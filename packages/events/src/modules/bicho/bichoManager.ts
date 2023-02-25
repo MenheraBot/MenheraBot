@@ -37,12 +37,6 @@ const finishGame = async (): Promise<void> => {
 
   const playerBets = await bichoRepository.getAllUserBets();
 
-  playerBets.push({
-    id: '435228312214962204',
-    bet: 293,
-    option: `${results[0].join('')}`,
-  });
-
   const players = makePlayerResults(playerBets, results);
 
   postBichoResults(players);
