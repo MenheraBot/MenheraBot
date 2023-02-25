@@ -7,7 +7,7 @@
     "rest": "yarn workspace @menhera-bot/rest",
     "events": "yarn workspace @menhera-bot/events",
     "lint": "yarn workspace @menhera-bot/eslint-config",
-    "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "NODE_ENV=test node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
     "build:all": "concurrently \"yarn rest build\" \"yarn events build\"",
     "run:lint": "eslint ."
   },
