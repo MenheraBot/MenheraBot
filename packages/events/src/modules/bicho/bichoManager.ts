@@ -91,8 +91,6 @@ const finishGame = async (): Promise<void> => {
   await startGameLoop();
 };
 
-finishGame();
-
 const didUserAlreadyBet = async (userId: BigString): Promise<boolean> =>
   bichoRepository.didUserAlreadyBet(userId);
 
