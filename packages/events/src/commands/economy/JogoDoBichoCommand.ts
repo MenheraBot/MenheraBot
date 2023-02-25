@@ -261,6 +261,7 @@ const BichoCommand = createCommand({
       const embed = createEmbed({
         color: hexStringToNumber(ctx.authorData.selectedColor),
         title: ctx.locale('commands:bicho.sorted-title'),
+        footer: { text: ctx.locale('commands:bicho.footer') },
         description: ctx.locale('commands:bicho.sorted-description', {
           nextDate:
             currentRaffle.dueDate > 0
