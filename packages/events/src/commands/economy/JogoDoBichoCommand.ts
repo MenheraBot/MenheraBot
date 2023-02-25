@@ -18,6 +18,7 @@ import {
   GAME_DURATION,
   getCurrentGameStatus,
   getLastGameStatus,
+  optionBetToText,
   registerUserBet,
 } from '../../modules/bicho/bichoManager';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
@@ -31,7 +32,6 @@ import {
 } from '../../utils/discord/componentUtils';
 import { COLORS } from '../../structures/constants';
 import bichoRepository from '../../database/repositories/bichoRepository';
-import { BichoBetType } from '../../modules/bicho/types';
 
 const tabledAnimals = (() => {
   let text = '';
@@ -300,28 +300,6 @@ const BichoCommand = createCommand({
         )!;
 
         const betType = getBetType(userBet.option);
-
-        const optionBetToText = (option: string, type: BichoBetType): string => {
-          switch (type) {
-            case 'unity':
-            case 'ten':
-            case 'hundred':
-            case 'thousand':
-              return option;
-
-            case 'animal':
-              return capitalize(option);
-
-            case 'sequence':
-              return option
-                .split(' | ')
-                .map((text, i) => `${i + 1}° ${capitalize(text)}`)
-                .join('. ');
-
-            case 'corner':
-              return option.split(' | ').map(capitalize).join(', ');
-          }
-        };
 
         embed.fields?.push({
           name: ctx.locale('commands:bicho.in'),

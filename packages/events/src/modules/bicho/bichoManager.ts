@@ -2,8 +2,14 @@ import { BigString } from 'discordeno/types';
 import bichoRepository from '../../database/repositories/bichoRepository';
 import { postBichoResults } from '../../utils/apiRequests/statistics';
 import starsRepository from '../../database/repositories/starsRepository';
-import { BichoGameInfo } from './types';
-import { makePlayerResults } from './finishBets';
+import { BichoBetType, BichoGameInfo } from './types';
+import { getBetType, makePlayerResults, mapResultToAnimal } from './finishBets';
+import { createEmbed } from '../../utils/discord/embedUtils';
+import { COLORS } from '../../structures/constants';
+import { bot } from '../..';
+import { getEnviroments } from '../../utils/getEnviroments';
+import { debugError } from '../../utils/debugError';
+import { capitalize } from '../../utils/miscUtils';
 
 const GAME_DURATION = 1000 * 60 * 60 * 6;
 
@@ -15,6 +21,11 @@ const generateResults = (): number[] => {
   return results;
 };
 
+const { BICHO_WEBHOOK_ID, BICHO_WEBHOOK_TOKEN } = getEnviroments([
+  'BICHO_WEBHOOK_ID',
+  'BICHO_WEBHOOK_TOKEN',
+]);
+
 const finishGame = async (): Promise<void> => {
   const results = [
     generateResults(),
@@ -25,6 +36,12 @@ const finishGame = async (): Promise<void> => {
   ];
 
   const playerBets = await bichoRepository.getAllUserBets();
+
+  playerBets.push({
+    id: '435228312214962204',
+    bet: 293,
+    option: `${results[0].join('')}`,
+  });
 
   const players = makePlayerResults(playerBets, results);
 
@@ -39,13 +56,73 @@ const finishGame = async (): Promise<void> => {
     }
   });
 
+  const wonPlayers = players.filter((a) => a.didWin);
+
+  const resultsEmbed = createEmbed({
+    title: 'Resultados do Jogo do Bicho',
+    timestamp: Date.now(),
+    color: COLORS.Random(),
+    description: `\`\`\`js\n1°) ${results[0]} (${capitalize(mapResultToAnimal(results[0]))})\n2°) ${
+      results[1]
+    } (${capitalize(mapResultToAnimal(results[1]))})\n3°) ${results[2]} (${capitalize(
+      mapResultToAnimal(results[2]),
+    )})\n4°) ${results[3]} (${capitalize(mapResultToAnimal(results[3]))})\n5°) ${
+      results[4]
+    } (${capitalize(mapResultToAnimal(results[4]))})\`\`\`\n**Jogadores:** ${
+      players.length
+    }\n**Maior Lucro:** ${biggestProfit} :star:\n**Vencedores**: ${wonPlayers.length}\n\`\`\`js\n${
+      wonPlayers.length === 0
+        ? 'Ninguém Ganhou'
+        : wonPlayers.map(
+            (player) =>
+              `[${player.id}]\n• Apostou ${player.bet}\n• Ganhou ${
+                player.profit
+              }\n• Escolha: ${(() => {
+                const playerBet = playerBets.find((a) => a.id === player.id)?.option ?? '0';
+
+                return optionBetToText(playerBet, getBetType(playerBet));
+              })()}\n------------\n`,
+          )
+    }\`\`\``,
+  });
+
+  await bot.helpers
+    .sendWebhookMessage(BigInt(BICHO_WEBHOOK_ID), BICHO_WEBHOOK_TOKEN, {
+      embeds: [resultsEmbed],
+    })
+    .catch(debugError);
+
   await bichoRepository.setLastGameInfo(Date.now(), results, biggestProfit);
   await bichoRepository.resetAllCurrentBichoStats();
   await startGameLoop();
 };
 
+finishGame();
+
 const didUserAlreadyBet = async (userId: BigString): Promise<boolean> =>
   bichoRepository.didUserAlreadyBet(userId);
+
+const optionBetToText = (option: string, type: BichoBetType): string => {
+  switch (type) {
+    case 'unity':
+    case 'ten':
+    case 'hundred':
+    case 'thousand':
+      return option;
+
+    case 'animal':
+      return capitalize(option);
+
+    case 'sequence':
+      return option
+        .split(' | ')
+        .map((text, i) => `${i + 1}° ${capitalize(text)}`)
+        .join('. ');
+
+    case 'corner':
+      return option.split(' | ').map(capitalize).join(', ');
+  }
+};
 
 const canRegisterBet = async (userId: BigString): Promise<boolean> => {
   const [dueDate, haveBet] = await Promise.all([
@@ -101,6 +178,7 @@ const getCurrentGameStatus = async (): Promise<{
 
 export {
   canRegisterBet,
+  optionBetToText,
   finishGame,
   GAME_DURATION,
   registerUserBet,
