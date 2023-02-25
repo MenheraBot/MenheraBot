@@ -85,18 +85,24 @@ const startGameLoop = async (): Promise<void> => {
 const getLastGameStatus = async (): Promise<BichoGameInfo | null> =>
   bichoRepository.getLastGameInfo();
 
-const getCurrentGameStatus = async (): Promise<{ dueDate: number; betsOn: number }> => {
-  const [dueDate, betsOn] = await Promise.all([
+const getCurrentGameStatus = async (): Promise<{
+  dueDate: number;
+  betsOn: number;
+  usersIn: number;
+}> => {
+  const [dueDate, betsOn, usersIn] = await Promise.all([
     bichoRepository.getCurrentGameDueDate(),
     bichoRepository.getCurrentBichoBetAmount(),
+    bichoRepository.getCurrentGameBetsMade(),
   ]);
 
-  return { dueDate, betsOn };
+  return { dueDate, betsOn, usersIn };
 };
 
 export {
   canRegisterBet,
   finishGame,
+  GAME_DURATION,
   registerUserBet,
   getLastGameStatus,
   getCurrentGameStatus,

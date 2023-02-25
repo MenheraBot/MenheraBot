@@ -14,7 +14,7 @@ const cmdSchema = new Schema({
   _id: { type: String },
   maintenance: { type: Boolean, default: false },
   maintenanceReason: { type: String, default: '' },
-  discordId: { type: String, default: '0' },
+  discordId: { type: String, default: null },
 });
 
 const guildSchema = new Schema({

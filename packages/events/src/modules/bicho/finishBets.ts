@@ -32,13 +32,13 @@ const BICHO_BET_MULTIPLIER = {
   unity: 2,
   ten: 5,
   hundred: 20,
-  thousand: 500,
+  thousand: 100,
   animal: 3,
   sequence: 19,
-  corner: 1000,
+  corner: 500,
 };
 
-const betType = (option: string): BichoBetType => {
+const getBetType = (option: string): BichoBetType => {
   if (/^(?=.*\d)[\d ]+$/.test(option)) {
     const withoutBlank = option.replace(/\s/g, '');
     if (withoutBlank.length === 4) return 'thousand';
@@ -92,11 +92,18 @@ const didUserWin = (results: number[][], option: string, bet: BichoBetType): boo
 
 const makePlayerResults = (bets: BetPlayer[], gameResults: number[][]): BichoWinner[] => {
   return bets.map<BichoWinner>((player) => ({
-    didWin: didUserWin(gameResults, player.option, betType(player.option)),
+    didWin: didUserWin(gameResults, player.option, getBetType(player.option)),
     id: `${player.id}`,
-    profit: player.bet * BICHO_BET_MULTIPLIER[betType(player.option)],
+    profit: player.bet * BICHO_BET_MULTIPLIER[getBetType(player.option)],
     bet: player.bet,
   }));
 };
 
-export { makePlayerResults, BICHO_BET_MULTIPLIER, BICHO_ANIMALS, didUserWin };
+export {
+  makePlayerResults,
+  BICHO_BET_MULTIPLIER,
+  BICHO_ANIMALS,
+  didUserWin,
+  getBetType,
+  mapResultToAnimal,
+};

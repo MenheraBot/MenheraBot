@@ -1,15 +1,21 @@
-import { ApplicationCommandOptionTypes, TextStyles } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles, TextStyles } from 'discordeno/types';
 
 import userRepository from '../../database/repositories/userRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import starsRepository from '../../database/repositories/starsRepository';
 import { extractFields } from '../../utils/discord/modalUtils';
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
-import { BICHO_ANIMALS, BICHO_BET_MULTIPLIER } from '../../modules/bicho/finishBets';
-import { capitalize, millisToSeconds } from '../../utils/miscUtils';
+import {
+  BICHO_ANIMALS,
+  BICHO_BET_MULTIPLIER,
+  getBetType,
+  mapResultToAnimal,
+} from '../../modules/bicho/finishBets';
+import { capitalize, millisToHours, millisToSeconds } from '../../utils/miscUtils';
 import {
   canRegisterBet,
   didUserAlreadyBet,
+  GAME_DURATION,
   getCurrentGameStatus,
   getLastGameStatus,
   registerUserBet,
@@ -18,10 +24,38 @@ import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import {
   createActionRow,
+  createButton,
   createCustomId,
   createSelectMenu,
   createTextInput,
 } from '../../utils/discord/componentUtils';
+import { COLORS } from '../../structures/constants';
+import bichoRepository from '../../database/repositories/bichoRepository';
+import { BichoBetType } from '../../modules/bicho/types';
+
+const tabledAnimals = (() => {
+  let text = '';
+
+  for (let i = 0; i < 100; i += 4) {
+    const currentAnimal = BICHO_ANIMALS[Math.floor(i / 4)];
+    text += `**[${i} - ${i + 3}]**  ${capitalize(currentAnimal)}\n`;
+  }
+
+  return text;
+})();
+
+const displayBichoTable = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const embed = createEmbed({
+    title: ctx.locale('commands:bicho.how-to-title'),
+    color: COLORS.Purple,
+    description: ctx.locale('commands:bicho.how-to-description', {
+      duration: millisToHours(GAME_DURATION),
+      table: tabledAnimals,
+    }),
+  });
+
+  ctx.makeMessage({ embeds: [embed], components: [] });
+};
 
 const finishUserBet = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
@@ -208,13 +242,21 @@ const BichoCommand = createCommand({
   ],
   category: 'economy',
   authorDataFields: ['estrelinhas', 'selectedColor'],
-  commandRelatedExecutions: [executeBetType, finishUserBet],
+  commandRelatedExecutions: [executeBetType, finishUserBet, displayBichoTable],
   execute: async (ctx, finishCommand) => {
     const bet = ctx.getOption<number>('aposta', false);
 
     if (!bet) {
       const lastRaffle = await getLastGameStatus();
       const currentRaffle = await getCurrentGameStatus();
+
+      const prettyResults = (index: number) =>
+        lastRaffle
+          ? lastRaffle.results[index].join(', ')
+          : ctx.locale('commands:bicho.no-register');
+
+      const getAnimalFromResults = (index: number) =>
+        lastRaffle ? capitalize(mapResultToAnimal(lastRaffle.results[index])) : '?';
 
       const embed = createEmbed({
         color: hexStringToNumber(ctx.authorData.selectedColor),
@@ -228,33 +270,69 @@ const BichoCommand = createCommand({
             ? `<t:${millisToSeconds(lastRaffle.dueDate)}:R>`
             : ctx.locale('commands:bicho.no-register'),
           value: currentRaffle.betsOn ?? ctx.locale('commands:bicho.no-register'),
-          first: lastRaffle
-            ? lastRaffle.results[0].join(', ')
-            : ctx.locale('commands:bicho.no-register'),
-          second: lastRaffle
-            ? lastRaffle.results[1].join(', ')
-            : ctx.locale('commands:bicho.no-register'),
-          third: lastRaffle
-            ? lastRaffle.results[2].join(', ')
-            : ctx.locale('commands:bicho.no-register'),
-          fourth: lastRaffle
-            ? lastRaffle.results[3].join(', ')
-            : ctx.locale('commands:bicho.no-register'),
-          fifth: lastRaffle
-            ? lastRaffle.results[4].join(', ')
-            : ctx.locale('commands:bicho.no-register'),
+          users: currentRaffle.usersIn ?? ctx.locale('commands:bicho.no-register'),
           biggestProfit: lastRaffle?.biggestProfit ?? 0,
+          first: prettyResults(0),
+          firstAnimal: getAnimalFromResults(0),
+          second: prettyResults(1),
+          secondAnimal: getAnimalFromResults(1),
+          third: prettyResults(2),
+          thirdAnimal: getAnimalFromResults(2),
+          fourth: prettyResults(3),
+          fourthAnimal: getAnimalFromResults(3),
+          fifth: prettyResults(4),
+          fifthAnimal: getAnimalFromResults(4),
         }),
         fields: [],
       });
 
-      if (await didUserAlreadyBet(ctx.author.id))
+      const animalNumbersButtons = createButton({
+        customId: createCustomId(2, ctx.author.id, ctx.commandId),
+        label: ctx.locale('commands:bicho.how-to'),
+        style: ButtonStyles.Primary,
+      });
+
+      if (await didUserAlreadyBet(ctx.author.id)) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const userBet = (await bichoRepository.getAllUserBets()).find(
+          (a) => `${a.id}` === `${ctx.author.id}`,
+        )!;
+
+        const betType = getBetType(userBet.option);
+
+        const optionBetToText = (option: string, type: BichoBetType): string => {
+          switch (type) {
+            case 'unity':
+            case 'ten':
+            case 'hundred':
+            case 'thousand':
+              return option;
+
+            case 'animal':
+              return capitalize(option);
+
+            case 'sequence':
+              return option
+                .split(' | ')
+                .map((text, i) => `${i + 1}° ${capitalize(text)}`)
+                .join('. ');
+
+            case 'corner':
+              return option.split(' | ').map(capitalize).join(', ');
+          }
+        };
+
         embed.fields?.push({
           name: ctx.locale('commands:bicho.in'),
-          value: ctx.locale('commands:bicho.in-description'),
+          value: ctx.locale('commands:bicho.in-description', {
+            type: ctx.locale(`commands:bicho.bet-types.${betType}`),
+            option: optionBetToText(userBet.option, betType),
+            profit: userBet.bet * BICHO_BET_MULTIPLIER[betType],
+          }),
         });
+      }
 
-      ctx.makeMessage({ embeds: [embed] });
+      ctx.makeMessage({ embeds: [embed], components: [createActionRow([animalNumbersButtons])] });
       return finishCommand();
     }
 

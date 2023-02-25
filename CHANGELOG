@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Novos locais para beijar no comando `/beijar` -> *mão* e *testa*.
 
+### Changed
+
+- Novas informações no comando `/bicho`. A melhor hora para jogar é agora! Foi adicionado um botão no comando para que você entenda e aprenda a jogar no Jogo do Bicho.
+
 ## [5.1.0] - 2022-12-18
 
 ### Changed
