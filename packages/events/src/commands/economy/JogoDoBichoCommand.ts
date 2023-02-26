@@ -327,7 +327,7 @@ const BichoCommand = createCommand({
         ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.close') }),
       );
 
-    if (!canRegisterBet(ctx.author.id))
+    if (!(await canRegisterBet(ctx.author.id)))
       return finishCommand(
         ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.already') }),
       );
