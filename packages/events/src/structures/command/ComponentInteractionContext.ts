@@ -115,7 +115,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   }
 
   captureException(error: Error): null {
-    if (process.env.NODE_ENV === 'DEVELOPMENT') logger.error(error.message);
+    if (process.env.NODE_ENV === 'development') logger.error(error.message);
 
     Sentry.withScope((scope) => {
       scope.setContext('command', {

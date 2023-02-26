@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.2.0] - 2023-02-25
+
+### Added
+
+- Novos locais para beijar no comando `/beijar` -> *mão* e *testa*.
+- Foi criado um canal no servidor de suporte para salvar todos os sorteios do Jogo do Bicho. Caso queira ver informações sobre partidas, ou ver se você ganhou um sorteio nas últimas horas, é so entrar! 
+
+### Changed
+
+- Novas informações no comando `/bicho`. A melhor hora para jogar é agora! Foi adicionado um botão no comando para que você entenda e aprenda a jogar no Jogo do Bicho.
+
 ## [5.1.0] - 2022-12-18
 
 ### Changed

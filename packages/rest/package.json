@@ -10,7 +10,7 @@
     "build": "tsc --project tsconfig.json",
     "typecheck": " tsc --project tsconfig.json --noEmit",
     "dev": "node --no-warnings -r dotenv/config .",
-    "start": "node --no-warnings ."
+    "start": "NODE_ENV=production node --no-warnings ."
   },
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {

@@ -692,9 +692,9 @@
     "hourly_limit": "You have exceeded your hourly high stakes limit (High stakes are considered, stakes greater than 10.000 stars placed in Double Numbers or Single Number)!"
   },
   "bicho": {
-    "sorted-title": "Drawn Numbers",
+    "sorted-title": "🐾 | Animal Game",
     "label": "Type a number between {{min}} and {{max}}",
-    "sorted-description": "**Last Draw:** {{lastDate}}\nNumbers Drawn:\n1st - `{{first}}`\n2nd - `{{second}}`\n3rd - `{{third}}`\n4th - `{{fourth}}`\n5th - `{{fifth}}`\nBiggest Profit: **{{biggestProfit}}** :star:\n\nNext Draw: {{nextDate}}\n**Accumulated Value:** {{value}} :star:",
+    "sorted-description": "**Last Draw:** {{lastDate}}\nNumbers Drawn:\n1st - `{{first}}` - {{firstAnimal}}\n2nd - `{{second}}` - {{secondAnimal}}\n3rd - `{{third}}` - {{thirdAnimal}}\n4th - `{{fourth}}` - {{fourthAnimal}}\n5th - `{{fifth}}` - {{fifthAnimal}}\nBiggest Profit: **{{biggestProfit}}** :star:\n\nNext Draw: {{nextDate}}\n\n**Users Betting** {{users}}\n**Accumulated Value:** {{value}} :star:",
     "no-register": "No registry",
     "poor": "You don't have enough stars to bet on! Try another value!",
     "bet-title": "Bet on an Animal",
@@ -711,9 +711,22 @@
     "second": "second",
     "third": "third",
     "in": "You're In!",
-    "in-description": "You are participating in this bet!",
+    "in-description": "You are participating in this bet!\n\n**Bet Type:** {{type}}\n**Your Choice:** {{option}}\n**You'll Profit:** {{profit}} :star:",
     "already": "You have already bet on the Animal Game! wait for the next one to start",
-    "success": "Your bet has been successfully placed! Stay tuned to the results to see if you've won anything. But don't worry, the credit will be automatically debited from your account!"
+    "how-to": "How to Play",
+    "how-to-title": "How to play Animal Game",
+    "how-to-description": "Jogo do bicho is based on 5 miles drawn every {{duration}} hours. You can bet on different categories: `number`, `animal`, `sequence` and `corner`. In number, you choose any number between 0 and 9999. Your bet will have different payouts based on whether the number you bet is one, ten, one hundred or one thousand. If the number you bet falls on any of the 5 draws, you win!\nThe other 3 ways to bet are based on the table of animals that you can see below. The animal is based on the ten of the numbers drawn, so what counts are only the last 2 numbers of each draw. The animal bet is the simplest, if the animal you chose falls into one of the 5 draws, you win! Next, you choose two animals. These animals must land in sequence in any of the draws. They don't need to be right after (for example, draw 1 and draw 2), they just need to be in sequence (for example, draw 2 and draw 5). Finally, the quinine! To win the corner, you must say the animals that will be drawn in all 5 rounds. The order doesn't matter on the corner, you just have to hit the 5 animals (there may be repetitions).\n\n**TABLE OF ANIMALS**\n\n{{table}}",
+    "bet-types": {
+      "unity": "Unity",
+      "ten": "Ten",
+      "hundred": "Hundred",
+      "thousand": "Thousand",
+      "corner": "Corner",
+      "sequence": "Sequence",
+      "animal": "Animal" 
+    },
+    "footer": "For older results, enter the support server",
+    "success": "Your bet has been successfully placed! Stay tuned to the results to see if you've won anything. But don't worry, the credit will be automatically added from your account!"
   },
   "badges": {
     "title": "Your Badges",

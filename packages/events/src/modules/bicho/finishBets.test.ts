@@ -63,11 +63,12 @@ describe('Bicho didUserWin function', () => {
       testWin('vaca | veado', 'sequence'),
       testWin('águia | vaca', 'sequence'),
       testWin('veado | leão', 'sequence'),
-      testWin('veado | leão', 'sequence'),
+      testWin('leão | veado', 'sequence'),
       testWin('galo | vaca', 'sequence'),
+      testWin('leão | leão', 'sequence'),
     ];
 
-    expect(totalResults).toEqual([false, true, false, true, true, false]);
+    expect(totalResults).toEqual([false, true, false, true, false, false, false]);
   });
 
   test('check if the corner selection is ok', () => {

@@ -8,6 +8,8 @@ const toWritableUtf = (str: string): string => str.replace(/[^\x00-\xFF]/g, '');
 
 const millisToSeconds = (milli: number): number => Math.floor(milli / 1000);
 
+const millisToHours = (milli: number): number => Math.floor(milli / 1000 / 60 / 60);
+
 const negate = (value: number): number => value * -1;
 
 const getMillisecondsToTheEndOfDay = (): number => {
@@ -26,6 +28,7 @@ export {
   randomFromArray,
   toWritableUtf,
   millisToSeconds,
+  millisToHours,
   negate,
   getMillisecondsToTheEndOfDay,
 };

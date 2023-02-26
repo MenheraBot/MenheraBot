@@ -131,7 +131,7 @@ const setInteractionCreateEvent = (): void => {
             err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
           const embed = createEmbed({
             color: 0xfd0000,
-            title: `${process.env.NODE_ENV === 'DEVELOPMENT' ? '[BETA]' : ''} ${T(
+            title: `${process.env.NODE_ENV === 'development' ? '[DEV]' : ''} ${T(
               'events:error_embed.title',
               {
                 cmd: command.name,
@@ -165,7 +165,7 @@ const setInteractionCreateEvent = (): void => {
       `[${new Date().toISOString().substring(11, 19)}] ${command.name} - ${interaction.user.id} `,
     );
 
-    if (!interaction.guildId || process.env.NODE_ENV !== 'PRODUCTION') return;
+    if (!interaction.guildId || process.env.NODE_ENV !== 'production') return;
 
     const data: UsedCommandData = {
       authorId: `${interaction.user.id}`,

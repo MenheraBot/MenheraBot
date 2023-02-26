@@ -37,7 +37,7 @@ const setupMenheraClient = (client: MenheraClient): void => {
 const initializeServices = async (): Promise<void> => {
   await loadLocales();
 
-  if (process.env.TESTING) return;
+  if (process.env.NODE_ENV === 'test') return;
 
   await initializeMongo();
   await initializeRedis();
