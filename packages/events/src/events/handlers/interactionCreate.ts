@@ -112,7 +112,7 @@ const setInteractionCreateEvent = (): void => {
     );
 
     getCommandsCounter().inc({
-      command: commandName,
+      category: command.category,
     });
 
     await new Promise((res) => {

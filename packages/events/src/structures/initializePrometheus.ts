@@ -15,7 +15,7 @@ const initializePrometheus = (): void => {
   commandsCounter = new client.Counter({
     name: 'commands_count',
     help: 'Count of commands executed',
-    labelNames: ['command'],
+    labelNames: ['category'],
   });
 
   register.registerMetric(commandsCounter);
