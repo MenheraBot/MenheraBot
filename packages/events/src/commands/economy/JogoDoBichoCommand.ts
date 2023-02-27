@@ -68,7 +68,7 @@ const finishUserBet = async (
     SEQUENCE: 'UNITY',
   };
 
-  if (!canRegisterBet(ctx.user.id))
+  if (!(await canRegisterBet(ctx.user.id)))
     return ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.already') });
 
   await ctx.ack();
