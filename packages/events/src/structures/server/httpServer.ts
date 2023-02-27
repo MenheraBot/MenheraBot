@@ -5,6 +5,7 @@ import { logger } from '../../utils/logger';
 import { getEnviroments } from '../../utils/getEnviroments';
 import { createPostInteractionRouter } from './routes/postInteraction';
 import { createVoteWebhookRouter } from './routes/voteWebhook';
+import { createPrometheusRouter } from './routes/prometheus';
 
 const server = new Koa();
 
@@ -25,6 +26,7 @@ const registerRouter = (router: Router): void => {
 const registerAllRouters = (): void => {
   registerRouter(createPostInteractionRouter());
   registerRouter(createVoteWebhookRouter());
+  registerRouter(createPrometheusRouter());
 };
 
 export { createHttpServer, registerAllRouters };
