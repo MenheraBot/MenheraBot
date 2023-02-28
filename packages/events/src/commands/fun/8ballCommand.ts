@@ -144,6 +144,7 @@ const EightballCommand = createCommand({
       name: 'pergunta',
       nameLocalizations: { 'en-US': 'question' },
       description: 'Pergunta para ser feita',
+      maxLength: 300,
       descriptionLocalizations: { 'en-US': 'Question to be asked' },
       type: ApplicationCommandOptionTypes.String,
       required: true,

@@ -16,6 +16,7 @@ const AstolfoCommand = createCommand({
       name: 'frase',
       nameLocalizations: { 'en-US': 'phrase' },
       type: ApplicationCommandOptionTypes.String,
+      maxLength: 300,
       description: 'Frase para o Astolfo falar',
       descriptionLocalizations: { 'en-US': 'Phrase for Astolfo to speak' },
       required: true,

@@ -17,6 +17,7 @@ const PhiloCommand = createCommand({
     {
       name: 'frase',
       nameLocalizations: { 'en-US': 'text' },
+      maxLength: 300,
       type: ApplicationCommandOptionTypes.String,
       description: 'Frase para enviar ao Aristóteles',
       descriptionLocalizations: { 'en-US': 'Text to sendo to Aristotle' },
