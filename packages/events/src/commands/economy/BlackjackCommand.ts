@@ -1,6 +1,4 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
-import { extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
-import { EMOJIS } from '../../structures/constants';
 import blackjackRepository from '../../database/repositories/blackjackRepository';
 import { mentionUser } from '../../utils/discord/userUtils';
 import { makeDealerPlay } from '../../modules/blackjack/makeDealerPlay';
@@ -42,19 +40,7 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
     return;
   }
 
-  await ctx.makeMessage({
-    components: [
-      createActionRow([
-        createButton({
-          customId: 'UNCLICKABLE',
-          label: ctx.locale('commands:blackjack.shuffling'),
-          style: ButtonStyles.Primary,
-          disabled: true,
-          emoji: extractNameAndIdFromEmoji(EMOJIS.loading),
-        }),
-      ]),
-    ],
-  });
+  await ctx.ack();
 
   if (selectedButton === 'STOP')
     return makeDealerPlay(
