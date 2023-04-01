@@ -19,6 +19,8 @@ import { BLACKJACK_PRIZE_MULTIPLIERS, shuffleCards } from '../../modules/blackja
 
 import { createCommand } from '../../structures/command/createCommand';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
+import { EMOJIS } from '../../structures/constants';
 
 const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedButton, bet, embedColor] = ctx.sentData;
@@ -40,7 +42,19 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
     return;
   }
 
-  await ctx.ack();
+  await ctx.makeMessage({
+    components: [
+      createActionRow([
+        createButton({
+          customId: 'UNCLICKABLE',
+          label: ctx.locale('commands:blackjack.shuffling'),
+          style: ButtonStyles.Primary,
+          disabled: true,
+          emoji: extractNameAndIdFromEmoji(EMOJIS.loading),
+        }),
+      ]),
+    ],
+  });
 
   if (selectedButton === 'STOP')
     return makeDealerPlay(

@@ -7,7 +7,6 @@ import {
 import { BLACKJACK_PRIZE_MULTIPLIERS } from './index';
 import { getHandValue, numbersToBlackjackCards } from './blackjackMatch';
 import { finishMatch } from './finishMatch';
-import { logger } from '../../utils/logger';
 
 const makeDealerPlay = async (
   ctx: ComponentInteractionContext,
@@ -100,24 +99,21 @@ const makeDealerPlay = async (
       embedColor,
     );
 
-  if (dealerHandValue === 21)
-    return finishMatch(
-      ctx,
-      bet,
-      bjPlayerCards,
-      bjDealerCards,
-      playerHandValue,
-      dealerHandValue,
-      cardTheme,
-      tableTheme,
-      cardBackgroundTheme,
-      'biggest',
-      true,
-      BLACKJACK_PRIZE_MULTIPLIERS.base,
-      embedColor,
-    );
-
-  if (`${ctx.user.id}` === process.env.OWNER_ID) logger.debug('BIZARRO, CHEGOU ATÉ AQUI!!!');
+  return finishMatch(
+    ctx,
+    bet,
+    bjPlayerCards,
+    bjDealerCards,
+    playerHandValue,
+    dealerHandValue,
+    cardTheme,
+    tableTheme,
+    cardBackgroundTheme,
+    'biggest',
+    true,
+    BLACKJACK_PRIZE_MULTIPLIERS.base,
+    embedColor,
+  );
 };
 
 export { makeDealerPlay };
