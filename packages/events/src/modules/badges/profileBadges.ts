@@ -1,9 +1,7 @@
 /*
   Níveis de raridade:
   0 = Disponível a partir do Discord
-  1 = Disponível para compra com estrelinhas a qualquer momento
   2 = Disponível utilizando comandos
-  3 = Disponível ajudando a Menhera reportando bugs de nível alto
   4 = Disponível ajudando no Desenvolvimento da Menhera
   5 = Disponível por tempo limitado em eventos especiais
   6 = Disponível somente para amigos próximos da Lux
@@ -56,8 +54,8 @@ const profileBadges = {
     name: 'Banido',
     availabeStartAt: '------',
     availabeStoptAt: '------',
-    rarityLevel: 7,
-    description: 'Badge exclusiva do Nav3ne por já ter sido banido mais de 5 vezes',
+    rarityLevel: 6,
+    description: 'Badge a princípio exclusiva do Nav3ne por já ter sido banido mais de 5 vezes',
     link: 'https://media.discordapp.net/attachments/793669360857907200/793940062391369808/banido.png',
   },
   7: {
@@ -166,6 +164,14 @@ const profileBadges = {
     description:
       'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de um ano!',
     link: 'https://media.discordapp.net/attachments/793669360857907200/1049110780546650272/oneyear.png',
+  },
+  20: {
+    name: 'Bug Reporter',
+    availabeStartAt: '02/04/2023',
+    availabeStoptAt: '--------',
+    rarityLevel: 4,
+    description: 'Badge para usuários que reportaram bugs de grande impacto da Menhera!',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/1092137842014158938/bug_reporter.png',
   },
 };
 
