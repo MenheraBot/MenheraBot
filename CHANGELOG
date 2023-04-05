@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.2.2] - 2023-04-05
+
+### Fixed
+
+- A Badge de 100 votos voltou a ser adicionada aos perfis com mais de 100 votos. Caso você tenha mais de 100 votos na Menhera, a Badge deve aparecer em seu próximo voto.
+- Resolvido a inconsistência de votos, onde as mensagens que a Menhera mandavam eram sempre sobre um voto a menos do que a verdadeira contagem de votos.
+
 ## [5.2.1] - 2023-04-02
 
 ### Added
