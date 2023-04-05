@@ -1,9 +1,11 @@
 import Router from 'koa-router';
+import { UpdateQuery } from 'mongoose';
 import { bot } from '../../../index';
 import userRepository from '../../../database/repositories/userRepository';
 import { debugError } from '../../../utils/debugError';
 import { createEmbed } from '../../../utils/discord/embedUtils';
 import { getEnviroments } from '../../../utils/getEnviroments';
+import { DatabaseUserSchema } from '../../../types/database';
 
 const voteConstants = {
   baseRollAmount: 1,
@@ -17,6 +19,9 @@ const voteConstants = {
 
 const handleRequest = async (userId: string, isWeekend: boolean): Promise<void> => {
   const user = await userRepository.ensureFindUser(userId);
+
+  // Simulates the new vote before adding it all prizes
+  user.votes += 1;
 
   let rollQuantity = voteConstants.baseRollAmount;
   let starAmount =
@@ -59,14 +64,21 @@ const handleRequest = async (userId: string, isWeekend: boolean): Promise<void> 
 
   if (userDM) bot.helpers.sendMessage(userDM.id, { embeds: [embed] });
 
-  await userRepository.updateUserWithSpecialData(userId, {
+  const updateData: UpdateQuery<DatabaseUserSchema> = {
     $inc: {
       votes: 1,
       rolls: rollQuantity,
       estrelinhas: starAmount,
     },
-    voteCooldown: Date.now() + 43200000,
-  });
+    $set: {
+      voteCooldown: Date.now() + 43200000,
+    },
+  };
+
+  if (user.votes >= 100 && !user.badges.some((a) => a.id === 9))
+    updateData.$push = { badges: { id: 9, obtainAt: `${Date.now()}` } };
+
+  await userRepository.updateUserWithSpecialData(userId, updateData);
 };
 
 const createVoteWebhookRouter = (): Router => {
@@ -83,8 +95,6 @@ const createVoteWebhookRouter = (): Router => {
     ctx.status = 200;
 
     if (type === 'test') return;
-
-    ctx.status = 200;
 
     handleRequest(user, isWeekend);
   });
