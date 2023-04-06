@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [5.2.2] - 2023-04-05
 
+### Changed
+
+- O comando /perfil está muito mais rápido quando seu perfil não mudou nos últimos 30 minutos.
+
 ### Fixed
 
 - A Badge de 100 votos voltou a ser adicionada aos perfis com mais de 100 votos. Caso você tenha mais de 100 votos na Menhera, a Badge deve aparecer em seu próximo voto.

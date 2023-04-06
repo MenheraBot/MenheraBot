@@ -15,6 +15,7 @@ import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { createCommand } from '../../structures/command/createCommand';
 
 interface VangoghUserprofileData {
+  id: string;
   color: string;
   avatar: string;
   votes: number;
@@ -114,6 +115,7 @@ const ProfileCommand = createCommand({
     };
 
     const userData: VangoghUserprofileData = {
+      id: user.id,
       color: user.selectedColor,
       avatar,
       votes: user.votes,
@@ -145,6 +147,7 @@ const ProfileCommand = createCommand({
     const res = await vanGoghRequest(VanGoghEndpoints.Profile, {
       user: userData,
       i18n,
+      stringedProfileData: `${profileTheme}-${JSON.stringify(userData)}`,
       type: profileTheme,
     });
 
