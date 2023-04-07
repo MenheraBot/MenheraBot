@@ -6,6 +6,7 @@ import { createIpcConnection } from './structures/ipcConnection';
 import { MenheraClient } from './types/menhera';
 import { getEnviroments } from './utils/getEnviroments';
 import { setupEventHandlers } from './events/index';
+import { updateCommandsOnApi } from './utils/updateApiCommands';
 
 const { DISCORD_TOKEN, REST_AUTHORIZATION, DISCORD_APPLICATION_ID } = getEnviroments([
   'DISCORD_TOKEN',
@@ -33,6 +34,7 @@ if (process.env.NODE_ENV === 'production') {
   // TODO(ySnoopyDogy): The rest process should say who is the master
   // @ts-expect-error Start the events as the main
   bot.events.ready();
+  updateCommandsOnApi();
 }
 
 if (process.env.NODE_ENV === 'development') {

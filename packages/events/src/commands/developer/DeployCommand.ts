@@ -1,11 +1,9 @@
 import { ApplicationCommandOptionTypes, CreateSlashApplicationCommand } from 'discordeno/types';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import { postCommandsInformation } from '../../utils/apiRequests/commands';
 import commandRepository from '../../database/repositories/commandRepository';
 
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
-import { ApiCommandInformation } from '../../types/commands';
 
 const DeployCommand = createCommand({
   path: '',
@@ -20,10 +18,6 @@ const DeployCommand = createCommand({
         {
           name: 'Global',
           value: 'global',
-        },
-        {
-          name: 'WEBSITE',
-          value: 'site',
         },
         {
           name: 'DEVELOPER',
@@ -48,33 +42,6 @@ const DeployCommand = createCommand({
   authorDataFields: [],
   execute: async (ctx, finishCommand) => {
     const selectedOption = ctx.getOption<string>('option', false, true);
-
-    if (selectedOption === 'site') {
-      const toAPIData = new Map<string, ApiCommandInformation>();
-      const disabledCommands = await commandRepository.getAllCommandsInMaintenance();
-      bot.commands.forEach((c) => {
-        if (c.category === 'dev') return;
-        const found = disabledCommands.find((a) => a._id?.toString() === c.name);
-
-        toAPIData.set(c.name, {
-          name: c.name,
-          category: c.category,
-          description: c.description,
-          options: c.options ?? [],
-          descriptionLocalizations: c.descriptionLocalizations,
-          nameLocalizations: c.nameLocalizations,
-          disabled: {
-            isDisabled: found?.maintenance ?? false,
-            reason: found?.maintenanceReason ?? null,
-          },
-        });
-      });
-
-      await postCommandsInformation(Array.from(toAPIData.values()));
-      ctx.makeMessage({ content: 'As informaçoes dos comandos foram atualizadas na API' });
-      return finishCommand();
-    }
-
     if (selectedOption === 'global') {
       if (!ctx.getOption('senha', false) || ctx.getOption('senha', false) !== 'UwU') {
         ctx.makeMessage({
