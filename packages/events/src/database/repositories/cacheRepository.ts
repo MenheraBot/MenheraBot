@@ -9,6 +9,8 @@ import { bot } from '../../index';
 import { RedisClient } from '../databases';
 
 const getDiscordUser = async (userId: UserIdType): Promise<User | null> => {
+  if (userId === null) return null;
+
   const fromRedis = await RedisClient.get(`discord_user:${userId}`).catch(debugError);
 
   if (!fromRedis) {
