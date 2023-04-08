@@ -23,9 +23,9 @@ import { extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
 import { EMOJIS } from '../../structures/constants';
 
 const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [selectedButton, bet, embedColor] = ctx.sentData;
+  const [selectedButton, bet, embedColor, blackjackId] = ctx.sentData;
 
-  const blackjackGameData = await blackjackRepository.getBlackjackState(ctx.user.id, ctx.commandId);
+  const blackjackGameData = await blackjackRepository.getBlackjackState(ctx.user.id, blackjackId);
 
   if (!blackjackGameData) {
     ctx.makeMessage({
@@ -67,6 +67,7 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
       blackjackGameData.tableTheme,
       blackjackGameData.cardBackgroundTheme,
       embedColor,
+      blackjackId,
     );
 
   const bjDealerCards = numbersToBlackjackCards(blackjackGameData.dealerCards);
@@ -92,6 +93,7 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
       false,
       0,
       embedColor,
+      blackjackId,
     );
 
   if (expectedPlayerHandValue === 21)
@@ -109,17 +111,8 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
       true,
       BLACKJACK_PRIZE_MULTIPLIERS.blackjack,
       embedColor,
+      blackjackId,
     );
-
-  await blackjackRepository.updateBlackjackState(ctx.user.id, ctx.commandId, {
-    bet: blackjackGameData.bet,
-    cardBackgroundTheme: blackjackGameData.cardBackgroundTheme,
-    cardTheme: blackjackGameData.cardTheme,
-    tableTheme: blackjackGameData.tableTheme,
-    dealerCards: blackjackGameData.dealerCards,
-    matchCards: blackjackGameData.matchCards,
-    playerCards: blackjackGameData.playerCards,
-  });
 
   return continueFromBuy(
     ctx,
@@ -131,6 +124,7 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
     blackjackGameData.tableTheme,
     blackjackGameData.cardBackgroundTheme,
     embedColor,
+    blackjackId,
   );
 };
 
@@ -194,6 +188,7 @@ const BlackjackCommand = createCommand({
         true,
         BLACKJACK_PRIZE_MULTIPLIERS.init_blackjack,
         ctx.authorData.selectedColor,
+        `${ctx.interaction.id}`,
       );
 
     await starsRepository.removeStars(ctx.author.id, bet);
@@ -213,6 +208,7 @@ const BlackjackCommand = createCommand({
         false,
         BLACKJACK_PRIZE_MULTIPLIERS.init_blackjack,
         ctx.authorData.selectedColor,
+        `${ctx.interaction.id}`,
       );
 
     const image = await getTableImage(
@@ -244,6 +240,7 @@ const BlackjackCommand = createCommand({
         'BUY',
         bet,
         ctx.authorData.selectedColor,
+        ctx.interaction.id,
       ),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:blackjack.buy'),
@@ -257,12 +254,13 @@ const BlackjackCommand = createCommand({
         'STOP',
         bet,
         ctx.authorData.selectedColor,
+        ctx.interaction.id,
       ),
       style: ButtonStyles.Danger,
       label: ctx.locale('commands:blackjack.stop'),
     });
 
-    await blackjackRepository.updateBlackjackState(ctx.author.id, ctx.commandId, {
+    await blackjackRepository.updateBlackjackState(ctx.author.id, ctx.interaction.id, {
       bet,
       cardBackgroundTheme,
       cardTheme,

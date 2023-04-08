@@ -27,6 +27,7 @@ const finishMatch = async (
   didUserWin: boolean,
   prizeMultiplier: number,
   embedColor: string,
+  blackjackId: string,
 ): Promise<void> => {
   const winner = didUserWin ? ctx.interaction.user.username : bot.username;
   const loser = !didUserWin ? ctx.interaction.user.username : bot.username;
@@ -69,7 +70,7 @@ const finishMatch = async (
 
   await safeImageReply(ctx, embed, image, []);
   await postBlackjackGame(`${ctx.interaction.user.id}`, didUserWin, prize);
-  await blackjackRepository.invalidateBlackjackState(ctx.interaction.user.id, ctx.commandId);
+  await blackjackRepository.invalidateBlackjackState(ctx.interaction.user.id, blackjackId);
 };
 
 export { finishMatch };

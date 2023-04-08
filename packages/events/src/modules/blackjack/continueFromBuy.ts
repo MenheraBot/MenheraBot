@@ -27,6 +27,7 @@ const continueFromBuy = async (
   tableTheme: AvailableTableThemes,
   cardBackgroundTheme: AvailableCardBackgroundThemes,
   embedColor: string,
+  blackjackId: string,
 ): Promise<void> => {
   const newCard = matchCards.shift() as number;
   const playerCards = [...oldPLayerCards, newCard];
@@ -58,20 +59,36 @@ const continueFromBuy = async (
   );
 
   const buyButton = createButton({
-    customId: createCustomId(0, ctx.interaction.user.id, ctx.commandId, 'BUY', bet, embedColor),
+    customId: createCustomId(
+      0,
+      ctx.interaction.user.id,
+      ctx.commandId,
+      'BUY',
+      bet,
+      embedColor,
+      blackjackId,
+    ),
     style: ButtonStyles.Primary,
     label: ctx.locale('commands:blackjack.buy'),
   });
 
   const stopButton = createButton({
-    customId: createCustomId(0, ctx.interaction.user.id, ctx.commandId, 'STOP', bet, embedColor),
+    customId: createCustomId(
+      0,
+      ctx.interaction.user.id,
+      ctx.commandId,
+      'STOP',
+      bet,
+      embedColor,
+      blackjackId,
+    ),
     style: ButtonStyles.Danger,
     label: ctx.locale('commands:blackjack.stop'),
   });
 
   await safeImageReply(ctx, embed, image, [createActionRow([buyButton, stopButton])]);
 
-  await blackjackRepository.updateBlackjackState(ctx.interaction.user.id, ctx.commandId, {
+  await blackjackRepository.updateBlackjackState(ctx.interaction.user.id, blackjackId, {
     bet,
     cardBackgroundTheme,
     cardTheme,
