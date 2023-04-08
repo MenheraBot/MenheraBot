@@ -6,6 +6,7 @@ import { getEnviroments } from '../../utils/getEnviroments';
 import { createPostInteractionRouter } from './routes/postInteraction';
 import { createVoteWebhookRouter } from './routes/voteWebhook';
 import { createPrometheusRouter } from './routes/prometheus';
+import { createRequestCommandsRouter } from './routes/requestCommands';
 
 const server = new Koa();
 
@@ -27,6 +28,7 @@ const registerAllRouters = (): void => {
   registerRouter(createPostInteractionRouter());
   registerRouter(createVoteWebhookRouter());
   registerRouter(createPrometheusRouter());
+  registerRouter(createRequestCommandsRouter());
 };
 
 export { createHttpServer, registerAllRouters };
