@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- Resolvido erro do blackjack onde não era possível jogar mais de uma partida ao mesmo tempo.
+- Resolvido erros do Trisal quando um usuário não era citado.
+- Correção parcial para reduzir as causas de imagens de API OFF em comandos de ação.
+
 ## [5.2.2] - 2023-04-05
 
 ### Changed

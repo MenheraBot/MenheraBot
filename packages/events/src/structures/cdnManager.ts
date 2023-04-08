@@ -39,7 +39,11 @@ interface AssetsLimit {
 let assetsLimit: AssetsLimit;
 
 export const getAssetLink = (type: keyof AssetsLimit): string => {
-  if (!assetsLimit || !assetsLimit[type]) return 'https://i.imgur.com/HftTDov.png';
+  if (!assetsLimit || !assetsLimit[type]) {
+    updateAssets();
+
+    return 'https://i.imgur.com/HftTDov.png';
+  }
 
   const random = Math.floor(Math.random() * assetsLimit[type]);
 
