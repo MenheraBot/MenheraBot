@@ -29,6 +29,7 @@ const LaughtCommand = createCommand({
       description: 'Por que tu ta rindo?',
       descriptionLocalizations: { 'en-US': 'Why are you laughing' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

@@ -30,6 +30,7 @@ const BiteCommand = createCommand({
       description: 'Por que tu quer morder?',
       descriptionLocalizations: { 'en-US': 'Why do you wanna bite?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

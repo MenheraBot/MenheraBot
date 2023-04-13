@@ -31,6 +31,7 @@ const ThinkCommand = createCommand({
       description: 'Por que tu ta pensando?',
       descriptionLocalizations: { 'en-US': 'Why are you thinking?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

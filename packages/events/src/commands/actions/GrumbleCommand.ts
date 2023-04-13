@@ -21,6 +21,7 @@ const GrumbleCommand = createCommand({
       description: 'Por que tu ta resmungando?',
       descriptionLocalizations: { 'en-US': 'Why are you grumbling?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

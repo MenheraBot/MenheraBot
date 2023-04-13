@@ -30,6 +30,7 @@ const PatCommand = createCommand({
       description: 'Por que tu quer fazer carinho?',
       descriptionLocalizations: { 'en-US': 'Why do you wanna cuddle?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

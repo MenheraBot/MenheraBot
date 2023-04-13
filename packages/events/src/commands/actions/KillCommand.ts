@@ -32,6 +32,7 @@ const KillCommand = createCommand({
       description: 'Por que tu quer fazer isso?',
       descriptionLocalizations: { 'en-US': 'Why do you wanna do that?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

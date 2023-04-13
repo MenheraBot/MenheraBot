@@ -29,6 +29,7 @@ const DisgustedCommand = createCommand({
       description: 'Por que tu ta com nojo?',
       descriptionLocalizations: { 'en-US': 'Why are you disgusted?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

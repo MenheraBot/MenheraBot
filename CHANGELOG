@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.2.4] - 2023-04-12
+
+### Changed
+
+- O campo `motivo` dos comandos de ação agora possuem um limite máximo de caracteres.
+
 ## [5.2.3] - 2023-04-08
 
 ### Fixed

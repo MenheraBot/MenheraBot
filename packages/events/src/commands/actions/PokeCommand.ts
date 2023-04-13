@@ -30,6 +30,7 @@ const PokeCommand = createCommand({
       description: 'Por que tu ta cutucando?',
       descriptionLocalizations: { 'en-US': 'Why are you poking?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

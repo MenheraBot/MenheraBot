@@ -30,6 +30,7 @@ const BicudaCommand = createCommand({
       description: 'Por que você quer chutar?',
       descriptionLocalizations: { 'en-US': 'Why are you angry?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

@@ -32,6 +32,7 @@ const BicudaCommand = createCommand({
       description: 'Por que tu quer mamar?',
       descriptionLocalizations: { 'en-US': 'Why do you wanna lick?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

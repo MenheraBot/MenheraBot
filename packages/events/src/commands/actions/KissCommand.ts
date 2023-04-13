@@ -46,6 +46,7 @@ const KissCommand = createCommand({
       description: 'Por que voce quer beijar?',
       descriptionLocalizations: { 'en-US': 'Why do you wanna kiss?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

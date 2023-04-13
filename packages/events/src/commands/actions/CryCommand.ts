@@ -29,6 +29,7 @@ const CryCommand = createCommand({
       description: 'Por que você está chorando?',
       descriptionLocalizations: { 'en-US': 'Why are you crying?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

@@ -32,6 +32,7 @@ const HugCommand = createCommand({
       description: 'Tem um motivo em especial para abraçar?',
       descriptionLocalizations: { 'en-US': 'Is there any special reasons for this hug?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

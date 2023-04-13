@@ -30,6 +30,7 @@ const PunchCommand = createCommand({
       description: 'Por que tu quer socar man?',
       descriptionLocalizations: { 'en-US': 'Why do you wann punch?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

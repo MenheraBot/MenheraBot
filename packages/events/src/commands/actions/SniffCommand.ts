@@ -29,6 +29,7 @@ const SniffCommand = createCommand({
       description: 'Por que tu quer dar a talda cheirada?',
       descriptionLocalizations: { 'en-US': 'Why do you wanna sniff? (strange question)' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

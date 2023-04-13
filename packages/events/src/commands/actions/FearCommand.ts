@@ -29,6 +29,7 @@ const FearCommand = createCommand({
       description: 'Por que tu ta com medo?',
       descriptionLocalizations: { 'en-US': 'Why are you afraid?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',

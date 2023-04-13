@@ -29,6 +29,7 @@ const ShyCommand = createCommand({
       description: 'Por que esse usuário te deixou assim?',
       descriptionLocalizations: { 'en-US': 'Why did this user leave you like this?' },
       required: false,
+      maxLength: 300,
     },
   ],
   category: 'actions',
