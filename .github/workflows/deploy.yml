@@ -56,7 +56,7 @@ jobs:
 
           CURRENT_VERSION=${{ steps.rest.outputs.version }}
 
-          if [ $imgName -eq 'events' ]; then
+          if [[ "$imgName" == "events" ]; then
               CURRENT_VERSION=${{ steps.events.outputs.version }}
           fi
 
