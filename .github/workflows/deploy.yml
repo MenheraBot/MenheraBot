@@ -59,7 +59,13 @@ jobs:
           do
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$imgName
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          VERSION=${{ steps.versions.outputs.$imgName }}
-          docker tag $imgName $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
+
+          CURRENT_VERSION=${{ steps.versions.outputs.rest }}
+
+          if [ $imgName -eq 'events' ]; then
+              CURRENT_VERSION=${{ steps.versions.outputs.events }}
+          fi
+
+          docker tag $imgName $IMAGE_ID:$CURRENT_VERSION
+          docker push $IMAGE_ID:$CURRENT_VERSION
           done
