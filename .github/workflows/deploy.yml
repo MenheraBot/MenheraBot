@@ -25,15 +25,6 @@ jobs:
 
       - uses: actions/checkout@v3
 
-      - name: Build REST image
-        run: docker build . --file Dockerfile --tag rest --target rest --label "runnumber=${GITHUB_RUN_ID}"
-
-      - name: Build EVETS image
-        run: docker build . --file Dockerfile --tag events --target events --label "runnumber=${GITHUB_RUN_ID}"
-
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-
       - name: Read REST package.json
         id: rest
         uses: zoexx/github-action-json-file-properties@release
@@ -45,6 +36,15 @@ jobs:
         uses: zoexx/github-action-json-file-properties@release
         with:
           file_path: packages/events/package.json
+
+      - name: Build REST image
+        run: docker build . --file Dockerfile --tag rest:${{ steps.rest.outputs.version }} --target rest --label "runnumber=${GITHUB_RUN_ID}"
+
+      - name: Build EVETS image
+        run: docker build . --file Dockerfile --tag events:${{ steps.events.outputs.version }} --target events --label "runnumber=${GITHUB_RUN_ID}"
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
       - name: Publish tagged images
         run: |
@@ -60,6 +60,6 @@ jobs:
               CURRENT_VERSION=${{ steps.events.outputs.version }}
           fi
 
-          docker tag $imgName $IMAGE_ID:$CURRENT_VERSION
+          docker tag $imgName $IMAGE_ID:latest
           docker push $IMAGE_ID:$CURRENT_VERSION
           done
