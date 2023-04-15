@@ -36,23 +36,17 @@ jobs:
 
       - name: Read REST package.json
         id: rest
-        uses: jaywcjlove/github-action-read-file@main
+        uses: zoexx/github-action-json-file-properties@release
         with:
-          path: packages/rest/package.json
+          file_path: packages/rest/package.json
 
       - name: Read EVENTS package.json
         id: events
-        uses: jaywcjlove/github-action-read-file@main
+        uses: zoexx/github-action-json-file-properties@release
         with:
-          path: packages/events/package.json
+          file_path: packages/events/package.json
 
-      - name: Prepare both image versions
-        id: versions
-        run: |
-          echo "events::$(echo "${{steps.events.outputs.content}}" | grep 'version"' | cut -d '"' -f 4)" >> $GITHUB_OUTPUT
-          echo "rest::$(echo "${{steps.rest.outputs.content}}"" | grep 'version"' | cut -d '"' -f 4)" >> $GITHUB_OUTPUT
-
-      - name: Push both images
+      - name: Publish tagged images
         run: |
           images=("rest" "events")
           for imgName in ${images[@]}
@@ -60,10 +54,10 @@ jobs:
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$imgName
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
 
-          CURRENT_VERSION=${{ steps.versions.outputs.rest }}
+          CURRENT_VERSION=${{ steps.rest.outputs.version }}
 
           if [ $imgName -eq 'events' ]; then
-              CURRENT_VERSION=${{ steps.versions.outputs.events }}
+              CURRENT_VERSION=${{ steps.events.outputs.version }}
           fi
 
           docker tag $imgName $IMAGE_ID:$CURRENT_VERSION
