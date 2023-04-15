@@ -25,41 +25,23 @@ jobs:
 
       - uses: actions/checkout@v3
 
-      - name: Read REST package.json
-        id: rest
-        uses: zoexx/github-action-json-file-properties@release
-        with:
-          file_path: packages/rest/package.json
+      - name: Build rest image
+        run: docker build . --file Dockerfile --tag rest --target rest --label "runnumber=${GITHUB_RUN_ID}"
 
-      - name: Read EVENTS package.json
-        id: events
-        uses: zoexx/github-action-json-file-properties@release
-        with:
-          file_path: packages/events/package.json
-
-      - name: Build REST image
-        run: docker build . --file Dockerfile --tag rest:${{ steps.rest.outputs.version }} --target rest --label "runnumber=${GITHUB_RUN_ID}"
-
-      - name: Build EVETS image
-        run: docker build . --file Dockerfile --tag events:${{ steps.events.outputs.version }} --target events --label "runnumber=${GITHUB_RUN_ID}"
+      - name: Build events image
+        run: docker build . --file Dockerfile --tag events --target events --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
-      - name: Publish tagged images
+      - name: Publish docker images
         run: |
           images=("rest" "events")
           for imgName in ${images[@]}
           do
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$imgName
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
-          CURRENT_VERSION=${{ steps.rest.outputs.version }}
-
-          if [[ "$imgName" == "events" ]]; then
-              CURRENT_VERSION=${{ steps.events.outputs.version }}
-          fi
-
-          docker tag $imgName $IMAGE_ID:latest
-          docker push $IMAGE_ID:$CURRENT_VERSION
+          VERSION=latest
+          docker tag $imgName $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
           done
