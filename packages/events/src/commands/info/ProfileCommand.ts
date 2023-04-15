@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
 import dayjs from 'dayjs';
+import md5 from 'md5';
 
 import userRepository from '../../database/repositories/userRepository';
 import { MessageFlags } from '../../utils/discord/messageUtils';
@@ -147,7 +148,7 @@ const ProfileCommand = createCommand({
     const res = await vanGoghRequest(VanGoghEndpoints.Profile, {
       user: userData,
       i18n,
-      stringedProfileData: `${profileTheme}-${JSON.stringify(userData)}`,
+      hashedData: md5(`${profileTheme}-${JSON.stringify(userData)}`),
       type: profileTheme,
     });
 
