@@ -1,7 +1,10 @@
 name: Build and publish Menhera images
 
 on:
-  push:
+  workflow_run:
+    workflows: [Test]
+    types:
+      - completed
     branches:
       - production
 
@@ -13,6 +16,13 @@ jobs:
       contents: read
 
     steps:
+
+      - name: Check if all tests passed
+        if: ${{ github.event.workflow_run.conclusion != 'success' }}
+        run: |
+          echo "::error title=Tests Failed::I refuse to publish a broken image! Fix Tests >.<"
+          exit 1
+
       - uses: actions/checkout@v3
 
       - name: Build rest image

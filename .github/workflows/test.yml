@@ -11,21 +11,17 @@ on:
       - master
       - development/**
       - feat/**
+      - production
 jobs:
   run-tests:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 24
-      matrix:
-        node-version: [18.4.x]
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-
+          node-version: 18.4.0
+          cache: 'yarn'
       
       - name: Install needed dependencies
         run: yarn install --frozen-lockfile
