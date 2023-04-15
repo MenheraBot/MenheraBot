@@ -31,6 +31,7 @@
     "koa": "^2.13.4",
     "koa-body": "^6.0.1",
     "koa-router": "^12.0.0",
+    "md5": "^2.3.0",
     "mongoose": "^6.4.6",
     "net-ipc": "^2.0.1",
     "prom-client": "^14.1.1",
@@ -39,6 +40,7 @@
   "devDependencies": {
     "@types/i18next-fs-backend": "^1.1.2",
     "@types/koa-router": "^7.4.4",
+    "@types/md5": "^2.3.2",
     "@types/string-similarity": "^4.0.0"
   }
 }
