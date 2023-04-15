@@ -76,10 +76,6 @@ describe('AngryCommand tests', () => {
       context.makeMessage.mock.calls[0][0].embeds[0].description.includes('Motivo tri'),
     ).toBe(true);
   });
-
-  it('should fail tests', () => {
-    expect(1).toBe(2);
-  });
 });
 
 export {};
