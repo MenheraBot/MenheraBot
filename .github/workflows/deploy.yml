@@ -49,8 +49,8 @@ jobs:
       - name: Prepare both image versions
         id: versions
         run: |
-          echo "events::$(echo ${{steps.events.outputs.content}} | grep 'version"' | cut -d '"' -f 4)" >> $GITHUB_OUTPUT
-          echo "rest::$(echo ${{steps.rest.outputs.content}} | grep 'version"' | cut -d '"' -f 4)" >> $GITHUB_OUTPUT
+          echo "events::$(echo "${{steps.events.outputs.content}}" | grep 'version"' | cut -d '"' -f 4)" >> $GITHUB_OUTPUT
+          echo "rest::$(echo "${{steps.rest.outputs.content}}"" | grep 'version"' | cut -d '"' -f 4)" >> $GITHUB_OUTPUT
 
       - name: Push both images
         run: |
