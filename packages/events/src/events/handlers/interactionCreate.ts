@@ -17,6 +17,7 @@ import commandRepository from '../../database/repositories/commandRepository';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { logger } from '../../utils/logger';
 import { getCommandsCounter } from '../../structures/initializePrometheus';
+import { getUserLastBanData } from '../../utils/apiRequests/statistics';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -62,11 +63,34 @@ const setInteractionCreateEvent = (): void => {
     if (isUserBanned) {
       const bannedInfo = await userRepository.getBannedUserInfo(interaction.user.id);
 
-      return errorReply(
+      const banReason = bannedInfo?.banReason ?? T('events:banned_no_reason');
+
+      // eslint-disable-next-line no-nested-ternary
+      const bannedSince = bannedInfo?.bannedSince
+        ? bannedInfo.bannedSince !== 'NO_DATA'
+          ? `<t:${bannedInfo.bannedSince}>`
+          : T('events:banned_long_ago')
+        : T('events:banned_long_ago');
+
+      await errorReply(
         T('permissions:BANNED_INFO', {
-          banReason: bannedInfo?.banReason,
+          banReason,
+          bannedSince,
         }),
       );
+
+      if (bannedSince === 'NO_DATA') return;
+
+      const lastBan = await getUserLastBanData(`${interaction.user.id}`);
+
+      if (!lastBan) {
+        await userRepository.updateUser(interaction.user.id, { bannedSince: 'NO_DATA' });
+        return;
+      }
+
+      await userRepository.updateUser(interaction.user.id, { bannedSince: lastBan });
+
+      return;
     }
 
     const commandName = interaction.data?.name as string;

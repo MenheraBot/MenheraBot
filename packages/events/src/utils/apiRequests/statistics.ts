@@ -155,6 +155,16 @@ const getTopGamblingUsers = async (
   return null;
 };
 
+const getUserLastBanData = async (userId: string): Promise<string | null> => {
+  const res = await dataRequest.get('/usages/ban', { params: { userId } }).catch(() => null);
+
+  if (!res) return null;
+
+  if (!res.data.error) return res.data;
+
+  return null;
+};
+
 export {
   postHuntExecution,
   postBichoResults,
@@ -166,6 +176,7 @@ export {
   getUserHuntStats,
   getUserProfileInfo,
   getTopGamblingUsers,
+  getUserLastBanData,
   getTopHunters,
   getUsersThatMostUsedCommands,
 };
