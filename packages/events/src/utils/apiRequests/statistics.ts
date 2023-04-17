@@ -160,9 +160,7 @@ const getUserLastBanData = async (userId: BigString): Promise<string | null> => 
 
   if (!res) return null;
 
-  if (!res.data.error) return res.data;
-
-  return null;
+  return res.data;
 };
 
 export {

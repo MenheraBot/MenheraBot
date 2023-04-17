@@ -18,6 +18,7 @@ import { createEmbed } from '../../utils/discord/embedUtils';
 import { logger } from '../../utils/logger';
 import { getCommandsCounter } from '../../structures/initializePrometheus';
 import { getUserLastBanData } from '../../utils/apiRequests/statistics';
+import { millisToSeconds } from '../../utils/miscUtils';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -68,7 +69,7 @@ const setInteractionCreateEvent = (): void => {
       // eslint-disable-next-line no-nested-ternary
       const bannedSince = bannedInfo?.bannedSince
         ? bannedInfo.bannedSince !== 'NO_DATA'
-          ? `<t:${bannedInfo.bannedSince}>`
+          ? `<t:${millisToSeconds(Number(bannedInfo.bannedSince))}>`
           : T('events:banned_long_ago')
         : T('events:banned_long_ago');
 
