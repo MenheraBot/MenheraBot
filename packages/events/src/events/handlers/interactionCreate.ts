@@ -81,7 +81,7 @@ const setInteractionCreateEvent = (): void => {
 
       if (bannedSince === 'NO_DATA') return;
 
-      const lastBan = await getUserLastBanData(`${interaction.user.id}`);
+      const lastBan = await getUserLastBanData(interaction.user.id);
 
       if (!lastBan) {
         await userRepository.updateUser(interaction.user.id, { bannedSince: 'NO_DATA' });
