@@ -12,6 +12,7 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
   angels: user.angels,
   ban: user.ban,
   banReason: user.banReason,
+  bannedSince: user.bannedSince,
   lastCommandAt: user.lastCommandAt,
   archangels: user.archangels,
   badges: user.badges,
@@ -157,7 +158,9 @@ const invalidateUserCache = async (userId: BigString): Promise<void> => {
 };
 
 const getBannedUserInfo = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {
-  return usersModel.findOne({ id: userId }, ['ban', 'banReason'], { lean: true }).catch(debugError);
+  return usersModel
+    .findOne({ id: userId }, ['ban', 'banReason', 'bannedSince'], { lean: true })
+    .catch(debugError);
 };
 
 const getTopRanking = async (

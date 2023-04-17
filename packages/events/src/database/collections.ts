@@ -51,6 +51,7 @@ const userSchema = new Schema({
   info: { type: String, default: 'OwO >.<' },
   ban: { type: Boolean, default: false },
   banReason: { type: String, default: null },
+  bannedSince: { type: String, default: null },
   selectedColor: { type: String, default: '#a788ff' },
   colors: { type: Array, default: [] },
   demons: { type: Number, default: 0 },

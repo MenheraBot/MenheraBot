@@ -25,6 +25,7 @@ export interface DatabaseUserSchema {
   info: string;
   ban: boolean;
   banReason: string | null;
+  bannedSince: string | null;
   selectedColor: ColorResolvable;
   colors: UserColor[];
   demons: number;
