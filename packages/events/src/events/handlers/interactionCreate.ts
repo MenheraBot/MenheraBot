@@ -82,6 +82,8 @@ const setInteractionCreateEvent = (): void => {
 
       if (bannedSince === 'NO_DATA') return;
 
+      if (bannedSince.startsWith('<')) return;
+
       const lastBan = await getUserLastBanData(interaction.user.id);
 
       if (!lastBan) {

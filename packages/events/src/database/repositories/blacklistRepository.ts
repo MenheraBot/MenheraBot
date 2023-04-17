@@ -14,7 +14,11 @@ const isUserBanned = async (userId: UserIdType): Promise<boolean> =>
 
 const banUser = async (userId: UserIdType, reason: string): Promise<void> => {
   await addBannedUsers([userId]);
-  await userRepository.updateUser(userId, { ban: true, banReason: reason });
+  await userRepository.updateUser(userId, {
+    ban: true,
+    banReason: reason,
+    bannedSince: `${Date.now()}`,
+  });
 };
 
 const addBannedUsers = async (users: UserIdType[]): Promise<void> => {
