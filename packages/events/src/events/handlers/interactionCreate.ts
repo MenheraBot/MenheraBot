@@ -25,8 +25,6 @@ const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_TOKEN',
 ]);
 
-const testTimeouts = new Map<bigint, NodeJS.Timeout>();
-
 const setInteractionCreateEvent = (): void => {
   bot.events.interactionCreate = async (_, interaction) => {
     if (
@@ -130,14 +128,6 @@ const setInteractionCreateEvent = (): void => {
 
     bot.commandsInExecution += 1;
 
-    testTimeouts.set(
-      interaction.id,
-      setTimeout(() => {
-        logger.info(`Provavel leak de execução no comando ${command.name}.`);
-        testTimeouts.delete(interaction.id);
-      }, 120_000),
-    );
-
     getCommandsCounter().inc({
       category: command.category,
     });
@@ -184,9 +174,6 @@ const setInteractionCreateEvent = (): void => {
     });
 
     bot.commandsInExecution -= 1;
-
-    clearTimeout(testTimeouts.get(interaction.id));
-    testTimeouts.delete(interaction.id);
 
     logger.info(
       `[${new Date().toISOString().substring(11, 19)}] ${command.name} - ${interaction.user.id} `,
