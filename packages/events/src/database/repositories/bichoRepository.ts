@@ -1,9 +1,9 @@
 import { BigString } from 'discordeno/types';
 import { BetPlayer, BichoGameInfo } from '../../modules/bicho/types';
-import { RedisClient } from '../databases';
+import { MainRedisClient } from '../databases';
 
 const getLastGameInfo = async (): Promise<BichoGameInfo | null> => {
-  const fromRedis = await RedisClient.get('last_bicho');
+  const fromRedis = await MainRedisClient.get('last_bicho');
 
   if (fromRedis) return JSON.parse(fromRedis);
 
@@ -15,14 +15,14 @@ const setLastGameInfo = async (
   results: number[][],
   biggestProfit: number,
 ): Promise<void> => {
-  await RedisClient.set('last_bicho', JSON.stringify({ dueDate, results, biggestProfit }));
+  await MainRedisClient.set('last_bicho', JSON.stringify({ dueDate, results, biggestProfit }));
 };
 
 const didUserAlreadyBet = async (userId: BigString): Promise<boolean> =>
-  RedisClient.sismember('current_bicho_bet_ids', `${userId}`).then((res) => res === 1);
+  MainRedisClient.sismember('current_bicho_bet_ids', `${userId}`).then((res) => res === 1);
 
 const getCurrentGameDueDate = async (): Promise<number> => {
-  const fromRedis = await RedisClient.get('current_bicho');
+  const fromRedis = await MainRedisClient.get('current_bicho');
 
   if (fromRedis) return Number(fromRedis);
 
@@ -30,7 +30,7 @@ const getCurrentGameDueDate = async (): Promise<number> => {
 };
 
 const setCurrentGameDueDate = async (dueDate: number): Promise<void> => {
-  await RedisClient.set('current_bicho', dueDate);
+  await MainRedisClient.set('current_bicho', dueDate);
 };
 
 const addUserBet = async (
@@ -38,33 +38,33 @@ const addUserBet = async (
   betValue: number,
   optionSelected: string,
 ): Promise<void> => {
-  await RedisClient.sadd(
+  await MainRedisClient.sadd(
     'current_bicho_bets',
     JSON.stringify({ id: `${userId}`, bet: betValue, option: optionSelected }),
   );
 
-  await RedisClient.sadd('current_bicho_bet_ids', `${userId}`);
+  await MainRedisClient.sadd('current_bicho_bet_ids', `${userId}`);
 };
 
 const resetAllCurrentBichoStats = async (): Promise<void> => {
-  await RedisClient.del('current_bicho_bet_ids');
-  await RedisClient.del('current_bicho');
-  await RedisClient.del('current_bicho_bets');
-  await RedisClient.del('current_bicho_bet_amount');
+  await MainRedisClient.del('current_bicho_bet_ids');
+  await MainRedisClient.del('current_bicho');
+  await MainRedisClient.del('current_bicho_bets');
+  await MainRedisClient.del('current_bicho_bet_amount');
 };
 
 const getAllUserBets = async (): Promise<BetPlayer[]> => {
-  const fromRedis = await RedisClient.smembers('current_bicho_bets');
+  const fromRedis = await MainRedisClient.smembers('current_bicho_bets');
 
   return fromRedis.map((a) => JSON.parse(a));
 };
 
 const incrementBetAmount = async (bet: number): Promise<void> => {
-  await RedisClient.incrby('current_bicho_bet_amount', bet);
+  await MainRedisClient.incrby('current_bicho_bet_amount', bet);
 };
 
 const getCurrentBichoBetAmount = async (): Promise<number> => {
-  const fromRedis = await RedisClient.get('current_bicho_bet_amount');
+  const fromRedis = await MainRedisClient.get('current_bicho_bet_amount');
 
   if (fromRedis) return Number(fromRedis);
 
@@ -72,7 +72,7 @@ const getCurrentBichoBetAmount = async (): Promise<number> => {
 };
 
 const getCurrentGameBetsMade = async (): Promise<number> =>
-  RedisClient.scard('current_bicho_bet_ids');
+  MainRedisClient.scard('current_bicho_bet_ids');
 
 export default {
   getLastGameInfo,

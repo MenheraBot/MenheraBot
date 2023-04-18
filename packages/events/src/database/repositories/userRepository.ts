@@ -3,7 +3,7 @@ import { UpdateQuery } from 'mongoose';
 import { BigString } from 'discordeno/types';
 import { usersModel } from '../collections';
 import { DatabaseUserSchema, UserIdType } from '../../types/database';
-import { RedisClient } from '../databases';
+import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema => ({
@@ -41,14 +41,14 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
 });
 
 const findUser = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {
-  const fromRedis = await RedisClient.get(`user:${userId}`).catch(debugError);
+  const fromRedis = await MainRedisClient.get(`user:${userId}`).catch(debugError);
 
   if (fromRedis) return JSON.parse(fromRedis);
 
   const fromMongo = await usersModel.findOne({ id: userId }).catch(debugError);
 
   if (fromMongo) {
-    await RedisClient.setex(
+    await MainRedisClient.setex(
       `user:${userId}`,
       3600,
       JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
@@ -68,12 +68,12 @@ const updateUser = async (
     .updateOne({ id: userId }, { ...query, lastCommandAt: Date.now() })
     .catch(debugError);
 
-  const fromRedis = await RedisClient.get(`user:${userId}`).catch(debugError);
+  const fromRedis = await MainRedisClient.get(`user:${userId}`).catch(debugError);
 
   if (fromRedis) {
     const data = JSON.parse(fromRedis);
 
-    await RedisClient.setex(
+    await MainRedisClient.setex(
       `user:${userId}`,
       3600,
       JSON.stringify(
@@ -92,7 +92,7 @@ const updateUserWithSpecialData = async (
     .catch(() => null);
 
   if (updatedUser) {
-    await RedisClient.setex(
+    await MainRedisClient.setex(
       `user:${userId}`,
       3600,
       JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
@@ -109,12 +109,12 @@ const multiUpdateUsers = async (
     .catch(debugError);
 
   userIds.forEach(async (id) => {
-    const fromRedis = await RedisClient.get(`user:${id}`).catch(debugError);
+    const fromRedis = await MainRedisClient.get(`user:${id}`).catch(debugError);
 
     if (fromRedis) {
       const data = JSON.parse(fromRedis);
 
-      await RedisClient.setex(
+      await MainRedisClient.setex(
         `user:${id}`,
         3600,
         JSON.stringify(
@@ -126,7 +126,7 @@ const multiUpdateUsers = async (
 };
 
 const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> => {
-  const fromRedis = await RedisClient.get(`user:${userId}`).catch(debugError);
+  const fromRedis = await MainRedisClient.get(`user:${userId}`).catch(debugError);
 
   if (fromRedis) return JSON.parse(fromRedis);
 
@@ -135,7 +135,7 @@ const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> =
   if (!fromMongo) {
     const newUser = await usersModel.create({ id: userId });
 
-    await RedisClient.setex(
+    await MainRedisClient.setex(
       `user:${userId}`,
       3600,
       JSON.stringify(parseMongoUserToRedisUser(newUser)),
@@ -144,7 +144,7 @@ const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> =
     return newUser;
   }
 
-  await RedisClient.setex(
+  await MainRedisClient.setex(
     `user:${userId}`,
     3600,
     JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
@@ -154,7 +154,7 @@ const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> =
 };
 
 const invalidateUserCache = async (userId: BigString): Promise<void> => {
-  await RedisClient.del(`user:${userId}`);
+  await MainRedisClient.del(`user:${userId}`);
 };
 
 const getBannedUserInfo = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {

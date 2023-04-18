@@ -1,6 +1,6 @@
 import { BigString } from 'discordeno/types';
 
-import { RedisClient } from '../databases';
+import { MainRedisClient } from '../databases';
 import { themeCreditsModel } from '../collections';
 import { DatabaseCreditsSchema } from '../../types/database';
 import starsRepository from './starsRepository';
@@ -32,14 +32,14 @@ const getDesignerThemes = async (designerId: BigString): Promise<DatabaseCredits
   themeCreditsModel.find({ ownerId: `${designerId}` });
 
 const getThemeInfo = async (themeId: number): Promise<DatabaseCreditsSchema | null> => {
-  const fromRedis = await RedisClient.get(`credits:${themeId}`);
+  const fromRedis = await MainRedisClient.get(`credits:${themeId}`);
 
   if (fromRedis) return JSON.parse(fromRedis);
 
   const fromMongo = await themeCreditsModel.findOne({ themeId });
 
   if (fromMongo)
-    RedisClient.set(
+    MainRedisClient.set(
       `credits:${themeId}`,
       JSON.stringify({
         themeId: fromMongo.themeId,
@@ -61,7 +61,7 @@ const giveOwnerThemeRoyalties = async (themeId: number, value: number): Promise<
     { new: true },
   )) as DatabaseCreditsSchema;
 
-  RedisClient.set(
+  MainRedisClient.set(
     `credits:${themeId}`,
     JSON.stringify({
       themeId: themeData.themeId,

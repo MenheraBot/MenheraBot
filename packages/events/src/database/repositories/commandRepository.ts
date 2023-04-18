@@ -1,10 +1,10 @@
-import { RedisClient } from '../databases';
+import { MainRedisClient } from '../databases';
 import { DatabaseCommandSchema } from '../../types/database';
 import { commandsModel } from '../collections';
 import { debugError } from '../../utils/debugError';
 
 const getCommandInfo = async (commandName: string): Promise<DatabaseCommandSchema | null> => {
-  const fromRedis = await RedisClient.get(`command:${commandName}`).catch(debugError);
+  const fromRedis = await MainRedisClient.get(`command:${commandName}`).catch(debugError);
 
   if (fromRedis) return JSON.parse(fromRedis);
 
@@ -14,7 +14,7 @@ const getCommandInfo = async (commandName: string): Promise<DatabaseCommandSchem
 
   if (!fromMongo) return null;
 
-  await RedisClient.set(
+  await MainRedisClient.set(
     `command:${commandName}`,
     JSON.stringify({
       discordId: fromMongo.discordId,
@@ -35,7 +35,7 @@ const bulkUpdateCommandsIds = async (
     bulkUpdate
       .find({ _id: command.commandName })
       .updateOne({ $set: { discordId: command.commandId } });
-    RedisClient.del(`command:${command.commandName}`);
+    MainRedisClient.del(`command:${command.commandName}`);
   });
 
   await bulkUpdate.execute();
@@ -68,7 +68,7 @@ const setMaintenanceInfo = async (
     )
     .catch(debugError);
 
-  await RedisClient.del(`command:${commandName}`).catch(debugError);
+  await MainRedisClient.del(`command:${commandName}`).catch(debugError);
 };
 export default {
   getCommandInfo,

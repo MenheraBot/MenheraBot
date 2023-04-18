@@ -6,12 +6,12 @@ import { UserIdType } from '../../types/database';
 import { transfromUserToDiscordUser } from '../../internals/transformers/transformUserToDiscordUser';
 import { bot } from '../../index';
 
-import { RedisClient } from '../databases';
+import { MainRedisClient } from '../databases';
 
 const getDiscordUser = async (userId: UserIdType): Promise<User | null> => {
   if (userId === null) return null;
 
-  const fromRedis = await RedisClient.get(`discord_user:${userId}`).catch(debugError);
+  const fromRedis = await MainRedisClient.get(`discord_user:${userId}`).catch(debugError);
 
   if (!fromRedis) {
     const fromDiscord = await bot.helpers.getUser(BigInt(userId)).catch(() => null);
@@ -29,13 +29,13 @@ const getDiscordUser = async (userId: UserIdType): Promise<User | null> => {
 };
 
 const setDiscordUser = async (payload: DiscordUser): Promise<void> => {
-  await RedisClient.setex(`discord_user:${payload.id}`, 3600, JSON.stringify(payload)).catch(
+  await MainRedisClient.setex(`discord_user:${payload.id}`, 3600, JSON.stringify(payload)).catch(
     debugError,
   );
 };
 
 const getRouletteUsages = async (userId: BigString): Promise<number> => {
-  const res = await RedisClient.get(`roulette:${userId}`);
+  const res = await MainRedisClient.get(`roulette:${userId}`);
 
   if (!res) return 0;
 
@@ -45,18 +45,18 @@ const getRouletteUsages = async (userId: BigString): Promise<number> => {
 const incrementRouletteHourlyUsage = async (userId: BigString): Promise<void> => {
   const expireTime = (60 - new Date().getMinutes()) * 60;
 
-  await RedisClient.multi()
+  await MainRedisClient.multi()
     .incr(`roulette:${userId}`)
     .expire(`roulette:${userId}`, expireTime)
     .exec();
 };
 
 const addDeletedAccount = async (users: string[]): Promise<void> => {
-  await RedisClient.sadd('deleted_accounts', users);
+  await MainRedisClient.sadd('deleted_accounts', users);
 };
 
 const getDeletedAccounts = async (): Promise<string[]> =>
-  RedisClient.smembers('deleted_accounts').catch((err) => {
+  MainRedisClient.smembers('deleted_accounts').catch((err) => {
     debugError(err);
     return [];
   });

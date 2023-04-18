@@ -1,7 +1,7 @@
 import { BigString } from 'discordeno/types';
 
 import { getThemeById } from '../../modules/themes/getThemes';
-import { RedisClient } from '../databases';
+import { MainRedisClient } from '../databases';
 import { DatabaseUserThemesSchema } from '../../types/database';
 import { debugError } from '../../utils/debugError';
 import { userThemesModel } from '../collections';
@@ -65,7 +65,7 @@ type UserSelectedThemeTypes = keyof Pick<
 >;
 
 const findEnsuredUserThemes = async (userId: BigString): Promise<DatabaseUserThemesSchema> => {
-  const fromRedis = await RedisClient.get(`user_themes:${userId}`).catch(debugError);
+  const fromRedis = await MainRedisClient.get(`user_themes:${userId}`).catch(debugError);
 
   if (fromRedis) return JSON.parse(fromRedis);
 
@@ -74,7 +74,7 @@ const findEnsuredUserThemes = async (userId: BigString): Promise<DatabaseUserThe
   if (!fromMongo) {
     const newUser = await userThemesModel.create({ id: userId });
 
-    await RedisClient.setex(
+    await MainRedisClient.setex(
       `user_themes:${userId}`,
       3600,
       JSON.stringify(parseMongoUserToRedisUser(newUser)),
@@ -83,7 +83,7 @@ const findEnsuredUserThemes = async (userId: BigString): Promise<DatabaseUserThe
     return newUser;
   }
 
-  await RedisClient.setex(
+  await MainRedisClient.setex(
     `user_themes:${userId}`,
     3600,
     JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
@@ -146,7 +146,7 @@ const addThemeToUserAccount = async (
     .catch(() => null);
 
   if (updatedUser) {
-    await RedisClient.setex(
+    await MainRedisClient.setex(
       `user_themes:${userId}`,
       3600,
       JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
@@ -223,12 +223,12 @@ const setThemeToUserAccount = async (
 ): Promise<void> => {
   await userThemesModel.updateOne({ id: `${userId}` }, { [themeType]: themeId });
 
-  const fromRedis = await RedisClient.get(`user_themes:${userId}`);
+  const fromRedis = await MainRedisClient.get(`user_themes:${userId}`);
 
   if (fromRedis) {
     const data = JSON.parse(fromRedis);
 
-    await RedisClient.setex(
+    await MainRedisClient.setex(
       `user_themes:${userId}`,
       3600,
       JSON.stringify(parseMongoUserToRedisUser({ ...data, [themeType]: themeId })),

@@ -14,6 +14,7 @@ import { getUserBadges } from '../../modules/badges/getUserBadges';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { createCommand } from '../../structures/command/createCommand';
+import { VangoghRedisClient } from '../../database/databases';
 
 interface VangoghUserprofileData {
   id: string;
@@ -145,10 +146,33 @@ const ProfileCommand = createCommand({
 
     const profileTheme = await userThemesRepository.getProfileTheme(discordUser.id);
 
+    const hashedData = md5(`${profileTheme}-${JSON.stringify(userData)}`);
+
+    const fromRedis = await VangoghRedisClient.get(`profile:${user.id}:hash`);
+
+    if (fromRedis && fromRedis === hashedData) {
+      const imageFromRedis = await VangoghRedisClient.get(`profile:${user.id}:image`);
+
+      if (!imageFromRedis) {
+        ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
+        return finishCommand();
+      }
+
+      await ctx.makeMessage({
+        file: {
+          name: 'profile.png',
+          blob: imageFromRedis as unknown as Blob,
+        },
+      });
+
+      finishCommand();
+      return;
+    }
+
     const res = await vanGoghRequest(VanGoghEndpoints.Profile, {
       user: userData,
       i18n,
-      hashedData: md5(`${profileTheme}-${JSON.stringify(userData)}`),
+      hashedData,
       type: profileTheme,
     });
 

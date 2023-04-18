@@ -1,7 +1,7 @@
 import { BigString } from 'discordeno/types';
 
 import { StoredBlackjackState } from '../../modules/blackjack/types';
-import { RedisClient } from '../databases';
+import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
 
 const updateBlackjackState = async (
@@ -9,7 +9,7 @@ const updateBlackjackState = async (
   blackjackId: BigString,
   blackjackState: StoredBlackjackState,
 ): Promise<void> => {
-  await RedisClient.set(`blackjack:${userId}-${blackjackId}`, JSON.stringify(blackjackState)).catch(
+  await MainRedisClient.set(`blackjack:${userId}-${blackjackId}`, JSON.stringify(blackjackState)).catch(
     debugError,
   );
 };
@@ -18,14 +18,14 @@ const invalidateBlackjackState = async (
   userId: BigString,
   blackjackId: BigString,
 ): Promise<void> => {
-  await RedisClient.del(`blackjack:${userId}-${blackjackId}`);
+  await MainRedisClient.del(`blackjack:${userId}-${blackjackId}`);
 };
 
 const getBlackjackState = async (
   userId: BigString,
   blackjackId: BigString,
 ): Promise<StoredBlackjackState | null> => {
-  const fromRedis = await RedisClient.get(`blackjack:${userId}-${blackjackId}`);
+  const fromRedis = await MainRedisClient.get(`blackjack:${userId}-${blackjackId}`);
 
   if (!fromRedis) return null;
 
