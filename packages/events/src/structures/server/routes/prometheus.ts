@@ -8,7 +8,7 @@ const createPrometheusRouter = (): Router => {
     const register = getRegister();
 
     ctx.set('Content-Type', register.contentType);
-    ctx.body = await getRegister().metrics();
+    ctx.body = await register.metrics();
   });
 
   return router;
