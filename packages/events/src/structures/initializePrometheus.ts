@@ -2,6 +2,7 @@ import client, { Counter, Registry } from 'prom-client';
 
 let register: Registry;
 let commandsCounter: Counter;
+let interactionsCounter: Counter;
 
 const initializePrometheus = (): void => {
   if (process.env.NOMICROSERVICES) return;
@@ -18,10 +19,17 @@ const initializePrometheus = (): void => {
     labelNames: ['category'],
   });
 
+  interactionsCounter = new client.Counter({
+    name: 'interactions_count',
+    help: 'Number of interactions received',
+    labelNames: ['type'],
+  });
+
   register.registerMetric(commandsCounter);
 };
 
 const getRegister = (): Registry => register;
 const getCommandsCounter = (): Counter => commandsCounter;
+const getInteractionsCounter = (): Counter => interactionsCounter;
 
-export { initializePrometheus, getRegister, getCommandsCounter };
+export { initializePrometheus, getRegister, getCommandsCounter, getInteractionsCounter };
