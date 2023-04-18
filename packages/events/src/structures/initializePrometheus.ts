@@ -26,6 +26,7 @@ const initializePrometheus = (): void => {
   });
 
   register.registerMetric(commandsCounter);
+  register.registerMetric(interactionsCounter);
 };
 
 const getRegister = (): Registry => register;
