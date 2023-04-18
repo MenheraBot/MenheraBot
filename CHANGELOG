@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.2.5] - 2023-04-18
+
+### Added
+
+- Usuários banidos agora podem ver desde quando estão banidos ao usar comandos. Não acho que alguém queira testar isso, mas garanto que está funcionando, e está bem legal ;)
+
+### Changed
+
+- Todos comandos de ação possuem um limite de 300 caracteres no campo `motivo`.
+- O comando `/perfil` foi acelerado ainda mais caso você não possua nenhuma mudança nele nos ultimos 30 minutos. 
+
 ## [5.2.4] - 2023-04-12
 
 ### Changed
