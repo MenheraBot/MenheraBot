@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.2.6] - 2023-04-19
+
+### Fixed
+
+- Resolvido um bug onde partidas vitoriosas do BlackJack não dariam Lucro, apenas devolveriam as estrelinhas apostadas.
+
 ## [5.2.5] - 2023-04-18
 
 ### Added
