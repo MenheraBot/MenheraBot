@@ -5,6 +5,7 @@ import { ApplicationCommandOptionChoice } from 'discordeno/transformers';
 import { postHuntExecution } from '../../utils/apiRequests/statistics';
 import userRepository from '../../database/repositories/userRepository';
 import huntRepository from '../../database/repositories/huntRepository';
+import commandRepository from '../../database/repositories/commandRepository';
 import { capitalize } from '../../utils/miscUtils';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { COLORS } from '../../structures/constants';
@@ -240,10 +241,13 @@ const HuntCommand = createCommand({
       $push: { inventory: { id: droppedItem } },
     });
 
+    const commandInfo = await commandRepository.getCommandInfo('itens');
+
     ctx.followUp({
       content: ctx.prettyResponse('wink', 'commands:cacar.drop', {
         name: ctx.locale(`data:magic-items.${droppedItem as 1}.name`),
         author: mentionUser(ctx.author.id),
+        command: `</itens:${commandInfo?.discordId}>`,
         chance: (getMagicItemById(droppedItem).data as HuntCooldownBoostItem).dropChance,
       }),
     });
