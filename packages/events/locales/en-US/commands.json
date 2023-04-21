@@ -596,14 +596,12 @@
     "items": "Inventory Item",
     "use": "Use Items",
     "use-footer": "Click the button below to use items",
-    "select": "Select an item to use",
+    "select": "Select the items you wanna use",
     "banned": "This user is **banned** from using Menhera",
-    "choose-item": "Select a Item to use as your main magic item",
+    "choose-item": "Select two items to use their powers",
     "reset": "Reset Active Items",
     "reseted": "All done! All of your items were moved to inventory",
-    "choose-toggle": "Wich item do you want to replace?",
-    "equipped": "Success! The **{{name}}** item has been selected as active! You can now enjoy its powers!",
-    "select-description": "Choose one of the items below to activate it. If there is no available space, you will have to choose one of the active items to replace it"
+    "equipped": "Success! Active items: **{{items}}**! You can now enjoy its powers!"
   },
   "carteira": {
     "no-dbuser": "this user is not in my database",

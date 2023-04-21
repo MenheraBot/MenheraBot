@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Adicionado uma referência ao comando /itens ao receber um drop de item mágico.
 
+### Changed
+
+- O limite de itens mágicos foi aumentado para **2**. Agora é possível combar o item de cooldown reduzido com o de chances aumentadas!
+
 ## [5.2.6] - 2023-04-19
 
 ### Fixed

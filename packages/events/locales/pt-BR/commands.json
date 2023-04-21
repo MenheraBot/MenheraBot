@@ -607,13 +607,11 @@
     "banned": "Este usuário está **banido** de usar a Menhera",
     "use": "Usar Itens",
     "use-footer": "Clique no botão abaixo para usar itens",
-    "select": "Escolha um item para usar",
-    "choose-item": "Selecione um item para usar como seu item mágico principal",
+    "select": "Escolha os items que você quer usar.",
+    "choose-item": "Selecione no máximo 2 items magicos para ativar",
     "reset": "Remover Itens Ativos",
     "reseted": "Feitoria! Todos seus itens ativos foram movidos para o inventário",
-    "choose-toggle": "Seu limite de itens ativos foi atingido. Selecione um item para substituir pelo atual",
-    "equipped": "Sucesso! O item **{{name}}** foi selecionado como ativo! Você já pode desfrutar de seus poderes!",
-    "select-description": "Escolha um dos itens abaixos para ativá-lo. Caso não tenha espaço disponível, tu terá que escolher um dos itens ativos para substituílo"
+    "equipped": "Sucesso! Itens ativados: **{{items}}**! Você já pode desfrutar de seus poderes!"
   },
   "carteira": {
     "no-dbuser": "Este usuário não está em minha database",

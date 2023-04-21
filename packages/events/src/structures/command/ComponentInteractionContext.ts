@@ -122,7 +122,10 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
         name: this.interaction.data?.name,
       });
 
-      Sentry.captureException(error);
+      try {
+        Sentry.captureException(error);
+        // eslint-disable-next-line no-empty
+      } catch {}
     });
 
     return null;

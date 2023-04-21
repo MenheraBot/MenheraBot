@@ -18,17 +18,19 @@ import { createCommand } from '../../structures/command/createCommand';
 const selectedToUseExecutor = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
 ): Promise<void> => {
-  const itemId = ctx.interaction.data.values[0];
+  const selectedItems = ctx.interaction.data.values;
 
   ctx.makeMessage({
     components: [],
     embeds: [],
     content: ctx.prettyResponse('success', 'commands:itens.equipped', {
-      name: ctx.locale(`data:magic-items.${itemId as '1'}.name`),
+      items: selectedItems.map((a) => ctx.locale(`data:magic-items.${a as '1'}.name`)).join(', '),
     }),
   });
 
-  userRepository.updateUser(ctx.user.id, { inUseItems: [{ id: Number(itemId) }] });
+  userRepository.updateUser(ctx.user.id, {
+    inUseItems: selectedItems.map((a) => ({ id: Number(a) })),
+  });
 };
 
 const buttonClickExecutor = async (ctx: ComponentInteractionContext): Promise<void> => {
@@ -53,20 +55,20 @@ const buttonClickExecutor = async (ctx: ComponentInteractionContext): Promise<vo
   const availableItems = createSelectMenu({
     customId: createCustomId(1, ctx.user.id, ctx.commandId, 'SELECT'),
     placeholder: ctx.locale('commands:itens.select'),
-    options: [],
+    options: authorData.inventory.map((item) => ({
+      label: ctx.locale(`data:magic-items.${item.id as 1}.name`),
+      value: `${item.id}`,
+      default: authorData.inUseItems.some((a) => a.id === item.id),
+      description: ctx.locale(`data:magic-items.${item.id as 1}.description`).substring(0, 100),
+    })),
+    maxValues: 2,
   });
+
+  if (availableItems.options.length < 2) availableItems.maxValues = 1;
 
   const inventoryWithoutUsingItems = authorData.inventory.filter(
     (a) => !authorData.inUseItems.some((b) => b.id === a.id),
   );
-
-  inventoryWithoutUsingItems.forEach((item) => {
-    availableItems.options.push({
-      label: ctx.locale(`data:magic-items.${item.id as 1}.name`),
-      description: ctx.locale(`data:magic-items.${item.id as 1}.description`).substring(0, 100),
-      value: `${item.id}`,
-    });
-  });
 
   const embed = createEmbed({
     title: ctx.locale('commands:itens.title', { user: ctx.user.username }),
