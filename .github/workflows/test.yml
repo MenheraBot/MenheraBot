@@ -12,6 +12,11 @@ on:
       - development/**
       - feat/**
       - production
+
+concurrency: 
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   run-tests:
     runs-on: ubuntu-latest
