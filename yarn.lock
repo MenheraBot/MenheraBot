@@ -2436,10 +2436,10 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-discordeno@^17.1.0:
-  version "17.1.0"
-  resolved "https://registry.yarnpkg.com/discordeno/-/discordeno-17.1.0.tgz#a3e70d9e9c3d365c0f6a83f35a578cb16d234356"
-  integrity sha512-pYtDxP+sS3GQoWPP1JY256N3xIYVvueZuDod4DEJVdlhLeywe/5IeIMNgFoqWXDIX5ZXKnyofsk7H9UhgcoMSg==
+discordeno@^18.0.1:
+  version "18.0.1"
+  resolved "https://registry.yarnpkg.com/discordeno/-/discordeno-18.0.1.tgz#82f1ca3b3c1d7952cba62c33fe706513fa208be2"
+  integrity sha512-d3D/HpC39YGInmxy2HK90kPpMMu2gYYsWuwtEEFPWpq2hlR9dvad4ihvLursPz5bj4Ob1NWOgPv3kz/bwMSIpw==
   dependencies:
     "@deno/shim-deno" "~0.9.0"
     "@deno/shim-timers" "~0.1.0"

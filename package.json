@@ -38,6 +38,6 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "discordeno": "^17.1.0"
+    "discordeno": "^18.0.1"
   }
 }

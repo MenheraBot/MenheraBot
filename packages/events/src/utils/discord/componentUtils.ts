@@ -5,6 +5,7 @@ import {
   InputTextComponent,
   MessageComponentTypes,
   SelectMenuComponent,
+  SelectMenuUsersComponent,
 } from 'discordeno/types';
 
 type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
@@ -30,6 +31,13 @@ const createSelectMenu = (
   type: MessageComponentTypes.SelectMenu,
 });
 
+const createUsersSelectMenu = (
+  component: PropertyOptional<SelectMenuUsersComponent, 'type'>,
+): SelectMenuUsersComponent => ({
+  ...component,
+  type: MessageComponentTypes.SelectMenuUsers,
+});
+
 const createTextInput = (
   component: PropertyOptional<InputTextComponent, 'type'>,
 ): InputTextComponent => ({
@@ -49,4 +57,5 @@ export {
   createTextInput,
   createSelectMenu,
   resolveSeparatedStrings,
+  createUsersSelectMenu,
 };
