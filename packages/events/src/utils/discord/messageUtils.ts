@@ -22,4 +22,6 @@ const extractNameAndIdFromEmoji = (
   };
 };
 
-export { MessageFlags, extractNameAndIdFromEmoji };
+const removeNonNumbers = (str: string): string => str.replace(/\D/g, '');
+
+export { MessageFlags, extractNameAndIdFromEmoji, removeNonNumbers };
