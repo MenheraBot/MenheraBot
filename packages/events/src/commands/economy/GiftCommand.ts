@@ -151,6 +151,7 @@ const GiftCommand = createCommand({
       ctx.makeMessage({
         content: ctx.prettyResponse('success', 'commands:presentear.transfered', {
           value: amount,
+          author: mentionUser(ctx.author.id),
           emoji: EMOJIS[selectedOption],
           user: mentionUser(toSendUser.id),
         }),
