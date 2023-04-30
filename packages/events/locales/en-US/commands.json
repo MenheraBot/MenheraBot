@@ -184,12 +184,7 @@
     "negated": "{{user}} refused the gift!",
     "poor": "You don't have that many {{field}}",
     "user-poor": "{{user}} don't have that many {{field}}",
-    "transfered": "You transferred **{{value}}** {{emoji}} to {{user}}",
-    "stars": "stars",
-    "demons": "demons",
-    "angels": "angels",
-    "semigods": "demigods",
-    "gods": "gods"
+    "transfered": "{{author}} transferred **{{value}}** {{emoji}} to {{user}}"
   },
   "loja": {
     "embed_title": "Menhera's Thrift store",

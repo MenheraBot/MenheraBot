@@ -189,7 +189,7 @@
     "invalid-value": "O valor a ser dado deve ser maior que 0",
     "poor": "Você não possui tantos {{field}} para enviar!",
     "user-poor": "{{user}} não possui tantos {{field}} assim!",
-    "transfered": "Você envio um pix de **{{value}}** {{emoji}} para {{user}}"
+    "transfered": "{{author}} enviou um pix de **{{value}}** {{emoji}} para {{user}}"
   },
   "loja": {
     "description": "Acesse o brechó da Menhera",

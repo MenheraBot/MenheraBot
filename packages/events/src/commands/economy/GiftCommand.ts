@@ -76,6 +76,7 @@ const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promis
       value: amount,
       emoji: EMOJIS[selectedOption as 'estrelinhas'],
       user: mentionUser(ctx.user.id),
+      author: mentionUser(ctx.commandAuthor.id),
     }),
     components: [],
   });
