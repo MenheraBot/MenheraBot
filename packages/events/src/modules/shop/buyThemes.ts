@@ -1,5 +1,6 @@
 import { ActionRow, ButtonStyles, InteractionResponseTypes } from 'discordeno/types';
 
+import md5 from 'md5';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import userRepository from '../../database/repositories/userRepository';
 import commandRepository from '../../database/repositories/commandRepository';
@@ -260,6 +261,9 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
                 mostUsedCommandCount: previewProfileData.usageCommands.array[0].count,
               }),
             },
+            hashedData: md5(
+              `${selectedItem.data.theme}-${JSON.stringify(previewProfileData.user)}`,
+            ),
             type: selectedItem.data.theme,
           });
 
