@@ -181,20 +181,15 @@
     "text": ":coin: | **{{choice}}**\n\n{{winner}} ganhou a aposta valendo **{{value}}** :star: contra {{loser}}"
   },
   "presentear": {
-    "confirm": "Seguinte {{user}}, {{author}} quer te enviar **{{count}}** {{emoji}}, você aceita?",
-    "negated": "{{user}} recusou o presente!",
-    "banned-user": "Este usuário não aceita presentes pois está banido da Menhera!",
+    "confirm": "**PIX**\n\nSeguinte {{user}}, {{author}} quer te enviar **{{count}}** {{emoji}}, você aceita?",
+    "negated": "{{user}} recusou o pix!",
+    "banned-user": "Este usuário não possui uma chave Pix pois está banido da Menhera!",
     "self-mention": "Você não pode mencionar a si mesmo!",
     "no-dbuser": "Este usuário não possui uma conta no Menhera's Bank!",
     "invalid-value": "O valor a ser dado deve ser maior que 0",
-    "poor": "Você não possui tantos {{field}} assim!",
+    "poor": "Você não possui tantos {{field}} para enviar!",
     "user-poor": "{{user}} não possui tantos {{field}} assim!",
-    "transfered": "Você transferiu **{{value}}** {{emoji}} para {{user}}",
-    "stars": "estrelinhas",
-    "demons": "demônios",
-    "angels": "anjos",
-    "semigods": "semideuses",
-    "gods": "deuses"
+    "transfered": "Você envio um pix de **{{value}}** {{emoji}} para {{user}}"
   },
   "loja": {
     "description": "Acesse o brechó da Menhera",

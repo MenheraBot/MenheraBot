@@ -90,9 +90,9 @@ const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promis
 
 const GiftCommand = createCommand({
   path: '',
-  name: 'presentear',
+  name: 'pix',
   nameLocalizations: { 'en-US': 'gift' },
-  description: '「🎁」・Dê um presente de seu inventário para outra pessoa',
+  description: '「🎁」・Envie um Pix para alguém',
   descriptionLocalizations: { 'en-US': '「🎁」・Give to someone else a gift from your inventory' },
   options: [
     {
@@ -186,6 +186,7 @@ const GiftCommand = createCommand({
         count: amount,
         emoji: EMOJIS[selectedOption],
       }),
+      allowedMentions: { users: [toSendUser.id] },
       components: [createActionRow([confirmButton, negateButton])],
     });
 
