@@ -126,7 +126,7 @@ export default class {
   }
 
   captureException(error: Error): null {
-    if (process.env.NODE_ENV === 'development') logger.error(error.message);
+    logger.error(error.message);
 
     Sentry.withScope((scope) => {
       scope.setContext('command', {
@@ -134,8 +134,10 @@ export default class {
         subCommand: this.subCommand,
         subCommandGroup: this.subCommandGround,
       });
-
-      Sentry.captureException(error);
+      try {
+        Sentry.captureException(error);
+        // eslint-disable-next-line no-empty
+      } catch {}
     });
 
     return null;

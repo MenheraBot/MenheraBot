@@ -10,7 +10,7 @@ const initializeSentry = (): void => {
   Sentry.init({
     dsn: SENTRY_DSN,
     environment: process.env.NODE_ENV ?? 'Unknown',
-    serverName: 'Menhera Event Manager',
+    serverName: 'ctb1-menhera1',
     tracesSampleRate: 1.0,
   });
 };

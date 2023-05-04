@@ -115,11 +115,12 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   }
 
   captureException(error: Error): null {
-    if (process.env.NODE_ENV === 'development') logger.error(error.message);
+    logger.error(error.message);
 
     Sentry.withScope((scope) => {
-      scope.setContext('command', {
-        name: this.interaction.data?.name,
+      scope.setContext('component', {
+        commandName: this.interaction.data?.name,
+        sentData: this.sentData,
       });
 
       try {
