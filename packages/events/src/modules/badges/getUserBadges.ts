@@ -25,8 +25,13 @@ const getUserBadges = (user: DatabaseUserSchema, discordUser: User): UserBadge[]
 
   const creationTime = new mongoose.Types.ObjectId(`${user._id}`).getTimestamp().getTime();
 
-  if (Date.now() - creationTime > oneYearInMillis)
-    userBadges.push({ id: 19, obtainAt: `${creationTime + oneYearInMillis}` });
+  const yearsWithMenhera = Math.floor((Date.now() - creationTime) / oneYearInMillis);
+
+  if (yearsWithMenhera > 0)
+    userBadges.push({
+      id: (18 + yearsWithMenhera) as 19,
+      obtainAt: `${creationTime + oneYearInMillis * yearsWithMenhera}`,
+    });
 
   const userFlagsBitfield = new ToggleBitfield(discordUser.publicFlags);
 

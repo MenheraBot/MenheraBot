@@ -173,6 +173,24 @@ const profileBadges = {
     description: 'Badge para usuários que reportaram bugs de grande impacto da Menhera!',
     link: 'https://media.discordapp.net/attachments/793669360857907200/1092137842014158938/bug_reporter.png',
   },
+  21: {
+    name: 'Dois anos com a Menhera',
+    availabeStartAt: '07/05/2022',
+    availabeStoptAt: '--------',
+    rarityLevel: 2,
+    description:
+      'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de um ano!',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/1103511584439029841/twoyears.png',
+  },
+  22: {
+    name: 'Três anos com a Menhera',
+    availabeStartAt: '07/05/2023',
+    availabeStoptAt: '--------',
+    rarityLevel: 2,
+    description:
+      'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de um ano!',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/1103514259536744468/threeyears.png',
+  },
 };
 
 export { profileBadges };
