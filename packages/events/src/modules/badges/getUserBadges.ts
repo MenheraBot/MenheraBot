@@ -20,6 +20,12 @@ const discordBitFlagsToMenheraBadges = {
 
 const oneYearInMillis = 31_536_000_000;
 
+const getYearBadgeId = (yearsWithMenhera: number): UserBadge['id'] => {
+  if (yearsWithMenhera === 1) return 19;
+
+  return (19 + yearsWithMenhera) as 20;
+};
+
 const getUserBadges = (user: DatabaseUserSchema, discordUser: User): UserBadge[] => {
   const userBadges = user.badges;
 
@@ -29,7 +35,7 @@ const getUserBadges = (user: DatabaseUserSchema, discordUser: User): UserBadge[]
 
   if (yearsWithMenhera > 0)
     userBadges.push({
-      id: (18 + yearsWithMenhera) as 19,
+      id: getYearBadgeId(yearsWithMenhera),
       obtainAt: `${creationTime + oneYearInMillis * yearsWithMenhera}`,
     });
 
