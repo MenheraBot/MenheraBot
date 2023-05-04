@@ -394,7 +394,7 @@ const executeBadgesCommand = async (
 
   const userBadges = getUserBadges(ctx.authorData, ctx.author);
 
-  if (userBadges.length > 6)
+  if (userBadges.length > 9)
     toSendEmbeds.push(
       createEmbed({ color: hexStringToNumber(ctx.authorData.selectedColor), fields: [] }),
     );
@@ -410,7 +410,7 @@ const executeBadgesCommand = async (
         emoji: extractNameAndIdFromEmoji(EMOJIS[`badge_${a.id}` as 'angels']),
       });
 
-    toSendEmbeds[i < 6 ? 0 : 1].fields?.push({
+    toSendEmbeds[i < 9 ? 0 : 1].fields?.push({
       name: `${EMOJIS[`badge_${a.id}` as 'angels']} | ${profileBadges[a.id as 1].name}`,
       value: ctx.locale('commands:badges.badge-info', {
         unix: Math.floor(Number(a.obtainAt) / 1000),

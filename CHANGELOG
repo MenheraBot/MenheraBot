@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.4.0] - 2023-05-04
+
+### Added
+
+- Foi adicionado duas novas badges! `2 anos com a Menhera` e `3 anos com a Menhera`. Essa badge é dada para quem usa a Menhera a mais de 2/3 anos! O tipo dessa badge é *UNICA*, somente uma aparecerá no perfil por vez: 1, 2 ou 3 anos com a Menhera.
+
 ## [5.3.1] - 2023-04-30
 
 ### Changed
