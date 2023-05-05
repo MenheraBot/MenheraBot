@@ -11,6 +11,7 @@ import { mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 import { bot } from '../..';
+import badgeRepository from '../../database/repositories/badgeRepository';
 
 const BicudaCommand = createCommand({
   path: '',
@@ -37,7 +38,7 @@ const BicudaCommand = createCommand({
     },
   ],
   category: 'actions',
-  authorDataFields: [],
+  authorDataFields: ['badges'],
   execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', true);
     const reason = ctx.getOption<string>('motivo', false);
@@ -77,6 +78,9 @@ const BicudaCommand = createCommand({
       )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
     if (user.id === bot.applicationId) {
+      if (!ctx.authorData.badges.some((a) => a.id === 23))
+        if (new Date().getDate() === 7) badgeRepository.giveBadgeToUser(ctx.author.id, 23);
+
       embed.title = '🥳 Mamadinha de presente';
       embed.image = { url: 'https://i.imgur.com/UMnJW64.png' };
       delete embed.thumbnail;

@@ -191,6 +191,15 @@ const profileBadges = {
       'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de um ano!',
     link: 'https://media.discordapp.net/attachments/793669360857907200/1103514259536744468/threeyears.png',
   },
+  23: {
+    name: 'Aniversário Menhera 2023',
+    availabeStartAt: '07/05/2023',
+    availabeStoptAt: '07/05/2023',
+    rarityLevel: 5,
+    description:
+      'Badge dada aos usuários que mamaram a Menhera durante o dia de seu aniversário de 3 anos',
+    link: '',
+  },
 };
 
 export { profileBadges };
