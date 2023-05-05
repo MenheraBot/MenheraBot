@@ -201,7 +201,10 @@ const HuntCommand = createCommand({
               count: timesToHunt,
             });
 
-      if (result.value > 0) embed.thumbnail = { url: 'https://i.imgur.com/053khaH.gif' };
+      if (result.value > 0) {
+        embed.thumbnail = { url: 'https://i.imgur.com/053khaH.gif' };
+        embed.image = { url: 'https://i.imgur.com/UMnJW64.png' };
+      }
     } else
       embed.description = ctx.locale('commands:cacar.hunt_description', {
         value: result.value,

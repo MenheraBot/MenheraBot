@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.4.1-EVENT] - 2023-05-05
+
+### Added
+
+- Iniciado o evento de aniversário de 3 anos da Menhera!
+
+### Changed
+
+- Os votos dão MUITO mais prêmios. `/cooldowns`
+- As chances de caça estão melhores! Use `/caçar tipo:probabilidades` para mais informações. _É possível caçar 2 deuses de uma vez só ^^_
+- Preços de temas estão MUITO mais baratos! Veja os descontos em `/loja preços comprar tipo:cores`, `/loja preços comprar tipo:rolls` e `/loja comprar temas`.
+- Comandos estão diferentes... Use e veja!
+
 ## [5.4.0] - 2023-05-04
 
 ### Added

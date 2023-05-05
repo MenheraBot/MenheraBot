@@ -3,7 +3,7 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import { TODAYS_YEAR, COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
-import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
+import { mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
@@ -35,8 +35,6 @@ const FearCommand = createCommand({
   category: 'actions',
   authorDataFields: [],
   execute: async (ctx, finishCommand) => {
-    const avatar = getUserAvatar(ctx.author, { enableGif: true });
-
     const selectedImage = getAssetLink('fear');
     const user = ctx.getOption<User>('user', 'users', false);
     const reason = ctx.getOption<string>('motivo', false);
@@ -48,7 +46,7 @@ const FearCommand = createCommand({
         description: ctx.locale('commands:medo.no-mention.embed_description', {
           author: mentionUser(ctx.author.id),
         }),
-        thumbnail: { url: avatar },
+        thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
         image: { url: selectedImage },
       });
 
@@ -69,7 +67,7 @@ const FearCommand = createCommand({
       }),
       image: { url: selectedImage },
       color: COLORS.ACTIONS,
-      thumbnail: { url: avatar },
+      thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
     });
 
     if (reason)
