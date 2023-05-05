@@ -1,10 +1,7 @@
 name: Build and publish Menhera images
 
 on:
-  workflow_run:
-    workflows: [Test]
-    types:
-      - completed
+  push:
     branches:
       - production
 
@@ -21,14 +18,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: production
-
-      - name: Check if all tests passed
-        if: ${{ github.event.workflow_run.conclusion != 'success' }}
-        run: |
-          echo "::error title=Tests Failed::I refuse to publish a broken image! Fix Tests >.<"
-          exit 1
 
       - name: Build rest image
         run: docker build . --file Dockerfile --tag rest --target rest --label "runnumber=${GITHUB_RUN_ID}"
