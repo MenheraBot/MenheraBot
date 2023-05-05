@@ -37,6 +37,45 @@ const defaultHuntingProbabilities = {
   ],
 };
 
+const eventBirthdayHuntingProbabilities = {
+  demons: [
+    { amount: 1, probability: 14 },
+    { amount: 2, probability: 18 },
+    { amount: 3, probability: 23 },
+    { amount: 4, probability: 30 },
+    { amount: 5, probability: 15 },
+  ],
+  giants: [
+    { amount: 0, probability: 4 },
+    { amount: 1, probability: 23 },
+    { amount: 2, probability: 23 },
+    { amount: 4, probability: 30 },
+    { amount: 3, probability: 20 },
+  ],
+  angels: [
+    { amount: 0, probability: 16 },
+    { amount: 1, probability: 32 },
+    { amount: 2, probability: 38 },
+    { amount: 3, probability: 14 },
+  ],
+  archangels: [
+    { amount: 0, probability: 14 },
+    { amount: 1, probability: 39 },
+    { amount: 2, probability: 37 },
+    { amount: 3, probability: 10 },
+  ],
+  demigods: [
+    { amount: 0, probability: 50 },
+    { amount: 1, probability: 39 },
+    { amount: 2, probability: 11 },
+  ],
+  gods: [
+    { amount: 0, probability: 79 },
+    { amount: 1, probability: 20 },
+    { amount: 2, probability: 1 },
+  ],
+};
+
 const defaultHuntCooldown = 3_600_000;
 
-export { defaultHuntingProbabilities, defaultHuntCooldown };
+export { defaultHuntingProbabilities, defaultHuntCooldown, eventBirthdayHuntingProbabilities };
