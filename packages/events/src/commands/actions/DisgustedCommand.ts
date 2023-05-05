@@ -3,7 +3,7 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import { TODAYS_YEAR, COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
-import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
+import { mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
@@ -45,7 +45,6 @@ const DisgustedCommand = createCommand({
         }),
       );
 
-    const avatar = getUserAvatar(ctx.author, { enableGif: true });
     const selectedImage = getAssetLink('disgusted');
 
     if (!user || user.id === ctx.author.id) {
@@ -55,7 +54,7 @@ const DisgustedCommand = createCommand({
         description: ctx.locale('commands:nojo.no-mention.embed_description', {
           author: mentionUser(ctx.author.id),
         }),
-        thumbnail: { url: avatar },
+        thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
         image: { url: selectedImage },
       });
 
@@ -76,7 +75,7 @@ const DisgustedCommand = createCommand({
       }),
       image: { url: selectedImage },
       color: COLORS.ACTIONS,
-      thumbnail: { url: avatar },
+      thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
     });
 
     if (reason)

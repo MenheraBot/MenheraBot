@@ -3,7 +3,7 @@ import { User } from 'discordeno/transformers';
 
 import { TODAYS_YEAR, COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
-import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
+import { mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
@@ -70,7 +70,6 @@ const KissCommand = createCommand({
         }),
       );
 
-    const avatar = getUserAvatar(ctx.author, { enableGif: true });
     const local = ctx.getOption<string>('local', false, true) as 'mouth';
     const selectedImage = getAssetLink(`kiss_${local}`);
 
@@ -84,7 +83,7 @@ const KissCommand = createCommand({
         url: selectedImage,
       },
       color: COLORS.ACTIONS,
-      thumbnail: { url: avatar },
+      thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
     });
 
     if (reason)

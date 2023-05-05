@@ -7,9 +7,10 @@ import { createCommand } from '../../structures/command/createCommand';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { TODAYS_YEAR, COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
-import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
+import { mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
+import { bot } from '../..';
 
 const BicudaCommand = createCommand({
   path: '',
@@ -57,7 +58,6 @@ const BicudaCommand = createCommand({
         }),
       );
 
-    const avatar = getUserAvatar(ctx.author, { enableGif: true });
     const selectedImage = getAssetLink('mamar');
 
     const embed = createEmbed({
@@ -68,13 +68,21 @@ const BicudaCommand = createCommand({
       }),
       image: { url: selectedImage },
       color: COLORS.ACTIONS,
-      thumbnail: { url: avatar },
+      thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
     });
 
     if (reason)
       embed.description = `${embed.description}\n\n_"${capitalize(
         reason,
       )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
+
+    if (user.id === bot.applicationId) {
+      embed.title = '🥳 Mamadinha de presente';
+      embed.image = { url: 'https://i.imgur.com/UMnJW64.png' };
+      delete embed.thumbnail;
+      embed.description =
+        '<:apaixonada:727975782034440252> "**Muito obrigada por esse presente de aniversário!**" - Menhera Bot';
+    }
 
     await ctx.makeMessage({ embeds: [embed] });
 

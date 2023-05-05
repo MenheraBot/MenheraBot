@@ -76,7 +76,7 @@ export const COLORS = {
   HuntArchangels: 0xa2f29e,
   Aqua: 0x03f3ff,
   Purple: 0x7f28c4,
-  ACTIONS: 0xfa8cc5,
+  ACTIONS: 0xd40be7,
   Colorless: 0x36393f,
   Pinkie: 0xeab3fa,
   Pear: 0x74bd63,

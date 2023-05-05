@@ -59,7 +59,7 @@ const handleRequest = async (userId: string, isWeekend: boolean): Promise<void> 
     title: embedTitle,
     description: embedDescription,
     color: 0x7e40e9,
-    image: { url: 'https://i.imgur.com/5XaGRDu.jpg' },
+    image: { url: 'https://i.imgur.com/UMnJW64.png' },
     thumbnail: { url: 'https://i.imgur.com/qtM9T9C.jpg' },
   });
 
