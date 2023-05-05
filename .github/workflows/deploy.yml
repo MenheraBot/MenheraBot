@@ -20,10 +20,7 @@ jobs:
       contents: read
 
     steps:
-
       - uses: actions/checkout@v3
-        with:
-          path: production
 
       - name: Check if all tests passed
         if: ${{ github.event.workflow_run.conclusion != 'success' }}
