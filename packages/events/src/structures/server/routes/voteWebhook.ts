@@ -8,13 +8,13 @@ import { getEnviroments } from '../../../utils/getEnviroments';
 import { DatabaseUserSchema } from '../../../types/database';
 
 const voteConstants = {
-  baseRollAmount: 1,
-  maxStarValue: 5_900,
-  minStarValue: 1_200,
-  rollWeekendMultiplier: 2,
-  starWeekendMultiplier: 2,
-  roll20Multiplier: 4,
-  star20Multiplier: 4,
+  baseRollAmount: 2,
+  maxStarValue: 12_300,
+  minStarValue: 4_800,
+  rollWeekendMultiplier: 3,
+  starWeekendMultiplier: 3,
+  roll20Multiplier: 5,
+  star20Multiplier: 5,
 };
 
 const handleRequest = async (userId: string, isWeekend: boolean): Promise<void> => {
@@ -51,6 +51,9 @@ const handleRequest = async (userId: string, isWeekend: boolean): Promise<void> 
       embedDescription = `É ISSO! VOCÊ CONSEGUIU! Além de dar um tempinho do seu final de semana para me ajudar, você atingiu a meta de 20 votos! Isso significa o que? Exatamente, MUUUUITOS PRÊMIOS.\nVocê recebeu **${starAmount}** :star: , **${rollQuantity}** 🔑.\nVocê pode votar a cada 12 horas,  e além de me ajudar, tu ganha prêmios por isso. Obrigada de verdade por tudo amorzinho, com isso, tu já votou ${user.votes} vezes em mim, tu é simplesmente incrível`;
     }
   }
+
+  embedTitle = '🥳 Evento de Aniversário';
+  embedDescription = `Você recebeu MUITO mais prêmios pois estamos comemorando **MEUS 3 ANOS DE VIDA**. Isso mesmo, eu estou de anivesrário, portanto as coisas estão especiais!!!\nVocê recebeu **${starAmount}** :star: , **${rollQuantity}** 🔑.\nVocê pode votar a cada 12 horas,  e além de me ajudar, tu ganha prêmios por isso. Obrigada de verdade por tudo amorzinho, com isso, tu já votou ${user.votes} vezes em mim, tu é simplesmente incrível`;
 
   const embed = createEmbed({
     title: embedTitle,
