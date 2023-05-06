@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Paramos de usar o discriminator para mostrar o username de usuários que já foram migrados para o novo sistema do Discord. Essa mudança pode ser vista em lugares como o ranking semanal de caças e `/carteira`
+
 ## [5.4.0] - 2023-05-04
 
 ### Added
