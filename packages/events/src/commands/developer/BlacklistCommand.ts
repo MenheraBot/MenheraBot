@@ -86,7 +86,8 @@ const BlacklistCommand = createCommand({
 
         if (!usr) return finishCommand(ctx.makeMessage({ content: 'Nenhum user na DB' }));
 
-        const msg = `== USER BANNED INFO ==\n\n• User :: ${user.username}#${user.discriminator} - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${usr.banReason}`;
+        // @ts-expect-error It dont exists yet
+        const msg = `== USER BANNED INFO ==\n\n• User :: ${user.username} [${user.displayName}] - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${usr.banReason}`;
         await ctx.makeMessage({ content: `\`\`\`asciidocmsg\n${msg}\`\`\`` });
         finishCommand();
       }

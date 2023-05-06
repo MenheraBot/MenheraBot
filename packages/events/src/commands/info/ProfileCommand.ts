@@ -7,7 +7,7 @@ import userRepository from '../../database/repositories/userRepository';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { getEnviroments } from '../../utils/getEnviroments';
 import cacheRepository from '../../database/repositories/cacheRepository';
-import { getUserAvatar } from '../../utils/discord/userUtils';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
 import { toWritableUtf } from '../../utils/miscUtils';
 import { getUserBadges } from '../../modules/badges/getUserBadges';
@@ -122,7 +122,7 @@ const ProfileCommand = createCommand({
       avatar,
       votes: user.votes,
       info: user.info,
-      tag: toWritableUtf(`${discordUser.username}#${discordUser.discriminator}`),
+      tag: toWritableUtf(getDisplayName(discordUser)),
       badges: getUserBadges(user, discordUser).map((a) => a.id),
       username: toWritableUtf(discordUser.username),
       marryDate: user.marriedDate as string,
@@ -137,7 +137,7 @@ const ProfileCommand = createCommand({
       userData.married = true;
       userData.marry = {
         username: toWritableUtf(marryData.username),
-        tag: `${toWritableUtf(marryData.username)}#${marryData.discriminator}`,
+        tag: toWritableUtf(getDisplayName(marryData)),
       };
 
       if (user.marriedAt && user.marriedAt > 0)

@@ -13,7 +13,7 @@ import ChatInputInteractionContext from '../../structures/command/ChatInputInter
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import { getUserAvatar } from '../../utils/discord/userUtils';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { millisToSeconds } from '../../utils/miscUtils';
 
 import { createCommand } from '../../structures/command/createCommand';
@@ -45,7 +45,7 @@ const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand:
 
   const embed = createEmbed({
     title: ctx.locale('commands:status.hunt.embed-title', {
-      user: `${user.username}#${user.discriminator}`,
+      user: getDisplayName(user),
     }),
     color: hexStringToNumber(ctx.authorData.selectedColor),
     fields: [
@@ -141,7 +141,7 @@ const executeDesignerStats = async (
 
   const embed = createEmbed({
     title: ctx.locale('commands:status.designer.title', {
-      user: `${user.username}#${user.discriminator}`,
+      user: getDisplayName(user),
     }),
     color: hexStringToNumber(ctx.authorData.selectedColor),
     thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
@@ -259,12 +259,7 @@ const executeGamblingGameStats = async (
     return finishCommand();
   }
 
-  const embed = makeGamblingStatisticsEmbed(
-    data,
-    ctx.i18n,
-    game,
-    `${user.username}#${user.discriminator}`,
-  );
+  const embed = makeGamblingStatisticsEmbed(data, ctx.i18n, game, getDisplayName(user));
 
   ctx.makeMessage({ embeds: [embed] });
   finishCommand();

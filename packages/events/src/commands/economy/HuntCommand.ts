@@ -7,7 +7,7 @@ import userRepository from '../../database/repositories/userRepository';
 import huntRepository from '../../database/repositories/huntRepository';
 import commandRepository from '../../database/repositories/commandRepository';
 import { capitalize } from '../../utils/miscUtils';
-import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
+import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { COLORS } from '../../structures/constants';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
@@ -224,7 +224,7 @@ const HuntCommand = createCommand({
       `${ctx.author.id}`,
       APIHuntTypes[selection],
       result,
-      `${ctx.author.username}#${ctx.author.discriminator}`,
+      getDisplayName(ctx.author),
     );
 
     await ctx.makeMessage({ embeds: [embed] });
