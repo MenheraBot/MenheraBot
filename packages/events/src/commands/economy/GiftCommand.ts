@@ -9,45 +9,7 @@ import { DatabaseHuntingTypes } from '../../modules/hunt/types';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { createCommand } from '../../structures/command/createCommand';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import { EMOJIS } from '../../structures/constants';
-
-const choices = [
-  {
-    name: '⭐ | Estrelinhas',
-    nameLocalizations: { 'en-US': '⭐ | Stars' },
-    value: 'estrelinhas',
-  },
-  {
-    name: '😈 | Demônios',
-    nameLocalizations: { 'en-US': '😈 | Demons' },
-    value: 'demons',
-  },
-  {
-    name: '👊 | Gigantes',
-    nameLocalizations: { 'en-US': '👊 | Giants' },
-    value: 'giants',
-  },
-  {
-    name: '👼 | Anjos',
-    nameLocalizations: { 'en-US': '👼 | Angels' },
-    value: 'angels',
-  },
-  {
-    name: '🧚‍♂️ | Arcanjos',
-    nameLocalizations: { 'en-US': '🧚‍♂️ | Archangels' },
-    value: 'archangels',
-  },
-  {
-    name: '🙌 | Semideuses',
-    nameLocalizations: { 'en-US': '🙌 | Demigods' },
-    value: 'demigods',
-  },
-  {
-    name: '✝️ | Deuses',
-    nameLocalizations: { 'en-US': '✝️ | Gods' },
-    value: 'gods',
-  },
-];
+import { EMOJIS, transactionableCommandOption } from '../../structures/constants';
 
 const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedButton, amount, selectedOption] = ctx.sentData;
@@ -109,7 +71,7 @@ const GiftCommand = createCommand({
       description: 'O tipo de item que quer presentear',
       descriptionLocalizations: { 'en-US': 'The type of item you want to gift' },
       type: ApplicationCommandOptionTypes.String,
-      choices,
+      choices: transactionableCommandOption,
       required: true,
     },
     {

@@ -1,14 +1,13 @@
 import dayjs from 'dayjs';
 import { ApplicationCommandOptionTypes, DiscordEmbedField } from 'discordeno/types';
 
-import { ApplicationCommandOptionChoice } from 'discordeno/transformers';
 import { postHuntExecution } from '../../utils/apiRequests/statistics';
 import userRepository from '../../database/repositories/userRepository';
 import huntRepository from '../../database/repositories/huntRepository';
 import commandRepository from '../../database/repositories/commandRepository';
 import { capitalize } from '../../utils/miscUtils';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { COLORS } from '../../structures/constants';
+import { COLORS, transactionableCommandOption } from '../../structures/constants';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import {
@@ -26,38 +25,8 @@ import {
   getUserHuntProbability,
 } from '../../modules/hunt/huntUtils';
 
-type ChoiceTypes = DatabaseHuntingTypes | 'probabilities';
-const choices: Array<ApplicationCommandOptionChoice & { value: ChoiceTypes }> = [
-  {
-    name: '😈 | Demônios',
-    nameLocalizations: { 'en-US': '😈 | Demons' },
-    value: 'demons',
-  },
-  {
-    name: '👊 | Gigantes',
-    nameLocalizations: { 'en-US': '👊 | Giants' },
-    value: 'giants',
-  },
-  {
-    name: '👼 | Anjos',
-    nameLocalizations: { 'en-US': '👼 | Angels' },
-    value: 'angels',
-  },
-  {
-    name: '🧚‍♂️ | Arcanjos',
-    nameLocalizations: { 'en-US': '🧚‍♂️ | Archangels' },
-    value: 'archangels',
-  },
-  {
-    name: '🙌 | Semideuses',
-    nameLocalizations: { 'en-US': '🙌 | Demigods' },
-    value: 'demigods',
-  },
-  {
-    name: '✝️ | Deuses',
-    nameLocalizations: { 'en-US': '✝️ | Gods' },
-    value: 'gods',
-  },
+const choices = [
+  ...transactionableCommandOption.filter((a) => a.value !== 'estrelinhas'),
   {
     name: '📊 | Probabilidades',
     nameLocalizations: { 'en-US': '📊 | Probabilities' },

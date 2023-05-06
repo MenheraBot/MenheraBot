@@ -15,7 +15,7 @@ import blacklistRepository from '../../database/repositories/blacklistRepository
 import { CoinflipTop, RouletteOrBichoTop } from '../../types/api';
 import userRepository from '../../database/repositories/userRepository';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { COLORS, EMOJIS } from '../../structures/constants';
+import { COLORS, EMOJIS, transactionableCommandOption } from '../../structures/constants';
 import { DatabaseUserSchema } from '../../types/database';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getUserAvatar } from '../../utils/discord/userUtils';
@@ -446,38 +446,7 @@ const TopCommand = createCommand({
           description: 'O tipo da caça que você quer ver',
           descriptionLocalizations: { 'en-US': 'The kind of hunt you want to see' },
           required: true,
-          choices: [
-            {
-              name: '😈 | Demônios',
-              nameLocalizations: { 'en-US': '😈 | Demons' },
-              value: 'demons',
-            },
-            {
-              name: '👊 | Gigantes',
-              nameLocalizations: { 'en-US': '👊 | Giants' },
-              value: 'giants',
-            },
-            {
-              name: '👼 | Anjos',
-              nameLocalizations: { 'en-US': '👼 | Angels' },
-              value: 'angels',
-            },
-            {
-              name: '🧚‍♂️ | Arcanjos',
-              nameLocalizations: { 'en-US': '🧚‍♂️ | Archangels' },
-              value: 'archangels',
-            },
-            {
-              name: '🙌 | Semideuses',
-              nameLocalizations: { 'en-US': '🙌 | Demigods' },
-              value: 'demigods',
-            },
-            {
-              name: '✝️ | Deuses',
-              nameLocalizations: { 'en-US': '✝️ | Gods' },
-              value: 'gods',
-            },
-          ],
+          choices: transactionableCommandOption.filter((a) => a.value !== 'estrelinhas'),
         },
         {
           type: ApplicationCommandOptionTypes.Integer,
@@ -669,38 +638,7 @@ const TopCommand = createCommand({
               description: 'O tipo da caça que você quer ver',
               descriptionLocalizations: { 'en-US': 'The kind of hunt you want to see' },
               required: true,
-              choices: [
-                {
-                  name: '😈 | Demônios',
-                  value: 'demon',
-                  nameLocalizations: { 'en-US': '😈 | Demons' },
-                },
-                {
-                  name: '👊 | Gigantes',
-                  value: 'giant',
-                  nameLocalizations: { 'en-US': '👊 | Giants' },
-                },
-                {
-                  name: '👼 | Anjos',
-                  value: 'angel',
-                  nameLocalizations: { 'en-US': '👼 | Angels' },
-                },
-                {
-                  name: '🧚‍♂️ | Arcanjos',
-                  value: 'archangel',
-                  nameLocalizations: { 'en-US': '🧚‍♂️ | Archangels' },
-                },
-                {
-                  name: '🙌 | Semideuses',
-                  value: 'demigod',
-                  nameLocalizations: { 'en-US': '🙌 | Demigods' },
-                },
-                {
-                  name: '✝️ | Deuses',
-                  value: 'god',
-                  nameLocalizations: { 'en-US': '✝️ | Gods' },
-                },
-              ],
+              choices: transactionableCommandOption.filter((a) => a.value !== 'estrelinhas'),
             },
             {
               type: ApplicationCommandOptionTypes.String,
