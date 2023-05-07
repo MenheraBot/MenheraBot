@@ -5,6 +5,8 @@ let commandsCounter: Counter;
 let interactionsCounter: Counter;
 
 const initializePrometheus = (): void => {
+  if (process.env.NOMICROSERVICES) return;
+
   register = new client.Registry();
 
   register.setDefaultLabels({

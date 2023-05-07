@@ -27,7 +27,7 @@ const getYearBadgeId = (yearsWithMenhera: number): UserBadge['id'] => {
 };
 
 const getUserBadges = (user: DatabaseUserSchema, discordUser: User): UserBadge[] => {
-  const userBadges = user.badges.filter((a) => a.id !== 23);
+  const userBadges = user.badges;
 
   const creationTime = new mongoose.Types.ObjectId(`${user._id}`).getTimestamp().getTime();
 

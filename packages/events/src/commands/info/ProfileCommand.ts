@@ -15,7 +15,6 @@ import userThemesRepository from '../../database/repositories/userThemesReposito
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { createCommand } from '../../structures/command/createCommand';
 import { VangoghRedisClient } from '../../database/databases';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 
 interface VangoghUserprofileData {
   id: string;
@@ -151,12 +150,6 @@ const ProfileCommand = createCommand({
 
     const fromRedis = await VangoghRedisClient.get(`profile:${user.id}:hash`);
 
-    const embed = createEmbed({
-      title: '🎁 | 3 Anos de Menhera',
-      image: { url: 'attachment://profile.png' },
-      color: hexStringToNumber(user.selectedColor),
-    });
-
     if (fromRedis && fromRedis === hashedData) {
       const imageFromRedis = await VangoghRedisClient.get(`profile:${user.id}:image`);
 
@@ -166,7 +159,6 @@ const ProfileCommand = createCommand({
       }
 
       await ctx.makeMessage({
-        embeds: [embed],
         file: {
           name: 'profile.png',
           blob: imageFromRedis as unknown as Blob,
@@ -190,7 +182,6 @@ const ProfileCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      embeds: [embed],
       file: {
         name: 'profile.png',
         blob: res.data,

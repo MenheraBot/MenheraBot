@@ -4,7 +4,7 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { TODAYS_YEAR, COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
-import { mentionUser } from '../../utils/discord/userUtils';
+import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
@@ -54,6 +54,7 @@ const BiteCommand = createCommand({
         }),
       );
 
+    const avatar = getUserAvatar(ctx.author, { enableGif: true });
     const selectedImage = getAssetLink('bite');
 
     const embed = createEmbed({
@@ -64,7 +65,7 @@ const BiteCommand = createCommand({
       }),
       image: { url: selectedImage },
       color: COLORS.ACTIONS,
-      thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
+      thumbnail: { url: avatar },
     });
 
     if (reason)

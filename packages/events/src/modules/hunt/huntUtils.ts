@@ -1,9 +1,10 @@
-import { defaultHuntCooldown, eventBirthdayHuntingProbabilities } from './defaultValues';
+import { defaultHuntCooldown, defaultHuntingProbabilities } from './defaultValues';
 import {
   DatabaseHuntingTypes,
   HuntCooldownBoostItem,
   HuntMagicItem,
   HuntProbabiltyProps,
+  HuntProbablyBoostItem,
   MagicItemsFile,
   StaticItemData,
 } from './types';
@@ -21,18 +22,16 @@ const getMagicItemById = (itemId: number): StaticItemData<MagicItemsFile> => {
 };
 
 const getUserHuntProbability = (
-  _userInventory: HuntMagicItem[],
+  userInventory: HuntMagicItem[],
   huntType: DatabaseHuntingTypes,
 ): HuntProbabiltyProps[] => {
-  return eventBirthdayHuntingProbabilities[huntType];
-
-  /*  const foundedItem = userInventory
+  const foundedItem = userInventory
     .map((a) => getMagicItemById(a.id))
     .find((a) => a.data.type === 'HUNT_PROBABILITY_BOOST' && a.data.huntType === huntType);
 
   if (foundedItem) return (foundedItem.data as HuntProbablyBoostItem).probabilities;
 
-  return defaultHuntingProbabilities[huntType]; */
+  return defaultHuntingProbabilities[huntType];
 };
 
 const getUserHuntCooldown = (
