@@ -2,7 +2,7 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import { TODAYS_YEAR, COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
-import { mentionUser } from '../../utils/discord/userUtils';
+import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
@@ -28,6 +28,7 @@ const GrumbleCommand = createCommand({
   authorDataFields: [],
   execute: async (ctx, finishCommand) => {
     const reason = ctx.getOption<string>('motivo', false);
+    const avatar = getUserAvatar(ctx.author, { enableGif: true });
 
     const selectedImage = getAssetLink('grumble');
 
@@ -38,7 +39,7 @@ const GrumbleCommand = createCommand({
       }),
       image: { url: selectedImage },
       color: COLORS.ACTIONS,
-      thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
+      thumbnail: { url: avatar },
     });
 
     if (reason)

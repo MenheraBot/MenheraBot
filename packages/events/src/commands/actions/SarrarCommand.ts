@@ -6,7 +6,7 @@ import { createActionRow, createButton, createCustomId } from '../../utils/disco
 import { createCommand } from '../../structures/command/createCommand';
 import { COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
-import { mentionUser } from '../../utils/discord/userUtils';
+import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 
@@ -22,6 +22,9 @@ const sarrada = async (ctx: ComponentInteractionContext): Promise<void> => {
   }
 
   const selectedImage = getAssetLink('sarrar');
+
+  const avatar = getUserAvatar(ctx.user, { enableGif: true });
+
   const embed = createEmbed({
     title: ctx.locale('commands:sarrar.embed_title'),
     description: ctx.locale('commands:sarrar.embed_description', {
@@ -30,7 +33,7 @@ const sarrada = async (ctx: ComponentInteractionContext): Promise<void> => {
     }),
     image: { url: selectedImage },
     color: COLORS.ACTIONS,
-    thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
+    thumbnail: { url: avatar },
   });
 
   await ctx.makeMessage({ embeds: [embed], components: [] });
@@ -59,6 +62,8 @@ const SarrarCommand = createCommand({
     if (user && user.id !== ctx.author.id) {
       const selectedImage = getAssetLink('sarrar');
 
+      const avatar = getUserAvatar(ctx.author, { enableGif: true });
+
       const embed = createEmbed({
         title: ctx.locale('commands:sarrar.embed_title'),
         description: ctx.locale('commands:sarrar.embed_description', {
@@ -67,7 +72,7 @@ const SarrarCommand = createCommand({
         }),
         image: { url: selectedImage },
         color: COLORS.ACTIONS,
-        thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
+        thumbnail: { url: avatar },
       });
 
       ctx.makeMessage({ embeds: [embed], components: [] });
@@ -75,6 +80,7 @@ const SarrarCommand = createCommand({
     }
 
     const selectedImage = getAssetLink('sarrar_sozinho');
+    const avatar = getUserAvatar(ctx.author, { enableGif: true });
 
     const embed = createEmbed({
       title: ctx.locale('commands:sarrar.no-mention.embed_title'),
@@ -83,7 +89,7 @@ const SarrarCommand = createCommand({
       }),
       image: { url: selectedImage },
       color: COLORS.ACTIONS,
-      thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
+      thumbnail: { url: avatar },
       footer: { text: ctx.locale('commands:sarrar.no-mention.embed_footer') },
     });
 

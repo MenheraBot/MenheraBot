@@ -1,8 +1,8 @@
 {
   "raiva": {
-    "bot": "O CARA TA COM RAIVA DE BOTS EM PLENO MEU ANIVERSÁRIO NE MANO",
+    "bot": "Ah para né vei, nenhum bot te deixaria com raiva (a não ser que ele esteja full lagado hehe)",
     "no-mention": {
-      "embed_title": "Brabinhah",
+      "embed_title": "Raiva",
       "embed_description": "{{author}} Está Com Raiva",
       "embed_description_uncensored": "{{author}} Está P. da Vida"
     },
@@ -13,50 +13,50 @@
     "bot": "Você chutou um robô, se pa que quebrou a perna. Só se pa... assim...",
     "self-mention_uncensored": "Wtf véi isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
     "self-mention": "Mano, isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
-    "embed_title": "Chutaço",
+    "embed_title": "Bicuda",
     "embed_description": "{{author}} meteu o bicudão em {{mention}}"
   },
   "morder": {
     "bot": "Você mordeu um robô... -5 dentes na boca",
     "self-mention_uncensored": "Ala o masoquista, faça isso agora mesmo, não precisa de comando",
     "self-mention": "IIi alá, se tu quer se morder, faça isso agora mesmo, não precisa de comando",
-    "embed_title": "Mordisquinha :3",
+    "embed_title": "Morder",
     "embed_description": "{{author}} moideu {{mention}}"
   },
   "chorar": {
     "bot": "Naaaah não, nem vem que nenhum bot faz alguem chorar, eles são amigáveis e divertidos. Assim como eu UwU",
     "no-mention": {
-      "embed_title": "A chorar",
+      "embed_title": "Chorando :(",
       "embed_description": "{{author}} está chorando"
     },
-    "embed_title": "Lacrimejando",
+    "embed_title": "Chorando :(",
     "embed_description": "{{mention}} fez {{author}} chorar"
   },
   "nojo": {
     "bot": "Iiii ala tu tem nojinho de bot ui ui ui",
     "no-mention": {
-      "embed_title": "Yikes",
+      "embed_title": "Nojo",
       "embed_description": "{{author}} está com nojinho blé"
     },
-    "embed_title": "Yikes",
+    "embed_title": "Nojo",
     "embed_description": "{{author}} está com nojo de {{mention}}"
   },
   "medo": {
     "no-mention": {
-      "embed_title": "Medinho",
+      "embed_title": "MEDO",
       "embed_description": "{{author}} está com medo"
     },
-    "embed_title": "Medo",
-    "embed_description": "{{author}} esta cagado de medo de {{mention}}"
+    "embed_title": "MEDO",
+    "embed_description": "{{author}} esta com medo de {{mention}}"
   },
   "resmungar": {
-    "embed_title": "Resmungadinha >.<",
+    "embed_title": "Humpf",
     "embed_description": "{{author}} está resmungando"
   },
   "abracar": {
     "bot": "Você foi abraçar um robô, mas acabou tocando onde não devia, e tomou uma descarga elétrica de 220V e 10mA, sorte que a corrente usada no bot é baixa...",
     "self-mention": "Tu não é a mulher elástico pra se abraçar, por favor, mencione quem você quer abraçar",
-    "embed_title": "Abraços",
+    "embed_title": "Abraçar",
     "embed_description": "{{author}} deu um abraço quentinho em {{mention}}"
   },
   "matar": {
@@ -65,13 +65,13 @@
       "embed_title": "Desligar",
       "embed_description": "*Robôs não podem ser mortos, mas podem ser desligados...*\n{{author}} desligou o bot {{mention}}"
     },
-    "embed_title": "Desviver",
-    "embed_description": "{{author}} **desviveu** {{mention}}"
+    "embed_title": "Matar",
+    "embed_description": "{{author}} **M A T O U** {{mention}}"
   },
   "beijar": {
     "bot": "Você beijou um robô, e acabou tocando em um fio descascado. Sorte que ele estava com chinelo nos pés. A ligação com a Terra foi cortado, nenhum circuito se fechou. Dessa vez foi safe.",
     "self-mention": "Sim, eu sei que amor próprio é tudo, mas por favor, beije alguém que não seja si mesmo, vai que assim vocês não avançam pra um `/casar`",
-    "embed_title": "💖 | Beijar",
+    "embed_title": "Beijar",
     "embed_description_mouth": "{{author}} deu uma bela de uma beijoca em {{mention}}",
     "embed_description_cheek": "{{author}} deu um beijinho na bochecha de {{mention}}",
     "embed_description_hand": "{{author}} beijou a mão de {{mention}}... Quanto cavalheirismo",
@@ -79,10 +79,10 @@
   },
   "rir": {
     "no-mention": {
-      "embed_title": "ADASKDSKADSAKDJASJKDASJKDASJKDBJKSADBSKDBASJDBKSJDBSAJKD",
+      "embed_title": "KKLKLKLK PARABENS ZÉ",
       "embed_description": "{{author}} está se mijando de rir"
     },
-    "embed_title": "Haha.",
+    "embed_title": "RINDO",
     "embed_description": "{{mention}} fez {{author}} cair no chão de tanto rir, namoral {{mention}}, muito bom mesmo!"
   },
   "mamar": {
@@ -98,7 +98,7 @@
   },
   "carinho": {
     "self-mention": "Olha cara, se tu quiser tu pode fazer carinho em si mesmo agora. Utilize meu comando somente para fazer carinho em outras pessoas",
-    "embed_title": "Pat pat pat",
+    "embed_title": "Carinho",
     "embed_description": "{{author}} fez carinho em {{mention}}"
   },
   "cutucar": {
@@ -107,11 +107,11 @@
     "embed_description": "{{author}} cutucou {{mention}}"
   },
   "socar": {
-    "bot": "NÃO NO MEU ANIVERSÁRIO",
+    "bot": "DIGA NÃO A AGRESSÃO À ROBÔS",
     "self-mention": "VEM DE CHICOTE, ALGEMAS, CORDA DE ALPINISTA. AI QUE EU PERCEBI QUE O CARA É ***! Eu não vou fazer tu se bater, mencione outra pessoa",
     "self-mention_uncensored": "VEM DE CHICOTE, ALGEMAS, CORDA DE ALPINISTA. AI QUE EU PERCEBI QUE O CARA É SADOMASOQUISTA! Eu não vou fazer tu se bater, mencione outra pessoa",
-    "embed_title": "One Punch Bot",
-    "embed_description": "{{author}} meteu-lhe o socalho em {{mention}}"
+    "embed_title": "Toma soco leve 🤜",
+    "embed_description": "{{author}} meteu o soquinho leve em {{mention}}"
   },
   "ressuscitar": {
     "self-mention": "Uai, se tu ta morto, como tu ta digitando?",
@@ -145,7 +145,7 @@
     "embed_description": "{{mention}} deixou {{author}} com vergonha >...<"
   },
   "tapa": {
-    "bot": "NO MEU ANIVERSÁRIO NÃO",
+    "bot": "DIGA NÃO A AGRESSÃO À ROBÔS",
     "self-mention": "Eu não vou fazer tu se bater, mencione outra pessoa",
     "embed_title": "TAPÃO",
     "embed_description": "{{author}} meteu o tapão em {{mention}}"
@@ -225,7 +225,7 @@
       "price": "Preço:"
     },
     "buy_themes": {
-      "title": "🎊 | Comprar Temas - No preçinho de aniversário",
+      "title": "🎊 | Comprar Temas",
       "description": "Abaixo estão alguns temas que você pode comprar imediatamente",
       "poor": "Tu não possui todas essas estrelinhas para comprar isso!",
       "owned": "(Possui)",
@@ -243,13 +243,13 @@
       "invalid-color": "Esta cor não é uma cor válida!",
       "no-name": "Sem nome especificado ({{number}})",
       "buy-text": "Escolha abaixo qual é a cor que deseja comprar!",
-      "title": "Compre sua Cor BARATINHA PAEE",
+      "title": "Compre sua Cor",
       "hex_input": "Digite sua cor em Hexadecimal",
       "name_placeholder": "Azul Bebê",
       "name_input": "O nome dessa cor (para sua organização)"
     },
     "dataRolls_fields": {
-      "title": "🔑 | Comprar Rolls na faixa",
+      "title": "🔑 | Comprar Rolls",
       "fields": {
         "name": "Tabela de Preços",
         "value": "1 Roll = **{{price}}** ⭐"
@@ -275,8 +275,8 @@
   "8ball": {
     "question": "Sua Pergunta",
     "answer": "Respota",
-    "themes": "OS TEMAS DO 8BALL ESTÃO MAIS BARATOS NO MEU ANIVERSÁRIO!!",
-    "ask": "Pergunte à Aniversariante 🎁",
+    "themes": "Você sabia que agora o 8ball tem temas? /loja comprar temas",
+    "ask": "Pergunte à Menhera",
     "answers": {
       "0": "É certo",
       "1": "Sem dúvida",
@@ -341,7 +341,7 @@
     "demigods": "Semideuses",
     "giants": "Gigantes",
     "archangels": "Arcanjos",
-    "gods": "**DEUSES EXCLUSIVOS**",
+    "gods": "Deuses",
     "invalid-rolls": "Este número de rolls é invalido!",
     "rolls-poor": "Você não tem essa quantidade de rolls",
     "cooldown": "Descanse campeão, você já saiu na sua caçada. Tente novamente em **{{time}}** minutos ou use um `roll` em sua próxima caça"
@@ -537,9 +537,9 @@
     "title": "⌛ | Seus tempos de Recarga",
     "no-cooldown": "Você já pode fazer isso!",
     "hunt": "Caçar",
-    "vote": "🎁 | Votar em Mim",
+    "vote": "Votar em Mim",
     "time": "**{{time}}** {{subtime}} | **<t:{{unix}}:T>**",
-    "click-to-vote": "🎁 Clique Para Votar | PRÊMIOS EXTRAS!",
+    "click-to-vote": "Clique Para Votar",
     "dungeon": "Dungeon",
     "no-dungeon": "Você ainda não reencarnou no Mundo de Boleham. Use `/ficha`!"
   },
@@ -571,7 +571,7 @@
   },
   "blackjack": {
     "available-options": "Opções Disponíveis",
-    "title": "Blacks & Jacks",
+    "title": "BlackJack",
     "shuffling": "Entregando as Cartas",
     "lost-game-data": "Vish {{author}}, eu acabei perdendo as cartas no meio da bagunça do meu quarto... Eu te devolvi as {{value}} :star: que tu tinha apostado nesse jogo... Prometo que vou tentar não perder mais nada <3",
     "description": "Sua Mão: **{{userHand}}** -> `{{userTotal}}`\nMão da Menhera: **{{dealerCards}}** -> `{{dealerTotal}}`",
@@ -640,13 +640,13 @@
     "censored": "A censura de palavrões foi ativada, vou ser a menina mais santa desse servidor, tu vai ver"
   },
   "temas": {
-    "profile": "🎁 | Estilos de Perfil NA FAIXA",
-    "cards": "🎁 | Estilos de Carta NA FAIXA",
-    "table": "🎁 | Estilos de Mesa de Cartas NA FAIXA",
-    "card_background": "🎁 | Estilos de Fundo de Carta NA FAIXA",
-    "eb_menhera": "🎁 | Menhera's do 8ball NA FAIXA",
-    "eb_background": "🎁 | Fundos do 8ball NA FAIXA",
-    "eb_text_box": "🎁 | Caixa de Perguntas do 8ball NA FAIXA",
+    "profile": "Estilos de Perfil",
+    "cards": "Estilos de Carta",
+    "table": "Estilos de Mesa de Cartas",
+    "card_background": "Estilos de Fundo de Carta",
+    "eb_menhera": "Menhera's do 8ball",
+    "eb_background": "Fundos do 8ball",
+    "eb_text_box": "Caixa de Perguntas do 8ball",
     "no-themes": "Você não tem nenhum tema deste tipo para alterar!",
     "selected": "Seu tema foi alterado com sucesso!",
     "choose": "Escolha abaixo o seu novo Tema!"

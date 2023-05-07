@@ -3,7 +3,7 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import { TODAYS_YEAR, COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
-import { mentionUser } from '../../utils/discord/userUtils';
+import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
@@ -45,7 +45,7 @@ const AngryCommand = createCommand({
       return finishCommand();
     }
 
-    // const avatar = getUserAvatar(ctx.author, { enableGif: true });
+    const avatar = getUserAvatar(ctx.author, { enableGif: true });
     const selectedImage = getAssetLink('angry');
 
     if (!user || user.id === ctx.author.id) {
@@ -55,7 +55,7 @@ const AngryCommand = createCommand({
         description: ctx.locale('commands:raiva.no-mention.embed_description', {
           author: mentionUser(ctx.author.id),
         }),
-        thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
+        thumbnail: { url: avatar },
         image: { url: selectedImage },
       });
 
@@ -76,7 +76,7 @@ const AngryCommand = createCommand({
       }),
       image: { url: selectedImage },
       color: COLORS.ACTIONS,
-      thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
+      thumbnail: { url: avatar },
     });
 
     if (reason)

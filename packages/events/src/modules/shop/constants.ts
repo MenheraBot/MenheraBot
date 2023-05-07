@@ -1,5 +1,5 @@
 const huntValues = {
-  roll: 13_000,
+  roll: 15_000,
   demons: 900,
   giants: 1_200,
   angels: 2_300,
@@ -9,13 +9,13 @@ const huntValues = {
 };
 
 const colorPrices = {
-  purple: 20_000,
-  red: 20_000,
-  cian: 20_000,
-  green: 20_000,
-  pink: 20_000,
-  yellow: 20_000,
-  your_choice: 35_000,
+  purple: 30_000,
+  red: 30_000,
+  cian: 30_000,
+  green: 30_000,
+  pink: 30_000,
+  yellow: 30_000,
+  your_choice: 50_000,
 };
 
 const unbuyableThemes = [3, 4, 5, 6, 25, 26, 27];

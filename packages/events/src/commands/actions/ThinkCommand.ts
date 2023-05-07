@@ -3,7 +3,7 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import { TODAYS_YEAR, COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
-import { mentionUser } from '../../utils/discord/userUtils';
+import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
@@ -47,6 +47,7 @@ const ThinkCommand = createCommand({
         }),
       );
 
+    const avatar = getUserAvatar(ctx.author, { enableGif: true });
     const selectedImage = getAssetLink('think');
 
     if (!user || user.id === ctx.author.id) {
@@ -56,7 +57,7 @@ const ThinkCommand = createCommand({
         description: ctx.locale('commands:pensar.no-mention.embed_description', {
           author: mentionUser(ctx.author.id),
         }),
-        thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
+        thumbnail: { url: avatar },
         image: { url: selectedImage },
       });
 
@@ -77,7 +78,7 @@ const ThinkCommand = createCommand({
       }),
       image: { url: selectedImage },
       color: COLORS.ACTIONS,
-      thumbnail: { url: 'https://i.imgur.com/UMnJW64.png' },
+      thumbnail: { url: avatar },
     });
 
     if (reason)
