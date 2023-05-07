@@ -74,15 +74,6 @@ const ProfileCommand = createCommand({
         ? await userRepository.ensureFindUser(discordUser.id)
         : ctx.authorData;
 
-    if (!user) {
-      ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:perfil.no-dbuser'),
-        flags: MessageFlags.EPHEMERAL,
-      });
-
-      return finishCommand();
-    }
-
     if (user.ban && `${ctx.author.id}` !== getEnviroments(['OWNER_ID']).OWNER_ID) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:perfil.banned', { reason: user.banReason }),

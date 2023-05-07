@@ -170,15 +170,14 @@
   },
   "coinflip": {
     "bet": "Apostar",
-    "bot": "bots não podem apostar e.e",
+    "bot": "Bots não podem apostar e.e",
     "self-mention": "você não pode apostar contra si mesmo",
-    "no-dbuser": "este usuário não possui uma conta no Menhera's Bank!",
-    "poor": "{{user}} não possui todas essas estrelinhas para apostar!",
-    "confirm": "{{author}} te desafiou para uma aposta de Cara ou Coroa valendo **{{value}}** :star:. Caso caia Cara, {{author}} vence, caso caia coroa, {{mention}} vence.\nVocê aceita?",
+    "poor": "{{user}} não possui **{{amount}}** {{currency}} para apostar!",
+    "confirm": "{{author}} te desafiou para uma aposta de Cara ou Coroa valendo **{{value}}** {{emoji}}. Caso caia Cara, {{author}} vence, caso caia coroa, {{mention}} vence.\nVocê aceita?",
     "cara": "CARA",
     "coroa": "COROA",
     "banned-user": "Este usuário não pode apostar pois está banido da Menhera!",
-    "text": ":coin: | **{{choice}}**\n\n{{winner}} ganhou a aposta valendo **{{value}}** :star: contra {{loser}}"
+    "text": ":coin: | **{{choice}}**\n\n{{winner}} ganhou a aposta valendo **{{value}}** {{emoji}} contra {{loser}}"
   },
   "presentear": {
     "confirm": "**PIX**\n\nSeguinte {{user}}, {{author}} quer te enviar **{{count}}** {{emoji}}, você aceita?",
@@ -351,7 +350,6 @@
     "someone-married": "Algum de vocês dois já está casado!", 
     "self-mention": "Tu não pode se casar consigo mesmo :(",
     "married": "Tu já está casado!!",
-    "no-dbuser": "Mame este usuário para adicioná-lo ao meu banco de dados",
     "mention-married_uncensored": "Calma lá comedor de casadas, este usuário já está casado!",
     "mention-married": "Calma la colega, este usuário já está casado!",
     "accepted": "{{toMarry}} aceitou o pedido de casamento de {{author}}. Que os pombinhos aproveitem a noite de núpcias hihi",
@@ -404,7 +402,6 @@
     "rename-success": "Você renomeou a cor `{{color}}` para **{{name}}**"
   },
   "perfil": {
-    "no-dbuser": "Este usuário não possui perfil!",
     "banned": "Este usuário está **banido** de usar a Menhera\n**Motivo:** `{{reason}}`",
     "mamou": "Mamou",
     "unknow-user": "Usuário não encontrado",
@@ -609,7 +606,6 @@
     "equipped": "Sucesso! Itens ativados: **{{items}}**! Você já pode desfrutar de seus poderes!"
   },
   "carteira": {
-    "no-dbuser": "Este usuário não está em minha database",
     "title": "Carteira de {{user}}",
     "stars": "Estrelinhas",
     "rolls": "Rolls",

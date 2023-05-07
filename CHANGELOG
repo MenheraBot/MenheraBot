@@ -5,11 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [5.4.2] - 2023-05-08
 
 ### Added
 
 - Há uma nova badge entre nós... Use `/perfil` ou `/personalizar badges` e veja se você a possui ;)
+- Agora é possível apostar **caças** no `/coinflip`. As apostas em caças são converdidas em estrelinhas para o `/estatísticas coinflip`. - Sugerido por Zip#7558 (510638095910305794)
 
 ### Changed
 

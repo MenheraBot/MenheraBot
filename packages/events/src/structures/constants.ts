@@ -63,6 +63,7 @@ export const EMOJIS = {
   badge_20: '<:badge_20:1092159000826626160>',
   badge_21: '<:badge_21:1103511851788144771>',
   badge_22: '<:badge_22:1103513736288931892>',
+  badge_23: '<:badge_23:1104856754765963314>',
 };
 
 export const COLORS = {
@@ -91,36 +92,36 @@ export const transactionableCommandOption = [
   {
     name: '⭐ | Estrelinhas',
     nameLocalizations: { 'en-US': '⭐ | Stars' },
-    value: 'estrelinhas',
+    value: 'estrelinhas' as const,
   },
   {
     name: '😈 | Demônios',
     nameLocalizations: { 'en-US': '😈 | Demons' },
-    value: 'demons',
+    value: 'demons' as const,
   },
   {
     name: '👊 | Gigantes',
     nameLocalizations: { 'en-US': '👊 | Giants' },
-    value: 'giants',
+    value: 'giants' as const,
   },
   {
     name: '👼 | Anjos',
     nameLocalizations: { 'en-US': '👼 | Angels' },
-    value: 'angels',
+    value: 'angels' as const,
   },
   {
     name: '🧚‍♂️ | Arcanjos',
     nameLocalizations: { 'en-US': '🧚‍♂️ | Archangels' },
-    value: 'archangels',
+    value: 'archangels' as const,
   },
   {
     name: '🙌 | Semideuses',
     nameLocalizations: { 'en-US': '🙌 | Demigods' },
-    value: 'demigods',
+    value: 'demigods' as const,
   },
   {
     name: '✝️ | Deuses',
     nameLocalizations: { 'en-US': '✝️ | Gods' },
-    value: 'gods',
+    value: 'gods' as const,
   },
 ];
