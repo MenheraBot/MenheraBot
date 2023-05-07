@@ -66,8 +66,8 @@ const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> 
     components: [],
   });
 
-  userRepository.updateUserWithSpecialData(winner, { [currency]: { $inc: inputAsNumber } });
-  userRepository.updateUserWithSpecialData(loser, { [currency]: { $inc: negate(inputAsNumber) } });
+  userRepository.updateUserWithSpecialData(winner, { $inc: { [currency]: inputAsNumber } });
+  userRepository.updateUserWithSpecialData(loser, { $inc: { [currency]: negate(inputAsNumber) } });
 
   const parsedValue =
     currency === 'estrelinhas' ? inputAsNumber : huntValues[currency] * inputAsNumber;
