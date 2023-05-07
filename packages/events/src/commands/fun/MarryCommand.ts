@@ -90,14 +90,6 @@ const MarryCommand = createCommand({
 
     const mentionData = await userRepository.ensureFindUser(mention.id);
 
-    if (!mentionData)
-      return finishCommand(
-        ctx.makeMessage({
-          content: ctx.prettyResponse('warn', 'commands:casar.no-dbuser'),
-          flags: MessageFlags.EPHEMERAL,
-        }),
-      );
-
     if (mentionData.ban)
       return finishCommand(
         ctx.makeMessage({

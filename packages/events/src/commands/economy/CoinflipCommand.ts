@@ -1,18 +1,26 @@
 import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import {
+  AllowedMentionsTypes,
+  ApplicationCommandOptionTypes,
+  ButtonStyles,
+} from 'discordeno/types';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import starsRepository from '../../database/repositories/starsRepository';
 import { postCoinflipMatch } from '../../utils/apiRequests/statistics';
-import { randomFromArray } from '../../utils/miscUtils';
+import { negate, randomFromArray } from '../../utils/miscUtils';
 import userRepository from '../../database/repositories/userRepository';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { mentionUser } from '../../utils/discord/userUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createCommand } from '../../structures/command/createCommand';
+import { EMOJIS, transactionableCommandOption } from '../../structures/constants';
+import { huntValues } from '../../modules/shop/constants';
 
 const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [input] = ctx.sentData;
+  const [input, currency] = ctx.sentData as [
+    string,
+    typeof transactionableCommandOption[number]['value'],
+  ];
 
   const [userData, authorData] = await Promise.all([
     userRepository.ensureFindUser(ctx.user.id),
@@ -21,25 +29,25 @@ const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> 
 
   const inputAsNumber = Number(input);
 
-  if (inputAsNumber > userData.estrelinhas) {
-    ctx.makeMessage({
+  if (inputAsNumber > userData[currency])
+    return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
         user: mentionUser(ctx.user.id),
+        currency: ctx.locale(`common:${currency}`),
+        amount: input,
       }),
       components: [],
     });
-    return;
-  }
 
-  if (inputAsNumber > authorData.estrelinhas) {
-    ctx.makeMessage({
+  if (inputAsNumber > authorData[currency])
+    return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
         user: mentionUser(ctx.commandAuthor.id),
+        currency: ctx.locale(`common:${currency}`),
+        amount: input,
       }),
       components: [],
     });
-    return;
-  }
 
   const availableOptions = ['cara', 'coroa'];
   const choice = randomFromArray(availableOptions);
@@ -53,13 +61,18 @@ const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> 
       value: input,
       winner: mentionUser(winner),
       loser: mentionUser(loser),
+      emoji: EMOJIS[currency],
     }),
     components: [],
   });
 
-  starsRepository.addStars(winner, inputAsNumber);
-  starsRepository.removeStars(loser, inputAsNumber);
-  postCoinflipMatch(`${winner}`, `${loser}`, inputAsNumber);
+  userRepository.updateUserWithSpecialData(winner, { [currency]: { $inc: inputAsNumber } });
+  userRepository.updateUserWithSpecialData(loser, { [currency]: { $inc: negate(inputAsNumber) } });
+
+  const parsedValue =
+    currency === 'estrelinhas' ? inputAsNumber : huntValues[currency] * inputAsNumber;
+
+  postCoinflipMatch(`${winner}`, `${loser}`, parsedValue);
 };
 
 const CoinflipCommand = createCommand({
@@ -84,13 +97,25 @@ const CoinflipCommand = createCommand({
       required: true,
       minValue: 1,
     },
+    {
+      name: 'moeda',
+      nameLocalizations: { 'en-US': 'currency' },
+      description: 'Moeda que será apostada. O padrão é estrelinhas',
+      descriptionLocalizations: { 'en-US': 'Currency to be wagered. The default is stars' },
+      type: ApplicationCommandOptionTypes.String,
+      required: false,
+      choices: transactionableCommandOption,
+    },
   ],
   category: 'economy',
-  authorDataFields: ['estrelinhas'],
+  authorDataFields: ['estrelinhas', 'demons', 'giants', 'angels', 'archangels', 'demigods', 'gods'],
   commandRelatedExecutions: [confirmCoinflip],
   execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', true);
     const input = ctx.getOption<number>('aposta', false, true);
+    const currency =
+      ctx.getOption<typeof transactionableCommandOption[number]['value']>('moeda', false) ??
+      'estrelinhas';
 
     if (user.toggles.bot)
       return finishCommand(
@@ -108,11 +133,13 @@ const CoinflipCommand = createCommand({
         }),
       );
 
-    if (input > ctx.authorData.estrelinhas)
+    if (input > ctx.authorData[currency])
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
             user: mentionUser(ctx.author.id),
+            currency: ctx.locale(`common:${currency}`),
+            amount: input,
           }),
           flags: MessageFlags.EPHEMERAL,
         }),
@@ -128,18 +155,20 @@ const CoinflipCommand = createCommand({
         }),
       );
 
-    if (input > targetData.estrelinhas)
+    if (input > targetData[currency])
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
             user: mentionUser(user.id),
+            currency: ctx.locale(`common:${currency}`),
+            amount: input,
           }),
           flags: MessageFlags.EPHEMERAL,
         }),
       );
 
     const confirmButton = createButton({
-      customId: createCustomId(0, user.id, ctx.commandId, input),
+      customId: createCustomId(0, user.id, ctx.commandId, input, currency),
       label: ctx.locale('commands:coinflip.bet'),
       style: ButtonStyles.Success,
     });
@@ -149,7 +178,9 @@ const CoinflipCommand = createCommand({
         value: input,
         author: mentionUser(ctx.author.id),
         mention: mentionUser(user.id),
+        emoji: EMOJIS[currency],
       }),
+      allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
       components: [createActionRow([confirmButton])],
     });
 

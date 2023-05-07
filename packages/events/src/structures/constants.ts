@@ -91,36 +91,36 @@ export const transactionableCommandOption = [
   {
     name: '⭐ | Estrelinhas',
     nameLocalizations: { 'en-US': '⭐ | Stars' },
-    value: 'estrelinhas',
+    value: 'estrelinhas' as const,
   },
   {
     name: '😈 | Demônios',
     nameLocalizations: { 'en-US': '😈 | Demons' },
-    value: 'demons',
+    value: 'demons' as const,
   },
   {
     name: '👊 | Gigantes',
     nameLocalizations: { 'en-US': '👊 | Giants' },
-    value: 'giants',
+    value: 'giants' as const,
   },
   {
     name: '👼 | Anjos',
     nameLocalizations: { 'en-US': '👼 | Angels' },
-    value: 'angels',
+    value: 'angels' as const,
   },
   {
     name: '🧚‍♂️ | Arcanjos',
     nameLocalizations: { 'en-US': '🧚‍♂️ | Archangels' },
-    value: 'archangels',
+    value: 'archangels' as const,
   },
   {
     name: '🙌 | Semideuses',
     nameLocalizations: { 'en-US': '🙌 | Demigods' },
-    value: 'demigods',
+    value: 'demigods' as const,
   },
   {
     name: '✝️ | Deuses',
     nameLocalizations: { 'en-US': '✝️ | Gods' },
-    value: 'gods',
+    value: 'gods' as const,
   },
 ];

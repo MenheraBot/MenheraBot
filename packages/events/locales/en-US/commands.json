@@ -165,15 +165,15 @@
   },
   "coinflip": {
     "bet": "Bet",
-    "bot": "bots cannot bet e.e",
+    "bot": "Bots cannot bet e.e",
     "self-mention": "you cannot bet against yourself",
     "no-dbuser": "this user does not have a Menhera's Bank account!",
-    "poor": "{{user}} don't have all these stars to bet on!",
-    "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** ⭐. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept?",
+    "poor": "{{user}} don't have **{{value}}** {{currency}} to bet on!",
+    "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** {{emoji}}. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept?",
     "cara": "HEADS",
     "coroa": "TAILS",
     "banned-user": "This user cannot bet because they're banned from Menhera!",
-    "text": ":coin: | **{{choice}}**\n\n{{winner}} won **{{value}}** :star: betting against {{loser}}"
+    "text": ":coin: | **{{choice}}**\n\n{{winner}} won **{{value}}** {{emoji}} betting against {{loser}}"
   },
   "presentear": {
     "self-mention": "You cannot mention yourself!",

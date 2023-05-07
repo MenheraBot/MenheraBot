@@ -3,7 +3,6 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import userRepository from '../../database/repositories/userRepository';
 import { createCommand } from '../../structures/command/createCommand';
-import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getDisplayName } from '../../utils/discord/userUtils';
 
@@ -38,15 +37,7 @@ const WalletCommand = createCommand({
     const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
 
     const userData =
-      user.id === ctx.author.id ? ctx.authorData : await userRepository.findUser(user.id);
-
-    if (!userData)
-      return finishCommand(
-        ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'commands:carteira.no-dbuser'),
-          flags: MessageFlags.EPHEMERAL,
-        }),
-      );
+      user.id === ctx.author.id ? ctx.authorData : await userRepository.ensureFindUser(user.id);
 
     if (userData.ban)
       return finishCommand(
