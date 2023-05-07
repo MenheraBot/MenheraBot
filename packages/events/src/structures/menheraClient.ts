@@ -13,6 +13,7 @@ import { logger } from '../utils/logger';
 import { loadCommands } from './command/loadCommands';
 import { updateAssets } from './cdnManager';
 import { initializePrometheus } from './initializePrometheus';
+import { transformDiscordUserToUser } from '../internals/transformers/reverse/transformDiscordUserToUser';
 
 const setupMenheraClient = (client: MenheraClient): void => {
   const { OWNER_ID } = getEnviroments(['OWNER_ID']);
@@ -73,6 +74,8 @@ const setupInternals = (bot: Bot, restIPC: Client): void => {
 
   bot.transformers.reverse.interactionResponse =
     transformInteractionResponseToDiscordInteractionResponse;
+
+  bot.transformers.user = transformDiscordUserToUser;
 
   bot.handlers.INTERACTION_CREATE = handleInteractionCreate;
 };

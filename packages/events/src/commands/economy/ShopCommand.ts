@@ -9,6 +9,7 @@ import { buyItems, executeSelectItem } from '../../modules/shop/buyItems';
 import { buyThemes, executeClickButton } from '../../modules/shop/buyThemes';
 import { buyInfo } from '../../modules/shop/buyInfo';
 import { sellInfo } from '../../modules/shop/sellInfo';
+import { transactionableCommandOption } from '../../structures/constants';
 
 const ShopCommand = createCommand({
   path: '',
@@ -80,38 +81,7 @@ const ShopCommand = createCommand({
           descriptionLocalizations: { 'en-US': 'Type of hunting to sell' },
           type: ApplicationCommandOptionTypes.String,
           required: true,
-          choices: [
-            {
-              name: '😈 | Demônios',
-              nameLocalizations: { 'en-US': '😈 | Demons' },
-              value: 'demons',
-            },
-            {
-              name: '👊 | Gigantes',
-              nameLocalizations: { 'en-US': '👊 | Giants' },
-              value: 'giants',
-            },
-            {
-              name: '👼 | Anjos',
-              nameLocalizations: { 'en-US': '👼 | Angels' },
-              value: 'angels',
-            },
-            {
-              name: '🧚‍♂️ | Arcanjos',
-              nameLocalizations: { 'en-US': '🧚‍♂️ | Archangels' },
-              value: 'archangels',
-            },
-            {
-              name: '🙌 | Semideuses',
-              nameLocalizations: { 'en-US': '🙌 | Demigods' },
-              value: 'demigods',
-            },
-            {
-              name: '✝️ | Deuses',
-              nameLocalizations: { 'en-US': '✝️ | Gods' },
-              value: 'gods',
-            },
-          ],
+          choices: transactionableCommandOption.filter((a) => a.value !== 'estrelinhas'),
         },
         {
           name: 'quantidade',

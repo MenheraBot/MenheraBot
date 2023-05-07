@@ -86,3 +86,41 @@ export const COLORS = {
 };
 
 export const TODAYS_YEAR = new Date().getFullYear();
+
+export const transactionableCommandOption = [
+  {
+    name: '⭐ | Estrelinhas',
+    nameLocalizations: { 'en-US': '⭐ | Stars' },
+    value: 'estrelinhas',
+  },
+  {
+    name: '😈 | Demônios',
+    nameLocalizations: { 'en-US': '😈 | Demons' },
+    value: 'demons',
+  },
+  {
+    name: '👊 | Gigantes',
+    nameLocalizations: { 'en-US': '👊 | Giants' },
+    value: 'giants',
+  },
+  {
+    name: '👼 | Anjos',
+    nameLocalizations: { 'en-US': '👼 | Angels' },
+    value: 'angels',
+  },
+  {
+    name: '🧚‍♂️ | Arcanjos',
+    nameLocalizations: { 'en-US': '🧚‍♂️ | Archangels' },
+    value: 'archangels',
+  },
+  {
+    name: '🙌 | Semideuses',
+    nameLocalizations: { 'en-US': '🙌 | Demigods' },
+    value: 'demigods',
+  },
+  {
+    name: '✝️ | Deuses',
+    nameLocalizations: { 'en-US': '✝️ | Gods' },
+    value: 'gods',
+  },
+];

@@ -16,9 +16,13 @@ const getUserAvatar = (
     );
   }
 
-  return bot.utils.formatImageURL(routes.USER_DEFAULT_AVATAR(Number(user.discriminator) % 5));
+  return bot.utils.formatImageURL(routes.USER_DEFAULT_AVATAR(2));
 };
 
 const mentionUser = (userId: bigint | string): string => `<@${userId}>`;
 
-export { getUserAvatar, mentionUser };
+const getDisplayName = (user: User): string =>
+  // @ts-expect-error It doesnt exists yet
+  user.discriminator === '0' ? user.displayName : `${user.username}#${user.discriminator}`;
+
+export { getUserAvatar, mentionUser, getDisplayName };

@@ -5,6 +5,7 @@ import userRepository from '../../database/repositories/userRepository';
 import { createCommand } from '../../structures/command/createCommand';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
+import { getDisplayName } from '../../utils/discord/userUtils';
 
 const WalletCommand = createCommand({
   path: '',
@@ -56,7 +57,7 @@ const WalletCommand = createCommand({
 
     const embed = createEmbed({
       title: ctx.locale('commands:carteira.title', {
-        user: `${user.username}#${user.discriminator}`,
+        user: getDisplayName(user),
       }),
       color: hexStringToNumber(userData.selectedColor),
       fields: [
