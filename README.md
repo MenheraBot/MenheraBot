@@ -7,14 +7,14 @@
 [![](https://top.gg/api/widget/upvotes/708014856711962654.svg)](https://top.gg/bot/708014856711962654/vote)
 [![Deploy](https://github.com/MenheraBot/MenheraBot/actions/workflows/deploy.yml/badge.svg?branch=master)](https://github.com/MenheraBot/MenheraBot/actions/workflows/deploy.yml)
 
-> Menhera is animating more than 49k servers with her functionalities
+> Menhera is animating more than 50k servers with her functionalities
 
 MenheraBot is an open source Discord bot made in TypeScript with [Discordeno](https://discordeno.mod.land/) with foccus in Fun.
 Feel free to add a star ⭐ to the repository to promote the project!
 
 ## 👨‍💻 | Contributing
 
-Pull requests are always welcome. If you have any ideia, want to implement a new feature, fix some bug, or even improve the code itself, you can do it openning a pull request to the `feat/development` branch. Check the next session about running the project.
+Pull requests are always welcome. If you have any ideia, want to implement a new feature, fix some bug, or even improve the code itself, you can do it openning a pull request to the `master` branch. Check the next session about running the project.
 
 ## 🔥 | Running
 
