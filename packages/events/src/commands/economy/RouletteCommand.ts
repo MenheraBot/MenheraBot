@@ -55,7 +55,7 @@ const finishRouletteBet = async (
       title: ctx.locale(`commands:roleta.${winOrLose}-title`),
       description: ctx.locale(`commands:roleta.${winOrLose}`, {
         bet,
-        profit: profitAfterTaxes,
+        profit: profitAfterTaxes + bet,
         taxes: getProfitTaxes(profit),
         number: randomValue,
         operation,
@@ -73,7 +73,7 @@ const finishRouletteBet = async (
       `${ctx.user.id}`,
       bet,
       operation,
-      didWin ? profitAfterTaxes : profit,
+      didWin ? profitAfterTaxes + bet : profit,
       didWin,
       selection,
     );

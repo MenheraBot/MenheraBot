@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- Resolvido o bug das estatísticas de roleta, onde o ganho não estava sendo somado com o valor base da aposta.
+
 ## [5.4.2] - 2023-05-08
 
 ### Added
