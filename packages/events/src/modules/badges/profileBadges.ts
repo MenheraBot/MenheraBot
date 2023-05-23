@@ -200,6 +200,14 @@ const profileBadges = {
       'Badge dada aos usuários que mamaram a Menhera durante o dia de seu aniversário de 3 anos',
     link: 'https://media.discordapp.net/attachments/793669360857907200/1104858081713737778/23.png',
   },
+  24: {
+    name: 'Hello Kitty',
+    availabeStartAt: '23/05/2023',
+    availabeStoptAt: '-----',
+    rarityLevel: 2,
+    description: 'Apenas os verdadeiros fans da hello Kitty possuem essa badge',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/1110404799033253908/hellokitty.png',
+  },
 };
 
 export { profileBadges };
