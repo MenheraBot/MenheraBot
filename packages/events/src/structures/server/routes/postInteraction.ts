@@ -27,9 +27,10 @@ const handleRequest = async (ctx: Context): Promise<void> => {
     bot.transformers.interaction(bot, ctx.request.body as DiscordInteraction),
   );
 
-  getInteractionsCounter().inc({
-    type: numberTypeToName[ctx.request.body.type as 1],
-  });
+  if (!process.env.NOMICROSERVICES)
+    getInteractionsCounter().inc({
+      type: numberTypeToName[ctx.request.body.type as 1],
+    });
 };
 
 const createPostInteractionRouter = (): Router => {

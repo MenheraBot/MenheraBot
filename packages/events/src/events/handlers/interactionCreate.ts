@@ -128,9 +128,10 @@ const setInteractionCreateEvent = (): void => {
 
     bot.commandsInExecution += 1;
 
-    getCommandsCounter().inc({
-      category: command.category,
-    });
+    if (!process.env.NOMICROSERVICES)
+      getCommandsCounter().inc({
+        category: command.category,
+      });
 
     await new Promise((res) => {
       command.execute(ctx, res).catch((err) => {

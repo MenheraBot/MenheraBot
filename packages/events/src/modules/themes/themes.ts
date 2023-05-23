@@ -147,6 +147,11 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     type: 'eb_background',
     theme: 'xp',
   },
+  30: {
+    price: 175_000,
+    type: 'profile',
+    theme: 'personal_space',
+  },
 };
 
 export default Themes;
