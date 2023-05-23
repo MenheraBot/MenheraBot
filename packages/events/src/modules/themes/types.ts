@@ -26,7 +26,8 @@ export type AvailableProfilesThemes =
   | 'fortification'
   | 'without_soul'
   | 'id03'
-  | 'gatito';
+  | 'gatito'
+  | 'personal_space';
 
 export type AvailableThemeTypes =
   | 'profile'

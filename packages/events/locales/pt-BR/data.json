@@ -153,18 +153,22 @@
     "26": {
       "name": "Dia dos Namorados",
       "description": "O amor está no ar!"
-     },
+    },
     "27": {
       "name": "Simplesmente Menhera",
       "description": "É, sou eu"
-      } ,
+    },
     "28": {
       "name": "Windows XP",
       "description": "A famosa telinha de aviso do Windows XP"
-     },
+    },
     "29": {
       "name": "Windows XP",
       "description": "Nenhum wallpaper é mais famoso que esse."
-     }
+    },
+    "30": {
+      "name": "Espaço Pessoal",
+      "description": "Para os amantes do espaço."
+    }
   }
 }
