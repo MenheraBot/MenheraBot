@@ -47,7 +47,7 @@ interface SuccessReturn {
 export type VanGoghReturnData = ErrorReturn | SuccessReturn;
 
 const vanGoghRequest = async <T>(route: VanGoghEndpoints, data: T): Promise<VanGoghReturnData> => {
-  const result = await VanGoghApi.post(`/${route}`, data).catch(console.log);
+  const result = await VanGoghApi.post(`/${route}`, data).catch();
   if (!result) return { err: true };
 
   return {
