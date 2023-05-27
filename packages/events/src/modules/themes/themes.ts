@@ -33,22 +33,22 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     type: 'card_background',
   },
   7: {
-    price: 950_000,
+    price: 666_666,
     theme: 'death',
     type: 'cards',
   },
   8: {
-    price: 80_000,
+    price: 60_000,
     theme: 'blue',
     type: 'card_background',
   },
   9: {
-    price: 140_000,
+    price: 70_000,
     theme: 'cute_menhera',
     type: 'card_background',
   },
   10: {
-    price: 320_000,
+    price: 90_000,
     theme: 'premium',
     type: 'card_background',
   },
@@ -68,7 +68,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     type: 'table',
   },
   14: {
-    price: 300_000,
+    price: 250_000,
     type: 'profile',
     theme: 'christmas_2021',
   },
@@ -98,12 +98,12 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     theme: 'gauderios',
   },
   20: {
-    price: 250_000,
+    price: 100_000,
     type: 'card_background',
     theme: 'lamenta_caelorum',
   },
   21: {
-    price: 650_000,
+    price: 390_000,
     theme: 'without_soul',
     type: 'profile',
   },
@@ -151,6 +151,41 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     price: 175_000,
     type: 'profile',
     theme: 'personal_space',
+  },
+  31: {
+    price: 260_000,
+    type: 'profile',
+    theme: 'hello_kitty',
+  },
+  32: {
+    price: 550_001,
+    type: 'cards',
+    theme: 'hello_kitty',
+  },
+  33: {
+    price: 210_000,
+    type: 'table',
+    theme: 'hello_kitty',
+  },
+  34: {
+    price: 120_000,
+    type: 'card_background',
+    theme: 'hello_kitty',
+  },
+  35: {
+    price: 80_000,
+    type: 'eb_text_box',
+    theme: 'hello_kitty',
+  },
+  36: {
+    price: 300_000,
+    type: 'eb_menhera',
+    theme: 'hello_kitty',
+  },
+  37: {
+    price: 85_000,
+    type: 'eb_background',
+    theme: 'hello_kitty',
   },
 };
 

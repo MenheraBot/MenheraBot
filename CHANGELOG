@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.5.0] - 2023-05-27
+
+### Added
+
+- **NOVO PACK DE TEMAS DA HELLO KITTY**. Foi criado temas da Hello Kitty para todos os tipos de temas! Use o preview da loja para ver Hello Kitty, My Melody e Kuromi nos seus comandos!
+
+- Nova Badge da Hello Kitty! **Para os maiores fãs da Hello Kitty.** Essa badge é dada para você caso você tenha **TODOS** os temas da Hello Kitty! 
+
+### Changed
+
+- Os preços de temas de fundo de cartas foram reduzidos! `Cartinha Azul`: ~~80000~~ -> *60_000*; `Menhera Fofa`: ~~140000~~ -> *70_000*; `Carta Premium`: ~~320000~~ -> *90_000*; `Lamenta Caelorum`: ~~250000~~ -> *100000*.
+
+- O preço do baralho de cartas `Morte Concreta` foi reduzido de ~~950000~~ para *666666*
+
+- O preço do tema de perfil `Um Propósito Sem Alma` foi reduzido de ~~650_000~~ para *390000*
+
 ## [5.4.3] - 2023-05-23
 
 ### Added

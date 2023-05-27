@@ -1,4 +1,4 @@
-export type AvailableCardThemes = 'default' | 'death';
+export type AvailableCardThemes = 'default' | 'death' | 'hello_kitty';
 
 export type AvailableCardBackgroundThemes =
   | 'red'
@@ -6,6 +6,7 @@ export type AvailableCardBackgroundThemes =
   | 'cute_menhera'
   | 'premium'
   | 'kawaii'
+  | 'hello_kitty'
   | 'lamenta_caelorum';
 
 export type AvailableTableThemes =
@@ -15,6 +16,7 @@ export type AvailableTableThemes =
   | 'pink'
   | 'rounded'
   | 'gauderios'
+  | 'hello_kitty'
   | 'atemporal';
 
 export type AvailableProfilesThemes =
@@ -27,6 +29,7 @@ export type AvailableProfilesThemes =
   | 'without_soul'
   | 'id03'
   | 'gatito'
+  | 'hello_kitty'
   | 'personal_space';
 
 export type AvailableThemeTypes =
@@ -38,11 +41,11 @@ export type AvailableThemeTypes =
   | 'eb_text_box'
   | 'eb_menhera';
 
-export type AvailableEightBallBackgroundThemeTypes = 'default' | 'xp';
+export type AvailableEightBallBackgroundThemeTypes = 'default' | 'xp' | 'hello_kitty';
 
-export type AvailableEightBallTextBoxThemeTypes = 'default' | 'xp';
+export type AvailableEightBallTextBoxThemeTypes = 'default' | 'xp' | 'hello_kitty';
 
-export type AvailableEightBallMennheraThemeTypes = 'default';
+export type AvailableEightBallMennheraThemeTypes = 'default' | 'hello_kitty';
 
 export interface UserBuyableTheme {
   id: number;

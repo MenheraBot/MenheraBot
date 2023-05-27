@@ -205,7 +205,7 @@ const profileBadges = {
     availabeStartAt: '23/05/2023',
     availabeStoptAt: '-----',
     rarityLevel: 2,
-    description: 'Apenas os verdadeiros fans da hello Kitty possuem essa badge',
+    description: 'Este usuário é fanático pela Hello Kitty <3',
     link: 'https://media.discordapp.net/attachments/793669360857907200/1110404799033253908/hellokitty.png',
   },
 };
