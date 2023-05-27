@@ -21,7 +21,8 @@ import {
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { previewProfileData, unbuyableThemes } from './constants';
+import { helloKittyThemes, previewProfileData, unbuyableThemes } from './constants';
+import badgeRepository from '../../database/repositories/badgeRepository';
 
 const themeByIndex = {
   0: 'profile',
@@ -354,6 +355,23 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
           command: `</personalizar temas:${commandInfo?.discordId}>`,
         }),
       });
+
+      if (!authorData.badges.some((a) => a.id === 24)) {
+        const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.user.id);
+
+        const allThemes = [
+          ...userThemes.profileThemes,
+          ...userThemes.cardsThemes,
+          ...userThemes.tableThemes,
+          ...userThemes.cardsBackgroundThemes,
+          ...userThemes.ebTextBoxThemes,
+          ...userThemes.ebMenheraThemes,
+          ...userThemes.ebBackgroundThemes,
+        ];
+
+        if (helloKittyThemes.every((a) => allThemes.some((b) => b.id === a)))
+          await badgeRepository.giveBadgeToUser(ctx.user.id, 24);
+      }
 
       const { notifyPurchase } = await userThemesRepository.findEnsuredUserThemes(credits.ownerId);
 

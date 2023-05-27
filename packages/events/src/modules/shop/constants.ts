@@ -21,6 +21,7 @@ const colorPrices = {
 };
 
 const unbuyableThemes = [3, 4, 5, 6, 25, 26, 27];
+const helloKittyThemes = [31, 32, 33, 34, 35, 36, 37];
 
 const previewProfileData = {
   user: {
@@ -49,4 +50,4 @@ const previewProfileData = {
   },
 };
 
-export { huntValues, colorPrices, unbuyableThemes, previewProfileData };
+export { huntValues, colorPrices, unbuyableThemes, previewProfileData, helloKittyThemes };
