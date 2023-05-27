@@ -1,3 +1,5 @@
+import { bot } from '../..';
+
 const huntValues = {
   roll: 15_000,
   demons: 900,
@@ -23,7 +25,7 @@ const unbuyableThemes = [3, 4, 5, 6, 25, 26, 27];
 const previewProfileData = {
   user: {
     color: '#70c9f9' as const,
-    avatar: 'https://i.imgur.com/3Tv50Pc.jpg',
+    avatar: bot.helpers.getAvatarURL(bot.applicationId, '4444'),
     votes: 666,
     info: 'Gostou desse perfil? E que tal comprar? Nem vai ser tao caro, eu confio que tu vai querer, boa sorte UwU',
     tag: 'PreviewMode#6666',
