@@ -41,5 +41,8 @@ jobs:
       - name: Execute typecheck in EVENTS package
         run: yarn events typecheck
 
+      - name: Execute typecheck in ORCHESTRATOR package
+        run: yarn orchestrator typecheck
+
       - name: Execute jest in all packages
         run: yarn test
