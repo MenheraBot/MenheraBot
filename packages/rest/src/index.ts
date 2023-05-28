@@ -27,7 +27,7 @@ server.on('disconnect', (conn, reason) => {
 
     console.log(
       `[IPC] Client ${identified.internalId} ${
-        reason ? 'has been shut down' : 'was brutally disconnected!'
+        reason ? 'is going to sleep' : 'was brutally disconnected!'
       }`,
     );
 
