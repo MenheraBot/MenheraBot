@@ -32,6 +32,8 @@ orchestratorServer.on('message', async (msg, conn) => {
         isMaster: false,
       });
 
+      console.log(connectedClients.length);
+
       if (connectedClients.length === 1) {
         await conn.request({ type: 'YOU_ARE_THE_MASTER' });
         connectedClients[0].isMaster = true;

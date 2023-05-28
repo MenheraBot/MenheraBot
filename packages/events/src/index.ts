@@ -28,13 +28,13 @@ setupEventHandlers();
 const restClient = await createIpcConnections();
 setupInternals(bot, restClient);
 
-logger.info('[READY] Events are being processed!');
-
-if (process.env.NODE_ENV === 'production') updateCommandsOnApi();
-
 if (process.env.NODE_ENV === 'development') {
   logger.debug('Starting local gateway to receive events');
-  startBot(bot);
+  await startBot(bot);
 }
+
+logger.info('[READY] I am ready to process events!');
+
+if (process.env.NODE_ENV === 'production') updateCommandsOnApi();
 
 export { bot };
