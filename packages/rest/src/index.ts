@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 import { Server } from 'net-ipc';
-import { handleRequest } from './handleRequest';
-import { ConnectionInfo, MessageTypes, RequestTypes } from './types';
-import { handleIdentify } from './ipcMessages';
 import config from './config';
+import { handleRequest } from './handleRequest';
+import { handleIdentify } from './ipcMessages';
+import { ConnectionInfo, IdentifyMessage, RequestTypes } from './types';
 
 const { SOCKET_PATH } = config(['SOCKET_PATH']);
 
@@ -26,7 +26,7 @@ server.on('disconnect', (conn, reason) => {
     if (!identified) return;
 
     console.log(
-      `[IPC] Client ${identified.package} - ${identified.id} ${
+      `[IPC] Client ${identified.internalId} ${
         reason ? 'has been shut down' : 'was brutally disconnected!'
       }`,
     );
@@ -42,15 +42,15 @@ server.on('disconnect', (conn, reason) => {
     identified.connectedAt = -1;
     identified.disconnectedAt = Date.now();
     identified.connected = false;
-    console.log(`[IPC] Client ${identified.package} - ${identified.id} disconnected`);
+    console.log(`[IPC] Client ${identified.internalId} disconnected`);
     return;
   }
 
   console.log(`[IPC] Unidentified client disconnected`);
 });
 
-server.on('message', (info: MessageTypes, connection) => {
-  if (info.type === 'IDENTIFY') return handleIdentify(connections, info, connection);
+server.on('message', (info: IdentifyMessage, connection) => {
+  if (info.type === 'IDENTIFY') return handleIdentify(connections, connection);
 });
 
 server.on('request', async (req: RequestTypes, res) => {
