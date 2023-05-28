@@ -1,11 +1,9 @@
-import Router from 'koa-router';
 import { UpdateQuery } from 'mongoose';
-import { bot } from '../../../index';
-import userRepository from '../../../database/repositories/userRepository';
-import { debugError } from '../../../utils/debugError';
-import { createEmbed } from '../../../utils/discord/embedUtils';
-import { getEnviroments } from '../../../utils/getEnviroments';
-import { DatabaseUserSchema } from '../../../types/database';
+import { bot } from '..';
+import userRepository from '../database/repositories/userRepository';
+import { DatabaseUserSchema } from '../types/database';
+import { debugError } from './debugError';
+import { createEmbed } from './discord/embedUtils';
 
 const voteConstants = {
   baseRollAmount: 1,
@@ -17,7 +15,7 @@ const voteConstants = {
   star20Multiplier: 4,
 };
 
-const handleRequest = async (userId: string, isWeekend: boolean): Promise<void> => {
+const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<void> => {
   const user = await userRepository.ensureFindUser(userId);
 
   // Simulates the new vote before adding it all prizes
@@ -81,25 +79,4 @@ const handleRequest = async (userId: string, isWeekend: boolean): Promise<void> 
   await userRepository.updateUserWithSpecialData(userId, updateData);
 };
 
-const createVoteWebhookRouter = (): Router => {
-  const router = new Router();
-
-  const { DBL_TOKEN } = getEnviroments(['DBL_TOKEN']);
-
-  router.post('/webhook', (ctx) => {
-    if (!ctx.req.headers.authorization || ctx.req.headers.authorization !== DBL_TOKEN)
-      return ctx.throw(401, 'You are not allowed to access that!');
-
-    const { user, isWeekend, type } = ctx.request.body;
-
-    ctx.status = 200;
-
-    if (type === 'test') return;
-
-    handleRequest(user, isWeekend);
-  });
-
-  return router;
-};
-
-export { createVoteWebhookRouter };
+export { executeVoteWebhook };

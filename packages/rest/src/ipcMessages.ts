@@ -1,17 +1,13 @@
 /* eslint-disable no-console */
 import { Connection } from 'net-ipc';
-import { ConnectionInfo, IdentifyMessage } from './types';
+import { ConnectionInfo } from './types';
 
-const handleIdentify = (
-  connections: ConnectionInfo[],
-  info: IdentifyMessage,
-  connection: Connection,
-): void => {
-  const isReconnect = connections.find((a) => a.id === info.id && a.package === info.package);
+const handleIdentify = (connections: ConnectionInfo[], connection: Connection): void => {
+  const isReconnect = connections.find((a) => a.internalId === connection.id);
 
   if (isReconnect) {
     console.log(
-      `[IPC] Connection with ${info.package} - ${info.id} restored! ${
+      `[IPC] Connection with client ${connection.id} restored! ${
         Date.now() - isReconnect.disconnectedAt
       }ms downtime`,
     );
@@ -24,15 +20,13 @@ const handleIdentify = (
   }
 
   connections.push({
-    id: info.id,
     connected: true,
     connectedAt: Date.now(),
     disconnectedAt: -1,
     internalId: connection.id,
-    package: info.package,
   });
 
-  console.log(`[IPC] New connection identified! ${info.package} - ${info.id}`);
+  console.log(`[IPC] New connection identified! ${connection.id}`);
 };
 
 export { handleIdentify };

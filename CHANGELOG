@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- O tema do perfil da Menhera agora muda todo dia! Junto disso, a cor do perfil dela muda a cada hora. Quem sabe isso não abre uma brecha pra apostar com os amigos quais será o próximo perfil e cor? hehe
+
 ## [5.5.0] - 2023-05-27
 
 ### Added

@@ -23,8 +23,6 @@ export interface SendRequest {
 }
 
 export type ConnectionInfo = {
-  package: string;
-  id: string;
   internalId: string;
   connected: boolean;
   connectedAt: number;
@@ -33,14 +31,6 @@ export type ConnectionInfo = {
 
 export interface IdentifyMessage {
   type: 'IDENTIFY';
-  id: string;
-  package: string;
-}
-
-export interface PingMessage {
-  type: 'PING';
-  servicePackage: string;
-  serviceId: string;
 }
 
 export interface RunMethodMessage {
@@ -53,5 +43,4 @@ export interface SendRequestMessage {
   data: SendRequest;
 }
 
-export type MessageTypes = IdentifyMessage | PingMessage;
 export type RequestTypes = RunMethodMessage | SendRequestMessage;

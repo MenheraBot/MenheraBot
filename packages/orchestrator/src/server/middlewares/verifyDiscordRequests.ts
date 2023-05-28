@@ -1,6 +1,6 @@
 import { verifySignature } from 'discordeno';
 import { Context, Next } from 'koa';
-import { getEnviroments } from '../../../utils/getEnviroments';
+import { getEnviroments } from '../../getEnviroments';
 
 const verifyDiscordRequests = (ctx: Context, next: Next): Promise<unknown> => {
   const { DISCORD_PUBLIC_KEY } = getEnviroments(['DISCORD_PUBLIC_KEY']);

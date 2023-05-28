@@ -1,20 +1,22 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
 import dayjs from 'dayjs';
+import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import md5 from 'md5';
 
-import userRepository from '../../database/repositories/userRepository';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { getEnviroments } from '../../utils/getEnviroments';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
-import { toWritableUtf } from '../../utils/miscUtils';
-import { getUserBadges } from '../../modules/badges/getUserBadges';
-import userThemesRepository from '../../database/repositories/userThemesRepository';
-import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { createCommand } from '../../structures/command/createCommand';
+import { bot } from '../..';
 import { VangoghRedisClient } from '../../database/databases';
+import cacheRepository from '../../database/repositories/cacheRepository';
+import userRepository from '../../database/repositories/userRepository';
+import userThemesRepository from '../../database/repositories/userThemesRepository';
+import { getUserBadges } from '../../modules/badges/getUserBadges';
+import Themes from '../../modules/themes/themes';
+import { createCommand } from '../../structures/command/createCommand';
+import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
+import { MessageFlags } from '../../utils/discord/messageUtils';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
+import { getEnviroments } from '../../utils/getEnviroments';
+import { toWritableUtf } from '../../utils/miscUtils';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 
 interface VangoghUserprofileData {
   id: string;
@@ -135,7 +137,15 @@ const ProfileCommand = createCommand({
         userData.marryDate = dayjs(user.marriedAt).format('DD/MM/YYYY');
     }
 
-    const profileTheme = await userThemesRepository.getProfileTheme(discordUser.id);
+    let profileTheme = await userThemesRepository.getProfileTheme(discordUser.id);
+
+    if (discordUser.id === bot.applicationId) {
+      const existingProfileThemes = Object.values(Themes).filter((obj) => obj.type === 'profile');
+
+      const profileIndex = new Date().getDate() % existingProfileThemes.length;
+
+      profileTheme = existingProfileThemes[profileIndex].theme;
+    }
 
     const hashedData = md5(`${profileTheme}-${JSON.stringify(userData)}`);
 
@@ -159,6 +169,10 @@ const ProfileCommand = createCommand({
       finishCommand();
       return;
     }
+
+    if (discordUser.id === bot.applicationId)
+      // eslint-disable-next-line no-bitwise
+      userData.color = `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0')}`;
 
     const res = await vanGoghRequest(VanGoghEndpoints.Profile, {
       user: userData,

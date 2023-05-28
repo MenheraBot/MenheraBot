@@ -1,12 +1,12 @@
-import { createHttpServer, registerAllRouters } from '../../structures/server/httpServer';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
-import { startGameLoop } from '../../modules/bicho/bichoManager';
-import { logger } from '../../utils/logger';
 import { bot } from '../../index';
+import { startGameLoop } from '../../modules/bicho/bichoManager';
 import { inactivityPunishment } from '../../structures/inactivityPunishment';
+import { logger } from '../../utils/logger';
 
 const setReadyEvent = (): void => {
-  bot.events.ready = async () => {
+  bot.events.ready = async (reason) => {
+    if (typeof reason !== 'string') return;
     if (bot.isMaster) return;
 
     bot.isMaster = true;
@@ -22,8 +22,6 @@ const setReadyEvent = (): void => {
     if (process.env.NOMICRERVICES) return;
 
     inactivityPunishment();
-    createHttpServer();
-    registerAllRouters();
   };
 };
 

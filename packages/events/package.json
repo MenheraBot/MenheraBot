@@ -28,9 +28,6 @@
     "i18next": "^21.8.14",
     "i18next-fs-backend": "^1.1.4",
     "ioredis": "^5.2.2",
-    "koa": "^2.13.4",
-    "koa-body": "^6.0.1",
-    "koa-router": "^12.0.0",
     "md5": "^2.3.0",
     "mongoose": "^6.4.6",
     "net-ipc": "^2.0.1",
@@ -39,7 +36,6 @@
   },
   "devDependencies": {
     "@types/i18next-fs-backend": "^1.1.2",
-    "@types/koa-router": "^7.4.4",
     "@types/md5": "^2.3.2",
     "@types/string-similarity": "^4.0.0"
   }

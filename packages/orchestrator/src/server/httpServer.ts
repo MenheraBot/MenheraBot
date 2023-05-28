@@ -1,12 +1,11 @@
 import Koa from 'koa';
 import { koaBody } from 'koa-body';
 import Router from 'koa-router';
-import { logger } from '../../utils/logger';
-import { getEnviroments } from '../../utils/getEnviroments';
+import { getEnviroments } from '../getEnviroments';
 import { createPostInteractionRouter } from './routes/postInteraction';
-import { createVoteWebhookRouter } from './routes/voteWebhook';
 import { createPrometheusRouter } from './routes/prometheus';
 import { createRequestCommandsRouter } from './routes/requestCommands';
+import { createVoteWebhookRouter } from './routes/voteWebhook';
 
 const server = new Koa();
 
@@ -14,7 +13,8 @@ const createHttpServer = (): void => {
   const { HTTP_SERVER_PORT } = getEnviroments(['HTTP_SERVER_PORT']);
 
   server.listen(HTTP_SERVER_PORT, () => {
-    logger.info(`[HTTP] Server started at port ${HTTP_SERVER_PORT}`);
+    // eslint-disable-next-line no-console
+    console.log(`[HTTP] Server started at port ${HTTP_SERVER_PORT}`);
   });
 
   server.use(koaBody({ includeUnparsed: true }));
