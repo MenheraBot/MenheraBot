@@ -34,9 +34,10 @@ const createIpcConnections = async (): Promise<Client> => {
         break;
       }
       case 'YOU_MAY_REST': {
-        logger.info('[ORCHESTRATOR] I am going to sleep now');
+        logger.info('[ORCHESTRATOR] I was told to sleep');
         bot.shuttingDown = true;
 
+        logger.debug('Waiting for all commands to finish');
         await new Promise<void>((resolve) => {
           if (bot.commandsInExecution <= 0) return resolve();
 
@@ -48,10 +49,15 @@ const createIpcConnections = async (): Promise<Client> => {
           }, 3000).unref();
         });
 
+        logger.debug('Closing all Database connections');
         await closeConnections();
+        logger.debug('Acked the close to the orchestrator');
         await ack(process.pid);
+        logger.debug('Closing orchestrator IPC');
         await orchestratorClient.close('REQUESTED_SHUTDOWN');
+        logger.debug('Closing rest IPC');
         await restClient.close('REQUESTED_SHUTDOWN');
+        logger.debug("I'm tired... I will rest for now");
         process.exit(0);
       }
     }
