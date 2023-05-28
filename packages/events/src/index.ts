@@ -1,11 +1,11 @@
 import { createBot, startBot } from 'discordeno';
 
-import { logger } from './utils/logger';
+import { setupEventHandlers } from './events/index';
+import { createIpcConnections } from './structures/ipcConnections';
 import { initializeServices, setupInternals, setupMenheraClient } from './structures/menheraClient';
-import { createIpcConnection } from './structures/ipcConnection';
 import { MenheraClient } from './types/menhera';
 import { getEnviroments } from './utils/getEnviroments';
-import { setupEventHandlers } from './events/index';
+import { logger } from './utils/logger';
 import { updateCommandsOnApi } from './utils/updateApiCommands';
 
 const { DISCORD_TOKEN, REST_AUTHORIZATION, DISCORD_APPLICATION_ID } = getEnviroments([
@@ -25,7 +25,7 @@ setupMenheraClient(bot);
 await initializeServices();
 setupEventHandlers();
 
-const restClient = await createIpcConnection();
+const restClient = await createIpcConnections();
 setupInternals(bot, restClient);
 
 logger.info('[READY] Events are being processed!');
