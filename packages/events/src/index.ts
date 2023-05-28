@@ -30,12 +30,7 @@ setupInternals(bot, restClient);
 
 logger.info('[READY] Events are being processed!');
 
-if (process.env.NODE_ENV === 'production') {
-  // TODO(ySnoopyDogy): The rest process should say who is the master
-  // @ts-expect-error Start the events as the main
-  bot.events.ready();
-  updateCommandsOnApi();
-}
+if (process.env.NODE_ENV === 'production') updateCommandsOnApi();
 
 if (process.env.NODE_ENV === 'development') {
   logger.debug('Starting local gateway to receive events');
