@@ -21,7 +21,7 @@ let finishSwap: (..._: unknown[]) => void;
 let waitingForSwap: EventClientConnection[] = [];
 let eventsCounter = 0;
 
-const connectedClients: EventClientConnection[] = [];
+let connectedClients: EventClientConnection[] = [];
 
 export enum RequestType {
   VoteWebhook = 'VOTE_WEBHOOK',
@@ -79,17 +79,18 @@ orchestratorServer.on('message', async (msg, conn) => {
       return;
     }
 
+    waitingForSwap.push({ id: conn.id, conn, version: msg.version, isMaster: false });
+
     if (swappingVersions) {
       console.log(`[CONNECT] New connection waiting for the version swap! ${msg.version}`);
-      waitingForSwap.push({ id: conn.id, conn, version: msg.version, isMaster: false });
       return;
     }
+
+    swappingVersions = true;
 
     console.log(
       `[SWAP VERSION] A new version has been released! Starting to swap the versions. Old version: ${currentVersion} | New Version: ${msg.version}`,
     );
-
-    swappingVersions = true;
 
     connectedClients.map((a) => a.conn.request({ type: RequestType.YouMayRest }));
 
@@ -102,14 +103,11 @@ orchestratorServer.on('message', async (msg, conn) => {
     swappingVersions = false;
     currentVersion = msg.version;
 
-    connectedClients.push({ id: conn.id, conn, version: msg.version, isMaster: true });
+    connectedClients = waitingForSwap;
+    waitingForSwap = [];
 
     await conn.request({ type: RequestType.YouAreTheMaster });
     console.log(`[CLIENT] Master Set!`);
-
-    waitingForSwap.forEach((c) => connectedClients.push(c));
-
-    waitingForSwap = [];
   }
 });
 
