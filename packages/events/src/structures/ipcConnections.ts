@@ -7,7 +7,7 @@ import { executeVoteWebhook } from '../utils/executeVoteWebhook';
 import { getEnviroments } from '../utils/getEnviroments';
 import { logger } from '../utils/logger';
 import { updateCommandsOnApi } from '../utils/updateApiCommands';
-import { getInteractionsCounter } from './initializePrometheus';
+import { getInteractionsCounter, getRegister } from './initializePrometheus';
 
 const numberTypeToName = {
   1: 'PING',
@@ -67,11 +67,10 @@ const createIpcConnections = async (): Promise<Client> => {
   orchestratorClient.on('request', async (msg, ack) => {
     switch (msg.type) {
       case 'PROMETHEUS': {
-        // const register = getRegister();
+        const register = getRegister();
 
-        // const metrics = await register.metrics();
-        // ack({ contentType: register.contentType, data: metrics });
-        ack({ contentType: 'miau', data: { some: true, metrics: false } });
+        const metrics = await register.metrics();
+        ack({ contentType: register.contentType, data: metrics });
         break;
       }
       case 'YOU_ARE_THE_MASTER': {
