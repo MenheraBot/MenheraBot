@@ -2,7 +2,6 @@ import blacklistRepository from '../../database/repositories/blacklistRepository
 import { bot } from '../../index';
 import { startGameLoop } from '../../modules/bicho/bichoManager';
 import { inactivityPunishment } from '../../structures/inactivityPunishment';
-import { createHttpServer, registerAllRouters } from '../../structures/server/httpServer';
 import { logger } from '../../utils/logger';
 
 const setReadyEvent = (): void => {
@@ -23,8 +22,6 @@ const setReadyEvent = (): void => {
     if (process.env.NOMICRERVICES) return;
 
     inactivityPunishment();
-    createHttpServer();
-    registerAllRouters();
   };
 };
 

@@ -1,9 +1,23 @@
 import { Client } from 'net-ipc';
 
+import { DiscordInteraction } from 'discordeno/types';
 import { bot } from '..';
 import { closeConnections } from '../database/databases';
+import { executeVoteWebhook } from '../utils/executeVoteWebhook';
 import { getEnviroments } from '../utils/getEnviroments';
 import { logger } from '../utils/logger';
+import { updateCommandsOnApi } from '../utils/updateApiCommands';
+import { getInteractionsCounter } from './initializePrometheus';
+
+const numberTypeToName = {
+  1: 'PING',
+  2: 'APPLICATION_COMMAND',
+  3: 'MESSAGE_COMPONENT',
+  4: 'APPLICATION_COMMAND_AUTOCOMPLETE',
+  5: 'MODAL_SUBMIT',
+};
+
+const { MENHERA_API_TOKEN } = getEnviroments(['MENHERA_API_TOKEN']);
 
 let retries = 0;
 
@@ -25,8 +39,41 @@ const createIpcConnections = async (): Promise<Client> => {
     logger.panic('[REST] REST Client closed');
   });
 
+  orchestratorClient.on('message', (msg) => {
+    if (msg.type === 'VOTE_WEBHOOK') {
+      executeVoteWebhook(msg.data.user, msg.data.isWeekend);
+      return;
+    }
+
+    if (msg.type === 'UPDATE_COMMANDS') {
+      if (msg.data.token !== MENHERA_API_TOKEN) return;
+      updateCommandsOnApi();
+      return;
+    }
+
+    if (msg.type === 'INTERACTION_CREATE') {
+      bot.events.interactionCreate(
+        bot,
+        bot.transformers.interaction(bot, msg.data.body as DiscordInteraction),
+      );
+
+      if (!process.env.NOMICROSERVICES)
+        getInteractionsCounter().inc({
+          type: numberTypeToName[msg.data.body.type as 1],
+        });
+    }
+  });
+
   orchestratorClient.on('request', async (msg, ack) => {
     switch (msg.type) {
+      case 'PROMETHEUS': {
+        // const register = getRegister();
+
+        // const metrics = await register.metrics();
+        // ack({ contentType: register.contentType, data: metrics });
+        ack({ contentType: 'miau', data: { some: true, metrics: false } });
+        break;
+      }
       case 'YOU_ARE_THE_MASTER': {
         ack(process.pid);
         // @ts-expect-error Ready should not be called with this

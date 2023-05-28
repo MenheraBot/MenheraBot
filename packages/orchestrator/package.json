@@ -1,22 +1,28 @@
 {
-    "name": "@menhera-bot/orchestrator",
-    "version": "1.0.0",
-    "engines": {
-      "node": ">=18"
-    },
-    "description": "Menhera's bridge from the outside world to internal stack. Receive external webhooks and provide metrics",
-    "main": "dist/index.js",
-    "scripts": {
-      "build": "tsc --project tsconfig.json",
-      "typecheck": " tsc --project tsconfig.json --noEmit",
-      "start": "NODE_ENV=PRODUCTION node .",
-      "dev": "NODE_ENV=DEVELOPMENT node -r dotenv/config ."
-    },
-    "author": "Luxanna Crownguard (ySnoopyDogy)",
-    "dependencies": {
-      "net-ipc": "^2.0.1"
-    },
-    "repository": "https://github.com/MenheraBot/MenheraBot",
-    "license": "MIT",
-    "readme": "https://github.com/MenheraBot/MenheraBot#readme"
+  "name": "@menhera-bot/orchestrator",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "description": "Menhera's bridge from the outside world to internal stack. Receive external webhooks and provide metrics",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "typecheck": " tsc --project tsconfig.json --noEmit",
+    "start": "NODE_ENV=PRODUCTION node .",
+    "dev": "NODE_ENV=DEVELOPMENT node -r dotenv/config ."
+  },
+  "author": "Luxanna Crownguard (ySnoopyDogy)",
+  "dependencies": {
+    "koa": "^2.14.2",
+    "koa-body": "^6.0.1",
+    "koa-router": "^12.0.0",
+    "net-ipc": "^2.0.1"
+  },
+  "repository": "https://github.com/MenheraBot/MenheraBot",
+  "license": "MIT",
+  "readme": "https://github.com/MenheraBot/MenheraBot#readme",
+  "devDependencies": {
+    "@types/koa-router": "^7.4.4"
   }
+}
