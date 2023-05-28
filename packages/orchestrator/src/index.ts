@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-import { Connection, Server } from 'net-ipc';
+import { Connection, PromiseSettled, Server } from 'net-ipc';
+import { mergeMetrics } from './prometheusWorkarround';
 import { createHttpServer, registerAllRouters } from './server/httpServer';
 
 if (!process.env.ORCHESTRATOR_SOCKET_PATH)
@@ -43,11 +44,16 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
     return;
   }
 
-  // TODO: If I use this with more than one event instance ON, I need to merge prometheus datas
-  // @ts-expect-error Its actually an array
-  const results = (await orchestratorServer.survey({ type: RequestType.Prometheus }))[0].value;
+  const results = (await orchestratorServer
+    .survey({ type: RequestType.Prometheus })
+    .catch(console.error)) as void | PromiseSettled[];
 
-  return results;
+  if (!results) return null;
+
+  return mergeMetrics(
+    results.filter((a) => a.status === 'fulfilled').map((a) => a.value),
+    connectedClients.length,
+  );
 };
 
 orchestratorServer.on('message', async (msg, conn) => {
