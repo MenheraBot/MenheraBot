@@ -45,7 +45,7 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
 
   // TODO: If I use this with more than one event instance ON, I need to merge prometheus datas
   // @ts-expect-error Its actually an array
-  const results = await orchestratorServer.survey({ type: RequestType.Prometheus })[0].value;
+  const results = (await orchestratorServer.survey({ type: RequestType.Prometheus }))[0].value;
 
   return results;
 };
