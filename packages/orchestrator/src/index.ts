@@ -33,7 +33,7 @@ orchestratorServer.on('message', async (msg, conn) => {
       });
 
       if (connectedClients.length === 1) {
-        await conn.send({ type: 'YOU_ARE_THE_MASTER' });
+        await conn.request({ type: 'YOU_ARE_THE_MASTER' });
         connectedClients[0].isMaster = true;
       }
 
@@ -56,7 +56,7 @@ orchestratorServer.on('message', async (msg, conn) => {
 
     connectedClients.push({ id: conn.id, conn, version: msg.version, isMaster: true });
 
-    await conn.send({ type: 'YOU_ARE_THE_MASTER' });
+    await conn.request({ type: 'YOU_ARE_THE_MASTER' });
 
     waitingForSwap.forEach((c) => connectedClients.push(c));
 
@@ -80,7 +80,7 @@ orchestratorServer.on('disconnect', (conn) => {
   if (connectedClients.length === 0) return;
 
   if (eventClient?.isMaster) {
-    connectedClients[0].conn.send({ type: 'YOU_ARE_THE_MASTER' });
+    connectedClients[0].conn.request({ type: 'YOU_ARE_THE_MASTER' });
     connectedClients[0].isMaster = true;
   }
 });
