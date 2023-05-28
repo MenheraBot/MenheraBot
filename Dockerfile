@@ -25,5 +25,5 @@ CMD ["yarn", "events", "start"]
 FROM node:18-alpine as orchestrator
 COPY --from=build /app /app
 WORKDIR /app
-RUN rm -rf packages/events/src packages/rest packages/eslint-config packages/orchestrator
+RUN rm -rf packages/orchestrator/src packages/rest packages/eslint-config packages/events
 CMD ["yarn", "orchestrator", "start"]
