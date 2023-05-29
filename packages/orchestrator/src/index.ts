@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
+import { DiscordInteraction } from 'discordeno/*';
 import { Connection, PromiseSettled, Server } from 'net-ipc';
 import { mergeMetrics } from './prometheusWorkarround';
+import { respondInteraction } from './respondInteraction';
 import { createHttpServer, registerAllRouters } from './server/httpServer';
 
 if (!process.env.ORCHESTRATOR_SOCKET_PATH)
@@ -37,6 +39,14 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
   if (eventsCounter >= 25) eventsCounter = 0;
 
   const clientsToUse = swappingVersions ? waitingForSwap : connectedClients;
+
+  if (clientsToUse.length === 0) {
+    if (type === RequestType.InteractionCreate)
+      return respondInteraction(data as DiscordInteraction);
+
+    return null;
+  }
+
   const toUseClient = clientsToUse[eventsCounter % clientsToUse.length];
 
   if (type !== RequestType.Prometheus) {
