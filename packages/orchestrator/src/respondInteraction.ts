@@ -3,7 +3,8 @@ import { DiscordInteraction } from 'discordeno/types';
 import { request } from 'node:https';
 
 const respondInteraction = (data: DiscordInteraction): void => {
-  if ([2, 3, 5].includes(data.type))
+  console.log(data);
+  if ([2, 3, 5].includes(data.type)) {
     try {
       request({
         hostname: 'discord.com',
@@ -22,6 +23,7 @@ const respondInteraction = (data: DiscordInteraction): void => {
       // eslint-disable-next-line no-console
       console.error('[HTTP] Error while sending maintenance message: ', err);
     }
+  }
 };
 
 export { respondInteraction };
