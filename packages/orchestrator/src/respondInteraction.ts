@@ -3,7 +3,6 @@ import { DiscordInteraction } from 'discordeno/types';
 import { request } from 'node:https';
 
 const respondInteraction = (data: DiscordInteraction): void => {
-  console.log(data);
   if ([2, 3, 5].includes(data.type)) {
     try {
       request({
