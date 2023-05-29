@@ -8,7 +8,7 @@ const respondInteraction = (data: DiscordInteraction): void => {
       request({
         hostname: 'discord.com',
         port: 443,
-        path: `/api/v10/intereactions/${data.id}/${data.token}/callback`,
+        path: `/api/v10/interactions/${data.id}/${data.token}/callback`,
         method: 'POST',
         headers: {
           'user-agent': `DiscordBot (https://github.com/discordeno/discordeno, v${DISCORDENO_VERSION})`,
