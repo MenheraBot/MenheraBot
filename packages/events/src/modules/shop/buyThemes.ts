@@ -1,17 +1,17 @@
 import { ActionRow, ButtonStyles, InteractionResponseTypes } from 'discordeno/types';
 
 import md5 from 'md5';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import userRepository from '../../database/repositories/userRepository';
+import badgeRepository from '../../database/repositories/badgeRepository';
 import commandRepository from '../../database/repositories/commandRepository';
-import { debugError } from '../../utils/debugError';
 import shopRepository from '../../database/repositories/shopRepository';
 import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
+import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { bot } from '../../index';
-import { getThemeById, getThemesByType, getUserActiveThemes } from '../themes/getThemes';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../types/interaction';
+import { debugError } from '../../utils/debugError';
 import {
   createActionRow,
   createButton,
@@ -21,8 +21,8 @@ import {
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
+import { getThemeById, getThemesByType, getUserActiveThemes } from '../themes/getThemes';
 import { helloKittyThemes, previewProfileData, unbuyableThemes } from './constants';
-import badgeRepository from '../../database/repositories/badgeRepository';
 
 const themeByIndex = {
   0: 'profile',
@@ -387,7 +387,9 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
                 ctx.user.username
               } (${ctx.user.id})\n**Tema Comprado:** ${ctx.locale(
                 `data:themes.${selectedItem.id as 1}.name`,
-              )}\n**Seu Lucro:** ${Math.floor(
+              )} \`${ctx.locale(
+                `common:theme_types.${selectedItem.data.type}`,
+              )}\`\n**Seu Lucro:** ${Math.floor(
                 (credits.royalty / 100) * selectedItem.data.price,
               )} :star:\n**Este tema foi comprado:** ${
                 credits.timesSold + 1
