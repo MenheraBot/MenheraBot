@@ -42,7 +42,7 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
 
   if (clientsToUse.length === 0) {
     if (type === RequestType.InteractionCreate)
-      return respondInteraction(data.body as DiscordInteraction);
+      return respondInteraction((data as { body: DiscordInteraction }).body);
 
     return null;
   }
