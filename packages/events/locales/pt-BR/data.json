@@ -168,7 +168,10 @@
     },
     "30": {
       "name": "Espaço Pessoal",
-      "description": "Para os amantes do espaço."
+      "description": "Para os amantes do espaço.",
+      "customFields": {
+        "textBoxFilled": "Caixa de texto preenchida"
+      }
     },
     "31": {
       "name": "Hello Kitty",

@@ -231,7 +231,11 @@
       "not-registered": "Esse tema ainda não está disponível! Tente novamente mais tarde",
       "preview-mode": "Alternar Modo Preview",
       "success": "**Compra efetuada com sucesso!** Você já pode habilitá-la no {{command}}",
-      "data": "**{{description}}**\n**Preço**: {{price}} :star:\n**Autor**: <@{{author}}>"
+      "data": "_{{description}}_\n**Preço**: {{price}} :star:\n**Autor**: <@{{author}}>",
+      "true": "✅",
+      "false": "❌",
+      "profileCompatibles": "\n`Compatibilidades`\n**Cor**: {{colorCompatible}}\n**Imagem**: {{imageCompatible}}",
+      "customEdits": "\n**Configurações extras**: {{customEdits}}"
     },
     "buy_colors": {
       "has-color": "Eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!",
@@ -347,7 +351,7 @@
   },
   "casar": {
     "bot": "Tu não pode se casar com bots",
-    "someone-married": "Algum de vocês dois já está casado!", 
+    "someone-married": "Algum de vocês dois já está casado!",
     "self-mention": "Tu não pode se casar consigo mesmo :(",
     "married": "Tu já está casado!!",
     "mention-married_uncensored": "Calma lá comedor de casadas, este usuário já está casado!",
@@ -722,7 +726,7 @@
       "thousand": "Milhar",
       "corner": "Quina",
       "sequence": "Sequência",
-      "animal": "Animal" 
+      "animal": "Animal"
     },
     "footer": "Para ver resultados antigos, entre no servidor de suporte",
     "success": "Sua aposta foi feita com sucesso! Fique ligado nos resultados para saber se ganhou algo. Mas não se preocupe, o crédito vai ser adicionado automaticamente em sua conta!"
@@ -737,7 +741,7 @@
   },
   "menhera": {
     "suporte": {
-      "message":  "Está com algum problema, ou quer só conversar com mais gente que usa meus comandos? Entre em meu servidor de suporte: \n\nhttps://discord.gg/fZMdQbA\n|| SHHHHHhh, não fala pra moderação desse servidor que eu mandei esse convite, vai que eles me banam por divulgação... ||"
+      "message": "Está com algum problema, ou quer só conversar com mais gente que usa meus comandos? Entre em meu servidor de suporte: \n\nhttps://discord.gg/fZMdQbA\n|| SHHHHHhh, não fala pra moderação desse servidor que eu mandei esse convite, vai que eles me banam por divulgação... ||"
     },
     "estatisticas": {
       "aniversary-title": "🎉 HOJE É MEU ANIVERSÁRIO🎉",

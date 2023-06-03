@@ -201,15 +201,34 @@ const changeThemeType = async (
 
     if (theme.data.type !== themeByIndex[themeIndex]) return;
 
+    let embedFieldValue = ctx.locale('commands:loja.buy_themes.data', {
+      description: ctx.locale(`data:themes.${theme.id as 1}.description`),
+      price: theme.data.price,
+      author: credits.find((b) => b.themeId === theme.id)?.ownerId,
+    });
+
+    if (theme.data.type === 'profile') {
+      embedFieldValue += ctx.locale('commands:loja.buy_themes.profileCompatibles', {
+        colorCompatible: ctx.locale(`commands:loja.buy_themes.${theme.data.colorCompatible}`),
+        imageCompatible: ctx.locale(`commands:loja.buy_themes.${theme.data.imageCompatible}`),
+      });
+
+      if (theme.data.customEdits)
+        embedFieldValue += ctx.locale('commands:loja.buy_themes.customEdits', {
+          customEdits: theme.data.customEdits
+            .map((a) =>
+              // @ts-expect-error customFields are pretty much different
+              ctx.locale(`data:themes.${theme.id as 1}.customFields.${a}`),
+            )
+            .join(', '),
+        });
+    }
+
     embed.fields?.push({
       name: `${ctx.locale(`data:themes.${theme.id as 1}.name`)} ${
         inInventory ? `__${ctx.locale('commands:loja.buy_themes.owned')}__` : ''
       }`,
-      value: ctx.locale('commands:loja.buy_themes.data', {
-        description: ctx.locale(`data:themes.${theme.id as 1}.description`),
-        price: theme.data.price,
-        author: credits.find((b) => b.themeId === theme.id)?.ownerId,
-      }),
+      value: embedFieldValue,
       inline: true,
     });
 

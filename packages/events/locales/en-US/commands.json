@@ -218,13 +218,18 @@
     },
     "buy_themes": {
       "title": "🎊 | Buy Themes",
-      "data": "**{{description}}**\n**Price**: {{price}} :star:\n**Author**: <@{{author}}>",
+      "data": "_{{description}}_\n**Price**: {{price}} :star:\n**Author**: <@{{author}}>",
       "description": "Below are some themes you can buy right away.",
       "owned": "(Owned)",
       "not-registered": "This theme is not yet available! Please try again later",
       "preview-mode": "Preview Mode",
       "success": "**Purchase successfully made!** You can now enable it on {{command}}",
-      "poor": "You don't have all these stars to buy this!"
+      "poor": "You don't have all these stars to buy this!",
+      "true": "✅",
+      "false": "❌",
+      "profileCompatibles": "\n`Compatibilities`\n**Color**: {{colorCompatible}}\n**Image**: {{imageCompatible}}",
+      "customEdits": "\n**Custom Edits**: {{customEdits}}"
+    
     },
     "buy_colors": {
       "has-color": "I appreciate your excitement to buy at my thrift store, but you already have this color!",
