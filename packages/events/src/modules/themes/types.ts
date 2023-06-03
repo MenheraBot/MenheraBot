@@ -65,6 +65,9 @@ export interface CardBackgroundTheme extends BaseTheme {
 export interface ProfileTheme extends BaseTheme {
   type: 'profile';
   theme: AvailableProfilesThemes;
+  colorCompatible: boolean;
+  imageCompatible: boolean;
+  customEdits?: string[];
 }
 
 export interface CardsTheme extends BaseTheme {
