@@ -31,6 +31,8 @@ const userThemes = new Schema({
   ebBackgroundThemes: { type: Array, default: [{ id: 25, aquiredAt: 0 }] },
   ebTextBoxThemes: { type: Array, default: [{ id: 26, aquiredAt: 0 }] },
   ebMenheraThemes: { type: Array, default: [{ id: 27, aquiredAt: 0 }] },
+  profileImages: { type: Array, default: [{ id: 1, aquiredAt: 0 }] },
+  selectedImage: { type: Number, default: 1 },
   selectedCardTheme: { type: Number, default: 4 },
   selectedProfileTheme: { type: Number, default: 3 },
   selectedTableTheme: { type: Number, default: 5 },

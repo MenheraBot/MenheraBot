@@ -1,10 +1,6 @@
 import { BigString } from 'discordeno/types';
 
 import { getThemeById } from '../../modules/themes/getThemes';
-import { MainRedisClient } from '../databases';
-import { DatabaseUserThemesSchema } from '../../types/database';
-import { debugError } from '../../utils/debugError';
-import { userThemesModel } from '../collections';
 import {
   AvailableCardBackgroundThemes,
   AvailableCardThemes,
@@ -22,6 +18,10 @@ import {
   TableTheme,
   ThemeFile,
 } from '../../modules/themes/types';
+import { DatabaseUserThemesSchema } from '../../types/database';
+import { debugError } from '../../utils/debugError';
+import { userThemesModel } from '../collections';
+import { MainRedisClient } from '../databases';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserThemesSchema): DatabaseUserThemesSchema => ({
   id: `${user.id}`,
@@ -32,6 +32,8 @@ const parseMongoUserToRedisUser = (user: DatabaseUserThemesSchema): DatabaseUser
   ebBackgroundThemes: user.ebBackgroundThemes,
   ebTextBoxThemes: user.ebTextBoxThemes,
   ebMenheraThemes: user.ebMenheraThemes,
+  profileImages: user.profileImages,
+  selectedImage: user.selectedImage,
   selectedCardTheme: user.selectedCardTheme,
   selectedTableTheme: user.selectedTableTheme,
   selectedProfileTheme: user.selectedProfileTheme,
@@ -51,6 +53,7 @@ type UserThemeArrayTypes = keyof Pick<
   | 'ebBackgroundThemes'
   | 'ebTextBoxThemes'
   | 'ebMenheraThemes'
+  | 'profileImages'
 >;
 
 type UserSelectedThemeTypes = keyof Pick<
@@ -62,6 +65,7 @@ type UserSelectedThemeTypes = keyof Pick<
   | 'selectedEbBackgroundTheme'
   | 'selectedEbTextBoxTheme'
   | 'selectedEbMenheraTheme'
+  | 'selectedImage'
 >;
 
 const findEnsuredUserThemes = async (userId: BigString): Promise<DatabaseUserThemesSchema> => {
@@ -182,6 +186,10 @@ const addEbMenheraTheme = async (userId: BigString, menheraId: number): Promise<
   await addThemeToUserAccount(userId, 'ebMenheraThemes', menheraId);
 };
 
+const addProfileImage = async (userId: BigString, imageId: number): Promise<void> => {
+  await addThemeToUserAccount(userId, 'profileImages', imageId);
+};
+
 const getThemeFromUserAccount = async <T extends ThemeFile>(
   userId: BigString,
   themeType: UserSelectedThemeTypes,
@@ -264,6 +272,10 @@ const setEbMenheraTheme = async (userId: BigString, themeId: number): Promise<vo
   await setThemeToUserAccount(userId, 'selectedEbMenheraTheme', themeId);
 };
 
+const setProfileImage = async (userId: BigString, imageId: number): Promise<void> => {
+  await setThemeToUserAccount(userId, 'selectedImage', imageId);
+};
+
 export default {
   findEnsuredUserThemes,
   getThemesForBlackjack,
@@ -273,6 +285,7 @@ export default {
   addCardsTheme,
   addCardBackgroundTheme,
   addProfileTheme,
+  setProfileImage,
   addEbBackgroundTheme,
   addEbTextBoxTheme,
   addEbMenheraTheme,
@@ -283,6 +296,7 @@ export default {
   getEbBackgroundTheme,
   getEbTextBoxTheme,
   getEbMenheraTheme,
+  addProfileImage,
   setTableTheme,
   setCardBackgroundTheme,
   setProfileTheme,

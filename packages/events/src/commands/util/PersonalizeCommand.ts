@@ -1,3 +1,4 @@
+import { Embed } from 'discordeno/transformers';
 import {
   ActionRow,
   ApplicationCommandOptionTypes,
@@ -5,20 +6,22 @@ import {
   InputTextComponent,
   TextStyles,
 } from 'discordeno/types';
-import { Embed } from 'discordeno/transformers';
 
-import { UserColor } from '../../types/database';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { AvailableThemeTypes, ThemeFile } from '../../modules/themes/types';
+import { usersModel } from '../../database/collections';
+import commandRepository from '../../database/repositories/commandRepository';
+import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
-import { getThemeById, getUserActiveThemes } from '../../modules/themes/getThemes';
-import { IdentifiedData } from '../../types/menhera';
-import { getUserAvatar } from '../../utils/discord/userUtils';
 import { getUserBadges } from '../../modules/badges/getUserBadges';
 import { profileBadges } from '../../modules/badges/profileBadges';
-import { extractNameAndIdFromEmoji, MessageFlags } from '../../utils/discord/messageUtils';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
+import { getThemeById, getUserActiveThemes } from '../../modules/themes/getThemes';
+import { AvailableThemeTypes, ThemeFile } from '../../modules/themes/types';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { createCommand } from '../../structures/command/createCommand';
 import { COLORS, EMOJIS } from '../../structures/constants';
+import { UserColor } from '../../types/database';
+import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
+import { IdentifiedData } from '../../types/menhera';
 import {
   createActionRow,
   createButton,
@@ -26,13 +29,10 @@ import {
   createSelectMenu,
   createTextInput,
 } from '../../utils/discord/componentUtils';
-import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
-import { usersModel } from '../../database/collections';
-import userRepository from '../../database/repositories/userRepository';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
+import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
+import { getUserAvatar } from '../../utils/discord/userUtils';
 import { toWritableUtf } from '../../utils/miscUtils';
-import { createCommand } from '../../structures/command/createCommand';
-import commandRepository from '../../database/repositories/commandRepository';
 
 const executeAboutMeCommand = async (
   ctx: ChatInputInteractionContext,
@@ -331,6 +331,48 @@ const executeColorCommand = async (ctx: ChatInputInteractionContext, finishComma
   finishCommand();
 };
 
+const executeSelectedImageComponent = async (
+  ctx: ComponentInteractionContext<SelectMenuInteraction>,
+) => {
+  const selectedImage = Number(ctx.interaction.data.values[0]);
+
+  await userThemesRepository.setProfileImage(ctx.user.id, selectedImage);
+
+  ctx.makeMessage({ components: [], content: ctx.locale('commands:imagem.success') });
+};
+
+const executeImageCommand = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
+  const authorData = await userThemesRepository.findEnsuredUserThemes(ctx.author.id);
+
+  if (authorData.profileImages.length < 2) {
+    ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:imagem.min-image'),
+      flags: MessageFlags.EPHEMERAL,
+    });
+
+    return finishCommand();
+  }
+
+  const selectMenu = createSelectMenu({
+    customId: createCustomId(3, ctx.author.id, ctx.commandId),
+    options: authorData.profileImages.map((img) => ({
+      label: ctx.locale(`data:images.${img.id as 1}`),
+      value: `${img.id}`,
+      default: img.id === authorData.selectedImage,
+    })),
+    maxValues: 1,
+    minValues: 1,
+    placeholder: ctx.locale('commands:imagem.select'),
+  });
+
+  ctx.makeMessage({
+    content: ctx.locale('commands:imagem.message'),
+    components: [createActionRow([selectMenu])],
+  });
+
+  finishCommand();
+};
+
 const executeBadgesSelected = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
 ): Promise<void> => {
@@ -563,6 +605,13 @@ const PersonalizeCommand = createCommand({
       type: ApplicationCommandOptionTypes.SubCommand,
     },
     {
+      name: 'imagem',
+      nameLocalizations: { 'en-US': 'image' },
+      description: '「🏞️」・Muda a imagem do seu perfil',
+      descriptionLocalizations: { 'en-US': '「🏞️」・Change your profile image' },
+      type: ApplicationCommandOptionTypes.SubCommand,
+    },
+    {
       name: 'temas',
       nameLocalizations: { 'en-US': 'themes' },
       description: '「🎊」・Personalize os temas da sua conta!',
@@ -635,13 +684,20 @@ const PersonalizeCommand = createCommand({
     'voteCooldown',
     'married',
   ],
-  commandRelatedExecutions: [executeBadgesSelected, selectedThemeToUse, executeColorComponents],
+  commandRelatedExecutions: [
+    executeBadgesSelected,
+    selectedThemeToUse,
+    executeColorComponents,
+    executeSelectedImageComponent,
+  ],
   execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();
 
     if (command === 'sobre_mim') return executeAboutMeCommand(ctx, finishCommand);
 
     if (command === 'cor') return executeColorCommand(ctx, finishCommand);
+
+    if (command === 'imagem') return executeImageCommand(ctx, finishCommand);
 
     if (command === 'temas') return executeThemesCommand(ctx, finishCommand);
 

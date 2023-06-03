@@ -777,5 +777,11 @@
       "3-2": "You can't hide it, everyone knows you're a mix. But you don't let yourself be shaken, and of course it tells everyone and everything that you're just cutting Ronaldinho Gaúcho.",
       "3-3": "The end of the ends. You are grateful to have had this baldness. As much as you didn't trust it at first, and that you were afraid of what others would think, you won, and made it to the end. Congratulations champion !"
     }
+  },
+  "imagem": {
+    "min-image": "You need to have at least 2 images to use this command!",
+    "select": "Select image",
+    "message": "ESelect the image that you wanna use bellow",
+    "success": "You have successfully changed your default image!"
   }
 }

@@ -66,6 +66,8 @@ export interface DatabaseUserThemesSchema {
   ebBackgroundThemes: UserBuyableTheme[];
   ebTextBoxThemes: UserBuyableTheme[];
   ebMenheraThemes: UserBuyableTheme[];
+  profileImages: UserBuyableTheme[];
+  selectedImage: number;
   selectedCardTheme: number;
   selectedTableTheme: number;
   selectedProfileTheme: number;

@@ -782,5 +782,11 @@
       "3-2": "Você não consegue esconder, todos sabem que você é um misto. Mas tu não se deixa abalar, e claro que conta para tudo e todos que tu ta apenas fazendo um corte do Ronaldinho Gaúcho.",
       "3-3": "O fim dos fins. Você é grato por ter tido essa calvice. Por mais que não confiasse no início, e que tinha medo do que os outros pensariam, você venceu, e chegou até o fim. Parabéns campeão!"
     }
+  },
+  "imagem": {
+    "min-image": "Tu precisa ter no mínimo 2 imagens para usar esse comando!",
+    "select": "Escolha a imagem que tu quer",
+    "message": "Escolha abaixo qual é a imagem que tu quer colocar como padrão para o perfil",
+    "success": "Tu alterou tua imagem padrão com sucesso!"
   }
 }
