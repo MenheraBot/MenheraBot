@@ -9,6 +9,7 @@ import {
 
 import { usersModel } from '../../database/collections';
 import commandRepository from '../../database/repositories/commandRepository';
+import profileImagesRepository from '../../database/repositories/profileImagesRepository';
 import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { getUserBadges } from '../../modules/badges/getUserBadges';
@@ -358,11 +359,13 @@ const executeImageCommand = async (ctx: ChatInputInteractionContext, finishComma
 
   const selectMenu = createSelectMenu({
     customId: createCustomId(3, ctx.author.id, ctx.commandId),
-    options: authorData.profileImages.map((img) => ({
-      label: ctx.locale(`data:images.${img.id as 1}`),
-      value: `${img.id}`,
-      default: img.id === authorData.selectedImage,
-    })),
+    options: await Promise.all(
+      authorData.profileImages.map(async (img) => ({
+        label: await profileImagesRepository.getImageName(img.id),
+        value: `${img.id}`,
+        default: img.id === authorData.selectedImage,
+      })),
+    ),
     maxValues: 1,
     minValues: 1,
     placeholder: ctx.locale('commands:imagem.select'),

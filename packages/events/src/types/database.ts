@@ -57,6 +57,17 @@ export interface DatabaseCreditsSchema {
   timesSold: number;
 }
 
+export interface DatabaseProfileImagesSchema {
+  imageId: number;
+  uploaderId: string;
+  name: string;
+  totalEarned: number;
+  timesSold: number;
+  registeredAt: number;
+  isPublic: boolean;
+  price: number;
+}
+
 export interface DatabaseUserThemesSchema {
   readonly id: string;
   cardsThemes: UserBuyableTheme[];
