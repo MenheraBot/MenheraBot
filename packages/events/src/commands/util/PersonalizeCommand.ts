@@ -344,6 +344,9 @@ const executeSelectedImageComponent = async (
 const executeImageCommand = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
   const authorData = await userThemesRepository.findEnsuredUserThemes(ctx.author.id);
 
+  if (!authorData.profileImages.some((a) => a.id === 1))
+    authorData.profileImages.push({ id: 1, aquiredAt: 0 });
+
   if (authorData.profileImages.length < 2) {
     ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:imagem.min-image'),
