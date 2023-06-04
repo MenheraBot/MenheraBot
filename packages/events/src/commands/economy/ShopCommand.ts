@@ -2,12 +2,13 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import { createCommand } from '../../structures/command/createCommand';
 
-import { sellHunts } from '../../modules/shop/sellHunts';
 import { buyColor, executeBuyColorSelectComponent } from '../../modules/shop/buyColor';
-import { buyRolls } from '../../modules/shop/buyRolls';
-import { buyItems, executeSelectItem } from '../../modules/shop/buyItems';
-import { buyThemes, executeClickButton } from '../../modules/shop/buyThemes';
+import { buyImages } from '../../modules/shop/buyImages';
 import { buyInfo } from '../../modules/shop/buyInfo';
+import { buyItems, executeSelectItem } from '../../modules/shop/buyItems';
+import { buyRolls } from '../../modules/shop/buyRolls';
+import { buyThemes, executeClickButton } from '../../modules/shop/buyThemes';
+import { sellHunts } from '../../modules/shop/sellHunts';
 import { sellInfo } from '../../modules/shop/sellInfo';
 import { transactionableCommandOption } from '../../structures/constants';
 
@@ -39,6 +40,15 @@ const ShopCommand = createCommand({
           nameLocalizations: { 'en-US': 'colors' },
           description: '「🌈」・Compre cores para dar um UP em seu perfil!',
           descriptionLocalizations: { 'en-US': '「🌈」・Buy colors to upgrade your profile!' },
+          type: ApplicationCommandOptionTypes.SubCommand,
+        },
+        {
+          name: 'imagens',
+          nameLocalizations: { 'en-US': 'images' },
+          description: '「🏞️」・Compre imagens para deixar o seu perfil a sua cara',
+          descriptionLocalizations: {
+            'en-US': '「🏞️」・Buy images to make your profile yout face!',
+          },
           type: ApplicationCommandOptionTypes.SubCommand,
         },
         {
@@ -189,6 +199,8 @@ const ShopCommand = createCommand({
       if (subCommand === 'cores') return buyColor(ctx, finishCommand);
 
       if (subCommand === 'rolls') return buyRolls(ctx, finishCommand);
+
+      if (subCommand === 'imagens') return buyImages(ctx, finishCommand);
 
       if (subCommand === 'itens') return buyItems(ctx, finishCommand);
 
