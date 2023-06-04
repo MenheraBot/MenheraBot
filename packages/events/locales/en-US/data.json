@@ -167,8 +167,8 @@
       "description": "No wallpaper is more famous than this one"
     },
     "30": {
-      "name": "Personal Space",
-      "description": "Made for the space lovers",
+      "name": "Mural",
+      "description": "For those who want to customize their profile freedomly",
       "customFields": {
         "textBoxFilled": "Text box filled"
       }
