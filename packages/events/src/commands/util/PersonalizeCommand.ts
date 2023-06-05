@@ -624,15 +624,28 @@ const customizeProfileTheme = async (ctx: ComponentInteractionContext): Promise<
       });
 
     const embed = createEmbed({
-      title: ctx.locale('commands:temas.edit-profile.title'),
+      title: ctx.prettyResponse('wink', 'commands:temas.edit-profile.title', {
+        theme: ctx.locale(`data:themes.${userThemes.selectedProfileTheme as 1}.name`),
+      }),
       color: hexStringToNumber((await userRepository.ensureFindUser(ctx.user.id)).selectedColor),
-      fields: currentTheme.data.customEdits.map((field) => ({
-        name: ctx.locale(`data:themes.${currentTheme.id as 1}.name`),
-        value: ctx.locale(`common:${getCustomThemeField(field, userThemes.customizedProfile)}`),
-      })),
+      footer: { text: ctx.locale('commands:temas.edit-profile.footer') },
+      description: currentTheme.data.customEdits
+        .map(
+          (field) =>
+            `${ctx.locale(
+              `data:themes.${currentTheme.id as 30}.customFields.${field as 'textBoxFilled'}`,
+            )}: ${ctx.locale(
+              `common:${getCustomThemeField(field, userThemes.customizedProfile)}`,
+            )}`,
+        )
+        .join('\n'),
     });
 
-    ctx.makeMessage({ components: [], content: undefined, embeds: [embed] });
+    const selectMenu = createSelectMenu({
+      customId: createCustomId(4, ctx.author.id, ctx.commandId, 'SELECT'),
+    });
+
+    ctx.makeMessage({ components: [], content: '', embeds: [embed] });
   }
 };
 

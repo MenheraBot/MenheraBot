@@ -671,7 +671,8 @@
     "edit-profile": {
       "customize": "Customizar Tema",
       "not-customizable": "O seu tema de perfil atual não é customizável",
-      "title": "Customize o seu tema"
+      "title": "Customização do tema {{theme}}",
+      "footer": "Selecione para ativar"
     }
   },
   "roleta": {
