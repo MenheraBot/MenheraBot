@@ -15,7 +15,7 @@ import userThemesRepository from '../../database/repositories/userThemesReposito
 import { getUserBadges } from '../../modules/badges/getUserBadges';
 import { profileBadges } from '../../modules/badges/profileBadges';
 import { getThemeById, getUserActiveThemes } from '../../modules/themes/getThemes';
-import { AvailableThemeTypes, ThemeFile } from '../../modules/themes/types';
+import { AvailableThemeTypes, ProfileTheme, ThemeFile } from '../../modules/themes/types';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { createCommand } from '../../structures/command/createCommand';
@@ -483,17 +483,34 @@ const executeBadgesCommand = async (
 const selectedThemeToUse = async (ctx: ComponentInteractionContext<SelectMenuInteraction>) => {
   const themeId = Number(ctx.interaction.data.values[0]);
 
+  const componentsToSend = [];
+
   const [themeType] = ctx.sentData;
 
   switch (themeType) {
+    case 'profile': {
+      userThemesRepository.setProfileTheme(ctx.user.id, themeId);
+
+      const themeData = getThemeById<ProfileTheme>(themeId);
+
+      if (themeData.data.customEdits && themeData.data.customEdits.length > 0) {
+        componentsToSend.push(
+          createActionRow([
+            createButton({
+              label: ctx.locale('commands:temas.edit-profile.customize'),
+              style: ButtonStyles.Primary,
+              customId: createCustomId(4, ctx.user.id, ctx.commandId),
+            }),
+          ]),
+        );
+      }
+      break;
+    }
     case 'cards':
       userThemesRepository.setCardsTheme(ctx.user.id, themeId);
       break;
     case 'card_background':
       userThemesRepository.setCardBackgroundTheme(ctx.user.id, themeId);
-      break;
-    case 'profile':
-      userThemesRepository.setProfileTheme(ctx.user.id, themeId);
       break;
     case 'table':
       userThemesRepository.setTableTheme(ctx.user.id, themeId);
@@ -510,7 +527,7 @@ const selectedThemeToUse = async (ctx: ComponentInteractionContext<SelectMenuInt
   }
 
   ctx.makeMessage({
-    components: [],
+    components: componentsToSend,
     embeds: [],
     content: ctx.prettyResponse('success', 'commands:temas.selected'),
   });
@@ -571,7 +588,24 @@ const executeThemesCommand = async (
     return finishCommand();
   }
 
-  ctx.makeMessage({ embeds: [embed], components: [createActionRow([selectMenu])] });
+  const componentsToSend = [createActionRow([selectMenu])];
+
+  if (themeType === 'profile') {
+    const themeData = getThemeById<ProfileTheme>(userThemes.selectedProfileTheme);
+
+    if (themeData.data.customEdits && themeData.data.customEdits.length > 0)
+      componentsToSend.push(
+        createActionRow([
+          createButton({
+            label: ctx.locale('commands:temas.edit-profile.customize'),
+            style: ButtonStyles.Primary,
+            customId: createCustomId(4, ctx.interaction.id, ctx.commandId),
+          }),
+        ]),
+      );
+  }
+
+  ctx.makeMessage({ embeds: [embed], components: componentsToSend });
   finishCommand();
 };
 

@@ -669,7 +669,10 @@
     "eb_text_box": "Caixa de Perguntas do 8ball",
     "no-themes": "Você não tem nenhum tema deste tipo para alterar!",
     "selected": "Seu tema foi alterado com sucesso!",
-    "choose": "Escolha abaixo o seu novo Tema!"
+    "choose": "Escolha abaixo o seu novo Tema!",
+    "edit-profile": {
+      "customize": "Customizar Tema"
+    }
   },
   "roleta": {
     "poor": "Você não tem estrelinhas o suficiente para apostar!",
