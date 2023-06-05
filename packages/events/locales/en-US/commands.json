@@ -229,7 +229,26 @@
       "false": "❌",
       "profileCompatibles": "\n`Compatibilities`\n**Color**: {{colorCompatible}}\n**Image**: {{imageCompatible}}",
       "customEdits": "\n**Custom Edits**: {{customEdits}}"
-    
+    },
+    "buy_images": {
+      "price": "Price: {{price}} ⭐",
+      "custom": "Copyright Image",
+      "no-preview-for-custom": "Unable to see preview of copyrighted images",
+      "preview-title": "Preview of {{name}}",
+      "no-attachment": "Yeah... I ended up losing the image you sent in the mess in my room... Please use the command again >...<",
+      "custom-selected-no-image": "For you to be able to buy the image of your own, you need to send the image you want directly to the command",
+      "no-image": "This image no longer exists!",
+      "modal-title": "Select the name",
+      "name_placeholder": "Dog drinking water",
+      "name_input": "Name of your image",
+      "already-has": "You already own this image!",
+      "custom-buy-waiting-approval": "You have successfully purchased an image of your own authorship! But calm down, it still can't be used!\n\nFor security reasons, your image has been sent for approval, and as soon as it's approved, you can use it! (Don't forget to leave your DM open to receive the approval message).\nIf the image is disapproved, you will receive your money back.",
+      "size-err": "You uploaded an image of an invalid size! Only **1080 x 720** size images are available for your profile", 
+      "content-type": "You sent an invalid type image! Only **{{accept}}** type images are available for your profile",
+      "buy-text-with-custom": "Choose below which image you want to buy!\n\n**You have sent an image in the command!\nTo use it as your profile, choose the __{{option}}__ option.\nYou have up to {{time}} minutes until the image is lost in the mess of my room**",
+      "buy-success": "You bought the image **{{name}}**!\nUse it in your profile with the command {{command}}",
+      "poor": "You don't have enough stars to buy this image!",
+      "buy-text": "Choose below which image you want to buy!\n*Click on the preview button to see the image before buying it*"
     },
     "buy_colors": {
       "has-color": "I appreciate your excitement to buy at my thrift store, but you already have this color!",
