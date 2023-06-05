@@ -1,21 +1,21 @@
+import * as Sentry from '@sentry/node';
 import {
-  InteractionResponseTypes,
-  InteractionCallbackData,
   ApplicationCommandOptionTypes,
+  InteractionCallbackData,
+  InteractionResponseTypes,
 } from 'discordeno';
 import { Interaction, User } from 'discordeno/transformers';
-import * as Sentry from '@sentry/node';
 import { TFunction } from 'i18next';
 
-import { logger } from '../../utils/logger';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { EMOJIS } from '../constants';
-import { Translation } from '../../types/i18next';
 import { bot } from '../../index';
 import { DatabaseUserSchema } from '../../types/database';
+import { Translation } from '../../types/i18next';
+import { MessageFlags } from '../../utils/discord/messageUtils';
+import { logger } from '../../utils/logger';
+import { EMOJIS } from '../constants';
 import { getOptionFromInteraction } from './getCommandOption';
 
-export type CanResolve = 'users' | 'members' | false;
+export type CanResolve = 'users' | 'members' | 'attachments' | false;
 
 export default class {
   public replied = false;

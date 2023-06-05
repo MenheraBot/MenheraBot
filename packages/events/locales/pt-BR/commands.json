@@ -238,8 +238,24 @@
       "customEdits": "\n**Configurações extras**: {{customEdits}}"
     },
     "buy_images": {
-      "price": "Preço: {{price}} :star:",
-      "custom": "Imagem Customizada"
+      "price": "Preço: {{price}} ⭐",
+      "custom": "Imagem Autoral",
+      "no-preview-for-custom": "Não é possível ver o preview de imagens autorais",
+      "preview-title": "Preview de {{name}}",
+      "no-attachment": "É... acabei perdendo a imagem que tu enviou na bagunça do meu quarto... Use o comando novamente >...<",
+      "custom-selected-no-image": "Pra ti poder comprar a imagem de tua autoria, tu precisa enviar a imagem que tu quer diretamente no comando",
+      "no-image": "Essa imagem não exsite mais!",
+      "modal-title": "Nome de sua Imagem",
+      "name_placeholder": "Cachorro tomando água",
+      "name_input": "O nome da sua imagem",
+      "already-has": "Tu já possui essa imagem!",
+      "custom-buy-waiting-approval": "Você comprou uma imagem de sua autoria com sucesso! Mas calma lá que ela ainda não pode ser usada!\n\nPor questões de segurança a sua imagem foi enviada para aprovação, e assim que for aprovada você poderá usar ela! (Não esqueça de deixar sua DM aberta para receber a mensagem de aprovação).\nCaso a imagem for reprovada, você receberá o dinheiro de volta.",
+      "size-err": "Você enviou uma imagem de tamanho inválido! Para o seu perfil estão disponíveis apenas imagens de tamanho **1080 x 720**", 
+      "content-type": "Você enviou uma imagem do tipo inválida! Para o seu perfil estão disponíveis apenas imagens do tipo **{{accept}}**",
+      "buy-text-with-custom": "Escolha abaixo qual é a imagem que deseja comprar!\n\n**Você enviou uma imagem no comando!\nPara usá-la como seu perfil, escolha a opção __{{option}}__.\nVocê tem até {{time}} minutos até a imagem ser perdida na bagunça do meu quarto**",
+      "buy-success": "Tu comprou a imagem **{{name}}**!\nUse ela em seu perfil com o comando {{command}}",
+      "poor": "Tu não possui estrelinhas o suficiente para comprar essa imagem!",
+      "buy-text": "Escolha abaixo qual é a imagem que deseja comprar!\n*Clique no botão de preview para ver a imagem antes de comprá-la*"
     },
     "buy_colors": {
       "has-color": "Eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!",

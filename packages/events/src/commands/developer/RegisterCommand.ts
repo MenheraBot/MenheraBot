@@ -159,7 +159,7 @@ const RegisterCommand = createCommand({
     if (userDM)
       bot.helpers
         .sendMessage(userDM.id, {
-          content: `:sparkles: **OBRIGADA POR ENVIAR UMA IMAGEM! **:sparkles:\n\nSua imagem \`${name}\` foi registrada pela minha dona.\nEla já está em seu perfil (até por que tu que enviou, é teu por direito >.<). Divulge bastante tua imagem, que tu ganha uma parte em estrelinhas pelas compras dela!`,
+          content: `:sparkles: **OBRIGADA POR ENVIAR UMA IMAGEM! **:sparkles:\n\nSua imagem \`${name}\` foi registrada pela minha dona.\nEla já está em seu perfil (até por que tu que enviou, é teu por direito >.<)`,
         })
         .catch(ctx.captureException.bind(ctx));
   },

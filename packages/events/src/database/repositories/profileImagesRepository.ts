@@ -3,6 +3,7 @@ import { BigString } from 'discordeno/types';
 import { DatabaseProfileImagesSchema } from '../../types/database';
 import { profileImagesModel } from '../collections';
 import { MainRedisClient } from '../databases';
+import starsRepository from './starsRepository';
 
 const registerImage = async (
   imageId: number,
@@ -38,7 +39,7 @@ const getImageName = async (imageId: number): Promise<string> => {
 };
 
 const getImageInfo = async (imageId: number): Promise<DatabaseProfileImagesSchema | null> => {
-  const fromRedis = await MainRedisClient.get(`images:${imageId}`);
+  const fromRedis = await MainRedisClient.get(`image:${imageId}`);
 
   if (fromRedis) return JSON.parse(fromRedis);
 
@@ -46,7 +47,7 @@ const getImageInfo = async (imageId: number): Promise<DatabaseProfileImagesSchem
 
   if (fromMongo)
     MainRedisClient.set(
-      `images:${imageId}`,
+      `image:${imageId}`,
       JSON.stringify({
         imageId: fromMongo.imageId,
         uploaderId: fromMongo.uploaderId,
@@ -62,8 +63,31 @@ const getImageInfo = async (imageId: number): Promise<DatabaseProfileImagesSchem
   return fromMongo;
 };
 
+const getAvailableToBuyImages = (
+  alreadyBought: number[],
+): Promise<{ id: number; price: number; name: string }[]> => {
+  return profileImagesModel
+    .find({ imageId: { $nin: alreadyBought }, isPublic: true })
+    .then((res) => res.map((b) => ({ name: b.name, id: b.imageId, price: b.price })));
+};
+
+const giveUploaderImageRoyalties = async (imageId: number, value: number): Promise<void> => {
+  const receiveValue = Math.floor(0.01 * value);
+
+  const imageData = await profileImagesModel.findOneAndUpdate(
+    { imageId },
+    { $inc: { timesSold: 1, totalEarned: receiveValue } },
+  );
+
+  await MainRedisClient.del(`image:${imageId}`);
+
+  await starsRepository.addStars(imageData?.uploaderId ?? '', receiveValue);
+};
+
 export default {
+  giveUploaderImageRoyalties,
   registerImage,
+  getAvailableToBuyImages,
   getImageInfo,
   getImageName,
 };

@@ -339,7 +339,10 @@ const executeSelectedImageComponent = async (
 
   await userThemesRepository.setProfileImage(ctx.user.id, selectedImage);
 
-  ctx.makeMessage({ components: [], content: ctx.locale('commands:imagem.success') });
+  ctx.makeMessage({
+    components: [],
+    content: ctx.prettyResponse('success', 'commands:imagem.success'),
+  });
 };
 
 const executeImageCommand = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
@@ -372,7 +375,7 @@ const executeImageCommand = async (ctx: ChatInputInteractionContext, finishComma
   });
 
   ctx.makeMessage({
-    content: ctx.locale('commands:imagem.message'),
+    content: ctx.prettyResponse('question', 'commands:imagem.message'),
     components: [createActionRow([selectMenu])],
   });
 

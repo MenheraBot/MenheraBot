@@ -3,7 +3,7 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { createCommand } from '../../structures/command/createCommand';
 
 import { buyColor, executeBuyColorSelectComponent } from '../../modules/shop/buyColor';
-import { buyImages } from '../../modules/shop/buyImages';
+import { buyImages, executeBuyImagesSelectComponent } from '../../modules/shop/buyImages';
 import { buyInfo } from '../../modules/shop/buyInfo';
 import { buyItems, executeSelectItem } from '../../modules/shop/buyItems';
 import { buyRolls } from '../../modules/shop/buyRolls';
@@ -50,6 +50,18 @@ const ShopCommand = createCommand({
             'en-US': '「🏞️」・Buy images to make your profile yout face!',
           },
           type: ApplicationCommandOptionTypes.SubCommand,
+          options: [
+            {
+              name: 'sua_imagem',
+              nameLocalizations: { 'en-US': 'your_image' },
+              description: 'Envie sua própria imagem para usá-la em seu perfil',
+              descriptionLocalizations: {
+                'en-US': 'Upload your own image to use it in your profile',
+              },
+              type: ApplicationCommandOptionTypes.Attachment,
+              required: false,
+            },
+          ],
         },
         {
           name: 'rolls',
@@ -187,7 +199,12 @@ const ShopCommand = createCommand({
     'selectedColor',
     'badges',
   ],
-  commandRelatedExecutions: [executeBuyColorSelectComponent, executeSelectItem, executeClickButton],
+  commandRelatedExecutions: [
+    executeBuyColorSelectComponent,
+    executeSelectItem,
+    executeClickButton,
+    executeBuyImagesSelectComponent,
+  ],
   execute: async (ctx, finishCommand) => {
     const subCommandGroup = ctx.getSubCommandGroup();
 

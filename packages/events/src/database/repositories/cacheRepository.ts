@@ -1,10 +1,10 @@
-import { User } from 'discordeno/transformers';
+import { Attachment, User } from 'discordeno/transformers';
 import { BigString, DiscordUser } from 'discordeno/types';
 
-import { debugError } from '../../utils/debugError';
-import { UserIdType } from '../../types/database';
-import { transfromUserToDiscordUser } from '../../internals/transformers/transformUserToDiscordUser';
 import { bot } from '../../index';
+import { transfromUserToDiscordUser } from '../../internals/transformers/transformUserToDiscordUser';
+import { UserIdType } from '../../types/database';
+import { debugError } from '../../utils/debugError';
 
 import { MainRedisClient } from '../databases';
 
@@ -61,11 +61,35 @@ const getDeletedAccounts = async (): Promise<string[]> =>
     return [];
   });
 
+const addCustomImageAttachment = async (
+  interactionId: BigString,
+  attachment: Attachment,
+): Promise<void> => {
+  await MainRedisClient.setex(
+    `attachment:${interactionId}`,
+    600,
+    JSON.stringify({ ...attachment, id: `${attachment.id}` }),
+  );
+};
+
+type JsonFriendlyAttachment = Attachment & { id: string };
+const getCustomImageAttachment = async (
+  interactionId: BigString,
+): Promise<JsonFriendlyAttachment | null> => {
+  const fromRedis = await MainRedisClient.get(`attachment:${interactionId}`);
+
+  if (fromRedis) return JSON.parse(fromRedis);
+
+  return null;
+};
+
 export default {
   getDiscordUser,
   setDiscordUser,
   incrementRouletteHourlyUsage,
   getRouletteUsages,
   getDeletedAccounts,
+  addCustomImageAttachment,
+  getCustomImageAttachment,
   addDeletedAccount,
 };
