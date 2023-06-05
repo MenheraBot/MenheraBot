@@ -42,6 +42,7 @@ const userThemes = new Schema({
   selectedEbTextBoxTheme: { type: Number, default: 26 },
   selectedEbMenheraTheme: { type: Number, default: 27 },
   notifyPurchase: { type: Boolean, default: true },
+  customizedProfile: { type: Array, default: [] },
 });
 
 const userSchema = new Schema({

@@ -33,7 +33,7 @@ import {
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
 import { getUserAvatar } from '../../utils/discord/userUtils';
-import { toWritableUtf } from '../../utils/miscUtils';
+import { getCustomThemeField, toWritableUtf } from '../../utils/miscUtils';
 
 const executeAboutMeCommand = async (
   ctx: ChatInputInteractionContext,
@@ -499,7 +499,7 @@ const selectedThemeToUse = async (ctx: ComponentInteractionContext<SelectMenuInt
             createButton({
               label: ctx.locale('commands:temas.edit-profile.customize'),
               style: ButtonStyles.Primary,
-              customId: createCustomId(4, ctx.user.id, ctx.commandId),
+              customId: createCustomId(4, ctx.user.id, ctx.commandId, 'CUSTOM'),
             }),
           ]),
         );
@@ -599,7 +599,7 @@ const executeThemesCommand = async (
           createButton({
             label: ctx.locale('commands:temas.edit-profile.customize'),
             style: ButtonStyles.Primary,
-            customId: createCustomId(4, ctx.interaction.id, ctx.commandId),
+            customId: createCustomId(4, ctx.author.id, ctx.commandId, 'CUSTOM'),
           }),
         ]),
       );
@@ -607,6 +607,33 @@ const executeThemesCommand = async (
 
   ctx.makeMessage({ embeds: [embed], components: componentsToSend });
   finishCommand();
+};
+
+const customizeProfileTheme = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [type] = ctx.sentData;
+
+  if (type === 'CUSTOM') {
+    const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.user.id);
+    const currentTheme = getThemeById<ProfileTheme>(userThemes.selectedProfileTheme);
+
+    if (!currentTheme.data.customEdits || currentTheme.data.customEdits.length === 0)
+      return ctx.makeMessage({
+        components: [],
+        embeds: [],
+        content: ctx.prettyResponse('error', 'commands:temas.edit-profile.not-customizable'),
+      });
+
+    const embed = createEmbed({
+      title: ctx.locale('commands:temas.edit-profile.title'),
+      color: hexStringToNumber((await userRepository.ensureFindUser(ctx.user.id)).selectedColor),
+      fields: currentTheme.data.customEdits.map((field) => ({
+        name: ctx.locale(`data:themes.${currentTheme.id as 1}.name`),
+        value: ctx.locale(`common:${getCustomThemeField(field, userThemes.customizedProfile)}`),
+      })),
+    });
+
+    ctx.makeMessage({ components: [], content: undefined, embeds: [embed] });
+  }
 };
 
 const PersonalizeCommand = createCommand({
@@ -732,6 +759,7 @@ const PersonalizeCommand = createCommand({
     selectedThemeToUse,
     executeColorComponents,
     executeSelectedImageComponent,
+    customizeProfileTheme,
   ],
   execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();

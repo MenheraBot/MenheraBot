@@ -232,8 +232,6 @@
       "preview-mode": "Alternar Modo Preview",
       "success": "**Compra efetuada com sucesso!** Você já pode habilitá-la no {{command}}",
       "data": "_{{description}}_\n**Preço**: {{price}} :star:\n**Autor**: <@{{author}}>",
-      "true": "✅",
-      "false": "❌",
       "profileCompatibles": "\n`Compatibilidades`\n**Cor**: {{colorCompatible}}\n**Imagem**: {{imageCompatible}}",
       "customEdits": "\n**Configurações extras**: {{customEdits}}"
     },
@@ -671,7 +669,9 @@
     "selected": "Seu tema foi alterado com sucesso!",
     "choose": "Escolha abaixo o seu novo Tema!",
     "edit-profile": {
-      "customize": "Customizar Tema"
+      "customize": "Customizar Tema",
+      "not-customizable": "O seu tema de perfil atual não é customizável",
+      "title": "Customize o seu tema"
     }
   },
   "roleta": {

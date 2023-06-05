@@ -23,10 +23,16 @@ const getMillisecondsToTheEndOfDay = (): number => {
   return 86400000 - passedMilli;
 };
 
+const getCustomThemeField = (field: string, customFields: string[]): boolean => {
+  const index = customFields.indexOf(field);
+  return customFields[index + 1] === 'true';
+};
+
 export {
   capitalize,
   randomFromArray,
   toWritableUtf,
+  getCustomThemeField,
   millisToSeconds,
   millisToHours,
   negate,

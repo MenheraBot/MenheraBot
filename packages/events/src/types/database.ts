@@ -87,6 +87,7 @@ export interface DatabaseUserThemesSchema {
   selectedEbTextBoxTheme: number;
   selectedEbMenheraTheme: number;
   notifyPurchase: boolean;
+  customizedProfile: string[];
 }
 
 export interface DatabaseGuildSchema {

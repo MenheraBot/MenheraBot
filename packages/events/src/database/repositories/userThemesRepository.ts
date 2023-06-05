@@ -42,6 +42,7 @@ const parseMongoUserToRedisUser = (user: DatabaseUserThemesSchema): DatabaseUser
   selectedEbTextBoxTheme: user.selectedEbTextBoxTheme,
   selectedEbMenheraTheme: user.selectedEbMenheraTheme,
   notifyPurchase: user.notifyPurchase,
+  customizedProfile: user.customizedProfile,
 });
 
 type UserThemeArrayTypes = keyof Pick<
@@ -134,6 +135,7 @@ const getThemesForEightBall = async (
 
 const makeNotify = async (userId: BigString, notify: boolean): Promise<void> => {
   await userThemesModel.updateOne({ id: `${userId}` }, { notifyPurchase: notify });
+  await MainRedisClient.del(`user_themes:${userId}`);
 };
 
 const addThemeToUserAccount = async (
@@ -276,6 +278,11 @@ const setProfileImage = async (userId: BigString, imageId: number): Promise<void
   await setThemeToUserAccount(userId, 'selectedImage', imageId);
 };
 
+const setCustomizedProfile = async (userId: BigString, custom: string[]): Promise<void> => {
+  await userThemesModel.updateOne({ id: `${userId}` }, { customizedProfile: custom });
+  await MainRedisClient.del(`user_themes:${userId}`);
+};
+
 export default {
   findEnsuredUserThemes,
   getThemesForBlackjack,
@@ -285,6 +292,7 @@ export default {
   addCardsTheme,
   addCardBackgroundTheme,
   addProfileTheme,
+  setCustomizedProfile,
   setProfileImage,
   addEbBackgroundTheme,
   addEbTextBoxTheme,

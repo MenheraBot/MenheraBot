@@ -209,8 +209,8 @@ const changeThemeType = async (
 
     if (theme.data.type === 'profile') {
       embedFieldValue += ctx.locale('commands:loja.buy_themes.profileCompatibles', {
-        colorCompatible: ctx.locale(`commands:loja.buy_themes.${theme.data.colorCompatible}`),
-        imageCompatible: ctx.locale(`commands:loja.buy_themes.${theme.data.imageCompatible}`),
+        colorCompatible: ctx.locale(`common:${theme.data.colorCompatible}`),
+        imageCompatible: ctx.locale(`common:${theme.data.imageCompatible}`),
       });
 
       if (theme.data.customEdits)
