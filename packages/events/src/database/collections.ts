@@ -4,6 +4,7 @@ import {
   DatabaseCommandSchema,
   DatabaseCreditsSchema,
   DatabaseGuildSchema,
+  DatabaseProfileImagesSchema,
   DatabaseUserSchema,
   DatabaseUserThemesSchema,
 } from '../types/database';
@@ -31,6 +32,8 @@ const userThemes = new Schema({
   ebBackgroundThemes: { type: Array, default: [{ id: 25, aquiredAt: 0 }] },
   ebTextBoxThemes: { type: Array, default: [{ id: 26, aquiredAt: 0 }] },
   ebMenheraThemes: { type: Array, default: [{ id: 27, aquiredAt: 0 }] },
+  profileImages: { type: Array, default: [{ id: 1, aquiredAt: 0 }] },
+  selectedImage: { type: Number, default: 1 },
   selectedCardTheme: { type: Number, default: 4 },
   selectedProfileTheme: { type: Number, default: 3 },
   selectedTableTheme: { type: Number, default: 5 },
@@ -39,6 +42,7 @@ const userThemes = new Schema({
   selectedEbTextBoxTheme: { type: Number, default: 26 },
   selectedEbMenheraTheme: { type: Number, default: 27 },
   notifyPurchase: { type: Boolean, default: true },
+  customizedProfile: { type: Array, default: [] },
 });
 
 const userSchema = new Schema({
@@ -77,10 +81,21 @@ const userSchema = new Schema({
 const themeCredits = new Schema({
   themeId: { type: Number, unique: true, index: true },
   ownerId: { type: String },
-  royalty: { type: Number, default: 3 },
+  royalty: { type: Number, default: 7 },
   totalEarned: { type: Number, default: 0 },
   timesSold: { type: Number, default: 0 },
   registeredAt: { type: Number, default: Date.now },
+});
+
+const profileImagesSchema = new Schema({
+  imageId: { type: Number, unique: true, index: true },
+  uploaderId: { type: String },
+  name: { type: String },
+  totalEarned: { type: Number, default: 0 },
+  timesSold: { type: Number, default: 0 },
+  price: { type: Number, default: 0 },
+  registeredAt: { type: Number, default: Date.now },
+  isPublic: { type: Boolean, default: true },
 });
 
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
@@ -88,3 +103,4 @@ export const guildsModel = model<DatabaseGuildSchema>('guild', guildSchema);
 export const usersModel = model<DatabaseUserSchema>('usersdb', userSchema);
 export const userThemesModel = model<DatabaseUserThemesSchema>('themes', userThemes);
 export const themeCreditsModel = model<DatabaseCreditsSchema>('credits', themeCredits);
+export const profileImagesModel = model<DatabaseProfileImagesSchema>('images', profileImagesSchema);

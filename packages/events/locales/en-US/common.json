@@ -44,6 +44,8 @@
     "eb_text_box": "8ball Text Box",
     "eb_menhera": "8ball Menhera"
   },
+  "true": "✅",
+  "false": "❌",
   "not-your-interaction": "This interaction is not for you! Just use components made just for you.",
   "exit-command": "Finish Command",
   "form-timesup": "You didn't submit the form on time!",

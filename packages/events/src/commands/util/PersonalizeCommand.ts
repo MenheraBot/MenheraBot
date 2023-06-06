@@ -1,24 +1,32 @@
+import { Embed } from 'discordeno/transformers';
 import {
   ActionRow,
   ApplicationCommandOptionTypes,
   ButtonStyles,
   InputTextComponent,
+  SelectMenuComponent,
   TextStyles,
 } from 'discordeno/types';
-import { Embed } from 'discordeno/transformers';
 
-import { UserColor } from '../../types/database';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { AvailableThemeTypes, ThemeFile } from '../../modules/themes/types';
+import md5 from 'md5';
+import { usersModel } from '../../database/collections';
+import commandRepository from '../../database/repositories/commandRepository';
+import profileImagesRepository from '../../database/repositories/profileImagesRepository';
+import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
-import { getThemeById, getUserActiveThemes } from '../../modules/themes/getThemes';
-import { IdentifiedData } from '../../types/menhera';
-import { getUserAvatar } from '../../utils/discord/userUtils';
 import { getUserBadges } from '../../modules/badges/getUserBadges';
 import { profileBadges } from '../../modules/badges/profileBadges';
-import { extractNameAndIdFromEmoji, MessageFlags } from '../../utils/discord/messageUtils';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
+import { previewProfileData } from '../../modules/shop/constants';
+import { getThemeById, getUserActiveThemes } from '../../modules/themes/getThemes';
+import { AvailableThemeTypes, ProfileTheme, ThemeFile } from '../../modules/themes/types';
+import { getProfileImageUrl } from '../../structures/cdnManager';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { createCommand } from '../../structures/command/createCommand';
 import { COLORS, EMOJIS } from '../../structures/constants';
+import { UserColor } from '../../types/database';
+import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
+import { IdentifiedData } from '../../types/menhera';
 import {
   createActionRow,
   createButton,
@@ -26,13 +34,11 @@ import {
   createSelectMenu,
   createTextInput,
 } from '../../utils/discord/componentUtils';
-import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
-import { usersModel } from '../../database/collections';
-import userRepository from '../../database/repositories/userRepository';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { toWritableUtf } from '../../utils/miscUtils';
-import { createCommand } from '../../structures/command/createCommand';
-import commandRepository from '../../database/repositories/commandRepository';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
+import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
+import { getCustomThemeField, toWritableUtf } from '../../utils/miscUtils';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 
 const executeAboutMeCommand = async (
   ctx: ChatInputInteractionContext,
@@ -331,6 +337,56 @@ const executeColorCommand = async (ctx: ChatInputInteractionContext, finishComma
   finishCommand();
 };
 
+const executeSelectedImageComponent = async (
+  ctx: ComponentInteractionContext<SelectMenuInteraction>,
+) => {
+  const selectedImage = Number(ctx.interaction.data.values[0]);
+
+  await userThemesRepository.setProfileImage(ctx.user.id, selectedImage);
+
+  ctx.makeMessage({
+    components: [],
+    content: ctx.prettyResponse('success', 'commands:imagem.success'),
+  });
+};
+
+const executeImageCommand = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
+  const authorData = await userThemesRepository.findEnsuredUserThemes(ctx.author.id);
+
+  if (!authorData.profileImages.some((a) => a.id === 1))
+    authorData.profileImages.push({ id: 1, aquiredAt: 0 });
+
+  if (authorData.profileImages.length < 2) {
+    ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:imagem.min-image'),
+      flags: MessageFlags.EPHEMERAL,
+    });
+
+    return finishCommand();
+  }
+
+  const selectMenu = createSelectMenu({
+    customId: createCustomId(3, ctx.author.id, ctx.commandId),
+    options: await Promise.all(
+      authorData.profileImages.map(async (img) => ({
+        label: await profileImagesRepository.getImageName(img.id),
+        value: `${img.id}`,
+        default: img.id === authorData.selectedImage,
+      })),
+    ),
+    maxValues: 1,
+    minValues: 1,
+    placeholder: ctx.locale('commands:imagem.select'),
+  });
+
+  ctx.makeMessage({
+    content: ctx.prettyResponse('question', 'commands:imagem.message'),
+    components: [createActionRow([selectMenu])],
+  });
+
+  finishCommand();
+};
+
 const executeBadgesSelected = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
 ): Promise<void> => {
@@ -432,17 +488,39 @@ const executeBadgesCommand = async (
 const selectedThemeToUse = async (ctx: ComponentInteractionContext<SelectMenuInteraction>) => {
   const themeId = Number(ctx.interaction.data.values[0]);
 
+  const componentsToSend = [];
+
   const [themeType] = ctx.sentData;
 
   switch (themeType) {
+    case 'profile': {
+      await userThemesRepository.setProfileTheme(ctx.user.id, themeId);
+
+      const themeData = getThemeById<ProfileTheme>(themeId);
+
+      if (themeData.data.customEdits && themeData.data.customEdits.length > 0) {
+        await userThemesRepository.setCustomizedProfile(
+          ctx.user.id,
+          themeData.data.customEdits.map((a) => [a, 'false']).flat(),
+        );
+
+        componentsToSend.push(
+          createActionRow([
+            createButton({
+              label: ctx.locale('commands:temas.edit-profile.customize'),
+              style: ButtonStyles.Primary,
+              customId: createCustomId(4, ctx.user.id, ctx.commandId, 'CUSTOM'),
+            }),
+          ]),
+        );
+      }
+      break;
+    }
     case 'cards':
       userThemesRepository.setCardsTheme(ctx.user.id, themeId);
       break;
     case 'card_background':
       userThemesRepository.setCardBackgroundTheme(ctx.user.id, themeId);
-      break;
-    case 'profile':
-      userThemesRepository.setProfileTheme(ctx.user.id, themeId);
       break;
     case 'table':
       userThemesRepository.setTableTheme(ctx.user.id, themeId);
@@ -459,7 +537,7 @@ const selectedThemeToUse = async (ctx: ComponentInteractionContext<SelectMenuInt
   }
 
   ctx.makeMessage({
-    components: [],
+    components: componentsToSend,
     embeds: [],
     content: ctx.prettyResponse('success', 'commands:temas.selected'),
   });
@@ -520,8 +598,181 @@ const executeThemesCommand = async (
     return finishCommand();
   }
 
-  ctx.makeMessage({ embeds: [embed], components: [createActionRow([selectMenu])] });
+  const componentsToSend = [createActionRow([selectMenu])];
+
+  if (themeType === 'profile') {
+    const themeData = getThemeById<ProfileTheme>(userThemes.selectedProfileTheme);
+
+    if (themeData.data.customEdits && themeData.data.customEdits.length > 0)
+      componentsToSend.push(
+        createActionRow([
+          createButton({
+            label: ctx.locale('commands:temas.edit-profile.customize'),
+            style: ButtonStyles.Primary,
+            customId: createCustomId(4, ctx.author.id, ctx.commandId, 'CUSTOM'),
+          }),
+        ]),
+      );
+  }
+
+  ctx.makeMessage({ embeds: [embed], components: componentsToSend });
   finishCommand();
+};
+
+const createCustomizeMessage = async (
+  ctx: ComponentInteractionContext,
+  useDbCustomized: boolean,
+): Promise<void> => {
+  const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.user.id);
+  const currentTheme = getThemeById<ProfileTheme>(userThemes.selectedProfileTheme);
+
+  if (!currentTheme.data.customEdits || currentTheme.data.customEdits.length === 0)
+    return ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('error', 'commands:temas.edit-profile.not-customizable'),
+    });
+
+  const fieldToUse = useDbCustomized
+    ? userThemes.customizedProfile
+    : currentTheme.data.customEdits
+        .map((a) => {
+          const sentValues = ctx.interaction.data.values ?? [];
+
+          const found = sentValues.some((b) => b.includes(a));
+
+          if (found) return [a, 'true'];
+
+          return [a, 'false'];
+        })
+        .flat();
+
+  const embed = createEmbed({
+    title: ctx.prettyResponse('wink', 'commands:temas.edit-profile.title', {
+      theme: ctx.locale(`data:themes.${userThemes.selectedProfileTheme as 1}.name`),
+    }),
+    color: hexStringToNumber((await userRepository.ensureFindUser(ctx.user.id)).selectedColor),
+    footer: { text: ctx.locale('commands:temas.edit-profile.footer') },
+    description: currentTheme.data.customEdits
+      .map(
+        (field) =>
+          `${ctx.locale(
+            `data:themes.${currentTheme.id as 30}.customFields.${field as 'textBoxFilled'}`,
+          )}: ${ctx.locale(`common:${getCustomThemeField(field, fieldToUse)}`)}`,
+      )
+      .join('\n'),
+  });
+
+  const selectMenu = createSelectMenu({
+    customId: createCustomId(4, ctx.user.id, ctx.commandId, 'SELECT'),
+    minValues: 0,
+    maxValues: currentTheme.data.customEdits.length,
+    options: currentTheme.data.customEdits.map((field) => ({
+      label: ctx.locale(
+        `data:themes.${currentTheme.id as 30}.customFields.${field as 'textBoxFilled'}`,
+      ),
+      value: `${field}|${getCustomThemeField(field, fieldToUse)}`,
+      emoji: {
+        name: ctx.locale(`common:${getCustomThemeField(field, fieldToUse)}`),
+      },
+      default: getCustomThemeField(field, fieldToUse),
+    })),
+  });
+
+  const saveButton = createButton({
+    customId: createCustomId(4, ctx.user.id, ctx.commandId, 'SAVE'),
+    label: ctx.locale('commands:temas.edit-profile.save'),
+    style: ButtonStyles.Primary,
+  });
+
+  await ctx.ack();
+
+  const userData = await userRepository.ensureFindUser(ctx.user.id);
+
+  const res = await vanGoghRequest(VanGoghEndpoints.Profile, {
+    user: {
+      id: userData.id,
+      color: userData.selectedColor,
+      image: getProfileImageUrl(userThemes.selectedImage),
+      avatar: getUserAvatar(ctx.user, { size: 512 }),
+      votes: userData.votes,
+      info: userData.info,
+      tag: toWritableUtf(getDisplayName(ctx.user)),
+      badges: getUserBadges(userData, ctx.user).map((a) => a.id),
+      username: toWritableUtf(ctx.user.username),
+      marryDate: userData.marriedDate as string,
+      mamadas: userData.mamado,
+      mamou: userData.mamou,
+      hiddingBadges: userData.hiddingBadges,
+      marry: null,
+      married: false,
+    },
+    i18n: {
+      aboutme: ctx.locale('commands:perfil.about-me'),
+      mamado: ctx.locale('commands:perfil.mamado'),
+      mamou: ctx.locale('commands:perfil.mamou'),
+      usages: ctx.locale('commands:perfil.commands-usage', {
+        user: previewProfileData.user.username,
+        usedCount: previewProfileData.usageCommands.cmds.count,
+        mostUsedCommandName: previewProfileData.usageCommands.array[0].name,
+        mostUsedCommandCount: previewProfileData.usageCommands.array[0].count,
+      }),
+    },
+    hashedData: md5(
+      `${currentTheme.data.theme}-${fieldToUse.join(',')}-${JSON.stringify(
+        previewProfileData.user,
+      )}`,
+    ),
+    type: currentTheme.data.theme,
+    customEdits: fieldToUse,
+  });
+
+  let toSendFile;
+
+  if (!res.err) {
+    embed.image = { url: 'attachment://profile.png' };
+    toSendFile = {
+      name: 'profile.png',
+      blob: res.data,
+    };
+  }
+
+  await ctx.makeMessage({
+    components: [createActionRow([selectMenu]), createActionRow([saveButton])],
+    content: '',
+    file: toSendFile,
+    attachments: typeof toSendFile === 'undefined' ? [] : undefined,
+    embeds: [embed],
+  });
+};
+
+const customizeProfileTheme = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [type] = ctx.sentData;
+
+  if (type === 'CUSTOM') return createCustomizeMessage(ctx, true);
+
+  if (type === 'SELECT') return createCustomizeMessage(ctx, false);
+
+  if (type === 'SAVE') {
+    const data = (
+      (ctx.interaction.message?.components as ActionRow[])[0]?.components[0] as SelectMenuComponent
+    ).options
+      .map((a) => {
+        const splitted = a.value.split('|');
+
+        return [splitted[0], splitted[1]];
+      })
+      .flat();
+
+    await userThemesRepository.setCustomizedProfile(ctx.user.id, data);
+
+    ctx.makeMessage({
+      components: [],
+      embeds: [],
+      attachments: [],
+      content: ctx.prettyResponse('success', 'commands:temas.edit-profile.success'),
+    });
+  }
 };
 
 const PersonalizeCommand = createCommand({
@@ -560,6 +811,13 @@ const PersonalizeCommand = createCommand({
       nameLocalizations: { 'en-US': 'color' },
       description: '「🌈」・Muda a cor base da sua conta',
       descriptionLocalizations: { 'en-US': '「🌈」・Change your account base color' },
+      type: ApplicationCommandOptionTypes.SubCommand,
+    },
+    {
+      name: 'imagem',
+      nameLocalizations: { 'en-US': 'image' },
+      description: '「🏞️」・Muda a imagem do seu perfil',
+      descriptionLocalizations: { 'en-US': '「🏞️」・Change your profile image' },
       type: ApplicationCommandOptionTypes.SubCommand,
     },
     {
@@ -635,13 +893,21 @@ const PersonalizeCommand = createCommand({
     'voteCooldown',
     'married',
   ],
-  commandRelatedExecutions: [executeBadgesSelected, selectedThemeToUse, executeColorComponents],
+  commandRelatedExecutions: [
+    executeBadgesSelected,
+    selectedThemeToUse,
+    executeColorComponents,
+    executeSelectedImageComponent,
+    customizeProfileTheme,
+  ],
   execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();
 
     if (command === 'sobre_mim') return executeAboutMeCommand(ctx, finishCommand);
 
     if (command === 'cor') return executeColorCommand(ctx, finishCommand);
+
+    if (command === 'imagem') return executeImageCommand(ctx, finishCommand);
 
     if (command === 'temas') return executeThemesCommand(ctx, finishCommand);
 

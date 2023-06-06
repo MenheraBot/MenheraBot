@@ -1,10 +1,12 @@
 import { BigString } from 'discordeno/types';
+import { DatabaseHuntingTypes } from '../../modules/hunt/types';
 import { AvailableThemeTypes } from '../../modules/themes/types';
 import { UserColor } from '../../types/database';
-import { DatabaseHuntingTypes } from '../../modules/hunt/types';
 import { negate } from '../../utils/miscUtils';
-import userRepository from './userRepository';
+import profileImagesRepository from './profileImagesRepository';
+import starsRepository from './starsRepository';
 import themeCreditsRepository from './themeCreditsRepository';
+import userRepository from './userRepository';
 import userThemesRepository from './userThemesRepository';
 
 const executeSellHunt = async (
@@ -27,6 +29,16 @@ const executeBuyColor = async (
     $inc: { estrelinhas: negate(price) },
     $push: { colors: color },
   });
+};
+
+const executeBuyImage = async (
+  userId: BigString,
+  imageId: number,
+  price: number,
+): Promise<void> => {
+  await starsRepository.removeStars(userId, price);
+  await userThemesRepository.addProfileImage(userId, imageId);
+  await profileImagesRepository.giveUploaderImageRoyalties(imageId, price);
 };
 
 const executeBuyRolls = async (userId: BigString, amount: number, price: number): Promise<void> => {
@@ -91,6 +103,7 @@ const executeBuyTheme = async (
 
 export default {
   executeSellHunt,
+  executeBuyImage,
   executeBuyColor,
   executeBuyRolls,
   executeBuyItem,

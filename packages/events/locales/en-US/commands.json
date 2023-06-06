@@ -218,13 +218,37 @@
     },
     "buy_themes": {
       "title": "🎊 | Buy Themes",
-      "data": "**{{description}}**\n**Price**: {{price}} :star:\n**Author**: <@{{author}}>",
+      "data": "_{{description}}_\n**Price**: {{price}} :star:\n**Author**: <@{{author}}>",
       "description": "Below are some themes you can buy right away.",
       "owned": "(Owned)",
       "not-registered": "This theme is not yet available! Please try again later",
       "preview-mode": "Preview Mode",
       "success": "**Purchase successfully made!** You can now enable it on {{command}}",
-      "poor": "You don't have all these stars to buy this!"
+      "poor": "You don't have all these stars to buy this!",
+      "true": "✅",
+      "false": "❌",
+      "profileCompatibles": "\n`Compatibilities`\n**Color**: {{colorCompatible}}\n**Image**: {{imageCompatible}}",
+      "customEdits": "\n**Custom Edits**: {{customEdits}}"
+    },
+    "buy_images": {
+      "price": "Price: {{price}} ⭐",
+      "custom": "Copyright Image",
+      "no-preview-for-custom": "Unable to see preview of copyrighted images",
+      "preview-title": "Preview of {{name}}",
+      "no-attachment": "Yeah... I ended up losing the image you sent in the mess in my room... Please use the command again >...<",
+      "custom-selected-no-image": "For you to be able to buy the image of your own, you need to send the image you want directly to the command",
+      "no-image": "This image no longer exists!",
+      "modal-title": "Select the name",
+      "name_placeholder": "Dog drinking water",
+      "name_input": "Name of your image",
+      "already-has": "You already own this image!",
+      "custom-buy-waiting-approval": "You have successfully purchased an image of your own authorship! But calm down, it still can't be used!\n\nFor security reasons, your image has been sent for approval, and as soon as it's approved, you can use it! (Don't forget to leave your DM open to receive the approval message).\nIf the image is disapproved, you will receive your money back.",
+      "size-err": "You uploaded an image of an invalid size! Only **1080 x 720** size images are available for your profile", 
+      "content-type": "You sent an invalid type image! Only **{{accept}}** type images are available for your profile",
+      "buy-text-with-custom": "Choose below which image you want to buy!\n\n**You have sent an image in the command!\nTo use it as your profile, choose the __{{option}}__ option.\nYou have up to {{time}} minutes until the image is lost in the mess of my room**",
+      "buy-success": "You bought the image **{{name}}**!\nUse it in your profile with the command {{command}}",
+      "poor": "You don't have enough stars to buy this image!",
+      "buy-text": "Choose below which image you want to buy!\n*Click on the preview button to see the image before buying it*"
     },
     "buy_colors": {
       "has-color": "I appreciate your excitement to buy at my thrift store, but you already have this color!",
@@ -639,7 +663,15 @@
     "eb_text_box": "8ball Question Box",
     "no-themes": "You don't have any such themes to change!",
     "selected": "Your theme was successfully changed!",
-    "choose": "Choose down bellow your new theme!"
+    "choose": "Choose down bellow your new theme!",
+    "edit-profile": {
+      "customize": "Customize Theme",
+      "not-customizable": "Your current profile theme is not customizable",
+      "title": "Theme Customization of {{theme}}",
+      "footer": "Select to activate",
+      "save": "Save Changes",
+      "success": "Your profile customizations have been saved UwU"
+    }
   },
   "roleta": {
     "poor": "You don't have enough stars to bet!",
@@ -772,5 +804,11 @@
       "3-2": "You can't hide it, everyone knows you're a mix. But you don't let yourself be shaken, and of course it tells everyone and everything that you're just cutting Ronaldinho Gaúcho.",
       "3-3": "The end of the ends. You are grateful to have had this baldness. As much as you didn't trust it at first, and that you were afraid of what others would think, you won, and made it to the end. Congratulations champion !"
     }
+  },
+  "imagem": {
+    "min-image": "You need to have at least 2 images to use this command!",
+    "select": "Select image",
+    "message": "ESelect the image that you wanna use bellow",
+    "success": "You have successfully changed your default image!"
   }
 }

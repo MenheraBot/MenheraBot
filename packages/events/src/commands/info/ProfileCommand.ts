@@ -9,7 +9,9 @@ import cacheRepository from '../../database/repositories/cacheRepository';
 import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { getUserBadges } from '../../modules/badges/getUserBadges';
-import Themes from '../../modules/themes/themes';
+import { getThemesByType } from '../../modules/themes/getThemes';
+import { ProfileTheme } from '../../modules/themes/types';
+import { getProfileImageUrl } from '../../structures/cdnManager';
 import { createCommand } from '../../structures/command/createCommand';
 import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
@@ -21,6 +23,7 @@ import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 interface VangoghUserprofileData {
   id: string;
   color: string;
+  image: string;
   avatar: string;
   votes: number;
   info: string;
@@ -109,9 +112,12 @@ const ProfileCommand = createCommand({
         : ctx.locale('commands:perfil.api-down'),
     };
 
+    const userThemes = await userThemesRepository.findEnsuredUserThemes(discordUser.id);
+
     const userData: VangoghUserprofileData = {
       id: user.id,
       color: user.selectedColor,
+      image: getProfileImageUrl(userThemes.selectedImage),
       avatar,
       votes: user.votes,
       info: user.info,
@@ -138,16 +144,22 @@ const ProfileCommand = createCommand({
     }
 
     let profileTheme = await userThemesRepository.getProfileTheme(discordUser.id);
+    let customEdits: string[] = userThemes.customizedProfile ?? [];
 
     if (discordUser.id === bot.applicationId) {
-      const existingProfileThemes = Object.values(Themes).filter((obj) => obj.type === 'profile');
+      const existingProfileThemes = getThemesByType<ProfileTheme>('profile');
 
       const profileIndex = new Date().getDate() % existingProfileThemes.length;
 
-      profileTheme = existingProfileThemes[profileIndex].theme;
+      const randomTheme = existingProfileThemes[profileIndex];
+
+      profileTheme = randomTheme.data.theme;
+
+      if (randomTheme.data.customEdits && randomTheme.data.customEdits.length > 0)
+        customEdits = randomTheme.data.customEdits.map((a) => [a, 'false']).flat();
     }
 
-    const hashedData = md5(`${profileTheme}-${JSON.stringify(userData)}`);
+    const hashedData = md5(`${profileTheme}-${customEdits.join(',')}-${JSON.stringify(userData)}`);
 
     const fromRedis = await VangoghRedisClient.get(`profile:${user.id}:hash`);
 
@@ -179,6 +191,7 @@ const ProfileCommand = createCommand({
       i18n,
       hashedData,
       type: profileTheme,
+      customEdits,
     });
 
     if (res.err) {

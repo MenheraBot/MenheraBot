@@ -57,6 +57,17 @@ export interface DatabaseCreditsSchema {
   timesSold: number;
 }
 
+export interface DatabaseProfileImagesSchema {
+  imageId: number;
+  uploaderId: string;
+  name: string;
+  totalEarned: number;
+  timesSold: number;
+  registeredAt: number;
+  isPublic: boolean;
+  price: number;
+}
+
 export interface DatabaseUserThemesSchema {
   readonly id: string;
   cardsThemes: UserBuyableTheme[];
@@ -66,6 +77,8 @@ export interface DatabaseUserThemesSchema {
   ebBackgroundThemes: UserBuyableTheme[];
   ebTextBoxThemes: UserBuyableTheme[];
   ebMenheraThemes: UserBuyableTheme[];
+  profileImages: UserBuyableTheme[];
+  selectedImage: number;
   selectedCardTheme: number;
   selectedTableTheme: number;
   selectedProfileTheme: number;
@@ -74,6 +87,7 @@ export interface DatabaseUserThemesSchema {
   selectedEbTextBoxTheme: number;
   selectedEbMenheraTheme: number;
   notifyPurchase: boolean;
+  customizedProfile: string[];
 }
 
 export interface DatabaseGuildSchema {

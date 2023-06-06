@@ -22,6 +22,7 @@ import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { getThemeById, getThemesByType, getUserActiveThemes } from '../themes/getThemes';
+import { ProfileTheme } from '../themes/types';
 import { helloKittyThemes, previewProfileData, unbuyableThemes } from './constants';
 
 const themeByIndex = {
@@ -201,15 +202,34 @@ const changeThemeType = async (
 
     if (theme.data.type !== themeByIndex[themeIndex]) return;
 
+    let embedFieldValue = ctx.locale('commands:loja.buy_themes.data', {
+      description: ctx.locale(`data:themes.${theme.id as 1}.description`),
+      price: theme.data.price,
+      author: credits.find((b) => b.themeId === theme.id)?.ownerId,
+    });
+
+    if (theme.data.type === 'profile') {
+      embedFieldValue += ctx.locale('commands:loja.buy_themes.profileCompatibles', {
+        colorCompatible: ctx.locale(`common:${theme.data.colorCompatible}`),
+        imageCompatible: ctx.locale(`common:${theme.data.imageCompatible}`),
+      });
+
+      if (theme.data.customEdits)
+        embedFieldValue += ctx.locale('commands:loja.buy_themes.customEdits', {
+          customEdits: theme.data.customEdits
+            .map((a) =>
+              // @ts-expect-error customFields are pretty much different
+              ctx.locale(`data:themes.${theme.id as 1}.customFields.${a}`),
+            )
+            .join(', '),
+        });
+    }
+
     embed.fields?.push({
       name: `${ctx.locale(`data:themes.${theme.id as 1}.name`)} ${
         inInventory ? `__${ctx.locale('commands:loja.buy_themes.owned')}__` : ''
       }`,
-      value: ctx.locale('commands:loja.buy_themes.data', {
-        description: ctx.locale(`data:themes.${theme.id as 1}.description`),
-        price: theme.data.price,
-        author: credits.find((b) => b.themeId === theme.id)?.ownerId,
-      }),
+      value: embedFieldValue,
       inline: true,
     });
 
@@ -236,7 +256,7 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
 
   switch (selectedType) {
     case 'SELECT': {
-      const selectedItem = getThemeById(
+      const selectedItem = getThemeById<ProfileTheme>(
         Number((ctx.interaction as SelectMenuInteraction).data.values[0]),
       );
 
@@ -248,6 +268,11 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
               flags: MessageFlags.EPHEMERAL,
             },
           });
+
+          let customEdits: string[] = [];
+
+          if (selectedItem.data.customEdits && selectedItem.data.customEdits.length > 0)
+            customEdits = selectedItem.data.customEdits.map((a) => [a, 'false']).flat();
 
           const res = await vanGoghRequest(VanGoghEndpoints.Profile, {
             user: previewProfileData.user,
@@ -263,9 +288,12 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
               }),
             },
             hashedData: md5(
-              `${selectedItem.data.theme}-${JSON.stringify(previewProfileData.user)}`,
+              `${selectedItem.data.theme}-${customEdits.join(',')}-${JSON.stringify(
+                previewProfileData.user,
+              )}`,
             ),
             type: selectedItem.data.theme,
+            customEdits,
           });
 
           if (res.err) {

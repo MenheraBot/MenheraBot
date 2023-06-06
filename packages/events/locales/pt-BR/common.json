@@ -43,6 +43,8 @@
     "eb_menhera": "Menhera do 8ball"
   },
   "exit-command": "Finalizar Comando",
+  "true": "✅",
+  "false": "❌",
   "not-your-interaction": "Esta interação não é para você! Somente utilize componentes que são feitos para ti.",
   "unregistered": "Tu ainda não reencarnou no Mundo de Boleham! Registre-se primeiro e tente novamente!",
   "form-timesup": "Você não enviou o formulário a tempo!",

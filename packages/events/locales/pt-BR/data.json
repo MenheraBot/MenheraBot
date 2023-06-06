@@ -167,8 +167,12 @@
       "description": "Nenhum wallpaper é mais famoso que esse."
     },
     "30": {
-      "name": "Espaço Pessoal",
-      "description": "Para os amantes do espaço."
+      "name": "Mural",
+      "description": "Para aqueles que querer personalizar seu perfil com um pouco mais de liberdade.",
+      "customFields": {
+        "textBoxFilled": "Caixa de texto preenchida",
+        "forceWhiteInfo": "Forçar sobre mim branco"
+      }
     },
     "31": {
       "name": "Hello Kitty",

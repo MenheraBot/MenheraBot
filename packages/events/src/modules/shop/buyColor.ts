@@ -1,17 +1,17 @@
 import { TextStyles } from 'discordeno/types';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import userRepository from '../../database/repositories/userRepository';
-import { extractFields } from '../../utils/discord/modalUtils';
 import shopRepository from '../../database/repositories/shopRepository';
-import { ModalInteraction } from '../../types/interaction';
+import userRepository from '../../database/repositories/userRepository';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { EMOJIS } from '../../structures/constants';
+import { ModalInteraction } from '../../types/interaction';
 import {
   createActionRow,
   createCustomId,
   createSelectMenu,
   createTextInput,
 } from '../../utils/discord/componentUtils';
+import { extractFields } from '../../utils/discord/modalUtils';
 import { colorPrices } from './constants';
 
 const executeBuyColorSelectComponent = async (ctx: ComponentInteractionContext): Promise<void> => {

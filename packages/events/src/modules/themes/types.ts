@@ -30,7 +30,7 @@ export type AvailableProfilesThemes =
   | 'id03'
   | 'gatito'
   | 'hello_kitty'
-  | 'personal_space';
+  | 'mural';
 
 export type AvailableThemeTypes =
   | 'profile'
@@ -65,6 +65,9 @@ export interface CardBackgroundTheme extends BaseTheme {
 export interface ProfileTheme extends BaseTheme {
   type: 'profile';
   theme: AvailableProfilesThemes;
+  colorCompatible: boolean;
+  imageCompatible: boolean;
+  customEdits?: string[];
 }
 
 export interface CardsTheme extends BaseTheme {
