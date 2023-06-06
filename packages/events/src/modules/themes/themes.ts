@@ -171,7 +171,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     theme: 'mural',
     colorCompatible: true,
     imageCompatible: true,
-    customEdits: ['textBoxFilled'],
+    customEdits: ['textBoxFilled', 'forceWhiteInfo'],
   },
   31: {
     price: 260_000,

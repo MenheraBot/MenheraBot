@@ -706,7 +706,6 @@ const createCustomizeMessage = async (
       hiddingBadges: userData.hiddingBadges,
       marry: null,
       married: false,
-      customizedProfile: fieldToUse,
     },
     i18n: {
       aboutme: ctx.locale('commands:perfil.about-me'),
@@ -719,8 +718,13 @@ const createCustomizeMessage = async (
         mostUsedCommandCount: previewProfileData.usageCommands.array[0].count,
       }),
     },
-    hashedData: md5(`${currentTheme.data.theme}-${JSON.stringify(previewProfileData.user)}`),
+    hashedData: md5(
+      `${currentTheme.data.theme}-${fieldToUse.join(',')}-${JSON.stringify(
+        previewProfileData.user,
+      )}`,
+    ),
     type: currentTheme.data.theme,
+    customEdits: fieldToUse,
   });
 
   let toSendFile;
