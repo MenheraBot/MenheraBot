@@ -11,6 +11,7 @@ import userThemesRepository from '../../database/repositories/userThemesReposito
 import { getUserBadges } from '../../modules/badges/getUserBadges';
 import { getThemesByType } from '../../modules/themes/getThemes';
 import { ProfileTheme } from '../../modules/themes/types';
+import { getProfileImageUrl } from '../../structures/cdnManager';
 import { createCommand } from '../../structures/command/createCommand';
 import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
@@ -22,7 +23,7 @@ import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 interface VangoghUserprofileData {
   id: string;
   color: string;
-  image: number;
+  image: string;
   avatar: string;
   votes: number;
   info: string;
@@ -116,7 +117,7 @@ const ProfileCommand = createCommand({
     const userData: VangoghUserprofileData = {
       id: user.id,
       color: user.selectedColor,
-      image: userThemes.selectedImage,
+      image: getProfileImageUrl(userThemes.selectedImage),
       avatar,
       votes: user.votes,
       info: user.info,

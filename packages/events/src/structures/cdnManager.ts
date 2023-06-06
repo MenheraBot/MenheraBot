@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 import axios from 'axios';
 
-import { logger } from '../utils/logger';
-import { getEnviroments } from '../utils/getEnviroments';
 import { debugError } from '../utils/debugError';
+import { getEnviroments } from '../utils/getEnviroments';
+import { logger } from '../utils/logger';
 
 interface AssetsLimit {
   angry: number;
@@ -38,6 +38,8 @@ interface AssetsLimit {
 
 let assetsLimit: AssetsLimit;
 
+const { CDN_URL } = getEnviroments(['CDN_URL']);
+
 export const getAssetLink = (type: keyof AssetsLimit): string => {
   if (!assetsLimit || !assetsLimit[type]) {
     updateAssets();
@@ -49,12 +51,13 @@ export const getAssetLink = (type: keyof AssetsLimit): string => {
 
   const extension = type === 'humor' || type === 'fodase' ? 'png' : 'gif';
 
-  return `${process.env.CDN_URL}/images/${type}/${random}.${extension}`;
+  return `${CDN_URL}/images/${type}/${random}.${extension}`;
 };
 
-export const updateAssets = async (): Promise<void> => {
-  const { CDN_URL } = getEnviroments(['CDN_URL']);
+export const getProfileImageUrl = (imageId: number): string =>
+  `${CDN_URL}/images/profiles/${imageId}.png`;
 
+export const updateAssets = async (): Promise<void> => {
   if (process.env.NOMICROSERVICES) return;
 
   const result = await axios.get(CDN_URL).catch(debugError);

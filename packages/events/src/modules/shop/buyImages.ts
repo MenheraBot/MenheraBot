@@ -14,6 +14,7 @@ import shopRepository from '../../database/repositories/shopRepository';
 import starsRepository from '../../database/repositories/starsRepository';
 import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
+import { getProfileImageUrl } from '../../structures/cdnManager';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { COLORS } from '../../structures/constants';
@@ -101,7 +102,7 @@ const executeBuyImagesSelectComponent = async (ctx: ComponentInteractionContext)
           title: ctx.locale('commands:loja.buy_images.preview-title', {
             name: await profileImagesRepository.getImageName(selectedImage),
           }),
-          image: { url: `${process.env.CDN_URL}/images/profiles/${selectedImage}.png` },
+          image: { url: getProfileImageUrl(selectedImage) },
           color: COLORS.Aqua,
         }),
       ],

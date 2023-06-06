@@ -1,4 +1,5 @@
 import { bot } from '../..';
+import { getProfileImageUrl } from '../../structures/cdnManager';
 
 const huntValues = {
   roll: 15_000,
@@ -28,7 +29,7 @@ const helloKittyThemes = [31, 32, 33, 34, 35, 36, 37];
 const previewProfileData = {
   user: {
     color: '#70c9f9' as const,
-    image: 1,
+    image: getProfileImageUrl(1),
     avatar: bot.helpers.getAvatarURL(bot.applicationId, '4444'),
     votes: 666,
     info: 'Gostou desse perfil? E que tal comprar? Nem vai ser tao caro, eu confio que tu vai querer, boa sorte UwU',

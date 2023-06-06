@@ -30,7 +30,7 @@ export type AvailableProfilesThemes =
   | 'id03'
   | 'gatito'
   | 'hello_kitty'
-  | 'personal_space';
+  | 'mural';
 
 export type AvailableThemeTypes =
   | 'profile'

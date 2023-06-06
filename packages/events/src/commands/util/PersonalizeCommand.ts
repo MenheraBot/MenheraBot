@@ -19,6 +19,7 @@ import { profileBadges } from '../../modules/badges/profileBadges';
 import { previewProfileData } from '../../modules/shop/constants';
 import { getThemeById, getUserActiveThemes } from '../../modules/themes/getThemes';
 import { AvailableThemeTypes, ProfileTheme, ThemeFile } from '../../modules/themes/types';
+import { getProfileImageUrl } from '../../structures/cdnManager';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { createCommand } from '../../structures/command/createCommand';
@@ -692,7 +693,7 @@ const createCustomizeMessage = async (
     user: {
       id: userData.id,
       color: userData.selectedColor,
-      image: userThemes.selectedImage,
+      image: getProfileImageUrl(userThemes.selectedImage),
       avatar: getUserAvatar(ctx.user, { size: 512 }),
       votes: userData.votes,
       info: userData.info,

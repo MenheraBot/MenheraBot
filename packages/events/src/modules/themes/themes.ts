@@ -168,7 +168,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
   30: {
     price: 175_000,
     type: 'profile',
-    theme: 'personal_space',
+    theme: 'mural',
     colorCompatible: true,
     imageCompatible: true,
     customEdits: ['textBoxFilled'],
