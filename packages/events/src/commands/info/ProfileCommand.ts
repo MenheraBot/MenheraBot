@@ -22,6 +22,7 @@ import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 interface VangoghUserprofileData {
   id: string;
   color: string;
+  image: number;
   avatar: string;
   votes: number;
   info: string;
@@ -115,6 +116,7 @@ const ProfileCommand = createCommand({
     const userData: VangoghUserprofileData = {
       id: user.id,
       color: user.selectedColor,
+      image: userThemes.selectedImage,
       avatar,
       votes: user.votes,
       info: user.info,

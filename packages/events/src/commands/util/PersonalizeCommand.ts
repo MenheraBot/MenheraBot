@@ -692,6 +692,7 @@ const createCustomizeMessage = async (
     user: {
       id: userData.id,
       color: userData.selectedColor,
+      image: userThemes.selectedImage,
       avatar: getUserAvatar(ctx.user, { size: 512 }),
       votes: userData.votes,
       info: userData.info,
