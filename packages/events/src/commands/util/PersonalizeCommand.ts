@@ -4,9 +4,11 @@ import {
   ApplicationCommandOptionTypes,
   ButtonStyles,
   InputTextComponent,
+  SelectMenuComponent,
   TextStyles,
 } from 'discordeno/types';
 
+import md5 from 'md5';
 import { usersModel } from '../../database/collections';
 import commandRepository from '../../database/repositories/commandRepository';
 import profileImagesRepository from '../../database/repositories/profileImagesRepository';
@@ -14,6 +16,7 @@ import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { getUserBadges } from '../../modules/badges/getUserBadges';
 import { profileBadges } from '../../modules/badges/profileBadges';
+import { previewProfileData } from '../../modules/shop/constants';
 import { getThemeById, getUserActiveThemes } from '../../modules/themes/getThemes';
 import { AvailableThemeTypes, ProfileTheme, ThemeFile } from '../../modules/themes/types';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
@@ -32,8 +35,10 @@ import {
 } from '../../utils/discord/componentUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
-import { getUserAvatar } from '../../utils/discord/userUtils';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
+import { logger } from '../../utils/logger';
 import { getCustomThemeField, toWritableUtf } from '../../utils/miscUtils';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 
 const executeAboutMeCommand = async (
   ctx: ChatInputInteractionContext,
@@ -609,43 +614,147 @@ const executeThemesCommand = async (
   finishCommand();
 };
 
+const createCustomizeMessage = async (
+  ctx: ComponentInteractionContext,
+  useDbCustomized: boolean,
+): Promise<void> => {
+  const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.user.id);
+  const currentTheme = getThemeById<ProfileTheme>(userThemes.selectedProfileTheme);
+
+  if (!currentTheme.data.customEdits || currentTheme.data.customEdits.length === 0)
+    return ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('error', 'commands:temas.edit-profile.not-customizable'),
+    });
+
+  const fieldToUse = useDbCustomized
+    ? userThemes.customizedProfile
+    : currentTheme.data.customEdits
+        .map((a) => {
+          const sentValues = ctx.interaction.data.values ?? [];
+
+          const found = sentValues.some((b) => b.includes(a));
+
+          if (found) return [a, 'true'];
+
+          return [a, 'false'];
+        })
+        .flat();
+
+  const embed = createEmbed({
+    title: ctx.prettyResponse('wink', 'commands:temas.edit-profile.title', {
+      theme: ctx.locale(`data:themes.${userThemes.selectedProfileTheme as 1}.name`),
+    }),
+    color: hexStringToNumber((await userRepository.ensureFindUser(ctx.user.id)).selectedColor),
+    footer: { text: ctx.locale('commands:temas.edit-profile.footer') },
+    description: currentTheme.data.customEdits
+      .map(
+        (field) =>
+          `${ctx.locale(
+            `data:themes.${currentTheme.id as 30}.customFields.${field as 'textBoxFilled'}`,
+          )}: ${ctx.locale(`common:${getCustomThemeField(field, fieldToUse)}`)}`,
+      )
+      .join('\n'),
+  });
+
+  const selectMenu = createSelectMenu({
+    customId: createCustomId(4, ctx.user.id, ctx.commandId, 'SELECT'),
+    minValues: 0,
+    maxValues: currentTheme.data.customEdits.length,
+    options: currentTheme.data.customEdits.map((field) => ({
+      label: ctx.locale(
+        `data:themes.${currentTheme.id as 30}.customFields.${field as 'textBoxFilled'}`,
+      ),
+      value: `${field}|${getCustomThemeField(field, fieldToUse)}`,
+      emoji: {
+        name: ctx.locale(`common:${getCustomThemeField(field, fieldToUse)}`),
+      },
+      default: getCustomThemeField(field, fieldToUse),
+    })),
+  });
+
+  const saveButton = createButton({
+    customId: createCustomId(4, ctx.user.id, ctx.commandId, 'SAVE'),
+    label: ctx.locale('commands:temas.edit-profile.save'),
+    style: ButtonStyles.Primary,
+  });
+
+  await ctx.ack();
+
+  const userData = await userRepository.ensureFindUser(ctx.user.id);
+
+  const res = await vanGoghRequest(VanGoghEndpoints.Profile, {
+    user: {
+      id: userData.id,
+      color: userData.selectedColor,
+      avatar: getUserAvatar(ctx.user, { size: 512 }),
+      votes: userData.votes,
+      info: userData.info,
+      tag: toWritableUtf(getDisplayName(ctx.user)),
+      badges: getUserBadges(userData, ctx.user).map((a) => a.id),
+      username: toWritableUtf(ctx.user.username),
+      marryDate: userData.marriedDate as string,
+      mamadas: userData.mamado,
+      mamou: userData.mamou,
+      hiddingBadges: userData.hiddingBadges,
+      marry: null,
+      married: false,
+      customizedProfile: fieldToUse,
+    },
+    i18n: {
+      aboutme: ctx.locale('commands:perfil.about-me'),
+      mamado: ctx.locale('commands:perfil.mamado'),
+      mamou: ctx.locale('commands:perfil.mamou'),
+      usages: ctx.locale('commands:perfil.commands-usage', {
+        user: previewProfileData.user.username,
+        usedCount: previewProfileData.usageCommands.cmds.count,
+        mostUsedCommandName: previewProfileData.usageCommands.array[0].name,
+        mostUsedCommandCount: previewProfileData.usageCommands.array[0].count,
+      }),
+    },
+    hashedData: md5(`${currentTheme.data.theme}-${JSON.stringify(previewProfileData.user)}`),
+    type: currentTheme.data.theme,
+  });
+
+  let toSendFile;
+
+  if (!res.err) {
+    embed.image = { url: 'attachment://profile.png' };
+    toSendFile = {
+      name: 'profile.png',
+      blob: res.data,
+    };
+  }
+
+  await ctx.makeMessage({
+    components: [createActionRow([selectMenu]), createActionRow([saveButton])],
+    content: '',
+    file: toSendFile,
+    attachments: typeof toSendFile === 'undefined' ? [] : undefined,
+    embeds: [embed],
+  });
+};
+
 const customizeProfileTheme = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [type] = ctx.sentData;
 
-  if (type === 'CUSTOM') {
-    const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.user.id);
-    const currentTheme = getThemeById<ProfileTheme>(userThemes.selectedProfileTheme);
+  if (type === 'CUSTOM') return createCustomizeMessage(ctx, true);
 
-    if (!currentTheme.data.customEdits || currentTheme.data.customEdits.length === 0)
-      return ctx.makeMessage({
-        components: [],
-        embeds: [],
-        content: ctx.prettyResponse('error', 'commands:temas.edit-profile.not-customizable'),
-      });
+  if (type === 'SELECT') return createCustomizeMessage(ctx, false);
 
-    const embed = createEmbed({
-      title: ctx.prettyResponse('wink', 'commands:temas.edit-profile.title', {
-        theme: ctx.locale(`data:themes.${userThemes.selectedProfileTheme as 1}.name`),
-      }),
-      color: hexStringToNumber((await userRepository.ensureFindUser(ctx.user.id)).selectedColor),
-      footer: { text: ctx.locale('commands:temas.edit-profile.footer') },
-      description: currentTheme.data.customEdits
-        .map(
-          (field) =>
-            `${ctx.locale(
-              `data:themes.${currentTheme.id as 30}.customFields.${field as 'textBoxFilled'}`,
-            )}: ${ctx.locale(
-              `common:${getCustomThemeField(field, userThemes.customizedProfile)}`,
-            )}`,
-        )
-        .join('\n'),
-    });
+  if (type === 'SAVE') {
+    const data = (
+      (ctx.interaction.message?.components as ActionRow[])[0]?.components[0] as SelectMenuComponent
+    ).options
+      .map((a) => {
+        const splitted = a.value.split('|');
 
-    const selectMenu = createSelectMenu({
-      customId: createCustomId(4, ctx.author.id, ctx.commandId, 'SELECT'),
-    });
+        return [splitted[0], splitted[1]];
+      })
+      .flat();
 
-    ctx.makeMessage({ components: [], content: '', embeds: [embed] });
+    logger.debug(data);
   }
 };
 

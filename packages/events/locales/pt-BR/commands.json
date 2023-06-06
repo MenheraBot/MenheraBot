@@ -672,7 +672,8 @@
       "customize": "Customizar Tema",
       "not-customizable": "O seu tema de perfil atual não é customizável",
       "title": "Customização do tema {{theme}}",
-      "footer": "Selecione para ativar"
+      "footer": "Selecione para ativar",
+      "save": "Salvar Alterações"
     }
   },
   "roleta": {
