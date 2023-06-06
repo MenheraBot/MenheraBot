@@ -493,11 +493,16 @@ const selectedThemeToUse = async (ctx: ComponentInteractionContext<SelectMenuInt
 
   switch (themeType) {
     case 'profile': {
-      userThemesRepository.setProfileTheme(ctx.user.id, themeId);
+      await userThemesRepository.setProfileTheme(ctx.user.id, themeId);
 
       const themeData = getThemeById<ProfileTheme>(themeId);
 
       if (themeData.data.customEdits && themeData.data.customEdits.length > 0) {
+        await userThemesRepository.setCustomizedProfile(
+          ctx.user.id,
+          themeData.data.customEdits.map((a) => [a, 'false']).flat(),
+        );
+
         componentsToSend.push(
           createActionRow([
             createButton({

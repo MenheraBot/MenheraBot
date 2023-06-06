@@ -22,6 +22,7 @@ import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { getThemeById, getThemesByType, getUserActiveThemes } from '../themes/getThemes';
+import { ProfileTheme } from '../themes/types';
 import { helloKittyThemes, previewProfileData, unbuyableThemes } from './constants';
 
 const themeByIndex = {
@@ -255,7 +256,7 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
 
   switch (selectedType) {
     case 'SELECT': {
-      const selectedItem = getThemeById(
+      const selectedItem = getThemeById<ProfileTheme>(
         Number((ctx.interaction as SelectMenuInteraction).data.values[0]),
       );
 
@@ -267,6 +268,11 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
               flags: MessageFlags.EPHEMERAL,
             },
           });
+
+          let customEdits: string[] = [];
+
+          if (selectedItem.data.customEdits && selectedItem.data.customEdits.length > 0)
+            customEdits = selectedItem.data.customEdits.map((a) => [a, 'false']).flat();
 
           const res = await vanGoghRequest(VanGoghEndpoints.Profile, {
             user: previewProfileData.user,
@@ -282,9 +288,12 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
               }),
             },
             hashedData: md5(
-              `${selectedItem.data.theme}-${JSON.stringify(previewProfileData.user)}`,
+              `${selectedItem.data.theme}-${customEdits.join(',')}-${JSON.stringify(
+                previewProfileData.user,
+              )}`,
             ),
             type: selectedItem.data.theme,
+            customEdits,
           });
 
           if (res.err) {
