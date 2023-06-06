@@ -36,7 +36,6 @@ import {
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import { logger } from '../../utils/logger';
 import { getCustomThemeField, toWritableUtf } from '../../utils/miscUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 
@@ -754,7 +753,14 @@ const customizeProfileTheme = async (ctx: ComponentInteractionContext): Promise<
       })
       .flat();
 
-    logger.debug(data);
+    await userThemesRepository.setCustomizedProfile(ctx.user.id, data);
+
+    ctx.makeMessage({
+      components: [],
+      embeds: [],
+      attachments: [],
+      content: ctx.prettyResponse('success', 'commands:temas.edit-profile.success'),
+    });
   }
 };
 
