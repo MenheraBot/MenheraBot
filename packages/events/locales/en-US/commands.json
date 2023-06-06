@@ -663,7 +663,15 @@
     "eb_text_box": "8ball Question Box",
     "no-themes": "You don't have any such themes to change!",
     "selected": "Your theme was successfully changed!",
-    "choose": "Choose down bellow your new theme!"
+    "choose": "Choose down bellow your new theme!",
+    "edit-profile": {
+      "customize": "Customize Theme",
+      "not-customizable": "Your current profile theme is not customizable",
+      "title": "Theme Customization of {{theme}}",
+      "footer": "Select to activate",
+      "save": "Save Changes",
+      "success": "Your profile customizations have been saved UwU"
+    }
   },
   "roleta": {
     "poor": "You don't have enough stars to bet!",
