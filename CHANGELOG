@@ -10,8 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - Agora é possível comprar imagens para seu perfil! `/loja comprar imagens`. (Observe que essas imagens funcionam apenas em perfis compativeis)
+- **O tema _Espaço Pessoal_ foi atualizado para _Mural_**. Além disso, esse agora é o primeiro tema que aceita as novas imagems de perfil, e além disso, possuem **Customizações Extras**. Com essas customizações você pode personalizar melhor o seu perfil, mudando pequenos detalhes dele no comando `/personalizar temas` 
 
-### Added
+### Changed
 
 - A mensagem enviada no PV dos designers ao ter um tema seu comprado agora informa o tipo do tema.
 
