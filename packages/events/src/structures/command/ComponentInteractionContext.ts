@@ -1,13 +1,13 @@
-import { InteractionResponseTypes, InteractionCallbackData } from 'discordeno';
-import { User } from 'discordeno/transformers';
 import * as Sentry from '@sentry/node';
+import { InteractionCallbackData, InteractionResponseTypes } from 'discordeno';
+import { User } from 'discordeno/transformers';
 import { TFunction } from 'i18next';
 
+import { bot } from '../../index';
+import { Translation } from '../../types/i18next';
 import { ComponentInteraction } from '../../types/interaction';
 import { logger } from '../../utils/logger';
 import { EMOJIS } from '../constants';
-import { Translation } from '../../types/i18next';
-import { bot } from '../../index';
 
 export type CanResolve = 'users' | 'members' | false;
 
@@ -119,8 +119,9 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
 
     Sentry.withScope((scope) => {
       scope.setContext('component', {
-        commandName: this.interaction.data?.name,
-        sentData: this.sentData,
+        commandName: this.interaction.message?.interaction?.name,
+        commandAuthor: this.commandAuthor.id,
+        customId: this.interaction.data.customId,
       });
 
       try {

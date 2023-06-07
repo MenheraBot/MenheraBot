@@ -133,6 +133,7 @@ export default class {
         name: this.interaction.data?.name,
         subCommand: this.subCommand,
         subCommandGroup: this.subCommandGround,
+        commandAuthor: this.author.id,
       });
       try {
         Sentry.captureException(error);
