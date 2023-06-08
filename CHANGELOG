@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.6.1] - 2023-06-07
+
+### Added
+
+- Os perfis `Clima Natalino`, `Guerreiro Aposentado` e `Fortificação` agora possuem a customização para escolher se ele deve usar a sua Cor ou sua Imagem para contruir o perfil.
+
+### Changed
+
+- Nas customizações do tema `Mural` agora é possível escolher se a fonte dos textos serão branca ou preta.
+
 ## [5.6.0] - 2023-06-06
 
 ### Added

@@ -104,15 +104,24 @@
     },
     "14": {
       "name": "Christmas Weather",
-      "description": "It's Christmas, It's Christmas! Come celebrate Christmas with the First Next Generation Profile Layout"
+      "description": "It's Christmas, It's Christmas! Come celebrate Christmas with the First Next Generation Profile Layout",
+      "customFields": {
+        "useImage": "Use image instead of color"
+      }
     },
     "15": {
       "name": "Retired Warrior",
-      "description": "You did it. You may rest now."
+      "description": "You did it. You may rest now.",
+      "customFields": {
+        "useImage": "Use image instead of color"
+      }
     },
     "16": {
       "name": "Fortification",
-      "description": "A stronger profile for you to feel more secure"
+      "description": "A stronger profile for you to feel more secure",
+      "customFields": {
+        "useImage": "Use image instead of color"
+      }
     },
     "17": {
       "name": "Kawaii Theme",
@@ -171,7 +180,8 @@
       "description": "For those who want to customize their profile freedomly",
       "customFields": {
         "textBoxFilled": "Text box filled",
-        "forceWhiteInfo": "Force white about me"
+        "whiteUpperText": "Upper text white",
+        "whiteBottomText": "Bottom text white"
       }
     },
     "31": {

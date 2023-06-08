@@ -104,15 +104,24 @@
     },
     "14": {
       "name": "Clima Natalino",
-      "description": "É natal, é natal! Venha comemorar o natal com o Primeiro Layout de Perfil da Nova Geração"
+      "description": "É natal, é natal! Venha comemorar o natal com o Primeiro Layout de Perfil da Nova Geração",
+      "customFields": {
+        "useImage": "Usar imagem invés de cor"
+      }
     },
     "15": {
       "name": "Guerreiro Aposentado",
-      "description": "Você conseguiu, descanse um pouco."
+      "description": "Você conseguiu, descanse um pouco.",
+      "customFields": {
+        "useImage": "Usar imagem invés de cor"
+      }
     },
     "16": {
       "name": "Fortificação",
-      "description": "Um perfil mais resistente para ti se sentir mais seguro"
+      "description": "Um perfil mais resistente para ti se sentir mais seguro",
+      "customFields": {
+        "useImage": "Usar imagem invés de cor"
+      }
     },
     "17": {
       "name": "Kawaii Theme",
@@ -171,7 +180,8 @@
       "description": "Para aqueles que querer personalizar seu perfil com um pouco mais de liberdade.",
       "customFields": {
         "textBoxFilled": "Caixa de texto preenchida",
-        "forceWhiteInfo": "Forçar sobre mim branco"
+        "whiteUpperText": "Texto superior branco",
+        "whiteBottomText": "Texto inferior branco"
       }
     },
     "31": {
