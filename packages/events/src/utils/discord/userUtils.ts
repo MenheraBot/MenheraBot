@@ -23,6 +23,6 @@ const mentionUser = (userId: bigint | string): string => `<@${userId}>`;
 
 const getDisplayName = (user: User): string =>
   // @ts-expect-error It doesnt exists yet
-  user.discriminator === '0' ? user.displayName : `${user.username}#${user.discriminator}`;
+  user.displayName ? user.displayName : user.username;
 
 export { getUserAvatar, mentionUser, getDisplayName };
