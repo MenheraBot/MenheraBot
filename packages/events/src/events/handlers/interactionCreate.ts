@@ -1,23 +1,26 @@
 import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
 import i18next from 'i18next';
 
-import { componentExecutor } from '../../structures/command/componentExecutor';
-import { autocompleteInteraction } from '../../structures/command/autocompleteInteraction';
-import guildRepository from '../../database/repositories/guildRepository';
-import { postCommandExecution } from '../../utils/apiRequests/commands';
-import { UsedCommandData } from '../../types/commands';
-import { getEnviroments } from '../../utils/getEnviroments';
-import { DatabaseUserSchema } from '../../types/database';
-import { MessageFlags } from '../../utils/discord/messageUtils';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { bot } from '../../index';
-import userRepository from '../../database/repositories/userRepository';
 import commandRepository from '../../database/repositories/commandRepository';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { logger } from '../../utils/logger';
-import { getCommandsCounter } from '../../structures/initializePrometheus';
+import guildRepository from '../../database/repositories/guildRepository';
+import userRepository from '../../database/repositories/userRepository';
+import { bot } from '../../index';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import { autocompleteInteraction } from '../../structures/command/autocompleteInteraction';
+import { componentExecutor } from '../../structures/command/componentExecutor';
+import {
+  getCommandsCounter,
+  getExperimentsCommandsCounter,
+} from '../../structures/initializePrometheus';
+import { UsedCommandData } from '../../types/commands';
+import { DatabaseUserSchema } from '../../types/database';
+import { postCommandExecution } from '../../utils/apiRequests/commands';
 import { getUserLastBanData } from '../../utils/apiRequests/statistics';
+import { createEmbed } from '../../utils/discord/embedUtils';
+import { MessageFlags } from '../../utils/discord/messageUtils';
+import { getEnviroments } from '../../utils/getEnviroments';
+import { logger } from '../../utils/logger';
 import { millisToSeconds } from '../../utils/miscUtils';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
@@ -128,10 +131,17 @@ const setInteractionCreateEvent = (): void => {
 
     bot.commandsInExecution += 1;
 
-    if (!process.env.NOMICROSERVICES)
+    if (!process.env.NOMICROSERVICES) {
       getCommandsCounter().inc({
         category: command.category,
       });
+
+      getExperimentsCommandsCounter().inc({
+        user_id: `${ctx.author.id}`,
+        guild_id: `${ctx.interaction.guildId}`,
+        command_name: ctx.interaction.data?.name,
+      });
+    }
 
     await new Promise((res) => {
       command.execute(ctx, res).catch((err) => {
