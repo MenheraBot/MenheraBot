@@ -2,6 +2,15 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import { User } from 'discordeno/transformers';
+import blacklistRepository from '../../database/repositories/blacklistRepository';
+import cacheRepository from '../../database/repositories/cacheRepository';
+import userRepository from '../../database/repositories/userRepository';
+import { ApiHuntingTypes, DatabaseHuntingTypes } from '../../modules/hunt/types';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import { createCommand } from '../../structures/command/createCommand';
+import { COLORS, EMOJIS, transactionableCommandOption } from '../../structures/constants';
+import { CoinflipTop, RouletteOrBichoTop } from '../../types/api';
+import { DatabaseUserSchema } from '../../types/database';
 import {
   getMostUsedCommands,
   getTopGamblingUsers,
@@ -9,18 +18,9 @@ import {
   getUserProfileInfo,
   getUsersThatMostUsedCommands,
 } from '../../utils/apiRequests/statistics';
-import { capitalize } from '../../utils/miscUtils';
-import { ApiHuntingTypes } from '../../modules/hunt/types';
-import blacklistRepository from '../../database/repositories/blacklistRepository';
-import { CoinflipTop, RouletteOrBichoTop } from '../../types/api';
-import userRepository from '../../database/repositories/userRepository';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { COLORS, EMOJIS, transactionableCommandOption } from '../../structures/constants';
-import { DatabaseUserSchema } from '../../types/database';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getUserAvatar } from '../../utils/discord/userUtils';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import { createCommand } from '../../structures/command/createCommand';
+import { capitalize } from '../../utils/miscUtils';
 
 const calculateSkipCount = (page: number, documents = 1000): number => {
   if (!Number.isNaN(page) && page > 0) {
@@ -210,7 +210,8 @@ const executeHuntStatistics = async (
   ctx: ChatInputInteractionContext,
   finishCommand: () => void,
 ): Promise<void> => {
-  const huntType = ctx.getOption<ApiHuntingTypes>('caça', false, true);
+  const selectedOption = ctx.getOption<DatabaseHuntingTypes>('caça', false, true);
+  const huntType = selectedOption.substring(0, selectedOption.length - 1) as ApiHuntingTypes;
   const topMode = ctx.getOption<'success'>('ordenar', false, true);
   const page = ctx.getOption<number>('página', false) ?? 0;
   const skip = calculateSkipCount(page);
