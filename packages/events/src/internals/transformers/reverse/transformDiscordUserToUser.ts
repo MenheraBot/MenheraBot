@@ -5,7 +5,7 @@ const transformDiscordUserToUser = (bot: Bot, payload: DiscordUser): User => ({
   username: payload.username,
   discriminator: payload.discriminator,
   // @ts-expect-error This dont exists yet!
-  displayName: payload.displayName,
+  displayName: payload.global_name,
   avatar: payload.avatar ? bot.utils.iconHashToBigInt(payload.avatar) : undefined,
   publicFlags: payload.public_flags,
   toggles: new UserToggles(payload),
