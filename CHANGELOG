@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.6.3] - 2023-07-01
+
+### Changed
+
+- Ao empatar com a Menhera no `/blackjack` suas estrelinhas apostadas são devolvidas. Isso mesmo, nada de derrotas por empate! - Sugerido por @luizinn_ (928461486173618176)
+
 ## [5.6.2] - 20233-06-08
 
 ### Fixed
@@ -45,7 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - **NOVO PACK DE TEMAS DA HELLO KITTY**. Foi criado temas da Hello Kitty para todos os tipos de temas! Use o preview da loja para ver Hello Kitty, My Melody e Kuromi nos seus comandos!
 
-- Nova Badge da Hello Kitty! **Para os maiores fãs da Hello Kitty.** Essa badge é dada para você caso você tenha **TODOS** os temas da Hello Kitty! 
+- Nova Badge da Hello Kitty! **Para os maiores fãs da Hello Kitty.** Essa badge é dada para você caso você tenha **TODOS** os temas da Hello Kitty!
 
 ### Changed
 
@@ -134,7 +140,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - Todos comandos de ação possuem um limite de 300 caracteres no campo `motivo`.
-- O comando `/perfil` foi acelerado ainda mais caso você não possua nenhuma mudança nele nos ultimos 30 minutos. 
+- O comando `/perfil` foi acelerado ainda mais caso você não possua nenhuma mudança nele nos ultimos 30 minutos.
 
 ## [5.2.4] - 2023-04-12
 
@@ -176,7 +182,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - Novos locais para beijar no comando `/beijar` -> *mão* e *testa*.
-- Foi criado um canal no servidor de suporte para salvar todos os sorteios do Jogo do Bicho. Caso queira ver informações sobre partidas, ou ver se você ganhou um sorteio nas últimas horas, é so entrar! 
+- Foi criado um canal no servidor de suporte para salvar todos os sorteios do Jogo do Bicho. Caso queira ver informações sobre partidas, ou ver se você ganhou um sorteio nas últimas horas, é so entrar!
 
 ### Changed
 
@@ -189,10 +195,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O valor mínimo para apostar no BlackJack foi reduzido para 1 estrelinha!
 - O preço de todas cores foi reduzido! Veja em `/loja preços comprar tipo:cores`
 
-### Fixed 
+### Fixed
 
 - Resolvido o comando `/personalizar badges` não esconder as badges do Discord.
-- Menções de usuários no comando `/presentear` 
+- Menções de usuários no comando `/presentear`
 - Resolvido problema da Menhera não vencer o blackjack caso inicie com um Blackjack na mão.
 - Resolvido o problema do comando `/personalizar badges` não funcionar em perfis que tivessem uma badge repetida (apenas eu tinha lol).
 
