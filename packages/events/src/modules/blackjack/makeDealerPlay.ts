@@ -80,8 +80,8 @@ const makeDealerPlay = async (
       tableTheme,
       cardBackgroundTheme,
       'draw',
-      false,
-      BLACKJACK_PRIZE_MULTIPLIERS.base,
+      true,
+      BLACKJACK_PRIZE_MULTIPLIERS.draw,
       embedColor,
       blackjackId,
     );

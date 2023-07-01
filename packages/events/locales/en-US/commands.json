@@ -243,7 +243,7 @@
       "name_input": "Name of your image",
       "already-has": "You already own this image!",
       "custom-buy-waiting-approval": "You have successfully purchased an image of your own authorship! But calm down, it still can't be used!\n\nFor security reasons, your image has been sent for approval, and as soon as it's approved, you can use it! (Don't forget to leave your DM open to receive the approval message).\nIf the image is disapproved, you will receive your money back.",
-      "size-err": "You uploaded an image of an invalid size! Only **1080 x 720** size images are available for your profile", 
+      "size-err": "You uploaded an image of an invalid size! Only **1080 x 720** size images are available for your profile",
       "content-type": "You sent an invalid type image! Only **{{accept}}** type images are available for your profile",
       "buy-text-with-custom": "Choose below which image you want to buy!\n\n**You have sent an image in the command!\nTo use it as your profile, choose the __{{option}}__ option.\nYou have up to {{time}} minutes until the image is lost in the mess of my room**",
       "buy-success": "You bought the image **{{name}}**!\nUse it in your profile with the command {{command}}",
@@ -602,7 +602,7 @@
     "init_blackjack": "**{{winner}}** started a game with a BlackJack! How lucky!\n**Your {{text}}:** {{prize}} :star:",
     "blackjack": "**{{winner}}** made a BlackJack! On the fly!\n**Your {{text}}:** {{prize}} :star:",
     "busted": "**{{loser}}** busted! Better luck next time!\n**Your {{text}}:** {{prize}} :star:",
-    "draw": "The players tied, but unfortunately, by law N°12.158/2021 of the Boleham World, Menhera takes it all hehehe. Yes it's unfair, but that's life!\n**Yours {{text}}:** {{prize}} :star:",
+    "draw": "Jeez! You tied with Menhera! As a draw is neither a win nor a loss, your **{{prize}}** :star: have been returned to your wallet",
     "biggest": "**{{winner}}** won for having more points!\n**Your {{text}}:** {{prize}} :star:",
     "profit": "Profit",
     "loss": "Loss"
@@ -748,7 +748,7 @@
       "thousand": "Thousand",
       "corner": "Corner",
       "sequence": "Sequence",
-      "animal": "Animal" 
+      "animal": "Animal"
     },
     "footer": "For older results, enter the support server",
     "success": "Your bet has been successfully placed! Stay tuned to the results to see if you've won anything. But don't worry, the credit will be automatically added from your account!"

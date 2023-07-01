@@ -4,6 +4,7 @@ const BLACKJACK_PRIZE_MULTIPLIERS = {
   init_blackjack: 2.5,
   blackjack: 2,
   base: 2,
+  draw: 1,
 };
 
 const shuffleCards = (): number[] => {

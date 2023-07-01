@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Blob } from 'node:buffer';
 
 import { getEnviroments } from './getEnviroments';
+import { debugError } from './debugError';
 
 const { VANGOGH_URL, MENHERA_AGENT, VANGOGH_TOKEN } = getEnviroments([
   'VANGOGH_URL',
@@ -47,7 +48,7 @@ interface SuccessReturn {
 export type VanGoghReturnData = ErrorReturn | SuccessReturn;
 
 const vanGoghRequest = async <T>(route: VanGoghEndpoints, data: T): Promise<VanGoghReturnData> => {
-  const result = await VanGoghApi.post(`/${route}`, data).catch();
+  const result = await VanGoghApi.post(`/${route}`, data).catch(debugError);
   if (!result) return { err: true };
 
   return {
