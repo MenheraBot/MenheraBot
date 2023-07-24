@@ -133,7 +133,7 @@ const setInteractionCreateEvent = (): void => {
 
     if (!process.env.NOMICROSERVICES) {
       getCommandsCounter().inc({
-        category: command.category,
+        command_name: ctx.interaction.data?.name,
       });
 
       getExperimentsCommandsCounter().inc({
