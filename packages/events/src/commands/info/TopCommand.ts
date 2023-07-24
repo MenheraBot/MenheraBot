@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
 import { User } from 'discordeno/transformers';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
@@ -21,6 +21,8 @@ import {
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getUserAvatar } from '../../utils/discord/userUtils';
 import { capitalize } from '../../utils/miscUtils';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 
 const calculateSkipCount = (page: number, documents = 1000): number => {
   if (!Number.isNaN(page) && page > 0) {
@@ -47,8 +49,60 @@ const topEmojis: { [key: string]: string } = {
   bicho: '🦌',
 };
 
+const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [command] = ctx.sentData;
+
+  const noop = () => undefined;
+
+  if (command === 'economy') {
+    const [, type, page] = ctx.sentData;
+
+    return executeUserDataRelatedRanking(
+      ctx,
+      type as keyof DatabaseUserSchema,
+      topEmojis[type],
+      ctx.locale(`commands:top.economia.${type as 'mamou'}-title`),
+      ctx.locale(`commands:top.economia.${type as 'mamou'}`),
+      Number(page),
+      COLORS.Purple,
+      noop,
+    );
+  }
+
+  if (command === 'hunt') {
+    const [, type, topMode, page] = ctx.sentData;
+
+    return executeHuntStatistics(
+      ctx,
+      type as ApiHuntingTypes,
+      topMode as 'success',
+      Number(page),
+      noop,
+    );
+  }
+
+  const [, gameMode, topMode, page] = ctx.sentData;
+
+  if (command === 'bicho')
+    return topUserResponseBasedBets(
+      ctx,
+      gameMode as 'bicho',
+      topMode as 'money',
+      Number(page),
+      noop,
+    );
+
+  return topAccountResponseBets(
+    ctx,
+    gameMode as 'blackjack',
+    topMode as 'money',
+    Number(page),
+    noop,
+  );
+};
+
 const executeUserDataRelatedRanking = async (
-  ctx: ChatInputInteractionContext,
+  ctx: ChatInputInteractionContext | ComponentInteractionContext,
   label: keyof DatabaseUserSchema,
   emoji: string,
   embedTitle: string,
@@ -88,7 +142,36 @@ const executeUserDataRelatedRanking = async (
     });
   }
 
-  ctx.makeMessage({ embeds: [embed] });
+  const backButton = createButton({
+    customId: createCustomId(
+      0,
+      ctx.interaction.user.id,
+      ctx.commandId,
+      'economy',
+      label,
+      page === 0 ? 1 : page - 1,
+    ),
+    style: ButtonStyles.Primary,
+    label: ctx.locale('common:back'),
+    disabled: page < 2,
+  });
+
+  const nextButton = createButton({
+    customId: createCustomId(
+      0,
+      ctx.interaction.user.id,
+      ctx.commandId,
+      'economy',
+      label,
+      page === 0 ? 2 : page + 1,
+    ),
+    style: ButtonStyles.Primary,
+    label: ctx.locale('common:next'),
+    disabled: page === 100,
+  });
+
+  ctx.makeMessage({ embeds: [embed], components: [createActionRow([backButton, nextButton])] });
+
   finishCommand();
 };
 
@@ -207,13 +290,12 @@ const executeMostUsedCommandsFromUser = async (
 };
 
 const executeHuntStatistics = async (
-  ctx: ChatInputInteractionContext,
+  ctx: ChatInputInteractionContext | ComponentInteractionContext,
+  type: ApiHuntingTypes,
+  topMode: 'success',
+  page: number,
   finishCommand: () => void,
 ): Promise<void> => {
-  const selectedOption = ctx.getOption<DatabaseHuntingTypes>('caça', false, true);
-  const huntType = selectedOption.substring(0, selectedOption.length - 1) as ApiHuntingTypes;
-  const topMode = ctx.getOption<'success'>('ordenar', false, true);
-  const page = ctx.getOption<number>('página', false) ?? 0;
   const skip = calculateSkipCount(page);
 
   const bannedUsers = blacklistRepository.getAllBannedUsersId();
@@ -223,7 +305,7 @@ const executeHuntStatistics = async (
     a[0].concat(a[1]),
   );
 
-  const results = await getTopHunters(skip, usersToIgnore, huntType, topMode);
+  const results = await getTopHunters(skip, usersToIgnore, type, topMode);
 
   if (!results) {
     ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
@@ -233,9 +315,9 @@ const executeHuntStatistics = async (
 
   const embed = createEmbed({
     title: ctx.locale('commands:top.estatisticas.cacar.title', {
-      type: ctx.locale(`commands:top.estatisticas.cacar.${huntType}`),
+      type: ctx.locale(`commands:top.estatisticas.cacar.${type}`),
       page: page > 1 ? page : 1,
-      emoji: topEmojis[`${huntType}s`],
+      emoji: topEmojis[`${type}s`],
     }),
     description: ctx.locale(`commands:top.estatisticas.cacar.description.${topMode}`),
     color: COLORS.Pinkie,
@@ -256,25 +338,55 @@ const executeHuntStatistics = async (
     embed.fields?.push({
       name: `**${skip + i + 1} -** ${capitalize(member?.username ?? userData.user_id)}`,
       value: ctx.locale('commands:top.estatisticas.cacar.description.text', {
-        hunted: userData[`${huntType}_hunted`],
-        success: userData[`${huntType}_success`],
-        tries: userData[`${huntType}_tries`],
+        hunted: userData[`${type}_hunted`],
+        success: userData[`${type}_success`],
+        tries: userData[`${type}_tries`],
       }),
       inline: true,
     });
   }
 
-  ctx.makeMessage({ embeds: [embed] });
+  const backButton = createButton({
+    customId: createCustomId(
+      0,
+      ctx.interaction.user.id,
+      ctx.commandId,
+      'hunt',
+      type,
+      topMode,
+      page === 0 ? 1 : page - 1,
+    ),
+    style: ButtonStyles.Primary,
+    label: ctx.locale('common:back'),
+    disabled: page < 2,
+  });
+
+  const nextButton = createButton({
+    customId: createCustomId(
+      0,
+      ctx.interaction.user.id,
+      ctx.commandId,
+      'hunt',
+      type,
+      topMode,
+      page === 0 ? 2 : page + 1,
+    ),
+    style: ButtonStyles.Primary,
+    label: ctx.locale('common:next'),
+    disabled: page === 100,
+  });
+
+  ctx.makeMessage({ embeds: [embed], components: [createActionRow([backButton, nextButton])] });
   finishCommand();
 };
 
 const topUserResponseBasedBets = async (
-  ctx: ChatInputInteractionContext,
+  ctx: ChatInputInteractionContext | ComponentInteractionContext,
+  gameMode: 'bicho' | 'roulette',
+  topMode: 'money',
+  page: number,
   finishCommand: () => void,
 ) => {
-  const gameMode = ctx.getOption<'bicho' | 'roulette'>('jogo', false, true);
-  const topMode = ctx.getOption<'money'>('ordenar', false, true);
-  const page = ctx.getOption<number>('página', false) ?? 0;
   const skip = calculateSkipCount(page);
 
   const bannedUsers = blacklistRepository.getAllBannedUsersId();
@@ -340,17 +452,47 @@ const topUserResponseBasedBets = async (
     });
   }
 
-  ctx.makeMessage({ embeds: [embed] });
+  const backButton = createButton({
+    customId: createCustomId(
+      0,
+      ctx.interaction.user.id,
+      ctx.commandId,
+      'bicho',
+      gameMode,
+      topMode,
+      page === 0 ? 1 : page - 1,
+    ),
+    style: ButtonStyles.Primary,
+    label: ctx.locale('common:back'),
+    disabled: page < 2,
+  });
+
+  const nextButton = createButton({
+    customId: createCustomId(
+      0,
+      ctx.interaction.user.id,
+      ctx.commandId,
+      'bicho',
+      gameMode,
+      topMode,
+      page === 0 ? 2 : page + 1,
+    ),
+    style: ButtonStyles.Primary,
+    label: ctx.locale('common:next'),
+    disabled: page === 100,
+  });
+
+  ctx.makeMessage({ embeds: [embed], components: [createActionRow([backButton, nextButton])] });
   finishCommand();
 };
 
 const topAccountResponseBets = async (
-  ctx: ChatInputInteractionContext,
+  ctx: ChatInputInteractionContext | ComponentInteractionContext,
+  gameMode: 'blackjack' | 'coinflip',
+  topMode: 'money',
+  page: number,
   finishCommand: () => void,
 ) => {
-  const gameMode = ctx.getOption<'blackjack' | 'coinflip'>('jogo', false, true);
-  const topMode = ctx.getOption<'money'>('ordenar', false, true);
-  const page = ctx.getOption<number>('página', false) ?? 0;
   const skip = calculateSkipCount(page);
 
   const bannedUsers = blacklistRepository.getAllBannedUsersId();
@@ -422,7 +564,37 @@ const topAccountResponseBets = async (
     });
   }
 
-  ctx.makeMessage({ embeds: [embed] });
+  const backButton = createButton({
+    customId: createCustomId(
+      0,
+      ctx.interaction.user.id,
+      ctx.commandId,
+      'blackjack',
+      gameMode,
+      topMode,
+      page === 0 ? 1 : page - 1,
+    ),
+    style: ButtonStyles.Primary,
+    label: ctx.locale('common:back'),
+    disabled: page < 2,
+  });
+
+  const nextButton = createButton({
+    customId: createCustomId(
+      0,
+      ctx.interaction.user.id,
+      ctx.commandId,
+      'blackjack',
+      gameMode,
+      topMode,
+      page === 0 ? 2 : page + 1,
+    ),
+    style: ButtonStyles.Primary,
+    label: ctx.locale('common:next'),
+    disabled: page === 100,
+  });
+
+  ctx.makeMessage({ embeds: [embed], components: [createActionRow([backButton, nextButton])] });
   finishCommand();
 };
 
@@ -681,6 +853,7 @@ const TopCommand = createCommand({
       ],
     },
   ],
+  commandRelatedExecutions: [executeButtonPressed],
   authorDataFields: ['selectedColor', 'inUseItems', 'inventory', 'id'],
   execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();
@@ -717,16 +890,28 @@ const TopCommand = createCommand({
         return executeMostUsedCommandsFromUser(ctx, finishCommand);
       }
 
-      case 'caçar':
-        return executeHuntStatistics(ctx, finishCommand);
+      case 'caçar': {
+        const selectedOption = ctx.getOption<DatabaseHuntingTypes>('caça', false, true);
+        const huntType = selectedOption.substring(0, selectedOption.length - 1) as ApiHuntingTypes;
+        const topMode = ctx.getOption<'success'>('ordenar', false, true);
+        const page = ctx.getOption<number>('página', false) ?? 0;
+
+        return executeHuntStatistics(ctx, huntType, topMode, page, finishCommand);
+      }
 
       case 'apostas': {
-        const gameMode = ctx.getOption('jogo', false, true);
+        const gameMode = ctx.getOption<'bicho' | 'roulette' | 'coinflip' | 'blackjack'>(
+          'jogo',
+          false,
+          true,
+        );
+        const topMode = ctx.getOption<'money'>('ordenar', false, true);
+        const page = ctx.getOption<number>('página', false) ?? 0;
 
         if (gameMode === 'roulette' || gameMode === 'bicho')
-          return topUserResponseBasedBets(ctx, finishCommand);
+          return topUserResponseBasedBets(ctx, gameMode, topMode, page, finishCommand);
 
-        return topAccountResponseBets(ctx, finishCommand);
+        return topAccountResponseBets(ctx, gameMode, topMode, page, finishCommand);
       }
     }
   },
