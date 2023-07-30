@@ -2,7 +2,6 @@ import { Attachment, User } from 'discordeno/transformers';
 import { BigString, DiscordUser } from 'discordeno/types';
 
 import { bot } from '../../index';
-import { transfromUserToDiscordUser } from '../../internals/transformers/transformUserToDiscordUser';
 import { UserIdType } from '../../types/database';
 import { debugError } from '../../utils/debugError';
 
@@ -20,7 +19,7 @@ const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promi
 
     if (!fromDiscord) return null;
 
-    setDiscordUser(transfromUserToDiscordUser(bot, fromDiscord));
+    setDiscordUser(bot.transformers.reverse.user(bot, fromDiscord));
 
     return fromDiscord;
   }

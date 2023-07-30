@@ -1,7 +1,6 @@
 import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
 import i18next from 'i18next';
 
-import { transformUserToDiscordUser } from 'discordeno/transformers';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import commandRepository from '../../database/repositories/commandRepository';
 import guildRepository from '../../database/repositories/guildRepository';
@@ -118,7 +117,7 @@ const setInteractionCreateEvent = (): void => {
         ? await userRepository.ensureFindUser(interaction.user.id)
         : null;
 
-    cacheRepository.setDiscordUser(transformUserToDiscordUser(bot, interaction.user));
+    cacheRepository.setDiscordUser(bot.transformers.reverse.user(bot, interaction.user));
 
     const guildLocale = i18next.getFixedT(
       await guildRepository.getGuildLanguage(interaction.guildId as bigint),

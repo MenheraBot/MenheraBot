@@ -1,4 +1,4 @@
-import { Interaction, User, transformUserToDiscordUser } from 'discordeno/transformers';
+import { Interaction, User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { CanResolve } from './ChatInputInteractionContext';
 import cacheRepository from '../../database/repositories/cacheRepository';
@@ -52,7 +52,7 @@ function getOptionFromInteraction<T>(
     ) as unknown as T;
 
     if (shouldResolve === 'users')
-      cacheRepository.setDiscordUser(transformUserToDiscordUser(bot, resolved as User));
+      cacheRepository.setDiscordUser(bot.transformers.reverse.user(bot, resolved as User));
 
     return resolved;
   }
