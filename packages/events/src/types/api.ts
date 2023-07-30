@@ -78,6 +78,7 @@ export enum ApiTransactionReason {
   SIMON_SAYS_SET = 'simon_says_set',
   PIX_COMMAND = 'pix_command',
   BLACKJACK_COMMAND = 'blackjack_command',
+  BLACKJACK_LOST_DATA = 'blackjack_lost_data',
   COINFLIP_COMMAND = 'coinflip_command',
   HUNT_COMMAND = 'hunt_command',
   ROULETTE_COMMAND = 'roulette_command',

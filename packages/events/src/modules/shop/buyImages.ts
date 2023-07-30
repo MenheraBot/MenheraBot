@@ -31,6 +31,8 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import { extractFields } from '../../utils/discord/modalUtils';
 import { getEnviroments } from '../../utils/getEnviroments';
 import { customImagePrice } from './constants';
+import { postTransaction } from '../../utils/apiRequests/statistics';
+import { ApiTransactionReason } from '../../types/api';
 
 const { IMAGE_APPROVAL_CHANNEL_ID } = getEnviroments(['IMAGE_APPROVAL_CHANNEL_ID']);
 
@@ -191,6 +193,14 @@ const executeBuyImagesSelectComponent = async (ctx: ComponentInteractionContext)
     });
 
   await starsRepository.removeStars(ctx.user.id, customImagePrice);
+
+  await postTransaction(
+    `${ctx.user.id}`,
+    `${bot.id}`,
+    customImagePrice,
+    'estrelinhas',
+    ApiTransactionReason.BUY_IMAGE,
+  );
 
   const nameInput = createTextInput({
     customId: 'NAME',

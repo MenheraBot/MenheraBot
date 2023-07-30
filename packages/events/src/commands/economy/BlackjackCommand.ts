@@ -42,6 +42,13 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
       attachments: [],
     });
     await starsRepository.addStars(ctx.user.id, Number(bet));
+    await postTransaction(
+      `${bot.id}`,
+      `${ctx.user.id}`,
+      Number(bet),
+      'estrelinhas',
+      ApiTransactionReason.BLACKJACK_LOST_DATA,
+    );
     return;
   }
 

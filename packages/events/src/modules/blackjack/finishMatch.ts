@@ -40,7 +40,7 @@ const finishMatch = async (
     await postTransaction(
       `${bot.id}`,
       `${ctx.interaction.user.id}`,
-      bet,
+      prize,
       'estrelinhas',
       ApiTransactionReason.BLACKJACK_COMMAND,
     );
