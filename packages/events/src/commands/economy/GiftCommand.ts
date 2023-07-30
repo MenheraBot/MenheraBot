@@ -130,6 +130,13 @@ const GiftCommand = createCommand({
       });
 
       await giveRepository.executeGive(selectedOption, ctx.author.id, toSendUser.id, amount);
+      await postTransaction(
+        `${ctx.author.id}`,
+        `${toSendUser.id}`,
+        Number(amount),
+        selectedOption as 'estrelinhas',
+        ApiTransactionReason.PIX_COMMAND,
+      );
       return finishCommand();
     }
 
