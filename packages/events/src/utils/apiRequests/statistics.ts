@@ -5,6 +5,7 @@ import {
   ApiGamblingGameStats,
   ApiHuntStats,
   ApiUserProfileStats,
+  BanInfo,
   BlackjackTop,
   CoinflipTop,
   MayReturnError,
@@ -158,9 +159,17 @@ const getTopGamblingUsers = async (
 };
 
 const getUserLastBanData = async (userId: BigString): Promise<string | null> => {
-  const res = await dataRequest.get(`/usages/ban/${userId}`).catch(() => null);
+  const res = await dataRequest.get(`/usages/lastban/${userId}`).catch(() => null);
 
   if (!res) return null;
+
+  return res.data;
+};
+
+const getAllUserBans = async (userId: BigString): Promise<BanInfo[]> => {
+  const res = await dataRequest.get(`/usages/bans/${userId}`).catch(() => null);
+
+  if (!res) return [];
 
   return res.data;
 };
@@ -193,6 +202,7 @@ export {
   getUserProfileInfo,
   getTopGamblingUsers,
   getUserLastBanData,
+  getAllUserBans,
   postTransaction,
   getTopHunters,
   getUsersThatMostUsedCommands,

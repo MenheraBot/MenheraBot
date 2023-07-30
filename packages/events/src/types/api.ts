@@ -102,3 +102,8 @@ export interface TransactionRegister {
   currencyType: TransactionType;
   reason: ApiTransactionReason;
 }
+
+export interface BanInfo {
+  date: string;
+  reason: string;
+}
