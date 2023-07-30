@@ -73,7 +73,9 @@ export interface CoinflipTop {
 }
 
 export enum ApiTransactionReason {
-  SIMON_SAYS = 'simon_says',
+  SIMON_SAYS_ADD = 'simon_says_add',
+  SIMON_SAYS_REMOVE = 'simon_says_remove',
+  SIMON_SAYS_SET = 'simon_says_set',
   PIX_COMMAND = 'pix_command',
   BLACKJACK_COMMAND = 'blackjack_command',
   COINFLIP_COMMAND = 'coinflip_command',
