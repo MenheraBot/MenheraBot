@@ -4,6 +4,9 @@ import { MainRedisClient } from '../databases';
 import { themeCreditsModel } from '../collections';
 import { DatabaseCreditsSchema } from '../../types/database';
 import starsRepository from './starsRepository';
+import { postTransaction } from '../../utils/apiRequests/statistics';
+import { bot } from '../..';
+import { ApiTransactionReason } from '../../types/api';
 
 const registerTheme = async (
   themeId: number,
@@ -74,6 +77,13 @@ const giveOwnerThemeRoyalties = async (themeId: number, value: number): Promise<
   );
 
   await starsRepository.addStars(themeData.ownerId, value);
+  await postTransaction(
+    `${bot.id}`,
+    `${themeData.ownerId}`,
+    value,
+    'estrelinhas',
+    ApiTransactionReason.BUY_THEME_ROYALTY,
+  );
 };
 
 export default {

@@ -7,11 +7,12 @@ import {
   AvailableTableThemes,
 } from '../themes/types';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { postBlackjackGame } from '../../utils/apiRequests/statistics';
+import { postBlackjackGame, postTransaction } from '../../utils/apiRequests/statistics';
 import { negate } from '../../utils/miscUtils';
 import { generateBlackjackEmbed, getTableImage, safeImageReply } from './blackjackMatch';
 import { BlackjackCard, BlackjackFinishGameReason } from './types';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { ApiTransactionReason } from '../../types/api';
 
 const finishMatch = async (
   ctx: ChatInputInteractionContext | ComponentInteractionContext,
@@ -33,7 +34,17 @@ const finishMatch = async (
   const loser = !didUserWin ? ctx.interaction.user.username : bot.username;
   const prize = didUserWin ? Math.floor(bet * prizeMultiplier) : bet;
 
-  if (didUserWin) starsRepository.addStars(ctx.interaction.user.id, prize);
+  if (didUserWin) {
+    await starsRepository.addStars(ctx.interaction.user.id, prize);
+
+    await postTransaction(
+      `${bot.id}`,
+      `${ctx.interaction.user.id}`,
+      bet,
+      'estrelinhas',
+      ApiTransactionReason.BLACKJACK_COMMAND,
+    );
+  }
 
   const image = await getTableImage(
     ctx,

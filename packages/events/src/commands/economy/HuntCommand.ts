@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import { ApplicationCommandOptionTypes, DiscordEmbedField } from 'discordeno/types';
 
-import { postHuntExecution } from '../../utils/apiRequests/statistics';
 import userRepository from '../../database/repositories/userRepository';
 import huntRepository from '../../database/repositories/huntRepository';
 import commandRepository from '../../database/repositories/commandRepository';
@@ -24,6 +23,9 @@ import {
   getUserHuntCooldown,
   getUserHuntProbability,
 } from '../../modules/hunt/huntUtils';
+import { postHuntExecution, postTransaction } from '../../utils/apiRequests/statistics';
+import { bot } from '../..';
+import { ApiTransactionReason } from '../../types/api';
 
 const choices = [
   ...transactionableCommandOption.filter((a) => a.value !== 'estrelinhas'),
@@ -189,14 +191,22 @@ const HuntCommand = createCommand({
       gods: 'god',
     } as const;
 
-    postHuntExecution(
+    await ctx.makeMessage({ embeds: [embed] });
+
+    await postTransaction(
+      `${bot.id}`,
+      `${ctx.author.id}`,
+      result.value,
+      selection,
+      ApiTransactionReason.HUNT_COMMAND,
+    );
+
+    await postHuntExecution(
       `${ctx.author.id}`,
       APIHuntTypes[selection],
       result,
       getDisplayName(ctx.author),
     );
-
-    await ctx.makeMessage({ embeds: [embed] });
 
     const droppedItem = dropHuntItem(
       ctx.authorData.inventory,

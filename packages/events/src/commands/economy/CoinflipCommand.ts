@@ -6,7 +6,7 @@ import {
 } from 'discordeno/types';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { postCoinflipMatch } from '../../utils/apiRequests/statistics';
+import { postCoinflipMatch, postTransaction } from '../../utils/apiRequests/statistics';
 import { negate, randomFromArray } from '../../utils/miscUtils';
 import userRepository from '../../database/repositories/userRepository';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
@@ -15,6 +15,7 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import { EMOJIS, transactionableCommandOption } from '../../structures/constants';
 import { huntValues } from '../../modules/shop/constants';
+import { ApiTransactionReason } from '../../types/api';
 
 const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [input, currency] = ctx.sentData as [
@@ -68,6 +69,14 @@ const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> 
 
   userRepository.updateUserWithSpecialData(winner, { $inc: { [currency]: inputAsNumber } });
   userRepository.updateUserWithSpecialData(loser, { $inc: { [currency]: negate(inputAsNumber) } });
+
+  await postTransaction(
+    `${loser}`,
+    `${winner}`,
+    inputAsNumber,
+    'estrelinhas',
+    ApiTransactionReason.COINFLIP_COMMAND,
+  );
 
   const parsedValue =
     currency === 'estrelinhas' ? inputAsNumber : huntValues[currency] * inputAsNumber;
