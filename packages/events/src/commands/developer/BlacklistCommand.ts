@@ -4,6 +4,7 @@ import { User } from 'discordeno/transformers';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import userRepository from '../../database/repositories/userRepository';
 import { createCommand } from '../../structures/command/createCommand';
+import { getAllUserBans } from '../../utils/apiRequests/statistics';
 
 const BlacklistCommand = createCommand({
   path: '',
@@ -86,9 +87,18 @@ const BlacklistCommand = createCommand({
 
         if (!usr) return finishCommand(ctx.makeMessage({ content: 'Nenhum user na DB' }));
 
-        // @ts-expect-error It dont exists yet
-        const msg = `== USER BANNED INFO ==\n\n• User :: ${user.username} [${user.displayName}] - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${usr.banReason}`;
-        await ctx.makeMessage({ content: `\`\`\`asciidocmsg\n${msg}\`\`\`` });
+        const allTimeBans = await getAllUserBans(user.id);
+
+        const msg = `== CURRENT BAN INFO ==\n\n• User :: ${user.username} [${
+          // @ts-expect-error It dont exists yet
+          user.displayName
+        }] - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${
+          usr.banReason
+        }\n\n== ALL TIME BANS ==\n${allTimeBans
+          .map((a) => `• ${new Date(Number(a.date)).toISOString()} :: "${a.reason}"`)
+          .join('\n')}`;
+
+        await ctx.makeMessage({ content: `\`\`\`js\n${msg}\`\`\`` });
         finishCommand();
       }
     }
