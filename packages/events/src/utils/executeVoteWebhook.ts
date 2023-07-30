@@ -4,6 +4,8 @@ import userRepository from '../database/repositories/userRepository';
 import { DatabaseUserSchema } from '../types/database';
 import { debugError } from './debugError';
 import { createEmbed } from './discord/embedUtils';
+import { postTransaction } from './apiRequests/statistics';
+import { ApiTransactionReason } from '../types/api';
 
 const voteConstants = {
   baseRollAmount: 1,
@@ -60,7 +62,7 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
 
   const userDM = await bot.helpers.getDmChannel(userId).catch(debugError);
 
-  if (userDM) bot.helpers.sendMessage(userDM.id, { embeds: [embed] });
+  if (userDM) bot.helpers.sendMessage(userDM.id, { embeds: [embed] }).catch(debugError);
 
   const updateData: UpdateQuery<DatabaseUserSchema> = {
     $inc: {
@@ -77,6 +79,14 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
     updateData.$push = { badges: { id: 9, obtainAt: `${Date.now()}` } };
 
   await userRepository.updateUserWithSpecialData(userId, updateData);
+
+  await postTransaction(
+    `${bot.id}`,
+    `${userId}`,
+    starAmount,
+    'estrelinhas',
+    ApiTransactionReason.VOTE_THANK,
+  );
 };
 
 export { executeVoteWebhook };
