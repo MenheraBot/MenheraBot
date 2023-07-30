@@ -10,6 +10,8 @@ import blacklistRepository from '../../database/repositories/blacklistRepository
 import { createCommand } from '../../structures/command/createCommand';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { EMOJIS, transactionableCommandOption } from '../../structures/constants';
+import { postTransaction } from '../../utils/apiRequests/statistics';
+import { ApiTransactionReason } from '../../types/api';
 
 const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedButton, amount, selectedOption] = ctx.sentData;
@@ -48,6 +50,14 @@ const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promis
     ctx.commandAuthor.id,
     ctx.user.id,
     Number(amount),
+  );
+
+  await postTransaction(
+    `${ctx.commandAuthor.id}`,
+    `${ctx.user.id}`,
+    Number(amount),
+    selectedOption as 'estrelinhas',
+    ApiTransactionReason.PIX_COMMAND,
   );
 };
 

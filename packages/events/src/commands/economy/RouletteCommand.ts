@@ -4,7 +4,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import userRepository from '../../database/repositories/userRepository';
 import { getProfitTaxes, getTaxedProfit } from '../../modules/roulette/getTaxedProfit';
 import starsRepository from '../../database/repositories/starsRepository';
-import { postRoulleteGame } from '../../utils/apiRequests/statistics';
+import { postRoulleteGame, postTransaction } from '../../utils/apiRequests/statistics';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import { SelectMenuInteraction } from '../../types/interaction';
 import {
@@ -23,6 +23,8 @@ import {
 } from '../../modules/roulette/constants';
 
 import { createCommand } from '../../structures/command/createCommand';
+import { bot } from '../..';
+import { ApiTransactionReason } from '../../types/api';
 
 const finishRouletteBet = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
@@ -66,8 +68,25 @@ const finishRouletteBet = async (
       }),
     });
 
-    if (didWin) starsRepository.addStars(ctx.user.id, profitAfterTaxes);
-    else starsRepository.removeStars(ctx.user.id, bet);
+    if (didWin) {
+      starsRepository.addStars(ctx.user.id, profitAfterTaxes);
+      postTransaction(
+        `${bot.id}`,
+        `${ctx.user.id}`,
+        profitAfterTaxes,
+        'estrelinhas',
+        ApiTransactionReason.ROULETTE_COMMAND,
+      );
+    } else {
+      starsRepository.removeStars(ctx.user.id, bet);
+      postTransaction(
+        `${ctx.user.id}`,
+        `${bot.id}`,
+        bet,
+        'estrelinhas',
+        ApiTransactionReason.ROULETTE_COMMAND,
+      );
+    }
 
     postRoulleteGame(
       `${ctx.user.id}`,

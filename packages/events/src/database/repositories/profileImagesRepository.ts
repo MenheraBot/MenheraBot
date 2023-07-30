@@ -4,6 +4,9 @@ import { DatabaseProfileImagesSchema } from '../../types/database';
 import { profileImagesModel } from '../collections';
 import { MainRedisClient } from '../databases';
 import starsRepository from './starsRepository';
+import { bot } from '../..';
+import { ApiTransactionReason } from '../../types/api';
+import { postTransaction } from '../../utils/apiRequests/statistics';
 
 const registerImage = async (
   imageId: number,
@@ -82,6 +85,14 @@ const giveUploaderImageRoyalties = async (imageId: number, value: number): Promi
   await MainRedisClient.del(`image:${imageId}`);
 
   await starsRepository.addStars(imageData?.uploaderId ?? '', receiveValue);
+
+  await postTransaction(
+    `${bot.id}`,
+    `${imageData?.uploaderId}`,
+    receiveValue,
+    'estrelinhas',
+    ApiTransactionReason.BUY_IMAGE_ROYALTY,
+  );
 };
 
 export default {

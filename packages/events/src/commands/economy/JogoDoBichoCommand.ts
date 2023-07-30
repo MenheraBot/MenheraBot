@@ -32,6 +32,9 @@ import {
 } from '../../utils/discord/componentUtils';
 import { COLORS } from '../../structures/constants';
 import bichoRepository from '../../database/repositories/bichoRepository';
+import { postTransaction } from '../../utils/apiRequests/statistics';
+import { bot } from '../..';
+import { ApiTransactionReason } from '../../types/api';
 
 const tabledAnimals = (() => {
   let text = '';
@@ -113,7 +116,14 @@ const finishUserBet = async (
         });
 
       await starsRepository.removeStars(ctx.user.id, Number(bet));
-      registerUserBet(ctx.user.id, Number(bet), `${polishedNumber}`);
+      await registerUserBet(ctx.user.id, Number(bet), `${polishedNumber}`);
+      await postTransaction(
+        `${ctx.user.id}`,
+        `${bot.id}`,
+        Number(bet),
+        'estrelinhas',
+        ApiTransactionReason.BICHO_COMMAND,
+      );
       break;
     }
     case 'UNITY': {
@@ -132,8 +142,14 @@ const finishUserBet = async (
         });
 
       await starsRepository.removeStars(ctx.user.id, Number(bet));
-
-      registerUserBet(ctx.user.id, Number(bet), ctx.interaction.data.values[0]);
+      await registerUserBet(ctx.user.id, Number(bet), ctx.interaction.data.values[0]);
+      await postTransaction(
+        `${ctx.user.id}`,
+        `${bot.id}`,
+        Number(bet),
+        'estrelinhas',
+        ApiTransactionReason.BICHO_COMMAND,
+      );
       break;
     }
     case 'SEQUENCE':

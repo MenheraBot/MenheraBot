@@ -1,6 +1,6 @@
 import { BigString } from 'discordeno/types';
 import bichoRepository from '../../database/repositories/bichoRepository';
-import { postBichoResults } from '../../utils/apiRequests/statistics';
+import { postBichoResults, postTransaction } from '../../utils/apiRequests/statistics';
 import starsRepository from '../../database/repositories/starsRepository';
 import { BichoBetType, BichoGameInfo } from './types';
 import { getBetType, makePlayerResults, mapResultToAnimal } from './finishBets';
@@ -10,6 +10,7 @@ import { bot } from '../..';
 import { getEnviroments } from '../../utils/getEnviroments';
 import { debugError } from '../../utils/debugError';
 import { capitalize } from '../../utils/miscUtils';
+import { ApiTransactionReason } from '../../types/api';
 
 const GAME_DURATION = 1000 * 60 * 60 * 6;
 
@@ -46,6 +47,13 @@ const finishGame = async (): Promise<void> => {
   players.forEach((a) => {
     if (a.didWin) {
       starsRepository.addStars(a.id, a.profit);
+      postTransaction(
+        `${bot.id}`,
+        `${a.id}`,
+        a.profit,
+        'estrelinhas',
+        ApiTransactionReason.WIN_BICHO,
+      );
       if (a.profit > biggestProfit) biggestProfit = a.profit;
     }
   });

@@ -2,6 +2,11 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
 import starsRepository from '../../database/repositories/starsRepository';
 import { createCommand } from '../../structures/command/createCommand';
+import { getEnviroments } from '../../utils/getEnviroments';
+import { ApiTransactionReason } from '../../types/api';
+import { postTransaction } from '../../utils/apiRequests/statistics';
+
+const { OWNER_ID } = getEnviroments(['OWNER_ID']);
 
 const ReloadLocalesCommand = createCommand({
   path: '',
@@ -57,6 +62,8 @@ const ReloadLocalesCommand = createCommand({
     await ctx.makeMessage({
       content: `Estrelinhas de <@${id}> alteradas com sucesso :star:\n**Operação**: ${operation}\n**Valor**: ${value}`,
     });
+
+    await postTransaction(OWNER_ID, `${id}`, value, 'estrelinhas', ApiTransactionReason.SIMON_SAYS);
 
     finishCommand();
   },

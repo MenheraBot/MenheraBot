@@ -168,11 +168,11 @@ const postTransaction = async (
   authorId: TransactionRegister['authorId'],
   targetId: TransactionRegister['targetId'],
   amount: TransactionRegister['amount'],
-  type: TransactionRegister['type'],
+  currencyType: TransactionRegister['currencyType'],
   reason: TransactionRegister['reason'],
 ): Promise<void> => {
   await dataRequest
-    .post('/statistics/transaction', { authorId, targetId, amount, type, reason })
+    .post('/statistics/transaction', { authorId, targetId, amount, currencyType, reason })
     .catch(debugError);
 };
 

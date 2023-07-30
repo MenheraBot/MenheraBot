@@ -72,10 +72,23 @@ export interface CoinflipTop {
   cf_lose_money: number;
 }
 
-// authorId, targetId, amount, type = estrelinhas/caças, reason = win_bicho, pix_command, buy_themes
-
 export enum ApiTransactionReason {
+  SIMON_SAYS = 'simon_says',
   PIX_COMMAND = 'pix_command',
+  BLACKJACK_COMMAND = 'blackjack_command',
+  COINFLIP_COMMAND = 'coinflip_command',
+  HUNT_COMMAND = 'hunt_command',
+  ROULETTE_COMMAND = 'roulette_command',
+  BICHO_COMMAND = 'bicho_command',
+  WIN_BICHO = 'win_bicho',
+  SELL_HUNT = 'sell_hunt',
+  BUY_COLOR = 'buy_color',
+  BUY_ROLL = 'buy_roll',
+  BUY_ITEM = 'buy_item',
+  BUY_IMAGE = 'buy_image',
+  BUY_IMAGE_ROYALTY = 'buy_image_royalty',
+  BUY_THEME = 'buy_theme',
+  BUY_THEME_ROYALTY = 'buy_theme',
 }
 
 type TransactionType = DatabaseHuntingTypes | 'estrelinhas';
@@ -84,6 +97,6 @@ export interface TransactionRegister {
   authorId: string;
   targetId: string;
   amount: number;
-  type: TransactionType;
+  currencyType: TransactionType;
   reason: ApiTransactionReason;
 }

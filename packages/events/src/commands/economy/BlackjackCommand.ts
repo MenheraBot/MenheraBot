@@ -21,6 +21,9 @@ import { createCommand } from '../../structures/command/createCommand';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
 import { EMOJIS } from '../../structures/constants';
+import { postTransaction } from '../../utils/apiRequests/statistics';
+import { bot } from '../..';
+import { ApiTransactionReason } from '../../types/api';
 
 const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedButton, bet, embedColor, blackjackId] = ctx.sentData;
@@ -192,6 +195,14 @@ const BlackjackCommand = createCommand({
       );
 
     await starsRepository.removeStars(ctx.author.id, bet);
+
+    await postTransaction(
+      `${ctx.author.id}`,
+      `${bot.id}`,
+      bet,
+      'estrelinhas',
+      ApiTransactionReason.BLACKJACK_COMMAND,
+    );
 
     if (getHandValue(bjDealerCards) === 21)
       return finishMatch(
