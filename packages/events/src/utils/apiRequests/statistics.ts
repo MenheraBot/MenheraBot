@@ -10,6 +10,7 @@ import {
   MayReturnError,
   RouletteOrBichoTop,
   TopHunters,
+  TransactionRegister,
 } from '../../types/api';
 import { BichoWinner } from '../../modules/bicho/types';
 import { ApiHuntingTypes } from '../../modules/hunt/types';
@@ -163,6 +164,18 @@ const getUserLastBanData = async (userId: BigString): Promise<string | null> => 
   return res.data;
 };
 
+const postTransaction = async (
+  authorId: TransactionRegister['authorId'],
+  targetId: TransactionRegister['targetId'],
+  amount: TransactionRegister['amount'],
+  type: TransactionRegister['type'],
+  reason: TransactionRegister['reason'],
+): Promise<void> => {
+  await dataRequest
+    .post('/statistics/transaction', { authorId, targetId, amount, type, reason })
+    .catch(debugError);
+};
+
 export {
   postHuntExecution,
   postBichoResults,
@@ -175,6 +188,7 @@ export {
   getUserProfileInfo,
   getTopGamblingUsers,
   getUserLastBanData,
+  postTransaction,
   getTopHunters,
   getUsersThatMostUsedCommands,
 };
