@@ -9,10 +9,7 @@ import { bot } from '../../index';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { autocompleteInteraction } from '../../structures/command/autocompleteInteraction';
 import { componentExecutor } from '../../structures/command/componentExecutor';
-import {
-  getCommandsCounter,
-  getExperimentsCommandsCounter,
-} from '../../structures/initializePrometheus';
+import { getCommandsCounter } from '../../structures/initializePrometheus';
 import { UsedCommandData } from '../../types/commands';
 import { DatabaseUserSchema } from '../../types/database';
 import { postCommandExecution } from '../../utils/apiRequests/commands';
@@ -131,17 +128,10 @@ const setInteractionCreateEvent = (): void => {
 
     bot.commandsInExecution += 1;
 
-    if (!process.env.NOMICROSERVICES) {
+    if (!process.env.NOMICROSERVICES)
       getCommandsCounter().inc({
         command_name: ctx.interaction.data?.name,
       });
-
-      getExperimentsCommandsCounter().inc({
-        user_id: `${ctx.author.id}`,
-        guild_id: `${ctx.interaction.guildId}`,
-        command_name: ctx.interaction.data?.name,
-      });
-    }
 
     await new Promise((res) => {
       command.execute(ctx, res).catch((err) => {
