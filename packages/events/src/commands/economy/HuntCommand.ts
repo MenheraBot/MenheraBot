@@ -193,13 +193,14 @@ const HuntCommand = createCommand({
 
     await ctx.makeMessage({ embeds: [embed] });
 
-    await postTransaction(
-      `${bot.id}`,
-      `${ctx.author.id}`,
-      result.value,
-      selection,
-      ApiTransactionReason.HUNT_COMMAND,
-    );
+    if (result.value > 0)
+      await postTransaction(
+        `${bot.id}`,
+        `${ctx.author.id}`,
+        result.value,
+        selection,
+        ApiTransactionReason.HUNT_COMMAND,
+      );
 
     await postHuntExecution(
       `${ctx.author.id}`,
