@@ -50,20 +50,42 @@ const ReloadLocalesCommand = createCommand({
     switch (operation) {
       case 'add':
         await starsRepository.addStars(id, value);
+
+        await postTransaction(
+          OWNER_ID,
+          `${id}`,
+          value,
+          'estrelinhas',
+          ApiTransactionReason.SIMON_SAYS_ADD,
+        );
         break;
       case 'remove':
         await starsRepository.removeStars(id, value);
+
+        await postTransaction(
+          OWNER_ID,
+          `${id}`,
+          value,
+          'estrelinhas',
+          ApiTransactionReason.SIMON_SAYS_REMOVE,
+        );
         break;
       case 'set':
         await starsRepository.setStars(id, value);
+
+        await postTransaction(
+          OWNER_ID,
+          `${id}`,
+          value,
+          'estrelinhas',
+          ApiTransactionReason.SIMON_SAYS_SET,
+        );
         break;
     }
 
     await ctx.makeMessage({
       content: `Estrelinhas de <@${id}> alteradas com sucesso :star:\n**Operação**: ${operation}\n**Valor**: ${value}`,
     });
-
-    await postTransaction(OWNER_ID, `${id}`, value, 'estrelinhas', ApiTransactionReason.SIMON_SAYS);
 
     finishCommand();
   },

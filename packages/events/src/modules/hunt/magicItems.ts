@@ -1,6 +1,6 @@
 import { MagicItemsFile } from './types';
 
-const HuntMagicItems: { [id: number]: MagicItemsDatabaseHuntingTypesFile } /* & Object */ = {
+const HuntMagicItems: { [id: number]: MagicItemsFile } /* & Object */ = {
   1: {
     type: 'HUNT_PROBABILITY_BOOST',
     huntType: 'demons',
