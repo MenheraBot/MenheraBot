@@ -1,6 +1,8 @@
-import { Interaction } from 'discordeno/transformers';
+import { Interaction, User, transformUserToDiscordUser } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { CanResolve } from './ChatInputInteractionContext';
+import cacheRepository from '../../database/repositories/cacheRepository';
+import { bot } from '../..';
 
 function getOptionFromInteraction<T>(
   interaction: Interaction,
@@ -44,10 +46,16 @@ function getOptionFromInteraction<T>(
 
   if (!found) return undefined;
 
-  if (shouldResolve)
-    return interaction.data?.resolved?.[shouldResolve]?.get(
+  if (shouldResolve) {
+    const resolved = interaction.data?.resolved?.[shouldResolve]?.get(
       BigInt(found?.value as unknown as string),
     ) as unknown as T;
+
+    if (shouldResolve === 'users')
+      cacheRepository.setDiscordUser(transformUserToDiscordUser(bot, resolved as User));
+
+    return resolved;
+  }
 
   return found?.value as T;
 }

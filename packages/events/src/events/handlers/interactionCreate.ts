@@ -1,6 +1,7 @@
 import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
 import i18next from 'i18next';
 
+import { transformUserToDiscordUser } from 'discordeno/transformers';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import commandRepository from '../../database/repositories/commandRepository';
 import guildRepository from '../../database/repositories/guildRepository';
@@ -19,6 +20,7 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import { getEnviroments } from '../../utils/getEnviroments';
 import { logger } from '../../utils/logger';
 import { millisToSeconds } from '../../utils/miscUtils';
+import cacheRepository from '../../database/repositories/cacheRepository';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -115,6 +117,8 @@ const setInteractionCreateEvent = (): void => {
       command.authorDataFields.length > 0
         ? await userRepository.ensureFindUser(interaction.user.id)
         : null;
+
+    cacheRepository.setDiscordUser(transformUserToDiscordUser(bot, interaction.user));
 
     const guildLocale = i18next.getFixedT(
       await guildRepository.getGuildLanguage(interaction.guildId as bigint),
