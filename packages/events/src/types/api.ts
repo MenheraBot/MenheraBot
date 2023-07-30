@@ -1,4 +1,4 @@
-import { ApiHuntingTypes } from '../modules/hunt/types';
+import { ApiHuntingTypes, DatabaseHuntingTypes } from '../modules/hunt/types';
 
 /* eslint-disable camelcase */
 export interface ApiHuntStats {
@@ -70,4 +70,20 @@ export interface CoinflipTop {
   cf_win_money: number;
   cf_loses: number;
   cf_lose_money: number;
+}
+
+// authorId, targetId, amount, type = estrelinhas/caças, reason = win_bicho, pix_command, buy_themes
+
+export enum ApiTransactionReason {
+  PIX_COMMAND = 'pix_command',
+}
+
+type TransactionType = DatabaseHuntingTypes | 'estrelinhas';
+
+export interface TransactionRegister {
+  authorId: string;
+  targetId: string;
+  amount: number;
+  type: TransactionType;
+  reason: ApiTransactionReason;
 }
