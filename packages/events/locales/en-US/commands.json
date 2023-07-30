@@ -810,5 +810,46 @@
     "select": "Select image",
     "message": "ESelect the image that you wanna use bellow",
     "success": "You have successfully changed your default image!"
+  },
+  "transactions": {
+    "not-found": "The user {{user}} has never used Menhera! How about calling him to know my commands? >,...,<",
+    "no-transactions": "No transaction found for user {{user}}",
+    "not-of-your-business": "**TOP SECRET**\nThe things I do, or don't do, are none of your business. :3",
+    "title": "{{user}}'s transactions | Page {{page}}",
+    "banned-user": "Thi suser is banned from Menhera!",
+    "transactions": {
+      "base": "**• **[<t:{{unix}}:d><t:{{unix}}:T> - <t:{{unix}}:R>] **-** ",
+      "menhera_to_you": "**I** sent **you** **{{amount}}** {{currencyType}} {{emoji}} for {{reason}}",
+      "you_to_menhera": "**You** sent **me** **{{amount}}** {{currencyType}} {{emoji}} for {{reason}}",
+      "user_to_you": "`{{author}}` sent **you** **{{amount}}** {{currencyType}} {{emoji}} for {{reason}}",
+      "you_to_user": "**You** sent **{{amount}}** {{currencyType}} {{emoji}} to `{{target}}` for {{reason}}",
+      "user_to_user": "`{{author}}` sent **{{amount}}** {{currencyType}} {{emoji}} to `{{target}}` for {{reason}}",
+      "menhera_to_user": "**I** sent **{{amount}}** {{currencyType}} {{emoji}} to `{{target}}` for {{reason}}",
+      "user_to_menhera": "`{{author}}` sent **me**  **{{amount}}** {{currencyType}} {{emoji}} for {{reason}}",
+      "menhera_to_menhera": "c2V4bw==",
+      "you_to_you": "c2V4bwo="
+    },
+    "reasons": {
+      "simon_says_add": "||simon says||",
+      "simon_says_remove": "||simon says||",
+      "simon_says_set": "||simon says||",
+      "pix_command": "a gift",
+      "blackjack_command": "betting on blackjack",
+      "blackjack_lost_data": "losing blackjack data",
+      "coinflip_command": "betting on coinflip",
+      "hunt_command": "hunting with Xandão",
+      "roulette_command": "betting on roulette",
+      "win_bicho": "winning the animal's",
+      "bicho_command": "betting on animal's game",
+      "sell_hunt": "selling hunts",
+      "buy_color": "buying color",
+      "buy_roll": "buying rolls",
+      "buy_item": "buying magic items",
+      "buy_image": "buying images",
+      "buy_image_royalty": "profit sharing in image",
+      "buy_theme": "buying themes",
+      "buy_theme_royalty": "profit sharing in theme",
+      "vote_thank": "voting for me >,<"
+    }
   }
 }

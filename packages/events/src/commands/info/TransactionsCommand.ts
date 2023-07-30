@@ -188,6 +188,16 @@ const TransactionsCommand = createCommand({
         }),
       );
 
+    if (userExists.ban && ctx.author.id !== bot.ownerId)
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:transactions.banned-user', {
+            user: getDisplayName(toFindUser),
+          }),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
+
     await ctx.defer();
 
     executeTransactionsCommand(ctx, toFindUser, page, userExists.selectedColor, finishCommand);
