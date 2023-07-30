@@ -16,7 +16,6 @@ import { createCommand } from '../../structures/command/createCommand';
 import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import { getEnviroments } from '../../utils/getEnviroments';
 import { toWritableUtf } from '../../utils/miscUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 
@@ -79,7 +78,7 @@ const ProfileCommand = createCommand({
         ? await userRepository.ensureFindUser(discordUser.id)
         : ctx.authorData;
 
-    if (user.ban && `${ctx.author.id}` !== getEnviroments(['OWNER_ID']).OWNER_ID) {
+    if (user.ban && ctx.author.id !== bot.ownerId) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:perfil.banned', { reason: user.banReason }),
         flags: MessageFlags.EPHEMERAL,

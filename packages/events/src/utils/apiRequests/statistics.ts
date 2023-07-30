@@ -190,11 +190,41 @@ const postTransaction = async (
   );
 };
 
+const getUserTransactions = async (
+  userId: string,
+  page: number,
+): Promise<TransactionRegister[] | null> => {
+  const result = await dataRequest
+    .get(`/statistics/transaction?userId=${userId}&page=${page}`)
+    .catch(() => null);
+
+  if (!result) return null;
+
+  return result.data.map(
+    (res: {
+      author_id: TransactionRegister['authorId'];
+      target_id: TransactionRegister['targetId'];
+      amount: TransactionRegister['amount'];
+      currency_type: TransactionRegister['currencyType'];
+      reason: TransactionRegister['reason'];
+      date: TransactionRegister['date'];
+    }) => ({
+      authorId: res.author_id,
+      targetId: res.target_id,
+      amount: res.amount,
+      currencyType: res.currency_type,
+      reason: res.reason,
+      date: Number(res.date),
+    }),
+  );
+};
+
 export {
   postHuntExecution,
   postBichoResults,
   postCoinflipMatch,
   getMostUsedCommands,
+  getUserTransactions,
   getGamblingGameStats,
   postRoulleteGame,
   postBlackjackGame,

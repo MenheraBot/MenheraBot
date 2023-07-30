@@ -54,6 +54,8 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
 
   const noop = () => undefined;
 
+  await ctx.ack();
+
   if (command === 'economy') {
     const [, type, page] = ctx.sentData;
 

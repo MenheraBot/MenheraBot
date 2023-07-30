@@ -8,12 +8,14 @@ import { debugError } from '../../utils/debugError';
 
 import { MainRedisClient } from '../databases';
 
-const getDiscordUser = async (userId: UserIdType): Promise<User | null> => {
+const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promise<User | null> => {
   if (userId === null) return null;
 
   const fromRedis = await MainRedisClient.get(`discord_user:${userId}`).catch(debugError);
 
   if (!fromRedis) {
+    if (!lookIntoDiscord) return null;
+
     const fromDiscord = await bot.helpers.getUser(BigInt(userId)).catch(() => null);
 
     if (!fromDiscord) return null;

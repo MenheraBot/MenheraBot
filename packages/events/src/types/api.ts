@@ -91,7 +91,7 @@ export enum ApiTransactionReason {
   BUY_IMAGE = 'buy_image',
   BUY_IMAGE_ROYALTY = 'buy_image_royalty',
   BUY_THEME = 'buy_theme',
-  BUY_THEME_ROYALTY = 'buy_theme',
+  BUY_THEME_ROYALTY = 'buy_theme_royalty',
   VOTE_THANK = 'vote_thank',
 }
 
@@ -103,6 +103,7 @@ export interface TransactionRegister {
   amount: number;
   currencyType: TransactionType;
   reason: ApiTransactionReason;
+  date: number;
 }
 
 export interface BanInfo {
