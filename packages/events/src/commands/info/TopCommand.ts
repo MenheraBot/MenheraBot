@@ -54,7 +54,24 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
 
   const noop = () => undefined;
 
-  await ctx.ack();
+  await ctx.makeMessage({
+    components: [
+      createActionRow([
+        createButton({
+          customId: 'UNCLICKABLE_ONE',
+          label: ctx.locale('common:back'),
+          style: ButtonStyles.Primary,
+          disabled: true,
+        }),
+        createButton({
+          customId: 'UNCLICKABLE_TWO',
+          label: ctx.locale('common:next'),
+          style: ButtonStyles.Primary,
+          disabled: true,
+        }),
+      ]),
+    ],
+  });
 
   if (command === 'economy') {
     const [, type, page] = ctx.sentData;

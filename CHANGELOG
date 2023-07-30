@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - **Transações!** - Agora é possível ver transações de usuários da Menhera com o comando `/transações`
 
+### Changed
+
+- Não é mais possível clicar 2 vezes no botão do top enquanto a próxima página carrega
+
 ## [5.6.5] - 2023-07-30
 
 ### Added
