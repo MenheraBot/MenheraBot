@@ -133,8 +133,8 @@ const ProfileCommand = createCommand({
     if (marryData) {
       userData.married = true;
       userData.marry = {
-        username: getDisplayName(discordUser, true),
-        tag: getDisplayName(discordUser, true),
+        username: getDisplayName(marryData, true),
+        tag: getDisplayName(marryData, true),
       };
 
       if (user.marriedAt && user.marriedAt > 0)
