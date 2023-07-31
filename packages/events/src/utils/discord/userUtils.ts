@@ -2,6 +2,7 @@ import { ImageSize, routes } from 'discordeno';
 import { User } from 'discordeno/transformers';
 
 import { bot } from '../../index';
+import { toWritableUtf } from '../miscUtils';
 
 const getUserAvatar = (
   user: User,
@@ -21,8 +22,17 @@ const getUserAvatar = (
 
 const mentionUser = (userId: bigint | string): string => `<@${userId}>`;
 
-const getDisplayName = (user: User): string =>
+const getDisplayName = (user: User, onlyUtf = false): string => {
   // @ts-expect-error It doesnt exists yet
-  user.displayName ? user.displayName : user.username;
+  const { displayName } = user;
+
+  if (!displayName) return user.username;
+
+  const parsed = onlyUtf ? toWritableUtf(displayName) : displayName;
+
+  if (parsed.length < 2) return user.username;
+
+  return parsed;
+};
 
 export { getUserAvatar, mentionUser, getDisplayName };

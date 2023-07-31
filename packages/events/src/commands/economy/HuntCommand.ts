@@ -206,7 +206,7 @@ const HuntCommand = createCommand({
       `${ctx.author.id}`,
       APIHuntTypes[selection],
       result,
-      getDisplayName(ctx.author),
+      getDisplayName(ctx.author, true),
     );
 
     const droppedItem = dropHuntItem(

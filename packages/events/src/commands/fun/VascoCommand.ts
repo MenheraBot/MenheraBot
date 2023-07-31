@@ -1,8 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
 
-import { getUserAvatar } from '../../utils/discord/userUtils';
-import { toWritableUtf } from '../../utils/miscUtils';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 
@@ -52,7 +51,7 @@ const VascoCommand = createCommand({
     const res = await vanGoghRequest(VanGoghEndpoints.Vasco, {
       user: getUserAvatar(user, { size: quality === 'normal' ? 256 : 64 }),
       quality,
-      username: toWritableUtf(user.username),
+      username: getDisplayName(user, true),
       position,
     });
 

@@ -16,7 +16,6 @@ import { createCommand } from '../../structures/command/createCommand';
 import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import { toWritableUtf } from '../../utils/miscUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 
 interface VangoghUserprofileData {
@@ -103,7 +102,7 @@ const ProfileCommand = createCommand({
       mamou: ctx.locale('commands:perfil.mamou'),
       usages: usageCommands
         ? ctx.locale('commands:perfil.commands-usage', {
-            user: toWritableUtf(discordUser.username),
+            user: getDisplayName(discordUser, true),
             usedCount: usageCommands.cmds.count,
             mostUsedCommandName: usageCommands.array[0]?.name ?? '??',
             mostUsedCommandCount: usageCommands.array[0]?.count ?? '??',
@@ -120,9 +119,9 @@ const ProfileCommand = createCommand({
       avatar,
       votes: user.votes,
       info: user.info,
-      tag: toWritableUtf(getDisplayName(discordUser)),
+      tag: getDisplayName(discordUser, true),
       badges: getUserBadges(user, discordUser).map((a) => a.id),
-      username: toWritableUtf(discordUser.username),
+      username: getDisplayName(discordUser, true),
       marryDate: user.marriedDate as string,
       mamadas: user.mamado,
       mamou: user.mamou,
@@ -134,8 +133,8 @@ const ProfileCommand = createCommand({
     if (marryData) {
       userData.married = true;
       userData.marry = {
-        username: toWritableUtf(marryData.username),
-        tag: toWritableUtf(getDisplayName(marryData)),
+        username: getDisplayName(discordUser, true),
+        tag: getDisplayName(discordUser, true),
       };
 
       if (user.marriedAt && user.marriedAt > 0)

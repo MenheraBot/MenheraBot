@@ -3,9 +3,10 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { COLORS, EMOJIS } from '../../structures/constants';
 import { createEmbed } from '../../utils/discord/embedUtils';
-import { randomFromArray, toWritableUtf } from '../../utils/miscUtils';
+import { randomFromArray } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
+import { getDisplayName } from '../../utils/discord/userUtils';
 
 const EighballAnswers: Array<{ id: number; type: 'positive' | 'neutral' | 'negative' }> = [
   {
@@ -166,7 +167,7 @@ const EightballCommand = createCommand({
       question,
       answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id}`),
       type: randomAnswer.type,
-      username: toWritableUtf(ctx.author.username),
+      username: getDisplayName(ctx.author, true),
       backgroundTheme,
       menheraTheme,
       textBoxTheme,
