@@ -849,7 +849,8 @@
       "buy_image_royalty": "profit sharing in image",
       "buy_theme": "buying themes",
       "buy_theme_royalty": "profit sharing in theme",
-      "vote_thank": "voting for me >,<"
+      "vote_thank": "voting for me >,<",
+      "inactivity_punishment": "being inactive on Menhera"
     }
   }
 }

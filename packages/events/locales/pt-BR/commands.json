@@ -853,7 +853,8 @@
       "buy_image_royalty": "participação de lucros em imagem",
       "buy_theme": "comprar tema",
       "buy_theme_royalty": "participação de lucros em tema",
-      "vote_thank": "votar em mim >,<"
+      "vote_thank": "votar em mim >,<",
+      "inactivity_punishment": "ficar inativo na Menhera"
     }
   }
 }

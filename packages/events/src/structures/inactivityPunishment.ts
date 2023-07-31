@@ -1,4 +1,7 @@
+import { bot } from '..';
 import { usersModel } from '../database/collections';
+import { ApiTransactionReason } from '../types/api';
+import { postTransaction } from '../utils/apiRequests/statistics';
 import { getMillisecondsToTheEndOfDay } from '../utils/miscUtils';
 
 let inactiveTimeout: NodeJS.Timeout;
@@ -73,6 +76,18 @@ const inactivityPunishment = async (): Promise<void> => {
       const bulkUpdate = usersModel.collection.initializeUnorderedBulkOp();
 
       ids.forEach((id, index) => {
+        Object.entries(updatedData[index].$inc).map((a) =>
+          a[1] !== 0
+            ? postTransaction(
+                `${id}`,
+                `${bot.id}`,
+                a[1] * -1,
+                a[0] as 'estrelinhas',
+                ApiTransactionReason.INACTIVITY_PUNISHMENT,
+              )
+            : '',
+        );
+
         bulkUpdate.find({ id }).updateOne(updatedData[index]);
       });
 
