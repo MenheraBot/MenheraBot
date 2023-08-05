@@ -35,7 +35,9 @@ const createIpcConnections = async (): Promise<Client> => {
 
   const orchestratorClient = new Client({ path: ORCHESTRATOR_SOCKET_PATH });
 
-  restClient.on('close', () => {
+  restClient.on('close', (reason) => {
+    if (reason === 'REQUESTED_SHUTDOWN') return;
+
     logger.panic('[REST] REST Client closed');
   });
 
@@ -67,10 +69,12 @@ const createIpcConnections = async (): Promise<Client> => {
   orchestratorClient.on('request', async (msg, ack) => {
     switch (msg.type) {
       case 'PROMETHEUS': {
+        bot.commandsInExecution += 1;
         const register = getRegister();
 
         const metrics = await register.metrics();
         ack({ contentType: register.contentType, data: metrics });
+        bot.commandsInExecution -= 1;
         break;
       }
       case 'YOU_ARE_THE_MASTER': {
@@ -95,22 +99,23 @@ const createIpcConnections = async (): Promise<Client> => {
           }, 3000).unref();
         });
 
-        logger.debug('Closing all Database connections');
+        logger.info('[SHUTDOWN] Closing all Database connections');
         await closeConnections();
-        logger.debug('Acked the close to the orchestrator');
+        logger.info('[SHUTDOWN] Acked the close to the orchestrator');
         await ack(process.pid);
-        logger.debug('Closing orchestrator IPC');
-        await orchestratorClient.close('REQUESTED_SHUTDOWN');
-        logger.debug('Closing rest IPC');
+        logger.info('[SHUTDOWN] Closing rest IPC');
         await restClient.close('REQUESTED_SHUTDOWN');
-        logger.debug("I'm tired... I will rest for now");
-        process.exit(0);
+        logger.info('[SHUTDOWN] Closing orchestrator IPC');
+        await orchestratorClient.close('REQUESTED_SHUTDOWN');
+        logger.info("[SHUTDOWN] I'm tired... I will rest for now");
       }
     }
   });
 
-  orchestratorClient.on('close', () => {
+  orchestratorClient.on('close', (reason) => {
     logger.info('[ORCHESTRATOR] Lost connection with Orchestrator');
+
+    if (reason === 'REQUESTED_SHUTDOWN') return;
 
     const reconnectLogic = () => {
       logger.info('[ORCHESTRATOR] Trying to reconnect to orchestrator server');

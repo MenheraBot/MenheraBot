@@ -138,10 +138,10 @@ orchestratorServer.on('disconnect', (conn) => {
 
   if (swappingVersions) {
     if (connectedClients.length === 0) {
-      finishSwap();
       console.log(
         `[DISCONNECT] This last client was the last one to swap versions. Finishing the swap`,
       );
+      finishSwap();
     }
     return;
   }
