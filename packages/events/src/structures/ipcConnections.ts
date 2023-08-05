@@ -35,8 +35,8 @@ const createIpcConnections = async (): Promise<Client> => {
 
   const orchestratorClient = new Client({ path: ORCHESTRATOR_SOCKET_PATH });
 
-  restClient.on('close', (reason) => {
-    if (reason === 'REQUESTED_SHUTDOWN') return;
+  restClient.on('close', () => {
+    if (bot.shuttingDown) return;
 
     logger.panic('[REST] REST Client closed');
   });
@@ -112,10 +112,10 @@ const createIpcConnections = async (): Promise<Client> => {
     }
   });
 
-  orchestratorClient.on('close', (reason) => {
-    logger.info('[ORCHESTRATOR] Lost connection with Orchestrator');
+  orchestratorClient.on('close', () => {
+    if (bot.shuttingDown) return;
 
-    if (reason === 'REQUESTED_SHUTDOWN') return;
+    logger.info('[ORCHESTRATOR] Lost connection with Orchestrator');
 
     const reconnectLogic = () => {
       logger.info('[ORCHESTRATOR] Trying to reconnect to orchestrator server');
