@@ -28,7 +28,7 @@ const getDisplayName = (user: User, onlyUtf = false): string => {
 
   if (!displayName) return user.username;
 
-  const parsed = onlyUtf ? toWritableUtf(displayName) : displayName;
+  const parsed = onlyUtf ? toWritableUtf(displayName).trim() : displayName;
 
   if (parsed.length < 2) return user.username;
 
