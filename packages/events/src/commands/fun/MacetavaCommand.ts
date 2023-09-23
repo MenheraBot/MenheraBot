@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
 
-import { getUserAvatar } from '../../utils/discord/userUtils';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 
@@ -29,6 +29,7 @@ const MacetavaCommand = createCommand({
     const res = await vanGoghRequest(VanGoghEndpoints.Macetava, {
       image: getUserAvatar(link, { enableGif: false, size: 512 }),
       authorName: ctx.author.username,
+      authorDisplayName: getDisplayName(ctx.author, true),
       authorImage: getUserAvatar(ctx.author, { enableGif: false, size: 128 }),
     });
 
