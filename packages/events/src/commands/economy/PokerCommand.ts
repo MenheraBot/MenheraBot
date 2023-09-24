@@ -14,6 +14,7 @@ import blacklistRepository from '../../database/repositories/blacklistRepository
 import { mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, removeNonNumbers } from '../../utils/discord/messageUtils';
+import { setupGame } from '../../modules/poker/matchManager';
 
 const createStartMatchEmbed = (embedColor: number, alreadyInPlayers: string[]): Embed =>
   createEmbed({
@@ -107,12 +108,14 @@ const checkStartMatchInteraction = async (ctx: ComponentInteractionContext): Pro
   await pokerRepository.addUsersInMatch(joinedUsers);
 
   ctx.makeMessage({ embeds: [], components: [], content: 'Iniciando Partida UwU' });
+
+  setupGame(ctx, joinedUsers, ctx.interaction.message?.embeds?.[0]?.color ?? 0);
 };
 
 const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
   const allowedUsers = ctx.interaction.message?.content.split(', ').map(removeNonNumbers) ?? [];
 
-  if (!allowedUsers.includes(`${ctx.user.id}`))
+  if (!allowedUsers.includes(`${ctx.user.id}`) && ctx.user.id !== ctx.commandAuthor.id)
     return ctx.respondInteraction({
       flags: MessageFlags.EPHEMERAL,
       content: 'Você não está convidado a participar dessa partida!',

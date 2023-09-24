@@ -1,0 +1,111 @@
+import cacheRepository from '../../database/repositories/cacheRepository';
+import pokerRepository from '../../database/repositories/pokerRepository';
+import userThemesRepository from '../../database/repositories/userThemesRepository';
+import { InteractionContext } from '../../types/menhera';
+import { createEmbed } from '../../utils/discord/embedUtils';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
+import { shuffleCards } from '../blackjack';
+import { PokerMatch, PokerPlayer } from './types';
+
+const distributeCards = (match: PokerMatch): void => {
+  const shuffledCards = shuffleCards();
+
+  const getCards = <Cards extends 2 | 5>(
+    cards: number[],
+    length: Cards,
+  ): Cards extends 2 ? [number, number] : [number, number, number, number, number] =>
+    Array.from({ length }, () => cards.shift() ?? 0) as Cards extends 2
+      ? [number, number]
+      : [number, number, number, number, number];
+
+  match.players.forEach((player) => {
+    player.cards = getCards(shuffledCards, 2);
+  });
+
+  match.deck = getCards(shuffledCards, 5);
+};
+
+const getOpenedCards = (match: PokerMatch): number[] => {
+  switch (match.stage) {
+    case 'preflop':
+      return [];
+    case 'flop':
+      return [match.deck[0], match.deck[1], match.deck[2]];
+    case 'turn':
+      return [match.deck[0], match.deck[1], match.deck[2], match.deck[3]];
+    case 'river':
+      return [match.deck[0], match.deck[1], match.deck[2], match.deck[3], match.deck[4]];
+    default:
+      return [];
+  }
+};
+
+const createTableMessage = async (ctx: InteractionContext, match: PokerMatch): Promise<void> => {
+  const parseUserToVangogh = (user: PokerPlayer) => ({
+    avatar: user.avatar,
+    name: user.name,
+    chips: user.chips,
+    fold: user.folded,
+    theme: user.backgroundTheme,
+    dealer: match.dealer === user.seatId,
+  });
+
+  const image = await vanGoghRequest(VanGoghEndpoints.PokerTable, {
+    pot: match.pot,
+    users: match.players.map(parseUserToVangogh),
+    cards: getOpenedCards(match),
+  });
+
+  const embed = createEmbed({
+    title: 'Partida de Poker',
+    image: image.err ? undefined : { url: 'attachment://poker.png' },
+  });
+
+  ctx.makeMessage({
+    embeds: [embed],
+    file: image.err ? undefined : { name: 'poker.png', blob: image.data },
+  });
+};
+
+const setupGame = async (
+  ctx: InteractionContext,
+  players: string[],
+  embedColor: number,
+): Promise<void> => {
+  const match: PokerMatch = {
+    masterId: players[0],
+    embedColor,
+    players: await Promise.all(
+      players.map(async (p, i) => {
+        const discordUser = await cacheRepository.getDiscordUser(p, false);
+        const userThemes = await userThemesRepository.getThemesForPoker(p);
+
+        return {
+          id: p,
+          name: discordUser ? getDisplayName(discordUser, true) : '???',
+          avatar: discordUser
+            ? getUserAvatar(discordUser, { size: 128 })
+            : 'https://cdn.menherabot.xyz/images/profiles/1.png',
+          cardTheme: userThemes[0],
+          backgroundTheme: userThemes[1],
+          chips: i === 0 ? 3423 : 1000000,
+          seatId: i,
+          cards: [0, 0],
+          folded: false,
+        };
+      }),
+    ),
+    deck: [0, 0, 0, 0, 0],
+    stage: 'preflop',
+    dealer: 0,
+    pot: 12332,
+  };
+
+  distributeCards(match);
+
+  await pokerRepository.setPokerMatchState(ctx.interaction.id, match);
+  await createTableMessage(ctx, match);
+};
+
+export { setupGame };
