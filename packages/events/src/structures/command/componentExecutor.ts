@@ -13,6 +13,7 @@ import ComponentInteractionContext from './ComponentInteractionContext';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getEnviroments } from '../../utils/getEnviroments';
 import { ComponentInteraction } from '../../types/interaction';
+import cacheRepository from '../../database/repositories/cacheRepository';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -21,6 +22,8 @@ const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
 
 const componentExecutor = async (interaction: Interaction): Promise<void> => {
   const receivedCommandName = interaction.message?.interaction?.name;
+
+  cacheRepository.setDiscordUser(bot.transformers.reverse.user(bot, interaction.user));
 
   if (!receivedCommandName) return;
   if (!interaction.data?.customId) return;

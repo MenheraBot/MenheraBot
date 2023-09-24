@@ -1,7 +1,9 @@
+import { ButtonStyles } from 'discordeno/types';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { InteractionContext } from '../../types/menhera';
+import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
@@ -41,6 +43,17 @@ const getOpenedCards = (match: PokerMatch): number[] => {
   }
 };
 
+const updatePlayerTurn = (match: PokerMatch, lastPlayed: number): void => {
+  const nextSeat = lastPlayed + 1;
+
+  if (match.players.some((a) => a.seatId === nextSeat)) {
+    match.seatToPlay = nextSeat;
+    return;
+  }
+
+  return updatePlayerTurn(match, nextSeat);
+};
+
 const createTableMessage = async (ctx: InteractionContext, match: PokerMatch): Promise<void> => {
   const parseUserToVangogh = (user: PokerPlayer) => ({
     avatar: user.avatar,
@@ -48,7 +61,7 @@ const createTableMessage = async (ctx: InteractionContext, match: PokerMatch): P
     chips: user.chips,
     fold: user.folded,
     theme: user.backgroundTheme,
-    dealer: match.dealer === user.seatId,
+    dealer: match.dealerSeat === user.seatId,
   });
 
   const image = await vanGoghRequest(VanGoghEndpoints.PokerTable, {
@@ -59,12 +72,32 @@ const createTableMessage = async (ctx: InteractionContext, match: PokerMatch): P
 
   const embed = createEmbed({
     title: 'Partida de Poker',
+    color: match.embedColor,
     image: image.err ? undefined : { url: 'attachment://poker.png' },
+  });
+
+  const seeCardsButton = createButton({
+    label: 'Ver Cartas',
+    style: ButtonStyles.Primary,
+    customId: createCustomId(2, 'N', ctx.commandId, match.matchId, 'SEE_CARDS'),
+  });
+
+  const makeActionButton = createButton({
+    label: 'Apostar',
+    style: ButtonStyles.Success,
+    customId: createCustomId(
+      2,
+      match.players.find((a) => a.seatId === match.seatToPlay)?.id ?? 0n,
+      ctx.commandId,
+      match.matchId,
+      'SHOW_ACTIONS',
+    ),
   });
 
   ctx.makeMessage({
     embeds: [embed],
     file: image.err ? undefined : { name: 'poker.png', blob: image.data },
+    components: [createActionRow([seeCardsButton, makeActionButton])],
   });
 };
 
@@ -74,6 +107,7 @@ const setupGame = async (
   embedColor: number,
 ): Promise<void> => {
   const match: PokerMatch = {
+    matchId: `${ctx.interaction.id}`,
     masterId: players[0],
     embedColor,
     players: await Promise.all(
@@ -93,13 +127,20 @@ const setupGame = async (
           seatId: i,
           cards: [0, 0],
           folded: false,
+          pot: 0,
         };
       }),
     ),
     deck: [0, 0, 0, 0, 0],
     stage: 'preflop',
-    dealer: 0,
+    dealerSeat: 0,
+    seatToPlay: 0,
     pot: 12332,
+    lastAction: {
+      action: 'CALL',
+      playerSeat: 1,
+      pot: 10,
+    },
   };
 
   distributeCards(match);

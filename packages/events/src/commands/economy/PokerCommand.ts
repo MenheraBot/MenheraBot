@@ -9,12 +9,55 @@ import {
 } from '../../utils/discord/componentUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import pokerRepository from '../../database/repositories/pokerRepository';
-import { SelectMenuUsersInteraction } from '../../types/interaction';
+import { SelectMenuInteraction, SelectMenuUsersInteraction } from '../../types/interaction';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, removeNonNumbers } from '../../utils/discord/messageUtils';
 import { setupGame } from '../../modules/poker/matchManager';
+import { displayActions, showPlayerCards } from '../../modules/poker/playerControl';
+import { handleGameAction } from '../../modules/poker/handleGameAction';
+
+const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [matchId, action] = ctx.sentData;
+
+  const gameData = await pokerRepository.getPokerMatchState(matchId);
+
+  if (!gameData)
+    return ctx.makeMessage({
+      content: 'Essa partida não existe mais',
+      embeds: [],
+      components: [],
+      attachments: [],
+    });
+
+  if (!gameData.players.map((a) => a.id).includes(`${ctx.user.id}`))
+    return ctx.makeMessage({
+      content: 'Você não está participando dessa mesa de Poker!',
+      flags: MessageFlags.EPHEMERAL,
+    });
+
+  const player = gameData.players.find((a) => a.id === `${ctx.user.id}`);
+
+  if (!player)
+    return ctx.makeMessage({
+      flags: MessageFlags.EPHEMERAL,
+      content: 'Você não está mais nesta mesa!',
+    });
+
+  switch (action) {
+    case 'SEE_CARDS':
+      return showPlayerCards(ctx, gameData, player);
+    case 'SHOW_ACTIONS':
+      return displayActions(ctx, gameData, player);
+    case 'GAME_ACTION':
+      return handleGameAction(
+        ctx as ComponentInteractionContext<SelectMenuInteraction>,
+        gameData,
+        player,
+      );
+  }
+};
 
 const createStartMatchEmbed = (embedColor: number, alreadyInPlayers: string[]): Embed =>
   createEmbed({
@@ -149,7 +192,7 @@ const PokerCommand = createCommand({
   descriptionLocalizations: { 'en-US': '「💳」・Manage poker matches' },
   category: 'economy',
   authorDataFields: ['estrelinhas'],
-  commandRelatedExecutions: [selectPlayers, checkStartMatchInteraction],
+  commandRelatedExecutions: [selectPlayers, checkStartMatchInteraction, gameInteractions],
   execute: async (ctx, finishCommand) => {
     finishCommand();
 
