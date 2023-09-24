@@ -9,17 +9,27 @@ export interface PokerPlayer {
   chips: number;
   seatId: number;
   cards: [number, number];
+  pot: number;
   folded: boolean;
 }
 
 type GameStages = 'preflop' | 'flop' | 'turn' | 'river';
 
+type Action = 'FOLD' | 'CHECK' | 'CALL' | 'RAISE' | 'ALLIN';
+
 export interface PokerMatch {
+  matchId: string;
   masterId: string;
   embedColor: number;
   players: PokerPlayer[];
   deck: [number, number, number, number, number];
   stage: GameStages;
-  dealer: number;
+  dealerSeat: number;
+  seatToPlay: number;
   pot: number;
+  lastAction: {
+    action: Action;
+    pot: number;
+    playerSeat: number;
+  };
 }
