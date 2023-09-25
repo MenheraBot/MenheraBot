@@ -15,7 +15,7 @@ export interface PokerPlayer {
 
 type GameStages = 'preflop' | 'flop' | 'turn' | 'river';
 
-type Action = 'FOLD' | 'CHECK' | 'CALL' | 'RAISE' | 'ALLIN';
+export type Action = 'FOLD' | 'CHECK' | 'CALL' | 'RAISE' | 'ALLIN';
 
 export interface PokerMatch {
   matchId: string;

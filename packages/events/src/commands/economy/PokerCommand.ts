@@ -9,14 +9,18 @@ import {
 } from '../../utils/discord/componentUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import pokerRepository from '../../database/repositories/pokerRepository';
-import { SelectMenuInteraction, SelectMenuUsersInteraction } from '../../types/interaction';
+import {
+  ModalInteraction,
+  SelectMenuInteraction,
+  SelectMenuUsersInteraction,
+} from '../../types/interaction';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, removeNonNumbers } from '../../utils/discord/messageUtils';
 import { setupGame } from '../../modules/poker/matchManager';
 import { displayActions, showPlayerCards } from '../../modules/poker/playerControl';
-import { handleGameAction } from '../../modules/poker/handleGameAction';
+import { handleGameAction, validateUserBet } from '../../modules/poker/handleGameAction';
 
 const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [matchId, action] = ctx.sentData;
@@ -47,12 +51,18 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
 
   switch (action) {
     case 'SEE_CARDS':
-      return showPlayerCards(ctx, gameData, player);
+      return showPlayerCards(ctx, player);
     case 'SHOW_ACTIONS':
       return displayActions(ctx, gameData, player);
     case 'GAME_ACTION':
       return handleGameAction(
         ctx as ComponentInteractionContext<SelectMenuInteraction>,
+        gameData,
+        player,
+      );
+    case 'RAISE_BET':
+      return validateUserBet(
+        ctx as ComponentInteractionContext<ModalInteraction>,
         gameData,
         player,
       );
