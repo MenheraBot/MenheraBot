@@ -51,6 +51,7 @@ const getOpenedCards = (match: PokerMatch): number[] => {
     case 'turn':
       return [match.deck[0], match.deck[1], match.deck[2], match.deck[3]];
     case 'river':
+    case 'showdown':
       return [match.deck[0], match.deck[1], match.deck[2], match.deck[3], match.deck[4]];
     default:
       return [];
@@ -60,7 +61,7 @@ const getOpenedCards = (match: PokerMatch): number[] => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ShowdownUserHands = { hand: any; player: PokerPlayer };
 
-const showdown = async (ctx: ComponentInteractionContext, match: PokerMatch): Promise<void> => {
+const makeShowdown = async (ctx: ComponentInteractionContext, match: PokerMatch): Promise<void> => {
   const userHands = match.players.reduce<ShowdownUserHands[]>((p, c) => {
     if (c.folded) return p;
 
@@ -68,6 +69,8 @@ const showdown = async (ctx: ComponentInteractionContext, match: PokerMatch): Pr
       ...c.cards.map((card) => getPokerCard(card).solverValue),
       ...getOpenedCards(match).map((card) => getPokerCard(card).solverValue),
     ];
+
+    console.log(cardsToUse);
 
     const hand = PokerSolver.Hand.solve(cardsToUse);
 
@@ -92,27 +95,70 @@ const showdown = async (ctx: ComponentInteractionContext, match: PokerMatch): Pr
   );
 };
 
-const finishRound = (
+const getTableImage = async (match: PokerMatch, showdown: boolean) => {
+  const parseUserToVangogh = (user: PokerPlayer) => ({
+    avatar: user.avatar,
+    name: user.name,
+    chips: user.chips,
+    fold: user.folded,
+    cards: user.cards,
+    theme: user.backgroundTheme,
+    dealer: match.dealerSeat === user.seatId,
+  });
+
+  return vanGoghRequest(VanGoghEndpoints.PokerTable, {
+    pot: match.pot,
+    users: match.players.map(parseUserToVangogh),
+    cards: getOpenedCards(match),
+    showdown,
+  });
+};
+
+const finishRound = async (
   ctx: ComponentInteractionContext,
   match: PokerMatch,
   winners: PokerPlayer[],
   reason: string,
-): void => {
+): Promise<void> => {
   const moneyForEach = Math.floor(match.pot / winners.length);
 
   winners.forEach((player) => {
     player.chips += moneyForEach;
   });
 
+  const image = await getTableImage(match, true);
+
+  const embed = createEmbed({
+    title: 'Partida de Poker',
+    color: match.embedColor,
+    image: image.err ? undefined : { url: 'attachment://poker.png' },
+  });
+
+  const nextMatch = createButton({
+    label: 'Continuar jogando',
+    style: ButtonStyles.Success,
+    customId: createCustomId(2, match.masterId, ctx.commandId, match.matchId, 'CONTINUE'),
+  });
+
+  const finishPoker = createButton({
+    label: 'Fechar mesa',
+    style: ButtonStyles.Danger,
+    customId: createCustomId(2, match.masterId, ctx.commandId, match.matchId, 'STOP'),
+  });
+
+  await pokerRepository.setPokerMatchState(match.matchId, match);
+
   ctx.makeMessage({
+    embeds: [embed],
+    attachments: [],
+    file: image.err ? undefined : { name: 'poker.png', blob: image.data },
+    components: [createActionRow([nextMatch, finishPoker])],
     content: `${winners
       .map((a) => mentionUser(a.id))
       .join(', ')} venceu essa rodada! Um total de **${
       match.pot
     }** fichas diretamente para seu bolso!\nMotivo: ${reason}`,
   });
-
-  pokerRepository.setPokerMatchState(match.matchId, match);
 };
 
 const createTableMessage = async (
@@ -120,20 +166,7 @@ const createTableMessage = async (
   match: PokerMatch,
   lastActionMessage = '',
 ): Promise<void> => {
-  const parseUserToVangogh = (user: PokerPlayer) => ({
-    avatar: user.avatar,
-    name: user.name,
-    chips: user.chips,
-    fold: user.folded,
-    theme: user.backgroundTheme,
-    dealer: match.dealerSeat === user.seatId,
-  });
-
-  const image = await vanGoghRequest(VanGoghEndpoints.PokerTable, {
-    pot: match.pot,
-    users: match.players.map(parseUserToVangogh),
-    cards: getOpenedCards(match),
-  });
+  const image = await getTableImage(match, false);
 
   const embed = createEmbed({
     title: 'Partida de Poker',
@@ -216,4 +249,4 @@ const setupGame = async (
   await createTableMessage(ctx, match);
 };
 
-export { setupGame, createTableMessage, finishRound, changeStage, showdown };
+export { setupGame, createTableMessage, finishRound, changeStage, makeShowdown };

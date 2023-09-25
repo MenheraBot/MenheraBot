@@ -5,7 +5,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
 
 import { mentionUser } from '../../utils/discord/userUtils';
-import { changeStage, createTableMessage, finishRound, showdown } from './matchManager';
+import { changeStage, createTableMessage, finishRound, makeShowdown } from './matchManager';
 import { Action, PokerMatch, PokerPlayer } from './types';
 import {
   createActionRow,
@@ -62,7 +62,7 @@ const updateGameState = async (
 
   await pokerRepository.setPokerMatchState(gameData.matchId, gameData);
 
-  if (gameData.stage === 'showdown') return showdown(ctx, gameData);
+  if (gameData.stage === 'showdown') return makeShowdown(ctx, gameData);
 
   createTableMessage(ctx, gameData, `${mentionUser(ctx.user.id)} desistiu de sua mão.`);
 };
