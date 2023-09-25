@@ -5,7 +5,7 @@ import userThemesRepository from '../../database/repositories/userThemesReposito
 import { InteractionContext } from '../../types/menhera';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
+import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { shuffleCards } from '../blackjack';
 import { PokerMatch, PokerPlayer } from './types';
@@ -43,18 +43,11 @@ const getOpenedCards = (match: PokerMatch): number[] => {
   }
 };
 
-const updatePlayerTurn = (match: PokerMatch, lastPlayed: number): void => {
-  const nextSeat = lastPlayed + 1;
-
-  if (match.players.some((a) => a.seatId === nextSeat)) {
-    match.seatToPlay = nextSeat;
-    return;
-  }
-
-  return updatePlayerTurn(match, nextSeat);
-};
-
-const createTableMessage = async (ctx: InteractionContext, match: PokerMatch): Promise<void> => {
+const createTableMessage = async (
+  ctx: InteractionContext,
+  match: PokerMatch,
+  lastActionMessage = '',
+): Promise<void> => {
   const parseUserToVangogh = (user: PokerPlayer) => ({
     avatar: user.avatar,
     name: user.name,
@@ -82,21 +75,22 @@ const createTableMessage = async (ctx: InteractionContext, match: PokerMatch): P
     customId: createCustomId(2, 'N', ctx.commandId, match.matchId, 'SEE_CARDS'),
   });
 
+  const nextPlayer = match.players.find((a) => a.seatId === match.seatToPlay)?.id ?? 0n;
+
   const makeActionButton = createButton({
     label: 'Apostar',
     style: ButtonStyles.Success,
-    customId: createCustomId(
-      2,
-      match.players.find((a) => a.seatId === match.seatToPlay)?.id ?? 0n,
-      ctx.commandId,
-      match.matchId,
-      'SHOW_ACTIONS',
-    ),
+    customId: createCustomId(2, nextPlayer, ctx.commandId, match.matchId, 'SHOW_ACTIONS'),
   });
 
   ctx.makeMessage({
+    content: `${lastActionMessage}\n\n**O jogador ${mentionUser(
+      nextPlayer,
+    )} deve escolher sua ação**`,
+    allowedMentions: { users: [BigInt(nextPlayer)] },
     embeds: [embed],
     file: image.err ? undefined : { name: 'poker.png', blob: image.data },
+    attachments: [],
     components: [createActionRow([seeCardsButton, makeActionButton])],
   });
 };
@@ -149,4 +143,4 @@ const setupGame = async (
   await createTableMessage(ctx, match);
 };
 
-export { setupGame };
+export { setupGame, createTableMessage };

@@ -14,9 +14,10 @@ import { PokerMatch, PokerPlayer } from './types';
 
 const showPlayerCards = async (
   ctx: ComponentInteractionContext,
-  match: PokerMatch,
   player: PokerPlayer,
 ): Promise<void> => {
+  await ctx.visibleAck(true);
+
   const image = await vanGoghRequest(VanGoghEndpoints.PokerHand, {
     cards: player.cards,
     theme: player.cardTheme,
@@ -26,14 +27,14 @@ const showPlayerCards = async (
 
   const embed = createEmbed({
     title: 'Sua Mão',
+    footer: player.folded ? { text: 'Você não está mais participando desta rodada!' } : undefined,
     color: hexStringToNumber(authorData.selectedColor),
     image: image.err ? undefined : { url: 'attachment://poker.png' },
   });
 
-  await ctx.respondInteraction({
+  await ctx.makeMessage({
     embeds: [embed],
-    // FIXME: Discord is not accepting this image!
-    // file: image.err ? undefined : { name: 'poker.png', blob: image.data },
+    file: image.err ? undefined : { name: 'poker.png', blob: image.data },
     flags: MessageFlags.EPHEMERAL,
   });
 };

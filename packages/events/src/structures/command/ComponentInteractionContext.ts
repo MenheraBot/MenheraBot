@@ -8,6 +8,7 @@ import { Translation } from '../../types/i18next';
 import { ComponentInteraction } from '../../types/interaction';
 import { logger } from '../../utils/logger';
 import { EMOJIS } from '../constants';
+import { MessageFlags } from '../../utils/discord/messageUtils';
 
 export type CanResolve = 'users' | 'members' | false;
 
@@ -72,6 +73,19 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
         type: InteractionResponseTypes.DeferredUpdateMessage,
       })
       .catch(this.captureException.bind(this));
+  }
+
+  async visibleAck(ephemeral: boolean): Promise<void> {
+    if (this.replied) return;
+
+    this.replied = true;
+
+    await bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
+      type: InteractionResponseTypes.DeferredChannelMessageWithSource,
+      data: {
+        flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
+      },
+    });
   }
 
   async respondInteraction(
