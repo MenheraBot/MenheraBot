@@ -13,7 +13,7 @@ export interface PokerPlayer {
   folded: boolean;
 }
 
-type GameStages = 'preflop' | 'flop' | 'turn' | 'river';
+type GameStages = 'preflop' | 'flop' | 'turn' | 'river' | 'showdown';
 
 export type Action = 'FOLD' | 'CHECK' | 'CALL' | 'RAISE' | 'ALLIN';
 
@@ -35,6 +35,7 @@ export interface PokerMatch {
   deck: [number, number, number, number, number];
   stage: GameStages;
   dealerSeat: number;
+  lastPlayerSeat: number;
   seatToPlay: number;
   pot: number;
   lastAction: {

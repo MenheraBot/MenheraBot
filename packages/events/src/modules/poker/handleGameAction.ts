@@ -5,7 +5,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
 
 import { mentionUser } from '../../utils/discord/userUtils';
-import { createTableMessage, finishRound } from './matchManager';
+import { changeStage, createTableMessage, finishRound, showdown } from './matchManager';
 import { Action, PokerMatch, PokerPlayer } from './types';
 import {
   createActionRow,
@@ -29,6 +29,16 @@ const updatePlayerTurn = (match: PokerMatch): void => {
     match.players.some((a) => a.seatId === nextSeat) &&
     match.players.find((a) => a.seatId === nextSeat)!.folded === false
   ) {
+    const currentPlayer = match.players.find((a) => a.seatId === match.lastAction.playerSeat)!;
+    const nextPlayer = match.players.find((a) => a.seatId === nextSeat)!;
+
+    const isLastPlayer = currentPlayer.seatId === match.lastPlayerSeat;
+
+    if (isLastPlayer && (currentPlayer.folded || currentPlayer.pot === nextPlayer.pot))
+      changeStage(match);
+
+    if (isLastPlayer && currentPlayer.folded) match.lastPlayerSeat = nextPlayer.seatId;
+
     match.seatToPlay = nextSeat;
     return;
   }
@@ -41,6 +51,7 @@ const updateGameState = async (
   gameData: PokerMatch,
 ): Promise<void> => {
   updatePlayerTurn(gameData);
+
   if (gameData.players.filter((a) => !a.folded).length === 1)
     return finishRound(
       ctx,
@@ -50,6 +61,8 @@ const updateGameState = async (
     );
 
   await pokerRepository.setPokerMatchState(gameData.matchId, gameData);
+
+  if (gameData.stage === 'showdown') return showdown(ctx, gameData);
 
   createTableMessage(ctx, gameData, `${mentionUser(ctx.user.id)} desistiu de sua mão.`);
 };
