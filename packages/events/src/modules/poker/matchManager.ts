@@ -1,4 +1,5 @@
 import { ButtonStyles } from 'discordeno/types';
+import PokerSolver from 'pokersolver';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
@@ -10,6 +11,7 @@ import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { shuffleCards } from '../blackjack';
 import { PokerMatch, PokerPlayer } from './types';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { getPokerCard } from './cardUtils';
 
 const distributeCards = (match: PokerMatch): void => {
   const shuffledCards = shuffleCards();
@@ -29,6 +31,17 @@ const distributeCards = (match: PokerMatch): void => {
   match.deck = getCards(shuffledCards, 5);
 };
 
+const changeStage = (match: PokerMatch): void => {
+  const stages: { [x: string]: PokerMatch['stage'] } = {
+    preflop: 'flop',
+    flop: 'turn',
+    turn: 'river',
+    river: 'showdown',
+  };
+
+  match.stage = stages[match.stage];
+};
+
 const getOpenedCards = (match: PokerMatch): number[] => {
   switch (match.stage) {
     case 'preflop':
@@ -44,7 +57,7 @@ const getOpenedCards = (match: PokerMatch): number[] => {
   }
 };
 
-/* // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ShowdownUserHands = { hand: any; player: PokerPlayer };
 
 const showdown = async (ctx: ComponentInteractionContext, match: PokerMatch): Promise<void> => {
@@ -52,17 +65,17 @@ const showdown = async (ctx: ComponentInteractionContext, match: PokerMatch): Pr
     if (c.folded) return p;
 
     const cardsToUse = [
-      c.cards.map((card) => getPokerCard(card).solverValue),
-      getOpenedCards(match).map((card) => getPokerCard(card).solverValue),
+      ...c.cards.map((card) => getPokerCard(card).solverValue),
+      ...getOpenedCards(match).map((card) => getPokerCard(card).solverValue),
     ];
 
-    const hand = Hand.solve(cardsToUse);
+    const hand = PokerSolver.Hand.solve(cardsToUse);
 
     p.push({ hand, player: c });
     return p;
   }, []);
 
-  const winners = Hand.winners(userHands.map((a) => a.hand)).map(
+  const winners = PokerSolver.Hand.winners(userHands.map((a) => a.hand)).map(
     (a: { cards: unknown; suits: unknown }) =>
       userHands.find((b) => b.hand.cards === a.cards && b.hand.suits === a.suits),
   );
@@ -77,7 +90,7 @@ const showdown = async (ctx: ComponentInteractionContext, match: PokerMatch): Pr
     winners.map((a: ShowdownUserHands) => a.player),
     winReason,
   );
-}; */
+};
 
 const finishRound = (
   ctx: ComponentInteractionContext,
@@ -187,6 +200,7 @@ const setupGame = async (
     deck: [0, 0, 0, 0, 0],
     stage: 'preflop',
     dealerSeat: 0,
+    lastPlayerSeat: 0,
     seatToPlay: 0,
     pot: 12332,
     lastAction: {
@@ -202,4 +216,4 @@ const setupGame = async (
   await createTableMessage(ctx, match);
 };
 
-export { setupGame, createTableMessage, finishRound };
+export { setupGame, createTableMessage, finishRound, changeStage, showdown };
