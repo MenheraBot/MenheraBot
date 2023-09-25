@@ -31,6 +31,7 @@
     "md5": "^2.3.0",
     "mongoose": "^6.11.3",
     "net-ipc": "^2.0.1",
+    "pokersolver": "^2.1.4",
     "prom-client": "^14.1.1",
     "string-similarity": "^4.0.4"
   },
