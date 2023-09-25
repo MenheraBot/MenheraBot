@@ -17,6 +17,16 @@ type GameStages = 'preflop' | 'flop' | 'turn' | 'river';
 
 export type Action = 'FOLD' | 'CHECK' | 'CALL' | 'RAISE' | 'ALLIN';
 
+export type CARD_SUITE = 'SPADES' | 'HEARTS' | 'DIAMONDS' | 'CLUBS';
+
+export interface PokerCard {
+  id: number;
+  value: number;
+  displayValue: string;
+  suit: CARD_SUITE;
+  solverValue: string;
+}
+
 export interface PokerMatch {
   matchId: string;
   masterId: string;

@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { TextStyles } from 'discordeno/types';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
 
 import { mentionUser } from '../../utils/discord/userUtils';
-import { createTableMessage } from './matchManager';
+import { createTableMessage, finishRound } from './matchManager';
 import { Action, PokerMatch, PokerPlayer } from './types';
 import {
   createActionRow,
@@ -26,7 +27,7 @@ const updatePlayerTurn = (match: PokerMatch): void => {
 
   if (
     match.players.some((a) => a.seatId === nextSeat) &&
-    match.players.find((a) => a.seatId === nextSeat)?.folded === false
+    match.players.find((a) => a.seatId === nextSeat)!.folded === false
   ) {
     match.seatToPlay = nextSeat;
     return;
@@ -40,6 +41,13 @@ const updateGameState = async (
   gameData: PokerMatch,
 ): Promise<void> => {
   updatePlayerTurn(gameData);
+  if (gameData.players.filter((a) => !a.folded).length === 1)
+    return finishRound(
+      ctx,
+      gameData,
+      [gameData.players.find((a) => a.seatId === gameData.seatToPlay)!],
+      'FOLDED',
+    );
 
   await pokerRepository.setPokerMatchState(gameData.matchId, gameData);
 
@@ -136,7 +144,6 @@ const handleGameAction = async (
       minLength: `${minValue}`.length,
       maxLength: `${player.chips}`.length,
       required: true,
-      value: `${minValue}`,
       placeholder: `O valor deve ser maior que ${minValue}`,
     });
 

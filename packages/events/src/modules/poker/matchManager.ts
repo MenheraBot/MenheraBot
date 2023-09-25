@@ -9,6 +9,7 @@ import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { shuffleCards } from '../blackjack';
 import { PokerMatch, PokerPlayer } from './types';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 
 const distributeCards = (match: PokerMatch): void => {
   const shuffledCards = shuffleCards();
@@ -41,6 +42,64 @@ const getOpenedCards = (match: PokerMatch): number[] => {
     default:
       return [];
   }
+};
+
+/* // eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ShowdownUserHands = { hand: any; player: PokerPlayer };
+
+const showdown = async (ctx: ComponentInteractionContext, match: PokerMatch): Promise<void> => {
+  const userHands = match.players.reduce<ShowdownUserHands[]>((p, c) => {
+    if (c.folded) return p;
+
+    const cardsToUse = [
+      c.cards.map((card) => getPokerCard(card).solverValue),
+      getOpenedCards(match).map((card) => getPokerCard(card).solverValue),
+    ];
+
+    const hand = Hand.solve(cardsToUse);
+
+    p.push({ hand, player: c });
+    return p;
+  }, []);
+
+  const winners = Hand.winners(userHands.map((a) => a.hand)).map(
+    (a: { cards: unknown; suits: unknown }) =>
+      userHands.find((b) => b.hand.cards === a.cards && b.hand.suits === a.suits),
+  );
+
+  const winReason = winners[0].hand.descr.includes('Royal Flush')
+    ? 'STRAIGHT-FLUSH-ROYAL'
+    : winners[0].hand.name.replace(' ', '-').toUpperCase();
+
+  finishRound(
+    ctx,
+    match,
+    winners.map((a: ShowdownUserHands) => a.player),
+    winReason,
+  );
+}; */
+
+const finishRound = (
+  ctx: ComponentInteractionContext,
+  match: PokerMatch,
+  winners: PokerPlayer[],
+  reason: string,
+): void => {
+  const moneyForEach = Math.floor(match.pot / winners.length);
+
+  winners.forEach((player) => {
+    player.chips += moneyForEach;
+  });
+
+  ctx.makeMessage({
+    content: `${winners
+      .map((a) => mentionUser(a.id))
+      .join(', ')} venceu essa rodada! Um total de **${
+      match.pot
+    }** fichas diretamente para seu bolso!\nMotivo: ${reason}`,
+  });
+
+  pokerRepository.setPokerMatchState(match.matchId, match);
 };
 
 const createTableMessage = async (
@@ -143,4 +202,4 @@ const setupGame = async (
   await createTableMessage(ctx, match);
 };
 
-export { setupGame, createTableMessage };
+export { setupGame, createTableMessage, finishRound };
