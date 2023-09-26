@@ -41,6 +41,7 @@ const changeStage = (match: PokerMatch): void => {
     turn: 'river',
     river: 'showdown',
   };
+  match.raises = 0;
 
   match.stage = stages[match.stage];
 };
@@ -168,11 +169,12 @@ const finishRound = async (
     attachments: [],
     file: image.err ? undefined : { name: 'poker.png', blob: image.data },
     components: [createActionRow([nextMatch, finishPoker])],
+    allowedMentions: { users: winners.map((a) => BigInt(a.id)) },
     content: `${winners
       .map((a) => mentionUser(a.id))
-      .join(', ')} venceu essa rodada! Um total de **${
-      match.pot
-    }** fichas diretamente para seu bolso!\nMotivo: ${reason}`,
+      .join(
+        ', ',
+      )} venceu essa rodada! Um total de **${moneyForEach}** fichas diretamente para seu bolso!\nMotivo: ${reason}`,
   });
 };
 
@@ -245,6 +247,8 @@ const setupGame = async (
     communityCards: [0, 0, 0, 0, 0],
     stage: 'preflop',
     dealerSeat: 0,
+    blind: 100,
+    raises: 0,
     winnerSeat: MAX_POKER_PLAYERS,
     lastPlayerSeat: 0,
     seatToPlay: 0,

@@ -17,6 +17,7 @@ import {
   createActionRow,
   createCustomId,
   createTextInput,
+  resolveSeparatedStrings,
 } from '../../utils/discord/componentUtils';
 import { extractFields } from '../../utils/discord/modalUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
@@ -103,7 +104,7 @@ const validateUserBet = async (
   const userInput = extractFields(ctx.interaction)[0].value;
   const bet = parseInt(userInput, 10);
 
-  const minValue = gameData.lastAction.pot - player.pot;
+  const minValue = (gameData.lastAction.pot - player.pot) * 2;
 
   if (Number.isNaN(bet))
     return ctx.respondInteraction({
@@ -131,6 +132,8 @@ const validateUserBet = async (
     player.pot += toBet;
     gameData.pot += toBet;
 
+    gameData.raises += 1;
+
     gameData.lastAction = {
       action: 'ALLIN',
       playerSeat: player.seatId,
@@ -141,24 +144,11 @@ const validateUserBet = async (
     return updateGameState(ctx, gameData);
   }
 
-  if (bet === gameData.lastAction.pot - player.pot) {
-    const toBet = gameData.lastAction.pot - player.pot;
-    player.chips -= toBet;
-    player.pot += toBet;
-    gameData.pot += toBet;
-
-    gameData.lastAction = {
-      action: 'CALL',
-      playerSeat: player.seatId,
-      pot: player.pot,
-    };
-
-    return updateGameState(ctx, gameData);
-  }
-
   player.chips -= bet;
   player.pot += bet;
   gameData.pot += bet;
+
+  gameData.raises += 1;
 
   gameData.lastAction = {
     action: 'RAISE',
@@ -176,10 +166,13 @@ const handleGameAction = async (
   gameData: PokerMatch,
   player: PokerPlayer,
 ): Promise<void> => {
-  const action = ctx.interaction.data.values[0] as Action;
+  const [action, amount] = resolveSeparatedStrings(ctx.interaction.data.values[0]) as [
+    Action,
+    string,
+  ];
 
-  if (action === 'RAISE') {
-    const minValue = gameData.lastAction.pot - player.pot + 1;
+  if (action === 'RAISE' && amount === 'CUSTOM') {
+    const minValue = (gameData.lastAction.pot - player.pot) * 2;
 
     const choseValue = createTextInput({
       customId: 'BET',
@@ -225,7 +218,7 @@ const handleGameAction = async (
   }
 
   if (action === 'CALL') {
-    const toBet = gameData.lastAction.pot - player.pot;
+    const toBet = Number(amount);
     player.chips -= toBet;
     player.pot += toBet;
     gameData.pot += toBet;
@@ -239,14 +232,52 @@ const handleGameAction = async (
     return updateGameState(ctx, gameData);
   }
 
+  if (action === 'BET') {
+    const toBet = Number(amount);
+    player.chips -= toBet;
+    player.pot += toBet;
+    gameData.pot += toBet;
+
+    gameData.lastPlayerSeat = getPreviousPlayableSeat(gameData, player.seatId);
+
+    gameData.lastAction = {
+      action: 'BET',
+      playerSeat: player.seatId,
+      pot: player.pot,
+    };
+
+    return updateGameState(ctx, gameData);
+  }
+
+  if (action === 'RAISE') {
+    const toBet = Number(amount);
+    player.chips -= toBet;
+    player.pot += toBet;
+    gameData.pot += toBet;
+
+    gameData.raises += 1;
+
+    gameData.lastPlayerSeat = getPreviousPlayableSeat(gameData, player.seatId);
+
+    gameData.lastAction = {
+      action: 'RAISE',
+      playerSeat: player.seatId,
+      pot: player.pot,
+    };
+
+    return updateGameState(ctx, gameData);
+  }
+
   if (action === 'ALLIN') {
     const toBet = player.chips;
     player.chips = 0;
     player.pot += toBet;
     gameData.pot += toBet;
 
-    if (player.pot > gameData.lastAction.pot)
+    if (player.pot > gameData.lastAction.pot) {
       gameData.lastPlayerSeat = getPreviousPlayableSeat(gameData, player.seatId);
+      gameData.raises += 1;
+    }
 
     gameData.lastAction = {
       action: 'ALLIN',
