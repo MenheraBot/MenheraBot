@@ -35,6 +35,7 @@ export interface PokerMatch {
   communityCards: [number, number, number, number, number];
   stage: GameStages;
   dealerSeat: number;
+  winnerSeat: number;
   lastPlayerSeat: number;
   seatToPlay: number;
   pot: number;

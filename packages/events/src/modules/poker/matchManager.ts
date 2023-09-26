@@ -114,7 +114,10 @@ const getTableImage = async (match: PokerMatch) => {
     chips: user.chips,
     fold: user.folded,
     cards: user.cards,
-    theme: user.backgroundTheme,
+    backgroundTheme: user.backgroundTheme,
+    cardTheme: user.cardTheme,
+    won: match.winnerSeat === user.seatId,
+    seat: user.seatId,
     dealer: match.dealerSeat === user.seatId,
   });
 
@@ -242,6 +245,7 @@ const setupGame = async (
     communityCards: [0, 0, 0, 0, 0],
     stage: 'preflop',
     dealerSeat: 0,
+    winnerSeat: MAX_POKER_PLAYERS,
     lastPlayerSeat: 0,
     seatToPlay: 0,
     pot: 100,
