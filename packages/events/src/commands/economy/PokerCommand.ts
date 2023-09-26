@@ -1,4 +1,4 @@
-import { ActionRow, AllowedMentionsTypes, ButtonComponent, ButtonStyles } from 'discordeno/types';
+import { ActionRow, ButtonComponent, ButtonStyles } from 'discordeno/types';
 import { Embed } from 'discordeno/transformers';
 import { createCommand } from '../../structures/command/createCommand';
 import {
@@ -20,7 +20,11 @@ import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, removeNonNumbers } from '../../utils/discord/messageUtils';
 import { setupGame } from '../../modules/poker/matchManager';
 import { showPlayerCards } from '../../modules/poker/playerControl';
-import { handleGameAction, validateUserBet } from '../../modules/poker/handleGameAction';
+import {
+  closeTable,
+  handleGameAction,
+  validateUserBet,
+} from '../../modules/poker/handleGameAction';
 
 const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [matchId, action] = ctx.sentData;
@@ -52,6 +56,8 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
   switch (action) {
     case 'SEE_CARDS':
       return showPlayerCards(ctx, player);
+    case 'CLOSE_TABLE':
+      return closeTable(ctx, gameData);
     case 'GAME_ACTION':
       return handleGameAction(
         ctx as ComponentInteractionContext<SelectMenuInteraction>,
@@ -116,8 +122,8 @@ const selectPlayers = async (
   const embed = createStartMatchEmbed(hexStringToNumber(ctx.sentData[0]), [`${ctx.user.id}`]);
 
   ctx.makeMessage({
-    allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
     embeds: [embed],
+    allowedMentions: { users: selectedUsersIds.map(BigInt) },
     components: [
       createActionRow([
         createButton({

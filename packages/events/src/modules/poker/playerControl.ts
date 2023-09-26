@@ -97,6 +97,7 @@ const getAvailableActions = (
     options: availableActions,
     maxValues: 1,
     minValues: 1,
+    placeholder: `${player.name}, escolha sua próxima ação`,
   });
 };
 

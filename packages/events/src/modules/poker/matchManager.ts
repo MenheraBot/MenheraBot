@@ -153,13 +153,13 @@ const finishRound = async (
   const nextMatch = createButton({
     label: 'Continuar jogando',
     style: ButtonStyles.Success,
-    customId: createCustomId(2, match.masterId, ctx.commandId, match.matchId, 'CONTINUE'),
+    customId: createCustomId(2, match.masterId, ctx.commandId, match.matchId, 'NEXT_GAME'),
   });
 
   const finishPoker = createButton({
     label: 'Fechar mesa',
     style: ButtonStyles.Danger,
-    customId: createCustomId(2, match.masterId, ctx.commandId, match.matchId, 'STOP'),
+    customId: createCustomId(2, match.masterId, ctx.commandId, match.matchId, 'CLOSE_TABLE'),
   });
 
   await pokerRepository.setPokerMatchState(match.matchId, match);
@@ -223,6 +223,7 @@ const setupGame = async (
     matchId: `${ctx.interaction.id}`,
     masterId: players[0],
     embedColor,
+    worthGame: false,
     players: await Promise.all(
       players.map(async (p, i) => {
         const discordUser = await cacheRepository.getDiscordUser(p, false);

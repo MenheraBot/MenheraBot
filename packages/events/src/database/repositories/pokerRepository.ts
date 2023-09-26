@@ -9,8 +9,16 @@ const addUsersInMatch = async (userIds: string[]): Promise<void> => {
   await MainRedisClient.sadd('poker_match', userIds);
 };
 
+const removeUsersInMatch = async (userIds: string[]): Promise<void> => {
+  await MainRedisClient.srem(`poker_match`, userIds);
+};
+
 const setPokerMatchState = async (matchId: BigString, matchData: PokerMatch): Promise<void> => {
   await MainRedisClient.set(`poker_table:${matchId}`, JSON.stringify(matchData));
+};
+
+const deletePokerMatchState = async (matchId: BigString): Promise<void> => {
+  await MainRedisClient.del(`poker_table:${matchId}`);
 };
 
 const getPokerMatchState = async (matchId: BigString): Promise<null | PokerMatch> => {
@@ -21,4 +29,11 @@ const getPokerMatchState = async (matchId: BigString): Promise<null | PokerMatch
   return JSON.parse(redisData);
 };
 
-export default { isUserInMatch, addUsersInMatch, setPokerMatchState, getPokerMatchState };
+export default {
+  isUserInMatch,
+  addUsersInMatch,
+  setPokerMatchState,
+  deletePokerMatchState,
+  getPokerMatchState,
+  removeUsersInMatch,
+};
