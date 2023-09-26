@@ -15,35 +15,39 @@ import {
 import { extractFields } from '../../utils/discord/modalUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 
-const updatePlayerTurn = (match: PokerMatch): void => {
-  let nextSeat = match.lastAction.playerSeat + 1;
-
-  const biggestSeat = match.players.reduce((p, c) => {
-    if (c.seatId > p) return c.seatId;
+const getNextPlayableSeat = (match: PokerMatch, lastSeat: number): number => {
+  const biggestPlayableSeat = match.players.reduce((p, c) => {
+    if (c.seatId > p && !c.folded) return c.seatId;
     return p;
   }, 0);
 
-  if (nextSeat > biggestSeat) nextSeat = 0;
+  if (lastSeat >= biggestPlayableSeat)
+    for (let i = 0; i < match.players.length; i++) {
+      const player = match.players.find((a) => a.seatId === i);
+      if (player && !player.folded) return player.seatId;
+    }
 
-  if (
-    match.players.some((a) => a.seatId === nextSeat) &&
-    match.players.find((a) => a.seatId === nextSeat)!.folded === false
-  ) {
-    const currentPlayer = match.players.find((a) => a.seatId === match.lastAction.playerSeat)!;
-    const nextPlayer = match.players.find((a) => a.seatId === nextSeat)!;
+  const nextPlayer = match.players.find((a) => a.seatId === lastSeat + 1);
+  if (!nextPlayer || nextPlayer.folded) return getNextPlayableSeat(match, lastSeat + 1);
 
-    const isLastPlayer = currentPlayer.seatId === match.lastPlayerSeat;
+  return nextPlayer.seatId;
+};
 
-    if (isLastPlayer && (currentPlayer.folded || currentPlayer.pot === nextPlayer.pot))
-      changeStage(match);
+const updatePlayerTurn = (match: PokerMatch): void => {
+  const nextPlayerSeatId = getNextPlayableSeat(match, match.lastAction.playerSeat);
 
-    if (isLastPlayer && currentPlayer.folded) match.lastPlayerSeat = nextPlayer.seatId;
+  const lastPlayer = match.players.find((a) => a.seatId === match.lastAction.playerSeat)!;
+  const nextPlayer = match.players.find((a) => a.seatId === nextPlayerSeatId)!;
 
-    match.seatToPlay = nextSeat;
+  if (lastPlayer.seatId === match.lastPlayerSeat && match.lastAction.pot === nextPlayer.pot) {
+    match.seatToPlay = getNextPlayableSeat(match, match.dealerSeat);
+    match.lastPlayerSeat = getNextPlayableSeat(match, match.dealerSeat - 1);
+
+    changeStage(match);
     return;
   }
 
-  return updatePlayerTurn(match);
+  match.seatToPlay = nextPlayer.seatId;
 };
 
 const updateGameState = async (
@@ -64,7 +68,7 @@ const updateGameState = async (
 
   if (gameData.stage === 'showdown') return makeShowdown(ctx, gameData);
 
-  createTableMessage(ctx, gameData, `${mentionUser(ctx.user.id)} desistiu de sua mão.`);
+  await createTableMessage(ctx, gameData, `${mentionUser(ctx.user.id)} desistiu de sua mão.`);
 };
 
 const validateUserBet = async (
@@ -109,6 +113,7 @@ const validateUserBet = async (
       pot: player.pot,
     };
 
+    gameData.lastPlayerSeat = player.seatId;
     return updateGameState(ctx, gameData);
   }
 
@@ -136,6 +141,8 @@ const validateUserBet = async (
     playerSeat: player.seatId,
     pot: player.pot,
   };
+
+  gameData.lastPlayerSeat = player.seatId;
 
   return updateGameState(ctx, gameData);
 };
@@ -214,6 +221,8 @@ const handleGameAction = async (
     player.pot += toBet;
     gameData.pot += toBet;
 
+    if (player.pot > gameData.lastAction.pot) gameData.lastPlayerSeat = player.seatId;
+
     gameData.lastAction = {
       action: 'ALLIN',
       playerSeat: player.seatId,
@@ -224,4 +233,4 @@ const handleGameAction = async (
   }
 };
 
-export { handleGameAction, validateUserBet };
+export { handleGameAction, validateUserBet, getNextPlayableSeat, updatePlayerTurn };

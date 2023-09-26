@@ -19,7 +19,7 @@ import { mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, removeNonNumbers } from '../../utils/discord/messageUtils';
 import { setupGame } from '../../modules/poker/matchManager';
-import { displayActions, showPlayerCards } from '../../modules/poker/playerControl';
+import { showPlayerCards } from '../../modules/poker/playerControl';
 import { handleGameAction, validateUserBet } from '../../modules/poker/handleGameAction';
 
 const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
@@ -52,8 +52,6 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
   switch (action) {
     case 'SEE_CARDS':
       return showPlayerCards(ctx, player);
-    case 'SHOW_ACTIONS':
-      return displayActions(ctx, gameData, player);
     case 'GAME_ACTION':
       return handleGameAction(
         ctx as ComponentInteractionContext<SelectMenuInteraction>,

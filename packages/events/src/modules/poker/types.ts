@@ -32,7 +32,7 @@ export interface PokerMatch {
   masterId: string;
   embedColor: number;
   players: PokerPlayer[];
-  deck: [number, number, number, number, number];
+  communityCards: [number, number, number, number, number];
   stage: GameStages;
   dealerSeat: number;
   lastPlayerSeat: number;

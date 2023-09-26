@@ -12,6 +12,7 @@ import { shuffleCards } from '../blackjack';
 import { PokerMatch, PokerPlayer } from './types';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { getPokerCard } from './cardUtils';
+import { getAvailableActions } from './playerControl';
 
 const distributeCards = (match: PokerMatch): void => {
   const shuffledCards = shuffleCards();
@@ -28,7 +29,7 @@ const distributeCards = (match: PokerMatch): void => {
     player.cards = getCards(shuffledCards, 2);
   });
 
-  match.deck = getCards(shuffledCards, 5);
+  match.communityCards = getCards(shuffledCards, 5);
 };
 
 const changeStage = (match: PokerMatch): void => {
@@ -47,12 +48,23 @@ const getOpenedCards = (match: PokerMatch): number[] => {
     case 'preflop':
       return [];
     case 'flop':
-      return [match.deck[0], match.deck[1], match.deck[2]];
+      return [match.communityCards[0], match.communityCards[1], match.communityCards[2]];
     case 'turn':
-      return [match.deck[0], match.deck[1], match.deck[2], match.deck[3]];
+      return [
+        match.communityCards[0],
+        match.communityCards[1],
+        match.communityCards[2],
+        match.communityCards[3],
+      ];
     case 'river':
     case 'showdown':
-      return [match.deck[0], match.deck[1], match.deck[2], match.deck[3], match.deck[4]];
+      return [
+        match.communityCards[0],
+        match.communityCards[1],
+        match.communityCards[2],
+        match.communityCards[3],
+        match.communityCards[4],
+      ];
     default:
       return [];
   }
@@ -69,8 +81,6 @@ const makeShowdown = async (ctx: ComponentInteractionContext, match: PokerMatch)
       ...c.cards.map((card) => getPokerCard(card).solverValue),
       ...getOpenedCards(match).map((card) => getPokerCard(card).solverValue),
     ];
-
-    console.log(cardsToUse);
 
     const hand = PokerSolver.Hand.solve(cardsToUse);
 
@@ -95,7 +105,7 @@ const makeShowdown = async (ctx: ComponentInteractionContext, match: PokerMatch)
   );
 };
 
-const getTableImage = async (match: PokerMatch, showdown: boolean) => {
+const getTableImage = async (match: PokerMatch) => {
   const parseUserToVangogh = (user: PokerPlayer) => ({
     avatar: user.avatar,
     name: user.name,
@@ -110,7 +120,7 @@ const getTableImage = async (match: PokerMatch, showdown: boolean) => {
     pot: match.pot,
     users: match.players.map(parseUserToVangogh),
     cards: getOpenedCards(match),
-    showdown,
+    showdown: match.stage === 'showdown',
   });
 };
 
@@ -126,7 +136,7 @@ const finishRound = async (
     player.chips += moneyForEach;
   });
 
-  const image = await getTableImage(match, true);
+  const image = await getTableImage(match);
 
   const embed = createEmbed({
     title: 'Partida de Poker',
@@ -166,7 +176,7 @@ const createTableMessage = async (
   match: PokerMatch,
   lastActionMessage = '',
 ): Promise<void> => {
-  const image = await getTableImage(match, false);
+  const image = await getTableImage(match);
 
   const embed = createEmbed({
     title: 'Partida de Poker',
@@ -174,29 +184,26 @@ const createTableMessage = async (
     image: image.err ? undefined : { url: 'attachment://poker.png' },
   });
 
+  const nextPlayer = match.players.find((a) => a.seatId === match.seatToPlay)?.id ?? 0n;
+
   const seeCardsButton = createButton({
     label: 'Ver Cartas',
     style: ButtonStyles.Primary,
     customId: createCustomId(2, 'N', ctx.commandId, match.matchId, 'SEE_CARDS'),
   });
 
-  const nextPlayer = match.players.find((a) => a.seatId === match.seatToPlay)?.id ?? 0n;
-
-  const makeActionButton = createButton({
-    label: 'Apostar',
-    style: ButtonStyles.Success,
-    customId: createCustomId(2, nextPlayer, ctx.commandId, match.matchId, 'SHOW_ACTIONS'),
-  });
-
-  ctx.makeMessage({
-    content: `${lastActionMessage}\n\n**O jogador ${mentionUser(
-      nextPlayer,
-    )} deve escolher sua ação**`,
+  await ctx.makeMessage({
     allowedMentions: { users: [BigInt(nextPlayer)] },
     embeds: [embed],
     file: image.err ? undefined : { name: 'poker.png', blob: image.data },
     attachments: [],
-    components: [createActionRow([seeCardsButton, makeActionButton])],
+    components: [
+      createActionRow([getAvailableActions(ctx, match)]),
+      createActionRow([seeCardsButton]),
+    ],
+    content: `${lastActionMessage}\n\n**O jogador ${mentionUser(
+      nextPlayer,
+    )} deve escolher sua ação**`,
   });
 };
 
@@ -230,7 +237,7 @@ const setupGame = async (
         };
       }),
     ),
-    deck: [0, 0, 0, 0, 0],
+    communityCards: [0, 0, 0, 0, 0],
     stage: 'preflop',
     dealerSeat: 0,
     lastPlayerSeat: 0,

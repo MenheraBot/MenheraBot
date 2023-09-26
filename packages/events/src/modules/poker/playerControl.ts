@@ -1,16 +1,13 @@
-import { ButtonStyles, SelectOption } from 'discordeno/types';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { SelectMenuComponent, SelectOption } from 'discordeno/types';
 import userRepository from '../../database/repositories/userRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import {
-  createActionRow,
-  createButton,
-  createCustomId,
-  createSelectMenu,
-} from '../../utils/discord/componentUtils';
+import { createCustomId, createSelectMenu } from '../../utils/discord/componentUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { PokerMatch, PokerPlayer } from './types';
+import { InteractionContext } from '../../types/menhera';
 
 const showPlayerCards = async (
   ctx: ComponentInteractionContext,
@@ -39,11 +36,12 @@ const showPlayerCards = async (
   });
 };
 
-const displayActions = async (
-  ctx: ComponentInteractionContext,
+const getAvailableActions = (
+  ctx: InteractionContext,
   gameData: PokerMatch,
-  player: PokerPlayer,
-): Promise<void> => {
+): SelectMenuComponent => {
+  const player = gameData.players.find((p) => p.seatId === gameData.seatToPlay)!;
+
   const availableActions: SelectOption[] = [
     { label: 'Fold', description: 'Desiste da rodada, e devolva suas cartas', value: 'FOLD' },
   ];
@@ -76,32 +74,12 @@ const displayActions = async (
     value: 'ALLIN',
   });
 
-  const seeCardsButton = createButton({
-    label: 'Ver Cartas',
-    style: ButtonStyles.Primary,
-    customId: createCustomId(2, 'N', ctx.commandId, gameData.matchId, 'SEE_CARDS'),
-  });
-
-  const makeActionButton = createButton({
-    label: 'Apostar',
-    style: ButtonStyles.Success,
-    disabled: true,
-    customId: createCustomId(2, 'N', ctx.commandId, gameData.matchId, 'ACTION'),
-  });
-
-  ctx.makeMessage({
-    components: [
-      createActionRow([seeCardsButton, makeActionButton]),
-      createActionRow([
-        createSelectMenu({
-          customId: createCustomId(2, ctx.user.id, ctx.commandId, gameData.matchId, 'GAME_ACTION'),
-          options: availableActions,
-          maxValues: 1,
-          minValues: 1,
-        }),
-      ]),
-    ],
+  return createSelectMenu({
+    customId: createCustomId(2, player.id, ctx.commandId, gameData.matchId, 'GAME_ACTION'),
+    options: availableActions,
+    maxValues: 1,
+    minValues: 1,
   });
 };
 
-export { showPlayerCards, displayActions };
+export { showPlayerCards, getAvailableActions };
