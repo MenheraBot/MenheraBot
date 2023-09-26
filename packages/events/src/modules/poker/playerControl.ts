@@ -46,26 +46,44 @@ const getAvailableActions = (
     { label: 'Fold', description: 'Desiste da rodada, e devolva suas cartas', value: 'FOLD' },
   ];
 
-  if (gameData.lastAction.pot === player.pot)
+  if (gameData.lastAction.pot === player.pot) {
     availableActions.push({
       label: 'Check',
       description: 'Passe a sua vez',
       value: 'CHECK',
     });
 
+    availableActions.push({
+      label: `Bet ${gameData.blind}`,
+      description: `Faça uma aposta de ${gameData.blind} fichas`,
+      value: `BET | ${gameData.blind}`,
+    });
+  }
+
   if (player.chips + player.pot > gameData.lastAction.pot) {
-    if (gameData.lastAction.pot !== player.pot)
+    const toRaise = (gameData.lastAction.pot - player.pot) * 2;
+
+    if (gameData.lastAction.pot !== player.pot) {
       availableActions.push({
         label: 'Call',
         description: `Aposte ${gameData.lastAction.pot - player.pot} fichas`,
-        value: 'CALL',
+        value: `CALL | ${gameData.lastAction.pot - player.pot}`,
       });
 
-    availableActions.push({
-      label: 'Raise',
-      description: 'Aumente a aposta atual',
-      value: 'RAISE',
-    });
+      if (player.chips >= toRaise && gameData.raises < 2)
+        availableActions.push({
+          label: `Raise ${toRaise}`,
+          description: 'Dobre a aposta atual',
+          value: `RAISE | ${toRaise}`,
+        });
+    }
+
+    if (player.chips > toRaise && gameData.raises < 2)
+      availableActions.push({
+        label: `Raise`,
+        description: 'Aumente a aposta atual em um valor',
+        value: 'RAISE | CUSTOM',
+      });
   }
 
   availableActions.push({

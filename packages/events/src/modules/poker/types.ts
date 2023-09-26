@@ -15,7 +15,7 @@ export interface PokerPlayer {
 
 type GameStages = 'preflop' | 'flop' | 'turn' | 'river' | 'showdown';
 
-export type Action = 'FOLD' | 'CHECK' | 'CALL' | 'RAISE' | 'ALLIN';
+export type Action = 'FOLD' | 'CHECK' | 'CALL' | 'BET' | 'RAISE' | 'ALLIN';
 
 export type CARD_SUITE = 'SPADES' | 'HEARTS' | 'DIAMONDS' | 'CLUBS';
 
@@ -38,6 +38,8 @@ export interface PokerMatch {
   winnerSeat: number;
   lastPlayerSeat: number;
   seatToPlay: number;
+  blind: number;
+  raises: number;
   pot: number;
   lastAction: {
     action: Action;
