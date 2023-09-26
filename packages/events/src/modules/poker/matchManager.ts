@@ -14,6 +14,8 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { getPokerCard } from './cardUtils';
 import { getAvailableActions } from './playerControl';
 
+const MAX_POKER_PLAYERS = 8;
+
 const distributeCards = (match: PokerMatch): void => {
   const shuffledCards = shuffleCards();
 
@@ -229,11 +231,11 @@ const setupGame = async (
             : 'https://cdn.menherabot.xyz/images/profiles/1.png',
           cardTheme: userThemes[0],
           backgroundTheme: userThemes[1],
-          chips: i === 0 ? 3423 : 1000000,
+          chips: i === 0 ? 10_000 : 9_900,
           seatId: i,
           cards: [0, 0],
           folded: false,
-          pot: 0,
+          pot: i === 0 ? 0 : 100,
         };
       }),
     ),
@@ -242,11 +244,11 @@ const setupGame = async (
     dealerSeat: 0,
     lastPlayerSeat: 0,
     seatToPlay: 0,
-    pot: 12332,
+    pot: 100,
     lastAction: {
-      action: 'CALL',
+      action: 'RAISE',
       playerSeat: 1,
-      pot: 10,
+      pot: 100,
     },
   };
 
@@ -256,4 +258,4 @@ const setupGame = async (
   await createTableMessage(ctx, match);
 };
 
-export { setupGame, createTableMessage, finishRound, changeStage, makeShowdown };
+export { setupGame, createTableMessage, finishRound, changeStage, MAX_POKER_PLAYERS, makeShowdown };

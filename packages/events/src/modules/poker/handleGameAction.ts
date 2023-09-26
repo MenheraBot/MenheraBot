@@ -5,7 +5,13 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
 
 import { mentionUser } from '../../utils/discord/userUtils';
-import { changeStage, createTableMessage, finishRound, makeShowdown } from './matchManager';
+import {
+  MAX_POKER_PLAYERS,
+  changeStage,
+  createTableMessage,
+  finishRound,
+  makeShowdown,
+} from './matchManager';
 import { Action, PokerMatch, PokerPlayer } from './types';
 import {
   createActionRow,
@@ -22,7 +28,7 @@ const getNextPlayableSeat = (match: PokerMatch, lastSeat: number): number => {
   }, 0);
 
   if (lastSeat >= biggestPlayableSeat)
-    for (let i = 0; i < match.players.length; i++) {
+    for (let i = 0; i < MAX_POKER_PLAYERS; i++) {
       const player = match.players.find((a) => a.seatId === i);
       if (player && !player.folded) return player.seatId;
     }
@@ -31,6 +37,24 @@ const getNextPlayableSeat = (match: PokerMatch, lastSeat: number): number => {
   if (!nextPlayer || nextPlayer.folded) return getNextPlayableSeat(match, lastSeat + 1);
 
   return nextPlayer.seatId;
+};
+
+const getPreviousPlayableSeat = (match: PokerMatch, lastSeat: number): number => {
+  const lowestPlayableSeat = match.players.reduce((p, c) => {
+    if (c.seatId < p && !c.folded) return c.seatId;
+    return p;
+  }, MAX_POKER_PLAYERS);
+
+  if (lastSeat <= lowestPlayableSeat)
+    for (let i = MAX_POKER_PLAYERS; i > 0; i--) {
+      const player = match.players.find((a) => a.seatId === i);
+      if (player && !player.folded) return player.seatId;
+    }
+
+  const previousPlayer = match.players.find((a) => a.seatId === lastSeat - 1);
+  if (!previousPlayer || previousPlayer.folded) return getPreviousPlayableSeat(match, lastSeat - 1);
+
+  return previousPlayer.seatId;
 };
 
 const updatePlayerTurn = (match: PokerMatch): void => {
@@ -113,7 +137,7 @@ const validateUserBet = async (
       pot: player.pot,
     };
 
-    gameData.lastPlayerSeat = player.seatId;
+    gameData.lastPlayerSeat = getPreviousPlayableSeat(gameData, player.seatId);
     return updateGameState(ctx, gameData);
   }
 
@@ -142,7 +166,7 @@ const validateUserBet = async (
     pot: player.pot,
   };
 
-  gameData.lastPlayerSeat = player.seatId;
+  gameData.lastPlayerSeat = getPreviousPlayableSeat(gameData, player.seatId);
 
   return updateGameState(ctx, gameData);
 };
@@ -221,7 +245,8 @@ const handleGameAction = async (
     player.pot += toBet;
     gameData.pot += toBet;
 
-    if (player.pot > gameData.lastAction.pot) gameData.lastPlayerSeat = player.seatId;
+    if (player.pot > gameData.lastAction.pot)
+      gameData.lastPlayerSeat = getPreviousPlayableSeat(gameData, player.seatId);
 
     gameData.lastAction = {
       action: 'ALLIN',
@@ -233,4 +258,10 @@ const handleGameAction = async (
   }
 };
 
-export { handleGameAction, validateUserBet, getNextPlayableSeat, updatePlayerTurn };
+export {
+  handleGameAction,
+  validateUserBet,
+  getNextPlayableSeat,
+  updatePlayerTurn,
+  getPreviousPlayableSeat,
+};
