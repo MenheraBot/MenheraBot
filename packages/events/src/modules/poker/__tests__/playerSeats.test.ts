@@ -19,6 +19,7 @@ export const mockGame = (): PokerMatch => ({
   seatToPlay: 0,
   blind: 0,
   raises: 0,
+  worthGame: false,
   stage: 'preflop',
 });
 

@@ -21,6 +21,8 @@ import {
 } from '../../utils/discord/componentUtils';
 import { extractFields } from '../../utils/discord/modalUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
+import starsRepository from '../../database/repositories/starsRepository';
+import { createEmbed } from '../../utils/discord/embedUtils';
 
 const getNextPlayableSeat = (match: PokerMatch, lastSeat: number): number => {
   const biggestPlayableSeat = match.players.reduce((p, c) => {
@@ -94,6 +96,43 @@ const updateGameState = async (
   if (gameData.stage === 'showdown') return makeShowdown(ctx, gameData);
 
   await createTableMessage(ctx, gameData, `${mentionUser(ctx.user.id)} desistiu de sua mão.`);
+};
+
+const closeTable = async (
+  ctx: ComponentInteractionContext,
+  gameData: PokerMatch,
+): Promise<void> => {
+  if (gameData.worthGame)
+    gameData.players.forEach((a) => {
+      starsRepository.addStars(a.id, a.chips);
+    });
+
+  const sorted = gameData.players.sort((a, b) => b.chips - a.chips);
+  const winner = sorted[0];
+
+  const embed = createEmbed({
+    title: 'Fim de Partida!',
+    color: gameData.embedColor,
+    thumbnail: { url: winner.avatar },
+    description: `A partida de poker acabou! Parabéns para o vencedor **${mentionUser(
+      winner.id,
+    )}**\n\n**Top ${MAX_POKER_PLAYERS}**\n${sorted
+      .map((a) => `1. ${mentionUser(a.id)} **${a.chips}** fichas!`)
+      .join('\n')}`,
+    footer: gameData.worthGame
+      ? { text: 'Cada jogador recebeu o valor em estrelinhas de suas fichas' }
+      : undefined,
+  });
+
+  pokerRepository.removeUsersInMatch(sorted.map((a) => a.id));
+  pokerRepository.deletePokerMatchState(gameData.matchId);
+
+  ctx.makeMessage({
+    components: [],
+    attachments: [],
+    content: '',
+    embeds: [embed],
+  });
 };
 
 const validateUserBet = async (
@@ -291,6 +330,7 @@ const handleGameAction = async (
 
 export {
   handleGameAction,
+  closeTable,
   validateUserBet,
   getNextPlayableSeat,
   updatePlayerTurn,
