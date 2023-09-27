@@ -1666,6 +1666,11 @@
     "@types/koa-compose" "*"
     "@types/node" "*"
 
+"@types/lodash@^4.14.199":
+  version "4.14.199"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.199.tgz#c3edb5650149d847a277a8961a7ad360c474e9bf"
+  integrity sha512-Vrjz5N5Ia4SEzWWgIVwnHNEnb1UE1XMkvY5DGXrAeOGE9imk0hgTHh5GyDjLDJi9OTCn9oo9dXH1uToK1VRfrg==
+
 "@types/md5@^2.3.2":
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@types/md5/-/md5-2.3.2.tgz#529bb3f8a7e9e9f621094eb76a443f585d882528"

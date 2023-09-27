@@ -28,36 +28,38 @@ import { createEmbed } from '../../utils/discord/embedUtils';
 
 const getNextPlayableSeat = (match: PokerMatch, lastSeat: number): number => {
   const biggestPlayableSeat = match.players.reduce((p, c) => {
-    if (c.seatId > p && !c.folded) return c.seatId;
+    if (c.seatId > p && !c.folded && c.chips > 0) return c.seatId;
     return p;
   }, 0);
 
   if (lastSeat >= biggestPlayableSeat)
     for (let i = 0; i < MAX_POKER_PLAYERS; i++) {
       const player = match.players.find((a) => a.seatId === i);
-      if (player && !player.folded) return player.seatId;
+      if (player && !player.folded && player.chips > 0) return player.seatId;
     }
 
   const nextPlayer = match.players.find((a) => a.seatId === lastSeat + 1);
-  if (!nextPlayer || nextPlayer.folded) return getNextPlayableSeat(match, lastSeat + 1);
+  if (!nextPlayer || nextPlayer.folded || nextPlayer.chips === 0)
+    return getNextPlayableSeat(match, lastSeat + 1);
 
   return nextPlayer.seatId;
 };
 
 const getPreviousPlayableSeat = (match: PokerMatch, lastSeat: number): number => {
   const lowestPlayableSeat = match.players.reduce((p, c) => {
-    if (c.seatId < p && !c.folded) return c.seatId;
+    if (c.seatId < p && !c.folded && c.chips > 0) return c.seatId;
     return p;
   }, MAX_POKER_PLAYERS);
 
   if (lastSeat <= lowestPlayableSeat)
     for (let i = MAX_POKER_PLAYERS; i > 0; i--) {
       const player = match.players.find((a) => a.seatId === i);
-      if (player && !player.folded) return player.seatId;
+      if (player && !player.folded && player.chips > 0) return player.seatId;
     }
 
   const previousPlayer = match.players.find((a) => a.seatId === lastSeat - 1);
-  if (!previousPlayer || previousPlayer.folded) return getPreviousPlayableSeat(match, lastSeat - 1);
+  if (!previousPlayer || previousPlayer.folded || previousPlayer.chips === 0)
+    return getPreviousPlayableSeat(match, lastSeat - 1);
 
   return previousPlayer.seatId;
 };
@@ -83,20 +85,21 @@ const updateGameState = async (
   ctx: ComponentInteractionContext,
   gameData: PokerMatch,
 ): Promise<void> => {
+  const playingPlayers = gameData.players.filter((a) => !a.folded);
+
+  if (playingPlayers.length === 1)
+    return finishRound(ctx, gameData, [gameData.players.find((a) => !a.folded)!], 'FOLDED');
+
+  const canBet = playingPlayers.filter((a) => a.chips > 0);
+
+  if (canBet.length <= 1 && gameData.lastAction.playerSeat === gameData.lastPlayerSeat)
+    return makeShowdown(ctx, gameData);
+
   updatePlayerTurn(gameData);
-
-  if (gameData.players.filter((a) => !a.folded).length === 1)
-    return finishRound(
-      ctx,
-      gameData,
-      [gameData.players.find((a) => a.seatId === gameData.seatToPlay)!],
-      'FOLDED',
-    );
-
-  await pokerRepository.setPokerMatchState(gameData.matchId, gameData);
 
   if (gameData.stage === 'showdown') return makeShowdown(ctx, gameData);
 
+  await pokerRepository.setPokerMatchState(gameData.matchId, gameData);
   await createTableMessage(ctx, gameData, `${mentionUser(ctx.user.id)} desistiu de sua mão.`);
 };
 
