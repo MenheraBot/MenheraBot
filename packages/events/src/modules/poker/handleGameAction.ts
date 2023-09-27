@@ -110,7 +110,10 @@ const startNextMatch = async (
   await ctx.ack();
 
   gameData.players = gameData.players.reduce<PokerPlayer[]>((players, player) => {
-    if (player.chips === 0) return players;
+    if (player.chips === 0) {
+      pokerRepository.removeUsersInMatch([player.id]);
+      return players;
+    }
 
     player.pot = 0;
     player.folded = false;

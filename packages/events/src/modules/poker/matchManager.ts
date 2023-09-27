@@ -25,13 +25,16 @@ const distributeCards = (match: PokerMatch): void => {
     cards: number[],
     length: Cards,
   ): Cards extends 2 ? [number, number] : [number, number, number, number, number] =>
-    Array.from({ length }, () => cards.shift() ?? 0) as Cards extends 2
+    Array.from({ length }, () => cards.shift()) as Cards extends 2
       ? [number, number]
       : [number, number, number, number, number];
 
-  match.players.forEach((player) => {
-    player.cards = getCards(shuffledCards, 2);
-  });
+  for (let i = 0; i < 1; i++) {
+    match.players.forEach((player) => {
+      const card = shuffledCards.shift()!;
+      player.cards[i] = card;
+    });
+  }
 
   match.communityCards = getCards(shuffledCards, 5);
 };
