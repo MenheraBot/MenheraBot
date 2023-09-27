@@ -14,7 +14,7 @@ import { PokerMatch, PokerPlayer } from './types';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { getPokerCard } from './cardUtils';
 import { getAvailableActions } from './playerControl';
-import { getNextPlayableSeat } from './handleGameAction';
+import { closeTable, getNextPlayableSeat } from './handleGameAction';
 
 const MAX_POKER_PLAYERS = 8;
 
@@ -29,7 +29,7 @@ const distributeCards = (match: PokerMatch): void => {
       ? [number, number]
       : [number, number, number, number, number];
 
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i <= 1; i++) {
     match.players.forEach((player) => {
       const card = shuffledCards.shift()!;
       player.cards[i] = card;
@@ -197,33 +197,51 @@ const finishRound = async (
     match.winnerSeat.push(player.seatId);
   });
 
+  const losePlayers = match.players.reduce((p, c) => {
+    if (c.chips === 0) {
+      pokerRepository.removeUsersInMatch([c.id]);
+      return p + 1;
+    }
+
+    return p;
+  }, 0);
+
+  const canHaveOtherMatch = match.players.length - losePlayers > 1;
+
   const image = await getTableImage(match);
 
   const embed = createEmbed({
     title: 'Partida de Poker',
     color: match.embedColor,
+    footer: canHaveOtherMatch
+      ? { text: `Aguardando Jogadores: 0 / ${match.players.length - losePlayers}` }
+      : undefined,
     image: image.err ? undefined : { url: 'attachment://poker.png' },
   });
 
   const nextMatch = createButton({
     label: 'Continuar jogando',
     style: ButtonStyles.Success,
-    customId: createCustomId(2, match.masterId, ctx.commandId, match.matchId, 'NEXT_GAME'),
+    customId: createCustomId(2, 'N', ctx.commandId, match.matchId, 'NEXT_GAME'),
   });
 
-  const finishPoker = createButton({
+  const exitTable = createButton({
+    label: 'Sair da Mesa',
+    style: ButtonStyles.Secondary,
+    customId: createCustomId(2, 'N', ctx.commandId, match.matchId, 'LEAVE_TABLE'),
+  });
+
+  const finishTable = createButton({
     label: 'Fechar mesa',
     style: ButtonStyles.Danger,
     customId: createCustomId(2, match.masterId, ctx.commandId, match.matchId, 'CLOSE_TABLE'),
   });
 
-  await pokerRepository.setPokerMatchState(match.matchId, match);
-
-  ctx.makeMessage({
+  await ctx.makeMessage({
     embeds: [embed],
     attachments: [],
     file: image.err ? undefined : { name: 'poker.png', blob: image.data },
-    components: [createActionRow([nextMatch, finishPoker])],
+    components: canHaveOtherMatch ? [createActionRow([finishTable, exitTable, nextMatch])] : [],
     allowedMentions: { users: winners.map((a) => BigInt(a.id)) },
     content: `${winners
       .map((a) => mentionUser(a.id))
@@ -231,6 +249,10 @@ const finishRound = async (
         ', ',
       )} venceu essa rodada! Um total de **${moneyForEach}** fichas diretamente para seu bolso!\nMotivo: ${reason}`,
   });
+
+  if (canHaveOtherMatch) return pokerRepository.setPokerMatchState(match.matchId, match);
+
+  closeTable(ctx, match, true);
 };
 
 const createTableMessage = async (

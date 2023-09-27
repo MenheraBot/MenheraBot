@@ -147,7 +147,7 @@ orchestratorServer.on('disconnect', (conn) => {
   }
 
   if (connectedClients.length === 0) {
-    console.log(`[DISCONNECT] There are no client to be setted as the mastert now`);
+    console.log(`[DISCONNECT] There are no client to be setted as the master now`);
     return;
   }
 
