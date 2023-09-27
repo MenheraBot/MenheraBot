@@ -20,7 +20,7 @@ import { ApiTransactionReason } from '../../types/api';
 const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [input, currency] = ctx.sentData as [
     string,
-    typeof transactionableCommandOption[number]['value'],
+    (typeof transactionableCommandOption)[number]['value'],
   ];
 
   const [userData, authorData] = await Promise.all([
@@ -123,7 +123,7 @@ const CoinflipCommand = createCommand({
     const user = ctx.getOption<User>('user', 'users', true);
     const input = ctx.getOption<number>('aposta', false, true);
     const currency =
-      ctx.getOption<typeof transactionableCommandOption[number]['value']>('moeda', false) ??
+      ctx.getOption<(typeof transactionableCommandOption)[number]['value']>('moeda', false) ??
       'estrelinhas';
 
     if (user.toggles.bot)
