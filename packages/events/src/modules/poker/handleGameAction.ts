@@ -108,10 +108,16 @@ const startNextMatch = async (
   gameData: PokerMatch,
 ): Promise<void> => {
   await ctx.ack();
-  gameData.players.forEach((player) => {
+
+  gameData.players = gameData.players.reduce<PokerPlayer[]>((players, player) => {
+    if (player.chips === 0) return players;
+
     player.pot = 0;
     player.folded = false;
-  });
+    players.push(player);
+
+    return players;
+  }, []);
 
   gameData.pot = 0;
   gameData.raises = 0;

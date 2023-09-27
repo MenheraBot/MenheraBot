@@ -28,7 +28,7 @@ export const mockPlayer = (seatId: number, folded = false): PokerPlayer => ({
   backgroundTheme: 'blue',
   cards: [0, 0],
   cardTheme: 'death',
-  chips: 0,
+  chips: 1,
   folded,
   id: '',
   name: '',
