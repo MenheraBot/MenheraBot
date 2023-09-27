@@ -37,36 +37,22 @@ export const mockPlayer = (seatId: number, folded = false): PokerPlayer => ({
 });
 
 describe('Tests related to getting the previous player to play seat', () => {
-  describe('Every player is playing', () => {
+  test('Every player is playing', () => {
     const game = mockGame();
     game.players = [mockPlayer(0), mockPlayer(1), mockPlayer(2)];
 
-    it('Should return the third player', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 0);
-
-      expect(nextSeat).toBe(2);
-    });
-
-    it('Should return the first player', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 1);
-
-      expect(nextSeat).toBe(0);
-    });
-
-    it('Should return the second player', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 2);
-
-      expect(nextSeat).toBe(1);
-    });
-
-    it('Should return the third player', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 5);
-
-      expect(nextSeat).toBe(2);
-    });
+    expect(getPreviousPlayableSeat(game, 0)).toBe(2);
+    expect(getPreviousPlayableSeat(game, 1)).toBe(0);
+    expect(getPreviousPlayableSeat(game, 2)).toBe(1);
+    expect(getPreviousPlayableSeat(game, 3)).toBe(2);
+    expect(getPreviousPlayableSeat(game, 4)).toBe(2);
+    expect(getPreviousPlayableSeat(game, 5)).toBe(2);
+    expect(getPreviousPlayableSeat(game, 6)).toBe(2);
+    expect(getPreviousPlayableSeat(game, 7)).toBe(2);
+    expect(getPreviousPlayableSeat(game, 8)).toBe(2);
   });
 
-  describe('Some players folded', () => {
+  test('Some players folded', () => {
     const game = mockGame();
     game.players = [
       mockPlayer(0, true),
@@ -76,104 +62,76 @@ describe('Tests related to getting the previous player to play seat', () => {
       mockPlayer(4, true),
     ];
 
-    it('Should return the seat 3', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 0);
-
-      expect(nextSeat).toBe(3);
-    });
-
-    it('Should return the seat 3', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 1);
-
-      expect(nextSeat).toBe(3);
-    });
-
-    it('Should return the seat 1', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 2);
-
-      expect(nextSeat).toBe(1);
-    });
-
-    it('Should return the seat 1', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 3);
-
-      expect(nextSeat).toBe(1);
-    });
-
-    it('Should return the seat 3', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 4);
-
-      expect(nextSeat).toBe(3);
-    });
-
-    it('Should return the seat 3', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 5);
-
-      expect(nextSeat).toBe(3);
-    });
+    expect(getPreviousPlayableSeat(game, 0)).toBe(3);
+    expect(getPreviousPlayableSeat(game, 1)).toBe(3);
+    expect(getPreviousPlayableSeat(game, 2)).toBe(1);
+    expect(getPreviousPlayableSeat(game, 3)).toBe(1);
+    expect(getPreviousPlayableSeat(game, 4)).toBe(3);
+    expect(getPreviousPlayableSeat(game, 5)).toBe(3);
+    expect(getPreviousPlayableSeat(game, 6)).toBe(3);
+    expect(getPreviousPlayableSeat(game, 7)).toBe(3);
+    expect(getPreviousPlayableSeat(game, 8)).toBe(3);
   });
 
-  describe('Some seats are missing', () => {
+  test('Some players all in', () => {
     const game = mockGame();
-    game.players = [mockPlayer(2), mockPlayer(4), mockPlayer(8, true)];
+    game.players = [
+      mockPlayer(0, true),
+      mockPlayer(1),
+      mockPlayer(2, true),
+      mockPlayer(3),
+      mockPlayer(4),
+      mockPlayer(6),
+      mockPlayer(7, true),
+    ];
 
-    it('Should return the seat 4', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 0);
+    game.players[1].chips = 0;
+    game.players[4].chips = 0;
 
-      expect(nextSeat).toBe(4);
-    });
+    expect(getPreviousPlayableSeat(game, 0)).toBe(6);
+    expect(getPreviousPlayableSeat(game, 1)).toBe(6);
+    expect(getPreviousPlayableSeat(game, 2)).toBe(6);
+    expect(getPreviousPlayableSeat(game, 3)).toBe(6);
+    expect(getPreviousPlayableSeat(game, 4)).toBe(3);
+    expect(getPreviousPlayableSeat(game, 5)).toBe(3);
+    expect(getPreviousPlayableSeat(game, 6)).toBe(3);
+    expect(getPreviousPlayableSeat(game, 7)).toBe(6);
+    expect(getPreviousPlayableSeat(game, 8)).toBe(6);
+  });
 
-    it('Should return the seat 4', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 2);
+  test('Some seats are missing', () => {
+    const game = mockGame();
+    game.players = [mockPlayer(2), mockPlayer(4), mockPlayer(8)];
 
-      expect(nextSeat).toBe(4);
-    });
-
-    it('Should return the seat 2', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 3);
-
-      expect(nextSeat).toBe(2);
-    });
-
-    it('Should return the seat 4', () => {
-      const nextSeat = getPreviousPlayableSeat(game, 9);
-
-      expect(nextSeat).toBe(4);
-    });
+    expect(getPreviousPlayableSeat(game, 0)).toBe(8);
+    expect(getPreviousPlayableSeat(game, 1)).toBe(8);
+    expect(getPreviousPlayableSeat(game, 2)).toBe(8);
+    expect(getPreviousPlayableSeat(game, 3)).toBe(2);
+    expect(getPreviousPlayableSeat(game, 4)).toBe(2);
+    expect(getPreviousPlayableSeat(game, 5)).toBe(4);
+    expect(getPreviousPlayableSeat(game, 6)).toBe(4);
+    expect(getPreviousPlayableSeat(game, 7)).toBe(4);
+    expect(getPreviousPlayableSeat(game, 8)).toBe(4);
   });
 });
 
 describe('Tests related to getting the next player to play seat', () => {
-  describe('Every player is playing', () => {
+  test('Every player is playing', () => {
     const game = mockGame();
-    game.players = [mockPlayer(0), mockPlayer(1), mockPlayer(2), mockPlayer(7)];
+    game.players = [mockPlayer(0), mockPlayer(1), mockPlayer(2), mockPlayer(3)];
 
-    it('Should return the second player', () => {
-      const nextSeat = getNextPlayableSeat(game, 0);
-
-      expect(nextSeat).toBe(1);
-    });
-
-    it('Should return the third player', () => {
-      const nextSeat = getNextPlayableSeat(game, 1);
-
-      expect(nextSeat).toBe(2);
-    });
-
-    it('Should return the first player', () => {
-      const nextSeat = getNextPlayableSeat(game, 2);
-
-      expect(nextSeat).toBe(7);
-    });
-
-    it('Should return the first player', () => {
-      const nextSeat = getNextPlayableSeat(game, 7);
-
-      expect(nextSeat).toBe(0);
-    });
+    expect(getNextPlayableSeat(game, 0)).toBe(1);
+    expect(getNextPlayableSeat(game, 1)).toBe(2);
+    expect(getNextPlayableSeat(game, 2)).toBe(3);
+    expect(getNextPlayableSeat(game, 3)).toBe(0);
+    expect(getNextPlayableSeat(game, 4)).toBe(0);
+    expect(getNextPlayableSeat(game, 5)).toBe(0);
+    expect(getNextPlayableSeat(game, 6)).toBe(0);
+    expect(getNextPlayableSeat(game, 7)).toBe(0);
+    expect(getNextPlayableSeat(game, 8)).toBe(0);
   });
 
-  describe('Some players folded', () => {
+  test('Some players folded', () => {
     const game = mockGame();
     game.players = [
       mockPlayer(0, true),
@@ -183,69 +141,55 @@ describe('Tests related to getting the next player to play seat', () => {
       mockPlayer(7, true),
     ];
 
-    it('Should return the second player', () => {
-      const nextSeat = getNextPlayableSeat(game, 0);
-
-      expect(nextSeat).toBe(1);
-    });
-
-    it('Should return the third player', () => {
-      const nextSeat = getNextPlayableSeat(game, 1);
-
-      expect(nextSeat).toBe(5);
-    });
-
-    it('Should return the third player', () => {
-      const nextSeat = getNextPlayableSeat(game, 2);
-
-      expect(nextSeat).toBe(5);
-    });
-
-    it('Should return the second player', () => {
-      const nextSeat = getNextPlayableSeat(game, 5);
-
-      expect(nextSeat).toBe(1);
-    });
-
-    it('Should return the second player', () => {
-      const nextSeat = getNextPlayableSeat(game, 4);
-
-      expect(nextSeat).toBe(5);
-    });
-
-    it('Should return the second player', () => {
-      const nextSeat = getNextPlayableSeat(game, 9);
-
-      expect(nextSeat).toBe(1);
-    });
+    expect(getNextPlayableSeat(game, 0)).toBe(1);
+    expect(getNextPlayableSeat(game, 1)).toBe(5);
+    expect(getNextPlayableSeat(game, 2)).toBe(5);
+    expect(getNextPlayableSeat(game, 3)).toBe(5);
+    expect(getNextPlayableSeat(game, 4)).toBe(5);
+    expect(getNextPlayableSeat(game, 5)).toBe(1);
+    expect(getNextPlayableSeat(game, 6)).toBe(1);
+    expect(getNextPlayableSeat(game, 7)).toBe(1);
+    expect(getNextPlayableSeat(game, 8)).toBe(1);
   });
 
-  describe('Some seats are missing', () => {
+  test('Some players all in', () => {
     const game = mockGame();
-    game.players = [mockPlayer(2), mockPlayer(4), mockPlayer(8, true)];
+    game.players = [
+      mockPlayer(0, true),
+      mockPlayer(1),
+      mockPlayer(2, true),
+      mockPlayer(3),
+      mockPlayer(4),
+      mockPlayer(6),
+      mockPlayer(7, true),
+    ];
 
-    it('Should return the seat 2', () => {
-      const nextSeat = getNextPlayableSeat(game, 0);
+    game.players[1].chips = 0;
+    game.players[4].chips = 0;
 
-      expect(nextSeat).toBe(2);
-    });
+    expect(getNextPlayableSeat(game, 0)).toBe(3);
+    expect(getNextPlayableSeat(game, 1)).toBe(3);
+    expect(getNextPlayableSeat(game, 2)).toBe(3);
+    expect(getNextPlayableSeat(game, 3)).toBe(6);
+    expect(getNextPlayableSeat(game, 4)).toBe(6);
+    expect(getNextPlayableSeat(game, 5)).toBe(6);
+    expect(getNextPlayableSeat(game, 6)).toBe(3);
+    expect(getNextPlayableSeat(game, 7)).toBe(3);
+    expect(getNextPlayableSeat(game, 8)).toBe(3);
+  });
 
-    it('Should return the seat 4', () => {
-      const nextSeat = getNextPlayableSeat(game, 2);
+  test('Some seats are missing', () => {
+    const game = mockGame();
+    game.players = [mockPlayer(2), mockPlayer(4), mockPlayer(8)];
 
-      expect(nextSeat).toBe(4);
-    });
-
-    it('Should return the seat 4', () => {
-      const nextSeat = getNextPlayableSeat(game, 3);
-
-      expect(nextSeat).toBe(4);
-    });
-
-    it('Should return the seat 2', () => {
-      const nextSeat = getNextPlayableSeat(game, 4);
-
-      expect(nextSeat).toBe(2);
-    });
+    expect(getNextPlayableSeat(game, 0)).toBe(2);
+    expect(getNextPlayableSeat(game, 1)).toBe(2);
+    expect(getNextPlayableSeat(game, 2)).toBe(4);
+    expect(getNextPlayableSeat(game, 3)).toBe(4);
+    expect(getNextPlayableSeat(game, 4)).toBe(8);
+    expect(getNextPlayableSeat(game, 5)).toBe(8);
+    expect(getNextPlayableSeat(game, 6)).toBe(8);
+    expect(getNextPlayableSeat(game, 7)).toBe(8);
+    expect(getNextPlayableSeat(game, 8)).toBe(2);
   });
 });
