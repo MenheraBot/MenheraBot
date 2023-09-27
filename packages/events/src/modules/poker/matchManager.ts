@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ButtonStyles } from 'discordeno/types';
 import PokerSolver from 'pokersolver';
-import _ from 'lodash';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
@@ -127,11 +126,11 @@ const getOpenedCards = (match: PokerMatch): number[] => {
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ShowdownUserHands = { hand: any; player: PokerPlayer };
-
 const makeShowdown = async (ctx: ComponentInteractionContext, match: PokerMatch): Promise<void> => {
-  const userHands = match.players.reduce<ShowdownUserHands[]>((p, c) => {
+  match.stage = 'showdown';
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const userHands = match.players.reduce<any[]>((p, c) => {
     if (c.folded) return p;
 
     const cardsToUse = [
@@ -140,25 +139,22 @@ const makeShowdown = async (ctx: ComponentInteractionContext, match: PokerMatch)
     ];
 
     const hand = PokerSolver.Hand.solve(cardsToUse);
+    hand.player = c;
 
-    p.push({ hand, player: c });
+    p.push(hand);
     return p;
   }, []);
 
-  const winners = PokerSolver.Hand.winners(userHands.map((a) => a.hand)).map((a: unknown) =>
-    userHands.find((b) => _.isEqual(a, b.hand)),
-  );
+  const winners = PokerSolver.Hand.winners(userHands);
 
-  const winReason = winners[0].hand.descr.includes('Royal Flush')
+  const winReason = winners[0].descr.includes('Royal Flush')
     ? 'STRAIGHT-FLUSH-ROYAL'
-    : winners[0].hand.name.replace(' ', '-').toUpperCase();
-
-  match.stage = 'showdown';
+    : winners[0].name.replace(' ', '-').toUpperCase();
 
   finishRound(
     ctx,
     match,
-    winners.map((a: ShowdownUserHands) => a.player),
+    winners.map((a: { player: PokerPlayer }) => a.player),
     winReason,
   );
 };
