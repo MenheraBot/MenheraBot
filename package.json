@@ -7,7 +7,6 @@
     "rest": "yarn workspace @menhera-bot/rest",
     "orchestrator": "yarn workspace @menhera-bot/orchestrator",
     "events": "yarn workspace @menhera-bot/events",
-    "lint": "yarn workspace @menhera-bot/eslint-config",
     "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
     "build:all": "concurrently \"yarn rest build\" \"yarn orchestrator build\" \"yarn events build\"",
     "run:lint": "eslint ."
@@ -23,10 +22,10 @@
     "url": "https://github.com/MenheraBot/MenheraBot/issues"
   },
   "workspaces": {
-    "hoistDependencies": true,
     "packages": [
       "packages/*"
-    ]
+    ],
+    "nohoist": ["**/events/**", "**/rest/**", "**/orchestrator/**"]
   },
   "homepage": "https://github.com/MenheraBot/MenheraBot#readme",
   "devDependencies": {
@@ -37,7 +36,5 @@
     "ts-jest": "^29.0.3",
     "typescript": "^4.8.4"
   },
-  "dependencies": {
-    "discordeno": "^18.0.1"
-  }
+  "dependencies": {}
 }
