@@ -53,11 +53,12 @@ const getAvailableActions = (
       value: 'CHECK',
     });
 
-    availableActions.push({
-      label: `Bet ${gameData.blind}`,
-      description: `Faça uma aposta de ${gameData.blind} fichas`,
-      value: `BET | ${gameData.blind}`,
-    });
+    if (player.chips > gameData.blind)
+      availableActions.push({
+        label: `Bet ${gameData.blind}`,
+        description: `Faça uma aposta de ${gameData.blind} fichas`,
+        value: `BET | ${gameData.blind}`,
+      });
   }
 
   if (player.chips + player.pot > gameData.lastAction.pot) {

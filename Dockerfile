@@ -2,28 +2,29 @@ FROM node:18-alpine as build
 WORKDIR /app
 COPY . .
 RUN yarn install
-RUN yarn rest build
-RUN yarn events build
-RUN yarn orchestrator build
+RUN yarn build:all
 RUN rm -rf node_modules
-RUN mv docker/.yarnclean .yarnclean
 RUN yarn install --production
+RUN mv docker/.yarnclean .yarnclean
 RUN yarn autoclean --force
 
-FROM node:18-alpine as rest
-COPY --from=build /app /app
+FROM gcr.io/distroless/nodejs18-debian12 as rest
 WORKDIR /app
-RUN rm -rf packages/rest/src packages/events packages/eslint-config packages/orchestrator
-CMD ["yarn", "rest", "start"]
+COPY --from=build /app/packages/rest/dist  ./
+COPY --from=build /app/packages/rest/node_modules ./node_modules 
+ENV NODE_ENV=production
+CMD ["index.js"]
 
-FROM node:18-alpine as events
-COPY --from=build /app /app
+FROM gcr.io/distroless/nodejs18-debian12 as events
 WORKDIR /app
-RUN rm -rf packages/events/src packages/rest packages/eslint-config packages/orchestrator
-CMD ["yarn", "events", "start"]
+COPY --from=build /app/packages/events/dist ./
+COPY --from=build /app/packages/events/node_modules ./node_modules 
+ENV NODE_ENV=production
+CMD ["index.js"]
 
-FROM node:18-alpine as orchestrator
-COPY --from=build /app /app
+FROM gcr.io/distroless/nodejs18-debian12 as orchestrator
 WORKDIR /app
-RUN rm -rf packages/orchestrator/src packages/rest packages/eslint-config packages/events
-CMD ["yarn", "orchestrator", "start"]
+COPY --from=build /app/packages/orchestrator/dist ./
+COPY --from=build /app/packages/orchestrator/node_modules ./node_modules 
+ENV NODE_ENV=production
+CMD ["index.js"]

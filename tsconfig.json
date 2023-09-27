@@ -6,12 +6,10 @@
     "resolveJsonModule": true,
 
     "isolatedModules": true,
-    "importHelpers": true,
+    "importHelpers": false,
 
     "newLine": "lf",
-    "noEmitHelpers": true,
     "preserveConstEnums": true,
-    "pretty": true,
     "removeComments": true,
     "strict": true,
     "noImplicitThis": true,
