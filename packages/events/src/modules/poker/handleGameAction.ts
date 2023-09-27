@@ -9,6 +9,8 @@ import {
   MAX_POKER_PLAYERS,
   changeStage,
   createTableMessage,
+  distributeCards,
+  executeBlinds,
   finishRound,
   makeShowdown,
 } from './matchManager';
@@ -96,6 +98,30 @@ const updateGameState = async (
   if (gameData.stage === 'showdown') return makeShowdown(ctx, gameData);
 
   await createTableMessage(ctx, gameData, `${mentionUser(ctx.user.id)} desistiu de sua mão.`);
+};
+
+const startNextMatch = async (
+  ctx: ComponentInteractionContext,
+  gameData: PokerMatch,
+): Promise<void> => {
+  await ctx.ack();
+  gameData.players.forEach((player) => {
+    player.pot = 0;
+    player.folded = false;
+  });
+
+  gameData.pot = 0;
+  gameData.raises = 0;
+  gameData.stage = 'preflop';
+  gameData.winnerSeat = [];
+
+  gameData.dealerSeat = getNextPlayableSeat(gameData, gameData.dealerSeat);
+
+  distributeCards(gameData);
+  executeBlinds(gameData);
+
+  await pokerRepository.setPokerMatchState(gameData.matchId, gameData);
+  await createTableMessage(ctx, gameData);
 };
 
 const closeTable = async (
@@ -330,6 +356,7 @@ const handleGameAction = async (
 
 export {
   handleGameAction,
+  startNextMatch,
   closeTable,
   validateUserBet,
   getNextPlayableSeat,
