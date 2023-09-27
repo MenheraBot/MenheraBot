@@ -109,18 +109,10 @@ const startNextMatch = async (
 ): Promise<void> => {
   await ctx.ack();
 
-  gameData.players = gameData.players.reduce<PokerPlayer[]>((players, player) => {
-    if (player.chips === 0) {
-      pokerRepository.removeUsersInMatch([player.id]);
-      return players;
-    }
-
+  gameData.players.forEach((player) => {
     player.pot = 0;
     player.folded = false;
-    players.push(player);
-
-    return players;
-  }, []);
+  });
 
   gameData.pot = 0;
   gameData.raises = 0;
@@ -139,6 +131,7 @@ const startNextMatch = async (
 const closeTable = async (
   ctx: ComponentInteractionContext,
   gameData: PokerMatch,
+  followUp = false,
 ): Promise<void> => {
   if (gameData.worthGame)
     gameData.players.forEach((a) => {
@@ -165,7 +158,7 @@ const closeTable = async (
   pokerRepository.removeUsersInMatch(sorted.map((a) => a.id));
   pokerRepository.deletePokerMatchState(gameData.matchId);
 
-  ctx.makeMessage({
+  ctx[followUp ? 'followUp' : 'makeMessage']({
     components: [],
     attachments: [],
     content: '',
@@ -315,7 +308,13 @@ const handleGameAction = async (
     player.pot += toBet;
     gameData.pot += toBet;
 
-    gameData.lastPlayerSeat = getPreviousPlayableSeat(gameData, player.seatId);
+    const haveOtherPlayer =
+      gameData.players.filter((a) => a.chips > 0 && !a.folded && a.seatId !== player.seatId)
+        .length > 0;
+
+    gameData.lastPlayerSeat = haveOtherPlayer
+      ? getPreviousPlayableSeat(gameData, player.seatId)
+      : player.seatId;
 
     gameData.lastAction = {
       action: 'BET',
@@ -334,7 +333,13 @@ const handleGameAction = async (
 
     gameData.raises += 1;
 
-    gameData.lastPlayerSeat = getPreviousPlayableSeat(gameData, player.seatId);
+    const haveOtherPlayer =
+      gameData.players.filter((a) => a.chips > 0 && !a.folded && a.seatId !== player.seatId)
+        .length > 0;
+
+    gameData.lastPlayerSeat = haveOtherPlayer
+      ? getPreviousPlayableSeat(gameData, player.seatId)
+      : player.seatId;
 
     gameData.lastAction = {
       action: 'RAISE',
@@ -352,7 +357,14 @@ const handleGameAction = async (
     gameData.pot += toBet;
 
     if (player.pot > gameData.lastAction.pot) {
-      gameData.lastPlayerSeat = getPreviousPlayableSeat(gameData, player.seatId);
+      const haveOtherPlayer =
+        gameData.players.filter((a) => a.chips > 0 && !a.folded && a.seatId !== player.seatId)
+          .length > 0;
+
+      gameData.lastPlayerSeat = haveOtherPlayer
+        ? getPreviousPlayableSeat(gameData, player.seatId)
+        : player.seatId;
+
       gameData.raises += 1;
     }
 
