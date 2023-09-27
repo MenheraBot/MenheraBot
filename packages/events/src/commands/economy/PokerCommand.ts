@@ -23,6 +23,7 @@ import { showPlayerCards } from '../../modules/poker/playerControl';
 import {
   closeTable,
   handleGameAction,
+  startNextMatch,
   validateUserBet,
 } from '../../modules/poker/handleGameAction';
 
@@ -58,6 +59,8 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
       return showPlayerCards(ctx, player);
     case 'CLOSE_TABLE':
       return closeTable(ctx, gameData);
+    case 'NEXT_GAME':
+      return startNextMatch(ctx, gameData);
     case 'GAME_ACTION':
       return handleGameAction(
         ctx as ComponentInteractionContext<SelectMenuInteraction>,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ButtonStyles } from 'discordeno/types';
 import PokerSolver from 'pokersolver';
 import cacheRepository from '../../database/repositories/cacheRepository';
@@ -13,6 +14,7 @@ import { PokerMatch, PokerPlayer } from './types';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { getPokerCard } from './cardUtils';
 import { getAvailableActions } from './playerControl';
+import { getNextPlayableSeat } from './handleGameAction';
 
 const MAX_POKER_PLAYERS = 8;
 
@@ -32,6 +34,57 @@ const distributeCards = (match: PokerMatch): void => {
   });
 
   match.communityCards = getCards(shuffledCards, 5);
+};
+
+const executeBlinds = (match: PokerMatch): void => {
+  const headsUp = match.players.length === 2;
+  const { blind } = match;
+  const halfBlind = Math.floor(blind / 2);
+
+  if (headsUp) {
+    const dealerIndex = match.players.findIndex((a) => a.seatId === match.dealerSeat);
+    const dealer = match.players[dealerIndex];
+    const bigBlind = match.players[Number(!dealerIndex)];
+
+    bigBlind.pot = blind;
+    bigBlind.chips -= blind;
+
+    dealer.pot = halfBlind;
+    dealer.chips -= halfBlind;
+
+    match.pot = blind + halfBlind;
+    match.lastAction = {
+      action: 'BET',
+      playerSeat: bigBlind.seatId,
+      pot: bigBlind.pot,
+    };
+
+    match.seatToPlay = dealer.seatId;
+    match.lastPlayerSeat = bigBlind.seatId;
+    return;
+  }
+
+  const smallBlindSeat = getNextPlayableSeat(match, match.dealerSeat);
+  const bigBlindSeat = getNextPlayableSeat(match, smallBlindSeat);
+
+  const smallBlind = match.players.find((a) => a.seatId === smallBlindSeat)!;
+  const bigBlind = match.players.find((a) => a.seatId === bigBlindSeat)!;
+
+  smallBlind.pot = halfBlind;
+  smallBlind.chips -= halfBlind;
+
+  bigBlind.pot = blind;
+  bigBlind.chips -= blind;
+
+  match.pot = blind + halfBlind;
+  match.lastAction = {
+    action: 'BET',
+    playerSeat: bigBlind.seatId,
+    pot: bigBlind.pot,
+  };
+
+  match.seatToPlay = getNextPlayableSeat(match, bigBlindSeat);
+  match.lastPlayerSeat = bigBlindSeat;
 };
 
 const changeStage = (match: PokerMatch): void => {
@@ -117,7 +170,7 @@ const getTableImage = async (match: PokerMatch) => {
     cards: user.cards,
     backgroundTheme: user.backgroundTheme,
     cardTheme: user.cardTheme,
-    won: match.winnerSeat === user.seatId,
+    won: match.winnerSeat.includes(user.seatId),
     seat: user.seatId,
     dealer: match.dealerSeat === user.seatId,
   });
@@ -140,6 +193,7 @@ const finishRound = async (
 
   winners.forEach((player) => {
     player.chips += moneyForEach;
+    match.winnerSeat.push(player.seatId);
   });
 
   const image = await getTableImage(match);
@@ -237,11 +291,11 @@ const setupGame = async (
             : 'https://cdn.menherabot.xyz/images/profiles/1.png',
           cardTheme: userThemes[0],
           backgroundTheme: userThemes[1],
-          chips: i === 0 ? 10_000 : 9_900,
+          chips: 10_000,
           seatId: i,
           cards: [0, 0],
           folded: false,
-          pot: i === 0 ? 0 : 100,
+          pot: 0,
         };
       }),
     ),
@@ -250,21 +304,31 @@ const setupGame = async (
     dealerSeat: 0,
     blind: 100,
     raises: 0,
-    winnerSeat: MAX_POKER_PLAYERS,
+    winnerSeat: [],
     lastPlayerSeat: 0,
     seatToPlay: 0,
-    pot: 100,
+    pot: 0,
     lastAction: {
-      action: 'RAISE',
-      playerSeat: 1,
-      pot: 100,
+      action: 'CHECK',
+      playerSeat: 0,
+      pot: 0,
     },
   };
 
   distributeCards(match);
+  executeBlinds(match);
 
   await pokerRepository.setPokerMatchState(ctx.interaction.id, match);
   await createTableMessage(ctx, match);
 };
 
-export { setupGame, createTableMessage, finishRound, changeStage, MAX_POKER_PLAYERS, makeShowdown };
+export {
+  setupGame,
+  createTableMessage,
+  finishRound,
+  changeStage,
+  MAX_POKER_PLAYERS,
+  makeShowdown,
+  executeBlinds,
+  distributeCards,
+};
