@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ButtonStyles } from 'discordeno/types';
 import PokerSolver from 'pokersolver';
+import _ from 'lodash';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
@@ -144,14 +145,15 @@ const makeShowdown = async (ctx: ComponentInteractionContext, match: PokerMatch)
     return p;
   }, []);
 
-  const winners = PokerSolver.Hand.winners(userHands.map((a) => a.hand)).map(
-    (a: { cards: unknown; suits: unknown }) =>
-      userHands.find((b) => b.hand.cards === a.cards && b.hand.suits === a.suits),
+  const winners = PokerSolver.Hand.winners(userHands.map((a) => a.hand)).map((a: unknown) =>
+    userHands.find((b) => _.isEqual(a, b.hand)),
   );
 
   const winReason = winners[0].hand.descr.includes('Royal Flush')
     ? 'STRAIGHT-FLUSH-ROYAL'
     : winners[0].hand.name.replace(' ', '-').toUpperCase();
+
+  match.stage = 'showdown';
 
   finishRound(
     ctx,

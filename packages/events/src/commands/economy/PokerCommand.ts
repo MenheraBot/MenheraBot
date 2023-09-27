@@ -194,7 +194,10 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
   const oldButton = ctx.interaction.message?.components?.[0].components?.[1] as ButtonComponent;
   oldButton.disabled = false;
 
-  if (alreadyInPlayers.length === allowedUsers.length) oldButton.style = ButtonStyles.Success;
+  if (alreadyInPlayers.length === allowedUsers.length) {
+    (ctx.interaction.message?.components?.[0].components?.[0] as ButtonComponent).disabled = true;
+    oldButton.style = ButtonStyles.Success;
+  }
 
   ctx.makeMessage({
     components: (ctx.interaction.message?.components as ActionRow[]) ?? [],
