@@ -215,6 +215,8 @@ const finishRound = async (
     }
   }
 
+  if (!match.players.some((a) => a.id === match.masterId)) match.masterId = match.players[0].id;
+
   const canHaveOtherMatch = match.players.length > 1;
 
   const embed = createEmbed({
