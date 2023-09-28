@@ -99,7 +99,7 @@ const updateGameState = async (
 
   if (gameData.stage === 'showdown') return makeShowdown(ctx, gameData);
 
-  await pokerRepository.setPokerMatchState(gameData.matchId, gameData);
+  await pokerRepository.setMatchState(gameData.matchId, gameData);
   await createTableMessage(ctx, gameData, `${mentionUser(ctx.user.id)} desistiu de sua mão.`);
 };
 
@@ -125,7 +125,7 @@ const startNextMatch = async (
   distributeCards(gameData);
   executeBlinds(gameData);
 
-  await pokerRepository.setPokerMatchState(gameData.matchId, gameData);
+  await pokerRepository.setMatchState(gameData.matchId, gameData);
   await createTableMessage(ctx, gameData);
 };
 
@@ -157,7 +157,7 @@ const closeTable = async (
   });
 
   pokerRepository.removeUsersInMatch(sorted.map((a) => a.id));
-  pokerRepository.deletePokerMatchState(gameData.matchId);
+  pokerRepository.deleteMatchState(gameData.matchId);
 
   ctx[followUp ? 'followUp' : 'makeMessage']({
     components: [],
