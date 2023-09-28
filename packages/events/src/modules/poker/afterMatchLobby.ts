@@ -4,11 +4,12 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { PokerMatch } from './types';
 import { mentionUser } from '../../utils/discord/userUtils';
 import { closeTable, startNextMatch } from './handleGameAction';
-import { logger } from '../../utils/logger';
+import starsRepository from '../../database/repositories/starsRepository';
 
-const joinNextMatch = async (
+const afterLobbyAction = async (
   ctx: ComponentInteractionContext,
   gameData: PokerMatch,
+  lobbyAction: string,
 ): Promise<void> => {
   if (gameData.inMatch) return ctx.ack();
 
@@ -25,51 +26,62 @@ const joinNextMatch = async (
     ];
   }
 
-  if (!oldEmbed.fields![0].value.includes(`${ctx.user.id}`))
-    oldEmbed.fields![0].value += `\n:white_check_mark: ${mentionUser(ctx.user.id)}`;
+  const fieldValue = oldEmbed.fields![0].value;
 
-  const alreadyInPlayers = oldEmbed.fields![0].value.split('\n');
-  const numberAlreadyInPlayers = hasNextMatchPlayers
-    ? alreadyInPlayers.length
-    : alreadyInPlayers.length - 1;
+  if (fieldValue.includes(`${ctx.user.id}`)) {
+    const splitted = fieldValue.split('\n');
+    const line = splitted.findIndex((a) => a.includes(`${ctx.user.id}`));
+    const repleceable = splitted[line].includes(':white_check_mark:')
+      ? ':white_check_mark:'
+      : ':x:';
 
-  const acceptedPlayers = alreadyInPlayers.filter((a) => a.includes(':white_check_mark:')).length;
+    const toReplace = `${lobbyAction === 'ENTER' ? ':white_check_mark:' : ':x:'} ${mentionUser(
+      ctx.user.id,
+    )}`;
 
-  if (numberAlreadyInPlayers === Number(totalPlayers)) {
-    if (acceptedPlayers < 2) return closeTable(ctx, gameData);
+    oldEmbed.fields![0].value = fieldValue.replace(
+      `${repleceable} ${mentionUser(ctx.user.id)}`,
+      toReplace,
+    );
+  } else
+    oldEmbed.fields![0].value += `\n${
+      lobbyAction === 'ENTER' ? ':white_check_mark:' : ':x:'
+    } ${mentionUser(ctx.user.id)}`;
 
-    const playingIds = alreadyInPlayers.map((a) => a.replace(/\D/g, ''));
+  const alreadyVottedPlayers = oldEmbed.fields![0].value.split('\n');
+  const numberAlreadyVottedPlayers = hasNextMatchPlayers
+    ? alreadyVottedPlayers.length
+    : alreadyVottedPlayers.length - 1;
 
-    if (numberAlreadyInPlayers !== acceptedPlayers)
+  const acceptedPlayers = alreadyVottedPlayers.filter((a) => a.includes(':white_check_mark:'));
+
+  if (numberAlreadyVottedPlayers === Number(totalPlayers)) {
+    if (acceptedPlayers.length < 2) return closeTable(ctx, gameData);
+
+    const playingIds = acceptedPlayers.map((a) => a.replace(/\D/g, ''));
+
+    if (numberAlreadyVottedPlayers !== acceptedPlayers.length)
       for (let i = 0; i < gameData.players.length; i++) {
         const player = gameData.players[i];
 
-        if (!playingIds.includes(player.id))
+        if (!playingIds.includes(player.id)) {
+          if (gameData.worthGame) starsRepository.addStars(player.id, player.chips);
+
           gameData.players.splice(
             gameData.players.findIndex((a) => a.id === player.id),
             1,
           );
+        }
       }
 
     return startNextMatch(ctx, gameData);
   }
 
   oldEmbed.footer = {
-    text: `Aguardando Jogadores: ${numberAlreadyInPlayers} / ${totalPlayers}`,
+    text: `Aguardando Jogadores: ${numberAlreadyVottedPlayers} / ${totalPlayers}`,
   };
 
   ctx.makeMessage({ embeds: [oldEmbed], attachments: [] });
 };
 
-const leaveTable = async (
-  ctx: ComponentInteractionContext,
-  gameData: PokerMatch,
-): Promise<void> => {
-  if (gameData.inMatch) return ctx.ack();
-
-  const oldEmbed = ctx.interaction.message?.embeds[0] as Embed;
-  const nextMatchPlayers = oldEmbed.fields?.[0];
-  logger.info(nextMatchPlayers);
-};
-
-export { joinNextMatch, leaveTable };
+export { afterLobbyAction };

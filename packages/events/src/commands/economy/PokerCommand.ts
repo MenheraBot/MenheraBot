@@ -25,10 +25,10 @@ import {
   handleGameAction,
   validateUserBet,
 } from '../../modules/poker/handleGameAction';
-import { joinNextMatch, leaveTable } from '../../modules/poker/afterMatchLobby';
+import { afterLobbyAction } from '../../modules/poker/afterMatchLobby';
 
 const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [matchId, action] = ctx.sentData;
+  const [matchId, action, lobbyAction] = ctx.sentData;
 
   const gameData = await pokerRepository.getPokerMatchState(matchId);
 
@@ -41,7 +41,7 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
     });
 
   if (!gameData.players.map((a) => a.id).includes(`${ctx.user.id}`))
-    return ctx.makeMessage({
+    return ctx.respondInteraction({
       content: 'Você não está participando dessa mesa de Poker!',
       flags: MessageFlags.EPHEMERAL,
     });
@@ -49,7 +49,7 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
   const player = gameData.players.find((a) => a.id === `${ctx.user.id}`);
 
   if (!player)
-    return ctx.makeMessage({
+    return ctx.respondInteraction({
       flags: MessageFlags.EPHEMERAL,
       content: 'Você não está mais nesta mesa!',
     });
@@ -59,10 +59,8 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
       return showPlayerCards(ctx, player);
     case 'CLOSE_TABLE':
       return closeTable(ctx, gameData);
-    case 'NEXT_GAME':
-      return joinNextMatch(ctx, gameData);
-    case 'LEAVE_TABLE':
-      return leaveTable(ctx, gameData);
+    case 'AFTER_LOBBY':
+      return afterLobbyAction(ctx, gameData, lobbyAction);
     case 'GAME_ACTION':
       return handleGameAction(
         ctx as ComponentInteractionContext<SelectMenuInteraction>,

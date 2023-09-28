@@ -229,13 +229,13 @@ const finishRound = async (
   const nextMatch = createButton({
     label: 'Continuar jogando',
     style: ButtonStyles.Success,
-    customId: createCustomId(2, 'N', ctx.commandId, match.matchId, 'NEXT_GAME'),
+    customId: createCustomId(2, 'N', ctx.commandId, match.matchId, 'AFTER_LOBBY', 'ENTER'),
   });
 
   const exitTable = createButton({
     label: 'Sair da Mesa',
     style: ButtonStyles.Secondary,
-    customId: createCustomId(2, 'N', ctx.commandId, match.matchId, 'LEAVE_TABLE'),
+    customId: createCustomId(2, 'N', ctx.commandId, match.matchId, 'AFTER_LOBBY', 'LEAVE'),
   });
 
   const finishTable = createButton({
