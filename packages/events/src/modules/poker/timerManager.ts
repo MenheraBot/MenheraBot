@@ -1,4 +1,5 @@
 import pokerRepository from '../../database/repositories/pokerRepository';
+import { cleanupGame } from './handleGameAction';
 import { DeleteMatchTimer, TimerActionType } from './types';
 
 let scrapTimer: NodeJS.Timeout;
@@ -7,8 +8,9 @@ const executeDeleteMatch = async (timer: DeleteMatchTimer) => {
   const match = await pokerRepository.getMatchState(timer.matchId);
   if (!match) return;
 
-  await pokerRepository.removeUsersInMatch(match.players.map((a) => a.id));
-  await pokerRepository.deleteMatchState(match.matchId);
+  if (match.inMatch) return;
+
+  cleanupGame(match);
 };
 
 const getExpiredTimers = async (): Promise<void> => {

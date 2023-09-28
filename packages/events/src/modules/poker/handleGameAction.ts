@@ -129,18 +129,25 @@ const startNextMatch = async (
   await createTableMessage(ctx, gameData);
 };
 
-const closeTable = async (
-  ctx: ComponentInteractionContext,
-  gameData: PokerMatch,
-  followUp = false,
-): Promise<void> => {
+const cleanupGame = (gameData: PokerMatch): void => {
   if (gameData.worthGame)
     gameData.players.forEach((a) => {
       starsRepository.addStars(a.id, a.chips);
     });
 
+  pokerRepository.removeUsersInMatch(gameData.players.map((a) => a.id));
+  pokerRepository.deleteMatchState(gameData.matchId);
+};
+
+const closeTable = async (
+  ctx: ComponentInteractionContext,
+  gameData: PokerMatch,
+  followUp = false,
+): Promise<void> => {
   const sorted = gameData.players.sort((a, b) => b.chips - a.chips);
   const winner = sorted[0];
+
+  cleanupGame(gameData);
 
   const embed = createEmbed({
     title: 'Fim de Partida!',
@@ -155,9 +162,6 @@ const closeTable = async (
       ? { text: 'Cada jogador recebeu o valor em estrelinhas de suas fichas' }
       : undefined,
   });
-
-  pokerRepository.removeUsersInMatch(sorted.map((a) => a.id));
-  pokerRepository.deleteMatchState(gameData.matchId);
 
   ctx[followUp ? 'followUp' : 'makeMessage']({
     components: [],
@@ -383,6 +387,7 @@ export {
   handleGameAction,
   startNextMatch,
   closeTable,
+  cleanupGame,
   validateUserBet,
   getNextPlayableSeat,
   updatePlayerTurn,
