@@ -49,3 +49,14 @@ export interface PokerMatch {
     playerSeat: number;
   };
 }
+
+export enum TimerActionType {
+  DELETE_GAME,
+}
+
+export interface DeleteMatchTimer {
+  type: TimerActionType;
+  matchId: string;
+}
+
+export type PokerTimerAction = DeleteMatchTimer;

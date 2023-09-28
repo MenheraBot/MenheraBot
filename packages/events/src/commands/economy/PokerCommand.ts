@@ -30,7 +30,7 @@ import { afterLobbyAction } from '../../modules/poker/afterMatchLobby';
 const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [matchId, action, lobbyAction] = ctx.sentData;
 
-  const gameData = await pokerRepository.getPokerMatchState(matchId);
+  const gameData = await pokerRepository.getMatchState(matchId);
 
   if (!gameData)
     return ctx.makeMessage({

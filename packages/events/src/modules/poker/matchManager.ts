@@ -10,7 +10,7 @@ import { createEmbed } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { shuffleCards } from '../blackjack';
-import { PokerMatch, PokerPlayer } from './types';
+import { PokerMatch, PokerPlayer, TimerActionType } from './types';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { getPokerCard } from './cardUtils';
 import { getAvailableActions } from './playerControl';
@@ -261,7 +261,12 @@ const finishRound = async (
 
   if (!canHaveOtherMatch) return closeTable(ctx, match, true);
 
-  await pokerRepository.setPokerMatchState(match.matchId, match);
+  await pokerRepository.registerTimer(Date.now() + 1000 * 60 * 2, {
+    type: TimerActionType.DELETE_GAME,
+    matchId: match.matchId,
+  });
+
+  await pokerRepository.setMatchState(match.matchId, match);
 };
 
 const createTableMessage = async (
@@ -351,7 +356,7 @@ const setupGame = async (
   distributeCards(match);
   executeBlinds(match);
 
-  await pokerRepository.setPokerMatchState(ctx.interaction.id, match);
+  await pokerRepository.setMatchState(ctx.interaction.id, match);
   await createTableMessage(ctx, match);
 };
 

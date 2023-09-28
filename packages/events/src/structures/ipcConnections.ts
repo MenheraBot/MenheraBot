@@ -8,6 +8,7 @@ import { getEnviroments } from '../utils/getEnviroments';
 import { logger } from '../utils/logger';
 import { updateCommandsOnApi } from '../utils/updateApiCommands';
 import { getInteractionsCounter, getRegister } from './initializePrometheus';
+import { stopPokerTimer } from '../modules/poker/timerManager';
 
 const numberTypeToName = {
   1: 'PING',
@@ -99,6 +100,8 @@ const createIpcConnections = async (): Promise<Client> => {
           }, 3000).unref();
         });
 
+        logger.info('[SHUTDOWN] Stopping poker timer');
+        stopPokerTimer();
         logger.info('[SHUTDOWN] Closing all Database connections');
         await closeConnections();
         logger.info('[SHUTDOWN] Acked the close to the orchestrator');
