@@ -14,7 +14,7 @@ const removeUsersInMatch = async (userIds: string[]): Promise<void> => {
 };
 
 const setPokerMatchState = async (matchId: BigString, matchData: PokerMatch): Promise<void> => {
-  await MainRedisClient.set(`poker_table:${matchId}`, JSON.stringify(matchData));
+  await MainRedisClient.setex(`poker_table:${matchId}`, 300, JSON.stringify(matchData));
 };
 
 const deletePokerMatchState = async (matchId: BigString): Promise<void> => {

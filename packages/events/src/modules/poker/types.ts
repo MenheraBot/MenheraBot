@@ -30,6 +30,7 @@ export interface PokerCard {
 export interface PokerMatch {
   matchId: string;
   masterId: string;
+  inMatch: boolean;
   worthGame: boolean;
   embedColor: number;
   players: PokerPlayer[];

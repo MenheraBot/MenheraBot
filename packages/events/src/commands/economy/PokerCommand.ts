@@ -23,9 +23,9 @@ import { showPlayerCards } from '../../modules/poker/playerControl';
 import {
   closeTable,
   handleGameAction,
-  startNextMatch,
   validateUserBet,
 } from '../../modules/poker/handleGameAction';
+import { joinNextMatch, leaveTable } from '../../modules/poker/afterMatchLobby';
 
 const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [matchId, action] = ctx.sentData;
@@ -60,7 +60,9 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
     case 'CLOSE_TABLE':
       return closeTable(ctx, gameData);
     case 'NEXT_GAME':
-      return startNextMatch(ctx, gameData);
+      return joinNextMatch(ctx, gameData);
+    case 'LEAVE_TABLE':
+      return leaveTable(ctx, gameData);
     case 'GAME_ACTION':
       return handleGameAction(
         ctx as ComponentInteractionContext<SelectMenuInteraction>,
