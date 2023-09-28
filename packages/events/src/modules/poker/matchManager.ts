@@ -191,30 +191,37 @@ const finishRound = async (
   reason: string,
 ): Promise<void> => {
   const moneyForEach = Math.floor(match.pot / winners.length);
+  match.inMatch = false;
 
   winners.forEach((player) => {
     player.chips += moneyForEach;
     match.winnerSeat.push(player.seatId);
   });
 
-  const losePlayers = match.players.reduce((p, c) => {
-    if (c.chips === 0) {
-      pokerRepository.removeUsersInMatch([c.id]);
-      return p + 1;
-    }
-
-    return p;
-  }, 0);
-
-  const canHaveOtherMatch = match.players.length - losePlayers > 1;
+  const losePlayers = match.players.filter((a) => a.chips === 0);
 
   const image = await getTableImage(match);
+
+  if (losePlayers.length > 0) {
+    pokerRepository.removeUsersInMatch(losePlayers.map((a) => a.id));
+    for (let i = 0; i < match.players.length; i++) {
+      const player = match.players[i];
+
+      if (losePlayers.some((a) => a.id === player.id))
+        match.players.splice(
+          match.players.findIndex((a) => a.id === player.id),
+          1,
+        );
+    }
+  }
+
+  const canHaveOtherMatch = match.players.length > 1;
 
   const embed = createEmbed({
     title: 'Partida de Poker',
     color: match.embedColor,
     footer: canHaveOtherMatch
-      ? { text: `Aguardando Jogadores: 0 / ${match.players.length - losePlayers}` }
+      ? { text: `Aguardando Jogadores: 0 / ${match.players.length}` }
       : undefined,
     image: image.err ? undefined : { url: 'attachment://poker.png' },
   });
@@ -250,9 +257,9 @@ const finishRound = async (
       )} venceu essa rodada! Um total de **${moneyForEach}** fichas diretamente para seu bolso!\nMotivo: ${reason}`,
   });
 
-  if (canHaveOtherMatch) return pokerRepository.setPokerMatchState(match.matchId, match);
+  if (!canHaveOtherMatch) return closeTable(ctx, match, true);
 
-  closeTable(ctx, match, true);
+  await pokerRepository.setPokerMatchState(match.matchId, match);
 };
 
 const createTableMessage = async (
@@ -326,6 +333,7 @@ const setupGame = async (
     stage: 'preflop',
     dealerSeat: 0,
     blind: 100,
+    inMatch: true,
     raises: 0,
     winnerSeat: [],
     lastPlayerSeat: 0,

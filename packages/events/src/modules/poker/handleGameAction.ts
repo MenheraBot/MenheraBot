@@ -108,6 +108,7 @@ const startNextMatch = async (
   gameData: PokerMatch,
 ): Promise<void> => {
   await ctx.ack();
+  gameData.inMatch = true;
 
   gameData.players.forEach((player) => {
     player.pot = 0;
