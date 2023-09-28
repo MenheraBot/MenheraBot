@@ -71,6 +71,8 @@ const afterLobbyAction = async (
             gameData.players.findIndex((a) => a.id === player.id),
             1,
           );
+
+          if (player.id === gameData.masterId) gameData.masterId = gameData.players[0].id;
         }
       }
 
