@@ -30,7 +30,7 @@
     "i18next-fs-backend": "^1.1.4",
     "ioredis": "^5.2.2",
     "md5": "^2.3.0",
-    "mongoose": "^6.11.3",
+    "mongoose": "6.12.0",
     "net-ipc": "^2.0.1",
     "pokersolver": "^2.1.4",
     "prom-client": "^14.1.1",
