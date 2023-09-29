@@ -58,6 +58,7 @@ export enum TimerActionType {
 export interface DeleteMatchTimer {
   type: TimerActionType;
   matchId: string;
+  executeAt: number;
 }
 
-export type PokerTimerAction = DeleteMatchTimer;
+export type PokerTimer = DeleteMatchTimer;

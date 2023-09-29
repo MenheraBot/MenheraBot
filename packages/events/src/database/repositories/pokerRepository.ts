@@ -1,6 +1,6 @@
 import { BigString } from 'discordeno/types';
 import { MainRedisClient } from '../databases';
-import { PokerMatch, PokerTimerAction } from '../../modules/poker/types';
+import { PokerMatch, PokerTimer } from '../../modules/poker/types';
 
 const isUserInMatch = async (userId: BigString): Promise<boolean> =>
   MainRedisClient.sismember('poker_match', `${userId}`).then((r) => r === 1);
@@ -17,18 +17,18 @@ const setMatchState = async (matchId: BigString, matchData: PokerMatch): Promise
   await MainRedisClient.set(`poker_table:${matchId}`, JSON.stringify(matchData));
 };
 
-const registerTimer = async (executeAt: number, executeAction: PokerTimerAction): Promise<void> => {
-  await MainRedisClient.set(`poker_timer:${executeAt}`, JSON.stringify(executeAction));
+const registerTimer = async (timerId: string, executeAction: PokerTimer): Promise<void> => {
+  await MainRedisClient.set(`poker_timer:${timerId}`, JSON.stringify(executeAction));
 };
 
-const getTimer = async (key: string): Promise<PokerTimerAction> => {
-  const timer = (await MainRedisClient.get(key)) as string;
+const getTimer = async (timerId: string): Promise<PokerTimer> => {
+  const timer = (await MainRedisClient.get(`poker_timer:${timerId}`)) as string;
 
   return JSON.parse(timer);
 };
 
-const deleteTimer = async (key: string): Promise<void> => {
-  await MainRedisClient.del(key);
+const deleteTimer = async (timerId: string): Promise<void> => {
+  await MainRedisClient.del(`poker_timer:${timerId}`);
 };
 
 const getTimerKeys = async (): Promise<string[]> => {

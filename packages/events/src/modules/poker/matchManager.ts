@@ -16,6 +16,7 @@ import { getPokerCard } from './cardUtils';
 import { getAvailableActions } from './playerControl';
 import { closeTable, getNextPlayableSeat } from './handleGameAction';
 import starsRepository from '../../database/repositories/starsRepository';
+import { startPokerTimeout } from './timerManager';
 
 const MAX_POKER_PLAYERS = 8;
 
@@ -259,7 +260,8 @@ const finishRound = async (
 
   if (!canHaveOtherMatch) return closeTable(ctx, match, true);
 
-  await pokerRepository.registerTimer(Date.now() + 1000 * 60 * 2, {
+  startPokerTimeout(`shutdown_${match.matchId}`, {
+    executeAt: Date.now() + 1000 * 60 * 2,
     type: TimerActionType.DELETE_GAME,
     matchId: match.matchId,
   });

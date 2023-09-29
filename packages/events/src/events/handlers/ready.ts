@@ -1,7 +1,7 @@
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { bot } from '../../index';
 import { startGameLoop } from '../../modules/bicho/bichoManager';
-import { startPokerTimer } from '../../modules/poker/timerManager';
+import { setupTimers } from '../../modules/poker/timerManager';
 import { inactivityPunishment } from '../../structures/inactivityPunishment';
 import { logger } from '../../utils/logger';
 
@@ -15,7 +15,7 @@ const setReadyEvent = (): void => {
     logger.info(`[MASTER] I was set as the events master instance. Initializing master services`);
 
     await startGameLoop();
-    startPokerTimer();
+    await setupTimers();
 
     await blacklistRepository.flushBannedUsers();
     const allBannedUsers = await blacklistRepository.getAllBannedUsersIdFromMongo();
