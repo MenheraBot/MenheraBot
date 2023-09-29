@@ -32,6 +32,7 @@ export enum RequestType {
   UpdateCommands = 'UPDATE_COMMANDS',
   YouAreTheMaster = 'YOU_ARE_THE_MASTER',
   YouMayRest = 'YOU_MAY_REST',
+  SimonSays = 'SIMON_SAYS',
 }
 
 const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => {
@@ -102,7 +103,7 @@ orchestratorServer.on('message', async (msg, conn) => {
       `[SWAP VERSION] A new version has been released! Starting to swap the versions. Old version: ${currentVersion} | New Version: ${msg.version}`,
     );
 
-    connectedClients.map((a) => a.conn.request({ type: RequestType.YouMayRest }));
+    connectedClients.map((a) => a.conn.send({ type: RequestType.YouMayRest }));
 
     await new Promise((resolve) => {
       finishSwap = resolve;
@@ -118,6 +119,30 @@ orchestratorServer.on('message', async (msg, conn) => {
 
     await conn.request({ type: RequestType.YouAreTheMaster });
     console.log(`[CLIENT] Master Set!`);
+  }
+
+  if (msg.type === 'BE_MERCURY') {
+    const replayMessage = () => {
+      if (swappingVersions)
+        return setTimeout(() => {
+          replayMessage();
+        }, 2000);
+
+      const master = connectedClients.find((a) => a.isMaster);
+
+      if (!master)
+        return setTimeout(() => {
+          replayMessage();
+        }, 1000);
+
+      master.conn.send({
+        type: RequestType.SimonSays,
+        timerId: msg.timerId,
+        timerMetadata: msg.timerMetadata,
+      });
+    };
+
+    replayMessage();
   }
 });
 

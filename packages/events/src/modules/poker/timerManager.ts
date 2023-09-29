@@ -1,8 +1,10 @@
+import { bot } from '../..';
 import pokerRepository from '../../database/repositories/pokerRepository';
+import { getOrchestratorClient } from '../../structures/ipcConnections';
 import { cleanupGame } from './handleGameAction';
-import { DeleteMatchTimer, TimerActionType } from './types';
+import { DeleteMatchTimer, PokerTimer, TimerActionType } from './types';
 
-let scrapTimer: NodeJS.Timeout;
+const timers = new Map<string, NodeJS.Timeout>();
 
 const executeDeleteMatch = async (timer: DeleteMatchTimer) => {
   const match = await pokerRepository.getMatchState(timer.matchId);
@@ -13,29 +15,48 @@ const executeDeleteMatch = async (timer: DeleteMatchTimer) => {
   cleanupGame(match);
 };
 
-const getExpiredTimers = async (): Promise<void> => {
-  (await pokerRepository.getTimerKeys()).forEach(async (timerKey) => {
-    const hasExpired = Date.now() > Number(timerKey.split(':')[1]);
-    if (!hasExpired) return;
+const executeTimer = async (timerId: string, timer: PokerTimer): Promise<void> => {
+  clearTimer(timerId);
 
-    const timer = await pokerRepository.getTimer(timerKey);
-    await pokerRepository.deleteTimer(timerKey);
+  switch (timer.type) {
+    case TimerActionType.DELETE_GAME:
+      return executeDeleteMatch(timer);
+  }
+};
 
-    switch (timer.type) {
-      case TimerActionType.DELETE_GAME:
-        return executeDeleteMatch(timer);
-    }
+const setupTimers = async (): Promise<void> => {
+  (await pokerRepository.getTimerKeys()).forEach(async (key) => {
+    const timerId = key.split(':')[1];
+    const timerMetadata = await pokerRepository.getTimer(timerId);
+
+    if (Date.now() >= timerMetadata.executeAt) return executeTimer(timerId, timerMetadata);
+    startPokerTimeout(timerId, timerMetadata);
   });
 };
 
-const startPokerTimer = (): void => {
-  scrapTimer = setInterval(() => {
-    getExpiredTimers();
-  }, 1000 * 30).unref();
+const startPokerTimeout = (timerId: string, timerMetadata: PokerTimer): void => {
+  if (!bot.isMaster) {
+    getOrchestratorClient().send({ type: 'BE_MERCURY', timerId, timerMetadata });
+    return;
+  }
+
+  pokerRepository.registerTimer(timerId, timerMetadata);
+
+  const timeout = setTimeout(() => {
+    executeTimer(timerId, timerMetadata);
+  }, Date.now() - timerMetadata.executeAt).unref();
+
+  timers.set(timerId, timeout);
 };
 
-const stopPokerTimer = (): void => {
-  clearInterval(scrapTimer);
+const clearTimer = (timerId: string): void => {
+  pokerRepository.deleteTimer(timerId);
+
+  const timer = timers.get(timerId);
+  if (!timer) return;
+
+  clearTimeout(timer);
+  timers.delete(timerId);
 };
 
-export { startPokerTimer, stopPokerTimer };
+export { clearTimer, startPokerTimeout, setupTimers };
