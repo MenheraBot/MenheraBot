@@ -15,6 +15,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { getPokerCard } from './cardUtils';
 import { getAvailableActions } from './playerControl';
 import { closeTable, getNextPlayableSeat } from './handleGameAction';
+import starsRepository from '../../database/repositories/starsRepository';
 
 const MAX_POKER_PLAYERS = 8;
 
@@ -198,20 +199,17 @@ const finishRound = async (
     match.winnerSeat.push(player.seatId);
   });
 
-  const losePlayers = match.players.filter((a) => a.chips === 0);
-
   const image = await getTableImage(match);
 
-  if (losePlayers.length > 0) {
-    pokerRepository.removeUsersInMatch(losePlayers.map((a) => a.id));
-    for (let i = 0; i < match.players.length; i++) {
-      const player = match.players[i];
+  for (let i = match.players.length - 1; i >= 0; i--) {
+    const player = match.players[i];
+    const shouldRemove = player.chips === 0 || player.willExit;
 
-      if (losePlayers.some((a) => a.id === player.id))
-        match.players.splice(
-          match.players.findIndex((a) => a.id === player.id),
-          1,
-        );
+    if (shouldRemove) {
+      pokerRepository.removeUsersInMatch([player.id]);
+      if (player.chips > 0 && match.worthGame) starsRepository.addStars(player.id, player.chips);
+
+      match.players.splice(i, 1);
     }
   }
 
@@ -290,6 +288,12 @@ const createTableMessage = async (
     customId: createCustomId(2, 'N', ctx.commandId, match.matchId, 'SEE_CARDS'),
   });
 
+  const masterButton = createButton({
+    label: 'Controles do Mestre',
+    style: ButtonStyles.Secondary,
+    customId: createCustomId(2, match.masterId, ctx.commandId, match.matchId, 'ADMIN_CONTROL'),
+  });
+
   await ctx.makeMessage({
     allowedMentions: { users: [BigInt(nextPlayer)] },
     embeds: [embed],
@@ -297,7 +301,7 @@ const createTableMessage = async (
     attachments: [],
     components: [
       createActionRow([getAvailableActions(ctx, match)]),
-      createActionRow([seeCardsButton]),
+      createActionRow([seeCardsButton, masterButton]),
     ],
     content: `${lastActionMessage}\n\n**O jogador ${mentionUser(
       nextPlayer,
@@ -322,6 +326,7 @@ const setupGame = async (
 
         return {
           id: p,
+          willExit: false,
           name: discordUser ? getDisplayName(discordUser, true) : '???',
           avatar: discordUser
             ? getUserAvatar(discordUser, { size: 128 })

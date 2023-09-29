@@ -8,7 +8,7 @@ import { debugError } from '../../utils/debugError';
 import { MainRedisClient } from '../databases';
 
 const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promise<User | null> => {
-  if (userId === null) return null;
+  if (userId === null || userId === 'null') return null;
 
   const fromRedis = await MainRedisClient.get(`discord_user:${userId}`).catch(debugError);
 
