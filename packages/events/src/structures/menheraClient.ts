@@ -15,6 +15,7 @@ import { updateAssets } from './cdnManager';
 import { initializePrometheus } from './initializePrometheus';
 import { transformDiscordUserToUser } from '../internals/transformers/reverse/transformDiscordUserToUser';
 import { transfromUserToDiscordUser } from '../internals/transformers/transformUserToDiscordUser';
+import { transformComponentToDiscordComponent } from '../internals/transformers/reverse/component';
 
 const setupMenheraClient = (client: MenheraClient): void => {
   const { OWNER_ID } = getEnviroments(['OWNER_ID']);
@@ -75,6 +76,8 @@ const setupInternals = (bot: Bot, restIPC: Client): void => {
 
   bot.transformers.reverse.interactionResponse =
     transformInteractionResponseToDiscordInteractionResponse;
+
+  bot.transformers.reverse.component = transformComponentToDiscordComponent;
 
   bot.transformers.user = transformDiscordUserToUser;
   bot.transformers.reverse.user = transfromUserToDiscordUser;

@@ -31,8 +31,13 @@ const createSelectMenu = (
   type: MessageComponentTypes.SelectMenu,
 });
 
+export type UpdatedSelectMenuUsersComponent = SelectMenuUsersComponent & {
+  // eslint-disable-next-line camelcase
+  defaultValues?: { id: BigString; type: 'user' }[];
+};
+
 const createUsersSelectMenu = (
-  component: PropertyOptional<SelectMenuUsersComponent, 'type'>,
+  component: PropertyOptional<UpdatedSelectMenuUsersComponent, 'type'>,
 ): SelectMenuUsersComponent => ({
   ...component,
   type: MessageComponentTypes.SelectMenuUsers,

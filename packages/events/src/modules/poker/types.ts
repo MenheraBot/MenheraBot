@@ -7,6 +7,7 @@ export interface PokerPlayer {
   backgroundTheme: AvailableCardBackgroundThemes;
   cardTheme: AvailableCardThemes;
   chips: number;
+  willExit: boolean;
   seatId: number;
   cards: [number, number];
   pot: number;

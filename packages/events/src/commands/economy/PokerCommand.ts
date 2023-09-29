@@ -19,7 +19,11 @@ import { mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, removeNonNumbers } from '../../utils/discord/messageUtils';
 import { setupGame } from '../../modules/poker/matchManager';
-import { showPlayerCards } from '../../modules/poker/playerControl';
+import {
+  executeMasterAction,
+  forceRemovePlayers,
+  showPlayerCards,
+} from '../../modules/poker/playerControl';
 import {
   closeTable,
   handleGameAction,
@@ -59,6 +63,13 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
       return showPlayerCards(ctx, player);
     case 'CLOSE_TABLE':
       return closeTable(ctx, gameData);
+    case 'ADMIN_CONTROL':
+      return executeMasterAction(ctx, gameData);
+    case 'REMOVE_PLAYERS':
+      return forceRemovePlayers(
+        ctx as ComponentInteractionContext<SelectMenuUsersInteraction>,
+        gameData,
+      );
     case 'AFTER_LOBBY':
       return afterLobbyAction(ctx, gameData, lobbyAction);
     case 'GAME_ACTION':

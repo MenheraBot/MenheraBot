@@ -61,16 +61,13 @@ const afterLobbyAction = async (
     const playingIds = acceptedPlayers.map((a) => a.replace(/\D/g, ''));
 
     if (numberAlreadyVottedPlayers !== acceptedPlayers.length)
-      for (let i = 0; i < gameData.players.length; i++) {
+      for (let i = gameData.players.length - 1; i >= 0; i--) {
         const player = gameData.players[i];
 
         if (!playingIds.includes(player.id)) {
           if (gameData.worthGame) starsRepository.addStars(player.id, player.chips);
 
-          gameData.players.splice(
-            gameData.players.findIndex((a) => a.id === player.id),
-            1,
-          );
+          gameData.players.splice(i, 1);
 
           if (player.id === gameData.masterId) gameData.masterId = gameData.players[0].id;
         }

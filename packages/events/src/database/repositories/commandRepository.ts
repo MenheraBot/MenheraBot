@@ -1,7 +1,24 @@
+import { BigString } from 'discordeno/types';
 import { MainRedisClient } from '../databases';
 import { DatabaseCommandSchema } from '../../types/database';
 import { commandsModel } from '../collections';
 import { debugError } from '../../utils/debugError';
+
+const getCommandInfoById = async (commandId: BigString): Promise<DatabaseCommandSchema | null> => {
+  const fromRedis = await MainRedisClient.get(`command:${commandId}`);
+
+  if (fromRedis) return getCommandInfo(fromRedis);
+
+  const fromMongo = await commandsModel
+    .findOne({ discordId: `${commandId}` }, null, { lean: true })
+    .catch(debugError);
+
+  if (!fromMongo) return null;
+
+  await MainRedisClient.set(`command:${commandId}`, fromMongo._id);
+
+  return fromMongo;
+};
 
 const getCommandInfo = async (commandName: string): Promise<DatabaseCommandSchema | null> => {
   const fromRedis = await MainRedisClient.get(`command:${commandName}`).catch(debugError);
@@ -20,8 +37,11 @@ const getCommandInfo = async (commandName: string): Promise<DatabaseCommandSchem
       discordId: fromMongo.discordId,
       maintenance: fromMongo.maintenance,
       maintenanceReason: fromMongo.maintenanceReason,
+      _id: fromMongo._id,
     }),
   ).catch(debugError);
+
+  await MainRedisClient.set(`command:${fromMongo.discordId}`, commandName);
 
   return fromMongo;
 };
@@ -31,11 +51,15 @@ const bulkUpdateCommandsIds = async (
 ): Promise<void> => {
   const bulkUpdate = commandsModel.collection.initializeUnorderedBulkOp();
 
-  commands.forEach((command) => {
+  commands.forEach(async (command) => {
     bulkUpdate
       .find({ _id: command.commandName })
       .updateOne({ $set: { discordId: command.commandId } });
+
+    const oldCommandInfo = await getCommandInfo(command.commandName);
+
     MainRedisClient.del(`command:${command.commandName}`);
+    if (oldCommandInfo) MainRedisClient.del(`command:${oldCommandInfo.discordId}`);
   });
 
   await bulkUpdate.execute();
@@ -70,7 +94,9 @@ const setMaintenanceInfo = async (
 
   await MainRedisClient.del(`command:${commandName}`).catch(debugError);
 };
+
 export default {
+  getCommandInfoById,
   getCommandInfo,
   setMaintenanceInfo,
   ensureCommandInfo,
