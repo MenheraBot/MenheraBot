@@ -834,9 +834,9 @@
       "you_to_you": "c2V4bwo="
     },
     "reasons": {
-      "simon_says_add": "||que o mestre mandou||",
-      "simon_says_remove": "||que o mestre mandou||",
-      "simon_says_set": "||que o mestre mandou||",
+      "simon_says_add": "que o mestre mandou",
+      "simon_says_remove": "que o mestre mandou",
+      "simon_says_set": "que o mestre mandou",
       "pix_command": "presente no pix",
       "blackjack_command": "apostar no blackjack",
       "blackjack_lost_data": "perder os dados do blackjack",
@@ -856,5 +856,29 @@
       "vote_thank": "votar em mim >,<",
       "inactivity_punishment": "ficar inativo na Menhera"
     }
+  },
+  "poker": {
+    "not-enough-stars": "Você não possui **{{stars}}** :star: para apostar em uma partida de Poker!",
+    "you-already-in-match": "Você já está em uma partida de Poker atualmente!",
+    "select-players": "Selecione os jogadores convidados a participar dessa partida de Poker. Você não deve escolher a si mesmo",
+    "select-max-players": "Selecione no máximo {{players}} pessoas",
+    "bots-cant-play": "Bots não podem jogar poker!",
+    "dont-select-yourself": "Você não deve incluir a si mesmo na seleção de convidados!",
+    "someone-already-in-match": "Um dos usuários que você convidou já está em uma partida de Poker no momento!",
+    "someone-is-banned": "Um dos usuários que você selecionou está banido da Menhera, portanto, não pode jogar Poker!",
+    "someone-is-poor": "Um dos usuários que você selecionou não possui **{{stars}}** :star: para apostar em uma partida de Poker!" ,
+    "accept-invite": "Aceitar convite",
+    "start-match": "Iniciar partida",
+    "invite-title-friendly": "Partida de Poker Amistosa",
+    "invite-title-worth": "Partida de Poker Oficial",
+    "invite-description-friendly": "{{user}} convidou-os para uma partida de poker amistosa. Nessa partida, todos os jogadores receberão **{{chips}}** fichas para se divertir. Essas fichas não valem estrelinhas, vocês podem apenas se divertir. Para aceitar o convite, basta clicar no botão abaixo.",
+    "invite-description-worth": "{{user}} convidou-os para uma partida de poker. Esta é uma **PARTIDA OFICIAL**, portanto todos os jogadores apostarão **{{stars}}** :star: ao entrar. É possível sair da partida a qualquer momento, e transformar suas fichas em estrelinhas novamente! Você pode aceitar o convite clicando no botão abaixo.",
+    "players-in": "Convites aceitos",
+    "uninvited": "Você não foi convidado a participar dessa partida!",
+    "already-in": "Você já aceitou o convite para essa partida! Aguarde o início dela.",
+    "someone-joined-other-match": "Alguém acabou entrando em uma outra partida enquanto esta não iniciava.",
+    "starting-match": "Preparem-se... A partida está iniciando!",
+    "unknown-match": "Essa partida já foi finalizada!",
+    "not-in-match": "Você não está participando desta partida de Poker!"
   }
 }

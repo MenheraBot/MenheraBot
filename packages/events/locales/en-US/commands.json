@@ -830,9 +830,9 @@
       "you_to_you": "c2V4bwo="
     },
     "reasons": {
-      "simon_says_add": "||simon says||",
-      "simon_says_remove": "||simon says||",
-      "simon_says_set": "||simon says||",
+      "simon_says_add": "simon says",
+      "simon_says_remove": "simon says",
+      "simon_says_set": "simon says",
       "pix_command": "a gift",
       "blackjack_command": "betting on blackjack",
       "blackjack_lost_data": "losing blackjack data",
@@ -852,5 +852,29 @@
       "vote_thank": "voting for me >,<",
       "inactivity_punishment": "being inactive on Menhera"
     }
+  },
+  "poker": {
+    "not-enough-stars": "You don't have **{{stars}}** :star: to bet on a Poker match!",
+    "you-already-in-match": "You are already in a Poker match now!",
+    "select-players": "Select the players invited to participate in this Poker match. You shouldn't choose yourself",
+    "select-max-players": "Select a maximum of {{players}} people",
+    "bots-cant-play": "Bots can't play poker!",
+    "dont-select-yourself": "You must not include yourself in the selection of guests!!",
+    "someone-already-in-match": "One of the users you invited is already in a Poker match right now!",
+    "someone-is-banned": "One of the users you selected is banned from Menhera and therefore cannot play Poker!",
+    "someone-is-poor": "One of the users you selected does not have **{{stars}}** :star: to bet on a Poker match!" ,
+    "accept-invite": "Accept invite",
+    "start-match": "Start match",
+    "invite-title-friendly": "Friendly Poker Match",
+    "invite-title-worth": "Official Poker Match",
+    "invite-description-friendly": "{{user}} invited you to a friendly poker match. In this match, all players will receive **{{chips}}** chips to have fun. These chips aren't worth stars, you can just have fun. To accept the invitation, simply click the button below.",
+    "invite-description-worth": "{{user}} invited you to a match of poker. This is an **OFFICIAL MATCH**, therefore all players will bet **{{stars}}** :star: upon entering. You can leave the game at any time, and turn your chips into stars again! You can accept the invitation by clicking the button below.",
+    "players-in": "Invitations accepted",
+    "uninvited": "You were not invited to participate in this match!",
+    "already-in": "You have already accepted the invitation to this match! Wait for it to start.",
+    "someone-joined-other-match": "Someone ended up joining another match while this one wasn't starting.",
+    "starting-match": "Get ready... The match is starting!",
+    "unknown-match": "This match has already been finished!",
+    "not-in-match": "You are not participating in this Poker match!"
   }
 }

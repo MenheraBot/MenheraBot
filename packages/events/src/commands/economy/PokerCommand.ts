@@ -22,7 +22,7 @@ import {
 import { mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, removeNonNumbers } from '../../utils/discord/messageUtils';
-import { setupGame } from '../../modules/poker/matchManager';
+import { DEFAULT_CHIPS, MAX_POKER_PLAYERS, setupGame } from '../../modules/poker/matchManager';
 import {
   executeMasterAction,
   forceRemovePlayers,
@@ -44,7 +44,7 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
 
   if (!gameData)
     return ctx.makeMessage({
-      content: 'Essa partida não existe mais',
+      content: ctx.prettyResponse('error', 'commands:poker.unknown-match'),
       embeds: [],
       components: [],
       attachments: [],
@@ -52,7 +52,7 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
 
   if (!gameData.players.map((a) => a.id).includes(`${ctx.user.id}`))
     return ctx.respondInteraction({
-      content: 'Você não está participando dessa mesa de Poker!',
+      content: ctx.prettyResponse('error', 'commands:poker.not-in-match'),
       flags: MessageFlags.EPHEMERAL,
     });
 
@@ -61,7 +61,7 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
   if (!player)
     return ctx.respondInteraction({
       flags: MessageFlags.EPHEMERAL,
-      content: 'Você não está mais nesta mesa!',
+      content: ctx.prettyResponse('error', 'commands:poker.not-in-match'),
     });
 
   switch (action) {
@@ -93,15 +93,29 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
   }
 };
 
-const createStartMatchEmbed = (embedColor: number, alreadyInPlayers: string[]): Embed =>
+const createStartMatchEmbed = (
+  ctx: ComponentInteractionContext,
+  embedColor: number,
+  alreadyInPlayers: string[],
+  chips: number,
+): Embed =>
   createEmbed({
-    title: 'Partida de Poker',
+    title: ctx.prettyResponse(
+      'wink',
+      `commands:poker.invite-title-${chips > 0 ? 'worth' : 'friendly'}`,
+    ),
     color: embedColor,
-    description:
-      'Uma partida de poker está se iniciando, os convidados podem entrar na mesa clicando no botão abaixo',
+    description: ctx.locale(
+      `commands:poker.invite-description-${chips > 0 ? 'worth' : 'friendly'}`,
+      {
+        user: mentionUser(ctx.interaction.message?.interaction?.user.id ?? ''),
+        stars: chips,
+        chips: DEFAULT_CHIPS,
+      },
+    ),
     fields: [
       {
-        name: 'Jogadores Participando',
+        name: ctx.locale('commands:poker.players-in'),
         value: alreadyInPlayers.map(mentionUser).join('\n'),
       },
     ],
@@ -114,11 +128,14 @@ const selectPlayers = async (
   const selectedUsersIds = ctx.interaction.data.values;
 
   if (selectedUsers.some((a) => a.toggles.bot))
-    return ctx.makeMessage({ content: 'Bots não podem jogar poker!', components: [] });
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:poker.bots-cant-play'),
+      components: [],
+    });
 
   if (selectedUsersIds.includes(`${ctx.user.id}`))
     return ctx.makeMessage({
-      content: 'Por favor, não escolha a si mesmo para jogar!',
+      content: ctx.prettyResponse('error', 'commands:poker.dont-select-yourself'),
       components: [],
     });
 
@@ -127,7 +144,7 @@ const selectPlayers = async (
   if (isSomeoneInMatch.includes(true))
     return ctx.makeMessage({
       components: [],
-      content: 'Um dos usuários que você selecionou já está jogando uma partida de Poker!',
+      content: ctx.prettyResponse('error', 'commands:poker.someone-already-in-match'),
     });
 
   const allUserData = await Promise.all(selectedUsersIds.map(userRepository.ensureFindUser));
@@ -135,8 +152,7 @@ const selectPlayers = async (
   if (allUserData.some((a) => a.ban))
     return ctx.makeMessage({
       components: [],
-      content:
-        'Um dos usuários que você selecionou está banido da Menhera, portanto não pode jogar Poker',
+      content: ctx.prettyResponse('error', 'commands:poker.someone-is-banned'),
     });
 
   const [embedColor, stringedChips] = ctx.sentData;
@@ -145,11 +161,15 @@ const selectPlayers = async (
   if (allUserData.some((a) => chips > a.estrelinhas))
     return ctx.makeMessage({
       components: [],
-      content:
-        'Um dos usuários que você selecionou não tem estrelinhas suficientes para apostar nesta partida',
+      content: ctx.prettyResponse('error', 'commands:poker.someone-is-poor'),
     });
 
-  const embed = createStartMatchEmbed(hexStringToNumber(embedColor), [`${ctx.user.id}`]);
+  const embed = createStartMatchEmbed(
+    ctx,
+    hexStringToNumber(embedColor),
+    [`${ctx.user.id}`],
+    chips,
+  );
 
   ctx.makeMessage({
     embeds: [embed],
@@ -157,12 +177,12 @@ const selectPlayers = async (
     components: [
       createActionRow([
         createButton({
-          label: 'Participar da partida',
+          label: ctx.locale('commands:poker.accept-invite'),
           style: ButtonStyles.Primary,
           customId: createCustomId(1, 'N', ctx.commandId, 'JOIN', chips),
         }),
         createButton({
-          label: 'Iniciar Partida',
+          label: ctx.locale('commands:poker.start-match'),
           style: ButtonStyles.Secondary,
           disabled: true,
           customId: createCustomId(1, ctx.user.id, ctx.commandId, 'START', chips),
@@ -187,8 +207,7 @@ const checkStartMatchInteraction = async (ctx: ComponentInteractionContext): Pro
     return ctx.makeMessage({
       embeds: [],
       components: [],
-      content:
-        'Alguém acabou entrando em uma outra partida enquanto esta estava sendo preparada...',
+      content: ctx.prettyResponse('error', 'commands:poker.someone-joined-other-match'),
     });
 
   const allUserData = await Promise.all(joinedUsers.map(userRepository.ensureFindUser));
@@ -199,8 +218,7 @@ const checkStartMatchInteraction = async (ctx: ComponentInteractionContext): Pro
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content:
-        'Um dos usuários que você selecionou não tem estrelinhas suficientes para apostar nesta partida',
+      content: ctx.prettyResponse('error', 'commands:poker.someone-is-poor', { stars: chips }),
     });
 
   await pokerRepository.addUsersInMatch(joinedUsers);
@@ -210,7 +228,11 @@ const checkStartMatchInteraction = async (ctx: ComponentInteractionContext): Pro
       starsRepository.removeStars(user, chips);
     });
 
-  ctx.makeMessage({ embeds: [], components: [], content: 'Iniciando Partida UwU' });
+  await ctx.makeMessage({
+    embeds: [],
+    components: [],
+    content: ctx.prettyResponse('hourglass', 'commands:poker.starting-match'),
+  });
 
   setupGame(ctx, joinedUsers, ctx.interaction.message?.embeds?.[0]?.color ?? 0, chips);
 };
@@ -221,7 +243,7 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
   if (!allowedUsers.includes(`${ctx.user.id}`) && ctx.user.id !== ctx.commandAuthor.id)
     return ctx.respondInteraction({
       flags: MessageFlags.EPHEMERAL,
-      content: 'Você não está convidado a participar dessa partida!',
+      content: ctx.prettyResponse('error', 'commands:poker.uninvited'),
     });
 
   const oldEmbed = ctx.interaction.message?.embeds[0] as Embed;
@@ -230,7 +252,7 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
 
   if (alreadyInPlayers.includes(`${ctx.user.id}`))
     return ctx.respondInteraction({
-      content: 'Você já está nessa partida! Aguarde o início dela',
+      content: ctx.prettyResponse('wink', 'commands:poker.already-in'),
       flags: MessageFlags.EPHEMERAL,
     });
 
@@ -241,8 +263,9 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
     const userData = await userRepository.ensureFindUser(ctx.user.id);
 
     if (chips > userData.estrelinhas)
-      return ctx.makeMessage({
-        content: 'Você não tem todas essas estrelinhas para entrar nessa partida',
+      return ctx.respondInteraction({
+        content: ctx.prettyResponse('error', 'commands:poker.not-enough-stars', { stars: chips }),
+        flags: MessageFlags.EPHEMERAL,
       });
   }
 
@@ -256,7 +279,14 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
 
   ctx.makeMessage({
     components: (ctx.interaction.message?.components as ActionRow[]) ?? [],
-    embeds: [createStartMatchEmbed(oldEmbed.color ?? 0, [...alreadyInPlayers, `${ctx.user.id}`])],
+    embeds: [
+      createStartMatchEmbed(
+        ctx,
+        oldEmbed.color ?? 0,
+        [...alreadyInPlayers, `${ctx.user.id}`],
+        chips,
+      ),
+    ],
   });
 };
 
@@ -290,15 +320,20 @@ const PokerCommand = createCommand({
 
     if (fichas > ctx.authorData.estrelinhas)
       return ctx.makeMessage({
-        content: 'Você não possui todas essas estrelinhas para apostar em uma partida de Poker!',
+        content: ctx.prettyResponse('error', 'commands:poker.not-enough-stars', { stars: fichas }),
+        flags: MessageFlags.EPHEMERAL,
       });
 
     const userInMatch = await pokerRepository.isUserInMatch(ctx.author.id);
 
-    if (userInMatch) return ctx.makeMessage({ content: 'already in match' });
+    if (userInMatch)
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:poker.you-already-in-match'),
+        flags: MessageFlags.EPHEMERAL,
+      });
 
     ctx.makeMessage({
-      content: 'Selecione os jogadores dessa partida. Você não deve escolher a si mesmo',
+      content: ctx.prettyResponse('wink', 'commands:poker.select-players'),
       components: [
         createActionRow([
           createUsersSelectMenu({
@@ -309,8 +344,10 @@ const PokerCommand = createCommand({
               ctx.authorData.selectedColor,
               fichas,
             ),
-            maxValues: 7,
-            placeholder: 'Selecione no máximo 7 pessoas',
+            maxValues: MAX_POKER_PLAYERS - 1,
+            placeholder: ctx.locale('commands:poker.select-max-players', {
+              players: MAX_POKER_PLAYERS - 1,
+            }),
           }),
         ]),
       ],
