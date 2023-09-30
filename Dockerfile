@@ -15,12 +15,11 @@ COPY --from=build /app/packages/rest/node_modules ./node_modules
 ENV NODE_ENV=production
 CMD ["index.js"]
 
-FROM gcr.io/distroless/nodejs18-debian12 as events
+FROM node:18-alpine as events
 WORKDIR /app
-COPY --from=build /app/packages/events/dist ./
-COPY --from=build /app/packages/events/node_modules ./node_modules 
-ENV NODE_ENV=production
-CMD ["index.js"]
+COPY --from=build /app/packages/rest/dist  ./
+COPY --from=build /app/packages/rest/node_modules ./node_modules 
+CMD ["yarn", "start"]
 
 FROM gcr.io/distroless/nodejs18-debian12 as orchestrator
 WORKDIR /app
