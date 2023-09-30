@@ -343,12 +343,12 @@ const setupGame = async (
   const blind = Math.floor((chips || DEFAULT_CHIPS) * 0.1);
 
   const playersData = await Promise.all(
-    players.map(async (p, i) => {
-      const discordUser = await cacheRepository.getDiscordUser(p, false);
-      const userThemes = await userThemesRepository.getThemesForPoker(p);
+    players.map(async (id, i) => {
+      const discordUser = await cacheRepository.getDiscordUser(id, false);
+      const userThemes = await userThemesRepository.getThemesForPoker(id);
 
       return {
-        id: p,
+        id,
         willExit: false,
         name: discordUser ? getDisplayName(discordUser, true) : '???',
         avatar: discordUser
@@ -403,6 +403,7 @@ export {
   changeStage,
   clearFoldTimeout,
   MAX_POKER_PLAYERS,
+  DEFAULT_CHIPS,
   makeShowdown,
   executeBlinds,
   distributeCards,
