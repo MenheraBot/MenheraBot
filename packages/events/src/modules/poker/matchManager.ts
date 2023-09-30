@@ -107,7 +107,7 @@ const finishRound = async (
     }
   }
 
-  if (!gameData.players.some((a) => a.id === gameData.masterId))
+  if (!gameData.players.some((a) => a.id === gameData.masterId) && gameData.players.length > 0)
     gameData.masterId = gameData.players[0].id;
 
   const canHaveOtherMatch = gameData.players.length > 1;
