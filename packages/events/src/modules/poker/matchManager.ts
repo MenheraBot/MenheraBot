@@ -16,7 +16,9 @@ import { getPokerCard } from './cardUtils';
 import { getAvailableActions } from './playerControl';
 import { closeTable, getNextPlayableSeat } from './handleGameAction';
 import starsRepository from '../../database/repositories/starsRepository';
-import { startPokerTimeout } from './timerManager';
+import { clearPokerTimer, startPokerTimeout } from './timerManager';
+import { millisToSeconds } from '../../utils/miscUtils';
+import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 
 const MAX_POKER_PLAYERS = 8;
 
@@ -131,7 +133,10 @@ const getOpenedCards = (match: PokerMatch): number[] => {
   }
 };
 
-const makeShowdown = async (ctx: ComponentInteractionContext, match: PokerMatch): Promise<void> => {
+const makeShowdown = async (
+  ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
+  match: PokerMatch,
+): Promise<void> => {
   match.stage = 'showdown';
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -187,7 +192,7 @@ const getTableImage = async (match: PokerMatch) => {
 };
 
 const finishRound = async (
-  ctx: ComponentInteractionContext,
+  ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
   match: PokerMatch,
   winners: PokerPlayer[],
   reason: string,
@@ -245,6 +250,8 @@ const finishRound = async (
     customId: createCustomId(2, match.masterId, ctx.commandId, match.matchId, 'CLOSE_TABLE'),
   });
 
+  const shutdownGame = Date.now() + 1000 * 60 * 2;
+
   await ctx.makeMessage({
     embeds: [embed],
     attachments: [],
@@ -255,13 +262,15 @@ const finishRound = async (
       .map((a) => mentionUser(a.id))
       .join(
         ', ',
-      )} venceu essa rodada! Um total de **${moneyForEach}** fichas diretamente para seu bolso!\nMotivo: ${reason}`,
+      )} venceu essa rodada! Um total de **${moneyForEach}** fichas diretamente para seu bolso!\nMotivo: ${reason}\n\nA partida vai acabar em <t:${millisToSeconds(
+      shutdownGame,
+    )}:R>`,
   });
 
   if (!canHaveOtherMatch) return closeTable(ctx, match, true);
 
-  startPokerTimeout(`shutdown_${match.matchId}`, {
-    executeAt: Date.now() + 1000 * 60 * 2,
+  startPokerTimeout(`shutdown:${match.matchId}`, {
+    executeAt: shutdownGame,
     type: TimerActionType.DELETE_GAME,
     matchId: match.matchId,
   });
@@ -269,8 +278,19 @@ const finishRound = async (
   await pokerRepository.setMatchState(match.matchId, match);
 };
 
+const startFoldTimeout = (match: PokerMatch): void => {
+  const player = match.players.find((a) => a.seatId === match.seatToPlay)!;
+  startPokerTimeout(`fold_timeout:${player.id}`, {
+    executeAt: Date.now() + 1000 * 30,
+    matchId: match.matchId,
+    type: TimerActionType.TIMOEUT_FOLD,
+  });
+};
+
+const clearFoldTimeout = (playerId: string): void => clearPokerTimer(`fold_timeout:${playerId}`);
+
 const createTableMessage = async (
-  ctx: InteractionContext,
+  ctx: InteractionContext | PokerFollowupInteractionContext,
   match: PokerMatch,
   lastActionMessage = '',
 ): Promise<void> => {
@@ -295,6 +315,8 @@ const createTableMessage = async (
     style: ButtonStyles.Secondary,
     customId: createCustomId(2, match.masterId, ctx.commandId, match.matchId, 'ADMIN_CONTROL'),
   });
+
+  startFoldTimeout(match);
 
   await ctx.makeMessage({
     allowedMentions: { users: [BigInt(nextPlayer)] },
@@ -345,6 +367,7 @@ const setupGame = async (
     ),
     communityCards: [0, 0, 0, 0, 0],
     stage: 'preflop',
+    interactionToken: ctx.interaction.token,
     dealerSeat: 0,
     blind: 100,
     inMatch: true,
@@ -372,6 +395,7 @@ export {
   createTableMessage,
   finishRound,
   changeStage,
+  clearFoldTimeout,
   MAX_POKER_PLAYERS,
   makeShowdown,
   executeBlinds,
