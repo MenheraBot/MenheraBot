@@ -19,6 +19,7 @@ import { ApiHuntingTypes } from '../../modules/hunt/types';
 import { debugError } from '../debugError';
 import { dataRequest } from './apiRequests';
 import { logger } from '../logger';
+import { PokerApiUser } from '../../modules/poker/types';
 
 const postHuntExecution = async (
   userId: string,
@@ -64,6 +65,10 @@ const postBlackjackGame = async (
   betValue: number,
 ): Promise<void> => {
   await dataRequest.post('/statistics/blackjack', { userId, didWin, betValue }).catch(debugError);
+};
+
+const postPokerRound = async (players: PokerApiUser[]): Promise<void> => {
+  await dataRequest.post('/statistics/poker', { players }).catch(debugError);
 };
 
 const getUserProfileInfo = async (userId: BigString): Promise<false | ApiUserProfileStats> => {
@@ -231,6 +236,7 @@ export {
   postBlackjackGame,
   getUserHuntStats,
   getUserProfileInfo,
+  postPokerRound,
   getTopGamblingUsers,
   getUserLastBanData,
   getAllUserBans,

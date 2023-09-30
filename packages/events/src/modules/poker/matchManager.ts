@@ -9,7 +9,7 @@ import { createActionRow, createButton, createCustomId } from '../../utils/disco
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { PokerMatch, PokerPlayer, TimerActionType } from './types';
+import { PokerApiUser, PokerMatch, PokerPlayer, PokerWinReasons, TimerActionType } from './types';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { distributeCards, getOpenedCards, getPokerCard } from './cardUtils';
 import { getAvailableActions, getPlayerBySeat } from './playerControl';
@@ -20,6 +20,7 @@ import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { executeBlinds } from './executeBlinds';
 import { AUTO_FOLD_TIMEOUT_IN_SECONDS, DEFAULT_CHIPS } from './constants';
 import { convertChipsToStars } from './afterMatchLobby';
+import { postPokerRound } from '../../utils/apiRequests/statistics';
 
 const makeShowdown = async (
   ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
@@ -95,9 +96,20 @@ const finishRound = async (
 
   const image = await getTableImage(gameData);
 
+  const pokerApiUsers: PokerApiUser[] = [];
+
   for (let i = gameData.players.length - 1; i >= 0; i--) {
     const player = gameData.players[i];
     const shouldRemove = player.chips <= gameData.blind || player.willExit;
+
+    const didPlayerWin = gameData.winnerSeat.includes(player.seatId);
+
+    pokerApiUsers.push({
+      chips: didPlayerWin ? moneyForEach : player.pot,
+      id: player.id,
+      reason: reason.replace('-', '_') as PokerWinReasons,
+      won: didPlayerWin,
+    });
 
     if (shouldRemove) {
       pokerRepository.removeUsersInMatch([player.id]);
@@ -106,6 +118,8 @@ const finishRound = async (
       gameData.players.splice(i, 1);
     }
   }
+
+  postPokerRound(pokerApiUsers);
 
   if (!gameData.players.some((a) => a.id === gameData.masterId) && gameData.players.length > 0)
     gameData.masterId = gameData.players[0].id;
