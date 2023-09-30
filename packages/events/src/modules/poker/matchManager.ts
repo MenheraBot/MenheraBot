@@ -21,6 +21,7 @@ import { millisToSeconds } from '../../utils/miscUtils';
 import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 
 const MAX_POKER_PLAYERS = 8;
+const DEFAULT_CHIPS = 50_000;
 
 const distributeCards = (match: PokerMatch): void => {
   const shuffledCards = shuffleCards();
@@ -209,7 +210,7 @@ const finishRound = async (
 
   for (let i = match.players.length - 1; i >= 0; i--) {
     const player = match.players[i];
-    const shouldRemove = player.chips === 0 || player.willExit;
+    const shouldRemove = player.chips <= match.blind || player.willExit;
 
     if (shouldRemove) {
       pokerRepository.removeUsersInMatch([player.id]);
@@ -337,39 +338,44 @@ const setupGame = async (
   ctx: InteractionContext,
   players: string[],
   embedColor: number,
+  chips: number,
 ): Promise<void> => {
+  const blind = Math.floor((chips || DEFAULT_CHIPS) * 0.1);
+
+  const playersData = await Promise.all(
+    players.map(async (p, i) => {
+      const discordUser = await cacheRepository.getDiscordUser(p, false);
+      const userThemes = await userThemesRepository.getThemesForPoker(p);
+
+      return {
+        id: p,
+        willExit: false,
+        name: discordUser ? getDisplayName(discordUser, true) : '???',
+        avatar: discordUser
+          ? getUserAvatar(discordUser, { size: 128 })
+          : 'https://cdn.menherabot.xyz/images/profiles/1.png',
+        cardTheme: userThemes[0],
+        backgroundTheme: userThemes[1],
+        chips: chips || DEFAULT_CHIPS,
+        seatId: i,
+        cards: [0, 0] as [number, number],
+        folded: false,
+        pot: 0,
+      };
+    }),
+  );
+
   const match: PokerMatch = {
     matchId: `${ctx.interaction.id}`,
     masterId: players[0],
     embedColor,
-    worthGame: false,
-    players: await Promise.all(
-      players.map(async (p, i) => {
-        const discordUser = await cacheRepository.getDiscordUser(p, false);
-        const userThemes = await userThemesRepository.getThemesForPoker(p);
-
-        return {
-          id: p,
-          willExit: false,
-          name: discordUser ? getDisplayName(discordUser, true) : '???',
-          avatar: discordUser
-            ? getUserAvatar(discordUser, { size: 128 })
-            : 'https://cdn.menherabot.xyz/images/profiles/1.png',
-          cardTheme: userThemes[0],
-          backgroundTheme: userThemes[1],
-          chips: 10_000,
-          seatId: i,
-          cards: [0, 0],
-          folded: false,
-          pot: 0,
-        };
-      }),
-    ),
+    worthGame: chips > 0,
+    players: playersData,
     communityCards: [0, 0, 0, 0, 0],
     stage: 'preflop',
     interactionToken: ctx.interaction.token,
     dealerSeat: 0,
-    blind: 100,
+    blind,
     inMatch: true,
     raises: 0,
     winnerSeat: [],
