@@ -4,6 +4,7 @@ import {
   ApiGamblingGameCompatible,
   ApiGamblingGameStats,
   ApiHuntStats,
+  ApiTransactionReason,
   ApiUserProfileStats,
   BanInfo,
   BlackjackTop,
@@ -179,7 +180,7 @@ const postTransaction = async (
   targetId: TransactionRegister['targetId'],
   amount: TransactionRegister['amount'],
   currencyType: TransactionRegister['currencyType'],
-  reason: TransactionRegister['reason'],
+  reason: ApiTransactionReason,
 ): Promise<void> => {
   await dataRequest
     .post('/statistics/transaction', { authorId, targetId, amount, currencyType, reason })

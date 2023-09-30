@@ -854,7 +854,8 @@
       "buy_theme": "comprar tema",
       "buy_theme_royalty": "participação de lucros em tema",
       "vote_thank": "votar em mim >,<",
-      "inactivity_punishment": "ficar inativo na Menhera"
+      "inactivity_punishment": "ficar inativo na Menhera",
+      "poker_command": "apostar no poker"
     }
   },
   "poker": {

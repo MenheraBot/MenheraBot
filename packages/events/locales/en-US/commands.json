@@ -850,7 +850,8 @@
       "buy_theme": "buying themes",
       "buy_theme_royalty": "profit sharing in theme",
       "vote_thank": "voting for me >,<",
-      "inactivity_punishment": "being inactive on Menhera"
+      "inactivity_punishment": "being inactive on Menhera",
+      "poker_command": "betting on poker"
     }
   },
   "poker": {

@@ -31,6 +31,7 @@ export interface PokerMatch {
   masterId: string;
   inMatch: boolean;
   worthGame: boolean;
+  initialChips: number;
   interactionToken: string;
   embedColor: number;
   players: PokerPlayer[];
