@@ -1,4 +1,4 @@
-import { updatePlayerTurn } from '../handleGameAction';
+import { updatePlayerTurn } from '../turnManager';
 import { mockGame, mockPlayer } from './playerSeats.test';
 
 describe('Related to updating the turn to play', () => {

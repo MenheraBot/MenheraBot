@@ -4,47 +4,55 @@ import commandRepository from '../../database/repositories/commandRepository';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import { getOrchestratorClient } from '../../structures/ipcConnections';
 import { DatabaseCommandSchema } from '../../types/database';
-import { closeTable, updateGameState } from './handleGameAction';
+import { updateGameState } from './turnManager';
 import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { DeleteMatchTimer, PokerTimer, TimeoutFoldTimer, TimerActionType } from './types';
+import { closeTable } from './matchManager';
+import { getPlayerBySeat } from './playerControl';
 
 const timers = new Map<string, NodeJS.Timeout>();
 
 const executeDeleteMatch = async (timer: DeleteMatchTimer) => {
-  const match = await pokerRepository.getMatchState(timer.matchId);
-  if (!match) return;
+  const gameData = await pokerRepository.getMatchState(timer.matchId);
+  if (!gameData) return;
 
-  if (match.inMatch) return;
+  if (gameData.inMatch) return;
 
   const pokerCommandId = (await commandRepository.getCommandInfo('poker')) as DatabaseCommandSchema;
 
-  const ctx = new PokerFollowupInteractionContext(match.interactionToken, pokerCommandId.discordId);
+  const ctx = new PokerFollowupInteractionContext(
+    gameData.interactionToken,
+    pokerCommandId.discordId,
+  );
 
-  closeTable(ctx, match);
+  closeTable(ctx, gameData);
 };
 
 const executeFoldTimeout = async (timer: TimeoutFoldTimer) => {
-  const match = await pokerRepository.getMatchState(timer.matchId);
-  if (!match) return;
+  const gameData = await pokerRepository.getMatchState(timer.matchId);
+  if (!gameData) return;
 
-  if (!match.inMatch) return;
+  if (!gameData.inMatch) return;
 
-  const player = match.players.find((a) => a.seatId === match.seatToPlay)!;
+  const player = getPlayerBySeat(gameData, gameData.seatToPlay);
 
   player.pot = 0;
   player.folded = true;
 
-  match.lastAction = {
+  gameData.lastAction = {
     action: 'FOLD',
     playerSeat: player.seatId,
-    pot: match.lastAction.pot,
+    pot: gameData.lastAction.pot,
   };
 
   const pokerCommandId = (await commandRepository.getCommandInfo('poker')) as DatabaseCommandSchema;
 
-  const ctx = new PokerFollowupInteractionContext(match.interactionToken, pokerCommandId.discordId);
+  const ctx = new PokerFollowupInteractionContext(
+    gameData.interactionToken,
+    pokerCommandId.discordId,
+  );
 
-  return updateGameState(ctx, match);
+  return updateGameState(ctx, gameData);
 };
 
 const executeTimer = async (timerId: string, timer: PokerTimer): Promise<void> => {

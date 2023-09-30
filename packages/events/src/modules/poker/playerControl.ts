@@ -108,6 +108,9 @@ const executeMasterAction = async (
   });
 };
 
+const getPlayerBySeat = (gameData: PokerMatch, seatId: number): PokerPlayer =>
+  gameData.players.find((a) => a.seatId === seatId)!;
+
 const getAvailableActions = (
   ctx: InteractionContext | PokerFollowupInteractionContext,
   gameData: PokerMatch,
@@ -174,4 +177,10 @@ const getAvailableActions = (
   });
 };
 
-export { showPlayerCards, getAvailableActions, executeMasterAction, forceRemovePlayers };
+export {
+  showPlayerCards,
+  getAvailableActions,
+  executeMasterAction,
+  forceRemovePlayers,
+  getPlayerBySeat,
+};
