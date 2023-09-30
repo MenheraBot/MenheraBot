@@ -19,7 +19,7 @@ FROM node:18-alpine as events
 WORKDIR /app
 COPY --from=build /app/packages/events/dist  ./
 COPY --from=build /app/packages/events/package.json  ./
-COPY --from=build /app/packages/rest/node_modules ./node_modules 
+COPY --from=build /app/packages/events/node_modules ./node_modules 
 CMD ["yarn", "start"]
 
 FROM gcr.io/distroless/nodejs18-debian12 as orchestrator
