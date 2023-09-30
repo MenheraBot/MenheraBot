@@ -14,12 +14,12 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { distributeCards, getOpenedCards, getPokerCard } from './cardUtils';
 import { getAvailableActions, getPlayerBySeat } from './playerControl';
 import { getNextPlayableSeat } from './turnManager';
-import starsRepository from '../../database/repositories/starsRepository';
 import { clearPokerTimer, startPokerTimeout } from './timerManager';
 import { capitalize, millisToSeconds } from '../../utils/miscUtils';
 import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { executeBlinds } from './executeBlinds';
 import { AUTO_FOLD_TIMEOUT_IN_SECONDS, DEFAULT_CHIPS } from './constants';
+import { convertChipsToStars } from './afterMatchLobby';
 
 const makeShowdown = async (
   ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
@@ -101,7 +101,7 @@ const finishRound = async (
 
     if (shouldRemove) {
       pokerRepository.removeUsersInMatch([player.id]);
-      if (player.chips > 0 && gameData.worthGame) starsRepository.addStars(player.id, player.chips);
+      convertChipsToStars(gameData, player);
 
       gameData.players.splice(i, 1);
     }
@@ -332,6 +332,7 @@ const setupGame = async (
     stage: 'preflop',
     interactionToken: ctx.interaction.token,
     dealerSeat: 0,
+    initialChips: chips || DEFAULT_CHIPS,
     blind,
     inMatch: true,
     raises: 0,
@@ -355,9 +356,7 @@ const setupGame = async (
 
 const cleanupGame = (gameData: PokerMatch): void => {
   if (gameData.worthGame)
-    gameData.players.forEach((a) => {
-      starsRepository.addStars(a.id, a.chips);
-    });
+    gameData.players.forEach((player) => convertChipsToStars(gameData, player));
 
   pokerRepository.removeUsersInMatch(gameData.players.map((a) => a.id));
   pokerRepository.deleteMatchState(gameData.matchId);

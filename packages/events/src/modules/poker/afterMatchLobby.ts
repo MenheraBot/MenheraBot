@@ -1,10 +1,37 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Embed } from 'discordeno/transformers';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { PokerMatch } from './types';
+import { PokerMatch, PokerPlayer } from './types';
 import { mentionUser } from '../../utils/discord/userUtils';
 import starsRepository from '../../database/repositories/starsRepository';
 import { closeTable, startNextMatch } from './matchManager';
+import { postTransaction } from '../../utils/apiRequests/statistics';
+import { bot } from '../..';
+import { ApiTransactionReason } from '../../types/api';
+
+const convertChipsToStars = async (gameData: PokerMatch, player: PokerPlayer): Promise<void> => {
+  if (!gameData.worthGame) return;
+
+  if (player.chips > 0) starsRepository.addStars(player.id, player.chips);
+
+  if (player.chips > gameData.initialChips)
+    postTransaction(
+      `${bot.id}`,
+      player.id,
+      player.chips - gameData.initialChips,
+      'estrelinhas',
+      ApiTransactionReason.POKER_COMMAND,
+    );
+
+  if (player.chips < gameData.initialChips)
+    postTransaction(
+      player.id,
+      `${bot.id}`,
+      gameData.initialChips - player.chips,
+      'estrelinhas',
+      ApiTransactionReason.POKER_COMMAND,
+    );
+};
 
 const afterLobbyAction = async (
   ctx: ComponentInteractionContext,
@@ -65,7 +92,7 @@ const afterLobbyAction = async (
         const player = gameData.players[i];
 
         if (!playingIds.includes(player.id)) {
-          if (gameData.worthGame) starsRepository.addStars(player.id, player.chips);
+          convertChipsToStars(gameData, player);
 
           gameData.players.splice(i, 1);
 
@@ -86,4 +113,4 @@ const afterLobbyAction = async (
   ctx.makeMessage({ embeds: [oldEmbed], attachments: [] });
 };
 
-export { afterLobbyAction };
+export { afterLobbyAction, convertChipsToStars };

@@ -94,6 +94,7 @@ export enum ApiTransactionReason {
   BUY_THEME_ROYALTY = 'buy_theme_royalty',
   VOTE_THANK = 'vote_thank',
   INACTIVITY_PUNISHMENT = 'inactivity_punishment',
+  POKER_COMMAND = 'poker_command',
 }
 
 type TransactionType = DatabaseHuntingTypes | 'estrelinhas';

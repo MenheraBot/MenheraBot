@@ -13,6 +13,7 @@ export const mockGame = (): PokerMatch => ({
   language: '',
   winnerSeat: [],
   lastPlayerSeat: 0,
+  initialChips: 0,
   masterId: '',
   matchId: '',
   interactionToken: '',
