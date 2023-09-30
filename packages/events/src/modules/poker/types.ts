@@ -16,20 +16,18 @@ export interface PokerPlayer {
 
 type GameStages = 'preflop' | 'flop' | 'turn' | 'river' | 'showdown';
 
-export type Action = 'FOLD' | 'CHECK' | 'CALL' | 'BET' | 'RAISE' | 'ALLIN';
+export type Action = 'FOLD' | 'CHECK' | 'CALL' | 'BET' | 'RAISE' | 'RAISE-CUSTOM' | 'ALLIN';
 
 export type CARD_SUITE = 'SPADES' | 'HEARTS' | 'DIAMONDS' | 'CLUBS';
 
 export interface PokerCard {
-  id: number;
-  value: number;
   displayValue: string;
-  suit: CARD_SUITE;
   solverValue: string;
 }
 
 export interface PokerMatch {
   matchId: string;
+  language: string;
   masterId: string;
   inMatch: boolean;
   worthGame: boolean;

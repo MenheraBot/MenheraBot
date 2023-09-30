@@ -12,6 +12,49 @@ import { extractFields } from '../../utils/discord/modalUtils';
 import { getPreviousPlayableSeat, updateGameState } from './turnManager';
 import { Action, PokerMatch, PokerPlayer } from './types';
 
+const executeAction = (
+  gameData: PokerMatch,
+  player: PokerPlayer,
+  action: Action,
+  amount = 0,
+): void => {
+  switch (action) {
+    case 'FOLD': {
+      player.pot = 0;
+      player.folded = true;
+      break;
+    }
+    case 'CALL':
+    case 'BET':
+    case 'RAISE':
+    case 'ALLIN': {
+      const toBet = amount;
+      player.chips -= toBet;
+      player.pot += toBet;
+      gameData.pot += toBet;
+      break;
+    }
+  }
+
+  if (player.pot > gameData.lastAction.pot) {
+    const haveOtherPlayer =
+      gameData.players.filter((a) => a.chips > 0 && !a.folded && a.seatId !== player.seatId)
+        .length > 0;
+
+    gameData.lastPlayerSeat = haveOtherPlayer
+      ? getPreviousPlayableSeat(gameData, player.seatId)
+      : player.seatId;
+
+    if (action !== 'BET') gameData.raises += 1;
+  }
+
+  gameData.lastAction = {
+    action,
+    playerSeat: player.seatId,
+    pot: action === 'FOLD' ? gameData.lastAction.pot : player.pot,
+  };
+};
+
 const validateUserBet = async (
   ctx: ComponentInteractionContext<ModalInteraction>,
   gameData: PokerMatch,
@@ -20,64 +63,36 @@ const validateUserBet = async (
   const userInput = extractFields(ctx.interaction)[0].value;
   const bet = parseInt(userInput, 10);
 
-  const minValue = (gameData.lastAction.pot - player.pot) * 2;
+  const minValue = (gameData.lastAction.pot - player.pot || gameData.blind) * 2;
 
   if (Number.isNaN(bet))
     return ctx.respondInteraction({
-      content: 'Você enviou um número inválido',
+      content: ctx.prettyResponse('error', 'commands:poker.player.invalid-number'),
       flags: MessageFlags.EPHEMERAL,
     });
 
   if (bet < minValue)
     return ctx.respondInteraction({
-      content: `Você precisa apostar pelo menos ${minValue} fichas!`,
+      content: ctx.prettyResponse('error', 'commands:poker.player.min-bet-required', {
+        chips: minValue,
+      }),
       flags: MessageFlags.EPHEMERAL,
     });
 
   if (bet > player.chips)
     return ctx.respondInteraction({
-      content: 'Você não tem todas essas fichas para apostar',
+      content: ctx.prettyResponse('error', 'commands:poker.player.too-poor'),
       flags: MessageFlags.EPHEMERAL,
     });
 
+  executeAction(gameData, player, bet === player.chips ? 'ALLIN' : 'RAISE', bet);
+
   await ctx.ack();
-
-  if (bet === player.chips) {
-    const toBet = player.chips;
-    player.chips = 0;
-    player.pot += toBet;
-    gameData.pot += toBet;
-
-    gameData.raises += 1;
-
-    gameData.lastAction = {
-      action: 'ALLIN',
-      playerSeat: player.seatId,
-      pot: player.pot,
-    };
-
-    gameData.lastPlayerSeat = getPreviousPlayableSeat(gameData, player.seatId);
-    return updateGameState(ctx, gameData);
-  }
-
-  player.chips -= bet;
-  player.pot += bet;
-  gameData.pot += bet;
-
-  gameData.raises += 1;
-
-  gameData.lastAction = {
-    action: 'RAISE',
-    playerSeat: player.seatId,
-    pot: player.pot,
-  };
-
-  gameData.lastPlayerSeat = getPreviousPlayableSeat(gameData, player.seatId);
 
   return updateGameState(ctx, gameData);
 };
 
-const handleUserBet = async (
+const handleUserSelection = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
   gameData: PokerMatch,
   player: PokerPlayer,
@@ -87,17 +102,19 @@ const handleUserBet = async (
     string,
   ];
 
-  if (action === 'RAISE' && amount === 'CUSTOM') {
-    const minValue = (gameData.lastAction.pot - player.pot) * 2;
+  if (action === 'RAISE-CUSTOM') {
+    const minValue = (gameData.lastAction.pot - player.pot || gameData.blind) * 2;
 
     const choseValue = createTextInput({
       customId: 'BET',
-      label: `Digite a sua aposta (Min. ${minValue})`,
+      label: ctx.locale('commands:poker.player.write-your-bet', {
+        chips: minValue,
+      }),
       style: TextStyles.Short,
       minLength: `${minValue}`.length,
       maxLength: `${player.chips}`.length,
       required: true,
-      placeholder: `O valor deve ser maior que ${minValue}`,
+      placeholder: ctx.locale('commands:poker.player.min-bet', { chips: minValue }),
     });
 
     await ctx.respondWithModal({
@@ -108,120 +125,11 @@ const handleUserBet = async (
     return;
   }
 
+  executeAction(gameData, player, action, Number(amount));
+
   await ctx.ack();
 
-  if (action === 'FOLD') {
-    player.pot = 0;
-    player.folded = true;
-
-    gameData.lastAction = {
-      action: 'FOLD',
-      playerSeat: player.seatId,
-      pot: gameData.lastAction.pot,
-    };
-
-    return updateGameState(ctx, gameData);
-  }
-
-  if (action === 'CHECK') {
-    gameData.lastAction = {
-      action: 'CHECK',
-      playerSeat: player.seatId,
-      pot: gameData.lastAction.pot,
-    };
-
-    return updateGameState(ctx, gameData);
-  }
-
-  if (action === 'CALL') {
-    const toBet = Number(amount);
-    player.chips -= toBet;
-    player.pot += toBet;
-    gameData.pot += toBet;
-
-    gameData.lastAction = {
-      action: 'CALL',
-      playerSeat: player.seatId,
-      pot: player.pot,
-    };
-
-    return updateGameState(ctx, gameData);
-  }
-
-  if (action === 'BET') {
-    const toBet = Number(amount);
-    player.chips -= toBet;
-    player.pot += toBet;
-    gameData.pot += toBet;
-
-    const haveOtherPlayer =
-      gameData.players.filter((a) => a.chips > 0 && !a.folded && a.seatId !== player.seatId)
-        .length > 0;
-
-    gameData.lastPlayerSeat = haveOtherPlayer
-      ? getPreviousPlayableSeat(gameData, player.seatId)
-      : player.seatId;
-
-    gameData.lastAction = {
-      action: 'BET',
-      playerSeat: player.seatId,
-      pot: player.pot,
-    };
-
-    return updateGameState(ctx, gameData);
-  }
-
-  if (action === 'RAISE') {
-    const toBet = Number(amount);
-    player.chips -= toBet;
-    player.pot += toBet;
-    gameData.pot += toBet;
-
-    gameData.raises += 1;
-
-    const haveOtherPlayer =
-      gameData.players.filter((a) => a.chips > 0 && !a.folded && a.seatId !== player.seatId)
-        .length > 0;
-
-    gameData.lastPlayerSeat = haveOtherPlayer
-      ? getPreviousPlayableSeat(gameData, player.seatId)
-      : player.seatId;
-
-    gameData.lastAction = {
-      action: 'RAISE',
-      playerSeat: player.seatId,
-      pot: player.pot,
-    };
-
-    return updateGameState(ctx, gameData);
-  }
-
-  if (action === 'ALLIN') {
-    const toBet = player.chips;
-    player.chips = 0;
-    player.pot += toBet;
-    gameData.pot += toBet;
-
-    if (player.pot > gameData.lastAction.pot) {
-      const haveOtherPlayer =
-        gameData.players.filter((a) => a.chips > 0 && !a.folded && a.seatId !== player.seatId)
-          .length > 0;
-
-      gameData.lastPlayerSeat = haveOtherPlayer
-        ? getPreviousPlayableSeat(gameData, player.seatId)
-        : player.seatId;
-
-      gameData.raises += 1;
-    }
-
-    gameData.lastAction = {
-      action: 'ALLIN',
-      playerSeat: player.seatId,
-      pot: player.pot,
-    };
-
-    return updateGameState(ctx, gameData);
-  }
+  return updateGameState(ctx, gameData);
 };
 
-export { validateUserBet, handleUserBet };
+export { validateUserBet, handleUserSelection, executeAction };

@@ -31,6 +31,13 @@ const getCardDisplay = (cardValue: number): string => {
   }
 };
 
+const SUIT_EMOJI = {
+  SPADES: '♠️',
+  HEARTS: '♥️',
+  DIAMONDS: '♦️',
+  CLUBS: '♣️',
+};
+
 const getPokerCard = (cardId: number): PokerCard => {
   const cardValue = cardId - (Math.ceil(cardId / 13) - 1) * 13;
   const cardSuit = getCardSuit(cardId);
@@ -39,10 +46,7 @@ const getPokerCard = (cardId: number): PokerCard => {
   const cardDisplayToPokerSolver = `${cardDisplay.replace('10', 'T')}${cardSuit[0].toLowerCase()}`;
 
   return {
-    id: cardId,
-    suit: cardSuit,
-    value: cardValue,
-    displayValue: cardDisplay,
+    displayValue: `${cardDisplay} ${SUIT_EMOJI[cardSuit]}`,
     solverValue: cardDisplayToPokerSolver,
   };
 };

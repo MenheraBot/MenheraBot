@@ -11,12 +11,13 @@ import {
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { PokerMatch, PokerPlayer } from './types';
+import { Action, PokerMatch, PokerPlayer } from './types';
 import { InteractionContext } from '../../types/menhera';
 import { SelectMenuUsersInteraction } from '../../types/interaction';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import { mentionUser } from '../../utils/discord/userUtils';
 import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
+import { getPokerCard } from './cardUtils';
 
 const showPlayerCards = async (
   ctx: ComponentInteractionContext,
@@ -32,8 +33,9 @@ const showPlayerCards = async (
   const authorData = await userRepository.ensureFindUser(ctx.user.id);
 
   const embed = createEmbed({
-    title: 'Sua Mão',
-    footer: player.folded ? { text: 'Você não está mais participando desta rodada!' } : undefined,
+    title: ctx.locale('commands:poker.player.your-hand'),
+    description: `**${player.cards.map((a) => getPokerCard(a).displayValue).join(' ')}**`,
+    footer: player.folded ? { text: ctx.locale('commands:poker.player.not-in-round') } : undefined,
     color: hexStringToNumber(authorData.selectedColor),
     image: image.err ? undefined : { url: 'attachment://poker.png' },
   });
@@ -52,23 +54,27 @@ const forceRemovePlayers = async (
   if (!gameData.inMatch)
     return ctx.makeMessage({
       components: [],
-      content: 'Você não pode controlar jogadores enquanto a partida não está acontecendo',
+      content: ctx.prettyResponse('error', 'commands:poker.player.cant-control-off-game'),
     });
 
-  const selectedPlayers = ctx.interaction.data.resolved.users;
+  const selectedPlayers = ctx.interaction.data?.resolved?.users;
 
   gameData.players.forEach((a) => {
-    a.willExit = !selectedPlayers.has(BigInt(a.id));
+    if (!selectedPlayers) a.willExit = true;
+    else a.willExit = !selectedPlayers.has(BigInt(a.id));
   });
 
   await pokerRepository.setMatchState(gameData.matchId, gameData);
 
+  const exitingPlayers = gameData.players.filter((a) => a.willExit);
+
   ctx.makeMessage({
     components: [],
-    content: `Os jogadores ${gameData.players
-      .filter((a) => a.willExit)
-      .map((a) => mentionUser(a.id))
-      .join(' ,')} foram marcados para sair da partida ao fim dessa rodada.`,
+    // @ts-expect-error This key has plural
+    content: ctx.prettyResponse('success', 'commands:poker.player.remove-players', {
+      player: exitingPlayers.map((a) => mentionUser(a.id)),
+      count: exitingPlayers.length,
+    }),
   });
 };
 
@@ -78,7 +84,7 @@ const executeMasterAction = async (
 ): Promise<void> => {
   if (!gameData.inMatch)
     return ctx.respondInteraction({
-      content: 'Você não pode controlar jogadores enquanto a partida não está acontecendo',
+      content: ctx.prettyResponse('error', 'commands:poker.player.cant-control-off-game'),
       flags: MessageFlags.EPHEMERAL,
     });
 
@@ -96,17 +102,26 @@ const executeMasterAction = async (
       return p;
     }, []),
     minValues: 0,
-    placeholder: 'Jogadores na partida',
+    placeholder: ctx.locale('commands:poker.player.ingame-players'),
     maxValues: gameData.players.length,
   });
 
   ctx.respondInteraction({
     components: [createActionRow([ingamePlayers])],
-    content:
-      'Abaixo estão os jogadores da partida atualmente. Retire a seleção de quem você quer remover da partida',
+    content: ctx.prettyResponse('lhama', 'commands:poker.player.remove-players-message'),
     flags: MessageFlags.EPHEMERAL,
   });
 };
+
+const localizedAction = (
+  ctx: InteractionContext | PokerFollowupInteractionContext,
+  action: Action,
+  chips?: number,
+): SelectOption => ({
+  label: ctx.locale(`commands:poker.actions.${action}`),
+  value: chips ? `${action} | ${chips}` : action,
+  description: ctx.locale(`commands:poker.actions.${action}-description`, { chips }),
+});
 
 const getPlayerBySeat = (gameData: PokerMatch, seatId: number): PokerPlayer =>
   gameData.players.find((a) => a.seatId === seatId)!;
@@ -117,63 +132,37 @@ const getAvailableActions = (
 ): SelectMenuComponent => {
   const player = gameData.players.find((p) => p.seatId === gameData.seatToPlay)!;
 
-  const availableActions: SelectOption[] = [
-    { label: 'Fold', description: 'Desiste da rodada, e devolva suas cartas', value: 'FOLD' },
-  ];
+  const availableActions: SelectOption[] = [localizedAction(ctx, 'FOLD')];
 
   if (gameData.lastAction.pot === player.pot) {
-    availableActions.push({
-      label: 'Check',
-      description: 'Passe a sua vez',
-      value: 'CHECK',
-    });
+    availableActions.push(localizedAction(ctx, 'CHECK'));
 
     if (player.chips > gameData.blind)
-      availableActions.push({
-        label: `Bet ${gameData.blind}`,
-        description: `Faça uma aposta de ${gameData.blind} fichas`,
-        value: `BET | ${gameData.blind}`,
-      });
+      availableActions.push(localizedAction(ctx, 'BET', gameData.blind));
   }
 
   if (player.chips + player.pot > gameData.lastAction.pot) {
-    const toRaise = (gameData.lastAction.pot - player.pot) * 2;
+    const toRaise = (gameData.lastAction.pot - player.pot || gameData.blind) * 2;
 
     if (gameData.lastAction.pot !== player.pot) {
-      availableActions.push({
-        label: 'Call',
-        description: `Aposte ${gameData.lastAction.pot - player.pot} fichas`,
-        value: `CALL | ${gameData.lastAction.pot - player.pot}`,
-      });
+      availableActions.push(localizedAction(ctx, 'CALL', gameData.lastAction.pot - player.pot));
 
       if (player.chips >= toRaise && gameData.raises < 2)
-        availableActions.push({
-          label: `Raise ${toRaise}`,
-          description: 'Dobre a aposta atual',
-          value: `RAISE | ${toRaise}`,
-        });
+        availableActions.push(localizedAction(ctx, 'RAISE', toRaise));
     }
 
     if (player.chips > toRaise && gameData.raises < 2)
-      availableActions.push({
-        label: `Raise`,
-        description: 'Aumente a aposta atual em um valor',
-        value: 'RAISE | CUSTOM',
-      });
+      availableActions.push(localizedAction(ctx, 'RAISE-CUSTOM'));
   }
 
-  availableActions.push({
-    label: 'All In',
-    description: 'Aposte todas suas fichas e torça para dar bom!',
-    value: 'ALLIN',
-  });
+  availableActions.push(localizedAction(ctx, 'ALLIN', player.chips));
 
   return createSelectMenu({
     customId: createCustomId(2, player.id, ctx.commandId, gameData.matchId, 'GAME_ACTION'),
     options: availableActions,
     maxValues: 1,
     minValues: 1,
-    placeholder: `${player.name}, escolha sua próxima ação`,
+    placeholder: ctx.locale('commands:poker.player.choose-next-action', { user: player.name }),
   });
 };
 

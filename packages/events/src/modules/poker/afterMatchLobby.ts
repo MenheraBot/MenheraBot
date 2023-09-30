@@ -20,7 +20,7 @@ const afterLobbyAction = async (
   if (!hasNextMatchPlayers) {
     oldEmbed.fields = [
       {
-        name: 'Próxima Partida',
+        name: ctx.locale('commands:poker.after-lobby.next-match'),
         value: '',
       },
     ];
@@ -77,7 +77,10 @@ const afterLobbyAction = async (
   }
 
   oldEmbed.footer = {
-    text: `Aguardando Jogadores: ${numberAlreadyVottedPlayers} / ${totalPlayers}`,
+    text: ctx.locale('commands:poker.after-lobby.waiting', {
+      players: numberAlreadyVottedPlayers,
+      maxPlayers: totalPlayers,
+    }),
   };
 
   ctx.makeMessage({ embeds: [oldEmbed], attachments: [] });
