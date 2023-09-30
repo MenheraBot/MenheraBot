@@ -1,4 +1,4 @@
-import { getNextPlayableSeat, getPreviousPlayableSeat } from '../handleGameAction';
+import { getNextPlayableSeat, getPreviousPlayableSeat } from '../turnManager';
 import { PokerMatch, PokerPlayer } from '../types';
 
 export const mockGame = (): PokerMatch => ({

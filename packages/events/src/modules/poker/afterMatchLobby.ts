@@ -3,8 +3,8 @@ import { Embed } from 'discordeno/transformers';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { PokerMatch } from './types';
 import { mentionUser } from '../../utils/discord/userUtils';
-import { closeTable, startNextMatch } from './handleGameAction';
 import starsRepository from '../../database/repositories/starsRepository';
+import { closeTable, startNextMatch } from './matchManager';
 
 const afterLobbyAction = async (
   ctx: ComponentInteractionContext,
