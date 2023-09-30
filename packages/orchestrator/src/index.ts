@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 import { DiscordInteraction } from 'discordeno/*';
-import { Connection, PromiseSettled, Server } from 'net-ipc';
+import { Connection, Server } from 'net-ipc';
 import { mergeMetrics } from './prometheusWorkarround';
 import { respondInteraction } from './respondInteraction';
 import { createHttpServer, registerAllRouters } from './server/httpServer';
+import { PrometheusResponse } from './server/routes/prometheus';
 
 if (!process.env.ORCHESTRATOR_SOCKET_PATH)
   throw new Error('ORCHESTRATOR_SOCKET_PATH is not in the env variables');
@@ -55,14 +56,18 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
     return;
   }
 
-  const results = (await orchestratorServer
-    .survey({ type: RequestType.Prometheus })
-    .catch(console.error)) as void | PromiseSettled[];
+  const results = await Promise.allSettled(
+    clientsToUse.map((a) => a.conn.request({ type: RequestType.Prometheus })),
+  );
 
-  if (!results) return null;
+  if (results.length === 0) return null;
 
   return mergeMetrics(
-    results.filter((a) => a.status === 'fulfilled').map((a) => a.value),
+    results.reduce<PrometheusResponse[]>((p, c) => {
+      if (c.status === 'rejected') return p;
+      p.push(c.value);
+      return p;
+    }, []),
     connectedClients.length,
   );
 };
@@ -137,6 +142,7 @@ orchestratorServer.on('message', async (msg, conn) => {
 
       master.conn.send({
         type: RequestType.SimonSays,
+        action: msg.action,
         timerId: msg.timerId,
         timerMetadata: msg.timerMetadata,
       });

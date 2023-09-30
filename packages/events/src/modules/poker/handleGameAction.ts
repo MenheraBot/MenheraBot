@@ -8,6 +8,7 @@ import { mentionUser } from '../../utils/discord/userUtils';
 import {
   MAX_POKER_PLAYERS,
   changeStage,
+  clearFoldTimeout,
   createTableMessage,
   distributeCards,
   executeBlinds,
@@ -25,6 +26,8 @@ import { extractFields } from '../../utils/discord/modalUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import starsRepository from '../../database/repositories/starsRepository';
 import { createEmbed } from '../../utils/discord/embedUtils';
+import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
+import { clearPokerTimer } from './timerManager';
 
 const getNextPlayableSeat = (match: PokerMatch, lastSeat: number): number => {
   const biggestPlayableSeat = match.players.reduce((p, c) => {
@@ -82,9 +85,12 @@ const updatePlayerTurn = (match: PokerMatch): void => {
 };
 
 const updateGameState = async (
-  ctx: ComponentInteractionContext,
+  ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
   gameData: PokerMatch,
 ): Promise<void> => {
+  const playedUserId = gameData.players.find((a) => a.seatId === gameData.seatToPlay)!.id;
+  clearFoldTimeout(playedUserId);
+
   const playingPlayers = gameData.players.filter((a) => !a.folded);
 
   if (playingPlayers.length === 1)
@@ -100,7 +106,7 @@ const updateGameState = async (
   if (gameData.stage === 'showdown') return makeShowdown(ctx, gameData);
 
   await pokerRepository.setMatchState(gameData.matchId, gameData);
-  await createTableMessage(ctx, gameData, `${mentionUser(ctx.user.id)} desistiu de sua mão.`);
+  await createTableMessage(ctx, gameData, `${mentionUser(playedUserId)} desistiu de sua mão.`);
 };
 
 const startNextMatch = async (
@@ -109,6 +115,7 @@ const startNextMatch = async (
 ): Promise<void> => {
   await ctx.ack();
   gameData.inMatch = true;
+  clearPokerTimer(`shutdown:${gameData.matchId}`);
 
   gameData.players.forEach((player) => {
     player.pot = 0;
@@ -119,6 +126,7 @@ const startNextMatch = async (
   gameData.raises = 0;
   gameData.stage = 'preflop';
   gameData.winnerSeat = [];
+  gameData.interactionToken = ctx.interaction.token;
 
   gameData.dealerSeat = getNextPlayableSeat(gameData, gameData.dealerSeat);
 
@@ -140,7 +148,7 @@ const cleanupGame = (gameData: PokerMatch): void => {
 };
 
 const closeTable = async (
-  ctx: ComponentInteractionContext,
+  ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
   gameData: PokerMatch,
   followUp = false,
 ): Promise<void> => {
@@ -389,6 +397,7 @@ export {
   closeTable,
   cleanupGame,
   validateUserBet,
+  updateGameState,
   getNextPlayableSeat,
   updatePlayerTurn,
   getPreviousPlayableSeat,

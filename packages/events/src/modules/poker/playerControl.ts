@@ -16,6 +16,7 @@ import { InteractionContext } from '../../types/menhera';
 import { SelectMenuUsersInteraction } from '../../types/interaction';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import { mentionUser } from '../../utils/discord/userUtils';
+import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 
 const showPlayerCards = async (
   ctx: ComponentInteractionContext,
@@ -108,7 +109,7 @@ const executeMasterAction = async (
 };
 
 const getAvailableActions = (
-  ctx: InteractionContext,
+  ctx: InteractionContext | PokerFollowupInteractionContext,
   gameData: PokerMatch,
 ): SelectMenuComponent => {
   const player = gameData.players.find((p) => p.seatId === gameData.seatToPlay)!;

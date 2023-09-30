@@ -8,7 +8,7 @@ import { getEnviroments } from '../utils/getEnviroments';
 import { logger } from '../utils/logger';
 import { updateCommandsOnApi } from '../utils/updateApiCommands';
 import { getInteractionsCounter, getRegister } from './initializePrometheus';
-import { startPokerTimeout } from '../modules/poker/timerManager';
+import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
 
 const numberTypeToName = {
   1: 'PING',
@@ -53,8 +53,9 @@ const createIpcConnections = async (): Promise<Client> => {
     }
 
     if (msg.type === 'SIMON_SAYS') {
-      startPokerTimeout(msg.timerId, msg.timerMetadata);
-      return;
+      if (msg.action === 'SET_TIMER') return startPokerTimeout(msg.timerId, msg.timerMetadata);
+
+      return clearPokerTimer(msg.timerId);
     }
 
     if (msg.type === 'UPDATE_COMMANDS') {

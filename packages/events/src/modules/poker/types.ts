@@ -33,6 +33,7 @@ export interface PokerMatch {
   masterId: string;
   inMatch: boolean;
   worthGame: boolean;
+  interactionToken: string;
   embedColor: number;
   players: PokerPlayer[];
   communityCards: [number, number, number, number, number];
@@ -53,12 +54,19 @@ export interface PokerMatch {
 
 export enum TimerActionType {
   DELETE_GAME,
+  TIMOEUT_FOLD,
 }
 
 export interface DeleteMatchTimer {
-  type: TimerActionType;
+  type: TimerActionType.DELETE_GAME;
   matchId: string;
   executeAt: number;
 }
 
-export type PokerTimer = DeleteMatchTimer;
+export interface TimeoutFoldTimer {
+  type: TimerActionType.TIMOEUT_FOLD;
+  executeAt: number;
+  matchId: string;
+}
+
+export type PokerTimer = DeleteMatchTimer | TimeoutFoldTimer;
