@@ -20,6 +20,27 @@ export type Action = 'FOLD' | 'CHECK' | 'CALL' | 'BET' | 'RAISE' | 'RAISE-CUSTOM
 
 export type CARD_SUITE = 'SPADES' | 'HEARTS' | 'DIAMONDS' | 'CLUBS';
 
+type HAND_TYPES =
+  | 'ROYAL_FLUSH'
+  | 'STRAIGHT_FLUSH'
+  | 'FOUR-OF-A-KIND'
+  | 'FULL_HOUSE'
+  | 'FLUSH'
+  | 'STRAIGHT'
+  | 'THREE_OF_A_KIND'
+  | 'TWO_PAIR'
+  | 'PAIR'
+  | 'HIGH_CARD';
+
+export type PokerWinReasons = HAND_TYPES | 'FOLDED';
+
+export type PokerApiUser = {
+  id: string;
+  won: boolean;
+  reason: PokerWinReasons;
+  chips: number;
+};
+
 export interface PokerCard {
   displayValue: string;
   solverValue: string;
