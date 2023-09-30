@@ -105,7 +105,7 @@ const finishRound = async (
     const didPlayerWin = gameData.winnerSeat.includes(player.seatId);
 
     pokerApiUsers.push({
-      chips: didPlayerWin ? moneyForEach : player.pot,
+      chips: didPlayerWin ? moneyForEach - player.pot : player.pot,
       id: player.id,
       reason: reason.replace('-', '_') as PokerWinReasons,
       won: didPlayerWin,
