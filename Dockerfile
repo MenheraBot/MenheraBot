@@ -18,7 +18,7 @@ CMD ["index.js"]
 FROM node:18-alpine as events
 WORKDIR /app
 COPY --from=build /app/packages/events/dist  ./dist/
-COPY --from=build /app/packages/events/locales  ./
+COPY --from=build /app/packages/events/locales  ./locales/
 COPY --from=build /app/packages/events/package.json  ./
 COPY --from=build /app/packages/events/node_modules ./node_modules 
 CMD ["yarn", "start"]
