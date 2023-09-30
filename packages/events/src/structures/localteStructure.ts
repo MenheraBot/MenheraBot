@@ -24,6 +24,7 @@ const loadLocales = async (): Promise<void> => {
       ns: namespaces,
       preload: readdirSync(filepath),
       fallbackLng: 'pt-BR',
+      pluralSeparator: '-',
       backend: {
         loadPath: `${filepath}/{{lng}}/{{ns}}.json`,
       },

@@ -2,13 +2,13 @@
 import pokerRepository from '../../database/repositories/pokerRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 
-import { mentionUser } from '../../utils/discord/userUtils';
 import { clearFoldTimeout, createTableMessage, finishRound, makeShowdown } from './matchManager';
 import { PokerMatch } from './types';
 
 import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { MAX_POKER_PLAYERS } from './constants';
 import { getPlayerBySeat } from './playerControl';
+import { mentionUser } from '../../utils/discord/userUtils';
 
 const getNextPlayableSeat = (gameData: PokerMatch, lastSeat: number): number => {
   const biggestPlayableSeat = gameData.players.reduce((p, c) => {
@@ -99,7 +99,14 @@ const updateGameState = async (
   if (gameData.stage === 'showdown') return makeShowdown(ctx, gameData);
 
   await pokerRepository.setMatchState(gameData.matchId, gameData);
-  await createTableMessage(ctx, gameData, `${mentionUser(playedUserId)} desistiu de sua mão.`);
+  await createTableMessage(
+    ctx,
+    gameData,
+    ctx.locale(`commands:poker.made-actions.${gameData.lastAction.action}`, {
+      user: mentionUser(playedUserId),
+      chips: gameData.lastAction.action === 'BET' ? gameData.blind : gameData.lastAction.pot,
+    }),
+  );
 };
 
 export { updateGameState, getNextPlayableSeat, updatePlayerTurn, getPreviousPlayableSeat };

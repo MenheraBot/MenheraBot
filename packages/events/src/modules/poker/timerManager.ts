@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { getFixedT } from 'i18next';
 import { bot } from '../..';
 import commandRepository from '../../database/repositories/commandRepository';
 import pokerRepository from '../../database/repositories/pokerRepository';
@@ -9,6 +10,7 @@ import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { DeleteMatchTimer, PokerTimer, TimeoutFoldTimer, TimerActionType } from './types';
 import { closeTable } from './matchManager';
 import { getPlayerBySeat } from './playerControl';
+import { executeAction } from './playerBet';
 
 const timers = new Map<string, NodeJS.Timeout>();
 
@@ -23,6 +25,7 @@ const executeDeleteMatch = async (timer: DeleteMatchTimer) => {
   const ctx = new PokerFollowupInteractionContext(
     gameData.interactionToken,
     pokerCommandId.discordId,
+    getFixedT(gameData.language),
   );
 
   closeTable(ctx, gameData);
@@ -36,20 +39,15 @@ const executeFoldTimeout = async (timer: TimeoutFoldTimer) => {
 
   const player = getPlayerBySeat(gameData, gameData.seatToPlay);
 
-  player.pot = 0;
-  player.folded = true;
-
-  gameData.lastAction = {
-    action: 'FOLD',
-    playerSeat: player.seatId,
-    pot: gameData.lastAction.pot,
-  };
+  executeAction(gameData, player, 'FOLD');
 
   const pokerCommandId = (await commandRepository.getCommandInfo('poker')) as DatabaseCommandSchema;
 
   const ctx = new PokerFollowupInteractionContext(
     gameData.interactionToken,
     pokerCommandId.discordId,
+
+    getFixedT(gameData.language),
   );
 
   return updateGameState(ctx, gameData);

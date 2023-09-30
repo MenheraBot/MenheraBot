@@ -16,10 +16,10 @@ import { getAvailableActions, getPlayerBySeat } from './playerControl';
 import { getNextPlayableSeat } from './turnManager';
 import starsRepository from '../../database/repositories/starsRepository';
 import { clearPokerTimer, startPokerTimeout } from './timerManager';
-import { millisToSeconds } from '../../utils/miscUtils';
+import { capitalize, millisToSeconds } from '../../utils/miscUtils';
 import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { executeBlinds } from './executeBlinds';
-import { DEFAULT_CHIPS, MAX_POKER_PLAYERS } from './constants';
+import { AUTO_FOLD_TIMEOUT_IN_SECONDS, DEFAULT_CHIPS } from './constants';
 
 const makeShowdown = async (
   ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
@@ -46,7 +46,7 @@ const makeShowdown = async (
   const winners = PokerSolver.Hand.winners(userHands);
 
   const winReason = winners[0].descr.includes('Royal Flush')
-    ? 'STRAIGHT-FLUSH-ROYAL'
+    ? 'ROYAL-FLUSH'
     : winners[0].name.replace(' ', '-').toUpperCase();
 
   finishRound(
@@ -113,28 +113,36 @@ const finishRound = async (
   const canHaveOtherMatch = gameData.players.length > 1;
 
   const embed = createEmbed({
-    title: 'Partida de Poker',
+    title: ctx.prettyResponse(
+      'wink',
+      `commands:poker.match-title-${gameData.worthGame ? 'worth' : 'friendly'}`,
+    ),
     color: gameData.embedColor,
     footer: canHaveOtherMatch
-      ? { text: `Aguardando Jogadores: 0 / ${gameData.players.length}` }
+      ? {
+          text: ctx.locale('commands:poker.after-lobby.waiting', {
+            players: 0,
+            maxPlayers: gameData.players.length,
+          }),
+        }
       : undefined,
     image: image.err ? undefined : { url: 'attachment://poker.png' },
   });
 
   const nextMatch = createButton({
-    label: 'Continuar jogando',
+    label: ctx.locale('commands:poker.after-lobby.keep-playing'),
     style: ButtonStyles.Success,
     customId: createCustomId(2, 'N', ctx.commandId, gameData.matchId, 'AFTER_LOBBY', 'ENTER'),
   });
 
   const exitTable = createButton({
-    label: 'Sair da Mesa',
+    label: ctx.locale('commands:poker.after-lobby.leave-table'),
     style: ButtonStyles.Secondary,
     customId: createCustomId(2, 'N', ctx.commandId, gameData.matchId, 'AFTER_LOBBY', 'LEAVE'),
   });
 
   const finishTable = createButton({
-    label: 'Fechar mesa',
+    label: ctx.locale('commands:poker.after-lobby.close-match'),
     style: ButtonStyles.Danger,
     customId: createCustomId(2, gameData.masterId, ctx.commandId, gameData.matchId, 'CLOSE_TABLE'),
   });
@@ -147,13 +155,15 @@ const finishRound = async (
     file: image.err ? undefined : { name: 'poker.png', blob: image.data },
     components: canHaveOtherMatch ? [createActionRow([finishTable, exitTable, nextMatch])] : [],
     allowedMentions: { users: winners.map((a) => BigInt(a.id)) },
-    content: `${winners
-      .map((a) => mentionUser(a.id))
-      .join(
-        ', ',
-      )} venceu essa rodada! Um total de **${moneyForEach}** fichas diretamente para seu bolso!\nMotivo: ${reason}\n\nA partida vai acabar em <t:${millisToSeconds(
-      shutdownGame,
-    )}:R>`,
+    // @ts-expect-error This key has plural
+    content: ctx.prettyResponse('crown', 'commands:poker.after-lobby.win-message', {
+      count: winners.length,
+      winners: winners.map((a) => mentionUser(a.id)),
+      unix: millisToSeconds(shutdownGame),
+      chips: moneyForEach,
+      hand: ctx.locale(`commands:poker.hands.${reason as 'PAIR'}`),
+      master: mentionUser(gameData.masterId),
+    }),
   });
 
   if (!canHaveOtherMatch) return closeTable(ctx, gameData, true);
@@ -167,10 +177,11 @@ const finishRound = async (
   await pokerRepository.setMatchState(gameData.matchId, gameData);
 };
 
-const startFoldTimeout = (gameData: PokerMatch): void => {
+const startFoldTimeout = (gameData: PokerMatch, executeAt: number): void => {
   const player = getPlayerBySeat(gameData, gameData.seatToPlay);
+
   startPokerTimeout(`fold_timeout:${player.id}`, {
-    executeAt: Date.now() + 1000 * 30,
+    executeAt,
     matchId: gameData.matchId,
     type: TimerActionType.TIMOEUT_FOLD,
   });
@@ -185,22 +196,47 @@ const createTableMessage = async (
 ): Promise<void> => {
   const image = await getTableImage(gameData);
 
+  const nextPlayer = getPlayerBySeat(gameData, gameData.seatToPlay).id;
+
+  const nextActionTimeout = Date.now() + 1000 * AUTO_FOLD_TIMEOUT_IN_SECONDS;
+
   const embed = createEmbed({
-    title: 'Partida de Poker',
+    title: ctx.prettyResponse(
+      'wink',
+      `commands:poker.match-title-${gameData.worthGame ? 'worth' : 'friendly'}`,
+    ),
+    description: ctx.locale('commands:poker.match.action-description', {
+      lastActionMessage,
+      user: mentionUser(nextPlayer),
+      unix: millisToSeconds(nextActionTimeout),
+    }),
+    fields: [
+      {
+        name: ctx.locale('commands:poker.match.info-title'),
+        value: ctx.locale('commands:poker.match.info-description', {
+          dealer: mentionUser(getPlayerBySeat(gameData, gameData.dealerSeat).id),
+          communityCards: getOpenedCards(gameData)
+            .map((a) => getPokerCard(a).displayValue)
+            .join(' '),
+          pot: gameData.pot,
+          stage: capitalize(gameData.stage),
+          blind: gameData.blind,
+          master: mentionUser(gameData.masterId),
+        }),
+      },
+    ],
     color: gameData.embedColor,
     image: image.err ? undefined : { url: 'attachment://poker.png' },
   });
 
-  const nextPlayer = getPlayerBySeat(gameData, gameData.seatToPlay).id;
-
   const seeCardsButton = createButton({
-    label: 'Ver Cartas',
+    label: ctx.locale('commands:poker.match.see-cards'),
     style: ButtonStyles.Primary,
     customId: createCustomId(2, 'N', ctx.commandId, gameData.matchId, 'SEE_CARDS'),
   });
 
   const masterButton = createButton({
-    label: 'Controles do Mestre',
+    label: ctx.locale('commands:poker.match.master-controls'),
     style: ButtonStyles.Secondary,
     customId: createCustomId(
       2,
@@ -211,7 +247,7 @@ const createTableMessage = async (
     ),
   });
 
-  startFoldTimeout(gameData);
+  startFoldTimeout(gameData, nextActionTimeout);
 
   await ctx.makeMessage({
     allowedMentions: { users: [BigInt(nextPlayer)] },
@@ -222,9 +258,7 @@ const createTableMessage = async (
       createActionRow([getAvailableActions(ctx, gameData)]),
       createActionRow([seeCardsButton, masterButton]),
     ],
-    content: `${lastActionMessage}\n\n**O jogador ${mentionUser(
-      nextPlayer,
-    )} deve escolher sua ação**`,
+    content: mentionUser(nextPlayer),
   });
 };
 
@@ -290,6 +324,7 @@ const setupGame = async (
   const match: PokerMatch = {
     matchId: `${ctx.interaction.id}`,
     masterId: players[0],
+    language: ctx.interaction.guildLocale ?? 'pt-BR',
     embedColor,
     worthGame: chips > 0,
     players: playersData,
@@ -339,16 +374,22 @@ const closeTable = async (
   cleanupGame(gameData);
 
   const embed = createEmbed({
-    title: 'Fim de Partida!',
+    title: ctx.prettyResponse('crown', 'commands:poker.match-over.title'),
     color: gameData.embedColor,
     thumbnail: { url: winner.avatar },
-    description: `A partida de poker acabou! Parabéns para o vencedor **${mentionUser(
-      winner.id,
-    )}**\n\n**Top ${MAX_POKER_PLAYERS}**\n${sorted
-      .map((a) => `1. ${mentionUser(a.id)} **${a.chips}** fichas!`)
-      .join('\n')}`,
+    description: ctx.locale('commands:poker.match-over.description', {
+      user: mentionUser(winner.id),
+      users: sorted
+        .map((a) =>
+          ctx.locale('commands:poker.match-over.chips', {
+            user: mentionUser(a.id),
+            chips: a.chips,
+          }),
+        )
+        .join('\n'),
+    }),
     footer: gameData.worthGame
-      ? { text: 'Cada jogador recebeu o valor em estrelinhas de suas fichas' }
+      ? { text: ctx.locale('commands:poker.match-over.stars-gave') }
       : undefined,
   });
 

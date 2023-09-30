@@ -31,7 +31,7 @@ import {
 import { afterLobbyAction } from '../../modules/poker/afterMatchLobby';
 import userRepository from '../../database/repositories/userRepository';
 import starsRepository from '../../database/repositories/starsRepository';
-import { handleUserBet, validateUserBet } from '../../modules/poker/playerBet';
+import { handleUserSelection, validateUserBet } from '../../modules/poker/playerBet';
 import { DEFAULT_CHIPS, MAX_POKER_PLAYERS } from '../../modules/poker/constants';
 
 const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
@@ -76,7 +76,7 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
     case 'AFTER_LOBBY':
       return afterLobbyAction(ctx, gameData, lobbyAction);
     case 'GAME_ACTION':
-      return handleUserBet(
+      return handleUserSelection(
         ctx as ComponentInteractionContext<SelectMenuInteraction>,
         gameData,
         player,
@@ -99,7 +99,7 @@ const createStartMatchEmbed = (
   createEmbed({
     title: ctx.prettyResponse(
       'wink',
-      `commands:poker.invite-title-${chips > 0 ? 'worth' : 'friendly'}`,
+      `commands:poker.match-title-${chips > 0 ? 'worth' : 'friendly'}`,
     ),
     color: embedColor,
     description: ctx.locale(

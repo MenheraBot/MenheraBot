@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { executeAction } from './playerBet';
 import { getPlayerBySeat } from './playerControl';
 import { getNextPlayableSeat } from './turnManager';
 import { PokerMatch } from './types';
@@ -13,18 +14,8 @@ const executeBlinds = (gameData: PokerMatch): void => {
     const dealer = gameData.players[dealerIndex];
     const bigBlind = gameData.players[Number(!dealerIndex)];
 
-    bigBlind.pot = blind;
-    bigBlind.chips -= blind;
-
-    dealer.pot = halfBlind;
-    dealer.chips -= halfBlind;
-
-    gameData.pot = blind + halfBlind;
-    gameData.lastAction = {
-      action: 'BET',
-      playerSeat: bigBlind.seatId,
-      pot: bigBlind.pot,
-    };
+    executeAction(gameData, dealer, 'BET', halfBlind);
+    executeAction(gameData, bigBlind, 'BET', blind);
 
     gameData.seatToPlay = dealer.seatId;
     gameData.lastPlayerSeat = bigBlind.seatId;
@@ -37,18 +28,8 @@ const executeBlinds = (gameData: PokerMatch): void => {
   const smallBlind = getPlayerBySeat(gameData, smallBlindSeat);
   const bigBlind = getPlayerBySeat(gameData, bigBlindSeat);
 
-  smallBlind.pot = halfBlind;
-  smallBlind.chips -= halfBlind;
-
-  bigBlind.pot = blind;
-  bigBlind.chips -= blind;
-
-  gameData.pot = blind + halfBlind;
-  gameData.lastAction = {
-    action: 'BET',
-    playerSeat: bigBlind.seatId,
-    pot: bigBlind.pot,
-  };
+  executeAction(gameData, smallBlind, 'BET', halfBlind);
+  executeAction(gameData, bigBlind, 'BET', blind);
 
   gameData.seatToPlay = getNextPlayableSeat(gameData, bigBlindSeat);
   gameData.lastPlayerSeat = bigBlindSeat;
