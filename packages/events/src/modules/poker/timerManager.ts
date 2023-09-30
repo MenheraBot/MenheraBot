@@ -60,7 +60,7 @@ const executeTimer = async (timerId: string, timer: PokerTimer): Promise<void> =
 
 const setupTimers = async (): Promise<void> => {
   (await pokerRepository.getTimerKeys()).forEach(async (key) => {
-    const timerId = key.split(':')[1];
+    const timerId = key.replace('poker_timer:', '');
     const timerMetadata = await pokerRepository.getTimer(timerId);
 
     if (Date.now() >= timerMetadata.executeAt) return executeTimer(timerId, timerMetadata);

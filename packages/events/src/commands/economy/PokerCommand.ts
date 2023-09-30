@@ -1,4 +1,9 @@
-import { ActionRow, ButtonComponent, ButtonStyles } from 'discordeno/types';
+import {
+  ActionRow,
+  ApplicationCommandOptionTypes,
+  ButtonComponent,
+  ButtonStyles,
+} from 'discordeno/types';
 import { Embed } from 'discordeno/transformers';
 import { createCommand } from '../../structures/command/createCommand';
 import {
@@ -14,7 +19,6 @@ import {
   SelectMenuInteraction,
   SelectMenuUsersInteraction,
 } from '../../types/interaction';
-import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, removeNonNumbers } from '../../utils/discord/messageUtils';
@@ -30,6 +34,8 @@ import {
   validateUserBet,
 } from '../../modules/poker/handleGameAction';
 import { afterLobbyAction } from '../../modules/poker/afterMatchLobby';
+import userRepository from '../../database/repositories/userRepository';
+import starsRepository from '../../database/repositories/starsRepository';
 
 const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [matchId, action, lobbyAction] = ctx.sentData;
@@ -116,15 +122,6 @@ const selectPlayers = async (
       components: [],
     });
 
-  const isSomeoneBanned = await Promise.all(selectedUsersIds.map(blacklistRepository.isUserBanned));
-
-  if (isSomeoneBanned.includes(true))
-    return ctx.makeMessage({
-      components: [],
-      content:
-        'Um dos usuários que você selecionou está banido da Menhera, portanto não pode jogar Poker',
-    });
-
   const isSomeoneInMatch = await Promise.all(selectedUsersIds.map(pokerRepository.isUserInMatch));
 
   if (isSomeoneInMatch.includes(true))
@@ -133,7 +130,26 @@ const selectPlayers = async (
       content: 'Um dos usuários que você selecionou já está jogando uma partida de Poker!',
     });
 
-  const embed = createStartMatchEmbed(hexStringToNumber(ctx.sentData[0]), [`${ctx.user.id}`]);
+  const allUserData = await Promise.all(selectedUsersIds.map(userRepository.ensureFindUser));
+
+  if (allUserData.some((a) => a.ban))
+    return ctx.makeMessage({
+      components: [],
+      content:
+        'Um dos usuários que você selecionou está banido da Menhera, portanto não pode jogar Poker',
+    });
+
+  const [embedColor, stringedChips] = ctx.sentData;
+  const chips = Number(stringedChips);
+
+  if (allUserData.some((a) => chips > a.estrelinhas))
+    return ctx.makeMessage({
+      components: [],
+      content:
+        'Um dos usuários que você selecionou não tem estrelinhas suficientes para apostar nesta partida',
+    });
+
+  const embed = createStartMatchEmbed(hexStringToNumber(embedColor), [`${ctx.user.id}`]);
 
   ctx.makeMessage({
     embeds: [embed],
@@ -143,13 +159,13 @@ const selectPlayers = async (
         createButton({
           label: 'Participar da partida',
           style: ButtonStyles.Primary,
-          customId: createCustomId(1, 'N', ctx.commandId, 'JOIN'),
+          customId: createCustomId(1, 'N', ctx.commandId, 'JOIN', chips),
         }),
         createButton({
           label: 'Iniciar Partida',
           style: ButtonStyles.Secondary,
           disabled: true,
-          customId: createCustomId(1, ctx.user.id, ctx.commandId, 'START'),
+          customId: createCustomId(1, ctx.user.id, ctx.commandId, 'START', chips),
         }),
       ]),
     ],
@@ -158,8 +174,7 @@ const selectPlayers = async (
 };
 
 const checkStartMatchInteraction = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [selectedOption] = ctx.sentData;
-
+  const [selectedOption, stringedChips] = ctx.sentData;
   if (selectedOption === 'JOIN') return enterMatch(ctx);
 
   const joinedUsers = ctx.interaction.message?.embeds?.[0].fields?.[0].value
@@ -176,11 +191,28 @@ const checkStartMatchInteraction = async (ctx: ComponentInteractionContext): Pro
         'Alguém acabou entrando em uma outra partida enquanto esta estava sendo preparada...',
     });
 
+  const allUserData = await Promise.all(joinedUsers.map(userRepository.ensureFindUser));
+
+  const chips = Number(stringedChips);
+
+  if (allUserData.some((a) => chips > a.estrelinhas))
+    return ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content:
+        'Um dos usuários que você selecionou não tem estrelinhas suficientes para apostar nesta partida',
+    });
+
   await pokerRepository.addUsersInMatch(joinedUsers);
+
+  if (chips > 0)
+    joinedUsers.forEach((user) => {
+      starsRepository.removeStars(user, chips);
+    });
 
   ctx.makeMessage({ embeds: [], components: [], content: 'Iniciando Partida UwU' });
 
-  setupGame(ctx, joinedUsers, ctx.interaction.message?.embeds?.[0]?.color ?? 0);
+  setupGame(ctx, joinedUsers, ctx.interaction.message?.embeds?.[0]?.color ?? 0, chips);
 };
 
 const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
@@ -202,6 +234,18 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
       flags: MessageFlags.EPHEMERAL,
     });
 
+  const [, stringedChips] = ctx.sentData;
+  const chips = Number(stringedChips);
+
+  if (chips > 0) {
+    const userData = await userRepository.ensureFindUser(ctx.user.id);
+
+    if (chips > userData.estrelinhas)
+      return ctx.makeMessage({
+        content: 'Você não tem todas essas estrelinhas para entrar nessa partida',
+      });
+  }
+
   const oldButton = ctx.interaction.message?.components?.[0].components?.[1] as ButtonComponent;
   oldButton.disabled = false;
 
@@ -219,13 +263,35 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
 const PokerCommand = createCommand({
   path: '',
   name: 'poker',
-  description: '「💳」・Gerencia partidas de poker',
-  descriptionLocalizations: { 'en-US': '「💳」・Manage poker matches' },
+  description: '「💰」・Inicie uma partida de Poker',
+  descriptionLocalizations: { 'en-US': '「💰」・Start a Poker match' },
   category: 'economy',
+  options: [
+    {
+      name: 'fichas',
+      description: 'Quantas fichas cada jogador vai levar para partida',
+      type: ApplicationCommandOptionTypes.Integer,
+      minValue: 10_000,
+      nameLocalizations: {
+        'en-US': 'chips',
+      },
+      descriptionLocalizations: {
+        'en-US': 'How many chips each player will take to the match',
+      },
+      required: false,
+    },
+  ],
   authorDataFields: ['estrelinhas'],
   commandRelatedExecutions: [selectPlayers, checkStartMatchInteraction, gameInteractions],
   execute: async (ctx, finishCommand) => {
     finishCommand();
+
+    const fichas = ctx.getOption<number>('fichas', false) ?? 0;
+
+    if (fichas > ctx.authorData.estrelinhas)
+      return ctx.makeMessage({
+        content: 'Você não possui todas essas estrelinhas para apostar em uma partida de Poker!',
+      });
 
     const userInMatch = await pokerRepository.isUserInMatch(ctx.author.id);
 
@@ -236,7 +302,13 @@ const PokerCommand = createCommand({
       components: [
         createActionRow([
           createUsersSelectMenu({
-            customId: createCustomId(0, ctx.author.id, ctx.commandId, ctx.authorData.selectedColor),
+            customId: createCustomId(
+              0,
+              ctx.author.id,
+              ctx.commandId,
+              ctx.authorData.selectedColor,
+              fichas,
+            ),
             maxValues: 7,
             placeholder: 'Selecione no máximo 7 pessoas',
           }),
