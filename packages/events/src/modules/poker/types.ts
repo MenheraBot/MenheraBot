@@ -23,7 +23,7 @@ export type CARD_SUITE = 'SPADES' | 'HEARTS' | 'DIAMONDS' | 'CLUBS';
 type HAND_TYPES =
   | 'ROYAL_FLUSH'
   | 'STRAIGHT_FLUSH'
-  | 'FOUR-OF-A-KIND'
+  | 'FOUR_OF_A_KIND'
   | 'FULL_HOUSE'
   | 'FLUSH'
   | 'STRAIGHT'
