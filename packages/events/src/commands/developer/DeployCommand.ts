@@ -120,6 +120,13 @@ const DeployCommand = createCommand({
       allCommands,
     );
 
+    await commandRepository.bulkUpdateCommandsIds(
+      res.map((a) => ({
+        commandName: a.name,
+        commandId: `${a.id}`,
+      })),
+    );
+
     ctx.makeMessage({
       content: `No total, ${res?.size} comandos foram adicionados neste servidor!`,
     });

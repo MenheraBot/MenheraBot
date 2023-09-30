@@ -8,6 +8,7 @@ import { getEnviroments } from '../utils/getEnviroments';
 import { logger } from '../utils/logger';
 import { updateCommandsOnApi } from '../utils/updateApiCommands';
 import { getInteractionsCounter, getRegister } from './initializePrometheus';
+import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
 
 const numberTypeToName = {
   1: 'PING',
@@ -21,6 +22,10 @@ const { MENHERA_API_TOKEN } = getEnviroments(['MENHERA_API_TOKEN']);
 
 let retries = 0;
 
+let orchestratorClient: Client;
+
+const getOrchestratorClient = (): Client => orchestratorClient;
+
 const createIpcConnections = async (): Promise<Client> => {
   const { REST_SOCKET_PATH, ORCHESTRATOR_SOCKET_PATH } = getEnviroments([
     'REST_SOCKET_PATH',
@@ -33,7 +38,7 @@ const createIpcConnections = async (): Promise<Client> => {
 
   logger.debug(`Creating IPC connection to Orchestrator ${REST_SOCKET_PATH}`);
 
-  const orchestratorClient = new Client({ path: ORCHESTRATOR_SOCKET_PATH });
+  orchestratorClient = new Client({ path: ORCHESTRATOR_SOCKET_PATH });
 
   restClient.on('close', () => {
     if (bot.shuttingDown) return;
@@ -41,10 +46,16 @@ const createIpcConnections = async (): Promise<Client> => {
     logger.panic('[REST] REST Client closed');
   });
 
-  orchestratorClient.on('message', (msg) => {
+  orchestratorClient.on('message', async (msg) => {
     if (msg.type === 'VOTE_WEBHOOK') {
       executeVoteWebhook(msg.data.user, msg.data.isWeekend);
       return;
+    }
+
+    if (msg.type === 'SIMON_SAYS') {
+      if (msg.action === 'SET_TIMER') return startPokerTimeout(msg.timerId, msg.timerMetadata);
+
+      return clearPokerTimer(msg.timerId);
     }
 
     if (msg.type === 'UPDATE_COMMANDS') {
@@ -63,6 +74,33 @@ const createIpcConnections = async (): Promise<Client> => {
         getInteractionsCounter().inc({
           type: numberTypeToName[msg.data.body.type as 1],
         });
+
+      return;
+    }
+
+    if (msg.type === 'YOU_MAY_REST') {
+      logger.info('[ORCHESTRATOR] I was told to sleep');
+      bot.shuttingDown = true;
+
+      logger.debug('Waiting for all commands to finish');
+      await new Promise<void>((resolve) => {
+        if (bot.commandsInExecution <= 0) return resolve();
+
+        const interval = setInterval(() => {
+          if (bot.commandsInExecution <= 0) {
+            clearInterval(interval);
+            resolve();
+          }
+        }, 3000).unref();
+      });
+
+      logger.info('[SHUTDOWN] Closing all Database connections');
+      await closeConnections();
+      logger.info('[SHUTDOWN] Closing rest IPC');
+      await restClient.close('REQUESTED_SHUTDOWN');
+      logger.info('[SHUTDOWN] Closing orchestrator IPC');
+      await orchestratorClient.close('REQUESTED_SHUTDOWN');
+      logger.info("[SHUTDOWN] I'm tired... I will rest for now");
     }
   });
 
@@ -82,32 +120,6 @@ const createIpcConnections = async (): Promise<Client> => {
         // @ts-expect-error Ready should not be called with this
         bot.events.ready('MASTER');
         break;
-      }
-      case 'YOU_MAY_REST': {
-        logger.info('[ORCHESTRATOR] I was told to sleep');
-        bot.shuttingDown = true;
-
-        logger.debug('Waiting for all commands to finish');
-        await new Promise<void>((resolve) => {
-          if (bot.commandsInExecution <= 0) return resolve();
-
-          const interval = setInterval(() => {
-            if (bot.commandsInExecution <= 0) {
-              clearInterval(interval);
-              resolve();
-            }
-          }, 3000).unref();
-        });
-
-        logger.info('[SHUTDOWN] Closing all Database connections');
-        await closeConnections();
-        logger.info('[SHUTDOWN] Acked the close to the orchestrator');
-        await ack(process.pid);
-        logger.info('[SHUTDOWN] Closing rest IPC');
-        await restClient.close('REQUESTED_SHUTDOWN');
-        logger.info('[SHUTDOWN] Closing orchestrator IPC');
-        await orchestratorClient.close('REQUESTED_SHUTDOWN');
-        logger.info("[SHUTDOWN] I'm tired... I will rest for now");
       }
     }
   });
@@ -154,4 +166,4 @@ const createIpcConnections = async (): Promise<Client> => {
   return restClient;
 };
 
-export { createIpcConnections };
+export { createIpcConnections, getOrchestratorClient };

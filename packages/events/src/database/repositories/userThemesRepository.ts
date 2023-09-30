@@ -111,6 +111,19 @@ const getThemesForBlackjack = async (
   return [tableTheme, cardTheme, backgroundCardTheme];
 };
 
+const getThemesForPoker = async (
+  userId: BigString,
+): Promise<[AvailableCardThemes, AvailableCardBackgroundThemes]> => {
+  const userThemes = await findEnsuredUserThemes(userId);
+
+  const cardTheme = getThemeById<CardsTheme>(userThemes.selectedCardTheme).data.theme;
+  const backgroundCardTheme = getThemeById<CardBackgroundTheme>(
+    userThemes.selectedCardBackgroundTheme,
+  ).data.theme;
+
+  return [cardTheme, backgroundCardTheme];
+};
+
 const getThemesForEightBall = async (
   userId: BigString,
 ): Promise<
@@ -297,6 +310,7 @@ export default {
   addEbBackgroundTheme,
   addEbTextBoxTheme,
   addEbMenheraTheme,
+  getThemesForPoker,
   getTableTheme,
   getCardsTheme,
   getCardBackgroundTheme,

@@ -38,7 +38,7 @@ const themeByIndex = {
 const createThemeComponents = (
   ctx: ChatInputInteractionContext | ComponentInteractionContext,
   preview: boolean,
-  currentThemeType: typeof themeByIndex[keyof typeof themeByIndex],
+  currentThemeType: (typeof themeByIndex)[keyof typeof themeByIndex],
 ): ActionRow[] => {
   const profileButton = createButton({
     customId: createCustomId(

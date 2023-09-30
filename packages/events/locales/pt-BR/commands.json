@@ -834,9 +834,9 @@
       "you_to_you": "c2V4bwo="
     },
     "reasons": {
-      "simon_says_add": "||que o mestre mandou||",
-      "simon_says_remove": "||que o mestre mandou||",
-      "simon_says_set": "||que o mestre mandou||",
+      "simon_says_add": "que o mestre mandou",
+      "simon_says_remove": "que o mestre mandou",
+      "simon_says_set": "que o mestre mandou",
       "pix_command": "presente no pix",
       "blackjack_command": "apostar no blackjack",
       "blackjack_lost_data": "perder os dados do blackjack",
@@ -854,7 +854,108 @@
       "buy_theme": "comprar tema",
       "buy_theme_royalty": "participação de lucros em tema",
       "vote_thank": "votar em mim >,<",
-      "inactivity_punishment": "ficar inativo na Menhera"
+      "inactivity_punishment": "ficar inativo na Menhera",
+      "poker_command": "apostar no poker"
+    }
+  },
+  "poker": {
+    "not-enough-stars": "Você não possui **{{stars}}** :star: para apostar em uma partida de Poker!",
+    "you-already-in-match": "Você já está em uma partida de Poker atualmente!",
+    "select-players": "Selecione os jogadores convidados a participar dessa partida de Poker. Você não deve escolher a si mesmo",
+    "select-max-players": "Selecione no máximo {{players}} pessoas",
+    "bots-cant-play": "Bots não podem jogar poker!",
+    "dont-select-yourself": "Você não deve incluir a si mesmo na seleção de convidados!",
+    "someone-already-in-match": "Um dos usuários que você convidou já está em uma partida de Poker no momento!",
+    "someone-is-banned": "Um dos usuários que você selecionou está banido da Menhera, portanto, não pode jogar Poker!",
+    "someone-is-poor": "Um dos usuários que você selecionou não possui **{{stars}}** :star: para apostar em uma partida de Poker!",
+    "accept-invite": "Aceitar convite",
+    "start-match": "Iniciar partida",
+    "match-title-friendly": "Partida de Poker Amistosa",
+    "match-title-worth": "Partida de Poker Oficial",
+    "invite-description-friendly": "{{user}} convidou-os para uma partida de poker amistosa. Nessa partida, todos os jogadores receberão **{{chips}}** fichas para se divertir. Essas fichas não valem estrelinhas, vocês podem apenas se divertir. Para aceitar o convite, basta clicar no botão abaixo.",
+    "invite-description-worth": "{{user}} convidou-os para uma partida de poker. Esta é uma **PARTIDA OFICIAL**, portanto todos os jogadores apostarão **{{stars}}** :star: ao entrar. É possível sair da partida a qualquer momento, e transformar suas fichas em estrelinhas novamente! Você pode aceitar o convite clicando no botão abaixo.",
+    "players-in": "Convites aceitos",
+    "uninvited": "Você não foi convidado a participar dessa partida!",
+    "already-in": "Você já aceitou o convite para essa partida! Aguarde o início dela.",
+    "someone-joined-other-match": "Alguém acabou entrando em uma outra partida enquanto esta não iniciava.",
+    "starting-match": "Preparem-se... A partida está iniciando!",
+    "unknown-match": "Essa partida já foi finalizada!",
+    "not-in-match": "Você não está participando desta partida de Poker!",
+    "player": {
+      "your-hand": "Sua mão",
+      "not-in-round": "Você não está mais participando dessa rodada!",
+      "cant-control-off-game": "Você não pode remover jogadores fora de um round!",
+      "remove-players-zero": "Nenhum jogador foi marcado para ser removido na da partida ao fim da rodada. Todos continuam jogando!",
+      "remove-players-one": "O jogador {{player, list}} foi marcado para ser removido da partida ao fim da rodada.",
+      "remove-players-other": "Os jogadores {{player, list}} foram marcados para serem removidos da partida ao fim da rodada.",
+      "remove-players-message": "Abaixo estão listados os jogadores que estão participando desta partida de Poker. Desselecione quem você quer remover da partida ao fim da rodada.",
+      "ingame-players": "Jogadores na partida",
+      "choose-next-action": "{{user}}, escolha a sua próxima ação",
+      "invalid-number": "Você enviou um número inválido!",
+      "min-bet-required": "Você precisa apostar pelo menos **{{chips}}** fichas!",
+      "too-poor": "Você não tem todas essas fichas para apostar!",
+      "min-bet": "O valor deve ser maior que {{chips}}",
+      "write-your-bet": "Digite o valor de sua aposta (Min. {{chips}})"
+    },
+    "match": {
+      "see-cards": "Ver cartas",
+      "master-controls": "Controles do mestre",
+      "info-title": "Informações da rodada",
+      "info-description": "**Dealer:** {{dealer}}\n**Rodada:** {{stage}}\n**Cartas da comunidade:** {{communityCards}}\n**Pot:** {{pot}}\n**Valor do blind:** {{blind}}\n**Mestre da partida:** {{master}}",
+      "action-description": "{{lastActionMessage}}\n\n{{user}} deve tomar uma ação <t:{{unix}}:R>. Após esse tempo, ele desistirá automaticamente da rodada."
+    },
+    "after-lobby": {
+      "waiting": "Aguardando jogadores: {{players}} / {{maxPlayers}}",
+      "keep-playing": "Continuar jogando",
+      "leave-table": "Sair da partida",
+      "close-match": "Terminar partida",
+      "next-match": "Participando da próxima partida",
+      "win-message-one": "{{winners, list}} venceu essa rodada com **{{hand}}**! Um total de **{{chips}}** fichas para o seu bolso.\n\nOs jogadores podem escolher se querem continuar a jogar ou sair da partida. Não há penalidade por sair, suas fichas serão convertidas em estrelinhas :star:. A partida irá finalizar automaticamente <t:{{unix}}:R>\nO mestre da partida, {{master}}, pode finalizar a partida imediatamente.",
+      "win-message-other": "{{winners, list}} venceram essa rodada com **{{hand}}**! Cada um recebeu **{{chips}}** fichas.\n\nOs jogadores podem escolher se querem continuar a jogar ou sair da partida. Não há penalidade por sair, suas fichas serão convertidas em estrelinhas :star:. A partida irá finalizar automaticamente <t:{{unix}}:R>\nO mestre da partida, {{master}}, pode finalizar a partida imediatamente."
+    },
+    "hands": {
+      "ROYAL-FLUSH": "UM ROYAL FLUSH!!",
+      "STRAIGHT-FLUSH": "um straigth flush",
+      "FOUR-OF-A-KIND": "uma quadra",
+      "FULL-HOUSE": "um full house",
+      "FLUSH": "um flush",
+      "STRAIGHT": "uma sequência",
+      "THREE-OF-A-KIND": "uma trinca",
+      "TWO-PAIR": "dois pares",
+      "PAIR": "um par",
+      "HIGH-CARD": "a carta mais alta",
+      "FOLDED": "a desistência de todos outros jogadores"
+    },
+    "match-over": {
+      "title": "Fim de partida!",
+      "description": "Essa partida de Poker acabou! Parabéns ao vencedor {{user}} :heart:\n\n**Top jogadores**\n{{users}}",
+      "chips": "1. {{user}} **{{chips}}** fichas",
+      "stars-gave": "Cada jogador recebeu o valor em estrelinhas de suas fichas"
+    },
+    "actions": {
+      "FOLD": "Desistir",
+      "FOLD-description": "Desiste da rodada atual.",
+      "CHECK": "Passar",
+      "CHECK-description": "Passe a sua vez",
+      "BET": "Apostar",
+      "BET-description": "Faça uma aposta de {{chips}} fichas",
+      "CALL": "Chamar",
+      "CALL-description": "Responda à aposta atual ({{chips}})",
+      "RAISE": "Dobrar",
+      "RAISE-description": "Dobre a aposta atual ({{chips}})",
+      "RAISE-CUSTOM": "Aumentar",
+      "RAISE-CUSTOM-description": "Aumente a aposta atual em um valor de sua escolha",
+      "ALLIN": "Apostar tudo",
+      "ALLIN-description": "Aposte todas as suas fichas e torça para o melhor acontecer"
+    },
+    "made-actions": {
+      "FOLD": "{{user}} desistiu de sua mão.",
+      "CHECK": "{{user}} passou a sua vez.",
+      "BET": "{{user}} apostou **{{chips}}** fichas.",
+      "CALL": "{{user}} igualou a aposta para **{{chips}}** fichas.",
+      "RAISE": "{{user}} dobrou a aposta atual para **{{chips}}** fichas.",
+      "RAISE-CUSTOM": "{{user}} aumentou a aposta para **{{chips}}** fichas.",
+      "ALLIN": "{{user}} apostou todas suas fichas, colocando sua aposta em **{{chips}}** fichas."
     }
   }
 }

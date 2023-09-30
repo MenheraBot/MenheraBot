@@ -13,6 +13,7 @@ import ComponentInteractionContext from './ComponentInteractionContext';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getEnviroments } from '../../utils/getEnviroments';
 import { ComponentInteraction } from '../../types/interaction';
+import cacheRepository from '../../database/repositories/cacheRepository';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -20,12 +21,35 @@ const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
 ]);
 
 const componentExecutor = async (interaction: Interaction): Promise<void> => {
-  const receivedCommandName = interaction.message?.interaction?.name;
-
-  if (!receivedCommandName) return;
+  cacheRepository.setDiscordUser(bot.transformers.reverse.user(bot, interaction.user));
   if (!interaction.data?.customId) return;
 
-  const [commandName] = receivedCommandName.split(' ');
+  const [executorIndex, interactionTarget, commandId] = interaction.data.customId.split('|');
+
+  const commandInfo = await commandRepository.getCommandInfoById(commandId);
+  const T = i18next.getFixedT(interaction.user.locale ?? 'pt-BR');
+
+  if (!commandInfo) {
+    await bot.helpers
+      .sendInteractionResponse(interaction.id, interaction.token, {
+        type: InteractionResponseTypes.UpdateMessage,
+        data: {
+          components: [],
+        },
+      })
+      .catch(() => null);
+
+    await bot.helpers
+      .sendFollowupMessage(interaction.token, {
+        type: InteractionResponseTypes.ChannelMessageWithSource,
+        data: {
+          content: `<:negacao:759603958317711371> | ${T('permissions:COMPONENT_OUTDATED')}`,
+          flags: MessageFlags.EPHEMERAL,
+        },
+      })
+      .catch(() => null);
+    return;
+  }
 
   const errorReply = async (content: string): Promise<void> => {
     await bot.helpers
@@ -40,8 +64,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
       .catch(() => null);
   };
 
-  const T = i18next.getFixedT(interaction.user.locale ?? 'pt-BR');
-  const command = bot.commands.get(commandName);
+  const command = bot.commands.get(commandInfo._id);
 
   if (!command) return errorReply(T('permissions:UNKNOWN_SLASH'));
 
@@ -64,16 +87,12 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
     );
   }
 
-  const commandInfo = await commandRepository.getCommandInfo(commandName);
-
-  if (commandInfo?.maintenance && interaction.user.id !== bot.ownerId)
+  if (commandInfo.maintenance && interaction.user.id !== bot.ownerId)
     return errorReply(
       T('events:maintenance', {
         reason: commandInfo.maintenanceReason,
       }),
     );
-
-  const [executorIndex, interactionTarget, commandId] = interaction.data.customId.split('|');
 
   if (interactionTarget.length > 1 && interactionTarget !== `${interaction.user.id}`)
     return errorReply(
@@ -83,28 +102,6 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
   const execute = command.commandRelatedExecutions[Number(executorIndex)];
 
   if (!execute) return errorReply(T('permissions:UNKNOWN_SLASH'));
-
-  if (commandInfo?.discordId && commandInfo.discordId !== `${commandId}`) {
-    await bot.helpers
-      .sendInteractionResponse(interaction.id, interaction.token, {
-        type: InteractionResponseTypes.UpdateMessage,
-        data: {
-          components: [],
-        },
-      })
-      .catch(() => null);
-
-    await bot.helpers
-      .sendFollowupMessage(interaction.token, {
-        type: InteractionResponseTypes.ChannelMessageWithSource,
-        data: {
-          content: `<:negacao:759603958317711371> | ${T('permissions:COMPONENT_OUTDATED')}`,
-          flags: MessageFlags.EPHEMERAL,
-        },
-      })
-      .catch(() => null);
-    return;
-  }
 
   const guildLocale = i18next.getFixedT(
     await guildRepository.getGuildLanguage(interaction.guildId as bigint),

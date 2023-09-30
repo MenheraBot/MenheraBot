@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 import { DiscordInteraction } from 'discordeno/*';
-import { Connection, PromiseSettled, Server } from 'net-ipc';
+import { Connection, Server } from 'net-ipc';
 import { mergeMetrics } from './prometheusWorkarround';
 import { respondInteraction } from './respondInteraction';
 import { createHttpServer, registerAllRouters } from './server/httpServer';
+import { PrometheusResponse } from './server/routes/prometheus';
 
 if (!process.env.ORCHESTRATOR_SOCKET_PATH)
   throw new Error('ORCHESTRATOR_SOCKET_PATH is not in the env variables');
@@ -32,6 +33,7 @@ export enum RequestType {
   UpdateCommands = 'UPDATE_COMMANDS',
   YouAreTheMaster = 'YOU_ARE_THE_MASTER',
   YouMayRest = 'YOU_MAY_REST',
+  SimonSays = 'SIMON_SAYS',
 }
 
 const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => {
@@ -54,14 +56,18 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
     return;
   }
 
-  const results = (await orchestratorServer
-    .survey({ type: RequestType.Prometheus })
-    .catch(console.error)) as void | PromiseSettled[];
+  const results = await Promise.allSettled(
+    clientsToUse.map((a) => a.conn.request({ type: RequestType.Prometheus })),
+  );
 
-  if (!results) return null;
+  if (results.length === 0) return null;
 
   return mergeMetrics(
-    results.filter((a) => a.status === 'fulfilled').map((a) => a.value),
+    results.reduce<PrometheusResponse[]>((p, c) => {
+      if (c.status === 'rejected') return p;
+      p.push(c.value);
+      return p;
+    }, []),
     connectedClients.length,
   );
 };
@@ -102,7 +108,7 @@ orchestratorServer.on('message', async (msg, conn) => {
       `[SWAP VERSION] A new version has been released! Starting to swap the versions. Old version: ${currentVersion} | New Version: ${msg.version}`,
     );
 
-    connectedClients.map((a) => a.conn.request({ type: RequestType.YouMayRest }));
+    connectedClients.map((a) => a.conn.send({ type: RequestType.YouMayRest }));
 
     await new Promise((resolve) => {
       finishSwap = resolve;
@@ -118,6 +124,31 @@ orchestratorServer.on('message', async (msg, conn) => {
 
     await conn.request({ type: RequestType.YouAreTheMaster });
     console.log(`[CLIENT] Master Set!`);
+  }
+
+  if (msg.type === 'BE_MERCURY') {
+    const replayMessage = () => {
+      if (swappingVersions)
+        return setTimeout(() => {
+          replayMessage();
+        }, 2000);
+
+      const master = connectedClients.find((a) => a.isMaster);
+
+      if (!master)
+        return setTimeout(() => {
+          replayMessage();
+        }, 1000);
+
+      master.conn.send({
+        type: RequestType.SimonSays,
+        action: msg.action,
+        timerId: msg.timerId,
+        timerMetadata: msg.timerMetadata,
+      });
+    };
+
+    replayMessage();
   }
 });
 
@@ -147,7 +178,7 @@ orchestratorServer.on('disconnect', (conn) => {
   }
 
   if (connectedClients.length === 0) {
-    console.log(`[DISCONNECT] There are no client to be setted as the mastert now`);
+    console.log(`[DISCONNECT] There are no client to be setted as the master now`);
     return;
   }
 
