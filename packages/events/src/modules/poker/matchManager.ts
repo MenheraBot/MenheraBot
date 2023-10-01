@@ -48,7 +48,7 @@ const makeShowdown = async (
 
   const winReason = winners[0].descr.includes('Royal Flush')
     ? 'ROYAL-FLUSH'
-    : winners[0].name.replace(' ', '-').toUpperCase();
+    : winners[0].name.replaceAll(' ', '-').toUpperCase();
 
   finishRound(
     ctx,
