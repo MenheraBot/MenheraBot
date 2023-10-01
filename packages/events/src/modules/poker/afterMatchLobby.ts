@@ -8,6 +8,7 @@ import { closeTable, startNextMatch } from './matchManager';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
+import pokerRepository from '../../database/repositories/pokerRepository';
 
 const convertChipsToStars = async (gameData: PokerMatch, player: PokerPlayer): Promise<void> => {
   if (!gameData.worthGame) return;
@@ -93,6 +94,7 @@ const afterLobbyAction = async (
 
         if (!playingIds.includes(player.id)) {
           convertChipsToStars(gameData, player);
+          pokerRepository.removeUsersInMatch([player.id]);
 
           gameData.players.splice(i, 1);
 
