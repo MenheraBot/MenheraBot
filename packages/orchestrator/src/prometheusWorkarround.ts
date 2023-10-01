@@ -6,24 +6,32 @@ const splitResults = (metrics: string) => {
   return lineByLine.map((line) => line.split(' '));
 };
 
-const appendClientCounts = (metricBody: string, connectedClients: number): string =>
+const appendClientCounts = (
+  metricBody: string,
+  connectedClients: number,
+  missedInteractions: number,
+): string =>
   metricBody.concat(`
-
 # HELP connected_clients Amount of event clients connected to the orchestrator
 # TYPE connected_clients gauge
 connected_clients{app="menhera-bot-events"} ${connectedClients}
+
+# HELP missed_interactions Amount of interactions missed due to lack of clients connected
+# TYPE missed_interactions counter
+missed_interactions{app="menhera-bot-events"} ${missedInteractions}
 `);
 
 const mergeMetrics = (
   validMetrics: PrometheusResponse[],
   connectedClients: number,
+  missedInteractions: number,
 ): PrometheusResponse => {
   const firstMetric = validMetrics[0];
 
   if (validMetrics.length === 1) {
     return {
       contentType: firstMetric.contentType,
-      data: appendClientCounts(firstMetric.data, connectedClients),
+      data: appendClientCounts(firstMetric.data, connectedClients, missedInteractions),
     };
   }
 
@@ -54,7 +62,7 @@ const mergeMetrics = (
 
   return {
     contentType: firstMetric.contentType,
-    data: appendClientCounts(updatedMetricsBody, connectedClients),
+    data: appendClientCounts(updatedMetricsBody, connectedClients, missedInteractions),
   };
 };
 

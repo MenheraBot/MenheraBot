@@ -25,6 +25,7 @@ let waitingForSwap: EventClientConnection[] = [];
 let eventsCounter = 0;
 
 let connectedClients: EventClientConnection[] = [];
+let missedInteractions = 0;
 
 export enum RequestType {
   VoteWebhook = 'VOTE_WEBHOOK',
@@ -43,8 +44,10 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
   const clientsToUse = swappingVersions ? waitingForSwap : connectedClients;
 
   if (clientsToUse.length === 0) {
-    if (type === RequestType.InteractionCreate)
+    if (type === RequestType.InteractionCreate) {
+      missedInteractions += 1;
       return respondInteraction((data as { body: DiscordInteraction }).body);
+    }
 
     return null;
   }
@@ -69,6 +72,7 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
       return p;
     }, []),
     connectedClients.length,
+    missedInteractions,
   );
 };
 
