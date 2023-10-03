@@ -1,8 +1,8 @@
-import client, { Counter, Registry } from 'prom-client';
+import client, { Gauge, Registry } from 'prom-client';
 
 let register: Registry;
-let commandsCounter: Counter;
-let interactionsCounter: Counter;
+let commandsCounter: Gauge;
+let interactionsCounter: Gauge;
 
 const initializePrometheus = (): void => {
   if (process.env.NOMICROSERVICES) return;
@@ -13,13 +13,13 @@ const initializePrometheus = (): void => {
     app: 'menhera-bot-events',
   });
 
-  commandsCounter = new client.Counter({
+  commandsCounter = new client.Gauge({
     name: 'commands_count',
     help: 'Count of commands executed',
     labelNames: ['command_name'],
   });
 
-  interactionsCounter = new client.Counter({
+  interactionsCounter = new client.Gauge({
     name: 'interactions_count',
     help: 'Number of interactions received',
     labelNames: ['type'],
@@ -30,7 +30,7 @@ const initializePrometheus = (): void => {
 };
 
 const getRegister = (): Registry => register;
-const getCommandsCounter = (): Counter => commandsCounter;
-const getInteractionsCounter = (): Counter => interactionsCounter;
+const getCommandsCounter = (): Gauge => commandsCounter;
+const getInteractionsCounter = (): Gauge => interactionsCounter;
 
 export { initializePrometheus, getRegister, getCommandsCounter, getInteractionsCounter };

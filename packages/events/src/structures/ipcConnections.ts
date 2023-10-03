@@ -112,6 +112,7 @@ const createIpcConnections = async (): Promise<Client> => {
 
         const metrics = await register.metrics();
         ack({ contentType: register.contentType, data: metrics });
+        register.resetMetrics();
         bot.commandsInExecution -= 1;
         break;
       }

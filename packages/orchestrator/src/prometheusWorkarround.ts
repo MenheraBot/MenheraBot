@@ -17,7 +17,7 @@ const appendClientCounts = (
 connected_clients{app="menhera-bot-events"} ${connectedClients}
 
 # HELP missed_interactions Amount of interactions missed due to lack of clients connected
-# TYPE missed_interactions counter
+# TYPE missed_interactions gauge
 missed_interactions{app="menhera-bot-events"} ${missedInteractions}
 `);
 
