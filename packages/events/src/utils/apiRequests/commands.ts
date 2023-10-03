@@ -7,7 +7,7 @@ import { debugError } from '../debugError';
 import { dataRequest, statusRequest } from './apiRequests';
 
 const postCommandExecution = async (info: UsedCommandData): Promise<void> => {
-  await dataRequest.post('/usages/commands', info).catch(debugError);
+  await dataRequest.post(`/usages/commands?command=${info.commandName}`, info).catch(debugError);
 };
 
 const updateCommandMaintenanteStatus = async (

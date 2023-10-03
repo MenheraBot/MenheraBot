@@ -47,7 +47,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
         type: InteractionResponseTypes.ChannelMessageWithSource,
         data: options,
       })
-      .catch(this.captureException.bind(this));
+      .catch((e) => this.captureException(e));
   }
 
   async respondWithModal(options: InteractionCallbackData): Promise<void> {
@@ -60,7 +60,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
         type: InteractionResponseTypes.Modal,
         data: options,
       })
-      .catch(this.captureException.bind(this));
+      .catch((e) => this.captureException(e));
   }
 
   async ack(): Promise<void> {
@@ -72,7 +72,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
       .sendInteractionResponse(this.interaction.id, this.interaction.token, {
         type: InteractionResponseTypes.DeferredUpdateMessage,
       })
-      .catch(this.captureException.bind(this));
+      .catch((e) => this.captureException(e));
   }
 
   async visibleAck(ephemeral: boolean): Promise<void> {
@@ -97,14 +97,14 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
           type: InteractionResponseTypes.ChannelMessageWithSource,
           data: options,
         })
-        .catch(this.captureException.bind(this));
+        .catch((e) => this.captureException(e));
       this.replied = true;
       return;
     }
 
     await bot.helpers
       .editOriginalInteractionResponse(this.interaction.token, options)
-      .catch(this.captureException.bind(this));
+      .catch((e) => this.captureException(e));
   }
 
   async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
@@ -115,13 +115,13 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
           type: InteractionResponseTypes.UpdateMessage,
           data: options,
         })
-        .catch(this.captureException.bind(this));
+        .catch((e) => this.captureException(e));
       return;
     }
 
     await bot.helpers
       .editOriginalInteractionResponse(this.interaction.token, options)
-      .catch(this.captureException.bind(this));
+      .catch((e) => this.captureException(e));
   }
 
   locale(text: Translation, options: Record<string, unknown> = {}): string {

@@ -63,14 +63,14 @@ export default class {
         type: InteractionResponseTypes.ChannelMessageWithSource,
         data: options,
       })
-      .catch(this.captureException.bind(this));
+      .catch((e) => this.captureException(e));
   }
 
   async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
     if (this.replied) {
       await bot.helpers
         .editOriginalInteractionResponse(this.interaction.token, options)
-        .catch(this.captureException.bind(this));
+        .catch((e) => this.captureException(e));
       return;
     }
 
@@ -81,7 +81,7 @@ export default class {
         type: InteractionResponseTypes.ChannelMessageWithSource,
         data: options,
       })
-      .catch(this.captureException.bind(this));
+      .catch((e) => this.captureException(e));
   }
 
   getSubCommandGroup(required = false): string {
@@ -118,7 +118,7 @@ export default class {
           flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
         },
       })
-      .catch(this.captureException.bind(this));
+      .catch((e) => this.captureException(e));
   }
 
   locale(text: Translation, options: Record<string, unknown> = {}): string {
