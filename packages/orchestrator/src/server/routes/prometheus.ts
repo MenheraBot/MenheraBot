@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { RequestType, resetMissedInteractions, sendEvent } from '../..';
+import { RequestType, sendEvent } from '../..';
 
 export interface PrometheusResponse {
   contentType: string;
@@ -17,7 +17,6 @@ const createPrometheusRouter = (): Router => {
       return;
     }
 
-    resetMissedInteractions();
     ctx.set('Content-Type', results.contentType);
     ctx.body = results.data;
   });

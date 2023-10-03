@@ -37,10 +37,6 @@ export enum RequestType {
   SimonSays = 'SIMON_SAYS',
 }
 
-const resetMissedInteractions = (): void => {
-  missedInteractions = 0;
-};
-
 const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => {
   eventsCounter += 1;
   if (eventsCounter >= 25) eventsCounter = 0;
@@ -208,4 +204,4 @@ orchestratorServer.start().catch((r) => {
   process.exit(1);
 });
 
-export { sendEvent, resetMissedInteractions };
+export { sendEvent };
