@@ -80,12 +80,14 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
 
     this.replied = true;
 
-    await bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
-      type: InteractionResponseTypes.DeferredChannelMessageWithSource,
-      data: {
-        flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
-      },
-    });
+    await bot.helpers
+      .sendInteractionResponse(this.interaction.id, this.interaction.token, {
+        type: InteractionResponseTypes.DeferredChannelMessageWithSource,
+        data: {
+          flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
+        },
+      })
+      .catch((e) => this.captureException(e));
   }
 
   async respondInteraction(
@@ -129,7 +131,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   }
 
   captureException(error: Error): null {
-    logger.error(error.message);
+    logger.error(this.interaction.data.customId, error.message);
 
     Sentry.withScope((scope) => {
       scope.setContext('component', {
@@ -140,8 +142,10 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
 
       try {
         Sentry.captureException(error);
-        // eslint-disable-next-line no-empty
-      } catch {}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (e: any) {
+        logger.error('Error while sending the event', e?.message ?? e);
+      }
     });
 
     return null;

@@ -110,6 +110,8 @@ export default class {
   }
 
   async defer(ephemeral = false): Promise<void> {
+    if (this.replied) return;
+
     this.replied = true;
     await bot.helpers
       .sendInteractionResponse(this.interaction.id, this.interaction.token, {
@@ -126,7 +128,7 @@ export default class {
   }
 
   captureException(error: Error): null {
-    logger.error(error.message);
+    logger.error(this.interaction.data?.name, error.message);
 
     Sentry.withScope((scope) => {
       scope.setContext('command', {
@@ -137,8 +139,10 @@ export default class {
       });
       try {
         Sentry.captureException(error);
-        // eslint-disable-next-line no-empty
-      } catch {}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (e: any) {
+        logger.error('Error while sending the event', e?.message ?? e);
+      }
     });
 
     return null;

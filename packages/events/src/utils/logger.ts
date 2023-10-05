@@ -5,16 +5,16 @@ const logger = {
   },
 
   error: (...args: unknown[]): void => {
-    console.error(...args);
+    console.error(new Date().toISOString(), ...args);
   },
 
   info: (...args: unknown[]): void => {
     if (process.env.NODE_ENV === 'test') return;
-    console.info(...args);
+    console.info(new Date().toISOString(), ...args);
   },
 
   panic: (...args: unknown[]): void => {
-    console.error(...args);
+    console.error(new Date().toISOString(), ...args);
     process.exit(1);
   },
 };
