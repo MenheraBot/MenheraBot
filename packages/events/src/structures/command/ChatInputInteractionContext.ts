@@ -110,7 +110,12 @@ export default class {
   }
 
   async defer(ephemeral = false): Promise<void> {
-    if (this.replied) return;
+    if (this.replied) {
+      logger.info(
+        `TRIED TO DEFER AN ALREADY REPLIED COMMAND. Author: ${this.author.id} Command: ${this.interaction.data?.name}`,
+      );
+      return;
+    }
 
     this.replied = true;
     await bot.helpers
