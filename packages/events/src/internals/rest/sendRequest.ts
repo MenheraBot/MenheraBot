@@ -19,17 +19,21 @@ const sendRequest = async <T = any>(
     body: unknown;
   },
 ): Promise<T> => {
-  const response = await client.request({
-    type: 'SEND_REQUEST',
-    data: {
-      Authorization: rest.secretKey,
-      url: route,
-      method,
-      bucketId,
-      retryCount,
-      payload,
-    },
-  });
+  const response = await client
+    .request({
+      type: 'SEND_REQUEST',
+      data: {
+        Authorization: rest.secretKey,
+        url: route,
+        method,
+        bucketId,
+        retryCount,
+        payload,
+      },
+    })
+    .catch((e) => {
+      logger.error('Error in sendRequest', e);
+    });
 
   if (response?.statusCode >= 400) logger.error(`[${response.status}] - ${response.error}`);
 

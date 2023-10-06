@@ -19,16 +19,21 @@ const runMethod = async <T = any>(
     headers?: Record<string, string>;
   },
 ): Promise<T> => {
-  const response = await client.request({
-    type: 'RUN_METHOD',
-    data: {
-      Authorization: rest.secretKey,
-      url: route,
-      body,
-      method,
-      options,
-    },
-  });
+  const response = await client
+    .request({
+      type: 'RUN_METHOD',
+      data: {
+        Authorization: rest.secretKey,
+        url: route,
+        body,
+        method,
+        options,
+      },
+    })
+    .catch((e) => {
+      logger.error('Error in runMethod', e);
+      return e;
+    });
 
   if (response?.statusCode >= 400) logger.error(`[${response.status}] - ${response.error}`);
 
