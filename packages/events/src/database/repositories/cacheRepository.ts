@@ -30,26 +30,9 @@ const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promi
 };
 
 const setDiscordUser = async (payload: DiscordUser): Promise<void> => {
-  await MainRedisClient.setex(`discord_user:${payload.id}`, 3600, JSON.stringify(payload)).catch(
+  await MainRedisClient.setex(`discord_user:${payload.id}`, 86400, JSON.stringify(payload)).catch(
     debugError,
   );
-};
-
-const getRouletteUsages = async (userId: BigString): Promise<number> => {
-  const res = await MainRedisClient.get(`roulette:${userId}`);
-
-  if (!res) return 0;
-
-  return Number(res);
-};
-
-const incrementRouletteHourlyUsage = async (userId: BigString): Promise<void> => {
-  const expireTime = (60 - new Date().getMinutes()) * 60;
-
-  await MainRedisClient.multi()
-    .incr(`roulette:${userId}`)
-    .expire(`roulette:${userId}`, expireTime)
-    .exec();
 };
 
 const addDeletedAccount = async (users: string[]): Promise<void> => {
@@ -87,8 +70,6 @@ const getCustomImageAttachment = async (
 export default {
   getDiscordUser,
   setDiscordUser,
-  incrementRouletteHourlyUsage,
-  getRouletteUsages,
   getDeletedAccounts,
   addCustomImageAttachment,
   getCustomImageAttachment,

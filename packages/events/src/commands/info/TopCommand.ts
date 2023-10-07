@@ -145,7 +145,7 @@ const executeUserDataRelatedRanking = async (
   });
 
   for (let i = 0; i < res.length; i++) {
-    const member = await cacheRepository.getDiscordUser(`${res[i].id}`);
+    const member = await cacheRepository.getDiscordUser(`${res[i].id}`, page <= 3);
     const memberName = member?.username ?? res[i].id;
 
     if (member) {
@@ -344,7 +344,7 @@ const executeHuntStatistics = async (
   });
 
   for (let i = 0; i < results.length; i++) {
-    const member = await cacheRepository.getDiscordUser(results[i].user_id);
+    const member = await cacheRepository.getDiscordUser(results[i].user_id, page <= 3);
 
     if (member) {
       if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
@@ -440,7 +440,7 @@ const topUserResponseBasedBets = async (
   });
 
   for (let i = 0; i < results.length; i++) {
-    const member = await cacheRepository.getDiscordUser(results[i].user_id);
+    const member = await cacheRepository.getDiscordUser(results[i].user_id, page <= 3);
 
     if (member) {
       if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
@@ -546,7 +546,7 @@ const topAccountResponseBets = async (
   });
 
   for (let i = 0; i < results.length; i++) {
-    const member = await cacheRepository.getDiscordUser(results[i].id);
+    const member = await cacheRepository.getDiscordUser(results[i].id, page <= 3);
 
     if (member) {
       if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };

@@ -1,3 +1,5 @@
+import { TaxedGameLimts } from '../../utils/taxesUtils';
+
 export const ROULETTE_NUMBERS = [
   { value: 0, color: 'green', parity: '?', size: '?', dozen: '?' },
   { value: 1, color: 'red', parity: 'odd', size: 'low', dozen: 'first' },
@@ -38,7 +40,12 @@ export const ROULETTE_NUMBERS = [
   { value: 36, color: 'red', parity: 'even', size: 'high', dozen: 'third' },
 ];
 
-export const HOURLY_ROULETTE_HIGH_VALUE_BET_LIMIT = 5;
+export const ROULETTE_LIMITS = {
+  MAX_LIMIT: 50_000,
+  MIN_LIMIT: 10,
+  MIN_TAX: 3.8 / 100,
+  MAX_TAX: 29.7 / 100,
+} satisfies TaxedGameLimts;
 
 export const WIN_MULTIPLIERS = {
   STRAIGHT: 9,

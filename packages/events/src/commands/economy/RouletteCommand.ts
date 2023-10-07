@@ -2,10 +2,12 @@ import { ActionRow, ApplicationCommandOptionTypes, ButtonStyles } from 'discorde
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import userRepository from '../../database/repositories/userRepository';
-import { getProfitTaxes, getTaxedProfit } from '../../modules/roulette/getTaxedProfit';
+import {
+  getRouletteProfitTaxes,
+  getRouletteTaxedProfit,
+} from '../../modules/roulette/getRouletteTaxes';
 import starsRepository from '../../database/repositories/starsRepository';
 import { postRoulleteGame, postTransaction } from '../../utils/apiRequests/statistics';
-import cacheRepository from '../../database/repositories/cacheRepository';
 import { SelectMenuInteraction } from '../../types/interaction';
 import {
   createActionRow,
@@ -16,11 +18,7 @@ import {
 } from '../../utils/discord/componentUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { randomFromArray } from '../../utils/miscUtils';
-import {
-  HOURLY_ROULETTE_HIGH_VALUE_BET_LIMIT,
-  ROULETTE_NUMBERS,
-  WIN_MULTIPLIERS,
-} from '../../modules/roulette/constants';
+import { ROULETTE_NUMBERS, WIN_MULTIPLIERS } from '../../modules/roulette/constants';
 
 import { createCommand } from '../../structures/command/createCommand';
 import { bot } from '../..';
@@ -45,10 +43,7 @@ const finishRouletteBet = async (
         embeds: [],
       });
 
-    const isHighValueBet = (operation === 'STRAIGHT' || operation === 'SPLIT') && bet >= 10_000;
-    if (isHighValueBet) cacheRepository.incrementRouletteHourlyUsage(ctx.user.id);
-
-    const profitAfterTaxes = getTaxedProfit(profit);
+    const profitAfterTaxes = getRouletteTaxedProfit(profit);
 
     const winOrLose = didWin ? 'win' : 'lose';
 
@@ -58,7 +53,7 @@ const finishRouletteBet = async (
       description: ctx.locale(`commands:roleta.${winOrLose}`, {
         bet,
         profit: profitAfterTaxes + bet,
-        taxes: getProfitTaxes(profit),
+        taxes: (getRouletteProfitTaxes(profit) * 100).toFixed(2),
         number: randomValue,
         operation,
         selection:
@@ -310,8 +305,8 @@ const RouletteCommand = createCommand({
       descriptionLocalizations: { 'en-US': 'Bet amount' },
       type: ApplicationCommandOptionTypes.Integer,
       required: true,
-      minValue: 1,
-      maxValue: 15_000,
+      minValue: 10,
+      maxValue: 50000,
     },
   ],
   category: 'economy',
@@ -416,16 +411,6 @@ const RouletteCommand = createCommand({
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:roleta.lowhigh-title'),
     });
-
-    const highValuesUsages = await cacheRepository.getRouletteUsages(ctx.author.id);
-
-    if (highValuesUsages >= HOURLY_ROULETTE_HIGH_VALUE_BET_LIMIT && bet >= 10_000) {
-      straightButton.disabled = true;
-      straightButton.style = ButtonStyles.Secondary;
-
-      splitButton.style = ButtonStyles.Secondary;
-      splitButton.disabled = true;
-    }
 
     ctx.makeMessage({
       embeds: [embed],

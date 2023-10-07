@@ -5,18 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.8.2] - 2023-10-07
+
+### Added
+
+- A premiação do `/bicho` agora possui impostos. Quanto maior seu prêmio, maior o imposto. O máximo de impostos é **36.3%**, quando o lucro é maior de **150000** estrelinhas.
+
+### Changed
+
+- O comando `/top` apenas mostra o nome dos usuários nas primeiras 3 páginas.
+- O valor máximo para apostar na `/roleta` foi aumentado para **50000**.
+- A aposta mínima da roleta foi aumentada para **10** estrelinhas.
+- O imposto do `/roleta` foi alterado. Agora, apostas até **10** estrelinhas possuem apenas **3.8%** de impostos. O imposto vai aumentar de forma linear até **50000** estrelinhas de lucro, quando o imposto cobrado será de **29.7%**
+
+### Fixed
+
+- Os impostos da `/roleta` não mostravam o valor em porcentagem.
+
+### Removed
+
+- O limite de apostas altas por hora foi removido do comando `/roleta`.
+
 ## [5.8.1] - 2023-10-01
 
 ### Fixed
 
 - A tradução das mãos trinca e quadra do poker foram corrigidas.
-- Corrigido o bug onde sair de uma partida no lobby de fim de jogo não te removia do estado de estar em uma partida. 
+- Corrigido o bug onde sair de uma partida no lobby de fim de jogo não te removia do estado de estar em uma partida.
 
 ## [5.8.0] - 2023-09-30
 
 ### Added
 
-- **POKER**!!!! Agora é possível jogar *Poker* na Menhera! Use `/poker` e aposte com seus amigos.
+- **POKER**!!!! Agora é possível jogar _Poker_ na Menhera! Use `/poker` e aposte com seus amigos.
 
 ## [5.7.3] - 2023-09-23
 
@@ -61,13 +82,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
-- Agora é possível alterar pela página do top usando *Botões*. Sugerido por @mareys (653755256953503757)
+- Agora é possível alterar pela página do top usando _Botões_. Sugerido por @mareys (653755256953503757)
 
 ## [5.6.3] - 2023-07-01
 
 ### Changed
 
-- Ao empatar com a Menhera no `/blackjack` suas estrelinhas apostadas são devolvidas. Isso mesmo, nada de derrotas por empate! - Sugerido por @luizinn_ (928461486173618176)
+- Ao empatar com a Menhera no `/blackjack` suas estrelinhas apostadas são devolvidas. Isso mesmo, nada de derrotas por empate! - Sugerido por @luizinn\_ (928461486173618176)
 
 ## [5.6.2] - 20233-06-08
 
@@ -113,11 +134,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Changed
 
-- Os preços de temas de fundo de cartas foram reduzidos! `Cartinha Azul`: ~~80000~~ -> *60_000*; `Menhera Fofa`: ~~140000~~ -> *70_000*; `Carta Premium`: ~~320000~~ -> *90_000*; `Lamenta Caelorum`: ~~250000~~ -> *100000*.
+- Os preços de temas de fundo de cartas foram reduzidos! `Cartinha Azul`: ~~80000~~ -> _60_000_; `Menhera Fofa`: ~~140000~~ -> _70_000_; `Carta Premium`: ~~320000~~ -> _90_000_; `Lamenta Caelorum`: ~~250000~~ -> _100000_.
 
-- O preço do baralho de cartas `Morte Concreta` foi reduzido de ~~950000~~ para *666666*
+- O preço do baralho de cartas `Morte Concreta` foi reduzido de ~~950000~~ para _666666_
 
-- O preço do tema de perfil `Um Propósito Sem Alma` foi reduzido de ~~650_000~~ para *390000*
+- O preço do tema de perfil `Um Propósito Sem Alma` foi reduzido de ~~650_000~~ para _390000_
 
 ## [5.4.3] - 2023-05-23
 
@@ -161,13 +182,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
-- Foi adicionado duas novas badges! `2 anos com a Menhera` e `3 anos com a Menhera`. Essa badge é dada para quem usa a Menhera a mais de 2/3 anos! O tipo dessa badge é *UNICA*, somente uma aparecerá no perfil por vez: 1, 2 ou 3 anos com a Menhera.
+- Foi adicionado duas novas badges! `2 anos com a Menhera` e `3 anos com a Menhera`. Essa badge é dada para quem usa a Menhera a mais de 2/3 anos! O tipo dessa badge é _UNICA_, somente uma aparecerá no perfil por vez: 1, 2 ou 3 anos com a Menhera.
 
 ## [5.3.1] - 2023-04-30
 
 ### Changed
 
-- O comando `/presentear` foi renomado para `/pix`! Sugerido por: Luizinn_#0258 (928461486173618176)
+- O comando `/presentear` foi renomado para `/pix`! Sugerido por: Luizinn\_#0258 (928461486173618176)
 
 ### Fixed
 
@@ -239,7 +260,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
-- Novos locais para beijar no comando `/beijar` -> *mão* e *testa*.
+- Novos locais para beijar no comando `/beijar` -> _mão_ e _testa_.
 - Foi criado um canal no servidor de suporte para salvar todos os sorteios do Jogo do Bicho. Caso queira ver informações sobre partidas, ou ver se você ganhou um sorteio nas últimas horas, é so entrar!
 
 ### Changed
