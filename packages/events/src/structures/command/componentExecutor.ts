@@ -14,6 +14,7 @@ import { createEmbed } from '../../utils/discord/embedUtils';
 import { getEnviroments } from '../../utils/getEnviroments';
 import { ComponentInteraction } from '../../types/interaction';
 import cacheRepository from '../../database/repositories/cacheRepository';
+import { logger } from '../../utils/logger';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -149,6 +150,8 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
 
     res(undefined);
   });
+
+  logger.info(`[COMPONENT] ${commandInfo._id} - ${ctx.user.id} "${interaction.data.customId}"`);
 };
 
 export { componentExecutor };

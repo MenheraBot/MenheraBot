@@ -179,9 +179,11 @@ const setInteractionCreateEvent = (): void => {
 
     bot.commandsInExecution -= 1;
 
-    logger.info(
-      `[${new Date().toISOString().substring(11, 19)}] ${command.name} - ${interaction.user.id} `,
-    );
+    const fullCommand = `${command.name}${ctx.subCommandGroup ? ` ${ctx.subCommandGroup}` : ''}${
+      ctx.subCommand ? ` ${ctx.subCommand}` : ''
+    }`;
+
+    logger.info(`[COMMAND] ${fullCommand} - ${interaction.user.id}`);
 
     if (!interaction.guildId || process.env.NODE_ENV !== 'production') return;
 

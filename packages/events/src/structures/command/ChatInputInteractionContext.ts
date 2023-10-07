@@ -22,7 +22,7 @@ export default class {
 
   public subCommand: string | undefined;
 
-  public subCommandGround: string | undefined;
+  public subCommandGroup: string | undefined;
 
   constructor(
     public interaction: Interaction,
@@ -32,7 +32,7 @@ export default class {
     let options = interaction.data?.options ?? [];
 
     if (options[0]?.type === ApplicationCommandOptionTypes.SubCommandGroup) {
-      this.subCommandGround = options[0].name;
+      this.subCommandGroup = options[0].name;
       options = options[0].options ?? [];
     }
 
@@ -85,7 +85,7 @@ export default class {
   }
 
   getSubCommandGroup(required = false): string {
-    const command = this.subCommandGround;
+    const command = this.subCommandGroup;
 
     if (!command && required)
       throw new Error(`SubCommandGroup is required in ${this.interaction.data?.name}`);
@@ -139,7 +139,7 @@ export default class {
       scope.setContext('command', {
         name: this.interaction.data?.name,
         subCommand: this.subCommand,
-        subCommandGroup: this.subCommandGround,
+        subCommandGroup: this.subCommandGroup,
         commandAuthor: this.author.id,
       });
       try {
