@@ -1,3 +1,5 @@
+import { TaxedGameLimts } from '../../utils/taxesUtils';
+
 const BLACKJACK_CARDS = Array.from({ length: 52 }, (_, i) => i + 1);
 
 const BLACKJACK_PRIZE_MULTIPLIERS = {
@@ -6,6 +8,13 @@ const BLACKJACK_PRIZE_MULTIPLIERS = {
   base: 2,
   draw: 1,
 };
+
+const BLACKJACK_TAXES = {
+  MAX_LIMIT: 50_000,
+  MAX_TAX: 25 / 100,
+  MIN_LIMIT: 10,
+  MIN_TAX: 3.8 / 100,
+} satisfies TaxedGameLimts;
 
 const shuffleCards = (): number[] => {
   const array = [...BLACKJACK_CARDS];
@@ -23,4 +32,4 @@ const shuffleCards = (): number[] => {
   return array;
 };
 
-export { BLACKJACK_CARDS, BLACKJACK_PRIZE_MULTIPLIERS, shuffleCards };
+export { BLACKJACK_CARDS, BLACKJACK_PRIZE_MULTIPLIERS, BLACKJACK_TAXES, shuffleCards };

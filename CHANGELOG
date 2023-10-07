@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - A premiação do `/bicho` agora possui impostos. Quanto maior seu prêmio, maior o imposto. O máximo de impostos é **36.3%**, quando o lucro é maior de **150000** estrelinhas.
+- A premiação do `/blackjack` agora possui impostos. Quanto maior seu prêmio, maior o imposto. O máximo de imposto é **25%**, quando o lucro é maior de **50000** estrelinhas
 
 ### Changed
 
@@ -17,8 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O valor máximo para apostar na `/roleta` foi aumentado para **50000**.
 - A aposta mínima da roleta foi aumentada para **10** estrelinhas.
 - O imposto do `/roleta` foi alterado. Agora, apostas até **10** estrelinhas possuem apenas **3.8%** de impostos. O imposto vai aumentar de forma linear até **50000** estrelinhas de lucro, quando o imposto cobrado será de **29.7%**.
-- O limite mínimo para apostar no `/bicho` foi aumentado para **10 estrelinhas**.
+- O limite mínimo para apostar no `/bicho` foi aumentado para **10** estrelinhas.
 - O limit máximo para apostar no `/bicho` foi reduzido para **250000** estrelinhas.
+- O limite mínimo para apostar no `/blackjack` foi aumentado para **10** estrelinhas
 
 ### Fixed
 

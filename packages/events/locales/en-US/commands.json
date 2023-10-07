@@ -599,12 +599,13 @@
     "dealer-hand": "Menhera's Hand",
     "timeout": "you took too long to play. Menhera ran out of patience, you lost everything!",
     "result": "👑 | Results",
-    "init_blackjack": "**{{winner}}** started a game with a BlackJack! How lucky!\n**Your {{text}}:** {{prize}} :star:",
-    "blackjack": "**{{winner}}** made a BlackJack! On the fly!\n**Your {{text}}:** {{prize}} :star:",
-    "busted": "**{{loser}}** busted! Better luck next time!\n**Your {{text}}:** {{prize}} :star:",
+    "init_blackjack": "**{{winner}}** started a game with a BlackJack! How lucky!\n**Your {{text}}:** {{prize}} :star:\n{{taxed}}",
+    "blackjack": "**{{winner}}** made a BlackJack! On the fly!\n**Your {{text}}:** {{prize}} :star:\n{{taxed}}",
+    "busted": "**{{loser}}** busted! Better luck next time!\n**Your {{text}}:** {{prize}} :star:\n{{taxed}}",
     "draw": "Jeez! You tied with Menhera! As a draw is neither a win nor a loss, your **{{prize}}** :star: have been returned to your wallet",
-    "biggest": "**{{winner}}** won for having more points!\n**Your {{text}}:** {{prize}} :star:",
+    "biggest": "**{{winner}}** won for having more points!\n**Your {{text}}:** {{prize}} :star:\n{{taxed}}",
     "profit": "Profit",
+    "taxed-win": "**Taxes:** {{tax}}%",
     "loss": "Loss"
   },
   "itens": {

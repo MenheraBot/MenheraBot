@@ -151,7 +151,7 @@ const BlackjackCommand = createCommand({
       descriptionLocalizations: { 'en-US': 'Bet ammount' },
       type: ApplicationCommandOptionTypes.Integer,
       required: true,
-      minValue: 1,
+      minValue: 10,
       maxValue: 50000,
     },
   ],
