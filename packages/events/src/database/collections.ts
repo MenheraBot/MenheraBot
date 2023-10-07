@@ -101,8 +101,7 @@ const profileImagesSchema = new Schema({
 
 const farmerSchema = new Schema({
   id: { type: String, unique: true, index: true },
-  maxFields: { type: Number, default: 1 },
-  plantations: { type: Array, default: [] },
+  plantations: { type: Array, default: [{ isPlanted: false }] },
 });
 
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);

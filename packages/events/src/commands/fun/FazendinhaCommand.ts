@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { createCommand } from '../../structures/command/createCommand';
+import { displayPlantations } from '../../modules/fazendinha/displayPlantations';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -26,15 +27,13 @@ const FazendinhaCommand = createCommand({
     },
   ],
   category: 'fun',
-  authorDataFields: [],
+  authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
     finishCommand();
 
     const farmer = await farmerRepository.getFarmer(ctx.author.id);
 
-    ctx.makeMessage({
-      content: `Você pode plantar ${farmer.maxFields} e você possui ${farmer.plantations.length} coisas plantadas`,
-    });
+    displayPlantations(ctx, farmer);
   },
 });
 

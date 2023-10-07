@@ -104,7 +104,6 @@ export interface DatabaseCommandSchema {
 
 export interface DatabaseFarmerSchema {
   readonly id: string;
-  maxFields: number;
   plantations: Plantation[];
 }
 

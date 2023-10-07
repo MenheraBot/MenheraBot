@@ -84,11 +84,11 @@ You can enter Menhera's [support server](https://discord.gg/fZMdQbA) to help fur
 
 ## 📧 | Contact
 
-Discord: **Luxanna#5757**
+Discord: **@ysnoopydogy**
 
 Twitter: **[@Luxanna_Dev](https://twitter.com/Luxanna_Dev)**
 
-Email: **luxanna@menherabot.xyz**
+Email: **[contact@luancaliel.dev](mailto:contact@luancaliel.dev)**
 
 
 ## 📜 | Source

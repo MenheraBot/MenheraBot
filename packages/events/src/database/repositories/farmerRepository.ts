@@ -7,7 +7,6 @@ import { debugError } from '../../utils/debugError';
 
 const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSchema => ({
   id: `${user.id}`,
-  maxFields: user.maxFields,
   plantations: user.plantations,
 });
 
