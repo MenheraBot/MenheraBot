@@ -12,6 +12,13 @@ const millisToHours = (milli: number): number => Math.floor(milli / 1000 / 60 / 
 
 const negate = (value: number): number => value * -1;
 
+const chunkArray = <T>(arr: T[], chunkSize: number): T[][] => {
+  const chunks = [];
+  for (let i = 0; i < arr.length; i += chunkSize) chunks.push(arr.slice(i, i + chunkSize));
+
+  return chunks;
+};
+
 const getMillisecondsToTheEndOfDay = (): number => {
   const date = new Date();
   const passedMilli =
@@ -34,6 +41,7 @@ export {
   toWritableUtf,
   getCustomThemeField,
   millisToSeconds,
+  chunkArray,
   millisToHours,
   negate,
   getMillisecondsToTheEndOfDay,

@@ -33,7 +33,7 @@ const FazendinhaCommand = createCommand({
 
     const farmer = await farmerRepository.getFarmer(ctx.author.id);
 
-    displayPlantations(ctx, farmer);
+    displayPlantations(ctx, farmer, ctx.authorData.selectedColor);
   },
 });
 
