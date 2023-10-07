@@ -63,8 +63,6 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
     clientsToUse.map((a) => a.conn.request({ type: RequestType.Prometheus })),
   );
 
-  if (results.length === 0) return null;
-
   return mergeMetrics(
     results.reduce<PrometheusResponse[]>((p, c) => {
       if (c.status === 'rejected') return p;
