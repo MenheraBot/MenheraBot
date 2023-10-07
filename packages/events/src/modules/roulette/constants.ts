@@ -41,10 +41,10 @@ export const ROULETTE_NUMBERS = [
 ];
 
 export const ROULETTE_LIMITS = {
-  MAX_LIMIT: 50_000,
+  MAX_LIMIT: 75_000,
   MIN_LIMIT: 10,
   MIN_TAX: 3.8 / 100,
-  MAX_TAX: 29.7 / 100,
+  MAX_TAX: 25 / 100,
 } satisfies TaxedGameLimts;
 
 export const WIN_MULTIPLIERS = {

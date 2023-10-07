@@ -10,8 +10,8 @@ const BLACKJACK_PRIZE_MULTIPLIERS = {
 };
 
 const BLACKJACK_TAXES = {
-  MAX_LIMIT: 50_000,
-  MAX_TAX: 25 / 100,
+  MAX_LIMIT: 75_000,
+  MAX_TAX: 20 / 100,
   MIN_LIMIT: 10,
   MIN_TAX: 3.8 / 100,
 } satisfies TaxedGameLimts;

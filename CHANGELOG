@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.8.3] - 2023-10-07
+
+### Changed
+
+- Os impostos foram reduzidos
+  - `/blackjack`: Imposto máximo -> **20%**. Teto máximo para o imposto -> **75_000**
+  - `/roleta`: Imposto máximo -> **25%**. Teto máximo para o imposto -> **75_000**
+
+### Fixed
+
+- Resolvido erros de português no `/blackjack`
+
 ## [5.8.2] - 2023-10-07
 
 ### Added
