@@ -604,7 +604,7 @@
     "result": "Resultado",
     "init_blackjack": "**{{winner}}** começou um jogo com um BlackJack! Que Sorte!\n**Seu {{text}}:** {{prize}} :star:\n{{taxed}}",
     "blackjack": "**{{winner}}** fez um BlackJack! Na mosca!\n**Seu {{text}}:** {{prize}} :star:\n{{taxed}}",
-    "busted": "**{{loser}}** estourou! Mais sorte da próxima vez!\n**Seu {{text}}:** {{prize}} :star\n{{taxed}}:",
+    "busted": "**{{loser}}** estourou! Mais sorte da próxima vez!\n**Seu {{text}}:** {{prize}} :star:\n{{taxed}}",
     "taxed-win": "**Imposto:** {{tax}}%",
     "draw": "Eita! Tu empatou com a Menhera! Como empate não é nem uma vitórioas quanto uma derrota, suas **{{prize}}** :star: foram devolvidas para a carteira",
     "biggest": "**{{winner}}** ganhou por possuir mais pontos!\n**Seu {{text}}:** {{prize}} :star:\n{{taxed}}",
