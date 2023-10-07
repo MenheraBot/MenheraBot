@@ -56,6 +56,7 @@ const finishGame = async (): Promise<void> => {
         taxedProfit,
         'estrelinhas',
         ApiTransactionReason.WIN_BICHO,
+        a.profit - taxedProfit,
       );
       if (taxedProfit > biggestProfit) biggestProfit = taxedProfit;
     }

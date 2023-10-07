@@ -71,6 +71,7 @@ const finishRouletteBet = async (
         profitAfterTaxes,
         'estrelinhas',
         ApiTransactionReason.ROULETTE_COMMAND,
+        profit - profitAfterTaxes,
       );
     } else {
       starsRepository.removeStars(ctx.user.id, bet);

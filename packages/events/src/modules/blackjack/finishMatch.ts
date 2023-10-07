@@ -50,6 +50,7 @@ const finishMatch = async (
       prize,
       'estrelinhas',
       ApiTransactionReason.BLACKJACK_COMMAND,
+      Math.floor(bet * prizeMultiplier) - prize,
     );
   }
 

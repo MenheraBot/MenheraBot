@@ -186,9 +186,10 @@ const postTransaction = async (
   amount: TransactionRegister['amount'],
   currencyType: TransactionRegister['currencyType'],
   reason: ApiTransactionReason,
+  taxes?: number,
 ): Promise<void> => {
   await dataRequest
-    .post('/statistics/transaction', { authorId, targetId, amount, currencyType, reason })
+    .post('/statistics/transaction', { authorId, targetId, amount, currencyType, reason, taxes })
     .catch(debugError);
 
   logger.debug(
