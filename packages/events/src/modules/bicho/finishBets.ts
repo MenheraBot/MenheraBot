@@ -1,3 +1,4 @@
+import { TaxedGameLimts } from '../../utils/taxesUtils';
 import { BetPlayer, BichoBetType, BichoWinner } from './types';
 
 const BICHO_ANIMALS = [
@@ -37,6 +38,13 @@ const BICHO_BET_MULTIPLIER = {
   sequence: 19,
   corner: 500,
 };
+
+const BICHO_TAXES = {
+  MAX_LIMIT: 150_000,
+  MAX_TAX: 36.3 / 100,
+  MIN_LIMIT: 10,
+  MIN_TAX: 3.8 / 100,
+} satisfies TaxedGameLimts;
 
 const getBetType = (option: string): BichoBetType => {
   if (/^(?=.*\d)[\d ]+$/.test(option)) {
@@ -103,6 +111,7 @@ export {
   makePlayerResults,
   BICHO_BET_MULTIPLIER,
   BICHO_ANIMALS,
+  BICHO_TAXES,
   didUserWin,
   getBetType,
   mapResultToAnimal,
