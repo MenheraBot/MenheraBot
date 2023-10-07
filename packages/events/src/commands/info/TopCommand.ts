@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
 import { User } from 'discordeno/transformers';
@@ -144,8 +143,12 @@ const executeUserDataRelatedRanking = async (
     fields: [],
   });
 
+  const members = await Promise.all(
+    res.map((a) => cacheRepository.getDiscordUser(`${a.id}`, page <= 3)),
+  );
+
   for (let i = 0; i < res.length; i++) {
-    const member = await cacheRepository.getDiscordUser(`${res[i].id}`, page <= 3);
+    const member = members[i];
     const memberName = member?.username ?? res[i].id;
 
     if (member) {
@@ -243,8 +246,10 @@ const executeMostUsersThatUsedCommands = async (
     fields: [],
   });
 
+  const members = await Promise.all(res.map((a) => cacheRepository.getDiscordUser(`${a.id}`)));
+
   for (let i = 0; i < res.length; i++) {
-    const member = await cacheRepository.getDiscordUser(res[i].id);
+    const member = members[i];
 
     if (member) {
       if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
@@ -343,8 +348,12 @@ const executeHuntStatistics = async (
     fields: [],
   });
 
+  const members = await Promise.all(
+    results.map((a) => cacheRepository.getDiscordUser(`${a.user_id}`, page <= 3)),
+  );
+
   for (let i = 0; i < results.length; i++) {
-    const member = await cacheRepository.getDiscordUser(results[i].user_id, page <= 3);
+    const member = members[i];
 
     if (member) {
       if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
@@ -439,8 +448,12 @@ const topUserResponseBasedBets = async (
     fields: [],
   });
 
+  const members = await Promise.all(
+    results.map((a) => cacheRepository.getDiscordUser(`${a.user_id}`, page <= 3)),
+  );
+
   for (let i = 0; i < results.length; i++) {
-    const member = await cacheRepository.getDiscordUser(results[i].user_id, page <= 3);
+    const member = members[i];
 
     if (member) {
       if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
@@ -545,8 +558,12 @@ const topAccountResponseBets = async (
     fields: [],
   });
 
+  const members = await Promise.all(
+    results.map((a) => cacheRepository.getDiscordUser(`${a.id}`, page <= 3)),
+  );
+
   for (let i = 0; i < results.length; i++) {
-    const member = await cacheRepository.getDiscordUser(results[i].id, page <= 3);
+    const member = members[i];
 
     if (member) {
       if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
