@@ -1,4 +1,5 @@
 import { profileBadges } from '../modules/badges/profileBadges';
+import { Plantation } from '../modules/fazendinha/types';
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
 
@@ -99,6 +100,12 @@ export interface DatabaseCommandSchema {
   maintenance: boolean;
   maintenanceReason: string | null;
   discordId: string;
+}
+
+export interface DatabaseFarmerSchema {
+  readonly id: string;
+  maxFields: number;
+  plantations: Plantation[];
 }
 
 export type UserIdType = string | bigint;

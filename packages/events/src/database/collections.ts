@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import {
   DatabaseCommandSchema,
   DatabaseCreditsSchema,
+  DatabaseFarmerSchema,
   DatabaseGuildSchema,
   DatabaseProfileImagesSchema,
   DatabaseUserSchema,
@@ -98,9 +99,16 @@ const profileImagesSchema = new Schema({
   isPublic: { type: Boolean, default: true },
 });
 
+const farmerSchema = new Schema({
+  id: { type: String, unique: true, index: true },
+  maxFields: { type: Number, default: 1 },
+  plantations: { type: Array, default: [] },
+});
+
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
 export const guildsModel = model<DatabaseGuildSchema>('guild', guildSchema);
 export const usersModel = model<DatabaseUserSchema>('usersdb', userSchema);
 export const userThemesModel = model<DatabaseUserThemesSchema>('themes', userThemes);
 export const themeCreditsModel = model<DatabaseCreditsSchema>('credits', themeCredits);
 export const profileImagesModel = model<DatabaseProfileImagesSchema>('images', profileImagesSchema);
+export const farmerModel = model<DatabaseFarmerSchema>('farmer', farmerSchema);
