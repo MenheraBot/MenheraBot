@@ -11,6 +11,11 @@ const rest = createRestManager({
   secretKey: REST_AUTHORIZATION,
 });
 
+rest.debug = (log) => {
+  // eslint-disable-next-line no-console
+  if (log.includes('REST - fetchFailed')) console.log(log);
+};
+
 const handleRequest = async (req: RequestTypes): Promise<unknown> => {
   switch (req.type) {
     case 'RUN_METHOD':

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Blob } from 'node:buffer';
 
@@ -46,8 +47,8 @@ export default async (data: SendRequest, rest: RestManager): Promise<unknown> =>
     .catch((e) => {
       if (e?.message?.includes('[404]')) return e;
 
-      // eslint-disable-next-line no-console
       console.log(new Date().toISOString(), e);
+      if (e?.message?.includes('Unexpected token < in JSON at position')) console.log(body);
       return e;
     });
 
