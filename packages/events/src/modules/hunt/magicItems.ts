@@ -19,9 +19,9 @@ const HuntMagicItems: { [id: number]: MagicItemsFile } /* & Object */ = {
     probabilities: [
       { amount: 1, probability: 46 },
       { amount: 2, probability: 19 },
-      { amount: 4, probability: 18 },
+      { amount: 3, probability: 18 },
       { amount: 0, probability: 10 },
-      { amount: 3, probability: 7 },
+      { amount: 4, probability: 7 },
     ],
     cost: 600_000,
   },

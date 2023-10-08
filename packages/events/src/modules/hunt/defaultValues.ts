@@ -11,8 +11,8 @@ const defaultHuntingProbabilities = {
     { amount: 0, probability: 33 },
     { amount: 1, probability: 23 },
     { amount: 2, probability: 19 },
-    { amount: 4, probability: 18 },
-    { amount: 3, probability: 7 },
+    { amount: 3, probability: 18 },
+    { amount: 4, probability: 7 },
   ],
   angels: [
     { amount: 0, probability: 50 },
