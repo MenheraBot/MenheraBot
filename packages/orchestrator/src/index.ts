@@ -130,6 +130,8 @@ orchestratorServer.on('message', async (msg, conn) => {
       return console.log('[CLIENT] The first version in swap is not connected anymore');
 
     await conn.request({ type: RequestType.YouAreTheMaster });
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    connectedClients.find((a) => a.id === a.conn.id)!.isMaster = true;
     console.log(`[CLIENT] Master Set!`);
   }
 
