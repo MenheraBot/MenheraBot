@@ -10,6 +10,8 @@ const millisToSeconds = (milli: number): number => Math.floor(milli / 1000);
 
 const millisToHours = (milli: number): number => Math.floor(milli / 1000 / 60 / 60);
 
+const minutesToMillis = (minutes: number): number => minutes * 60 * 1000;
+
 const negate = (value: number): number => value * -1;
 
 const chunkArray = <T>(arr: T[], chunkSize: number): T[][] => {
@@ -42,6 +44,7 @@ export {
   getCustomThemeField,
   millisToSeconds,
   chunkArray,
+  minutesToMillis,
   millisToHours,
   negate,
   getMillisecondsToTheEndOfDay,

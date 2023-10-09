@@ -1,11 +1,13 @@
-export enum PlantTypes {
+export enum AvailablePlants {
   Mate,
 }
 
+export type PlantState = 'GROWING' | 'MATURE' | 'ROTTEN';
+
 export interface PlantedField {
-  harvestAt: number;
+  plantedAt: number;
   isPlanted: true;
-  plantType: PlantTypes;
+  plantType: AvailablePlants;
 }
 
 export interface EmptyField {
@@ -13,3 +15,8 @@ export interface EmptyField {
 }
 
 export type Plantation = PlantedField | EmptyField;
+
+export interface PlantsFile {
+  minutesToHarvest: number;
+  minutesToRot: number;
+}

@@ -2,6 +2,7 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { createCommand } from '../../structures/command/createCommand';
 import { displayPlantations } from '../../modules/fazendinha/displayPlantations';
+import { executeFieldAction } from '../../modules/fazendinha/fieldAction';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -26,7 +27,8 @@ const FazendinhaCommand = createCommand({
       type: ApplicationCommandOptionTypes.SubCommand,
     },
   ],
-  category: 'fun',
+  category: 'economy',
+  commandRelatedExecutions: [executeFieldAction],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
     finishCommand();

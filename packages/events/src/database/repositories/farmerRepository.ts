@@ -4,6 +4,7 @@ import { farmerModel } from '../collections';
 import { DatabaseFarmerSchema } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
+import { Plantation } from '../../modules/fazendinha/types';
 
 const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSchema => ({
   id: `${user.id}`,
@@ -38,6 +39,20 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
   return fromMongo;
 };
 
+const updateField = async (
+  farmerId: BigString,
+  fieldIndex: number,
+  field: Plantation,
+): Promise<void> => {
+  await farmerModel.updateOne(
+    { id: `${farmerId}` },
+    { $set: { [`plantations.${fieldIndex}`]: field } },
+  );
+
+  await MainRedisClient.del(`farmer:${farmerId}`);
+};
+
 export default {
   getFarmer,
+  updateField,
 };
