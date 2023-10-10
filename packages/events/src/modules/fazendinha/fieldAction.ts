@@ -15,7 +15,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
   const field = farmer.plantations[selectedField];
   const isPlanted = field?.isPlanted;
 
-  const state = isPlanted && getPlantState(field);
+  const state = isPlanted && getPlantState(field)[0];
 
   if (state === 'GROWING')
     return ctx.respondInteraction({

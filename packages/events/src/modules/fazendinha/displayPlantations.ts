@@ -1,10 +1,10 @@
 import { ButtonComponent, ButtonStyles, DiscordEmbedField } from 'discordeno/types';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getDisplayName } from '../../utils/discord/userUtils';
-import { AvailablePlants, Plantation } from './types';
+import { AvailablePlants, PlantState, Plantation } from './types';
 import { DatabaseFarmerSchema } from '../../types/database';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { chunkArray } from '../../utils/miscUtils';
+import { chunkArray, millisToSeconds } from '../../utils/miscUtils';
 import { InteractionContext } from '../../types/menhera';
 import { getPlantState } from './plantState';
 
@@ -23,14 +23,38 @@ const parseUserPlantations = (
   const fields: DiscordEmbedField[] = [];
   const buttons: ButtonComponent[] = [];
 
+  let plantState: false | PlantState = false;
+
   plantations.forEach((field, i) => {
-    const fieldText = field.isPlanted
+    let fieldText = field.isPlanted
       ? getPlantationDisplay(PlantIcon[field.plantType])
       : getPlantationDisplay('🟫');
 
-    fields.push({ name: `Campo (${i + 1})`, value: fieldText, inline: true });
+    if (field.isPlanted) {
+      const [state, timeToAction] = getPlantState(field);
+      plantState = state;
 
-    const plantState = field.isPlanted && getPlantState(field);
+      switch (plantState) {
+        case 'GROWING': {
+          fieldText += `\nMaduro \n<t:${millisToSeconds(timeToAction)}:R>`;
+          break;
+        }
+        case 'ROTTEN': {
+          fieldText += `\nApodrecido \n<t:${millisToSeconds(timeToAction)}:R>`;
+          break;
+        }
+        case 'MATURE': {
+          fieldText += `\nApodrecerá \n<t:${millisToSeconds(timeToAction)}:R>`;
+          break;
+        }
+      }
+    }
+
+    fields.push({
+      name: `Campo (${i + 1})`,
+      value: fieldText,
+      inline: true,
+    });
 
     // eslint-disable-next-line no-nested-ternary
     const buttonStyle = !field.isPlanted
