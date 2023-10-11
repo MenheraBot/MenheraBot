@@ -12,20 +12,20 @@ import {
 import { chunkArray, millisToSeconds } from '../../utils/miscUtils';
 import { InteractionContext } from '../../types/menhera';
 import { getPlantationState } from './plantationState';
+import { Plants } from './plants';
 
-const PlantIcon: Record<AvailablePlants | PlantationState, string> = {
+const PlantIcon: Record<PlantationState, string> = {
   EMPTY: '🟫',
   GROWING: '🌱',
   ROTTEN: '🍂',
   MATURE: '',
-  [AvailablePlants.Mate]: '🌿',
 };
 
 const getPlantationDisplay = (state: PlantationState, field: Plantation): string => {
   const repeatIcon = (icon: string) =>
     `${icon}${icon}${icon}\n${icon}${icon}${icon}\n${icon}${icon}${icon}`;
 
-  if (state === 'MATURE') return repeatIcon(PlantIcon[(field as PlantedField).plantType]);
+  if (state === 'MATURE') return repeatIcon(Plants[(field as PlantedField).plantType].emoji);
 
   return repeatIcon(PlantIcon[state]);
 };
@@ -94,7 +94,7 @@ const parseUserPlantations = (
 };
 
 const getAvailableSeeds = (
-  ctx: InteractionContext,
+  _: InteractionContext,
   farmer: DatabaseFarmerSchema,
   selectedSeed: AvailablePlants,
 ): SelectOption[] =>
@@ -104,7 +104,7 @@ const getAvailableSeeds = (
 
       allSeeds.push({
         label: `NOME ${seed.plant} ${seed.amount}x`,
-        emoji: { name: PlantIcon[seed.plant] },
+        emoji: { name: Plants[seed.plant].emoji },
         value: `${seed.plant}`,
         default: selectedSeed === seed.plant,
       });
@@ -114,7 +114,7 @@ const getAvailableSeeds = (
     [
       {
         label: 'Erva ∞',
-        emoji: { name: PlantIcon[AvailablePlants.Mate] },
+        emoji: { name: Plants[AvailablePlants.Mate].emoji },
         value: `${AvailablePlants.Mate}`,
         default: selectedSeed === AvailablePlants.Mate,
       },

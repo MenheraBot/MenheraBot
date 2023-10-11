@@ -1,5 +1,8 @@
 export enum AvailablePlants {
   Mate,
+  Rice,
+  Sunflower,
+  Mushroom,
 }
 
 export interface PlantedField {
@@ -19,4 +22,5 @@ export type Plantation = PlantedField | EmptyField;
 export interface PlantsFile {
   minutesToHarvest: number;
   minutesToRot: number;
+  emoji: string;
 }

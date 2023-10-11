@@ -69,7 +69,7 @@ const executeHarvest = async (
       ...(success ? pushOrIncrement : {}),
     },
     {
-      arrayFilters: [{ 'elem.plant': plant }],
+      arrayFilters: alreadyInSilo ? [{ 'elem.plant': plant }] : [],
       new: true,
     },
   );

@@ -23,8 +23,9 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
       flags: MessageFlags.EPHEMERAL,
     });
 
+  const userSeeds = farmer.seeds.find((a) => a.plant === seed);
+
   if (!field.isPlanted) {
-    const userSeeds = farmer.seeds.find((a) => a.plant === Number(seed));
     if (seed !== AvailablePlants.Mate && (!userSeeds || userSeeds.amount <= 0))
       return ctx.respondInteraction({
         content: `Você não possui sementes de Mate para plantar.`,
@@ -38,6 +39,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
     };
 
     farmer.plantations[selectedField] = newField;
+    if (userSeeds && seed !== AvailablePlants.Mate) userSeeds.amount -= 1;
 
     await farmerRepository.executePlant(ctx.user.id, selectedField, newField, seed);
   } else {
@@ -47,13 +49,18 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
       ctx.user.id,
       selectedField,
       { isPlanted: false },
-      seed,
-      farmer.silo.some((a) => a.plant === seed),
+      field.plantType,
+      farmer.silo.some((a) => a.plant === field.plantType),
       state === 'MATURE',
     );
   }
 
-  displayPlantations(ctx, farmer, embedColor, Number(seed));
+  displayPlantations(
+    ctx,
+    farmer,
+    embedColor,
+    !userSeeds || userSeeds.amount <= 0 ? AvailablePlants.Mate : seed,
+  );
 };
 
 const changeSelectedSeed = async (
