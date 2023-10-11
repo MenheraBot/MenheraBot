@@ -1,5 +1,5 @@
 import { profileBadges } from '../modules/badges/profileBadges';
-import { Plantation } from '../modules/fazendinha/types';
+import { AvailablePlants, Plantation } from '../modules/fazendinha/types';
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
 
@@ -102,9 +102,15 @@ export interface DatabaseCommandSchema {
   discordId: string;
 }
 
+type Seed = {
+  amount: number;
+  plant: AvailablePlants;
+};
+
 export interface DatabaseFarmerSchema {
   readonly id: string;
   plantations: Plantation[];
+  seeds: Seed[];
 }
 
 export type UserIdType = string | bigint;

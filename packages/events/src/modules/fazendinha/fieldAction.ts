@@ -1,21 +1,22 @@
 import farmerRepository from '../../database/repositories/farmerRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { SelectMenuInteraction } from '../../types/interaction';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { logger } from '../../utils/logger';
 import { displayPlantations } from './displayPlantations';
-import { getPlantState } from './plantState';
+import { getPlantationState } from './plantationState';
 import { AvailablePlants } from './types';
 
 const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<void> => {
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
-  const [selectedFieldString, embedColor] = ctx.sentData;
+  const [selectedFieldString, embedColor, selectedSeedString] = ctx.sentData;
   const selectedField = Number(selectedFieldString);
+  const seed = Number(selectedSeedString);
 
   const field = farmer.plantations[selectedField];
-  const isPlanted = field?.isPlanted;
 
-  const state = isPlanted && getPlantState(field)[0];
+  const state = getPlantationState(field)[0];
 
   if (state === 'GROWING')
     return ctx.respondInteraction({
@@ -23,23 +24,44 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
       flags: MessageFlags.EPHEMERAL,
     });
 
-  const newField = isPlanted
-    ? { isPlanted: false as const }
-    : {
-        isPlanted: true,
-        plantedAt: Date.now(),
-        plantType: AvailablePlants.Mate,
-      };
+  if (!field.isPlanted) {
+    const userSeeds = farmer.seeds.find((a) => a.plant === Number(seed));
+    if (seed !== AvailablePlants.Mate && (!userSeeds || userSeeds.amount <= 0))
+      return ctx.respondInteraction({
+        content: `Você não possui sementes de Mate para plantar.`,
+        flags: MessageFlags.EPHEMERAL,
+      });
 
-  farmer.plantations[selectedField] = newField;
+    const newField = {
+      isPlanted: true as const,
+      plantedAt: Date.now(),
+      plantType: Number(seed),
+    };
 
-  await farmerRepository.updateField(ctx.user.id, selectedField, newField);
+    farmer.plantations[selectedField] = newField;
 
-  displayPlantations(ctx, farmer, embedColor);
+    await farmerRepository.executePlant(ctx.user.id, selectedField, newField, seed);
+  } else {
+    farmer.plantations[selectedField] = { isPlanted: false };
+    await farmerRepository.updateField(ctx.user.id, selectedField, { isPlanted: false });
+  }
 
-  if (!isPlanted) return;
+  displayPlantations(ctx, farmer, embedColor, Number(seed));
+
+  if (!field.isPlanted) return;
 
   if (state === 'MATURE') logger.debug('+ 1 erva pra conta');
 };
 
-export { executeFieldAction };
+const changeSelectedSeed = async (
+  ctx: ComponentInteractionContext<SelectMenuInteraction>,
+): Promise<void> => {
+  const [embedColor] = ctx.sentData;
+
+  const [selectedSeed] = ctx.interaction.data.values;
+
+  const farmer = await farmerRepository.getFarmer(ctx.user.id);
+
+  displayPlantations(ctx, farmer, embedColor, Number(selectedSeed));
+};
+export { executeFieldAction, changeSelectedSeed };

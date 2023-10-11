@@ -2,7 +2,8 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { createCommand } from '../../structures/command/createCommand';
 import { displayPlantations } from '../../modules/fazendinha/displayPlantations';
-import { executeFieldAction } from '../../modules/fazendinha/fieldAction';
+import { changeSelectedSeed, executeFieldAction } from '../../modules/fazendinha/fieldAction';
+import { AvailablePlants } from '../../modules/fazendinha/types';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -28,14 +29,14 @@ const FazendinhaCommand = createCommand({
     },
   ],
   category: 'economy',
-  commandRelatedExecutions: [executeFieldAction],
+  commandRelatedExecutions: [executeFieldAction, changeSelectedSeed],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
     finishCommand();
 
     const farmer = await farmerRepository.getFarmer(ctx.author.id);
 
-    displayPlantations(ctx, farmer, ctx.authorData.selectedColor);
+    displayPlantations(ctx, farmer, ctx.authorData.selectedColor, AvailablePlants.Mate);
   },
 });
 

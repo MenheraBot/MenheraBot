@@ -1,8 +1,10 @@
 import { minutesToMillis } from '../../utils/miscUtils';
 import { Plants } from './plants';
-import { PlantState, PlantedField } from './types';
+import { Plantation, PlantationState } from './types';
 
-const getPlantState = (field: PlantedField): [PlantState, number] => {
+const getPlantationState = (field: Plantation): [PlantationState, number] => {
+  if (!field.isPlanted) return ['EMPTY', -1];
+
   const timeToHarvest = field.plantedAt + minutesToMillis(Plants[field.plantType].minutesToHarvest);
 
   if (Date.now() < timeToHarvest) return ['GROWING', timeToHarvest];
@@ -14,4 +16,4 @@ const getPlantState = (field: PlantedField): [PlantState, number] => {
   return ['MATURE', timeToRot];
 };
 
-export { getPlantState };
+export { getPlantationState };

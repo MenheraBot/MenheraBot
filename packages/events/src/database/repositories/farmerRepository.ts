@@ -4,11 +4,12 @@ import { farmerModel } from '../collections';
 import { DatabaseFarmerSchema } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
-import { Plantation } from '../../modules/fazendinha/types';
+import { AvailablePlants, Plantation, PlantedField } from '../../modules/fazendinha/types';
 
 const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSchema => ({
   id: `${user.id}`,
   plantations: user.plantations,
+  seeds: user.seeds,
 });
 
 const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
@@ -49,10 +50,51 @@ const updateField = async (
     { $set: { [`plantations.${fieldIndex}`]: field } },
   );
 
-  await MainRedisClient.del(`farmer:${farmerId}`);
+  const fromRedis = await MainRedisClient.get(`farmer:${farmerId}`).catch(debugError);
+
+  if (fromRedis) {
+    const data = JSON.parse(fromRedis) as DatabaseFarmerSchema;
+
+    data.plantations[fieldIndex] = field;
+
+    await MainRedisClient.setex(
+      `farmer:${farmerId}`,
+      3600,
+      JSON.stringify(parseMongoUserToRedisUser(data)),
+    ).catch(debugError);
+  }
+};
+
+const executePlant = async (
+  farmerId: BigString,
+  fieldIndex: number,
+  field: PlantedField,
+  seed: AvailablePlants,
+): Promise<void> => {
+  const updatedUser = await farmerModel.findOneAndUpdate(
+    { id: `${farmerId}` },
+    {
+      $set: { [`plantations.${fieldIndex}`]: field },
+      $inc: {
+        [`seeds.$[elem].amount`]: seed === AvailablePlants.Mate ? 0 : -1,
+      },
+    },
+    {
+      arrayFilters: [{ 'elem.plant': seed }],
+      new: true,
+    },
+  );
+
+  if (updatedUser)
+    await MainRedisClient.setex(
+      `farmer:${farmerId}`,
+      3600,
+      JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
+    ).catch(debugError);
 };
 
 export default {
   getFarmer,
+  executePlant,
   updateField,
 };

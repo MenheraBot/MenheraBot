@@ -2,8 +2,6 @@ export enum AvailablePlants {
   Mate,
 }
 
-export type PlantState = 'GROWING' | 'MATURE' | 'ROTTEN';
-
 export interface PlantedField {
   plantedAt: number;
   isPlanted: true;
@@ -13,6 +11,8 @@ export interface PlantedField {
 export interface EmptyField {
   isPlanted: false;
 }
+
+export type PlantationState = 'EMPTY' | 'GROWING' | 'MATURE' | 'ROTTEN';
 
 export type Plantation = PlantedField | EmptyField;
 
