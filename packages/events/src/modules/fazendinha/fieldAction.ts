@@ -2,7 +2,6 @@ import farmerRepository from '../../database/repositories/farmerRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../types/interaction';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import { logger } from '../../utils/logger';
 import { displayPlantations } from './displayPlantations';
 import { getPlantationState } from './plantationState';
 import { AvailablePlants } from './types';
@@ -43,14 +42,18 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
     await farmerRepository.executePlant(ctx.user.id, selectedField, newField, seed);
   } else {
     farmer.plantations[selectedField] = { isPlanted: false };
-    await farmerRepository.updateField(ctx.user.id, selectedField, { isPlanted: false });
+
+    await farmerRepository.executeHarvest(
+      ctx.user.id,
+      selectedField,
+      { isPlanted: false },
+      seed,
+      farmer.silo.some((a) => a.plant === seed),
+      state === 'MATURE',
+    );
   }
 
   displayPlantations(ctx, farmer, embedColor, Number(seed));
-
-  if (!field.isPlanted) return;
-
-  if (state === 'MATURE') logger.debug('+ 1 erva pra conta');
 };
 
 const changeSelectedSeed = async (

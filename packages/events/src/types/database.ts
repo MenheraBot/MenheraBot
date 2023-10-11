@@ -102,7 +102,7 @@ export interface DatabaseCommandSchema {
   discordId: string;
 }
 
-type Seed = {
+type QuantativePlant = {
   amount: number;
   plant: AvailablePlants;
 };
@@ -110,7 +110,8 @@ type Seed = {
 export interface DatabaseFarmerSchema {
   readonly id: string;
   plantations: Plantation[];
-  seeds: Seed[];
+  seeds: QuantativePlant[];
+  silo: QuantativePlant[];
 }
 
 export type UserIdType = string | bigint;

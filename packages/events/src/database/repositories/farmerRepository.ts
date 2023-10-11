@@ -10,6 +10,7 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
   id: `${user.id}`,
   plantations: user.plantations,
   seeds: user.seeds,
+  silo: user.silo,
 });
 
 const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
@@ -40,29 +41,45 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
   return fromMongo;
 };
 
-const updateField = async (
+const executeHarvest = async (
   farmerId: BigString,
   fieldIndex: number,
   field: Plantation,
+  plant: AvailablePlants,
+  alreadyInSilo: boolean,
+  success: boolean,
 ): Promise<void> => {
-  await farmerModel.updateOne(
+  const pushOrIncrement = {
+    [alreadyInSilo ? '$inc' : '$push']: alreadyInSilo
+      ? {
+          [`silo.$[elem].amount`]: 1,
+        }
+      : {
+          silo: {
+            plant,
+            amount: 1,
+          },
+        },
+  };
+
+  const updatedUser = await farmerModel.findOneAndUpdate(
     { id: `${farmerId}` },
-    { $set: { [`plantations.${fieldIndex}`]: field } },
+    {
+      $set: { [`plantations.${fieldIndex}`]: field },
+      ...(success ? pushOrIncrement : {}),
+    },
+    {
+      arrayFilters: [{ 'elem.plant': plant }],
+      new: true,
+    },
   );
 
-  const fromRedis = await MainRedisClient.get(`farmer:${farmerId}`).catch(debugError);
-
-  if (fromRedis) {
-    const data = JSON.parse(fromRedis) as DatabaseFarmerSchema;
-
-    data.plantations[fieldIndex] = field;
-
+  if (updatedUser)
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
       3600,
-      JSON.stringify(parseMongoUserToRedisUser(data)),
+      JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
     ).catch(debugError);
-  }
 };
 
 const executePlant = async (
@@ -96,5 +113,5 @@ const executePlant = async (
 export default {
   getFarmer,
   executePlant,
-  updateField,
+  executeHarvest,
 };
