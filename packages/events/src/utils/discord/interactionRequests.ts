@@ -29,10 +29,10 @@ const editOriginalInteractionResponse = async (
   options: InteractionCallbackData,
 ): Promise<void> =>
   bot.rest.sendRequest(bot.rest, {
-    method: 'POST',
+    method: 'PATCH',
     url: bot.constants.routes.INTERACTION_ORIGINAL_ID_TOKEN(bot.applicationId, token),
     payload: bot.rest.createRequestBody(bot.rest, {
-      method: 'POST',
+      method: 'PATCH',
       body: {
         ...bot.transformers.reverse.interactionResponse(bot, {
           type: InteractionResponseTypes.UpdateMessage,
