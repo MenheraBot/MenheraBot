@@ -19,8 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Build rest image
-        run: docker build . --file Dockerfile --tag rest --target rest --label "runnumber=${GITHUB_RUN_ID}"
+#     - name: Build rest image
+#       run: docker build . --file Dockerfile --tag rest --target rest --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Build events image
         run: docker build . --file Dockerfile --tag events --target events --label "runnumber=${GITHUB_RUN_ID}"
@@ -34,7 +34,7 @@ jobs:
 
       - name: Publish docker images
         run: |
-          images=("rest" "events" "orchestrator")
+          images=("events" "orchestrator")
           for imgName in ${images[@]}
           do
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$imgName
