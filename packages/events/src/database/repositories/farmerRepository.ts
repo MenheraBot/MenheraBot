@@ -110,8 +110,33 @@ const executePlant = async (
     ).catch(debugError);
 };
 
+const updateSilo = async (
+  farmerId: BigString,
+  silo: DatabaseFarmerSchema['silo'],
+): Promise<void> => {
+  await farmerModel.updateOne(
+    { id: `${farmerId}` },
+    {
+      $set: { silo },
+    },
+  );
+
+  const fromRedis = await MainRedisClient.get(`farmer:${farmerId}`);
+
+  if (fromRedis) {
+    const data = JSON.parse(fromRedis);
+
+    await MainRedisClient.setex(
+      `farmer:${farmerId}`,
+      3600,
+      JSON.stringify(parseMongoUserToRedisUser({ ...data, silo })),
+    ).catch(debugError);
+  }
+};
+
 export default {
   getFarmer,
   executePlant,
+  updateSilo,
   executeHarvest,
 };

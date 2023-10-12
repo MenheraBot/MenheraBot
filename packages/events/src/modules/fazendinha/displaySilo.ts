@@ -22,6 +22,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { SelectMenuInteraction } from '../../types/interaction';
+import { executeSellPlant } from '../shop/sellPlants';
 
 const displaySilo = async (
   ctx: ChatInputInteractionContext,
@@ -79,8 +80,17 @@ const handleButtonAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   if (selectedOption === 'DISPLAY') return buildSellPlantsMessage(ctx, farmer, embedColor);
 
-  if (selectedOption === 'SHOW_MODAL')
-    return showModal(ctx as ComponentInteractionContext<SelectMenuInteraction>, farmer, embedColor);
+  if (selectedOption === 'SHOW_MODAL') {
+    const sellAll = ctx.interaction.data.values?.includes('ALL');
+    if (!sellAll)
+      return showModal(
+        ctx as ComponentInteractionContext<SelectMenuInteraction>,
+        farmer,
+        embedColor,
+      );
+
+    return executeSellPlant(ctx, farmer, farmer.silo);
+  }
 };
 
 const showModal = async (
@@ -153,6 +163,8 @@ const buildSellPlantsMessage = async (
       flags: MessageFlags.EPHEMERAL,
     });
   }
+
+  options.unshift({ label: 'Vender Tudo', value: 'ALL', emoji: { name: '💰' } });
 
   const embed = createEmbed({
     title: 'Venda suas plantas',
