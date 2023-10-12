@@ -5,7 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [5.8.4] - 2023-10-12
+
+### Changed
+
+- Os IDs de usuários no `/top` agora são menções.
+- Os comandos da Menhera estão mais rápidos! Principalmente os de imagem. Você deve perceber isso no `/perfil`, que agora está mais rápido que uma nave!
 
 ### Fixed
 
