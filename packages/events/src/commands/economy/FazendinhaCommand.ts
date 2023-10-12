@@ -4,7 +4,7 @@ import { createCommand } from '../../structures/command/createCommand';
 import { displayPlantations } from '../../modules/fazendinha/displayPlantations';
 import { changeSelectedSeed, executeFieldAction } from '../../modules/fazendinha/fieldAction';
 import { AvailablePlants } from '../../modules/fazendinha/types';
-import { displaySilo } from '../../modules/fazendinha/displaySilo';
+import { displaySilo, handleButtonAction } from '../../modules/fazendinha/displaySilo';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -38,7 +38,7 @@ const FazendinhaCommand = createCommand({
     },
   ],
   category: 'economy',
-  commandRelatedExecutions: [executeFieldAction, changeSelectedSeed],
+  commandRelatedExecutions: [executeFieldAction, changeSelectedSeed, handleButtonAction],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
     finishCommand();

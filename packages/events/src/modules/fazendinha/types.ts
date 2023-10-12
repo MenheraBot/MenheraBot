@@ -23,4 +23,5 @@ export interface PlantsFile {
   minutesToHarvest: number;
   minutesToRot: number;
   emoji: string;
+  sellValue: number;
 }
