@@ -149,7 +149,7 @@ const executeUserDataRelatedRanking = async (
 
   for (let i = 0; i < res.length; i++) {
     const member = members[i];
-    const memberName = member ? getDisplayName(member) : `<@${res[i].id}>`;
+    const memberName = member ? getDisplayName(member) : `ID ${res[i].id}`;
 
     if (member) {
       if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
@@ -258,7 +258,7 @@ const executeMostUsersThatUsedCommands = async (
     }
 
     embed.fields?.push({
-      name: `**${i + 1} -** ${member ? getDisplayName(member) : `<@${res[i].id}>`}`,
+      name: `**${i + 1} -** ${member ? getDisplayName(member) : `ID ${res[i].id}`}`,
       value: `${ctx.locale('commands:top.use')} **${res[i].uses}** ${ctx.locale(
         'commands:top.times',
       )}`,
@@ -364,7 +364,7 @@ const executeHuntStatistics = async (
     const userData = results[i];
 
     embed.fields?.push({
-      name: `**${skip + i + 1} -** ${member ? getDisplayName(member) : `<@${userData.user_id}>`}`,
+      name: `**${skip + i + 1} -** ${member ? getDisplayName(member) : `ID ${userData.user_id}`}`,
       value: ctx.locale('commands:top.estatisticas.cacar.description.text', {
         hunted: userData[`${type}_hunted`],
         success: userData[`${type}_success`],
@@ -465,7 +465,9 @@ const topUserResponseBasedBets = async (
     const userData = results[i];
 
     embed.fields?.push({
-      name: `**${skip + i + 1} -** ${member ? getDisplayName(member) : `<@${results[i].user_id}>`}`,
+      name: `**${skip + i + 1} -** ${
+        member ? getDisplayName(member) : `ID ${results[i].user_id}>`
+      }`,
       value: ctx.locale('commands:top.estatisticas.apostas.description.text', {
         earnMoney: userData.earn_money.toLocaleString(ctx.interaction.locale),
         lostMoney: userData.lost_money.toLocaleString(ctx.interaction.locale),
@@ -577,7 +579,7 @@ const topAccountResponseBets = async (
     const baseField = (gameMode === 'blackjack' ? 'bj' : 'cf') as 'cf';
 
     embed.fields?.push({
-      name: `**${skip + i + 1} -** ${member ? getDisplayName(member) : `<@${userData.id}>`}`,
+      name: `**${skip + i + 1} -** ${member ? getDisplayName(member) : `ID ${userData.id}`}`,
       value: ctx.locale('commands:top.estatisticas.apostas.description.text', {
         earnMoney: userData[`${baseField}_win_money`].toLocaleString(ctx.interaction.locale),
         lostMoney: userData[`${baseField}_lose_money`].toLocaleString(ctx.interaction.locale),
