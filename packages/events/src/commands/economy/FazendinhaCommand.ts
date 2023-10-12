@@ -4,6 +4,7 @@ import { createCommand } from '../../structures/command/createCommand';
 import { displayPlantations } from '../../modules/fazendinha/displayPlantations';
 import { changeSelectedSeed, executeFieldAction } from '../../modules/fazendinha/fieldAction';
 import { AvailablePlants } from '../../modules/fazendinha/types';
+import { displaySilo } from '../../modules/fazendinha/displaySilo';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -27,16 +28,28 @@ const FazendinhaCommand = createCommand({
       },
       type: ApplicationCommandOptionTypes.SubCommand,
     },
+    {
+      name: 'silo',
+      description: '「🧺」・Dê uma olhada no silo de sua fazenda',
+      descriptionLocalizations: {
+        'en-US': "「🧺」・Take a look on your farm's silo",
+      },
+      type: ApplicationCommandOptionTypes.SubCommand,
+    },
   ],
   category: 'economy',
   commandRelatedExecutions: [executeFieldAction, changeSelectedSeed],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
     finishCommand();
+    const command = ctx.getSubCommand();
 
     const farmer = await farmerRepository.getFarmer(ctx.author.id);
 
-    displayPlantations(ctx, farmer, ctx.authorData.selectedColor, AvailablePlants.Mate);
+    if (command === 'plantações')
+      return displayPlantations(ctx, farmer, ctx.authorData.selectedColor, AvailablePlants.Mate);
+
+    if (command === 'silo') return displaySilo(ctx, farmer, ctx.authorData.selectedColor);
   },
 });
 
