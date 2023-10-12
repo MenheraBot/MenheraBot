@@ -20,6 +20,8 @@ import { getEnviroments } from '../../utils/getEnviroments';
 import { logger } from '../../utils/logger';
 import { millisToSeconds } from '../../utils/miscUtils';
 import cacheRepository from '../../database/repositories/cacheRepository';
+import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
+import { debugError } from '../../utils/debugError';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -42,13 +44,13 @@ const setInteractionCreateEvent = (): void => {
       return autocompleteInteraction(interaction);
 
     const errorReply = async (content: string): Promise<void> => {
-      await bot.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+      await sendInteractionResponse(interaction.id, interaction.token, {
         type: InteractionResponseTypes.ChannelMessageWithSource,
         data: {
           content: `<:negacao:759603958317711371> | ${content}`,
           flags: MessageFlags.EPHEMERAL,
         },
-      });
+      }).catch(debugError);
     };
 
     if (bot.shuttingDown)

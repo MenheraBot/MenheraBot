@@ -55,7 +55,10 @@ const vanGoghRequest = async <T>(route: VanGoghEndpoints, data: T): Promise<VanG
 
   return {
     err: false,
-    data: result.data as unknown as Blob,
+    data: new Blob([Buffer.from(result.data, 'base64')], {
+      encoding: 'base64',
+      type: 'image/png',
+    }),
   };
 };
 

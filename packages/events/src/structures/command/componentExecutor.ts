@@ -15,6 +15,10 @@ import { getEnviroments } from '../../utils/getEnviroments';
 import { ComponentInteraction } from '../../types/interaction';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import { logger } from '../../utils/logger';
+import {
+  sendFollowupMessage,
+  sendInteractionResponse,
+} from '../../utils/discord/interactionRequests';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -31,38 +35,32 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
   const T = i18next.getFixedT(interaction.user.locale ?? 'pt-BR');
 
   if (!commandInfo) {
-    await bot.helpers
-      .sendInteractionResponse(interaction.id, interaction.token, {
-        type: InteractionResponseTypes.UpdateMessage,
-        data: {
-          components: [],
-        },
-      })
-      .catch(() => null);
+    await sendInteractionResponse(interaction.id, interaction.token, {
+      type: InteractionResponseTypes.UpdateMessage,
+      data: {
+        components: [],
+      },
+    }).catch(() => null);
 
-    await bot.helpers
-      .sendFollowupMessage(interaction.token, {
-        type: InteractionResponseTypes.ChannelMessageWithSource,
-        data: {
-          content: `<:negacao:759603958317711371> | ${T('permissions:COMPONENT_OUTDATED')}`,
-          flags: MessageFlags.EPHEMERAL,
-        },
-      })
-      .catch(() => null);
+    await sendFollowupMessage(interaction.token, {
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: {
+        content: `<:negacao:759603958317711371> | ${T('permissions:COMPONENT_OUTDATED')}`,
+        flags: MessageFlags.EPHEMERAL,
+      },
+    }).catch(() => null);
     return;
   }
 
   const errorReply = async (content: string): Promise<void> => {
-    await bot.helpers
-      .sendInteractionResponse(interaction.id, interaction.token, {
-        type: InteractionResponseTypes.ChannelMessageWithSource,
-        data: {
-          content: `<:negacao:759603958317711371> | ${content}`,
-          flags: MessageFlags.EPHEMERAL,
-          allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
-        },
-      })
-      .catch(() => null);
+    await sendInteractionResponse(interaction.id, interaction.token, {
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: {
+        content: `<:negacao:759603958317711371> | ${content}`,
+        flags: MessageFlags.EPHEMERAL,
+        allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
+      },
+    }).catch(() => null);
   };
 
   const command = bot.commands.get(commandInfo._id);

@@ -1,22 +1,20 @@
 import { createBot, startBot } from 'discordeno';
 
 import { setupEventHandlers } from './events/index';
-import { createIpcConnections } from './structures/ipcConnections';
+import { createIpcConnection } from './structures/orchestratorConnection';
 import { initializeServices, setupInternals, setupMenheraClient } from './structures/menheraClient';
 import { MenheraClient } from './types/menhera';
 import { getEnviroments } from './utils/getEnviroments';
 import { logger } from './utils/logger';
 import { updateCommandsOnApi } from './utils/updateApiCommands';
 
-const { DISCORD_TOKEN, REST_AUTHORIZATION, DISCORD_APPLICATION_ID } = getEnviroments([
+const { DISCORD_TOKEN, DISCORD_APPLICATION_ID } = getEnviroments([
   'DISCORD_TOKEN',
-  'REST_AUTHORIZATION',
   'DISCORD_APPLICATION_ID',
 ]);
 
 const bot = createBot({
   token: DISCORD_TOKEN,
-  secretKey: REST_AUTHORIZATION,
   botId: BigInt(DISCORD_APPLICATION_ID),
   applicationId: BigInt(DISCORD_APPLICATION_ID),
 }) as MenheraClient;
@@ -25,8 +23,8 @@ setupMenheraClient(bot);
 await initializeServices();
 setupEventHandlers();
 
-const restClient = await createIpcConnections();
-setupInternals(bot, restClient);
+await createIpcConnection();
+setupInternals(bot);
 
 if (process.env.NODE_ENV === 'development') {
   logger.debug('Starting local gateway to receive events');

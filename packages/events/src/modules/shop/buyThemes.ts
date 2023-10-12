@@ -24,6 +24,10 @@ import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { getThemeById, getThemesByType, getUserActiveThemes } from '../themes/getThemes';
 import { ProfileTheme } from '../themes/types';
 import { helloKittyThemes, previewProfileData, unbuyableThemes } from './constants';
+import {
+  editOriginalInteractionResponse,
+  sendInteractionResponse,
+} from '../../utils/discord/interactionRequests';
 
 const themeByIndex = {
   0: 'profile',
@@ -262,7 +266,7 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
 
       if (preview) {
         if (currentThemeType === 'profile') {
-          await bot.helpers.sendInteractionResponse(ctx.interaction.id, ctx.interaction.token, {
+          await sendInteractionResponse(ctx.interaction.id, ctx.interaction.token, {
             type: InteractionResponseTypes.DeferredChannelMessageWithSource,
             data: {
               flags: MessageFlags.EPHEMERAL,
@@ -297,14 +301,14 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
           });
 
           if (res.err) {
-            await bot.helpers.editOriginalInteractionResponse(ctx.interaction.token, {
+            await editOriginalInteractionResponse(ctx.interaction.token, {
               content: ctx.prettyResponse('error', 'common:http-error'),
             });
 
             return;
           }
 
-          await bot.helpers.editOriginalInteractionResponse(ctx.interaction.token, {
+          await editOriginalInteractionResponse(ctx.interaction.token, {
             file: {
               name: 'profile-preview.png',
               blob: res.data,
@@ -314,7 +318,7 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
           return;
         }
 
-        await bot.helpers.sendInteractionResponse(ctx.interaction.id, ctx.interaction.token, {
+        await sendInteractionResponse(ctx.interaction.id, ctx.interaction.token, {
           type: InteractionResponseTypes.DeferredChannelMessageWithSource,
           data: {
             flags: MessageFlags.EPHEMERAL,
@@ -334,7 +338,7 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
           return;
         }
 
-        await bot.helpers.editOriginalInteractionResponse(ctx.interaction.token, {
+        await editOriginalInteractionResponse(ctx.interaction.token, {
           file: {
             name: 'theme-preview.png',
             blob: res.data,

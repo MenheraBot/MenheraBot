@@ -172,7 +172,10 @@ const ProfileCommand = createCommand({
       await ctx.makeMessage({
         file: {
           name: 'profile.png',
-          blob: imageFromRedis as unknown as Blob,
+          blob: new Blob([Buffer.from(imageFromRedis, 'base64')], {
+            encoding: 'base64',
+            type: 'image/png',
+          }),
         },
       });
 

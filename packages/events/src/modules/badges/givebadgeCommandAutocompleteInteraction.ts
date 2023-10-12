@@ -1,10 +1,10 @@
 import { Interaction } from 'discordeno/transformers';
 import { InteractionResponseTypes } from 'discordeno/types';
 import { findBestMatch } from 'string-similarity';
-import { bot } from '../../index';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
 import { debugError } from '../../utils/debugError';
 import { profileBadges } from './profileBadges';
+import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
 
 const executeGivebadgeAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<number>(interaction, 'badgeid', false, true);
@@ -26,14 +26,12 @@ const executeGivebadgeAutocomplete = async (interaction: Interaction): Promise<v
   const toSendOptions = ratings.ratings.filter((a) => a.rating >= 0.2);
 
   if (toSendOptions.length === 0)
-    return bot.helpers
-      .sendInteractionResponse(interaction.id, interaction.token, {
-        type: InteractionResponseTypes.ApplicationCommandAutocompleteResult,
-        data: {
-          choices: [],
-        },
-      })
-      .catch(debugError);
+    return sendInteractionResponse(interaction.id, interaction.token, {
+      type: InteractionResponseTypes.ApplicationCommandAutocompleteResult,
+      data: {
+        choices: [],
+      },
+    }).catch(debugError);
 
   const infoToReturn: Array<{ name: string; value: number }> = [];
 
@@ -50,14 +48,12 @@ const executeGivebadgeAutocomplete = async (interaction: Interaction): Promise<v
     }
   }
 
-  return bot.helpers
-    .sendInteractionResponse(interaction.id, interaction.token, {
-      type: InteractionResponseTypes.ApplicationCommandAutocompleteResult,
-      data: {
-        choices: infoToReturn,
-      },
-    })
-    .catch(debugError);
+  return sendInteractionResponse(interaction.id, interaction.token, {
+    type: InteractionResponseTypes.ApplicationCommandAutocompleteResult,
+    data: {
+      choices: infoToReturn,
+    },
+  }).catch(debugError);
 };
 
 export { executeGivebadgeAutocomplete };

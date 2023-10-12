@@ -3,12 +3,16 @@ import { InteractionCallbackData, InteractionResponseTypes } from 'discordeno';
 import { User } from 'discordeno/transformers';
 import { TFunction } from 'i18next';
 
-import { bot } from '../../index';
 import { Translation } from '../../types/i18next';
 import { ComponentInteraction } from '../../types/interaction';
 import { logger } from '../../utils/logger';
 import { EMOJIS } from '../constants';
 import { MessageFlags } from '../../utils/discord/messageUtils';
+import {
+  editOriginalInteractionResponse,
+  sendFollowupMessage,
+  sendInteractionResponse,
+} from '../../utils/discord/interactionRequests';
 
 export type CanResolve = 'users' | 'members' | false;
 
@@ -42,12 +46,10 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   }
 
   async followUp(options: InteractionCallbackData): Promise<void> {
-    await bot.helpers
-      .sendFollowupMessage(this.interaction.token, {
-        type: InteractionResponseTypes.ChannelMessageWithSource,
-        data: options,
-      })
-      .catch((e) => this.captureException(e));
+    await sendFollowupMessage(this.interaction.token, {
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: options,
+    }).catch((e) => this.captureException(e));
   }
 
   async respondWithModal(options: InteractionCallbackData): Promise<void> {
@@ -55,12 +57,10 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
 
     this.replied = true;
 
-    await bot.helpers
-      .sendInteractionResponse(this.interaction.id, this.interaction.token, {
-        type: InteractionResponseTypes.Modal,
-        data: options,
-      })
-      .catch((e) => this.captureException(e));
+    await sendInteractionResponse(this.interaction.id, this.interaction.token, {
+      type: InteractionResponseTypes.Modal,
+      data: options,
+    }).catch((e) => this.captureException(e));
   }
 
   async ack(): Promise<void> {
@@ -68,11 +68,9 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
 
     this.replied = true;
 
-    await bot.helpers
-      .sendInteractionResponse(this.interaction.id, this.interaction.token, {
-        type: InteractionResponseTypes.DeferredUpdateMessage,
-      })
-      .catch((e) => this.captureException(e));
+    await sendInteractionResponse(this.interaction.id, this.interaction.token, {
+      type: InteractionResponseTypes.DeferredUpdateMessage,
+    }).catch((e) => this.captureException(e));
   }
 
   async visibleAck(ephemeral: boolean): Promise<void> {
@@ -80,50 +78,44 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
 
     this.replied = true;
 
-    await bot.helpers
-      .sendInteractionResponse(this.interaction.id, this.interaction.token, {
-        type: InteractionResponseTypes.DeferredChannelMessageWithSource,
-        data: {
-          flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
-        },
-      })
-      .catch((e) => this.captureException(e));
+    await sendInteractionResponse(this.interaction.id, this.interaction.token, {
+      type: InteractionResponseTypes.DeferredChannelMessageWithSource,
+      data: {
+        flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
+      },
+    }).catch((e) => this.captureException(e));
   }
 
   async respondInteraction(
     options: InteractionCallbackData & { attachments?: unknown[] },
   ): Promise<void> {
     if (!this.replied) {
-      await bot.helpers
-        .sendInteractionResponse(this.interaction.id, this.interaction.token, {
-          type: InteractionResponseTypes.ChannelMessageWithSource,
-          data: options,
-        })
-        .catch((e) => this.captureException(e));
+      await sendInteractionResponse(this.interaction.id, this.interaction.token, {
+        type: InteractionResponseTypes.ChannelMessageWithSource,
+        data: options,
+      }).catch((e) => this.captureException(e));
       this.replied = true;
       return;
     }
 
-    await bot.helpers
-      .editOriginalInteractionResponse(this.interaction.token, options)
-      .catch((e) => this.captureException(e));
+    await editOriginalInteractionResponse(this.interaction.token, options).catch((e) =>
+      this.captureException(e),
+    );
   }
 
   async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
     if (!this.replied) {
       this.replied = true;
-      await bot.helpers
-        .sendInteractionResponse(this.interaction.id, this.interaction.token, {
-          type: InteractionResponseTypes.UpdateMessage,
-          data: options,
-        })
-        .catch((e) => this.captureException(e));
+      await sendInteractionResponse(this.interaction.id, this.interaction.token, {
+        type: InteractionResponseTypes.UpdateMessage,
+        data: options,
+      }).catch((e) => this.captureException(e));
       return;
     }
 
-    await bot.helpers
-      .editOriginalInteractionResponse(this.interaction.token, options)
-      .catch((e) => this.captureException(e));
+    await editOriginalInteractionResponse(this.interaction.token, options).catch((e) =>
+      this.captureException(e),
+    );
   }
 
   locale(text: Translation, options: Record<string, unknown> = {}): string {

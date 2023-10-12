@@ -7,13 +7,17 @@ import {
 import { Interaction, User } from 'discordeno/transformers';
 import { TFunction } from 'i18next';
 
-import { bot } from '../../index';
 import { DatabaseUserSchema } from '../../types/database';
 import { Translation } from '../../types/i18next';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { logger } from '../../utils/logger';
 import { EMOJIS } from '../constants';
 import { getOptionFromInteraction } from './getCommandOption';
+import {
+  editOriginalInteractionResponse,
+  sendFollowupMessage,
+  sendInteractionResponse,
+} from '../../utils/discord/interactionRequests';
 
 export type CanResolve = 'users' | 'members' | 'attachments' | false;
 
@@ -58,30 +62,26 @@ export default class {
   }
 
   async followUp(options: InteractionCallbackData): Promise<void> {
-    await bot.helpers
-      .sendFollowupMessage(this.interaction.token, {
-        type: InteractionResponseTypes.ChannelMessageWithSource,
-        data: options,
-      })
-      .catch((e) => this.captureException(e));
+    await sendFollowupMessage(this.interaction.token, {
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: options,
+    }).catch((e) => this.captureException(e));
   }
 
   async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
     if (this.replied) {
-      await bot.helpers
-        .editOriginalInteractionResponse(this.interaction.token, options)
-        .catch((e) => this.captureException(e));
+      await editOriginalInteractionResponse(this.interaction.token, options).catch((e) =>
+        this.captureException(e),
+      );
       return;
     }
 
     this.replied = true;
 
-    await bot.helpers
-      .sendInteractionResponse(this.interaction.id, this.interaction.token, {
-        type: InteractionResponseTypes.ChannelMessageWithSource,
-        data: options,
-      })
-      .catch((e) => this.captureException(e));
+    await sendInteractionResponse(this.interaction.id, this.interaction.token, {
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: options,
+    }).catch((e) => this.captureException(e));
   }
 
   getSubCommandGroup(required = false): string {
@@ -118,14 +118,13 @@ export default class {
     }
 
     this.replied = true;
-    await bot.helpers
-      .sendInteractionResponse(this.interaction.id, this.interaction.token, {
-        type: InteractionResponseTypes.DeferredChannelMessageWithSource,
-        data: {
-          flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
-        },
-      })
-      .catch((e) => this.captureException(e));
+
+    await sendInteractionResponse(this.interaction.id, this.interaction.token, {
+      type: InteractionResponseTypes.DeferredChannelMessageWithSource,
+      data: {
+        flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
+      },
+    }).catch((e) => this.captureException(e));
   }
 
   locale(text: Translation, options: Record<string, unknown> = {}): string {

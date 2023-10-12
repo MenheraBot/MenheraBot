@@ -1,10 +1,7 @@
 import { Bot, Collection, createRestManager, handleInteractionCreate } from 'discordeno';
-import { Client } from 'net-ipc';
 
 import { transformInteractionResponseToDiscordInteractionResponse } from '../internals/transformers/reverse/interactionResponse';
-import { sendRequest } from '../internals/rest/sendRequest';
 import { initializeRedis, initializeMongo } from '../database/databases';
-import { runMethod } from '../internals/rest/runMethod';
 import { loadLocales } from './localteStructure';
 import { initializeSentry } from './initializeSentry';
 import { getEnviroments } from '../utils/getEnviroments';
@@ -49,29 +46,13 @@ const initializeServices = async (): Promise<void> => {
   initializePrometheus();
 };
 
-const setupInternals = (bot: Bot, restIPC: Client): void => {
-  const { DISCORD_TOKEN, REST_AUTHORIZATION } = getEnviroments([
-    'DISCORD_TOKEN',
-    'REST_AUTHORIZATION',
-  ]);
+const setupInternals = (bot: Bot): void => {
+  const { DISCORD_TOKEN } = getEnviroments(['DISCORD_TOKEN']);
 
   logger.debug('Setting up the custom rest manager');
 
   bot.rest = createRestManager({
     token: DISCORD_TOKEN,
-    secretKey: REST_AUTHORIZATION,
-    runMethod: async (rest, method, route, body, options) =>
-      runMethod(restIPC, rest, method, route, body, options),
-    sendRequest: async (rest, options) =>
-      sendRequest(
-        restIPC,
-        rest,
-        options.method,
-        options.url,
-        options.bucketId,
-        options.retryCount,
-        options.payload,
-      ),
   });
 
   bot.transformers.reverse.interactionResponse =

@@ -3,7 +3,7 @@ import { getFixedT } from 'i18next';
 import { bot } from '../..';
 import commandRepository from '../../database/repositories/commandRepository';
 import pokerRepository from '../../database/repositories/pokerRepository';
-import { getOrchestratorClient } from '../../structures/ipcConnections';
+import { getOrchestratorClient } from '../../structures/orchestratorConnection';
 import { DatabaseCommandSchema } from '../../types/database';
 import { updateGameState } from './turnManager';
 import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';

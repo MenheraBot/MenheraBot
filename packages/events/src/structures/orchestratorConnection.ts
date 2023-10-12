@@ -26,25 +26,12 @@ let orchestratorClient: Client;
 
 const getOrchestratorClient = (): Client => orchestratorClient;
 
-const createIpcConnections = async (): Promise<Client> => {
-  const { REST_SOCKET_PATH, ORCHESTRATOR_SOCKET_PATH } = getEnviroments([
-    'REST_SOCKET_PATH',
-    'ORCHESTRATOR_SOCKET_PATH',
-  ]);
+const createIpcConnection = async (): Promise<void> => {
+  const { ORCHESTRATOR_SOCKET_PATH } = getEnviroments(['ORCHESTRATOR_SOCKET_PATH']);
 
-  logger.debug(`Creating IPC connection to REST ${REST_SOCKET_PATH}`);
-
-  const restClient = new Client({ path: REST_SOCKET_PATH });
-
-  logger.debug(`Creating IPC connection to Orchestrator ${REST_SOCKET_PATH}`);
+  logger.debug(`Creating IPC connection to Orchestrator ${ORCHESTRATOR_SOCKET_PATH}`);
 
   orchestratorClient = new Client({ path: ORCHESTRATOR_SOCKET_PATH });
-
-  restClient.on('close', () => {
-    if (bot.shuttingDown) return;
-
-    logger.panic('[REST] REST Client closed');
-  });
 
   orchestratorClient.on('message', async (msg) => {
     if (msg.type === 'VOTE_WEBHOOK') {
@@ -96,8 +83,6 @@ const createIpcConnections = async (): Promise<Client> => {
 
       logger.info('[SHUTDOWN] Closing all Database connections');
       await closeConnections();
-      logger.info('[SHUTDOWN] Closing rest IPC');
-      await restClient.close('REQUESTED_SHUTDOWN');
       logger.info('[SHUTDOWN] Closing orchestrator IPC');
       await orchestratorClient.close('REQUESTED_SHUTDOWN');
       logger.info("[SHUTDOWN] I'm tired... I will rest for now");
@@ -145,12 +130,6 @@ const createIpcConnections = async (): Promise<Client> => {
     setTimeout(reconnectLogic, 1000);
   });
 
-  restClient.on('ready', () => {
-    logger.info('[REST] REST IPC connected');
-
-    restClient.send({ type: 'IDENTIFY' });
-  });
-
   orchestratorClient.on('ready', () => {
     logger.info('[ORCHESTRATOR] Orchestrator IPC connected');
     retries = 0;
@@ -158,12 +137,9 @@ const createIpcConnections = async (): Promise<Client> => {
     orchestratorClient.send({ type: 'IDENTIFY', version: process.env.VERSION });
   });
 
-  if (process.env.NODE_ENV === 'test') return restClient;
+  if (process.env.NODE_ENV === 'test') return;
 
-  await restClient.connect().catch(logger.panic);
   await orchestratorClient.connect().catch(logger.panic);
-
-  return restClient;
 };
 
-export { createIpcConnections, getOrchestratorClient };
+export { createIpcConnection, getOrchestratorClient };
