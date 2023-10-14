@@ -159,12 +159,6 @@ const TrickOrTreatCommand = createCommand({
   execute: async (ctx, finishCommand) => {
     finishCommand();
 
-    if (ctx.author.id !== 435228312214962204n)
-      return ctx.makeMessage({
-        content: 'Sai daqui!!! Isso ainda não está pronto',
-        flags: MessageFlags.EPHEMERAL,
-      });
-
     const action = ctx.getOption<'hunt' | 'ask' | 'shop'>('ação', false, true);
 
     if (action === 'ask') return explainEvent(ctx);
