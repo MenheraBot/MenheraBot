@@ -10,6 +10,7 @@ import { calculateProbability } from '../../modules/hunt/huntUtils';
 import eventRepository from '../../database/repositories/eventRepository';
 import { millisToSeconds, randomFromArray } from '../../utils/miscUtils';
 import { defaultHuntCooldown } from '../../modules/hunt/defaultValues';
+import cacheRepository from '../../database/repositories/cacheRepository';
 
 const candiesProbability: { amount: number; probability: number }[] = [
   { amount: 1, probability: 37 },
@@ -24,6 +25,8 @@ export enum Tricks {
   CHANGE_COLOR,
   ENGLISH_COMMANDS,
   OTHER_MARRY,
+  OTHER_INFO,
+  OUT_OF_TOP,
 }
 
 const tricks: { id: Tricks; text: string }[] = [
@@ -38,6 +41,14 @@ const tricks: { id: Tricks; text: string }[] = [
   {
     id: Tricks.OTHER_MARRY,
     text: 'Na intenção de brincar com você e seu cônjuge, seus vizinhos estão fofocando que você está casado com outra pessoa.... Você está casado com uma pessoa aleatória agora.',
+  },
+  {
+    id: Tricks.OTHER_INFO,
+    text: 'Seus vizinhos estão falando de você pelas costas... O seu "sobre mim" foi alterado!',
+  },
+  {
+    id: Tricks.OUT_OF_TOP,
+    text: 'Os seus vizinhos estão te ignorando. Você não aparecerá em nenhum /top.',
   },
 ];
 
@@ -142,6 +153,12 @@ const TrickOrTreatCommand = createCommand({
         flags: MessageFlags.EPHEMERAL,
       });
 
+    if (
+      eventUser.currentTrick?.id === Tricks.OUT_OF_TOP &&
+      Date.now() >= eventUser.currentTrick.endsIn
+    )
+      await cacheRepository.removeDeletedAccount(`${ctx.author.id}`);
+
     const getCandy = Math.random() < 0.5;
 
     if (getCandy) {
@@ -182,6 +199,9 @@ const TrickOrTreatCommand = createCommand({
     });
 
     await eventRepository.setUserTrick(ctx.author.id, selectedTrick.id);
+
+    if (selectedTrick.id === Tricks.OUT_OF_TOP)
+      await cacheRepository.addDeletedAccount([`${ctx.author.id}`]);
 
     const embed = createEmbed({
       title: '<:MenheraDevil:768621225420652595> Travessuras',

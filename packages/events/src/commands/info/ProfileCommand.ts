@@ -20,6 +20,7 @@ import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import eventRepository from '../../database/repositories/eventRepository';
 import { Tricks } from '../event/TrickOrTreatsCommand';
 import { randomFromArray } from '../../utils/miscUtils';
+import { availableAuthors } from '../fun/CalvoCommand';
 
 interface VangoghUserprofileData {
   id: string;
@@ -165,6 +166,7 @@ const ProfileCommand = createCommand({
         'Urgot',
         'Zoe',
         'Kukulcán',
+        ...availableAuthors,
       ]);
 
       userData.married = true;

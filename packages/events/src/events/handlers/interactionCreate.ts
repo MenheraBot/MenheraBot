@@ -140,6 +140,10 @@ const setInteractionCreateEvent = (): void => {
             guildLocale = i18next.getFixedT('en-US');
             break;
           }
+          case Tricks.OTHER_INFO: {
+            authorData.info = 'Eu amo meus vizinhos queridos';
+            break;
+          }
         }
       }
     }
