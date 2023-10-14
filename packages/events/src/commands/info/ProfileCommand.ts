@@ -17,6 +17,9 @@ import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
+import eventRepository from '../../database/repositories/eventRepository';
+import { Tricks } from '../event/TrickOrTreatsCommand';
+import { randomFromArray } from '../../utils/miscUtils';
 
 interface VangoghUserprofileData {
   id: string;
@@ -88,8 +91,11 @@ const ProfileCommand = createCommand({
 
     await ctx.defer();
 
+    const userTrick = await eventRepository.getUserTrick(ctx.author.id);
+    const isMarryTrick = userTrick === Tricks.OTHER_MARRY;
+
     const marryData =
-      user.married && user.married !== 'false'
+      user.married && user.married !== 'false' && !isMarryTrick
         ? await cacheRepository.getDiscordUser(user.married)
         : null;
 
@@ -139,6 +145,35 @@ const ProfileCommand = createCommand({
 
       if (user.marriedAt && user.marriedAt > 0)
         userData.marryDate = dayjs(user.marriedAt).format('DD/MM/YYYY');
+    }
+
+    if (isMarryTrick) {
+      const newMarry = randomFromArray([
+        'Xandão do Supremo',
+        'Kin Kardashian',
+        'Zeus',
+        'Medusa',
+        'Nox',
+        'Ah Puch',
+        'Alune',
+        'Veigar',
+        'Ivern',
+        'Heimerdinger',
+        'Malzahar',
+        'Ramus',
+        'Sivir',
+        'Urgot',
+        'Zoe',
+        'Kukulcán',
+      ]);
+
+      userData.married = true;
+      userData.marry = {
+        username: newMarry,
+        tag: newMarry,
+      };
+
+      userData.marryDate = '16/02/2004';
     }
 
     let profileTheme = await userThemesRepository.getProfileTheme(discordUser.id);

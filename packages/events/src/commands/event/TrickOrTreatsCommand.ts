@@ -7,7 +7,6 @@ import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { EMOJIS } from '../../structures/constants';
 import { getDisplayName } from '../../utils/discord/userUtils';
 import { calculateProbability } from '../../modules/hunt/huntUtils';
-import { logger } from '../../utils/logger';
 import eventRepository from '../../database/repositories/eventRepository';
 import { millisToSeconds, randomFromArray } from '../../utils/miscUtils';
 import { defaultHuntCooldown } from '../../modules/hunt/defaultValues';
@@ -23,12 +22,22 @@ const candiesProbability: { amount: number; probability: number }[] = [
 
 export enum Tricks {
   CHANGE_COLOR,
+  ENGLISH_COMMANDS,
+  OTHER_MARRY,
 }
 
 const tricks: { id: Tricks; text: string }[] = [
   {
     id: Tricks.CHANGE_COLOR,
     text: 'Os vizinhos acharam que sua fantasia está ruim, portanto **alteraram a sua cor** para ficar mais assustadora!',
+  },
+  {
+    id: Tricks.ENGLISH_COMMANDS,
+    text: 'Os vizinhos querem pregar uma peça contigo. Como eles são bilíngues, todos seus comandos estarão em inglês.',
+  },
+  {
+    id: Tricks.OTHER_MARRY,
+    text: 'Na intenção de brincar com você e seu cônjuge, seus vizinhos estão fofocando que você está casado com outra pessoa.... Você está casado com uma pessoa aleatória agora.',
   },
 ];
 
@@ -49,7 +58,7 @@ const explainEvent = async (ctx: ChatInputInteractionContext): Promise<void> => 
       {
         name: '<:MenheraDevil:768621225420652595> Travessuras',
         value:
-          'Caso a vizinhança decida te dar uma **travessura**, você sofrerá com uma traquinagem maligna <:MenheraThink:767210250779754536>\nExistem diversos tipos de pequenas travessuras que a vizinhança pode fazer com sua conta, portanto apenas usando você descubrirá tudo. Boa sorte >.<',
+          'Caso a vizinhança decida te dar uma **travessura**, você sofrerá com uma traquinagem maligna por uma hora <:MenheraThink:767210250779754536>\nExistem diversos tipos de pequenas travessuras que a vizinhança pode fazer com sua conta, portanto apenas usando você descubrirá tudo. Boa sorte >.<',
       },
     ],
     image: { url: 'https://cdn.menherabot.xyz/images/event/halloween.png' },
@@ -62,7 +71,13 @@ const explainEvent = async (ctx: ChatInputInteractionContext): Promise<void> => 
 };
 
 const eventShop = async (ctx: ChatInputInteractionContext): Promise<void> => {
-  logger.debug(ctx.author.id);
+  const eventUser = await eventRepository.getEventUser(ctx.author.id);
+  ctx.makeMessage({
+    flags: MessageFlags.EPHEMERAL,
+    content: `A loja do evento ainda não está aberta!\nVocê já pode começar a pegar doces para que, quando ela abrir, você já possa coletar diversos prêmios!\n\nAtualmente você possui **${
+      eventUser.candies
+    }** doce${eventUser.candies > 1 ? 's' : ''}.`,
+  });
 };
 
 const TrickOrTreatCommand = createCommand({
@@ -127,7 +142,7 @@ const TrickOrTreatCommand = createCommand({
         flags: MessageFlags.EPHEMERAL,
       });
 
-    const getCandy = Math.random() > 0.5;
+    const getCandy = Math.random() < 0.5;
 
     if (getCandy) {
       const candies = calculateProbability(candiesProbability);
@@ -165,6 +180,8 @@ const TrickOrTreatCommand = createCommand({
         id: selectedTrick.id,
       },
     });
+
+    await eventRepository.setUserTrick(ctx.author.id, selectedTrick.id);
 
     const embed = createEmbed({
       title: '<:MenheraDevil:768621225420652595> Travessuras',
