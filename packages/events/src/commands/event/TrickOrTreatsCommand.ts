@@ -8,6 +8,9 @@ import { EMOJIS } from '../../structures/constants';
 import { getDisplayName } from '../../utils/discord/userUtils';
 import { calculateProbability } from '../../modules/hunt/huntUtils';
 import { logger } from '../../utils/logger';
+import eventRepository from '../../database/repositories/eventRepository';
+import { millisToSeconds } from '../../utils/miscUtils';
+import { defaultHuntCooldown } from '../../modules/hunt/defaultValues';
 
 const candiesProbability: { amount: number; probability: number }[] = [
   { amount: 1, probability: 37 },
@@ -101,6 +104,18 @@ const TrickOrTreatCommand = createCommand({
 
     if (action === 'shop') return eventShop(ctx);
 
+    const eventUser = await eventRepository.getEventUser(ctx.author.id);
+
+    const canHunt = eventUser.cooldown < Date.now();
+
+    if (!canHunt)
+      return ctx.makeMessage({
+        content: `Tu caminhou demais para buscar doces. Fique descansando um pouco mais...\nTu poderá pegar mais doces <t:${millisToSeconds(
+          eventUser.cooldown,
+        )}:R>.`,
+        flags: MessageFlags.EPHEMERAL,
+      });
+
     const getCandy = Math.random() > 0.5;
 
     if (getCandy) {
@@ -115,6 +130,11 @@ const TrickOrTreatCommand = createCommand({
         thumbnail: {
           url: 'https://cdn.discordapp.com/avatars/708014856711962654/7566028cf51a0abc7b84e4b103c56894.png?size=2048',
         },
+      });
+
+      await eventRepository.updateUser(ctx.author.id, {
+        candies: eventUser.candies + candies,
+        cooldown: Date.now() + defaultHuntCooldown,
       });
 
       ctx.makeMessage({ embeds: [embed] });
