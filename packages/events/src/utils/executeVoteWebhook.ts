@@ -62,7 +62,8 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
 
   const userDM = await bot.helpers.getDmChannel(userId).catch(debugError);
 
-  if (userDM) bot.helpers.sendMessage(userDM.id, { embeds: [embed] }).catch(debugError);
+  if (userDM)
+    bot.helpers.sendMessage(userDM.id, { embeds: [embed] }).catch((e) => debugError(e, false));
 
   const updateData: UpdateQuery<DatabaseUserSchema> = {
     $inc: {
