@@ -8,6 +8,7 @@ import {
   DatabaseUserSchema,
   DatabaseUserThemesSchema,
 } from '../types/database';
+import { Tricks } from '../commands/event/TrickOrTreatsCommand';
 
 const { Schema, model } = mongoose;
 
@@ -102,12 +103,16 @@ export type Halloween2023User = {
   id: string;
   candies: number;
   cooldown: number;
+  currentTrick: { id: Tricks; endsIn: number } | null;
+  allTimeTricks: Tricks[];
 };
 
 const eventHalloween2023 = new Schema({
   id: { type: String, unique: true, index: true },
   candies: { type: Number, default: 0 },
   cooldown: { type: Number, default: 0 },
+  currentTrick: { type: Object, default: null },
+  allTimeTricks: { type: Array, default: [] },
 });
 
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);

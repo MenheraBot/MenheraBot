@@ -9,7 +9,7 @@ import { getDisplayName } from '../../utils/discord/userUtils';
 import { calculateProbability } from '../../modules/hunt/huntUtils';
 import { logger } from '../../utils/logger';
 import eventRepository from '../../database/repositories/eventRepository';
-import { millisToSeconds } from '../../utils/miscUtils';
+import { millisToSeconds, randomFromArray } from '../../utils/miscUtils';
 import { defaultHuntCooldown } from '../../modules/hunt/defaultValues';
 
 const candiesProbability: { amount: number; probability: number }[] = [
@@ -19,6 +19,17 @@ const candiesProbability: { amount: number; probability: number }[] = [
   { amount: 3, probability: 12 },
   { amount: 5, probability: 11 },
   { amount: 6, probability: 1 },
+];
+
+export enum Tricks {
+  CHANGE_COLOR,
+}
+
+const tricks: { id: Tricks; text: string }[] = [
+  {
+    id: Tricks.CHANGE_COLOR,
+    text: 'Os vizinhos acharam que sua fantasia está ruim, portanto **alteraram a sua cor** para ficar mais assustadora!',
+  },
 ];
 
 const explainEvent = async (ctx: ChatInputInteractionContext): Promise<void> => {
@@ -141,7 +152,30 @@ const TrickOrTreatCommand = createCommand({
       return;
     }
 
-    logger.debug('nyan');
+    const selectedTrick = randomFromArray(tricks);
+
+    if (!eventUser.allTimeTricks.includes(selectedTrick.id))
+      eventUser.allTimeTricks.push(selectedTrick.id);
+
+    await eventRepository.updateUser(ctx.author.id, {
+      cooldown: Date.now() + defaultHuntCooldown,
+      allTimeTricks: eventUser.allTimeTricks,
+      currentTrick: {
+        endsIn: Date.now() + defaultHuntCooldown,
+        id: selectedTrick.id,
+      },
+    });
+
+    const embed = createEmbed({
+      title: '<:MenheraDevil:768621225420652595> Travessuras',
+      color: hexStringToNumber(ctx.authorData.selectedColor),
+      description: selectedTrick.text,
+      thumbnail: {
+        url: 'https://cdn.menherabot.xyz/images/event/trick.png',
+      },
+    });
+
+    ctx.makeMessage({ embeds: [embed] });
   },
 });
 

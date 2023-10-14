@@ -6,7 +6,9 @@ import { MainRedisClient } from '../databases';
 const parseMongoUserToRedisUser = (user: Halloween2023User): Halloween2023User => ({
   id: user.id,
   candies: user.candies,
+  currentTrick: user.currentTrick,
   cooldown: user.cooldown,
+  allTimeTricks: user.allTimeTricks,
 });
 
 const getEventUser = async (userId: BigString): Promise<Halloween2023User> => {
