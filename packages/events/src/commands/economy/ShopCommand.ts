@@ -11,6 +11,7 @@ import { buyThemes, executeClickButton } from '../../modules/shop/buyThemes';
 import { sellHunts } from '../../modules/shop/sellHunts';
 import { sellInfo } from '../../modules/shop/sellInfo';
 import { transactionableCommandOption } from '../../structures/constants';
+import { buySeeds, handleBuySeedsInteractions } from '../../modules/shop/buySeeds';
 
 const ShopCommand = createCommand({
   path: '',
@@ -32,6 +33,15 @@ const ShopCommand = createCommand({
           description: '「🔮」・ Compre itens mágicos para melhorar suas habilidades',
           descriptionLocalizations: {
             'en-US': '「🔮」・Buy magic items to improve your skills',
+          },
+          type: ApplicationCommandOptionTypes.SubCommand,
+        },
+        {
+          name: 'sementes',
+          nameLocalizations: { 'en-US': 'seeds' },
+          description: '「🌱」・ Compre sementes para plantar em sua fazendinha',
+          descriptionLocalizations: {
+            'en-US': '「🌱」・Buy seeds to plant in your farm',
           },
           type: ApplicationCommandOptionTypes.SubCommand,
         },
@@ -176,6 +186,11 @@ const ShopCommand = createCommand({
                   nameLocalizations: { 'en-US': '🐾 | Hunts' },
                   value: 'hunts',
                 },
+                {
+                  name: '🌿 | Plantas',
+                  nameLocalizations: { 'en-US': '🌿 | Plants' },
+                  value: 'plants',
+                },
               ],
             },
           ],
@@ -204,6 +219,7 @@ const ShopCommand = createCommand({
     executeSelectItem,
     executeClickButton,
     executeBuyImagesSelectComponent,
+    handleBuySeedsInteractions,
   ],
   execute: async (ctx, finishCommand) => {
     const subCommandGroup = ctx.getSubCommandGroup();
@@ -222,6 +238,8 @@ const ShopCommand = createCommand({
       if (subCommand === 'itens') return buyItems(ctx, finishCommand);
 
       if (subCommand === 'temas') return buyThemes(ctx, finishCommand);
+
+      if (subCommand === 'sementes') return buySeeds(ctx, finishCommand);
     }
 
     if (subCommandGroup === 'preços') {
