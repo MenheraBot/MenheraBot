@@ -5,15 +5,7 @@ import ComponentInteractionContext from '../structures/command/ComponentInteract
 import ChatInputInteractionContext from '../structures/command/ChatInputInteractionContext';
 import { DatabaseUserSchema } from './database';
 
-type CommandCategory =
-  | 'economy'
-  | 'roleplay'
-  | 'fun'
-  | 'actions'
-  | 'info'
-  | 'dev'
-  | 'util'
-  | 'event';
+type CommandCategory = 'economy' | 'roleplay' | 'fun' | 'actions' | 'info' | 'dev' | 'util';
 
 export interface ChatInputCommandConfig extends CreateSlashApplicationCommand {
   devsOnly?: true;

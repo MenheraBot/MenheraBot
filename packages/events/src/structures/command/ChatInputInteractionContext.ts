@@ -30,7 +30,7 @@ export default class {
 
   constructor(
     public interaction: Interaction,
-    public authorData: DatabaseUserSchema,
+    public authorData: Readonly<DatabaseUserSchema>,
     public i18n: TFunction,
   ) {
     let options = interaction.data?.options ?? [];
