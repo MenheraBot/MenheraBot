@@ -9,7 +9,6 @@ import { getDisplayName } from '../../utils/discord/userUtils';
 import { calculateProbability } from '../../modules/hunt/huntUtils';
 import eventRepository from '../../database/repositories/eventRepository';
 import { millisToSeconds, randomFromArray } from '../../utils/miscUtils';
-import { defaultHuntCooldown } from '../../modules/hunt/defaultValues';
 import cacheRepository from '../../database/repositories/cacheRepository';
 
 const candiesProbability: { amount: number; probability: number }[] = [
@@ -36,6 +35,8 @@ export enum Tricks {
   USER_CANT_HUNT,
   ANGRY_EMOJI,
 }
+
+export const cooldownTime = 1_800_000;
 
 const tricks: { id: Tricks; text: string }[] = [
   {
@@ -212,7 +213,7 @@ const TrickOrTreatCommand = createCommand({
       await eventRepository.updateUser(ctx.author.id, {
         candies: eventUser.candies + candies,
         allTimeTreats: eventUser.allTimeTreats + candies,
-        cooldown: Date.now() + defaultHuntCooldown,
+        cooldown: Date.now() + cooldownTime,
       });
 
       ctx.makeMessage({ embeds: [embed] });
@@ -225,10 +226,10 @@ const TrickOrTreatCommand = createCommand({
       eventUser.allTimeTricks.push(selectedTrick.id);
 
     await eventRepository.updateUser(ctx.author.id, {
-      cooldown: Date.now() + defaultHuntCooldown,
+      cooldown: Date.now() + cooldownTime,
       allTimeTricks: eventUser.allTimeTricks,
       currentTrick: {
-        endsIn: Date.now() + defaultHuntCooldown,
+        endsIn: Date.now() + cooldownTime,
         id: selectedTrick.id,
       },
     });

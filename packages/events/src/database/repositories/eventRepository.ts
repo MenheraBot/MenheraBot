@@ -2,9 +2,8 @@ import { BigString } from 'discordeno/types';
 import { Halloween2023User, halloweenEventModel } from '../collections';
 import { debugError } from '../../utils/debugError';
 import { MainRedisClient } from '../databases';
-import { Tricks } from '../../commands/event/TrickOrTreatsCommand';
+import { Tricks, cooldownTime } from '../../commands/event/TrickOrTreatsCommand';
 import { millisToSeconds } from '../../utils/miscUtils';
-import { defaultHuntCooldown } from '../../modules/hunt/defaultValues';
 
 const parseMongoUserToRedisUser = (user: Halloween2023User): Halloween2023User => ({
   id: user.id,
@@ -37,7 +36,7 @@ const getUserTrick = async (userId: BigString): Promise<Tricks | null> =>
   MainRedisClient.get(`tricks:${userId}`).then((a) => (a ? Number(a) : null));
 
 const setUserTrick = async (userId: BigString, trick: Tricks): Promise<void> => {
-  await MainRedisClient.setex(`tricks:${userId}`, millisToSeconds(defaultHuntCooldown), trick);
+  await MainRedisClient.setex(`tricks:${userId}`, millisToSeconds(cooldownTime), trick);
 };
 
 const updateUser = async (userId: BigString, query: Partial<Halloween2023User>): Promise<void> => {
