@@ -21,8 +21,8 @@ import {
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import farmerRepository from '../../database/repositories/farmerRepository';
-import { SelectMenuInteraction } from '../../types/interaction';
-import { executeSellPlant } from '../shop/sellPlants';
+import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
+import { executeSellPlant, receiveModal } from '../shop/sellPlants';
 
 const displaySilo = async (
   ctx: ChatInputInteractionContext,
@@ -91,6 +91,9 @@ const handleButtonAction = async (ctx: ComponentInteractionContext): Promise<voi
 
     return executeSellPlant(ctx, farmer, farmer.silo);
   }
+
+  if (selectedOption === 'SELL')
+    return receiveModal(ctx as ComponentInteractionContext<ModalInteraction>, farmer);
 };
 
 const showModal = async (
