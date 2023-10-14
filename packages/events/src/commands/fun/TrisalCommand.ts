@@ -3,7 +3,7 @@ import { User } from 'discordeno/transformers';
 
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
+import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import { createButton, createActionRow, createCustomId } from '../../utils/discord/componentUtils';
 import relationshipRepostory from '../../database/repositories/relationshipRepostory';
@@ -12,6 +12,8 @@ import ChatInputInteractionContext from '../../structures/command/ChatInputInter
 import { createCommand } from '../../structures/command/createCommand';
 import userRepository from '../../database/repositories/userRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import eventRepository from '../../database/repositories/eventRepository';
+import { Tricks } from '../event/TrickOrTreatsCommand';
 
 const executeFinishTrisalConfirmation = async (ctx: ComponentInteractionContext): Promise<void> => {
   const authorData = await userRepository.ensureFindUser(ctx.user.id);
@@ -258,11 +260,39 @@ const executeOrderTrisal = async (
   finishCommand();
 };
 
+const halloweenTrisal = async (ctx: ChatInputInteractionContext, user: User): Promise<void> => {
+  await ctx.defer();
+
+  const res = await vanGoghRequest(VanGoghEndpoints.Trisal, {
+    userOne: 'https://cdn.menherabot.xyz/images/event/halloween.png',
+    userTwo: getUserAvatar(user),
+    userThree: 'https://cdn.menherabot.xyz/images/event/trick.png',
+  });
+
+  if (res.err)
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'common:http-error'),
+    });
+
+  const embed = createEmbed({
+    title: ctx.locale('commands:trisal.title'),
+    description: `MenheraBot, ${getDisplayName(user, false)}, Outra MenheraBot`,
+    color: hexStringToNumber(ctx.authorData.selectedColor),
+    image: { url: 'attachment://halloween2023.png' },
+  });
+
+  ctx.makeMessage({ embeds: [embed], file: { blob: res.data, name: 'halloween2023.png' } });
+};
+
 const executeDisplayTrisal = async (
   ctx: ChatInputInteractionContext,
   finishCommand: (...args: unknown[]) => unknown,
 ) => {
   const user = ctx.getOption<User>('user', 'users', false) ?? ctx.author;
+
+  const userTrick = await eventRepository.getUserTrick(user.id);
+
+  if (userTrick === Tricks.RANDOM_TRISAL) return finishCommand(halloweenTrisal(ctx, user));
 
   const userData =
     user.id === ctx.author.id ? ctx.authorData : await userRepository.findUser(user.id);

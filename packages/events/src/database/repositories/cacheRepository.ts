@@ -39,6 +39,10 @@ const addDeletedAccount = async (users: string[]): Promise<void> => {
   await MainRedisClient.sadd('deleted_accounts', users);
 };
 
+const removeDeletedAccount = async (userId: string): Promise<void> => {
+  await MainRedisClient.srem('deleted_accounts', userId);
+};
+
 const getDeletedAccounts = async (): Promise<string[]> =>
   MainRedisClient.smembers('deleted_accounts').catch((err) => {
     debugError(err);
@@ -71,6 +75,7 @@ export default {
   getDiscordUser,
   setDiscordUser,
   getDeletedAccounts,
+  removeDeletedAccount,
   addCustomImageAttachment,
   getCustomImageAttachment,
   addDeletedAccount,

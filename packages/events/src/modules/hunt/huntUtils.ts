@@ -48,9 +48,8 @@ const getUserHuntCooldown = (
 };
 
 const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {
-  const chance = Math.floor(Math.random() * 100);
-
-  let accumulator = 100;
+  let accumulator = probabilities.reduce((p, c) => p + c.probability, 0);
+  const chance = Math.floor(Math.random() * accumulator);
 
   // eslint-disable-next-line no-restricted-syntax
   for (const data of probabilities) {
@@ -59,6 +58,7 @@ const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {
       return data.amount;
     }
   }
+
   return 0;
 };
 

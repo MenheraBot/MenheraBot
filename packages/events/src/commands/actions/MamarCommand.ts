@@ -5,11 +5,13 @@ import blacklistRepository from '../../database/repositories/blacklistRepository
 import relationshipRepostory from '../../database/repositories/relationshipRepostory';
 import { createCommand } from '../../structures/command/createCommand';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import { TODAYS_YEAR, COLORS } from '../../structures/constants';
+import { TODAYS_YEAR, COLORS, EMOJIS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
+import eventRepository from '../../database/repositories/eventRepository';
+import { Tricks } from '../event/TrickOrTreatsCommand';
 
 const BicudaCommand = createCommand({
   path: '',
@@ -54,6 +56,22 @@ const BicudaCommand = createCommand({
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:mamar.user-banned'),
           flags: MessageFlags.EPHEMERAL,
+        }),
+      );
+
+    const userTrick = await eventRepository.getUserTrick(ctx.author.id);
+
+    if (userTrick === Tricks.USER_CANT_MAMAR)
+      return finishCommand(
+        ctx.makeMessage({
+          content: `${EMOJIS.lock} | Você não consegue mamar nignuém, pois seus vizinhos te prenderam em uma cadeira`,
+        }),
+      );
+
+    if ((await eventRepository.getUserTrick(user.id)) === Tricks.USER_CANT_BE_MAMADO)
+      return finishCommand(
+        ctx.makeMessage({
+          content: `${EMOJIS.error} | Este usuário não pode ser mamado, pois seus vizinhos o colocaram um sinto de castidade.`,
         }),
       );
 

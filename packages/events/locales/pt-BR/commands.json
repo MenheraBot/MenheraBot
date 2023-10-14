@@ -557,6 +557,7 @@
     "no-cooldown": "Você já pode fazer isso!",
     "hunt": "Caçar",
     "vote": "Votar em Mim",
+    "candy": "Pedir doces",
     "time": "**{{time}}** {{subtime}} | **<t:{{unix}}:T>**",
     "click-to-vote": "Clique Para Votar",
     "dungeon": "Dungeon",

@@ -7,6 +7,8 @@ import { randomFromArray } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { getDisplayName } from '../../utils/discord/userUtils';
+import eventRepository from '../../database/repositories/eventRepository';
+import { Tricks } from '../event/TrickOrTreatsCommand';
 
 const EighballAnswers: Array<{ id: number; type: 'positive' | 'neutral' | 'negative' }> = [
   {
@@ -154,7 +156,14 @@ const EightballCommand = createCommand({
   category: 'fun',
   authorDataFields: [],
   execute: async (ctx, finishCommand) => {
-    const randomAnswer = randomFromArray(EighballAnswers) as { id: 0; type: 'positive' };
+    const userTrick = await eventRepository.getUserTrick(ctx.author.id);
+
+    const toUseAnswerts =
+      userTrick === Tricks.NEGATIVE_RESPONSES
+        ? EighballAnswers.filter((a) => a.type === 'negative')
+        : EighballAnswers;
+
+    const randomAnswer = randomFromArray(toUseAnswerts) as { id: 0; type: 'positive' };
 
     const question = ctx.getOption<string>('pergunta', false, true);
 

@@ -17,6 +17,10 @@ import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
+import eventRepository from '../../database/repositories/eventRepository';
+import { Tricks } from '../event/TrickOrTreatsCommand';
+import { randomFromArray } from '../../utils/miscUtils';
+import { availableAuthors } from '../fun/CalvoCommand';
 
 interface VangoghUserprofileData {
   id: string;
@@ -86,10 +90,28 @@ const ProfileCommand = createCommand({
       return finishCommand();
     }
 
+    const userTrick = await eventRepository.getUserTrick(user.id);
+
+    if (userTrick === Tricks.BANNED_ON_PROFILE && user.id !== `${ctx.author.id}`) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:perfil.banned', {
+          reason: 'Esse usuário está sendo zoado pelos seus vizinhos em uma travessura',
+        }),
+        flags: MessageFlags.EPHEMERAL,
+      });
+
+      return finishCommand();
+    }
+
+    if (userTrick === Tricks.CHANGE_COLOR)
+      user.selectedColor = Math.random() < 0.5 ? '#eb6123' : '#215D1F';
+
     await ctx.defer();
 
+    const isMarryTrick = userTrick === Tricks.OTHER_MARRY;
+
     const marryData =
-      user.married && user.married !== 'false'
+      user.married && user.married !== 'false' && !isMarryTrick
         ? await cacheRepository.getDiscordUser(user.married)
         : null;
 
@@ -120,7 +142,8 @@ const ProfileCommand = createCommand({
       votes: user.votes,
       info: user.info,
       tag: getDisplayName(discordUser, true),
-      badges: getUserBadges(user, discordUser).map((a) => a.id),
+      badges:
+        userTrick === Tricks.NO_BADGES ? [] : getUserBadges(user, discordUser).map((a) => a.id),
       username: getDisplayName(discordUser, true),
       marryDate: user.marriedDate as string,
       mamadas: user.mamado,
@@ -139,6 +162,36 @@ const ProfileCommand = createCommand({
 
       if (user.marriedAt && user.marriedAt > 0)
         userData.marryDate = dayjs(user.marriedAt).format('DD/MM/YYYY');
+    }
+
+    if (isMarryTrick) {
+      const newMarry = randomFromArray([
+        'Xandão do Supremo',
+        'Kin Kardashian',
+        'Zeus',
+        'Medusa',
+        'Nox',
+        'Ah Puch',
+        'Alune',
+        'Veigar',
+        'Ivern',
+        'Heimerdinger',
+        'Malzahar',
+        'Ramus',
+        'Sivir',
+        'Urgot',
+        'Zoe',
+        'Kukulcán',
+        ...availableAuthors,
+      ]);
+
+      userData.married = true;
+      userData.marry = {
+        username: newMarry,
+        tag: newMarry,
+      };
+
+      userData.marryDate = '16/02/2004';
     }
 
     let profileTheme = await userThemesRepository.getProfileTheme(discordUser.id);

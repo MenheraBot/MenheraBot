@@ -6,7 +6,7 @@ import { randomFromArray } from '../../utils/miscUtils';
 import { createActionRow, createButton } from '../../utils/discord/componentUtils';
 import { createCommand } from '../../structures/command/createCommand';
 
-const availableAuthors = [
+export const availableAuthors = [
   'Zinédine Zidane',
   'Pedro Certezas',
   'Dwayne "The Rock" Johnson',
