@@ -33,6 +33,8 @@ export enum Tricks {
   RANDOM_TRISAL,
   USER_CANT_MAMAR,
   USER_CANT_BE_MAMADO,
+  USER_CANT_HUNT,
+  ANGRY_EMOJI,
 }
 
 const tricks: { id: Tricks; text: string }[] = [
@@ -79,6 +81,14 @@ const tricks: { id: Tricks; text: string }[] = [
   {
     id: Tricks.USER_CANT_BE_MAMADO,
     text: 'Seus vizinhos colocaram um sinto de castidade em ti. As pessoas estão impossibilitadas de te mamar',
+  },
+  {
+    id: Tricks.USER_CANT_HUNT,
+    text: 'Os vizinhos lhe enrolaram em papel como uma múmia. Você não pode mais caçar monstros, pois você é agora um deles',
+  },
+  {
+    id: Tricks.ANGRY_EMOJI,
+    text: 'Seus vizinhos pintaram sua cara (😡). Um emoji de raiva será inserido em seus comandos',
   },
 ];
 

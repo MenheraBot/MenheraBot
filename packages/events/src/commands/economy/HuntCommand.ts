@@ -26,6 +26,8 @@ import {
 import { postHuntExecution, postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
+import eventRepository from '../../database/repositories/eventRepository';
+import { Tricks } from '../event/TrickOrTreatsCommand';
 
 const choices = [
   ...transactionableCommandOption.filter((a) => a.value !== 'estrelinhas'),
@@ -101,6 +103,15 @@ const HuntCommand = createCommand({
 
     if (selection === ('probabilities' as string))
       return executeDisplayProbabilities(ctx, finishCommand);
+
+    const userTrick = await eventRepository.getUserTrick(ctx.author.id);
+
+    if (userTrick === Tricks.USER_CANT_HUNT)
+      return finishCommand(
+        ctx.makeMessage({
+          content: 'Você não pode caçar, pois seus vizinhos te transformaram em uma múmia',
+        }),
+      );
 
     const rollsToUse = ctx.getOption<number>('rolls', false);
 

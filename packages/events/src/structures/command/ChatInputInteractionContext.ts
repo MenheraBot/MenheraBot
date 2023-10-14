@@ -18,6 +18,8 @@ import {
   sendFollowupMessage,
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests';
+import eventRepository from '../../database/repositories/eventRepository';
+import { Tricks } from '../../commands/event/TrickOrTreatsCommand';
 
 export type CanResolve = 'users' | 'members' | 'attachments' | false;
 
@@ -69,6 +71,13 @@ export default class {
   }
 
   async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
+    const userTrick = await eventRepository.getUserTrick(this.author.id);
+
+    if (userTrick === Tricks.ANGRY_EMOJI) {
+      if (options.content) options.content += '\n😡😡😡';
+      else options.content = '😡😡😡';
+    }
+
     if (this.replied) {
       await editOriginalInteractionResponse(this.interaction.token, options).catch((e) =>
         this.captureException(e),
