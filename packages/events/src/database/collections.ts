@@ -105,6 +105,7 @@ export type Halloween2023User = {
   cooldown: number;
   currentTrick: { id: Tricks; endsIn: number } | null;
   allTimeTricks: Tricks[];
+  allTimeTreats: number;
 };
 
 const eventHalloween2023 = new Schema({
@@ -113,6 +114,7 @@ const eventHalloween2023 = new Schema({
   cooldown: { type: Number, default: 0 },
   currentTrick: { type: Object, default: null },
   allTimeTricks: { type: Array, default: [] },
+  allTimeTreats: { type: Number, default: 0 },
 });
 
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);

@@ -207,6 +207,7 @@ const TrickOrTreatCommand = createCommand({
 
       await eventRepository.updateUser(ctx.author.id, {
         candies: eventUser.candies + candies,
+        allTimeTreats: eventUser.allTimeTreats + candies,
         cooldown: Date.now() + defaultHuntCooldown,
       });
 

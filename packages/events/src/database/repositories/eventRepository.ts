@@ -12,6 +12,7 @@ const parseMongoUserToRedisUser = (user: Halloween2023User): Halloween2023User =
   currentTrick: user.currentTrick,
   cooldown: user.cooldown,
   allTimeTricks: user.allTimeTricks,
+  allTimeTreats: user.allTimeTreats,
 });
 
 const getEventUser = async (userId: BigString): Promise<Halloween2023User> => {
