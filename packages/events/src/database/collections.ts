@@ -98,9 +98,22 @@ const profileImagesSchema = new Schema({
   isPublic: { type: Boolean, default: true },
 });
 
+type Halloween2023 = {
+  id: string;
+  candies: number;
+  cooldown: number;
+};
+
+const eventHalloween2023 = new Schema({
+  id: { type: String, unique: true, index: true },
+  candies: { type: Number, default: 0 },
+  cooldown: { type: Number, default: 0 },
+});
+
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
 export const guildsModel = model<DatabaseGuildSchema>('guild', guildSchema);
 export const usersModel = model<DatabaseUserSchema>('usersdb', userSchema);
 export const userThemesModel = model<DatabaseUserThemesSchema>('themes', userThemes);
 export const themeCreditsModel = model<DatabaseCreditsSchema>('credits', themeCredits);
 export const profileImagesModel = model<DatabaseProfileImagesSchema>('images', profileImagesSchema);
+export const halloweenEventModel = model<Halloween2023>('halloween2023', eventHalloween2023);
