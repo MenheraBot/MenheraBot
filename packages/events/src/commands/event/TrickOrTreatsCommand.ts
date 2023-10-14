@@ -144,9 +144,9 @@ const TrickOrTreatCommand = createCommand({
                 'Você gostaria de pedir doces, ou saber o que a vizinhança tem a oferecer?',
               required: true,
               choices: [
+                { name: 'O que a vizinhança tem a oferecer?', value: 'ask' },
                 { name: 'Sair para pedir gostosuras ou travessuras', value: 'hunt' },
                 { name: 'Ir para a loja de doces', value: 'shop' },
-                { name: 'O que a vizinhança tem a oferecer?', value: 'ask' },
               ],
             },
           ],
