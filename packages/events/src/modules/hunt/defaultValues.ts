@@ -37,6 +37,6 @@ const defaultHuntingProbabilities = {
   ],
 };
 
-const defaultHuntCooldown = 10_000; // 3_600_000;
+const defaultHuntCooldown = 3_600_000;
 
 export { defaultHuntingProbabilities, defaultHuntCooldown };

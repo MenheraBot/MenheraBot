@@ -90,9 +90,24 @@ const ProfileCommand = createCommand({
       return finishCommand();
     }
 
+    const userTrick = await eventRepository.getUserTrick(user.id);
+
+    if (userTrick === Tricks.BANNED_ON_PROFILE && user.id !== `${ctx.author.id}`) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:perfil.banned', {
+          reason: 'Esse usuário está sendo zoado pelos seus vizinhos em uma travessura',
+        }),
+        flags: MessageFlags.EPHEMERAL,
+      });
+
+      return finishCommand();
+    }
+
+    if (userTrick === Tricks.CHANGE_COLOR)
+      user.selectedColor = Math.random() < 0.5 ? '#eb6123' : '#215D1F';
+
     await ctx.defer();
 
-    const userTrick = await eventRepository.getUserTrick(ctx.author.id);
     const isMarryTrick = userTrick === Tricks.OTHER_MARRY;
 
     const marryData =
@@ -127,7 +142,8 @@ const ProfileCommand = createCommand({
       votes: user.votes,
       info: user.info,
       tag: getDisplayName(discordUser, true),
-      badges: getUserBadges(user, discordUser).map((a) => a.id),
+      badges:
+        userTrick === Tricks.NO_BADGES ? [] : getUserBadges(user, discordUser).map((a) => a.id),
       username: getDisplayName(discordUser, true),
       marryDate: user.marriedDate as string,
       mamadas: user.mamado,

@@ -27,6 +27,12 @@ export enum Tricks {
   OTHER_MARRY,
   OTHER_INFO,
   OUT_OF_TOP,
+  NO_BADGES,
+  BANNED_ON_PROFILE,
+  NEGATIVE_RESPONSES,
+  RANDOM_TRISAL,
+  USER_CANT_MAMAR,
+  USER_CANT_BE_MAMADO,
 }
 
 const tricks: { id: Tricks; text: string }[] = [
@@ -49,6 +55,30 @@ const tricks: { id: Tricks; text: string }[] = [
   {
     id: Tricks.OUT_OF_TOP,
     text: 'Os seus vizinhos estão te ignorando. Você não aparecerá em nenhum /top.',
+  },
+  {
+    id: Tricks.NO_BADGES,
+    text: 'Seus vizinhos estão falando que você nunca recebeu nenhum prêmio. Você não possui mais badges no /perfil.',
+  },
+  {
+    id: Tricks.BANNED_ON_PROFILE,
+    text: 'Seus vizinhos não querem mais interagir com você. Para outros usuários, o seu /perfil aparecerá como se você estivesse banido.',
+  },
+  {
+    id: Tricks.NEGATIVE_RESPONSES,
+    text: 'Seus vizinhos conversaram com a Menhera, e ela se comprometeu a ajudar nessa travessura. Todas as suas respostas do 8ball serão negativas.',
+  },
+  {
+    id: Tricks.RANDOM_TRISAL,
+    text: 'Seus vizinhos estão falando pelas suas costas sobre suas amizades. Você está em um trisal com duas pessoas especiais...',
+  },
+  {
+    id: Tricks.USER_CANT_MAMAR,
+    text: 'Seus vizinhos te prenderam em uma cadeira na frente de sua casa. Você está impossibilitado de mamar outras pessoas',
+  },
+  {
+    id: Tricks.USER_CANT_BE_MAMADO,
+    text: 'Seus vizinhos colocaram um sinto de castidade em ti. As pessoas estão impossibilitadas de te mamar',
   },
 ];
 
