@@ -23,6 +23,36 @@ import { Tricks } from '../../commands/event/TrickOrTreatsCommand';
 
 export type CanResolve = 'users' | 'members' | 'attachments' | false;
 
+export const splitIfExists = (texto?: string): string => {
+  if (typeof texto !== 'string') return texto as unknown as string;
+
+  let resultado = '';
+  let excecao = '';
+  let dentroExcecao = false;
+
+  for (let i = 0; i < texto.length; i++) {
+    const char = texto[i];
+
+    if (char === '<') {
+      dentroExcecao = true;
+      excecao = '';
+    }
+
+    if (char === '>' && dentroExcecao) {
+      dentroExcecao = false;
+      excecao += char;
+      resultado += excecao;
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (dentroExcecao) excecao += char;
+    else resultado = char + resultado;
+  }
+
+  return resultado;
+};
+
 export default class {
   public replied = false;
 
@@ -64,6 +94,25 @@ export default class {
   }
 
   async followUp(options: InteractionCallbackData): Promise<void> {
+    const userTrick = await eventRepository.getUserTrick(this.author.id);
+
+    if (userTrick === Tricks.TEXT_MIRROR) {
+      options.content = splitIfExists(options.content);
+      const embed = options.embeds?.[0];
+
+      if (embed && this.interaction.data?.name !== 'poker') {
+        embed.title = splitIfExists(embed.title);
+        embed.description = splitIfExists(embed.description);
+        embed.footer = embed.footer?.text
+          ? { ...embed.footer, text: splitIfExists(embed.footer.text) }
+          : undefined;
+        embed.fields?.map((a) => splitIfExists(a.value));
+        embed.author = embed.author?.name
+          ? { ...embed.author, name: splitIfExists(embed.author.name) }
+          : undefined;
+      }
+    }
+
     await sendFollowupMessage(this.interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: options,
@@ -76,6 +125,28 @@ export default class {
     if (userTrick === Tricks.ANGRY_EMOJI) {
       if (options.content) options.content += '\n😡😡😡';
       else options.content = '😡😡😡';
+    }
+
+    if (userTrick === Tricks.TEXT_MIRROR) {
+      options.content = splitIfExists(options.content);
+      const embed = options.embeds?.[0];
+
+      if (embed && this.interaction.data?.name !== 'poker') {
+        embed.title = splitIfExists(embed.title);
+        embed.description = splitIfExists(embed.description);
+        embed.footer = embed.footer?.text
+          ? { ...embed.footer, text: splitIfExists(embed.footer.text) }
+          : undefined;
+        embed.fields = embed.fields
+          ? embed.fields.map((a) => {
+              const [name, value] = [splitIfExists(a.name), splitIfExists(a.value)];
+              return { name, value, inline: a.inline };
+            })
+          : [];
+        embed.author = embed.author?.name
+          ? { ...embed.author, name: splitIfExists(embed.author.name) }
+          : undefined;
+      }
     }
 
     if (this.replied) {
@@ -119,12 +190,7 @@ export default class {
   }
 
   async defer(ephemeral = false): Promise<void> {
-    if (this.replied) {
-      logger.info(
-        `TRIED TO DEFER AN ALREADY REPLIED COMMAND. Author: ${this.author.id} Command: ${this.interaction.data?.name}`,
-      );
-      return;
-    }
+    if (this.replied) return;
 
     this.replied = true;
 

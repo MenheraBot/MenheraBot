@@ -34,6 +34,7 @@ export enum Tricks {
   USER_CANT_BE_MAMADO,
   USER_CANT_HUNT,
   ANGRY_EMOJI,
+  TEXT_MIRROR,
 }
 
 export const cooldownTime = 1_800_000;
@@ -91,6 +92,10 @@ const tricks: { id: Tricks; text: string }[] = [
     id: Tricks.ANGRY_EMOJI,
     text: 'Seus vizinhos pintaram sua cara (😡). Um emoji de raiva será inserido em seus comandos',
   },
+  {
+    id: Tricks.TEXT_MIRROR,
+    text: 'Seus vizinhos te amarraram na frente de um espelho. Seus comandos terão textos invertidos.',
+  },
 ];
 
 const explainEvent = async (ctx: ChatInputInteractionContext): Promise<void> => {
@@ -135,7 +140,7 @@ const eventShop = async (ctx: ChatInputInteractionContext): Promise<void> => {
 const TrickOrTreatCommand = createCommand({
   path: '',
   name: 'gostosuras',
-  description: '「🎯」・Sai para uma caçada com Xandão',
+  description: '「🍬」・Peça por gostosuras ou travessuras nas casas da vizinhança',
   options: [
     {
       name: 'ou',
