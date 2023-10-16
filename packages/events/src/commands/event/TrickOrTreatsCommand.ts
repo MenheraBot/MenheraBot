@@ -99,6 +99,45 @@ const tricks: { id: Tricks; text: string }[] = [
   },
 ];
 
+const availableProducts = [
+  {
+    name: 'Roll de caça',
+    value: 20,
+  },
+  {
+    name: 'Tema de Cartas: _Morte Concreta_',
+    value: 500,
+  },
+  {
+    name: 'Imagem: _Evento Halloween 2023_',
+    value: 150,
+  },
+  {
+    // titulos não existem ainda. Eu vou criar isso, e adicionar no perfil.
+    // O titulo vai ser algo obrigatório de aparecer nos temas de perfil.
+    // Os temas que ja existem eu vou mudar pra adicionar um campinho de título tbm
+    // Esse vai ser o primeiro titulo que as pessoas podem pegar, só n vai aparecer ainda
+    name: 'Título: _Caçador de doces nato_',
+    value: 50,
+  },
+  {
+    name: 'Tema de Mesa: _Mesa Rosa_',
+    value: 100,
+  },
+  {
+    name: 'Tema de Mesa: _Mesa Vermelha_',
+    value: 100,
+  },
+  {
+    name: 'Tema de Perfil: _Mundo Invertido_',
+    value: 100,
+  },
+  {
+    name: 'Tema de Fundo de Carta: _Fundo Azul_',
+    value: 50,
+  },
+];
+
 const explainEvent = async (ctx: ChatInputInteractionContext): Promise<void> => {
   const embed = createEmbed({
     title: `${EMOJIS.badge_12} | Gostosuras ou Travessuras?`,
@@ -130,12 +169,23 @@ const explainEvent = async (ctx: ChatInputInteractionContext): Promise<void> => 
 
 const eventShop = async (ctx: ChatInputInteractionContext): Promise<void> => {
   const eventUser = await eventRepository.getEventUser(ctx.author.id);
-  ctx.makeMessage({
-    flags: MessageFlags.EPHEMERAL,
-    content: `A loja do evento ainda não está aberta!\nVocê já pode começar a pegar doces para que, quando ela abrir, você já possa coletar diversos prêmios!\n\nAtualmente você possui **${
-      eventUser.candies
-    }** doce${eventUser.candies > 1 ? 's' : ''}.`,
+
+  const embed = createEmbed({
+    title: '<:MenheraDevil:768621225420652595> Loja do Evento',
+    color: hexStringToNumber(ctx.authorData.selectedColor),
+    description: `Bem vindo à loja do **Evento de Halloween 2023** <a:MenheraChibiSnowball:768621226138140732>\nVocê possui atualmente **${eventUser.candies}** 🍭 doces.\nNo total, você já pegou **${eventUser.allTimeTreats}** 🍭 doces`,
+    footer: {
+      text: 'A compra de itens ainda não está disponível. Os preços podem mudar até o fim do evento',
+    },
+    fields: [
+      {
+        name: 'Produtos Disponíveis',
+        value: availableProducts.map((a) => `- **${a.name}** (${a.value})`).join('\n'),
+      },
+    ],
   });
+
+  ctx.makeMessage({ embeds: [embed] });
 };
 
 const displayTop = async (ctx: ChatInputInteractionContext): Promise<void> => {
