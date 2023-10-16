@@ -208,6 +208,23 @@ const profileBadges = {
     description: 'Este usuário é fanático pela Hello Kitty <3',
     link: 'https://media.discordapp.net/attachments/793669360857907200/1110404799033253908/hellokitty.png',
   },
+  25: {
+    name: 'Fanático por Doces',
+    availableStartAt: '15/10/2023',
+    availabeStoptAt: '01/11/2023',
+    rarityLevel: 5,
+    description: 'Esta badge foi dada aos usuários do TOP 10 do evento de hallowween de 2023',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/1163302701598253086/25.png',
+  },
+  26: {
+    name: 'Alvo da Vizinhança',
+    availableStartAt: '15/10/2023',
+    availabeStoptAt: '01/11/2023',
+    rarityLevel: 5,
+    description:
+      'Badge dada a todos usuários que sofreram com todas travessuras do evento de halloween de 2023',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/1163306438370787420/26.png',
+  },
 };
 
 export { profileBadges };
