@@ -2,10 +2,9 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { inspect } from 'node:util';
 
-import { usersModel } from '../../database/collections';
+import { usersModel, halloweenEventModel as eventModel } from '../../database/collections';
 import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
-import eventRepository from '../../database/repositories/eventRepository';
 import { MainRedisClient as redis } from '../../database/databases';
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
@@ -29,7 +28,7 @@ const EvalCommand = createCommand({
   category: 'dev',
   authorDataFields: ['id'],
   execute: async (ctx, finishCommand) => {
-    noop(userRepository, usersModel, userThemesRepository, eventRepository, redis);
+    noop(userRepository, usersModel, userThemesRepository, eventModel, redis);
 
     try {
       // eslint-disable-next-line no-eval
