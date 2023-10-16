@@ -5,11 +5,12 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { EMOJIS } from '../../structures/constants';
-import { getDisplayName } from '../../utils/discord/userUtils';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { calculateProbability } from '../../modules/hunt/huntUtils';
 import eventRepository from '../../database/repositories/eventRepository';
 import { millisToSeconds, randomFromArray } from '../../utils/miscUtils';
 import cacheRepository from '../../database/repositories/cacheRepository';
+import { halloweenEventModel } from '../../database/collections';
 
 const candiesProbability: { amount: number; probability: number }[] = [
   { amount: 1, probability: 37 },
@@ -137,6 +138,44 @@ const eventShop = async (ctx: ChatInputInteractionContext): Promise<void> => {
   });
 };
 
+const displayTop = async (ctx: ChatInputInteractionContext): Promise<void> => {
+  await ctx.defer();
+
+  const res = await halloweenEventModel.find({ ban: false }, ['allTimeTreats', 'id'], {
+    limit: 10,
+    sort: { allTimeTreats: -1 },
+  });
+
+  const embed = createEmbed({
+    title: `🍭 | TOP 10 Doceiros do Evento`,
+    color: hexStringToNumber(ctx.authorData.selectedColor),
+    fields: [],
+  });
+
+  const members = await Promise.all(
+    res.map((a) => cacheRepository.getDiscordUser(`${a.id}`, true)),
+  );
+
+  for (let i = 0; i < res.length; i++) {
+    const member = members[i];
+    const memberName = member ? getDisplayName(member) : `ID ${res[i].id}`;
+
+    if (member) {
+      if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
+      if (member.username.startsWith('Deleted User'))
+        cacheRepository.addDeletedAccount([`${res[i].id}`]);
+    }
+
+    embed.fields?.push({
+      name: `**${1 + i} -** ${memberName}`,
+      value: `Conseguiui **${res[i].allTimeTreats}** doces`,
+      inline: false,
+    });
+  }
+
+  ctx.makeMessage({ embeds: [embed] });
+};
+
 const TrickOrTreatCommand = createCommand({
   path: '',
   name: 'gostosuras',
@@ -163,6 +202,7 @@ const TrickOrTreatCommand = createCommand({
                 { name: 'O que a vizinhança tem a oferecer?', value: 'ask' },
                 { name: 'Sair para pedir gostosuras ou travessuras', value: 'hunt' },
                 { name: 'Ir para a loja de doces', value: 'shop' },
+                { name: 'Ver quem mais tem doces', value: 'top' },
               ],
             },
           ],
@@ -175,11 +215,13 @@ const TrickOrTreatCommand = createCommand({
   execute: async (ctx, finishCommand) => {
     finishCommand();
 
-    const action = ctx.getOption<'hunt' | 'ask' | 'shop'>('ação', false, true);
+    const action = ctx.getOption<'hunt' | 'ask' | 'shop' | 'top'>('ação', false, true);
 
     if (action === 'ask') return explainEvent(ctx);
 
     if (action === 'shop') return eventShop(ctx);
+
+    if (action === 'top') return displayTop(ctx);
 
     const eventUser = await eventRepository.getEventUser(ctx.author.id);
 
