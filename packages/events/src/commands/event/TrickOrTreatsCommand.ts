@@ -5,12 +5,12 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { EMOJIS } from '../../structures/constants';
-import { getDisplayName } from '../../utils/discord/userUtils';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { calculateProbability } from '../../modules/hunt/huntUtils';
 import eventRepository from '../../database/repositories/eventRepository';
 import { millisToSeconds, randomFromArray } from '../../utils/miscUtils';
-import { defaultHuntCooldown } from '../../modules/hunt/defaultValues';
 import cacheRepository from '../../database/repositories/cacheRepository';
+import { halloweenEventModel } from '../../database/collections';
 
 const candiesProbability: { amount: number; probability: number }[] = [
   { amount: 1, probability: 37 },
@@ -33,7 +33,12 @@ export enum Tricks {
   RANDOM_TRISAL,
   USER_CANT_MAMAR,
   USER_CANT_BE_MAMADO,
+  USER_CANT_HUNT,
+  ANGRY_EMOJI,
+  TEXT_MIRROR,
 }
+
+export const cooldownTime = 1_800_000;
 
 const tricks: { id: Tricks; text: string }[] = [
   {
@@ -80,6 +85,57 @@ const tricks: { id: Tricks; text: string }[] = [
     id: Tricks.USER_CANT_BE_MAMADO,
     text: 'Seus vizinhos colocaram um sinto de castidade em ti. As pessoas estão impossibilitadas de te mamar',
   },
+  {
+    id: Tricks.USER_CANT_HUNT,
+    text: 'Os vizinhos lhe enrolaram em papel como uma múmia. Você não pode mais caçar monstros, pois você é agora um deles',
+  },
+  {
+    id: Tricks.ANGRY_EMOJI,
+    text: 'Seus vizinhos pintaram sua cara (😡). Um emoji de raiva será inserido em seus comandos',
+  },
+  {
+    id: Tricks.TEXT_MIRROR,
+    text: 'Seus vizinhos te amarraram na frente de um espelho. Seus comandos terão textos invertidos.',
+  },
+];
+
+const availableProducts = [
+  {
+    name: 'Roll de caça',
+    value: 20,
+  },
+  {
+    name: 'Tema de Cartas: _Morte Concreta_',
+    value: 500,
+  },
+  {
+    name: 'Imagem: _Evento Halloween 2023_',
+    value: 150,
+  },
+  {
+    // titulos não existem ainda. Eu vou criar isso, e adicionar no perfil.
+    // O titulo vai ser algo obrigatório de aparecer nos temas de perfil.
+    // Os temas que ja existem eu vou mudar pra adicionar um campinho de título tbm
+    // Esse vai ser o primeiro titulo que as pessoas podem pegar, só n vai aparecer ainda
+    name: 'Título: _Caçador de doces nato_',
+    value: 50,
+  },
+  {
+    name: 'Tema de Mesa: _Mesa Rosa_',
+    value: 100,
+  },
+  {
+    name: 'Tema de Mesa: _Mesa Vermelha_',
+    value: 100,
+  },
+  {
+    name: 'Tema de Perfil: _Mundo Invertido_',
+    value: 100,
+  },
+  {
+    name: 'Tema de Fundo de Carta: _Fundo Azul_',
+    value: 50,
+  },
 ];
 
 const explainEvent = async (ctx: ChatInputInteractionContext): Promise<void> => {
@@ -113,18 +169,67 @@ const explainEvent = async (ctx: ChatInputInteractionContext): Promise<void> => 
 
 const eventShop = async (ctx: ChatInputInteractionContext): Promise<void> => {
   const eventUser = await eventRepository.getEventUser(ctx.author.id);
-  ctx.makeMessage({
-    flags: MessageFlags.EPHEMERAL,
-    content: `A loja do evento ainda não está aberta!\nVocê já pode começar a pegar doces para que, quando ela abrir, você já possa coletar diversos prêmios!\n\nAtualmente você possui **${
-      eventUser.candies
-    }** doce${eventUser.candies > 1 ? 's' : ''}.`,
+
+  const embed = createEmbed({
+    title: '<:MenheraDevil:768621225420652595> Loja do Evento',
+    color: hexStringToNumber(ctx.authorData.selectedColor),
+    description: `Bem vindo à loja do **Evento de Halloween 2023** <a:MenheraChibiSnowball:768621226138140732>\nVocê possui atualmente **${eventUser.candies}** 🍭 doces.\nNo total, você já pegou **${eventUser.allTimeTreats}** 🍭 doces`,
+    footer: {
+      text: 'A compra de itens ainda não está disponível. Os preços podem mudar até o fim do evento',
+    },
+    fields: [
+      {
+        name: 'Produtos Disponíveis',
+        value: availableProducts.map((a) => `- **${a.name}** (${a.value})`).join('\n'),
+      },
+    ],
   });
+
+  ctx.makeMessage({ embeds: [embed] });
+};
+
+const displayTop = async (ctx: ChatInputInteractionContext): Promise<void> => {
+  await ctx.defer();
+
+  const res = await halloweenEventModel.find({ ban: false }, ['allTimeTreats', 'id'], {
+    limit: 10,
+    sort: { allTimeTreats: -1 },
+  });
+
+  const embed = createEmbed({
+    title: `🍭 | TOP 10 Doceiros do Evento`,
+    color: hexStringToNumber(ctx.authorData.selectedColor),
+    fields: [],
+  });
+
+  const members = await Promise.all(
+    res.map((a) => cacheRepository.getDiscordUser(`${a.id}`, true)),
+  );
+
+  for (let i = 0; i < res.length; i++) {
+    const member = members[i];
+    const memberName = member ? getDisplayName(member) : `ID ${res[i].id}`;
+
+    if (member) {
+      if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
+      if (member.username.startsWith('Deleted User'))
+        cacheRepository.addDeletedAccount([`${res[i].id}`]);
+    }
+
+    embed.fields?.push({
+      name: `**${1 + i} -** ${memberName}`,
+      value: `Conseguiui **${res[i].allTimeTreats}** doces`,
+      inline: false,
+    });
+  }
+
+  ctx.makeMessage({ embeds: [embed] });
 };
 
 const TrickOrTreatCommand = createCommand({
   path: '',
   name: 'gostosuras',
-  description: '「🎯」・Sai para uma caçada com Xandão',
+  description: '「🍬」・Peça por gostosuras ou travessuras nas casas da vizinhança',
   options: [
     {
       name: 'ou',
@@ -147,6 +252,7 @@ const TrickOrTreatCommand = createCommand({
                 { name: 'O que a vizinhança tem a oferecer?', value: 'ask' },
                 { name: 'Sair para pedir gostosuras ou travessuras', value: 'hunt' },
                 { name: 'Ir para a loja de doces', value: 'shop' },
+                { name: 'Ver quem mais tem doces', value: 'top' },
               ],
             },
           ],
@@ -159,17 +265,13 @@ const TrickOrTreatCommand = createCommand({
   execute: async (ctx, finishCommand) => {
     finishCommand();
 
-    if (ctx.author.id !== 435228312214962204n)
-      return ctx.makeMessage({
-        content: 'Sai daqui!!! Isso ainda não está pronto',
-        flags: MessageFlags.EPHEMERAL,
-      });
-
-    const action = ctx.getOption<'hunt' | 'ask' | 'shop'>('ação', false, true);
+    const action = ctx.getOption<'hunt' | 'ask' | 'shop' | 'top'>('ação', false, true);
 
     if (action === 'ask') return explainEvent(ctx);
 
     if (action === 'shop') return eventShop(ctx);
+
+    if (action === 'top') return displayTop(ctx);
 
     const eventUser = await eventRepository.getEventUser(ctx.author.id);
 
@@ -208,7 +310,7 @@ const TrickOrTreatCommand = createCommand({
       await eventRepository.updateUser(ctx.author.id, {
         candies: eventUser.candies + candies,
         allTimeTreats: eventUser.allTimeTreats + candies,
-        cooldown: Date.now() + defaultHuntCooldown,
+        cooldown: Date.now() + cooldownTime,
       });
 
       ctx.makeMessage({ embeds: [embed] });
@@ -221,10 +323,10 @@ const TrickOrTreatCommand = createCommand({
       eventUser.allTimeTricks.push(selectedTrick.id);
 
     await eventRepository.updateUser(ctx.author.id, {
-      cooldown: Date.now() + defaultHuntCooldown,
+      cooldown: Date.now() + cooldownTime,
       allTimeTricks: eventUser.allTimeTricks,
       currentTrick: {
-        endsIn: Date.now() + defaultHuntCooldown,
+        endsIn: Date.now() + cooldownTime,
         id: selectedTrick.id,
       },
     });

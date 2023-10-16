@@ -13,6 +13,9 @@ import {
   sendFollowupMessage,
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests';
+import eventRepository from '../../database/repositories/eventRepository';
+import { Tricks } from '../../commands/event/TrickOrTreatsCommand';
+import { splitIfExists } from './ChatInputInteractionContext';
 
 export type CanResolve = 'users' | 'members' | false;
 
@@ -46,6 +49,25 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   }
 
   async followUp(options: InteractionCallbackData): Promise<void> {
+    const userTrick = await eventRepository.getUserTrick(this.user.id);
+
+    if (userTrick === Tricks.TEXT_MIRROR) {
+      options.content = splitIfExists(options.content);
+      const embed = options.embeds?.[0];
+
+      if (embed && this.interaction.message?.interaction?.name !== 'poker') {
+        embed.title = splitIfExists(embed.title);
+        embed.description = splitIfExists(embed.description);
+        embed.footer = embed.footer?.text
+          ? { ...embed.footer, text: splitIfExists(embed.footer.text) }
+          : undefined;
+        embed.fields?.map((a) => splitIfExists(a.value));
+        embed.author = embed.author?.name
+          ? { ...embed.author, name: splitIfExists(embed.author.name) }
+          : undefined;
+      }
+    }
+
     await sendFollowupMessage(this.interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: options,
@@ -89,6 +111,25 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   async respondInteraction(
     options: InteractionCallbackData & { attachments?: unknown[] },
   ): Promise<void> {
+    const userTrick = await eventRepository.getUserTrick(this.user.id);
+
+    if (userTrick === Tricks.TEXT_MIRROR) {
+      options.content = splitIfExists(options.content);
+      const embed = options.embeds?.[0];
+
+      if (embed && this.interaction.message?.interaction?.name !== 'poker') {
+        embed.title = splitIfExists(embed.title);
+        embed.description = splitIfExists(embed.description);
+        embed.footer = embed.footer?.text
+          ? { ...embed.footer, text: splitIfExists(embed.footer.text) }
+          : undefined;
+        embed.fields?.map((a) => splitIfExists(a.value));
+        embed.author = embed.author?.name
+          ? { ...embed.author, name: splitIfExists(embed.author.name) }
+          : undefined;
+      }
+    }
+
     if (!this.replied) {
       await sendInteractionResponse(this.interaction.id, this.interaction.token, {
         type: InteractionResponseTypes.ChannelMessageWithSource,
@@ -104,6 +145,25 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   }
 
   async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
+    const userTrick = await eventRepository.getUserTrick(this.user.id);
+
+    if (userTrick === Tricks.TEXT_MIRROR) {
+      options.content = splitIfExists(options.content);
+      const embed = options.embeds?.[0];
+
+      if (embed && this.interaction.message?.interaction?.name !== 'poker') {
+        embed.title = splitIfExists(embed.title);
+        embed.description = splitIfExists(embed.description);
+        embed.footer = embed.footer?.text
+          ? { ...embed.footer, text: splitIfExists(embed.footer.text) }
+          : undefined;
+        embed.fields?.map((a) => splitIfExists(a.value));
+        embed.author = embed.author?.name
+          ? { ...embed.author, name: splitIfExists(embed.author.name) }
+          : undefined;
+      }
+    }
+
     if (!this.replied) {
       this.replied = true;
       await sendInteractionResponse(this.interaction.id, this.interaction.token, {
