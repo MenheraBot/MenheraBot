@@ -65,6 +65,8 @@ export const EMOJIS = {
   badge_22: '<:badge_22:1103513736288931892>',
   badge_23: '<:badge_23:1104856754765963314>',
   badge_24: '<:badge_24:1110404657827811339>',
+  badge_25: '<:badge_25:1163303420921401354>',
+  badge_26: '<:badge_26:1163306957160062976>',
 };
 
 export const COLORS = {
