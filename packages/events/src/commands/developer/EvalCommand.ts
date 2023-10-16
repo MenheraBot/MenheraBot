@@ -5,6 +5,8 @@ import { inspect } from 'node:util';
 import { usersModel } from '../../database/collections';
 import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
+import eventRepository from '../../database/repositories/eventRepository';
+import { MainRedisClient as redis } from '../../database/databases';
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
 import { createEmbed } from '../../utils/discord/embedUtils';
@@ -27,7 +29,7 @@ const EvalCommand = createCommand({
   category: 'dev',
   authorDataFields: ['id'],
   execute: async (ctx, finishCommand) => {
-    noop(userRepository, usersModel, userThemesRepository);
+    noop(userRepository, usersModel, userThemesRepository, eventRepository, redis);
 
     try {
       // eslint-disable-next-line no-eval
