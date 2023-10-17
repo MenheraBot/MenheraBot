@@ -10,7 +10,9 @@ import { MainRedisClient } from '../databases';
 const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promise<User | null> => {
   if (userId === null || userId === 'null') return null;
 
-  const fromRedis = await MainRedisClient.get(`discord_user:${userId}`).catch(debugError);
+  const fromRedis = await MainRedisClient.getex(`discord_user:${userId}`, 'EX', 86400).catch(
+    debugError,
+  );
 
   if (!fromRedis) {
     if (!lookIntoDiscord) return null;
