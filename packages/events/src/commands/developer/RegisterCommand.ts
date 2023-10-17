@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, CamelCase } from 'discordeno/types';
 
 import { User } from 'discordeno/transformers';
 import { bot } from '../..';
@@ -9,16 +9,38 @@ import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { createCommand } from '../../structures/command/createCommand';
+import { getThemeById } from '../../modules/themes/getThemes';
+import { debugError } from '../../utils/debugError';
+import { AvailableThemeTypes } from '../../modules/themes/types';
+
+const snakeCaseToCamelCase = <T extends string>(input: T): CamelCase<T> =>
+  input
+    .split('_')
+    .reduce(
+      (res, word, i) =>
+        i === 0
+          ? word.toLowerCase()
+          : `${res}${word.charAt(0).toUpperCase()}${word.substring(1).toLowerCase()}`,
+      '',
+    ) as CamelCase<T>;
 
 const registerCredit = async (ctx: ChatInputInteractionContext) => {
   const user = ctx.getOption<User>('owner', 'users', true);
   const themeId = ctx.getOption<number>('theme', false, true);
   const royalty = ctx.getOption<number>('royalty', false) ?? 7;
-  const themeType = ctx.getOption<string>('type', false, true) as 'addCardBackgroundTheme';
 
   const alreadyExists = await themeCreditsRepository.getThemeInfo(themeId);
 
   if (alreadyExists) return ctx.makeMessage({ content: 'Já existe um tema com esse ID!' });
+
+  let themeType: CamelCase<`add_${AvailableThemeTypes}_theme`>;
+
+  try {
+    themeType = snakeCaseToCamelCase(`add_${getThemeById(themeId).data.type}_theme`);
+  } catch {
+    ctx.makeMessage({ content: `O thema ${themeId} não exsite` });
+    return;
+  }
 
   await themeCreditsRepository.registerTheme(themeId, user.id, royalty);
   await userThemesRepository[themeType](user.id, themeId);
@@ -30,11 +52,13 @@ const registerCredit = async (ctx: ChatInputInteractionContext) => {
   const userDM = await bot.helpers.getDmChannel(user.id).catch(ctx.captureException.bind(ctx));
 
   if (userDM)
-    bot.helpers.sendMessage(userDM.id, {
-      content: `:sparkles: **OBRIGADA POR CRIAR UM TEMA! **:sparkles:\n\nSeu tema \`${ctx.locale(
-        `data:themes.${themeId as 1}.name`,
-      )}\` foi registrado pela minha dona.\nEle já está em seu perfil (até por que tu que fez, é teu por direito >.<). Divulge bastante teu tema, que tu ganha uma parte em estrelinhas pelas compras de seu tema!`,
-    });
+    bot.helpers
+      .sendMessage(userDM.id, {
+        content: `:sparkles: **OBRIGADA POR CRIAR UM TEMA! **:sparkles:\n\nSeu tema \`${ctx.locale(
+          `data:themes.${themeId as 1}.name`,
+        )}\` foi registrado pela minha dona.\nEle já está em seu perfil (até por que tu que fez, é teu por direito >.<). Divulge bastante teu tema, que tu ganha uma parte em estrelinhas pelas compras de seu tema!`,
+      })
+      .catch((e) => debugError(e, false));
 
   const userBadges = await userRepository.ensureFindUser(user.id);
 
@@ -62,21 +86,6 @@ const RegisterCommand = createCommand({
           name: 'theme',
           description: 'Id do tema',
           type: ApplicationCommandOptionTypes.Integer,
-          required: true,
-        },
-        {
-          name: 'type',
-          description: 'Tipo do tema',
-          type: ApplicationCommandOptionTypes.String,
-          choices: [
-            { name: 'card_background', value: 'addCardBackgroundTheme' },
-            { name: 'cards', value: 'addCardsTheme' },
-            { name: 'profile', value: 'addProfileTheme' },
-            { name: 'table', value: 'addTableTheme' },
-            { name: 'eb_background', value: 'addEbBackgroundTheme' },
-            { name: 'eb_text_box', value: 'addEbTextBoxTheme' },
-            { name: 'eb_menhera', value: 'addEbMenheraTheme' },
-          ],
           required: true,
         },
         {
