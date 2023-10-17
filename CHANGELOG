@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.9.1-HALLOWEEN] - 2023-10-17
+
+### Changed
+
+- O comando `/loja comprar imagem` não permite mais você comprar uma imagem caso você não tenha algum perfil compatível.
+
 ## [5.9.0-HALLOWEEN] - 2023-10-14
 
 ### Added
