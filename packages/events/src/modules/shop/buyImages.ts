@@ -33,6 +33,8 @@ import { getEnviroments } from '../../utils/getEnviroments';
 import { customImagePrice } from './constants';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { ApiTransactionReason } from '../../types/api';
+import { getThemeById, getThemesByType } from '../themes/getThemes';
+import { ProfileTheme } from '../themes/types';
 
 const { IMAGE_APPROVAL_CHANNEL_ID } = getEnviroments(['IMAGE_APPROVAL_CHANNEL_ID']);
 
@@ -233,10 +235,27 @@ const buyImages = async (
   ctx: ChatInputInteractionContext,
   finishCommand: (args?: unknown) => void,
 ): Promise<void> => {
-  const alreadyBoughtImages = await userThemesRepository.findEnsuredUserThemes(ctx.author.id);
+  const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.author.id);
+
+  if (
+    !userThemes.profileThemes.some((a) => {
+      const theme = getThemeById(a.id);
+
+      if (theme.data.type !== 'profile') return false;
+      return theme.data.imageCompatible;
+    })
+  )
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:loja.buy_images.need_profile_theme', {
+        examples: getThemesByType<ProfileTheme>('profile')
+          .filter((a) => a.data.imageCompatible)
+          .map((a) => ctx.locale(`data:themes.${a.id as 1}.name`)),
+        command: `</loja comprar temas:${ctx.interaction.data?.id}>`,
+      }),
+    });
 
   const availableImages = await profileImagesRepository.getAvailableToBuyImages(
-    alreadyBoughtImages.profileImages.map((a) => a.id),
+    userThemes.profileImages.map((a) => a.id),
   );
 
   const sentImage = ctx.getOption<Attachment>('sua_imagem', 'attachments');
