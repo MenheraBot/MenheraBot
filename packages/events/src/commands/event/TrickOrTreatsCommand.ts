@@ -101,16 +101,16 @@ const tricks: { id: Tricks; text: string }[] = [
 
 const availableProducts = [
   {
+    name: 'Uma estrelinha',
+    value: 1,
+  },
+  {
     name: 'Roll de caça',
-    value: 20,
+    value: 30,
   },
   {
-    name: 'Tema de Cartas: _Morte Concreta_',
-    value: 500,
-  },
-  {
-    name: 'Imagem: _Evento Halloween 2023_',
-    value: 150,
+    name: 'Tema de Fundo de Carta: _Fundo Azul_',
+    value: 70,
   },
   {
     // titulos não existem ainda. Eu vou criar isso, e adicionar no perfil.
@@ -118,23 +118,27 @@ const availableProducts = [
     // Os temas que ja existem eu vou mudar pra adicionar um campinho de título tbm
     // Esse vai ser o primeiro titulo que as pessoas podem pegar, só n vai aparecer ainda
     name: 'Título: _Caçador de doces nato_',
-    value: 50,
+    value: 100,
   },
   {
     name: 'Tema de Mesa: _Mesa Rosa_',
-    value: 100,
+    value: 200,
   },
   {
     name: 'Tema de Mesa: _Mesa Vermelha_',
-    value: 100,
+    value: 200,
   },
   {
     name: 'Tema de Perfil: _Mundo Invertido_',
-    value: 100,
+    value: 200,
   },
   {
-    name: 'Tema de Fundo de Carta: _Fundo Azul_',
-    value: 50,
+    name: 'Imagem: _Evento Halloween 2023_',
+    value: 300,
+  },
+  {
+    name: 'Tema de Cartas: _Morte Concreta_',
+    value: 500,
   },
 ];
 
