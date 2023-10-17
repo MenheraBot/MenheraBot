@@ -237,6 +237,7 @@
     },
     "buy_images": {
       "price": "Preço: {{price}} ⭐",
+      "need_profile_theme": "Para que tu consiga usar uma imagem em seu tema de perfil, é preciso que tu tenha um perfil compatível com imagens. Tu pode comprar temas de perfil em {{command}}.\nExemplos de perfis compatíveis com imagens são: **{{examples, list}}**",
       "custom": "Imagem Autoral",
       "no-preview-for-custom": "Não é possível ver o preview de imagens autorais",
       "preview-title": "Preview de {{name}}",

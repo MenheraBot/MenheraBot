@@ -232,6 +232,7 @@
     },
     "buy_images": {
       "price": "Price: {{price}} ⭐",
+      "need_profile_theme": "In order for you to be able to use an image in your profile theme, you must have a profile that supports images. You can purchase profile themes at {{command}}.\nExamples of compatible profiles with images are: **{{examples, list}}**",
       "custom": "Copyright Image",
       "no-preview-for-custom": "Unable to see preview of copyrighted images",
       "preview-title": "Preview of {{name}}",
