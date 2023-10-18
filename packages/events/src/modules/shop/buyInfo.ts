@@ -5,6 +5,7 @@ import { COLORS } from '../../structures/constants';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getUserAvatar } from '../../utils/discord/userUtils';
 import { colorPrices, huntValues } from './constants';
+import { Plants } from '../fazendinha/plants';
 
 const buyInfo = async (
   ctx: ChatInputInteractionContext,
@@ -95,6 +96,22 @@ const buyInfo = async (
       ],
     };
     ctx.makeMessage({ embeds: [dataRolls] });
+    return finishCommand();
+  }
+
+  if (type === 'plants') {
+    const dataVender = {
+      title: ctx.locale('commands:loja.embed_title'),
+      color: 0xe77fa1,
+      thumbnail: {
+        url: 'https://i.imgur.com/t94XkgG.png',
+      },
+      fields: Object.entries(Plants).map((c) => {
+        return { name: `${c[0]}`, value: `${c[1].buyValue}` };
+      }),
+    };
+
+    ctx.makeMessage({ embeds: [dataVender] });
     return finishCommand();
   }
 

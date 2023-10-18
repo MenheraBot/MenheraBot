@@ -162,6 +162,11 @@ const ShopCommand = createCommand({
                   nameLocalizations: { 'en-US': '🔮 | Magic Items' },
                   value: 'items',
                 },
+                {
+                  name: '🌿 | Plantas',
+                  nameLocalizations: { 'en-US': '🌿 | Plants' },
+                  value: 'plants',
+                },
               ],
             },
           ],
