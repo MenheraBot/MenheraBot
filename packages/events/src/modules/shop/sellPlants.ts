@@ -70,6 +70,7 @@ const executeSellPlant = async (
     'estrelinhas',
     ApiTransactionReason.SELL_PLANT,
   );
+
   await farmerRepository.updateSilo(ctx.user.id, farmer.silo);
 
   ctx.makeMessage({

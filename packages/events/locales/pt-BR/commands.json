@@ -858,7 +858,8 @@
       "vote_thank": "votar em mim >,<",
       "inactivity_punishment": "ficar inativo na Menhera",
       "poker_command": "apostar no poker",
-      "sell_plant": "vender plantas"
+      "sell_plant": "vender plantas",
+      "buy_seed": "comprar sementes"
     }
   },
   "poker": {

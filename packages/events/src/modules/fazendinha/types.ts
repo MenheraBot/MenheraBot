@@ -3,6 +3,7 @@ export enum AvailablePlants {
   Rice,
   Sunflower,
   Mushroom,
+  Corn,
 }
 
 export interface PlantedField {
@@ -24,4 +25,5 @@ export interface PlantsFile {
   minutesToRot: number;
   emoji: string;
   sellValue: number;
+  buyValue: number;
 }

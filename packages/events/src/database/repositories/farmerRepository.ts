@@ -1,7 +1,7 @@
 import { BigString } from 'discordeno/types';
 
 import { farmerModel } from '../collections';
-import { DatabaseFarmerSchema } from '../../types/database';
+import { DatabaseFarmerSchema, QuantitativePlant } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
 import { AvailablePlants, Plantation, PlantedField } from '../../modules/fazendinha/types';
@@ -82,6 +82,27 @@ const executeHarvest = async (
     ).catch(debugError);
 };
 
+const updateSeeds = async (farmerId: BigString, seeds: QuantitativePlant[]): Promise<void> => {
+  await farmerModel.updateOne(
+    { id: `${farmerId}` },
+    {
+      $set: { seeds },
+    },
+  );
+
+  const fromRedis = await MainRedisClient.get(`farmer:${farmerId}`);
+
+  if (fromRedis) {
+    const data = JSON.parse(fromRedis);
+
+    await MainRedisClient.setex(
+      `farmer:${farmerId}`,
+      3600,
+      JSON.stringify(parseMongoUserToRedisUser({ ...data, seeds })),
+    ).catch(debugError);
+  }
+};
+
 const executePlant = async (
   farmerId: BigString,
   fieldIndex: number,
@@ -138,5 +159,6 @@ export default {
   getFarmer,
   executePlant,
   updateSilo,
+  updateSeeds,
   executeHarvest,
 };
