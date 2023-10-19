@@ -40,61 +40,75 @@ export enum Tricks {
 
 export const cooldownTime = 1_800_000;
 
-const tricks: { id: Tricks; text: string }[] = [
+const tricks: { id: Tricks; text: string; name: string }[] = [
   {
     id: Tricks.CHANGE_COLOR,
+    name: 'Mudança de cor',
     text: 'Os vizinhos acharam que sua fantasia está ruim, portanto **alteraram a sua cor** para ficar mais assustadora!',
   },
   {
     id: Tricks.ENGLISH_COMMANDS,
+    name: 'Comandos em inglês',
     text: 'Os vizinhos querem pregar uma peça contigo. Como eles são bilíngues, todos seus comandos estarão em inglês.',
   },
   {
     id: Tricks.OTHER_MARRY,
+    name: 'Casamento forçado',
     text: 'Na intenção de brincar com você e seu cônjuge, seus vizinhos estão fofocando que você está casado com outra pessoa.... Você está casado com uma pessoa aleatória agora.',
   },
   {
     id: Tricks.OTHER_INFO,
+    name: 'Sobre mim diferente',
     text: 'Seus vizinhos estão falando de você pelas costas... O seu "sobre mim" foi alterado!',
   },
   {
     id: Tricks.OUT_OF_TOP,
+    name: 'Fora do /top',
     text: 'Os seus vizinhos estão te ignorando. Você não aparecerá em nenhum /top.',
   },
   {
     id: Tricks.NO_BADGES,
+    name: 'Nenhuma badge',
     text: 'Seus vizinhos estão falando que você nunca recebeu nenhum prêmio. Você não possui mais badges no /perfil.',
   },
   {
     id: Tricks.BANNED_ON_PROFILE,
+    name: 'Banido do /perfil',
     text: 'Seus vizinhos não querem mais interagir com você. Para outros usuários, o seu /perfil aparecerá como se você estivesse banido.',
   },
   {
     id: Tricks.NEGATIVE_RESPONSES,
+    name: '8ball negativo',
     text: 'Seus vizinhos conversaram com a Menhera, e ela se comprometeu a ajudar nessa travessura. Todas as suas respostas do 8ball serão negativas.',
   },
   {
     id: Tricks.RANDOM_TRISAL,
+    name: 'Trisal especial',
     text: 'Seus vizinhos estão falando pelas suas costas sobre suas amizades. Você está em um trisal com duas pessoas especiais...',
   },
   {
     id: Tricks.USER_CANT_MAMAR,
+    name: 'Proibido mamar',
     text: 'Seus vizinhos te prenderam em uma cadeira na frente de sua casa. Você está impossibilitado de mamar outras pessoas',
   },
   {
     id: Tricks.USER_CANT_BE_MAMADO,
+    name: 'Proibido ser mamado',
     text: 'Seus vizinhos colocaram um sinto de castidade em ti. As pessoas estão impossibilitadas de te mamar',
   },
   {
     id: Tricks.USER_CANT_HUNT,
+    name: 'Proibido caçar',
     text: 'Os vizinhos lhe enrolaram em papel como uma múmia. Você não pode mais caçar monstros, pois você é agora um deles',
   },
   {
     id: Tricks.ANGRY_EMOJI,
+    name: '😡😡😡',
     text: 'Seus vizinhos pintaram sua cara (😡). Um emoji de raiva será inserido em seus comandos',
   },
   {
     id: Tricks.TEXT_MIRROR,
+    name: 'Textos invertidos',
     text: 'Seus vizinhos te amarraram na frente de um espelho. Seus comandos terão textos invertidos.',
   },
 ];
@@ -230,6 +244,25 @@ const displayTop = async (ctx: ChatInputInteractionContext): Promise<void> => {
   ctx.makeMessage({ embeds: [embed] });
 };
 
+const displayTricks = async (ctx: ChatInputInteractionContext): Promise<void> => {
+  const eventUser = await eventRepository.getEventUser(ctx.author.id);
+
+  const embed = createEmbed({
+    title: '<:MenheraDevil:768621225420652595> Travessuras disponíveis',
+    color: hexStringToNumber(ctx.authorData.selectedColor),
+    description: tricks
+      .map(
+        (trick) =>
+          `**${trick.name}**. Adquirido: ${
+            eventUser.allTimeTricks.includes(trick.id) ? ':white_check_mark:' : ':x:'
+          }`,
+      )
+      .join('\n'),
+  });
+
+  ctx.makeMessage({ embeds: [embed] });
+};
+
 const TrickOrTreatCommand = createCommand({
   path: '',
   name: 'gostosuras',
@@ -253,8 +286,9 @@ const TrickOrTreatCommand = createCommand({
                 'Você gostaria de pedir doces, ou saber o que a vizinhança tem a oferecer?',
               required: true,
               choices: [
-                { name: 'O que a vizinhança tem a oferecer?', value: 'ask' },
                 { name: 'Sair para pedir gostosuras ou travessuras', value: 'hunt' },
+                { name: 'Travessuras disponíveis', value: 'tricks' },
+                { name: 'O que a vizinhança tem a oferecer?', value: 'ask' },
                 { name: 'Ir para a loja de doces', value: 'shop' },
                 { name: 'Ver quem mais tem doces', value: 'top' },
               ],
@@ -269,13 +303,15 @@ const TrickOrTreatCommand = createCommand({
   execute: async (ctx, finishCommand) => {
     finishCommand();
 
-    const action = ctx.getOption<'hunt' | 'ask' | 'shop' | 'top'>('ação', false, true);
+    const action = ctx.getOption<'hunt' | 'ask' | 'shop' | 'top' | 'tricks'>('ação', false, true);
 
     if (action === 'ask') return explainEvent(ctx);
 
     if (action === 'shop') return eventShop(ctx);
 
     if (action === 'top') return displayTop(ctx);
+
+    if (action === 'tricks') return displayTricks(ctx);
 
     const eventUser = await eventRepository.getEventUser(ctx.author.id);
 
