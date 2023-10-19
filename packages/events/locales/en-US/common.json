@@ -48,6 +48,7 @@
   "false": "❌",
   "not-your-interaction": "This interaction is not for you! Just use components made just for you.",
   "exit-command": "Finish Command",
+  "general-failure": "An error occurred while you were executing this command :(\nIf you want, you can report this problem on my support server </menhera suporte:{{commandId}}>",
   "form-timesup": "You didn't submit the form on time!",
   "unregistered": "You still haven't reincarnated in the Bulletin World! Register first and try again!",
   "waiting-form": "Waiting Form...",

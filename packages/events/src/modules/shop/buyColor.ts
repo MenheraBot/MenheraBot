@@ -13,6 +13,8 @@ import {
 } from '../../utils/discord/componentUtils';
 import { extractFields } from '../../utils/discord/modalUtils';
 import { colorPrices } from './constants';
+import { debugError } from '../../utils/debugError';
+import commandRepository from '../../database/repositories/commandRepository';
 
 const executeBuyColorSelectComponent = async (ctx: ComponentInteractionContext): Promise<void> => {
   const availableColors = [
@@ -57,10 +59,27 @@ const executeBuyColorSelectComponent = async (ctx: ComponentInteractionContext):
   const authorData = await userRepository.ensureFindUser(ctx.user.id);
 
   if (selectedInteraction === 'SELECT') {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const chosenColor = availableColors.find(
       (a) => a.cor === ctx.interaction.data.values?.[0].replace('7 - ', ''),
-    )!;
+    );
+
+    if (!chosenColor) {
+      debugError(
+        new Error(`A cor selecionada não existe. Selecao: ${ctx.interaction.data.values?.[0]}`),
+      );
+
+      const commandInfo = await commandRepository.getCommandInfo('menhera');
+
+      ctx.makeMessage({
+        components: [],
+        embeds: [],
+        content: ctx.prettyResponse('bug', 'common:general-failure', {
+          commandId: commandInfo?._id,
+        }),
+      });
+
+      return;
+    }
 
     if (authorData.estrelinhas < chosenColor.price) {
       ctx.makeMessage({
