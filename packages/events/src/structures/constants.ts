@@ -18,6 +18,7 @@ export const EMOJIS = {
   archangels: '👼',
   us: '🇺🇸',
   br: '🇧🇷',
+  bug: '🐛',
   ring: '💍',
   yes: '✅',
   no: '❌',

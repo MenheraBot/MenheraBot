@@ -45,6 +45,7 @@
   "exit-command": "Finalizar Comando",
   "true": "✅",
   "false": "❌",
+  "general-failure": "Um erro aconteceu enquanto você executava esse comando :(\nCaso você queira, você pode reportar esse problema em meu servidor de supporte </menhera suporte:{{commandId}}>",
   "not-your-interaction": "Esta interação não é para você! Somente utilize componentes que são feitos para ti.",
   "unregistered": "Tu ainda não reencarnou no Mundo de Boleham! Registre-se primeiro e tente novamente!",
   "form-timesup": "Você não enviou o formulário a tempo!",
