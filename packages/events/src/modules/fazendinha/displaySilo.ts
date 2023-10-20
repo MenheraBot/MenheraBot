@@ -19,10 +19,11 @@ import {
   createTextInput,
 } from '../../utils/discord/componentUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { MessageFlags } from '../../utils/discord/messageUtils';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
 import { executeSellPlant, receiveModal } from '../shop/sellPlants';
+import { InteractionContext } from '../../types/menhera';
+import commandRepository from '../../database/repositories/commandRepository';
 
 const displaySilo = async (
   ctx: ChatInputInteractionContext,
@@ -139,7 +140,7 @@ const showModal = async (
 };
 
 const buildSellPlantsMessage = async (
-  ctx: ComponentInteractionContext,
+  ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   embedColor: string,
 ): Promise<void> => {
@@ -160,10 +161,10 @@ const buildSellPlantsMessage = async (
   }, '');
 
   if (options.length === 0) {
-    await ctx.makeMessage({ components: [] });
-    return ctx.followUp({
+    return ctx.makeMessage({
+      components: [],
+      embeds: [],
       content: 'Você não possui plantas para vender',
-      flags: MessageFlags.EPHEMERAL,
     });
   }
 
@@ -175,6 +176,8 @@ const buildSellPlantsMessage = async (
     color: hexStringToNumber(embedColor),
   });
 
+  const commandId = await commandRepository.getCommandInfo('fazendinha');
+
   ctx.makeMessage({
     embeds: [embed],
     components: [
@@ -183,11 +186,17 @@ const buildSellPlantsMessage = async (
           options,
           minValues: 1,
           maxValues: options.length >= 5 ? 5 : options.length,
-          customId: createCustomId(2, ctx.user.id, ctx.commandId, 'SHOW_MODAL', embedColor),
+          customId: createCustomId(
+            2,
+            ctx.user.id,
+            commandId?.discordId ?? ctx.commandId,
+            'SHOW_MODAL',
+            embedColor,
+          ),
         }),
       ]),
     ],
   });
 };
 
-export { displaySilo, handleButtonAction };
+export { displaySilo, handleButtonAction, buildSellPlantsMessage };
