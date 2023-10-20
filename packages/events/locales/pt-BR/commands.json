@@ -911,6 +911,7 @@
       "waiting": "Aguardando jogadores: {{players}} / {{maxPlayers}}",
       "keep-playing": "Continuar jogando",
       "leave-table": "Sair da partida",
+      "no-players": "Não há jogadores para continuar essa partida!",
       "close-match": "Terminar partida",
       "next-match": "Participando da próxima partida",
       "win-message-one": "{{winners, list}} venceu essa rodada com **{{hand}}**! Um total de **{{chips}}** fichas para o seu bolso.\n\nOs jogadores podem escolher se querem continuar a jogar ou sair da partida. Não há penalidade por sair, suas fichas serão convertidas em estrelinhas :star:. A partida irá finalizar automaticamente <t:{{unix}}:R>\nO mestre da partida, {{master}}, pode finalizar a partida imediatamente.",
