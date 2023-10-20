@@ -905,6 +905,7 @@
     "after-lobby": {
       "waiting": "Waiting for players: {{players}} / {{maxPlayers}}",
       "keep-playing": "Keep playing",
+      "no-players": "There is no players to continue this match!",
       "leave-table": "Leave the match",
       "close-match": "End match",
       "next-match": "Participating in the next match",

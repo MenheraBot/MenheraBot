@@ -369,10 +369,13 @@ const setupGame = async (
 };
 
 const cleanupGame = (gameData: PokerMatch): void => {
-  if (gameData.worthGame)
-    gameData.players.forEach((player) => convertChipsToStars(gameData, player));
+  if (gameData.players.length > 0) {
+    if (gameData.worthGame)
+      gameData.players.forEach((player) => convertChipsToStars(gameData, player));
 
-  pokerRepository.removeUsersInMatch(gameData.players.map((a) => a.id));
+    pokerRepository.removeUsersInMatch(gameData.players.map((a) => a.id));
+  }
+
   pokerRepository.deleteMatchState(gameData.matchId);
 };
 
@@ -389,18 +392,20 @@ const closeTable = async (
   const embed = createEmbed({
     title: ctx.prettyResponse('crown', 'commands:poker.match-over.title'),
     color: gameData.embedColor,
-    thumbnail: { url: winner.avatar },
-    description: ctx.locale('commands:poker.match-over.description', {
-      user: mentionUser(winner.id),
-      users: sorted
-        .map((a) =>
-          ctx.locale('commands:poker.match-over.chips', {
-            user: mentionUser(a.id),
-            chips: a.chips,
-          }),
-        )
-        .join('\n'),
-    }),
+    thumbnail: winner ? { url: winner.avatar } : undefined,
+    description: winner
+      ? ctx.locale('commands:poker.match-over.description', {
+          user: mentionUser(winner.id),
+          users: sorted
+            .map((a) =>
+              ctx.locale('commands:poker.match-over.chips', {
+                user: mentionUser(a.id),
+                chips: a.chips,
+              }),
+            )
+            .join('\n'),
+        })
+      : ctx.locale('commands:poker.after-lobby.no-players'),
     footer: gameData.worthGame
       ? { text: ctx.locale('commands:poker.match-over.stars-gave') }
       : undefined,
