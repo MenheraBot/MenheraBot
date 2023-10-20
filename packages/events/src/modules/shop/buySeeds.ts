@@ -134,7 +134,7 @@ const buySeeds = async (
     options: [],
     minValues: 1,
     placeholder: 'Selecione as sementes que você quer comprar',
-    maxValues: 4,
+    maxValues: 5,
   });
 
   const embed = createEmbed({

@@ -102,7 +102,7 @@ const ShopCommand = createCommand({
     {
       name: 'vender',
       nameLocalizations: { 'en-US': 'sell' },
-      description: '「💸」・ Venda suas caças',
+      description: 'Venda suas caças',
       descriptionLocalizations: { 'en-US': '「💸」・ Sell your fighters' },
       type: ApplicationCommandOptionTypes.SubCommand,
       options: [
