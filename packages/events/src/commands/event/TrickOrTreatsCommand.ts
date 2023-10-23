@@ -115,16 +115,16 @@ const tricks: { id: Tricks; text: string; name: string }[] = [
 
 const availableProducts = [
   {
-    name: 'Uma estrelinha',
+    name: 'Mil estrelinhas',
     value: 1,
   },
   {
     name: 'Roll de caça',
-    value: 30,
+    value: 14,
   },
   {
     name: 'Tema de Fundo de Carta: _Fundo Azul_',
-    value: 70,
+    value: 55,
   },
   {
     // titulos não existem ainda. Eu vou criar isso, e adicionar no perfil.
@@ -136,23 +136,23 @@ const availableProducts = [
   },
   {
     name: 'Tema de Mesa: _Mesa Rosa_',
-    value: 200,
+    value: 100,
   },
   {
     name: 'Tema de Mesa: _Mesa Vermelha_',
-    value: 200,
+    value: 90,
   },
   {
     name: 'Tema de Perfil: _Mundo Invertido_',
-    value: 200,
+    value: 150,
   },
   {
     name: 'Imagem: _Evento Halloween 2023_',
-    value: 300,
+    value: 50,
   },
   {
     name: 'Tema de Cartas: _Morte Concreta_',
-    value: 500,
+    value: 300,
   },
 ];
 
