@@ -159,7 +159,7 @@ const availableProducts = [
     // Esse vai ser o primeiro titulo que as pessoas podem pegar, só n vai aparecer ainda
     name: 'Título: _Caçador de doces nato_',
     value: 100,
-    execute: (user: BigString) => userRepository.updateUser(user, { titles: [1] }),
+    type: (user: BigString) => userRepository.updateUser(user, { titles: [1] }),
   },
   {
     name: 'Tema de Mesa: _Mesa Rosa_',
@@ -174,7 +174,7 @@ const availableProducts = [
   {
     name: 'Tema de Cartas: _Morte Concreta_',
     value: 300,
-    execute: (user: BigString) => use.addCardsTheme(user, 7),
+    execute: (user: BigString) => userThemesRepository.addCardsTheme(user, 7),
   },
 ];
 
