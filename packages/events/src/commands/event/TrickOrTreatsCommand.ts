@@ -342,7 +342,7 @@ const buyItem = async (ctx: ComponentInteractionContext<SelectMenuInteraction>):
     }
     case 5: {
       const userThemes = await userRepository.ensureFindUser(ctx.user.id);
-      if (userThemes.titles.includes(0))
+      if (userThemes?.titles?.includes(0))
         return ctx.makeMessage({
           content: 'Você já possui esse item!',
           components: [],
