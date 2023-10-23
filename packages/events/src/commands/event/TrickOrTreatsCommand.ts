@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, BigString, TextStyles } from 'discordeno/types';
 
 import { createCommand } from '../../structures/command/createCommand';
 import { MessageFlags } from '../../utils/discord/messageUtils';
@@ -11,6 +11,18 @@ import eventRepository from '../../database/repositories/eventRepository';
 import { millisToSeconds, randomFromArray } from '../../utils/miscUtils';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import { halloweenEventModel } from '../../database/collections';
+import {
+  createActionRow,
+  createCustomId,
+  createSelectMenu,
+  createTextInput,
+} from '../../utils/discord/componentUtils';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import userRepository from '../../database/repositories/userRepository';
+import userThemesRepository from '../../database/repositories/userThemesRepository';
+import starsRepository from '../../database/repositories/starsRepository';
+import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
+import { extractFields } from '../../utils/discord/modalUtils';
 
 const candiesProbability: { amount: number; probability: number }[] = [
   { amount: 1, probability: 37 },
@@ -117,22 +129,28 @@ const availableProducts = [
   {
     name: 'Mil estrelinhas',
     value: 1,
+    execute: (user: BigString, amount: number) => starsRepository.addStars(user, amount * 1000),
   },
   {
     name: 'Roll de caça',
     value: 14,
+    execute: (user: BigString, amount: number) =>
+      userRepository.updateUserWithSpecialData(user, { $inc: { rolls: amount } }),
   },
   {
     name: 'Imagem: _Evento Halloween 2023_',
     value: 50,
+    execute: (user: BigString) => userThemesRepository.addProfileImage(user, 17),
   },
   {
     name: 'Tema de Fundo de Carta: _Fundo Azul_',
     value: 55,
+    execute: (user: BigString) => userThemesRepository.addCardBackgroundTheme(user, 8),
   },
   {
     name: 'Tema de Mesa: _Mesa Vermelha_',
     value: 90,
+    execute: (user: BigString) => userThemesRepository.addTableTheme(user, 11),
   },
   {
     // titulos não existem ainda. Eu vou criar isso, e adicionar no perfil.
@@ -141,18 +159,22 @@ const availableProducts = [
     // Esse vai ser o primeiro titulo que as pessoas podem pegar, só n vai aparecer ainda
     name: 'Título: _Caçador de doces nato_',
     value: 100,
+    type: (user: BigString) => userRepository.updateUser(user, { titles: [1] }),
   },
   {
     name: 'Tema de Mesa: _Mesa Rosa_',
     value: 100,
+    execute: (user: BigString) => userThemesRepository.addTableTheme(user, 12),
   },
   {
     name: 'Tema de Perfil: _Mundo Invertido_',
     value: 150,
+    execute: (user: BigString) => userThemesRepository.addProfileTheme(user, 2),
   },
   {
     name: 'Tema de Cartas: _Morte Concreta_',
     value: 300,
+    execute: (user: BigString) => userThemesRepository.addCardsTheme(user, 7),
   },
 ];
 
@@ -185,6 +207,232 @@ const explainEvent = async (ctx: ChatInputInteractionContext): Promise<void> => 
   ctx.makeMessage({ embeds: [embed] });
 };
 
+const buyRollAndStar = async (
+  ctx: ComponentInteractionContext<ModalInteraction>,
+): Promise<void> => {
+  const fields = extractFields(ctx.interaction)[0];
+
+  const parsed = parseInt(fields.value, 10);
+
+  if (parsed < 0)
+    return ctx.makeMessage({
+      content: 'Você informou um número inválido de doces',
+      components: [],
+      embeds: [],
+    });
+
+  if (Number.isNaN(parsed))
+    return ctx.makeMessage({
+      content: 'Você informou um número inválido de doces',
+      components: [],
+      embeds: [],
+    });
+
+  const eventUser = await eventRepository.getEventUser(ctx.user.id);
+
+  const item = availableProducts[Number(fields.customId)];
+
+  if (eventUser.candies < item.value * parsed)
+    return ctx.makeMessage({
+      content: 'Você não possui todos esses doces para comprar tudo isso',
+      components: [],
+      embeds: [],
+    });
+
+  await eventRepository.updateUser(ctx.user.id, {
+    candies: eventUser.candies - item.value * parsed,
+  });
+  // @ts-expect-error uwu
+  item.execute(ctx.user.id, parsed);
+
+  ctx.makeMessage({
+    content: '🎃 **Feliz Halloween!**',
+    components: [],
+    embeds: [],
+  });
+};
+
+const buyItem = async (ctx: ComponentInteractionContext<SelectMenuInteraction>): Promise<void> => {
+  const [selectedIndex] = ctx.interaction.data.values;
+
+  const eventUser = await eventRepository.getEventUser(ctx.user.id);
+
+  const item = availableProducts[Number(selectedIndex)];
+
+  switch (Number(selectedIndex)) {
+    case 0:
+    case 1: {
+      const input = createTextInput({
+        customId: selectedIndex,
+        label: 'Selecione quantas vezes você quer comprar',
+        style: TextStyles.Short,
+        minLength: 1,
+        maxLength: 3,
+        required: true,
+      });
+
+      ctx.respondWithModal({
+        customId: createCustomId(1, ctx.user.id, ctx.commandId),
+        title: 'Halloween UwU',
+        components: [createActionRow([input])],
+      });
+      return;
+    }
+    case 2: {
+      const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.user.id);
+      if (userThemes.profileImages.some((a) => a.id === 17))
+        return ctx.makeMessage({
+          content: 'Você já possui esse item!',
+          components: [],
+          embeds: [],
+        });
+      if (eventUser.candies < item.value)
+        return ctx.makeMessage({
+          content: 'Você não possui todos esses doces para comprar isso!',
+          components: [],
+          embeds: [],
+        });
+
+      await eventRepository.updateUser(ctx.user.id, { candies: eventUser.candies - item.value });
+      // @ts-expect-error uwu
+      await item.execute(ctx.user.id);
+      break;
+    }
+    case 3: {
+      const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.user.id);
+      if (userThemes.cardsBackgroundThemes.some((a) => a.id === 8))
+        return ctx.makeMessage({
+          content: 'Você já possui esse item!',
+          components: [],
+          embeds: [],
+        });
+      if (eventUser.candies < item.value)
+        return ctx.makeMessage({
+          content: 'Você não possui todos esses doces para comprar isso!',
+          components: [],
+          embeds: [],
+        });
+
+      await eventRepository.updateUser(ctx.user.id, { candies: eventUser.candies - item.value });
+      // @ts-expect-error uwu
+      await item.execute(ctx.user.id);
+
+      break;
+    }
+    case 4: {
+      const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.user.id);
+      if (userThemes.tableThemes.some((a) => a.id === 11))
+        return ctx.makeMessage({
+          content: 'Você já possui esse item!',
+          components: [],
+          embeds: [],
+        });
+      if (eventUser.candies < item.value)
+        return ctx.makeMessage({
+          content: 'Você não possui todos esses doces para comprar isso!',
+          components: [],
+          embeds: [],
+        });
+
+      await eventRepository.updateUser(ctx.user.id, { candies: eventUser.candies - item.value });
+      // @ts-expect-error uwu
+      await item.execute(ctx.user.id);
+
+      break;
+    }
+    case 5: {
+      const userThemes = await userRepository.ensureFindUser(ctx.user.id);
+      if (userThemes.titles.includes(0))
+        return ctx.makeMessage({
+          content: 'Você já possui esse item!',
+          components: [],
+          embeds: [],
+        });
+      if (eventUser.candies < item.value)
+        return ctx.makeMessage({
+          content: 'Você não possui todos esses doces para comprar isso!',
+          components: [],
+          embeds: [],
+        });
+
+      await eventRepository.updateUser(ctx.user.id, { candies: eventUser.candies - item.value });
+      // @ts-expect-error uwu
+      await item.execute(ctx.user.id);
+
+      break;
+    }
+    case 6: {
+      const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.user.id);
+      if (userThemes.tableThemes.some((a) => a.id === 12))
+        return ctx.makeMessage({
+          content: 'Você já possui esse item!',
+          components: [],
+          embeds: [],
+        });
+      if (eventUser.candies < item.value)
+        return ctx.makeMessage({
+          content: 'Você não possui todos esses doces para comprar isso!',
+          components: [],
+          embeds: [],
+        });
+
+      await eventRepository.updateUser(ctx.user.id, { candies: eventUser.candies - item.value });
+      // @ts-expect-error uwu
+      await item.execute(ctx.user.id);
+
+      break;
+    }
+    case 7: {
+      const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.user.id);
+      if (userThemes.profileThemes.some((a) => a.id === 2))
+        return ctx.makeMessage({
+          content: 'Você já possui esse item!',
+          components: [],
+          embeds: [],
+        });
+      if (eventUser.candies < item.value)
+        return ctx.makeMessage({
+          content: 'Você não possui todos esses doces para comprar isso!',
+          components: [],
+          embeds: [],
+        });
+
+      await eventRepository.updateUser(ctx.user.id, { candies: eventUser.candies - item.value });
+      // @ts-expect-error uwu
+      await item.execute(ctx.user.id);
+
+      break;
+    }
+    case 8: {
+      const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.user.id);
+      if (userThemes.cardsThemes.some((a) => a.id === 7))
+        return ctx.makeMessage({
+          content: 'Você já possui esse item!',
+          components: [],
+          embeds: [],
+        });
+      if (eventUser.candies < item.value)
+        return ctx.makeMessage({
+          content: 'Você não possui todos esses doces para comprar isso!',
+          components: [],
+          embeds: [],
+        });
+
+      await eventRepository.updateUser(ctx.user.id, { candies: eventUser.candies - item.value });
+      // @ts-expect-error uwu
+      await item.execute(ctx.user.id);
+
+      break;
+    }
+  }
+
+  ctx.makeMessage({
+    content: '🎃 **Feliz Halloween!**',
+    components: [],
+    embeds: [],
+  });
+};
+
 const eventShop = async (ctx: ChatInputInteractionContext): Promise<void> => {
   const eventUser = await eventRepository.getEventUser(ctx.author.id);
 
@@ -203,7 +451,19 @@ const eventShop = async (ctx: ChatInputInteractionContext): Promise<void> => {
     ],
   });
 
-  ctx.makeMessage({ embeds: [embed] });
+  const selectMenu = createSelectMenu({
+    customId: createCustomId(0, ctx.author.id, ctx.commandId),
+    minValues: 1,
+    options: availableProducts.map((a, i) => ({
+      label: a.name.replaceAll('_', '"'),
+      value: `${i}`,
+      description: `${a.value} ⭐`,
+    })),
+    maxValues: 1,
+    placeholder: 'Selecione o que você quer comprar',
+  });
+
+  ctx.makeMessage({ embeds: [embed], components: [createActionRow([selectMenu])] });
 };
 
 const displayTop = async (ctx: ChatInputInteractionContext): Promise<void> => {
@@ -299,6 +559,7 @@ const TrickOrTreatCommand = createCommand({
     },
   ],
   category: 'event',
+  commandRelatedExecutions: [buyItem, buyRollAndStar],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
     finishCommand();
