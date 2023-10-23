@@ -21,6 +21,8 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
   demons: user.demons,
   estrelinhas: user.estrelinhas,
   giants: user.giants,
+  currentTitle: user.currentTitle,
+  titles: user.titles,
   gods: user.gods,
   hiddingBadges: user.hiddingBadges,
   huntCooldown: user.huntCooldown,
