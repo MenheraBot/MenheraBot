@@ -39,6 +39,8 @@ export interface DatabaseUserSchema {
   votes: number;
   badges: UserBadge[];
   hiddingBadges: Array<UserBadge['id']>;
+  titles: number[];
+  currentTitle: number;
   huntCooldown: number;
   voteCooldown: number;
   trisal: string[];
