@@ -123,8 +123,16 @@ const availableProducts = [
     value: 14,
   },
   {
+    name: 'Imagem: _Evento Halloween 2023_',
+    value: 50,
+  },
+  {
     name: 'Tema de Fundo de Carta: _Fundo Azul_',
     value: 55,
+  },
+  {
+    name: 'Tema de Mesa: _Mesa Vermelha_',
+    value: 90,
   },
   {
     // titulos não existem ainda. Eu vou criar isso, e adicionar no perfil.
@@ -139,16 +147,8 @@ const availableProducts = [
     value: 100,
   },
   {
-    name: 'Tema de Mesa: _Mesa Vermelha_',
-    value: 90,
-  },
-  {
     name: 'Tema de Perfil: _Mundo Invertido_',
     value: 150,
-  },
-  {
-    name: 'Imagem: _Evento Halloween 2023_',
-    value: 50,
   },
   {
     name: 'Tema de Cartas: _Morte Concreta_',
