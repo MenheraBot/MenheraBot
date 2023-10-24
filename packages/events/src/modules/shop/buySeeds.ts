@@ -123,6 +123,15 @@ const buySeeds = async (
 ): Promise<void> => {
   finishCommand();
 
+  const farmer = await farmerRepository.getFarmer(ctx.user.id);
+
+  if (farmer.biggerSeed === 0)
+    return ctx.makeMessage({
+      content: `Você precisa colher mais ${10 - farmer.plantedFields} ${
+        Plants[farmer.biggerSeed].emoji
+      } para poder comprar sementes`,
+    });
+
   const selectMenu = createSelectMenu({
     customId: createCustomId(
       4,
@@ -141,7 +150,7 @@ const buySeeds = async (
     title: 'Comprar Sementes',
     color: hexStringToNumber(ctx.authorData.selectedColor),
     fields: Object.entries(Plants)
-      .filter((a) => a[0] !== '0')
+      .filter((a) => a[0] !== '0' && Number(a[0]) > farmer.biggerSeed)
       .map(([plant, data]) => {
         selectMenu.options.push({ label: `Sementede de ${plant}`, value: `${plant}` });
         return {
@@ -150,6 +159,11 @@ const buySeeds = async (
           value: `Valor da planta: ${data.sellValue}\nMadura em ${data.minutesToHarvest} minutos\nApodrece em ${data.minutesToRot} minutos`,
         };
       }),
+    footer: {
+      text: `Colha mais ${10 - farmer.plantedFields} ${
+        Plants[farmer.biggerSeed as 1].emoji
+      } para liberar a próxima planta`,
+    },
   });
 
   ctx.makeMessage({

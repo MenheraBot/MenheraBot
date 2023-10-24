@@ -114,6 +114,8 @@ export interface DatabaseFarmerSchema {
   plantations: Plantation[];
   seeds: QuantitativePlant[];
   silo: QuantitativePlant[];
+  biggerSeed: number;
+  plantedFields: number;
 }
 
 export type UserIdType = string | bigint;
