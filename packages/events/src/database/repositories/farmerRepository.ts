@@ -9,6 +9,8 @@ import { AvailablePlants, Plantation, PlantedField } from '../../modules/fazendi
 const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSchema => ({
   id: `${user.id}`,
   plantations: user.plantations,
+  biggestSeed: user.biggestSeed,
+  plantedFields: user.plantedFields,
   seeds: user.seeds,
   silo: user.silo,
 });
@@ -48,6 +50,8 @@ const executeHarvest = async (
   plant: AvailablePlants,
   alreadyInSilo: boolean,
   success: boolean,
+  plantedFields: number,
+  biggestSeed: number,
 ): Promise<void> => {
   const pushOrIncrement = {
     [alreadyInSilo ? '$inc' : '$push']: alreadyInSilo
@@ -65,7 +69,7 @@ const executeHarvest = async (
   const updatedUser = await farmerModel.findOneAndUpdate(
     { id: `${farmerId}` },
     {
-      $set: { [`plantations.${fieldIndex}`]: field },
+      $set: { [`plantations.${fieldIndex}`]: field, plantedFields, biggestSeed },
       ...(success ? pushOrIncrement : {}),
     },
     {

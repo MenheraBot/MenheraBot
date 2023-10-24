@@ -114,7 +114,7 @@ export interface DatabaseFarmerSchema {
   plantations: Plantation[];
   seeds: QuantitativePlant[];
   silo: QuantitativePlant[];
-  biggerSeed: number;
+  biggestSeed: number;
   plantedFields: number;
 }
 

@@ -45,6 +45,8 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
   } else {
     farmer.plantations[selectedField] = { isPlanted: false };
 
+    const updateStats = state === 'MATURE' && field.plantType === farmer.biggestSeed;
+
     await farmerRepository.executeHarvest(
       ctx.user.id,
       selectedField,
@@ -52,6 +54,14 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
       field.plantType,
       farmer.silo.some((a) => a.plant === field.plantType),
       state === 'MATURE',
+      // eslint-disable-next-line no-nested-ternary
+      updateStats
+        ? farmer.plantedFields === 9
+          ? 0
+          : farmer.plantedFields + 1
+        : farmer.plantedFields,
+      // eslint-disable-next-line no-nested-ternary
+      updateStats && farmer.plantedFields === 9 ? farmer.biggestSeed + 1 : farmer.biggestSeed,
     );
   }
 

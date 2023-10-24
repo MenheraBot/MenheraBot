@@ -125,10 +125,10 @@ const buySeeds = async (
 
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
-  if (farmer.biggerSeed === 0)
+  if (farmer.biggestSeed === 0)
     return ctx.makeMessage({
       content: `Você precisa colher mais ${10 - farmer.plantedFields} ${
-        Plants[farmer.biggerSeed].emoji
+        Plants[farmer.biggestSeed].emoji
       } para poder comprar sementes`,
     });
 
@@ -143,16 +143,17 @@ const buySeeds = async (
     options: [],
     minValues: 1,
     placeholder: 'Selecione as sementes que você quer comprar',
-    maxValues: 5,
   });
 
   const embed = createEmbed({
     title: 'Comprar Sementes',
     color: hexStringToNumber(ctx.authorData.selectedColor),
     fields: Object.entries(Plants)
-      .filter((a) => a[0] !== '0' && Number(a[0]) > farmer.biggerSeed)
+      .filter((a) => a[0] !== '0')
       .map(([plant, data]) => {
-        selectMenu.options.push({ label: `Sementede de ${plant}`, value: `${plant}` });
+        if (farmer.biggestSeed >= Number(plant))
+          selectMenu.options.push({ label: `Sementede de ${plant}`, value: `${plant}` });
+
         return {
           name: `${plant}`,
           inline: true,
@@ -161,10 +162,12 @@ const buySeeds = async (
       }),
     footer: {
       text: `Colha mais ${10 - farmer.plantedFields} ${
-        Plants[farmer.biggerSeed as 1].emoji
+        Plants[farmer.biggestSeed as 1].emoji
       } para liberar a próxima planta`,
     },
   });
+
+  selectMenu.maxValues = selectMenu.options.length > 5 ? 5 : selectMenu.options.length;
 
   ctx.makeMessage({
     embeds: [embed],
