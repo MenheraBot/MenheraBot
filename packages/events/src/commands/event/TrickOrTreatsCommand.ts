@@ -159,7 +159,7 @@ const availableProducts = [
     // Esse vai ser o primeiro titulo que as pessoas podem pegar, só n vai aparecer ainda
     name: 'Título: _Caçador de doces nato_',
     value: 100,
-    type: (user: BigString) => userRepository.updateUser(user, { titles: [1] }),
+    execute: (user: BigString) => userRepository.updateUser(user, { titles: [1] }),
   },
   {
     name: 'Tema de Mesa: _Mesa Rosa_',
@@ -242,7 +242,6 @@ const buyRollAndStar = async (
   await eventRepository.updateUser(ctx.user.id, {
     candies: eventUser.candies - item.value * parsed,
   });
-  // @ts-expect-error uwu
   item.execute(ctx.user.id, parsed);
 
   ctx.makeMessage({
