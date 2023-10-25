@@ -978,6 +978,10 @@
       "field-action": "{{action}} ({{index}})",
       "embed-title": "Fazenda de {{user}}",
       "available-seed": "{{name}} {{amount}}x"
+    },
+    "field-action": {
+      "not-enough-seeds": "Você não possui sementes de **{{plant}}** para plantar!",
+      "field-still-growing": "Este campo ainda está crescendo. Tu não pode o colher ainda!"
     }
   }
 }

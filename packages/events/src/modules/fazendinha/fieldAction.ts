@@ -19,7 +19,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   if (state === 'GROWING')
     return ctx.respondInteraction({
-      content: 'Este campo ainda está crescendo. Você não pode colhê-lo ainda',
+      content: ctx.prettyResponse('error', 'commands:fazendinha.field-action.field-still-growing'),
       flags: MessageFlags.EPHEMERAL,
     });
 
@@ -28,7 +28,9 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
   if (!field.isPlanted) {
     if (seed !== AvailablePlants.Mate && (!userSeeds || userSeeds.amount <= 0))
       return ctx.respondInteraction({
-        content: `Você não possui sementes de Mate para plantar.`,
+        content: ctx.prettyResponse('error', 'commands:fazendinha.field-action.not-enough-seeds', {
+          plant: ctx.locale(`data:plants.${userSeeds?.plant ?? 0}`),
+        }),
         flags: MessageFlags.EPHEMERAL,
       });
 
