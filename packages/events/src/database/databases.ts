@@ -17,7 +17,7 @@ const MainRedisClient = new Redis({
 });
 
 const VangoghRedisClient = new Redis({
-  db: 6,
+  db: process.env.NODE_ENV === 'development' ? 2 : 6,
   lazyConnect: true,
   maxRetriesPerRequest: 2,
   connectTimeout: 5_000,
