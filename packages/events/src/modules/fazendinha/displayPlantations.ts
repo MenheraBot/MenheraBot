@@ -14,20 +14,30 @@ import { InteractionContext } from '../../types/menhera';
 import { getPlantationState } from './plantationState';
 import { Plants } from './plants';
 
-const PlantIcon: Record<PlantationState, string> = {
+const PlantStateIcon: Record<PlantationState, string> = {
   EMPTY: '🟫',
   GROWING: '🌱',
   ROTTEN: '🍂',
   MATURE: '',
 };
 
-const getPlantationDisplay = (state: PlantationState, field: Plantation): string => {
+const getPlantationDisplay = (
+  ctx: InteractionContext,
+  state: PlantationState,
+  timeToAction: number,
+  field: Plantation,
+): string => {
   const repeatIcon = (icon: string) =>
     `${icon}${icon}${icon}\n${icon}${icon}${icon}\n${icon}${icon}${icon}`;
 
-  if (state === 'MATURE') return repeatIcon(Plants[(field as PlantedField).plantType].emoji);
+  const toUseEmoji =
+    state === 'MATURE' ? Plants[(field as PlantedField).plantType].emoji : PlantStateIcon[state];
 
-  return repeatIcon(PlantIcon[state]);
+  return ctx.locale('commands:fazendinha.plant-states-message.message', {
+    unix: field.isPlanted ? `<t:${millisToSeconds(timeToAction)}:R>` : undefined,
+    emojis: repeatIcon(toUseEmoji),
+    state: ctx.locale(`commands:fazendinha.plant-states-message.${state}`),
+  });
 };
 
 const parseUserPlantations = (
@@ -41,27 +51,10 @@ const parseUserPlantations = (
 
   plantations.forEach((field, i) => {
     const [plantState, timeToAction] = getPlantationState(field);
-    let fieldText = getPlantationDisplay(plantState, field);
-
-    if (field.isPlanted) {
-      switch (plantState) {
-        case 'GROWING': {
-          fieldText += `\nMaduro \n<t:${millisToSeconds(timeToAction)}:R>`;
-          break;
-        }
-        case 'ROTTEN': {
-          fieldText += `\nApodrecido \n<t:${millisToSeconds(timeToAction)}:R>`;
-          break;
-        }
-        case 'MATURE': {
-          fieldText += `\nApodrecerá \n<t:${millisToSeconds(timeToAction)}:R>`;
-          break;
-        }
-      }
-    }
+    const fieldText = getPlantationDisplay(ctx, plantState, timeToAction, field);
 
     fields.push({
-      name: `Campo (${i + 1})`,
+      name: ctx.locale('commands:fazendinha.plantations.field', { index: i + 1 }),
       value: fieldText,
       inline: true,
     });
@@ -75,7 +68,12 @@ const parseUserPlantations = (
 
     buttons.push(
       createButton({
-        label: `${field.isPlanted ? 'Colher' : 'Plantar'} (${i + 1})`,
+        label: ctx.locale(`commands:fazendinha.plantations.field-action`, {
+          index: i + 1,
+          action: ctx.locale(
+            `commands:fazendinha.plantations.${field.isPlanted ? 'harvest' : 'plant'}`,
+          ),
+        }),
         style: buttonStyle,
         disabled: plantState === 'GROWING',
         customId: createCustomId(
@@ -94,7 +92,7 @@ const parseUserPlantations = (
 };
 
 const getAvailableSeeds = (
-  _: InteractionContext,
+  ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   selectedSeed: AvailablePlants,
 ): SelectOption[] =>
@@ -103,7 +101,10 @@ const getAvailableSeeds = (
       if (seed.amount <= 0 || seed.plant === AvailablePlants.Mate) return allSeeds;
 
       allSeeds.push({
-        label: `NOME ${seed.plant} ${seed.amount}x`,
+        label: ctx.locale('commands:fazendinha.plantations.available-seed', {
+          name: ctx.locale(`data:plants.${seed.plant}`),
+          amount: seed.amount,
+        }),
         emoji: { name: Plants[seed.plant].emoji },
         value: `${seed.plant}`,
         default: selectedSeed === seed.plant,
@@ -113,7 +114,7 @@ const getAvailableSeeds = (
     },
     [
       {
-        label: 'Erva ∞',
+        label: `${ctx.locale('data:plants.0')} ∞`,
         emoji: { name: Plants[AvailablePlants.Mate].emoji },
         value: `${AvailablePlants.Mate}`,
         default: selectedSeed === AvailablePlants.Mate,
@@ -130,7 +131,9 @@ const displayPlantations = async (
   const [fields, buttons] = parseUserPlantations(ctx, farmer.plantations, embedColor, selectedSeed);
 
   const embed = createEmbed({
-    title: `Fazenda de ${getDisplayName(ctx.user)}`,
+    title: ctx.locale('commands:fazendinha.plantations.embed-title', {
+      user: getDisplayName(ctx.user),
+    }),
     color: hexStringToNumber(embedColor),
     fields,
   });

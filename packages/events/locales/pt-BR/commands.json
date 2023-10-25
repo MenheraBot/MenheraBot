@@ -962,5 +962,22 @@
       "RAISE-CUSTOM": "{{user}} aumentou a aposta para **{{chips}}** fichas.",
       "ALLIN": "{{user}} apostou todas suas fichas, colocando sua aposta em **{{chips}}** fichas."
     }
+  },
+  "fazendinha": {
+    "plant-states-message": {
+      "ROTTEN": "Apodrecido",
+      "MATURE": "Apodrecerá",
+      "GROWING": "Maduro",
+      "EMPTY": "Disponível",
+      "message": "{{emojis}}\n{{state}}\n{{unix}}"
+    },
+    "plantations": {
+      "field": "Campo ({{index}})",
+      "harvest": "Colher",
+      "plant": "Plantar",
+      "field-action": "{{action}} ({{index}})",
+      "embed-title": "Fazenda de {{user}}",
+      "available-seed": "{{name}} {{amount}}x"
+    }
   }
 }
