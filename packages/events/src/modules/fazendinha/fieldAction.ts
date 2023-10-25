@@ -62,7 +62,6 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
           ? 0
           : farmer.plantedFields + 1
         : farmer.plantedFields,
-      // eslint-disable-next-line no-nested-ternary
       updateStats && farmer.plantedFields === 9 ? farmer.biggestSeed + 1 : farmer.biggestSeed,
     );
   }
@@ -80,10 +79,9 @@ const changeSelectedSeed = async (
 ): Promise<void> => {
   const [embedColor] = ctx.sentData;
 
-  const [selectedSeed] = ctx.interaction.data.values;
-
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
-  displayPlantations(ctx, farmer, embedColor, Number(selectedSeed));
+  displayPlantations(ctx, farmer, embedColor, Number(ctx.interaction.data.values[0]));
 };
+
 export { executeFieldAction, changeSelectedSeed };
