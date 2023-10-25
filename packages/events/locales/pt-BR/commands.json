@@ -235,6 +235,11 @@
       "profileCompatibles": "\n`Compatibilidades`\n**Cor**: {{colorCompatible}}\n**Imagem**: {{imageCompatible}}",
       "customEdits": "\n**Configurações extras**: {{customEdits}}"
     },
+    "sell_plants": {
+      "not-enough": "Tu não tem **{{amount}}** {{plant}} para vender",
+      "invalid-amount": "Tu informou um número inválido de plantas para vender",
+      "success": "Suas plantas foram vendidas por **{{amount}}** :star: estrelinhas"
+    },
     "buy_images": {
       "price": "Preço: {{price}} ⭐",
       "need_profile_theme": "Para que tu consiga usar uma imagem em seu tema de perfil, é preciso que tu tenha um perfil compatível com imagens. Tu pode comprar temas de perfil em {{command}}.\nExemplos de perfis compatíveis com imagens são: **{{examples, list}}**",
@@ -992,7 +997,7 @@
       "sell-title": "Venda suas plantas",
       "no-plants": "Tu não possui plantas para vender",
       "description": "{{text}}\n- {{emoji}} **{{amount}}x** - {{plant}} (**{{value}}** :star:)",
-      "select": "Selecione a quantidade de {{plant}} que você quer vender", 
+      "select": "Selecione a quantidade de {{plant}} que você quer vender",
       "display-mate": "- {{emoji}} **∞** - {{plant}}",
       "display-other": "- {{emoji}} **{{amount}}x** - {{plant}}"
     },

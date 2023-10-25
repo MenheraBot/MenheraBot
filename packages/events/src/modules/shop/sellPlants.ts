@@ -26,7 +26,7 @@ const receiveModal = async (
       return ctx.makeMessage({
         components: [],
         embeds: [],
-        content: `Você informou um número inválido de plantas para vender`,
+        content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
       });
   }
 
@@ -47,14 +47,17 @@ const executeSellPlant = async (
       return ctx.makeMessage({
         components: [],
         embeds: [],
-        content: `Você não tem ${currentPlant.amount} ${currentPlant.plant} para vender!`,
+        content: ctx.prettyResponse('error', 'commands:loja.sell_plants.not-enough', {
+          amount: currentPlant.amount,
+          plant: ctx.locale(`data:plants.${currentPlant.plant}`),
+        }),
       });
 
     if (currentPlant.amount < 0)
       return ctx.makeMessage({
         components: [],
         embeds: [],
-        content: `Você informou um número inválido de plantas para vender`,
+        content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
       });
 
     totalStars += currentPlant.amount * Plants[currentPlant.plant].sellValue;
@@ -74,7 +77,9 @@ const executeSellPlant = async (
   await farmerRepository.updateSilo(ctx.user.id, farmer.silo);
 
   ctx.makeMessage({
-    content: `Suas plantas foram vendidas por **${totalStars}** :star:`,
+    content: ctx.prettyResponse('success', 'commands:loja.sell_plants.success', {
+      amount: totalStars,
+    }),
     components: [],
     embeds: [],
   });
