@@ -171,7 +171,7 @@ const buySeeds = async (
           });
 
         return {
-          name: `${plant}`,
+          name: ctx.locale(`data:plants.${plant as '1'}`),
           inline: true,
           value: ctx.locale('commands:loja.buy_seeds.plant-stats', {
             value: data.sellValue,
