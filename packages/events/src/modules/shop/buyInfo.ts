@@ -99,16 +99,20 @@ const buyInfo = async (
     return finishCommand();
   }
 
-  if (type === 'plants') {
+  if (type === 'seeds') {
     const dataVender = {
       title: ctx.locale('commands:loja.embed_title'),
       color: 0xe77fa1,
       thumbnail: {
         url: 'https://i.imgur.com/t94XkgG.png',
       },
-      fields: Object.entries(Plants).map((c) => {
-        return { name: `${c[0]}`, value: `${c[1].buyValue}` };
-      }),
+      fields: Object.entries(Plants)
+        .filter((a) => a[0] !== '0')
+        .map((c) => ({
+          name: `${Plants[c[0] as '1'].emoji} ${ctx.locale(`data:plants.${c[0] as '1'}`)}`,
+          value: `${c[1].buyValue} :star:`,
+          inline: true,
+        })),
     };
 
     ctx.makeMessage({ embeds: [dataVender] });

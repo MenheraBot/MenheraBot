@@ -43,7 +43,11 @@ const sellInfo = async (
         url: 'https://i.imgur.com/t94XkgG.png',
       },
       fields: Object.entries(Plants).map((c) => {
-        return { name: `${c[0]}`, value: `${c[1].sellValue}` };
+        return {
+          name: `${Plants[c[0] as '1'].emoji} ${ctx.locale(`data:plants.${c[0] as '1'}`)}`,
+          value: `${c[1].sellValue} :star:`,
+          inline: true,
+        };
       }),
     };
 

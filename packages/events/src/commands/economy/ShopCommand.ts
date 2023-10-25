@@ -181,9 +181,9 @@ const ShopCommand = createCommand({
                   value: 'items',
                 },
                 {
-                  name: '🌿 | Plantas',
-                  nameLocalizations: { 'en-US': '🌿 | Plants' },
-                  value: 'plants',
+                  name: '🌿 | Sementes',
+                  nameLocalizations: { 'en-US': '🌿 | Seeds' },
+                  value: 'seeds',
                 },
               ],
             },
