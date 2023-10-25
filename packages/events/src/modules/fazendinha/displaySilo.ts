@@ -33,7 +33,7 @@ const displaySilo = async (
   let maySell = false;
 
   const embed = createEmbed({
-    title: `Silo de ${getDisplayName(ctx.user)}`,
+    title: ctx.locale('commands:fazendinha.silo.embed-title', { user: getDisplayName(ctx.user) }),
     color: hexStringToNumber(embedColor),
     fields: ['seeds' as const, 'silo' as const].reduce<DiscordEmbedField[]>((p, c) => {
       const items = farmer[c].filter((a) => a.amount > 0);
@@ -45,16 +45,22 @@ const displaySilo = async (
       } else if (items.length > 0) maySell = true;
 
       p.push({
-        name: c === 'seeds' ? 'Sementes' : 'Plantas',
+        name: ctx.locale(`commands:fazendinha.plantations.${c}`),
         value:
           items.length === 0
-            ? '**Nada**'
+            ? ctx.locale('commands:fazendinha.silo.nothing')
             : items
-                .map(
-                  (a) =>
-                    `- ${Plants[a.plant].emoji} **${
-                      a.plant === AvailablePlants.Mate && c === 'seeds' ? '∞' : `${a.amount}x`
-                    }** - ${a.plant} `,
+                .map((a) =>
+                  ctx.locale(
+                    `commands:fazendinha.silo.display-${
+                      a.plant === AvailablePlants.Mate ? 'mate' : 'other'
+                    }`,
+                    {
+                      emoji: Plants[a.plant].emoji,
+                      amount: a.amount,
+                      plant: ctx.locale(`data:plants.${a.plant}`),
+                    },
+                  ),
                 )
                 .join('\n'),
         inline: true,
@@ -65,7 +71,7 @@ const displaySilo = async (
   });
 
   const sellButton = createButton({
-    label: 'Vender Plantas',
+    label: ctx.locale('commands:fazendinha.silo.sell-plants'),
     style: maySell ? ButtonStyles.Success : ButtonStyles.Secondary,
     disabled: !maySell,
     customId: createCustomId(2, ctx.user.id, ctx.commandId, 'DISPLAY', embedColor),
@@ -112,13 +118,18 @@ const showModal = async (
     fields.push(
       createActionRow([
         createTextInput({
-          label: `${plant} (Max. ${fromSilo.amount})`,
+          label: ctx.locale('commands:fazendinha.silo.max', {
+            plant: ctx.locale(`data:plants.${plant as '0'}`),
+            amount: fromSilo.amount,
+          }),
           customId: plant,
           style: TextStyles.Short,
           minLength: 1,
           maxLength: `${fromSilo.amount}`.length,
           required: true,
-          placeholder: `Selecione quantos ${plant} você quer vender`,
+          placeholder: ctx.locale('commands:fazendinha.silo.select', {
+            plant: ctx.locale(`data:plants.${plant as '0'}`),
+          }),
         }),
       ]),
     );
@@ -129,12 +140,12 @@ const showModal = async (
   if (modalFields.length === 0)
     return ctx.makeMessage({
       components: [],
-      content: 'Você não possui mais essas plantas para vender',
+      content: ctx.locale('commands:fazendinha.silo.not-enough-plants'),
     });
 
   ctx.respondWithModal({
     customId: createCustomId(2, ctx.user.id, ctx.commandId, 'SELL', embedColor),
-    title: 'Vender Plantas',
+    title: ctx.locale('commands:fazendinha.silo.sell-plants'),
     components: modalFields,
   });
 };
@@ -150,28 +161,38 @@ const buildSellPlantsMessage = async (
     if (plant.amount === 0) return text;
 
     options.push({
-      label: `Vender ${plant.plant}`,
+      label: ctx.locale('commands:fazendinha.silo.sell-plant', {
+        plant: ctx.locale(`data:plants.${plant.plant}`),
+      }),
       emoji: { name: Plants[plant.plant].emoji },
       value: `${plant.plant}`,
     });
 
-    return `${text}\n- ${Plants[plant.plant].emoji} **${`${plant.amount}x`}** - ${plant.plant} (**${
-      Plants[plant.plant].sellValue
-    }** :star:) `;
+    return ctx.locale('commands:fazendinha.silo.description', {
+      text,
+      emoji: Plants[plant.plant].emoji,
+      amount: plant.amount,
+      plant: ctx.locale(`data:plants.${plant.plant}`),
+      value: Plants[plant.plant].sellValue,
+    });
   }, '');
 
   if (options.length === 0) {
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: 'Você não possui plantas para vender',
+      content: ctx.locale('commands:fazendinha.silo.no-plants'),
     });
   }
 
-  options.unshift({ label: 'Vender Tudo', value: 'ALL', emoji: { name: '💰' } });
+  options.unshift({
+    label: ctx.locale('commands:fazendinha.silo.sell-all'),
+    value: 'ALL',
+    emoji: { name: '💰' },
+  });
 
   const embed = createEmbed({
-    title: 'Venda suas plantas',
+    title: ctx.locale('commands:fazendinha.silo.sell-title'),
     description,
     color: hexStringToNumber(embedColor),
   });

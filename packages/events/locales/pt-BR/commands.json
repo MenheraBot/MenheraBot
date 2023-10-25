@@ -973,11 +973,28 @@
     },
     "plantations": {
       "field": "Campo ({{index}})",
+      "seeds": "Sementes",
+      "silo": "Plantas",
       "harvest": "Colher",
       "plant": "Plantar",
       "field-action": "{{action}} ({{index}})",
       "embed-title": "Fazenda de {{user}}",
       "available-seed": "{{name}} {{amount}}x"
+    },
+    "silo": {
+      "embed-title": "Silo de {{user}}",
+      "nothing": "**Nada**",
+      "not-enough-plants": "Tu não possui mais essas plantas pra vender",
+      "max": "{{plant}} (Max. {{amount}})",
+      "sell-plants": "Vender plantas",
+      "sell-plant": "Vender {{plant}}",
+      "sell-all": "Vender tudo",
+      "sell-title": "Venda suas plantas",
+      "no-plants": "Tu não possui plantas para vender",
+      "description": "{{text}}\n- {{emoji}} **{{amount}}x** - {{plant}} (**{{value}}** :star:)",
+      "select": "Selecione a quantidade de {{plant}} que você quer vender", 
+      "display-mate": "- {{emoji}} **∞** - {{plant}}",
+      "display-other": "- {{emoji}} **{{amount}}x** - {{plant}}"
     },
     "field-action": {
       "not-enough-seeds": "Você não possui sementes de **{{plant}}** para plantar!",
