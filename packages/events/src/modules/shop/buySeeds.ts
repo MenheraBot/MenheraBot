@@ -18,6 +18,7 @@ import farmerRepository from '../../database/repositories/farmerRepository';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
+import commandRepository from '../../database/repositories/commandRepository';
 
 const handleBuySeedsInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [option] = ctx.sentData;
@@ -48,7 +49,7 @@ const parseModalSumbit = async (
       return ctx.makeMessage({
         components: [],
         embeds: [],
-        content: `Você informou um número inválido de sementes para comprar`,
+        content: ctx.prettyResponse('error', 'commands:loja.buy_seeds.invalid-amount'),
       });
 
     const fromSeeds = farmer.seeds.find((a) => a.plant === plant.plant);
@@ -65,7 +66,9 @@ const parseModalSumbit = async (
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: `Você não possui ${totalPrice} :star: estrelinhas para comprar todas essas sementes!`,
+      content: ctx.prettyResponse('error', 'commands:loja.buy_seeds.not-enough-stars', {
+        amount: totalPrice,
+      }),
     });
 
   await starsRepository.removeStars(ctx.user.id, totalPrice);
@@ -79,10 +82,15 @@ const parseModalSumbit = async (
     ApiTransactionReason.BUY_SEED,
   );
 
+  const commandInfo = await commandRepository.getCommandInfo('fazendinha');
+
   ctx.makeMessage({
     components: [],
     embeds: [],
-    content: `Você gastou ${totalPrice} :star: em sementes. Hora de plantá-las!`,
+    content: ctx.prettyResponse('success', 'commands:loja.buy_seeds.success', {
+      amount: totalPrice,
+      command: `</fazendinha plantações:${commandInfo?.discordId}>`,
+    }),
   });
 };
 
@@ -96,13 +104,15 @@ const showModal = async (
     fields.push(
       createActionRow([
         createTextInput({
-          label: `Comprar semente de ${plant}`,
+          label: ctx.locale('commands:loja.buy_seeds.buy-seed-of', {
+            plant: ctx.locale(`data:plants.${plant as '1'}`),
+          }),
           customId: plant,
           style: TextStyles.Short,
           minLength: 1,
           maxLength: 2,
           required: true,
-          placeholder: `Selecione quantas sementes você quer comprar`,
+          placeholder: ctx.locale('commands:loja.buy_seeds.select-amount'),
         }),
       ]),
     );
@@ -112,7 +122,7 @@ const showModal = async (
 
   await ctx.respondWithModal({
     customId: createCustomId(4, ctx.user.id, ctx.commandId, 'BUY', embedColor),
-    title: 'Comprar Sementes',
+    title: ctx.locale('commands:loja.buy_seeds.embed-title'),
     components: modalFields,
   });
 };
@@ -127,9 +137,10 @@ const buySeeds = async (
 
   if (farmer.biggestSeed === 0)
     return ctx.makeMessage({
-      content: `Você precisa colher mais ${10 - farmer.plantedFields} ${
-        Plants[farmer.biggestSeed].emoji
-      } para poder comprar sementes`,
+      content: ctx.prettyResponse('lock', 'commands:loja.buy_seeds.seed-limit', {
+        amount: 10 - farmer.plantedFields,
+        emoji: Plants[farmer.biggestSeed].emoji,
+      }),
     });
 
   const selectMenu = createSelectMenu({
@@ -142,28 +153,38 @@ const buySeeds = async (
     ),
     options: [],
     minValues: 1,
-    placeholder: 'Selecione as sementes que você quer comprar',
+    placeholder: ctx.locale('commands:loja.buy_seeds.select'),
   });
 
   const embed = createEmbed({
-    title: 'Comprar Sementes',
+    title: ctx.locale('commands:loja.buy_seeds.embed-title'),
     color: hexStringToNumber(ctx.authorData.selectedColor),
     fields: Object.entries(Plants)
       .filter((a) => a[0] !== '0')
       .map(([plant, data]) => {
         if (farmer.biggestSeed >= Number(plant))
-          selectMenu.options.push({ label: `Sementede de ${plant}`, value: `${plant}` });
+          selectMenu.options.push({
+            label: ctx.locale(`commands:loja.buy_seeds.seed`, {
+              plant: ctx.locale(`data:plants.${plant as '1'}`),
+            }),
+            value: `${plant}`,
+          });
 
         return {
           name: `${plant}`,
           inline: true,
-          value: `Valor da planta: ${data.sellValue}\nMadura em ${data.minutesToHarvest} minutos\nApodrece em ${data.minutesToRot} minutos`,
+          value: ctx.locale('commands:loja.buy_seeds.plant-stats', {
+            value: data.sellValue,
+            harvestTime: data.minutesToHarvest,
+            rotTime: data.minutesToRot,
+          }),
         };
       }),
     footer: {
-      text: `Colha mais ${10 - farmer.plantedFields} ${
-        Plants[farmer.biggestSeed as 1].emoji
-      } para liberar a próxima planta`,
+      text: ctx.locale('commands:loja.buy_seeds.harvest-more', {
+        amount: 10 - farmer.plantedFields,
+        emoji: Plants[farmer.biggestSeed as 1].emoji,
+      }),
     },
   });
 

@@ -240,6 +240,19 @@
       "invalid-amount": "Tu informou um número inválido de plantas para vender",
       "success": "Suas plantas foram vendidas por **{{amount}}** :star: estrelinhas"
     },
+    "buy_seeds": {
+      "buy-seed-of": "Comprar semente de {{plant}}",  
+      "plant-stats": "**Valor da Planta:** {{value}} :star:\n**Amadurece em:** {{harvestTime}} minutos\n**Apodrece em** {{rotTime}} minutos",
+      "seed": "Semente de {{plant}}",
+      "success": "Você gastou **{{amount}}** :star: estrelinhas comprando sementes. Hora de plantá-las {{command}}",
+      "not-enough-stars": "Tu não possui **{{amount}}** :star: estrelinhas para comprar todas essas sementes",
+      "invalid-amount": "Tu informou um número inválido de sementes para comprar",
+      "select-amount": "Digite quantas sementes tu quer comprar",
+      "harvest-more": "Colha mais {{amount}} {{emoji}} para liberar a próxima semente",
+      "embed-title": "Comprar Sementes",
+      "select": "Selecione as sementes que tu quer comprar",
+      "seed-limit": "Tu precisa colher mais **{{amount}}** {{emoji}} para poder comprar sementes"
+    },
     "buy_images": {
       "price": "Preço: {{price}} ⭐",
       "need_profile_theme": "Para que tu consiga usar uma imagem em seu tema de perfil, é preciso que tu tenha um perfil compatível com imagens. Tu pode comprar temas de perfil em {{command}}.\nExemplos de perfis compatíveis com imagens são: **{{examples, list}}**",
