@@ -242,7 +242,7 @@
     },
     "buy_seeds": {
       "buy-seed-of": "Comprar semente de {{plant}}",  
-      "plant-stats": "**Valor da Planta:** {{value}} :star:\n**Amadurece em:** {{harvestTime}} minutos\n**Apodrece em** {{rotTime}} minutos",
+      "plant-stats": "**Preço de Compra:** {{buyValue}} :star:\n**Valor de venda:** {{sellValue}} :star:\n**Amadurece em:** {{harvestTime}} minutos\n**Apodrece em** {{rotTime}} minutos",
       "seed": "Semente de {{plant}}",
       "success": "Você gastou **{{amount}}** :star: estrelinhas comprando sementes. Hora de plantá-las {{command}}",
       "not-enough-stars": "Tu não possui **{{amount}}** :star: estrelinhas para comprar todas essas sementes",

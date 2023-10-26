@@ -237,7 +237,7 @@
     },
     "buy_seeds": {
       "buy-seed-of": "Buy {{plant}} seed",  
-      "plant-stats": "**Plant Value:** {{value}} :star:\n**Ripens in:** {{harvestTime}} minutes\n**Rots in** {{rotTime}} minutes",
+      "plant-stats": "**Buy Value**: {{buyValue}} :star:\n**Sell Value:** {{sellValue}} :star:\n**Ripens in:** {{harvestTime}} minutes\n**Rots in** {{rotTime}} minutes",
       "seed": "{{plant}} seed",
       "success": "You spent **{{amount}}** :star: little stars buying seeds. Time to plant them {{command}}",
       "not-enough-stars": "You don't have **{{amount}}** :star: stars to buy all these seeds",

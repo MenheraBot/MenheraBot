@@ -175,7 +175,8 @@ const buySeeds = async (
           name: `${Plants[plant as '1'].emoji} ${ctx.locale(`data:plants.${plant as '1'}`)}`,
           inline: true,
           value: ctx.locale('commands:loja.buy_seeds.plant-stats', {
-            value: data.sellValue,
+            sellValue: data.sellValue,
+            buyValue: data.buyValue,
             harvestTime: data.minutesToHarvest,
             rotTime: data.minutesToRot,
           }),
