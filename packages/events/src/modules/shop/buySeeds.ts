@@ -167,11 +167,12 @@ const buySeeds = async (
             label: ctx.locale(`commands:loja.buy_seeds.seed`, {
               plant: ctx.locale(`data:plants.${plant as '1'}`),
             }),
+            emoji: { name: Plants[plant as '1'].emoji },
             value: `${plant}`,
           });
 
         return {
-          name: ctx.locale(`data:plants.${plant as '1'}`),
+          name: `${Plants[plant as '1'].emoji} ${ctx.locale(`data:plants.${plant as '1'}`)}`,
           inline: true,
           value: ctx.locale('commands:loja.buy_seeds.plant-stats', {
             value: data.sellValue,
