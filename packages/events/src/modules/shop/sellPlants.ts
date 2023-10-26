@@ -28,6 +28,13 @@ const receiveModal = async (
         embeds: [],
         content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
       });
+
+    if (plant.amount <= 0)
+      return ctx.makeMessage({
+        components: [],
+        embeds: [],
+        content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
+      });
   }
 
   executeSellPlant(ctx, farmer, selectedPlants);
@@ -63,6 +70,13 @@ const executeSellPlant = async (
     totalStars += currentPlant.amount * Plants[currentPlant.plant].sellValue;
     fromSilo.amount -= currentPlant.amount;
   }
+
+  if (totalStars === 0)
+    return ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
+    });
 
   starsRepository.addStars(ctx.user.id, totalStars);
 
