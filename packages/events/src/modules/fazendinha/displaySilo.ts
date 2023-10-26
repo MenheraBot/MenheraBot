@@ -53,7 +53,7 @@ const displaySilo = async (
                 .map((a) =>
                   ctx.locale(
                     `commands:fazendinha.silo.display-${
-                      a.plant === AvailablePlants.Mate ? 'mate' : 'other'
+                      a.plant === AvailablePlants.Mate && c === 'seeds' ? 'mate' : 'other'
                     }`,
                     {
                       emoji: Plants[a.plant].emoji,
