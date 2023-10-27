@@ -175,16 +175,15 @@ const ProfileCommand = createCommand({
       return;
     }
 
-
     const usageCommands = await getUserProfileInfo(discordUser.id);
 
-    if(usageCommands)
+    if (usageCommands)
       ctx.locale('commands:perfil.commands-usage', {
         user: getDisplayName(discordUser, true),
         usedCount: usageCommands.cmds.count,
         mostUsedCommandName: usageCommands.array[0]?.name ?? 'nenhum',
         mostUsedCommandCount: usageCommands.array[0]?.count ?? '0',
-      })
+      });
 
     if (discordUser.id === bot.applicationId)
       // eslint-disable-next-line no-bitwise
