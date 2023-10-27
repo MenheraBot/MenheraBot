@@ -1,6 +1,7 @@
 import farmerRepository from '../../database/repositories/farmerRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../types/interaction';
+import { postFazendinhaAction } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { displayPlantations } from './displayPlantations';
 import { getPlantationState } from './plantationState';
@@ -63,6 +64,12 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
           : farmer.plantedFields + 1
         : farmer.plantedFields,
       updateStats && farmer.plantedFields === 9 ? farmer.biggestSeed + 1 : farmer.biggestSeed,
+    );
+
+    postFazendinhaAction(
+      `${ctx.user.id}`,
+      field.plantType,
+      state === 'ROTTEN' ? 'ROTTED' : 'HARVEST',
     );
   }
 
