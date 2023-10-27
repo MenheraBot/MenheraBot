@@ -241,7 +241,7 @@
       "success": "Suas plantas foram vendidas por **{{amount}}** :star: estrelinhas"
     },
     "buy_seeds": {
-      "buy-seed-of": "Comprar semente de {{plant}}",  
+      "buy-seed-of": "Comprar semente de {{plant}}",
       "plant-stats": "**Preço de Compra:** {{buyValue}} :star:\n**Valor de venda:** {{sellValue}} :star:\n**Amadurece em:** {{harvestTime}} minutos\n**Apodrece em** {{rotTime}} minutos",
       "seed": "Semente de {{plant}}",
       "success": "Você gastou **{{amount}}** :star: estrelinhas comprando sementes. Hora de plantá-las {{command}}",
@@ -533,6 +533,11 @@
       "success": "Suas configurações de notificação de compras foram alteradas!",
       "notify-footer": "Com notificar compras ativo, toda vez que um usuário comprar um design seu, a Menhera tentará enviar uma mensagem em sua DM mostrando isso",
       "description": "**Tipo:** $t(common:theme_types.{{type}})\n**Royalty:**: {{royalty}}%\n**Lucro:** {{profit}} :star:\n**Vendidos:** {{sold}}\nRegistrado em {{registered}}"
+    },
+    "fazendeiro": {
+      "title": "Estatísticas da Fazenda de {{user}}",
+      "field-data": "**Colheu:** {{harvest}}\n**Estragou:** {{rotted}}",
+      "error": "Oops! Não encontrei os dados desse fazendeiro... Ele pode nunca ter usado o comando, ou eu posso estar doente :("
     },
     "coinflip": {
       "embed-title": "Estatísticas do Coinflip de {{user}}",

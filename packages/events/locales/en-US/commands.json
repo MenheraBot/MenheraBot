@@ -236,7 +236,7 @@
       "success": "Your plants were sold for **{{amount}}** :star: little stars"
     },
     "buy_seeds": {
-      "buy-seed-of": "Buy {{plant}} seed",  
+      "buy-seed-of": "Buy {{plant}} seed",
       "plant-stats": "**Buy Value**: {{buyValue}} :star:\n**Sell Value:** {{sellValue}} :star:\n**Ripens in:** {{harvestTime}} minutes\n**Rots in** {{rotTime}} minutes",
       "seed": "{{plant}} seed",
       "success": "You spent **{{amount}}** :star: little stars buying seeds. Time to plant them {{command}}",
@@ -528,6 +528,11 @@
       "dont-notify": "Do Not Notify Purchases",
       "notify-footer": "With notify purchases active, every time a user buys a design from you, Menhera will try to send a message in your DM showing this",
       "description": "**Type:** $t(common:theme_types.{{type}})\n**Royalty:**: {{royalty}}%\n**Profit:** {{profit}} :star:\n**Sold:** {{sold}}\nRegistered at {{registered}}"
+    },
+    "fazendeiro": {
+      "title": "{{user}}'s Farm Statistics",
+      "field-data": "**Harvest:** {{harvest}}\n**Rotted:** {{rotted}}",
+      "error": "Oops! I didn't find this farmer's data... He may never have used the command, or I may be sick :("
     },
     "coinflip": {
       "embed-title": "{{user}}'s Coinflip Statistics",

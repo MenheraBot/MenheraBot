@@ -235,15 +235,15 @@ const postFazendinhaAction = async (
   await dataRequest.post('/statistics/fazendinha', { userId, plant, action }).catch(debugError);
 };
 
-/* const getFazendinhaStatistics = async (
-  userId: string,
+const getFazendinhaStatistics = async (
+  userId: BigString,
 ): Promise<null | { plant: AvailablePlants; rotted: number; harvest: number }[]> => {
   const result = await dataRequest.get(`/statistics/fazendinha?userId=${userId}`).catch(debugError);
 
   if (!result) return null;
 
   return result.data;
-}; */
+};
 
 export {
   postHuntExecution,
@@ -251,6 +251,7 @@ export {
   postCoinflipMatch,
   getMostUsedCommands,
   getUserTransactions,
+  getFazendinhaStatistics,
   getGamblingGameStats,
   postRoulleteGame,
   postBlackjackGame,
