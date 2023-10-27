@@ -1,0 +1,34 @@
+name: Make BETA build
+
+on:
+  push:
+    branches:
+      - beta
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-publish-images:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build the image
+        run: docker build . --file Dockerfile --tag beta --target events --label "runnumber=${GITHUB_RUN_ID}"
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+      - name: Publish image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/beta
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=latest
+          docker tag beta $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
