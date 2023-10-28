@@ -10,8 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - O comando `/perfil` está **MUITO** mais rápido! Tanto na primeira execução, quanto na segunda (na segunda está extremamente rápido, quase instantâneo)
-- O comando `/top comandos tipo:comandos mais usados de um usuário` está **MUITO** mais rápido! É praticamente instantâneo.
-- A página máxima do top foi reduzida de `100` para `99`.
+- O comando `/top comandos tipo:comandos mais usados de um usuário` está **MUITO** mais rápido! É praticamente instantâneo
+- A página máxima do top foi reduzida de `100` para `99`
+- O comando `/top economia` foi renomeado para `/top diversos`
 
 ## [5.9.4-HALLOWEEN] - 2023-10-28
 

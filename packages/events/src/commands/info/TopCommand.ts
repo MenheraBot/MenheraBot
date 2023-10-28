@@ -2,7 +2,7 @@ import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
 import { ApiHuntingTypes, DatabaseHuntingTypes } from '../../modules/hunt/types';
 import { createCommand } from '../../structures/command/createCommand';
-import { COLORS, EMOJIS, transactionableCommandOption } from '../../structures/constants';
+import { COLORS, transactionableCommandOption } from '../../structures/constants';
 import { DatabaseUserSchema } from '../../types/database';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { createActionRow, createButton } from '../../utils/discord/componentUtils';
@@ -12,23 +12,7 @@ import { executeUserDataRelatedTop } from '../../modules/top/userDataRelated';
 import { executeUsedCommandsByUserTop } from '../../modules/top/usedCommandsByUser';
 import { executeUsedCommandsTop } from '../../modules/top/usedCommands';
 import { executeUserCommandsTop } from '../../modules/top/userCommands';
-
-const topEmojis: { [key: string]: string } = {
-  mamou: EMOJIS.crown,
-  mamado: EMOJIS.lick,
-  estrelinhas: EMOJIS.estrelinhas,
-  demons: EMOJIS.demons,
-  giants: EMOJIS.giants,
-  angels: EMOJIS.angels,
-  archangels: EMOJIS.archangels,
-  demigods: EMOJIS.demigods,
-  gods: EMOJIS.gods,
-  votes: EMOJIS.ok,
-  blackjack: '🃏',
-  coinflip: '📀',
-  roulette: '🎡',
-  bicho: '🦌',
-};
+import { topEmojis } from '../../modules/top';
 
 const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [command] = ctx.sentData;
@@ -123,8 +107,8 @@ const TopCommand = createCommand({
       ],
     },
     {
-      name: 'economia',
-      nameLocalizations: { 'en-US': 'economy' },
+      name: 'diversos',
+      nameLocalizations: { 'en-US': 'misc' },
       type: ApplicationCommandOptionTypes.SubCommand,
       description: '「⭐」・Veja os melhores usuários da Menhera',
       descriptionLocalizations: { 'en-US': "「⭐」・See Menhera's best users" },
@@ -395,7 +379,7 @@ const TopCommand = createCommand({
 
     switch (command) {
       case 'caças':
-      case 'economia': {
+      case 'diversos': {
         const type = ctx.getOption<keyof DatabaseUserSchema>(
           command === 'caças' ? 'caça' : 'tipo',
           false,
