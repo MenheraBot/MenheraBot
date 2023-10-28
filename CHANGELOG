@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - O comando `/top estatísticas apostas` está **MUITO** mais rápido!
 
+### Fixed
+
+- O comando `/perfil` voltou a mostrar as informações de comandos de usuários!
+
 ## [5.9.3-HALLOWEEN] - 2023-10-23
 
 ### Added
