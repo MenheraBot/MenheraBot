@@ -13,6 +13,7 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
   plantedFields: user.plantedFields,
   seeds: user.seeds,
   silo: user.silo,
+  lastPlantedSeed: user.lastPlantedSeed,
 });
 
 const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
@@ -116,7 +117,7 @@ const executePlant = async (
   const updatedUser = await farmerModel.findOneAndUpdate(
     { id: `${farmerId}` },
     {
-      $set: { [`plantations.${fieldIndex}`]: field },
+      $set: { [`plantations.${fieldIndex}`]: field, lastPlantedSeed: seed },
       $inc: {
         [`seeds.$[elem].amount`]: seed === AvailablePlants.Mate ? 0 : -1,
       },

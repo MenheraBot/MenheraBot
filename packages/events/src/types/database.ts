@@ -116,6 +116,7 @@ export interface DatabaseFarmerSchema {
   silo: QuantitativePlant[];
   biggestSeed: number;
   plantedFields: number;
+  lastPlantedSeed: AvailablePlants;
 }
 
 export type UserIdType = string | bigint;

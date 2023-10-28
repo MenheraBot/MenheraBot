@@ -3,8 +3,8 @@ import farmerRepository from '../../database/repositories/farmerRepository';
 import { createCommand } from '../../structures/command/createCommand';
 import { displayPlantations } from '../../modules/fazendinha/displayPlantations';
 import { changeSelectedSeed, executeFieldAction } from '../../modules/fazendinha/fieldAction';
-import { AvailablePlants } from '../../modules/fazendinha/types';
 import { displaySilo, handleButtonAction } from '../../modules/fazendinha/displaySilo';
+import { AvailablePlants } from '../../modules/fazendinha/types';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -47,7 +47,12 @@ const FazendinhaCommand = createCommand({
     const farmer = await farmerRepository.getFarmer(ctx.author.id);
 
     if (command === 'plantações')
-      return displayPlantations(ctx, farmer, ctx.authorData.selectedColor, AvailablePlants.Mate);
+      return displayPlantations(
+        ctx,
+        farmer,
+        ctx.authorData.selectedColor,
+        farmer.lastPlantedSeed ?? AvailablePlants.Mate,
+      );
 
     if (command === 'silo') return displaySilo(ctx, farmer, ctx.authorData.selectedColor);
   },

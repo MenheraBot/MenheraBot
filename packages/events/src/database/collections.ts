@@ -108,6 +108,7 @@ const farmerSchema = new Schema({
   silo: { type: Array, default: [] },
   biggestSeed: { type: Number, default: 0 },
   plantedFields: { type: Number, default: 0 },
+  lastPlantedSeed: { type: Number, default: 0 },
 });
 
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
