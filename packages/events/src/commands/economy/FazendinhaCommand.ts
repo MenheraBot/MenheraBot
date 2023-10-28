@@ -46,12 +46,18 @@ const FazendinhaCommand = createCommand({
 
     const farmer = await farmerRepository.getFarmer(ctx.author.id);
 
+    const lastPlantedSeedFromSilo = farmer.seeds.find(
+      (b) => b.plant === farmer.lastPlantedSeed ?? AvailablePlants.Mate,
+    );
+
     if (command === 'plantações')
       return displayPlantations(
         ctx,
         farmer,
         ctx.authorData.selectedColor,
-        farmer.lastPlantedSeed ?? AvailablePlants.Mate,
+        typeof lastPlantedSeedFromSilo === 'undefined' || lastPlantedSeedFromSilo.amount <= 0
+          ? AvailablePlants.Mate
+          : lastPlantedSeedFromSilo.plant,
       );
 
     if (command === 'silo') return displaySilo(ctx, farmer, ctx.authorData.selectedColor);
