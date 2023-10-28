@@ -1,34 +1,17 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
-import { User } from 'discordeno/transformers';
-import blacklistRepository from '../../database/repositories/blacklistRepository';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import userRepository from '../../database/repositories/userRepository';
 import { ApiHuntingTypes, DatabaseHuntingTypes } from '../../modules/hunt/types';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { createCommand } from '../../structures/command/createCommand';
 import { COLORS, EMOJIS, transactionableCommandOption } from '../../structures/constants';
 import { DatabaseUserSchema } from '../../types/database';
-import {
-  getMostUsedCommands,
-  getTopGamblingUsers,
-  getTopHunters,
-  getUserProfileInfo,
-  getUsersThatMostUsedCommands,
-} from '../../utils/apiRequests/statistics';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { capitalize } from '../../utils/miscUtils';
-
-const calculateSkipCount = (page: number, documents = 1000): number => {
-  if (!Number.isNaN(page) && page > 0) {
-    if (page >= documents / 10) return documents / 10;
-    return (page - 1) * 10;
-  }
-  return 0;
-};
+import { createActionRow, createButton } from '../../utils/discord/componentUtils';
+import { executeGamblingTop } from '../../modules/top/gamblingTop';
+import { executeTopHuntStatistics } from '../../modules/top/huntStatistics';
+import { executeUserDataRelatedTop } from '../../modules/top/userDataRelated';
+import { executeUsedCommandsByUserTop } from '../../modules/top/usedCommandsByUser';
+import { executeUsedCommandsTop } from '../../modules/top/usedCommands';
+import { executeUserCommandsTop } from '../../modules/top/userCommands';
 
 const topEmojis: { [key: string]: string } = {
   mamou: EMOJIS.crown,
@@ -74,7 +57,7 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
   if (command === 'economy') {
     const [, type, page] = ctx.sentData;
 
-    return executeUserDataRelatedRanking(
+    return executeUserDataRelatedTop(
       ctx,
       type as keyof DatabaseUserSchema,
       topEmojis[type],
@@ -89,7 +72,7 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
   if (command === 'hunt') {
     const [, type, topMode, page] = ctx.sentData;
 
-    return executeHuntStatistics(
+    return executeTopHuntStatistics(
       ctx,
       type as ApiHuntingTypes,
       topMode as 'success',
@@ -101,409 +84,7 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
   const [, gameMode, topMode, page] = ctx.sentData;
 
   if (command === 'gambling')
-    return topUserResponseBasedBets(
-      ctx,
-      gameMode as 'bicho',
-      topMode as 'money',
-      Number(page),
-      noop,
-    );
-};
-
-const executeUserDataRelatedRanking = async (
-  ctx: ChatInputInteractionContext | ComponentInteractionContext,
-  label: keyof DatabaseUserSchema,
-  emoji: string,
-  embedTitle: string,
-  actor: string,
-  page: number,
-  color: number,
-  finishCommand: () => void,
-): Promise<void> => {
-  const skip = calculateSkipCount(page);
-
-  const res = await userRepository.getTopRanking(
-    label,
-    skip,
-    await cacheRepository.getDeletedAccounts(),
-  );
-
-  const embed = createEmbed({
-    title: `${emoji} | ${embedTitle} ${page > 1 ? page : 1}º`,
-    color,
-    fields: [],
-  });
-
-  const members = await Promise.all(
-    res.map((a) => cacheRepository.getDiscordUser(`${a.id}`, page <= 3)),
-  );
-
-  for (let i = 0; i < res.length; i++) {
-    const member = members[i];
-    const memberName = member ? getDisplayName(member) : `ID ${res[i].id}`;
-
-    if (member) {
-      if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
-      if (member.username.startsWith('Deleted User'))
-        cacheRepository.addDeletedAccount([`${res[i].id}`]);
-    }
-
-    embed.fields?.push({
-      name: `**${skip + 1 + i} -** ${memberName}`,
-      value: `${actor}: **${res[i].value}**`,
-      inline: false,
-    });
-  }
-
-  const backButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'economy',
-      label,
-      page === 0 ? 1 : page - 1,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('common:back'),
-    disabled: page < 2,
-  });
-
-  const nextButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'economy',
-      label,
-      page === 0 ? 2 : page + 1,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('common:next'),
-    disabled: page === 100,
-  });
-
-  ctx.makeMessage({ embeds: [embed], components: [createActionRow([backButton, nextButton])] });
-
-  finishCommand();
-};
-
-const executeMostUsedCommands = async (
-  ctx: ChatInputInteractionContext,
-  finishCommand: () => void,
-): Promise<void> => {
-  const res = await getMostUsedCommands();
-
-  if (!res) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
-
-    return finishCommand();
-  }
-
-  const embed = createEmbed({
-    title: ctx.prettyResponse('robot', 'commands:top.commands'),
-    color: 0xf47fff,
-    fields: [],
-  });
-
-  for (let i = 0; i < res.length; i++)
-    embed.fields?.push({
-      name: `**${i + 1} -** ${capitalize(res[i].name)}`,
-      value: `${ctx.locale('commands:top.used')} **${res[i].usages}** ${ctx.locale(
-        'commands:top.times',
-      )}`,
-      inline: false,
-    });
-
-  ctx.makeMessage({ embeds: [embed] });
-  finishCommand();
-};
-
-const executeMostUsersThatUsedCommands = async (
-  ctx: ChatInputInteractionContext,
-  finishCommand: () => void,
-): Promise<void> => {
-  const res = await getUsersThatMostUsedCommands();
-
-  if (!res) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
-
-    return finishCommand();
-  }
-
-  const embed = createEmbed({
-    title: ctx.prettyResponse('smile', 'commands:top.users'),
-    color: 0xf47fff,
-    fields: [],
-  });
-
-  const members = await Promise.all(res.map((a) => cacheRepository.getDiscordUser(`${a.id}`)));
-
-  for (let i = 0; i < res.length; i++) {
-    const member = members[i];
-
-    if (member) {
-      if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
-      if (member.username.startsWith('Deleted User'))
-        cacheRepository.addDeletedAccount([res[i].id]);
-    }
-
-    embed.fields?.push({
-      name: `**${i + 1} -** ${member ? getDisplayName(member) : `ID ${res[i].id}`}`,
-      value: `${ctx.locale('commands:top.use')} **${res[i].uses}** ${ctx.locale(
-        'commands:top.times',
-      )}`,
-      inline: false,
-    });
-  }
-
-  ctx.makeMessage({ embeds: [embed] });
-
-  finishCommand();
-};
-
-const executeMostUsedCommandsFromUser = async (
-  ctx: ChatInputInteractionContext,
-  finishCommand: () => void,
-): Promise<void> => {
-  const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
-
-  if (!user) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:top.not-user') });
-
-    return finishCommand();
-  }
-
-  const res = await getUserProfileInfo(user.id);
-
-  if (!res || res.cmds.count === 0) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:top.not-user') });
-
-    return finishCommand();
-  }
-
-  const embed = createEmbed({
-    title: ctx.prettyResponse('smile', 'commands:top.user', { user: user.username }),
-    color: 0xf47fff,
-    fields: [],
-  });
-
-  for (let i = 0; i < res.array.length; i++) {
-    if (i > 10) break;
-
-    embed.fields?.push({
-      name: `**${i + 1} -** ${capitalize(res.array[i].name)}`,
-      value: `${ctx.locale('commands:top.use')} **${res.array[i].count}** ${ctx.locale(
-        'commands:top.times',
-      )}`,
-      inline: false,
-    });
-  }
-
-  ctx.makeMessage({ embeds: [embed] });
-  finishCommand();
-};
-
-const executeHuntStatistics = async (
-  ctx: ChatInputInteractionContext | ComponentInteractionContext,
-  type: ApiHuntingTypes,
-  topMode: 'success',
-  page: number,
-  finishCommand: () => void,
-): Promise<void> => {
-  const skip = calculateSkipCount(page);
-
-  const bannedUsers = blacklistRepository.getAllBannedUsersId();
-  const deletedAccounts = cacheRepository.getDeletedAccounts();
-
-  const usersToIgnore = await Promise.all([bannedUsers, deletedAccounts]).then((a) =>
-    a[0].concat(a[1]),
-  );
-
-  const results = await getTopHunters(skip, usersToIgnore, type, topMode);
-
-  if (!results) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
-
-    return finishCommand();
-  }
-
-  const embed = createEmbed({
-    title: ctx.locale('commands:top.estatisticas.cacar.title', {
-      type: ctx.locale(`commands:top.estatisticas.cacar.${type}`),
-      page: page > 1 ? page : 1,
-      emoji: topEmojis[`${type}s`],
-    }),
-    description: ctx.locale(`commands:top.estatisticas.cacar.description.${topMode}`),
-    color: COLORS.Pinkie,
-    fields: [],
-  });
-
-  const members = await Promise.all(
-    results.map((a) => cacheRepository.getDiscordUser(`${a.user_id}`, page <= 3)),
-  );
-
-  for (let i = 0; i < results.length; i++) {
-    const member = members[i];
-
-    if (member) {
-      if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
-      if (member.username.startsWith('Deleted User'))
-        cacheRepository.addDeletedAccount([`${member.id}`]);
-    }
-
-    const userData = results[i];
-
-    embed.fields?.push({
-      name: `**${skip + i + 1} -** ${member ? getDisplayName(member) : `ID ${userData.user_id}`}`,
-      value: ctx.locale('commands:top.estatisticas.cacar.description.text', {
-        hunted: userData[`${type}_hunted`],
-        success: userData[`${type}_success`],
-        tries: userData[`${type}_tries`],
-      }),
-      inline: true,
-    });
-  }
-
-  const backButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'hunt',
-      type,
-      topMode,
-      page === 0 ? 1 : page - 1,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('common:back'),
-    disabled: page < 2,
-  });
-
-  const nextButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'hunt',
-      type,
-      topMode,
-      page === 0 ? 2 : page + 1,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('common:next'),
-    disabled: page === 100,
-  });
-
-  ctx.makeMessage({ embeds: [embed], components: [createActionRow([backButton, nextButton])] });
-  finishCommand();
-};
-
-const topUserResponseBasedBets = async (
-  ctx: ChatInputInteractionContext | ComponentInteractionContext,
-  gameMode: 'bicho' | 'roulette' | 'coinflip' | 'blackjack',
-  topMode: 'money',
-  page: number,
-  finishCommand: () => void,
-) => {
-  const skip = calculateSkipCount(page);
-
-  const bannedUsers = blacklistRepository.getAllBannedUsersId();
-  const deletedAccounts = cacheRepository.getDeletedAccounts();
-
-  const usersToIgnore = await Promise.all([bannedUsers, deletedAccounts]).then((a) =>
-    a[0].concat(a[1]),
-  );
-
-  const results = await getTopGamblingUsers(skip, usersToIgnore, topMode, gameMode);
-
-  if (!results) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
-
-    return finishCommand();
-  }
-
-  const embed = createEmbed({
-    title: ctx.locale('commands:top.estatisticas.apostas.title', {
-      type: ctx.locale(`commands:top.estatisticas.apostas.${gameMode}`),
-      page: page > 1 ? page : 1,
-      emoji: topEmojis[gameMode],
-    }),
-    description: ctx.locale(`commands:top.estatisticas.apostas.description.${topMode}`),
-    color: COLORS.Pinkie,
-    fields: [],
-  });
-
-  const members = await Promise.all(
-    results.map((a) => cacheRepository.getDiscordUser(`${a.user_id}`, page <= 3)),
-  );
-
-  for (let i = 0; i < results.length; i++) {
-    const member = members[i];
-
-    if (member) {
-      if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
-
-      if (member.username.startsWith('Deleted Account'))
-        cacheRepository.addDeletedAccount([`${member.id}`]);
-    }
-
-    const userData = results[i];
-
-    embed.fields?.push({
-      name: `**${skip + i + 1} -** ${
-        member ? getDisplayName(member) : `ID ${results[i].user_id}>`
-      }`,
-      value: ctx.locale('commands:top.estatisticas.apostas.description.text', {
-        earnMoney: userData.earn_money.toLocaleString(ctx.interaction.locale),
-        lostMoney: userData.lost_money.toLocaleString(ctx.interaction.locale),
-        lostGames: userData.lost_games,
-        wonGames: userData.won_games,
-        winPercentage:
-          (((userData.won_games ?? 0) / (userData.won_games + userData.lost_games)) * 100).toFixed(
-            2,
-          ) || 0,
-        lostPercentage:
-          (((userData.lost_games ?? 0) / (userData.won_games + userData.lost_games)) * 100).toFixed(
-            2,
-          ) || 0,
-      }),
-      inline: false,
-    });
-  }
-
-  const backButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'gambling',
-      gameMode,
-      topMode,
-      page === 0 ? 1 : page - 1,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('common:back'),
-    disabled: page < 2,
-  });
-
-  const nextButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'gambling',
-      gameMode,
-      topMode,
-      page === 0 ? 2 : page + 1,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('common:next'),
-    disabled: page === 100,
-  });
-
-  ctx.makeMessage({ embeds: [embed], components: [createActionRow([backButton, nextButton])] });
-  finishCommand();
+    return executeGamblingTop(ctx, gameMode as 'bicho', topMode as 'money', Number(page), noop);
 };
 
 const TopCommand = createCommand({
@@ -537,7 +118,7 @@ const TopCommand = createCommand({
           descriptionLocalizations: { 'en-US': 'Top page you want to see' },
           required: false,
           minValue: 2,
-          maxValue: 100,
+          maxValue: 99,
         },
       ],
     },
@@ -586,7 +167,7 @@ const TopCommand = createCommand({
           descriptionLocalizations: { 'en-US': 'Top page you want to see' },
           required: false,
           minValue: 2,
-          maxValue: 100,
+          maxValue: 99,
         },
       ],
     },
@@ -745,7 +326,7 @@ const TopCommand = createCommand({
               descriptionLocalizations: { 'en-US': 'Top page you want to see' },
               required: false,
               minValue: 2,
-              maxValue: 100,
+              maxValue: 99,
             },
           ],
         },
@@ -798,7 +379,7 @@ const TopCommand = createCommand({
               descriptionLocalizations: { 'en-US': 'Top page you want to see' },
               required: false,
               minValue: 2,
-              maxValue: 100,
+              maxValue: 99,
             },
           ],
         },
@@ -823,7 +404,7 @@ const TopCommand = createCommand({
 
         const page = ctx.getOption<number>('página', false) ?? 0;
 
-        return executeUserDataRelatedRanking(
+        return executeUserDataRelatedTop(
           ctx,
           type,
           topEmojis[type],
@@ -837,13 +418,13 @@ const TopCommand = createCommand({
       case 'comandos': {
         const type = ctx.getOption<'commands' | 'user'>('tipo', false, true);
 
-        if (type === 'commands') return executeMostUsedCommands(ctx, finishCommand);
-        return executeMostUsedCommandsFromUser(ctx, finishCommand);
+        if (type === 'commands') return executeUsedCommandsTop(ctx, finishCommand);
+        return executeUsedCommandsByUserTop(ctx, finishCommand);
       }
       case 'usuários': {
         const type = ctx.getOption<'command' | 'users'>('tipo', false, true);
 
-        if (type === 'users') return executeMostUsersThatUsedCommands(ctx, finishCommand);
+        if (type === 'users') return executeUserCommandsTop(ctx, finishCommand);
 
         break;
       }
@@ -854,7 +435,7 @@ const TopCommand = createCommand({
         const topMode = ctx.getOption<'success'>('ordenar', false, true);
         const page = ctx.getOption<number>('página', false) ?? 0;
 
-        return executeHuntStatistics(ctx, huntType, topMode, page, finishCommand);
+        return executeTopHuntStatistics(ctx, huntType, topMode, page, finishCommand);
       }
 
       case 'apostas': {
@@ -866,7 +447,7 @@ const TopCommand = createCommand({
         const topMode = ctx.getOption<'money'>('ordenar', false, true);
         const page = ctx.getOption<number>('página', false) ?? 0;
 
-        return topUserResponseBasedBets(ctx, gameMode, topMode, page, finishCommand);
+        return executeGamblingTop(ctx, gameMode, topMode, page, finishCommand);
       }
     }
   },
