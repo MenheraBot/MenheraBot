@@ -7,10 +7,8 @@ import {
   ApiTransactionReason,
   ApiUserProfileStats,
   BanInfo,
-  BlackjackTop,
-  CoinflipTop,
   MayReturnError,
-  RouletteOrBichoTop,
+  TopGamblingUser,
   TopHunters,
   TransactionRegister,
 } from '../../types/api';
@@ -152,7 +150,7 @@ const getTopGamblingUsers = async (
   bannedUsers: string[],
   type: 'wins' | 'money',
   game: ApiGamblingGameCompatible,
-): Promise<RouletteOrBichoTop[] | CoinflipTop[] | BlackjackTop[] | null> => {
+): Promise<TopGamblingUser[] | null> => {
   const res = await dataRequest
     .get(`/statistics/${game}/top`, { data: { skip, bannedUsers, type } })
     .catch(() => null);
