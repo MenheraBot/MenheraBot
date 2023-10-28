@@ -1,11 +1,9 @@
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import { ApiHuntingTypes, DatabaseHuntingTypes } from '../../modules/hunt/types';
 import { createCommand } from '../../structures/command/createCommand';
 import { COLORS, transactionableCommandOption } from '../../structures/constants';
 import { DatabaseUserSchema } from '../../types/database';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { createActionRow, createButton } from '../../utils/discord/componentUtils';
 import { executeGamblingTop } from '../../modules/top/gamblingTop';
 import { executeTopHuntStatistics } from '../../modules/top/huntStatistics';
 import { executeUserDataRelatedTop } from '../../modules/top/userDataRelated';
@@ -13,63 +11,6 @@ import { executeUsedCommandsByUserTop } from '../../modules/top/usedCommandsByUs
 import { executeUsedCommandsTop } from '../../modules/top/usedCommands';
 import { executeUserCommandsTop } from '../../modules/top/userCommands';
 import { topEmojis } from '../../modules/top';
-
-const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [command] = ctx.sentData;
-
-  const noop = () => undefined;
-
-  await ctx.makeMessage({
-    components: [
-      createActionRow([
-        createButton({
-          customId: 'UNCLICKABLE_ONE',
-          label: ctx.locale('common:back'),
-          style: ButtonStyles.Primary,
-          disabled: true,
-        }),
-        createButton({
-          customId: 'UNCLICKABLE_TWO',
-          label: ctx.locale('common:next'),
-          style: ButtonStyles.Primary,
-          disabled: true,
-        }),
-      ]),
-    ],
-  });
-
-  if (command === 'economy') {
-    const [, type, page] = ctx.sentData;
-
-    return executeUserDataRelatedTop(
-      ctx,
-      type as keyof DatabaseUserSchema,
-      topEmojis[type],
-      ctx.locale(`commands:top.economia.${type as 'mamou'}-title`),
-      ctx.locale(`commands:top.economia.${type as 'mamou'}`),
-      Number(page),
-      COLORS.Purple,
-      noop,
-    );
-  }
-
-  if (command === 'hunt') {
-    const [, type, topMode, page] = ctx.sentData;
-
-    return executeTopHuntStatistics(
-      ctx,
-      type as ApiHuntingTypes,
-      topMode as 'success',
-      Number(page),
-      noop,
-    );
-  }
-
-  const [, gameMode, topMode, page] = ctx.sentData;
-
-  if (command === 'gambling')
-    return executeGamblingTop(ctx, gameMode as 'bicho', topMode as 'money', Number(page), noop);
-};
 
 const TopCommand = createCommand({
   path: '',
