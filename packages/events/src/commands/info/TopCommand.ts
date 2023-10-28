@@ -591,43 +591,87 @@ const TopCommand = createCommand({
       ],
     },
     {
-      type: ApplicationCommandOptionTypes.SubCommand,
-      name: 'comandos',
-      nameLocalizations: { 'en-US': 'commands' },
+      type: ApplicationCommandOptionTypes.SubCommandGroup,
+      name: 'usos',
+      nameLocalizations: { 'en-US': 'uses' },
       description: '「📟」・Veja os melhores sobre os comandos',
       descriptionLocalizations: { 'en-US': '「📟」・See the best about commands' },
       options: [
         {
-          type: ApplicationCommandOptionTypes.String,
-          name: 'tipo',
-          nameLocalizations: { 'en-US': 'type' },
-          description: 'O tipo de informação que queres ver',
-          descriptionLocalizations: { 'en-US': 'The type of information you want to see' },
-          required: true,
-          choices: [
+          type: ApplicationCommandOptionTypes.SubCommand,
+          name: 'comandos',
+          nameLocalizations: { 'en-US': 'commands' },
+          description: '「📟」・Veja informações dos comandos mais usados',
+          descriptionLocalizations: { 'en-US': '「📟」・See info about the most used commands' },
+          options: [
             {
-              name: 'Comandos Mais Usados',
-              nameLocalizations: { 'en-US': 'Most Used Commands' },
-              value: 'commands',
+              type: ApplicationCommandOptionTypes.String,
+              name: 'tipo',
+              nameLocalizations: { 'en-US': 'type' },
+              description: 'O tipo de informação que queres ver',
+              descriptionLocalizations: { 'en-US': 'The type of information you want to see' },
+              required: true,
+              choices: [
+                {
+                  name: 'Comandos mais usados',
+                  nameLocalizations: { 'en-US': 'Most used commands' },
+                  value: 'commands',
+                },
+                {
+                  name: 'Comandos mais usados de um usuário',
+                  nameLocalizations: { 'en-US': 'Most used commands by an user' },
+                  value: 'user',
+                },
+              ],
             },
             {
-              name: 'Usuários Que Mais Usaram Comandos',
-              nameLocalizations: { 'en-US': 'Users Who Used Commands Most' },
-              value: 'users',
-            },
-            {
-              name: 'Comandos Mais Usados De Um Usuário',
-              nameLocalizations: { 'en-US': 'Most Used Commands by A User' },
-              value: 'user',
+              type: ApplicationCommandOptionTypes.User,
+              name: 'user',
+              description: 'Usuário para ver os comandos mais usados',
+              descriptionLocalizations: { 'en-US': 'User to see most used commands' },
+              required: false,
             },
           ],
         },
         {
-          type: ApplicationCommandOptionTypes.User,
-          name: 'user',
-          description: 'Usuário para ver os comandos mais usados',
-          descriptionLocalizations: { 'en-US': 'User to see most used commands' },
-          required: false,
+          type: ApplicationCommandOptionTypes.SubCommand,
+          name: 'usuários',
+          nameLocalizations: { 'en-US': 'users' },
+          description: '「📟」・Veja informações sobre o uso de comandos de usuários',
+          descriptionLocalizations: { 'en-US': '「📟」・See info about command usage from users' },
+          options: [
+            {
+              type: ApplicationCommandOptionTypes.String,
+              name: 'tipo',
+              nameLocalizations: { 'en-US': 'type' },
+              description: 'O tipo de informação que queres ver',
+              descriptionLocalizations: { 'en-US': 'The type of information you want to see' },
+              required: true,
+              choices: [
+                {
+                  name: 'Usuários que mais usaram comandos',
+                  nameLocalizations: { 'en-US': 'Users that used commands the most' },
+                  value: 'users',
+                },
+                {
+                  name: 'Usuários que mais usaram um comando específico',
+                  nameLocalizations: { 'en-US': 'Users that used a specific command the most' },
+                  value: 'command',
+                },
+              ],
+            },
+            {
+              type: ApplicationCommandOptionTypes.Integer,
+              name: 'comando',
+              nameLocalizations: { 'en-US': 'command' },
+              description: 'Comando que você quer buscar pelos usuários que mais o usaram',
+              descriptionLocalizations: {
+                'en-US': 'Command you want to search for the users who used it the most',
+              },
+              required: false,
+              autocomplete: true,
+            },
+          ],
         },
       ],
     },
@@ -791,11 +835,17 @@ const TopCommand = createCommand({
         );
       }
       case 'comandos': {
-        const type = ctx.getOption<'commands' | 'users' | 'user'>('tipo', false, true);
+        const type = ctx.getOption<'commands' | 'user'>('tipo', false, true);
 
         if (type === 'commands') return executeMostUsedCommands(ctx, finishCommand);
-        if (type === 'users') return executeMostUsersThatUsedCommands(ctx, finishCommand);
         return executeMostUsedCommandsFromUser(ctx, finishCommand);
+      }
+      case 'usuários': {
+        const type = ctx.getOption<'command' | 'users'>('tipo', false, true);
+
+        if (type === 'users') return executeMostUsersThatUsedCommands(ctx, finishCommand);
+
+        break;
       }
 
       case 'caçar': {
