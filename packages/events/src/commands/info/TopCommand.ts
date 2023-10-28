@@ -8,7 +8,6 @@ import { ApiHuntingTypes, DatabaseHuntingTypes } from '../../modules/hunt/types'
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { createCommand } from '../../structures/command/createCommand';
 import { COLORS, EMOJIS, transactionableCommandOption } from '../../structures/constants';
-import { CoinflipTop, RouletteOrBichoTop } from '../../types/api';
 import { DatabaseUserSchema } from '../../types/database';
 import {
   getMostUsedCommands,
@@ -101,7 +100,7 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
 
   const [, gameMode, topMode, page] = ctx.sentData;
 
-  if (command === 'bicho')
+  if (command === 'gambling')
     return topUserResponseBasedBets(
       ctx,
       gameMode as 'bicho',
@@ -109,14 +108,6 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
       Number(page),
       noop,
     );
-
-  return topAccountResponseBets(
-    ctx,
-    gameMode as 'blackjack',
-    topMode as 'money',
-    Number(page),
-    noop,
-  );
 };
 
 const executeUserDataRelatedRanking = async (
@@ -410,7 +401,7 @@ const executeHuntStatistics = async (
 
 const topUserResponseBasedBets = async (
   ctx: ChatInputInteractionContext | ComponentInteractionContext,
-  gameMode: 'bicho' | 'roulette',
+  gameMode: 'bicho' | 'roulette' | 'coinflip' | 'blackjack',
   topMode: 'money',
   page: number,
   finishCommand: () => void,
@@ -424,12 +415,7 @@ const topUserResponseBasedBets = async (
     a[0].concat(a[1]),
   );
 
-  const results = (await getTopGamblingUsers(
-    skip,
-    usersToIgnore,
-    topMode,
-    gameMode,
-  )) as RouletteOrBichoTop[];
+  const results = await getTopGamblingUsers(skip, usersToIgnore, topMode, gameMode);
 
   if (!results) {
     ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
@@ -491,7 +477,7 @@ const topUserResponseBasedBets = async (
       0,
       ctx.interaction.user.id,
       ctx.commandId,
-      'bicho',
+      'gambling',
       gameMode,
       topMode,
       page === 0 ? 1 : page - 1,
@@ -506,123 +492,7 @@ const topUserResponseBasedBets = async (
       0,
       ctx.interaction.user.id,
       ctx.commandId,
-      'bicho',
-      gameMode,
-      topMode,
-      page === 0 ? 2 : page + 1,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('common:next'),
-    disabled: page === 100,
-  });
-
-  ctx.makeMessage({ embeds: [embed], components: [createActionRow([backButton, nextButton])] });
-  finishCommand();
-};
-
-const topAccountResponseBets = async (
-  ctx: ChatInputInteractionContext | ComponentInteractionContext,
-  gameMode: 'blackjack' | 'coinflip',
-  topMode: 'money',
-  page: number,
-  finishCommand: () => void,
-) => {
-  const skip = calculateSkipCount(page);
-
-  const bannedUsers = blacklistRepository.getAllBannedUsersId();
-  const deletedAccounts = cacheRepository.getDeletedAccounts();
-
-  const usersToIgnore = await Promise.all([bannedUsers, deletedAccounts]).then((a) =>
-    a[0].concat(a[1]),
-  );
-
-  const results = (await getTopGamblingUsers(
-    skip,
-    usersToIgnore,
-    topMode,
-    gameMode,
-  )) as CoinflipTop[];
-
-  if (!results) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
-
-    return finishCommand();
-  }
-
-  const embed = createEmbed({
-    title: ctx.locale('commands:top.estatisticas.apostas.title', {
-      type: ctx.locale(`commands:top.estatisticas.apostas.${gameMode}`),
-      page: page > 1 ? page : 1,
-      emoji: topEmojis[gameMode],
-    }),
-    description: ctx.locale(`commands:top.estatisticas.apostas.description.${topMode}`),
-    color: COLORS.Pinkie,
-    fields: [],
-  });
-
-  const members = await Promise.all(
-    results.map((a) => cacheRepository.getDiscordUser(`${a.id}`, page <= 3)),
-  );
-
-  for (let i = 0; i < results.length; i++) {
-    const member = members[i];
-
-    if (member) {
-      if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
-
-      if (member.username.startsWith('Deleted Account'))
-        cacheRepository.addDeletedAccount([`${member.id}`]);
-    }
-
-    const userData = results[i];
-
-    const baseField = (gameMode === 'blackjack' ? 'bj' : 'cf') as 'cf';
-
-    embed.fields?.push({
-      name: `**${skip + i + 1} -** ${member ? getDisplayName(member) : `ID ${userData.id}`}`,
-      value: ctx.locale('commands:top.estatisticas.apostas.description.text', {
-        earnMoney: userData[`${baseField}_win_money`].toLocaleString(ctx.interaction.locale),
-        lostMoney: userData[`${baseField}_lose_money`].toLocaleString(ctx.interaction.locale),
-        lostGames: userData[`${baseField}_loses`],
-        wonGames: userData[`${baseField}_wins`],
-        winPercentage:
-          (
-            ((userData[`${baseField}_wins`] ?? 0) /
-              (userData[`${baseField}_wins`] + userData[`${baseField}_loses`])) *
-            100
-          ).toFixed(2) || 0,
-        lostPercentage:
-          (
-            ((userData[`${baseField}_loses`] ?? 0) /
-              (userData[`${baseField}_wins`] + userData[`${baseField}_loses`])) *
-            100
-          ).toFixed(2) || 0,
-      }),
-      inline: false,
-    });
-  }
-
-  const backButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'blackjack',
-      gameMode,
-      topMode,
-      page === 0 ? 1 : page - 1,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('common:back'),
-    disabled: page < 2,
-  });
-
-  const nextButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'blackjack',
+      'gambling',
       gameMode,
       topMode,
       page === 0 ? 2 : page + 1,
@@ -946,10 +816,7 @@ const TopCommand = createCommand({
         const topMode = ctx.getOption<'money'>('ordenar', false, true);
         const page = ctx.getOption<number>('página', false) ?? 0;
 
-        if (gameMode === 'roulette' || gameMode === 'bicho')
-          return topUserResponseBasedBets(ctx, gameMode, topMode, page, finishCommand);
-
-        return topAccountResponseBets(ctx, gameMode, topMode, page, finishCommand);
+        return topUserResponseBasedBets(ctx, gameMode, topMode, page, finishCommand);
       }
     }
   },
