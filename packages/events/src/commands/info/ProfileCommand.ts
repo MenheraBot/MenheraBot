@@ -231,7 +231,7 @@ const ProfileCommand = createCommand({
     const usageCommands = await getUserProfileInfo(discordUser.id);
 
     if (usageCommands)
-      ctx.locale('commands:perfil.commands-usage', {
+      i18n.usages = ctx.locale('commands:perfil.commands-usage', {
         user: getDisplayName(discordUser, true),
         usedCount: usageCommands.cmds.count,
         mostUsedCommandName: usageCommands.array[0]?.name ?? 'nenhum',
