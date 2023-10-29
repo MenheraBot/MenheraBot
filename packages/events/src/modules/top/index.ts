@@ -15,7 +15,7 @@ import { executeUsedCommandsFromUserTop } from './usedCommandsFromUser';
 import { executeUserCommandsTop } from './userCommands';
 import { executeUsersByUsedCommandTop } from './usersByUsedCommand';
 
-const calculateSkipCount = (page: number): number => (page - 1) * 10;
+const calculateSkipCount = (page: number): number => (page > 1 ? page - 1 : 0) * 10;
 
 const topEmojis: { [key: string]: string } = {
   mamou: EMOJIS.crown,
