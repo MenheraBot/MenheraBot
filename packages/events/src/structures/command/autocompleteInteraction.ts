@@ -1,6 +1,6 @@
 import { Interaction } from 'discordeno/transformers';
 import { executeGivebadgeAutocomplete } from '../../modules/badges/givebadgeCommandAutocompleteInteraction';
-import { executeCommandIdAutocomplete } from '../../modules/top/commandIdAutocompleteInteraction';
+import { executeCommandNameAutocomplete } from '../../modules/top/commandIdAutocompleteInteraction';
 
 const autocompleteInteraction = (interaction: Interaction): void => {
   const commandName = interaction.data?.name;
@@ -10,7 +10,7 @@ const autocompleteInteraction = (interaction: Interaction): void => {
       executeGivebadgeAutocomplete(interaction);
       break;
     case 'top':
-      executeCommandIdAutocomplete(interaction);
+      executeCommandNameAutocomplete(interaction);
       break;
   }
 };

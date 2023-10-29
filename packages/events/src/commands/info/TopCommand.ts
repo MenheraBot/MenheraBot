@@ -13,6 +13,7 @@ import { executeUsedCommandsTop } from '../../modules/top/usedCommands';
 import { executeUserCommandsTop } from '../../modules/top/userCommands';
 import { executeTopPagination, topEmojis } from '../../modules/top';
 import { executeUsersByUsedCommandTop } from '../../modules/top/usersByUsedCommand';
+import { bot } from '../..';
 
 const TopCommand = createCommand({
   path: '',
@@ -179,7 +180,7 @@ const TopCommand = createCommand({
               ],
             },
             {
-              type: ApplicationCommandOptionTypes.Integer,
+              type: ApplicationCommandOptionTypes.String,
               name: 'comando',
               nameLocalizations: { 'en-US': 'command' },
               description: 'Comando que você quer buscar pelos usuários que mais o usaram',
@@ -380,14 +381,26 @@ const TopCommand = createCommand({
         if (type === 'users')
           return executeUserCommandsTop(ctx, page, ctx.authorData.selectedColor);
 
-        const commandId = ctx.getOption<number>('comando', false);
+        const commandName = ctx.getOption<string>('comando', false);
 
-        if (!commandId)
+        if (!commandName)
           return ctx.makeMessage({
             content: ctx.prettyResponse('error', 'commands:top.command-required'),
           });
 
-        return executeUsersByUsedCommandTop(ctx, 0, page, ctx.authorData.selectedColor);
+        const commandInMenhera = bot.commands.get(commandName);
+
+        if (!commandInMenhera)
+          return ctx.makeMessage({
+            content: ctx.prettyResponse('error', 'permissions:UNKNOWN_SLASH'),
+          });
+
+        return executeUsersByUsedCommandTop(
+          ctx,
+          commandInMenhera.name,
+          page,
+          ctx.authorData.selectedColor,
+        );
       }
 
       case 'caçar': {

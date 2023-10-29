@@ -1,9 +1,9 @@
 import { ApplicationCommandOptionChoice, Interaction } from 'discordeno/transformers';
 import { InteractionResponseTypes } from 'discordeno/types';
+import { findBestMatch } from 'string-similarity';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
 import { debugError } from '../../utils/debugError';
 import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
-import { serachApiCommands } from '../../utils/apiRequests/commands';
 import { bot } from '../..';
 
 const respondWithChoices = (interaction: Interaction, choices: ApplicationCommandOptionChoice[]) =>
@@ -14,30 +14,52 @@ const respondWithChoices = (interaction: Interaction, choices: ApplicationComman
     },
   }).catch(debugError);
 
-const executeCommandIdAutocomplete = async (interaction: Interaction): Promise<void | null> => {
-  const input = getOptionFromInteraction<number>(interaction, 'comando', false, true);
+const namedCommands: ApplicationCommandOptionChoice[] = [];
 
-  if (`${input}`.length < 3) return respondWithChoices(interaction, []);
+const getCommandNames = () => {
+  if (namedCommands.length > 0) return namedCommands;
 
-  const result = await serachApiCommands(`${input}`);
+  const fromBot = bot.commands.array().reduce<ApplicationCommandOptionChoice[]>((p, c) => {
+    if (c.devsOnly) return p;
 
-  if (!result) return respondWithChoices(interaction, []);
+    p.push({ value: c.name, name: `/${c.name}`, nameLocalizations: c.nameLocalizations });
 
-  const choices = result.reduce<ApplicationCommandOptionChoice[]>((p, c) => {
-    if (p.length >= 25) return p;
-
-    const commandFromMenhera = bot.commands.get(c.name);
-
-    p.push({
-      name: c.name,
-      nameLocalizations: commandFromMenhera?.nameLocalizations,
-      value: Number(c.id),
-    });
+    if (c.nameLocalizations?.['en-US'])
+      p.push({
+        value: c.name,
+        name: `/${c.nameLocalizations['en-US']}`,
+        nameLocalizations: c.nameLocalizations,
+      });
 
     return p;
   }, []);
 
-  return respondWithChoices(interaction, choices);
+  namedCommands.push(...fromBot);
+
+  return namedCommands;
 };
 
-export { executeCommandIdAutocomplete };
+const executeCommandNameAutocomplete = async (interaction: Interaction): Promise<void | null> => {
+  const input = getOptionFromInteraction<string>(interaction, 'comando', false, true);
+
+  if (`${input}`.length < 3) return respondWithChoices(interaction, []);
+
+  const ratings = findBestMatch(
+    `${input}`,
+    getCommandNames().map((a) => a.name),
+  ).ratings.reduce<ApplicationCommandOptionChoice[]>((p, c) => {
+    if (p.length >= 25 || c.rating < 0.3) return p;
+
+    const command = namedCommands.find((a) => a.name === c.target);
+
+    if (!command) return p;
+
+    p.push(command);
+
+    return p;
+  }, []);
+
+  return respondWithChoices(interaction, ratings);
+};
+
+export { executeCommandNameAutocomplete };

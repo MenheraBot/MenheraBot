@@ -117,7 +117,7 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
   if (command === 'commands') return executeUsedCommandsTop(ctx, Number(page), firstInfo);
 
   if (command === 'command')
-    return executeUsersByUsedCommandTop(ctx, Number(firstInfo), Number(page), secondInfo);
+    return executeUsersByUsedCommandTop(ctx, firstInfo, Number(page), secondInfo);
 
   if (command === 'users') return executeUserCommandsTop(ctx, Number(page), firstInfo);
 

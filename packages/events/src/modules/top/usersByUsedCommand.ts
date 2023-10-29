@@ -7,14 +7,14 @@ import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 
 const executeUsersByUsedCommandTop = async (
   ctx: InteractionContext,
-  commandId: number,
+  commandName: string,
   page: number,
   embedColor: string,
 ): Promise<void> => {
   const skip = calculateSkipCount(page);
 
   const usersToIgnore = await usersToIgnoreInTop();
-  const res = await getTopUsersByUses(skip, usersToIgnore, commandId);
+  const res = await getTopUsersByUses(skip, usersToIgnore, commandName);
 
   if (!res || res.length === 0)
     return ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
@@ -48,7 +48,7 @@ const executeUsersByUsedCommandTop = async (
     });
   }
 
-  const pagination = createPaginationButtons(ctx, 'command', `${commandId}`, embedColor, page);
+  const pagination = createPaginationButtons(ctx, 'command', `${commandName}`, embedColor, page);
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   if (embed.fields!.length < 10) pagination.components[1]!.disabled = true;

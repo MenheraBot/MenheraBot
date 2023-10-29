@@ -120,10 +120,10 @@ const getTopCommandsByUses = async (
 const getTopUsersByUses = async (
   skip: number,
   bannedUsers: string[],
-  commandId?: number,
+  commandName?: string,
 ): Promise<{ id: string; uses: number; commandName: string }[] | null> => {
   const res = await dataRequest
-    .get(`/usages/top/users`, { params: { commandId, skip }, data: { bannedUsers } })
+    .get(`/usages/top/users`, { params: { commandName, skip }, data: { bannedUsers } })
     .catch(() => null);
 
   if (!res) return null;
