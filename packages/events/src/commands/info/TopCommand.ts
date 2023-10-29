@@ -11,6 +11,7 @@ import { executeUsedCommandsByUserTop } from '../../modules/top/usedCommandsByUs
 import { executeUsedCommandsTop } from '../../modules/top/usedCommands';
 import { executeUserCommandsTop } from '../../modules/top/userCommands';
 import { executeTopPagination, topEmojis } from '../../modules/top';
+import { executeUsersByUsedCommandTop } from '../../modules/top/usersByUsedCommand';
 
 const TopCommand = createCommand({
   path: '',
@@ -351,7 +352,7 @@ const TopCommand = createCommand({
 
         if (type === 'users') return executeUserCommandsTop(ctx, finishCommand);
 
-        break;
+        return executeUsersByUsedCommandTop(ctx, finishCommand);
       }
 
       case 'caçar': {
