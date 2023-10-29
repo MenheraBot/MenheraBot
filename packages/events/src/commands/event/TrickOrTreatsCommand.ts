@@ -573,6 +573,11 @@ const TrickOrTreatCommand = createCommand({
 
     if (action === 'tricks') return displayTricks(ctx);
 
+    if (Date.now() >= 1698807600000)
+      return ctx.makeMessage({
+        content: 'O evento de Halloween acabou! Gaste seus doces antes das 00:10',
+      });
+
     const eventUser = await eventRepository.getEventUser(ctx.author.id);
 
     const canHunt = eventUser.cooldown < Date.now();

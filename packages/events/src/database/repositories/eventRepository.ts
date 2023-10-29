@@ -55,4 +55,4 @@ const updateUser = async (userId: BigString, query: Partial<Halloween2023User>):
   }
 };
 
-export default { getEventUser, updateUser, getUserTrick, setUserTrick };
+export default { getEventUser, updateUser, getUserTrick, setUserTrick, parseMongoUserToRedisUser };
