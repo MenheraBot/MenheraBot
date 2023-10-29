@@ -5,14 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [5.9.5-HALLOWEEN] - 2023-10-28
+## [Unreleased]
+
+### Added
+
+- Adicionado dois novos comandos! `/top usos comandos` e `/top usos usuários`. Ambos possuem paginação. Cada um desses comandos tem mais dois comandos:
+  - `/top usos comandos`
+    - "Comandos mais usados" - Veja os comandos mais usados da Menhera
+    - "Comandos mais usados de um usuário" - Veja os comandos mais usados de um usuário (O mesmo que o antigo, porém **MUITO RÁPIDO**)
+  - `/top usos usuários`
+    - "Usuários que mais usaram comandos" - Veja os usuários que mais usaram comandos da Menhera
+    - "Usuários que mais usaram um comando específico" - Veja os usuários que mais usaram um comando em específico (deve-se enviar o nome do comando nas opções)
+
 
 ### Changed
 
 - O comando `/perfil` está **MUITO** mais rápido! Tanto na primeira execução, quanto na segunda (na segunda está extremamente rápido, quase instantâneo)
-- O comando `/top comandos tipo:comandos mais usados de um usuário` está **MUITO** mais rápido! É praticamente instantâneo
-- A página máxima do top foi reduzida de `100` para `99`
+- A página máxima dos tops foram reduzidas de `100` para `99`
 - O comando `/top economia` foi renomeado para `/top diversos`
+
+### Removed
+
+- O comando `/top comandos` foi removido.
 
 ## [5.9.4-HALLOWEEN] - 2023-10-28
 
