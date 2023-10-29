@@ -1,47 +1,43 @@
 import { User } from 'discordeno/transformers';
-import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
-import { createEmbed } from '../../utils/discord/embedUtils';
+import { getTopCommandsByUser } from '../../utils/apiRequests/statistics';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 import { InteractionContext } from '../../types/menhera';
+import { calculateSkipCount, createPaginationButtons } from '.';
+import { getDisplayName } from '../../utils/discord/userUtils';
 
 const executeUsedCommandsByUserTop = async (
   ctx: InteractionContext,
   user: User,
   page: number,
+  embedColor: string,
 ): Promise<void> => {
-  if (!user) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:top.not-user') });
+  const skip = calculateSkipCount(page);
+  const res = await getTopCommandsByUser(user.id, skip);
 
-    return;
-  }
-
-  const res = await getUserProfileInfo(user.id);
-
-  if (!res || res.cmds.count === 0) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:top.not-user') });
-
-    return;
-  }
+  if (!res || res.length === 0)
+    return ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
 
   const embed = createEmbed({
-    title: ctx.prettyResponse('smile', 'commands:top.user', { user: user.username }),
-    color: 0xf47fff,
+    title: ctx.prettyResponse('smile', 'commands:top.user', { user: getDisplayName(user), page }),
+    color: hexStringToNumber(embedColor),
     fields: [],
   });
 
-  for (let i = 0; i < res.array.length; i++) {
-    if (i > 10) break;
-
+  for (let i = 0; i < res.length; i++) {
     embed.fields?.push({
-      name: `**${i + 1} -** ${capitalize(res.array[i].name)}`,
-      value: `${ctx.locale('commands:top.use')} **${res.array[i].count}** ${ctx.locale(
-        'commands:top.times',
-      )}`,
+      name: `**${skip + i + 1} -** ${capitalize(res[i].name)}`,
+      value: ctx.locale('commands:top.use', { times: res[i].uses }),
       inline: false,
     });
   }
 
-  ctx.makeMessage({ embeds: [embed] });
+  const pagination = createPaginationButtons(ctx, 'user', `${user.id}`, embedColor, page);
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  if (embed.fields!.length < 10) pagination.components[1]!.disabled = true;
+
+  ctx.makeMessage({ embeds: [embed], components: [pagination] });
 };
 
 export { executeUsedCommandsByUserTop };

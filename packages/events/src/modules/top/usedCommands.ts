@@ -1,10 +1,14 @@
 import { calculateSkipCount, createPaginationButtons } from '.';
 import { InteractionContext } from '../../types/menhera';
 import { getMostUsedCommands } from '../../utils/apiRequests/statistics';
-import { createEmbed } from '../../utils/discord/embedUtils';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 
-const executeUsedCommandsTop = async (ctx: InteractionContext, page: number): Promise<void> => {
+const executeUsedCommandsTop = async (
+  ctx: InteractionContext,
+  page: number,
+  embedColor: string,
+): Promise<void> => {
   const skip = calculateSkipCount(page);
   const res = await getMostUsedCommands(skip);
 
@@ -13,18 +17,18 @@ const executeUsedCommandsTop = async (ctx: InteractionContext, page: number): Pr
 
   const embed = createEmbed({
     title: ctx.prettyResponse('robot', 'commands:top.commands', { page: page > 1 ? page : 1 }),
-    color: 0xf47fff,
+    color: hexStringToNumber(embedColor),
     fields: [],
   });
 
   for (let i = 0; i < res.length; i++)
     embed.fields?.push({
       name: `**${skip + i + 1} -** ${capitalize(res[i].name)}`,
-      value: ctx.locale('commands:top.used', { times: res[i].usages }),
+      value: ctx.locale('commands:top.used', { times: res[i].uses }),
       inline: false,
     });
 
-  const pagination = createPaginationButtons(ctx, 'commands', '', '', page);
+  const pagination = createPaginationButtons(ctx, 'commands', embedColor, 'NONE', page);
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   if (embed.fields!.length < 10) pagination.components[1]!.disabled = true;

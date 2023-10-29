@@ -482,12 +482,9 @@
     },
     "commands": "Popular Commands {{page}}º",
     "users": "Users Who Most Used Commands",
-    "members": "Members",
     "used": "Used **{{times}}** times",
     "use": "Used **{{times}}** times",
-    "user": "Most used commands from {{user}}",
-    "times": "times",
-    "not-user": "this user didn't use any commands"
+    "user": "{{user}}'s Favorite Commands {{page}}º"
   },
   "idioma": {
     "question": "What language do you want me to speak?",

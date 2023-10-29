@@ -487,12 +487,9 @@
     },
     "commands": "Comandos Populares {{page}}º",
     "users": "Usuários Que Mais Usaram Comandos",
-    "members": "Membros",
     "used": "Usado **{{times}}** vezes",
     "use": "Usou **{{times}}** vezes",
-    "user": "Comandos mais usados de {{user}}",
-    "times": "vezes",
-    "not-user": "Este usuário não usou nenhum comando meu"
+    "user": "Comandos Favoritos de {{user}} {{page}}º"
   },
   "idioma": {
     "question": "Qual língua você quer que eu fale?",

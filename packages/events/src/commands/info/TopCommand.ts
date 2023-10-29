@@ -366,11 +366,12 @@ const TopCommand = createCommand({
         const type = ctx.getOption<'commands' | 'user'>('tipo', false, true);
         const page = ctx.getOption<number>('página', false) ?? 0;
 
-        if (type === 'commands') return executeUsedCommandsTop(ctx, page);
+        if (type === 'commands')
+          return executeUsedCommandsTop(ctx, page, ctx.authorData.selectedColor);
 
         const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
 
-        return executeUsedCommandsByUserTop(ctx, user, page);
+        return executeUsedCommandsByUserTop(ctx, user, page, ctx.authorData.selectedColor);
       }
       case 'usuários': {
         const type = ctx.getOption<'command' | 'users'>('tipo', false, true);

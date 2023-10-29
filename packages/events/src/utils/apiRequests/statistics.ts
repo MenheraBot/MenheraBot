@@ -69,6 +69,19 @@ const postPokerRound = async (players: PokerApiUser[]): Promise<void> => {
   await dataRequest.post('/statistics/poker', { players }).catch(debugError);
 };
 
+const getTopCommandsByUser = async (
+  userId: BigString,
+  skip: number,
+): Promise<null | { name: string; uses: number }[]> => {
+  const res = await dataRequest
+    .get('/usages/top/commands', { params: { skip, userId: `${userId}` } })
+    .catch(() => null);
+
+  if (!res) return null;
+
+  return res.data;
+};
+
 const getUserProfileInfo = async (userId: BigString): Promise<false | ApiUserProfileStats> => {
   const res = await dataRequest
     .get('/usages/user', { data: { userId: `${userId}` } })
@@ -110,8 +123,8 @@ const getGamblingGameStats = async (
 
 const getMostUsedCommands = async (
   skip: number,
-): Promise<null | { name: string; usages: number }[]> => {
-  const res = await dataRequest.get('/usages/top/command', { params: { skip } }).catch(() => null);
+): Promise<null | { name: string; uses: number }[]> => {
+  const res = await dataRequest.get('/usages/top/commands', { params: { skip } }).catch(() => null);
 
   if (!res) return null;
 
@@ -237,6 +250,7 @@ const getUserTransactions = async (
 export {
   postHuntExecution,
   postBichoResults,
+  getTopCommandsByUser,
   postCoinflipMatch,
   getMostUsedCommands,
   getUserTransactions,
