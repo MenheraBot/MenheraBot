@@ -138,6 +138,16 @@ const TopCommand = createCommand({
               descriptionLocalizations: { 'en-US': 'User to see most used commands' },
               required: false,
             },
+            {
+              type: ApplicationCommandOptionTypes.Integer,
+              name: 'página',
+              nameLocalizations: { 'en-US': 'page' },
+              description: 'Página do top que tu quer ver',
+              descriptionLocalizations: { 'en-US': 'Top page you want to see' },
+              required: false,
+              minValue: 2,
+              maxValue: 99,
+            },
           ],
         },
         {
@@ -177,6 +187,16 @@ const TopCommand = createCommand({
               },
               required: false,
               autocomplete: true,
+            },
+            {
+              type: ApplicationCommandOptionTypes.Integer,
+              name: 'página',
+              nameLocalizations: { 'en-US': 'page' },
+              description: 'Página do top que tu quer ver',
+              descriptionLocalizations: { 'en-US': 'Top page you want to see' },
+              required: false,
+              minValue: 2,
+              maxValue: 99,
             },
           ],
         },
@@ -315,6 +335,7 @@ const TopCommand = createCommand({
   commandRelatedExecutions: [executeTopPagination],
   authorDataFields: ['selectedColor', 'inUseItems', 'inventory', 'id'],
   execute: async (ctx, finishCommand) => {
+    finishCommand();
     const command = ctx.getSubCommand();
 
     await ctx.defer();
@@ -338,21 +359,20 @@ const TopCommand = createCommand({
           ctx.locale(`commands:top.economia.${type as 'mamou'}`),
           page,
           COLORS.Purple,
-          finishCommand,
         );
       }
       case 'comandos': {
         const type = ctx.getOption<'commands' | 'user'>('tipo', false, true);
 
-        if (type === 'commands') return executeUsedCommandsTop(ctx, finishCommand);
-        return executeUsedCommandsByUserTop(ctx, finishCommand);
+        if (type === 'commands') return executeUsedCommandsTop(ctx);
+        return executeUsedCommandsByUserTop(ctx);
       }
       case 'usuários': {
         const type = ctx.getOption<'command' | 'users'>('tipo', false, true);
 
-        if (type === 'users') return executeUserCommandsTop(ctx, finishCommand);
+        if (type === 'users') return executeUserCommandsTop(ctx);
 
-        return executeUsersByUsedCommandTop(ctx, finishCommand);
+        return executeUsersByUsedCommandTop(ctx);
       }
 
       case 'caçar': {
@@ -361,7 +381,7 @@ const TopCommand = createCommand({
         const topMode = ctx.getOption<'success'>('ordenar', false, true);
         const page = ctx.getOption<number>('página', false) ?? 0;
 
-        return executeTopHuntStatistics(ctx, huntType, topMode, page, finishCommand);
+        return executeTopHuntStatistics(ctx, huntType, topMode, page);
       }
 
       case 'apostas': {
@@ -373,7 +393,7 @@ const TopCommand = createCommand({
         const topMode = ctx.getOption<'money'>('ordenar', false, true);
         const page = ctx.getOption<number>('página', false) ?? 0;
 
-        return executeGamblingTop(ctx, gameMode, topMode, page, finishCommand);
+        return executeGamblingTop(ctx, gameMode, topMode, page);
       }
     }
   },

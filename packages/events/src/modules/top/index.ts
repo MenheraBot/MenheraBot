@@ -77,8 +77,6 @@ const createPaginationButtons = (
 const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [command, firstInfo, secondInfo, page] = ctx.sentData;
 
-  const noop = () => undefined;
-
   await ctx.makeMessage({
     components: [
       createActionRow([
@@ -107,7 +105,6 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
       ctx.locale(`commands:top.economia.${firstInfo as 'mamou'}`),
       Number(page),
       COLORS.Purple,
-      noop,
     );
   }
 
@@ -117,12 +114,11 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
       firstInfo as ApiHuntingTypes,
       secondInfo as 'success',
       Number(page),
-      noop,
     );
   }
 
   if (command === 'gambling')
-    return executeGamblingTop(ctx, firstInfo as 'bicho', secondInfo as 'money', Number(page), noop);
+    return executeGamblingTop(ctx, firstInfo as 'bicho', secondInfo as 'money', Number(page));
 };
 
 export {

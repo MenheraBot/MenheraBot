@@ -4,16 +4,13 @@ import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 
-const executeUsedCommandsByUserTop = async (
-  ctx: ChatInputInteractionContext,
-  finishCommand: () => void,
-): Promise<void> => {
+const executeUsedCommandsByUserTop = async (ctx: ChatInputInteractionContext): Promise<void> => {
   const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
 
   if (!user) {
     ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:top.not-user') });
 
-    return finishCommand();
+    return;
   }
 
   const res = await getUserProfileInfo(user.id);
@@ -21,7 +18,7 @@ const executeUsedCommandsByUserTop = async (
   if (!res || res.cmds.count === 0) {
     ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:top.not-user') });
 
-    return finishCommand();
+    return;
   }
 
   const embed = createEmbed({
@@ -43,7 +40,6 @@ const executeUsedCommandsByUserTop = async (
   }
 
   ctx.makeMessage({ embeds: [embed] });
-  finishCommand();
 };
 
 export { executeUsedCommandsByUserTop };

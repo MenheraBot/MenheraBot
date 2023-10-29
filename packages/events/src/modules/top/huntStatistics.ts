@@ -17,7 +17,6 @@ const executeTopHuntStatistics = async (
   type: ApiHuntingTypes,
   topMode: 'success',
   page: number,
-  finishCommand: () => void,
 ): Promise<void> => {
   const skip = calculateSkipCount(page);
 
@@ -28,7 +27,7 @@ const executeTopHuntStatistics = async (
   if (!results) {
     ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
 
-    return finishCommand();
+    return;
   }
 
   const embed = createEmbed({
@@ -71,7 +70,6 @@ const executeTopHuntStatistics = async (
   const pagination = createPaginationButtons(ctx, 'hunt', type, topMode, page);
 
   ctx.makeMessage({ embeds: [embed], components: [pagination] });
-  finishCommand();
 };
 
 export { executeTopHuntStatistics };

@@ -4,16 +4,13 @@ import { getUsersThatMostUsedCommands } from '../../utils/apiRequests/statistics
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 
-const executeUserCommandsTop = async (
-  ctx: ChatInputInteractionContext,
-  finishCommand: () => void,
-): Promise<void> => {
+const executeUserCommandsTop = async (ctx: ChatInputInteractionContext): Promise<void> => {
   const res = await getUsersThatMostUsedCommands();
 
   if (!res) {
     ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
 
-    return finishCommand();
+    return;
   }
 
   const embed = createEmbed({
@@ -43,8 +40,6 @@ const executeUserCommandsTop = async (
   }
 
   ctx.makeMessage({ embeds: [embed] });
-
-  finishCommand();
 };
 
 export { executeUserCommandsTop };

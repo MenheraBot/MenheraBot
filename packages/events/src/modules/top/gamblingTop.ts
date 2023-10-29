@@ -17,7 +17,6 @@ const executeGamblingTop = async (
   gameMode: ApiGamblingGameCompatible,
   topMode: 'money',
   page: number,
-  finishCommand: () => void,
 ): Promise<void> => {
   const skip = calculateSkipCount(page);
 
@@ -28,7 +27,7 @@ const executeGamblingTop = async (
   if (!results) {
     ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
 
-    return finishCommand();
+    return;
   }
 
   const embed = createEmbed({
@@ -81,7 +80,6 @@ const executeGamblingTop = async (
   const pagination = createPaginationButtons(ctx, 'gambling', gameMode, topMode, page);
 
   ctx.makeMessage({ embeds: [embed], components: [pagination] });
-  finishCommand();
 };
 
 export { executeGamblingTop };

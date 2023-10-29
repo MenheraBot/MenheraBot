@@ -3,16 +3,13 @@ import { getMostUsedCommands } from '../../utils/apiRequests/statistics';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 
-const executeUsedCommandsTop = async (
-  ctx: ChatInputInteractionContext,
-  finishCommand: () => void,
-): Promise<void> => {
+const executeUsedCommandsTop = async (ctx: ChatInputInteractionContext): Promise<void> => {
   const res = await getMostUsedCommands();
 
   if (!res) {
     ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
 
-    return finishCommand();
+    return;
   }
 
   const embed = createEmbed({
@@ -31,7 +28,6 @@ const executeUsedCommandsTop = async (
     });
 
   ctx.makeMessage({ embeds: [embed] });
-  finishCommand();
 };
 
 export { executeUsedCommandsTop };

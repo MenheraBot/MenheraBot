@@ -14,7 +14,6 @@ const executeUserDataRelatedTop = async (
   actor: string,
   page: number,
   color: number,
-  finishCommand: () => void,
 ): Promise<void> => {
   const skip = calculateSkipCount(page);
 
@@ -54,8 +53,6 @@ const executeUserDataRelatedTop = async (
   const pagination = createPaginationButtons(ctx, 'economy', label, 'NONE', page);
 
   ctx.makeMessage({ embeds: [embed], components: [pagination] });
-
-  finishCommand();
 };
 
 export { executeUserDataRelatedTop };
