@@ -134,21 +134,23 @@ const getMostUsedCommands = async (
 const getUsersByUsedCommand = async (
   commandId: number,
 ): Promise<{ id: string; uses: number }[] | null> => {
-  const res = await dataRequest.get(`/usages/top/users?commandId=${commandId}`).catch(() => null);
+  const res = await dataRequest
+    .get(`/usages/top/users`, { params: { commandId } })
+    .catch(() => null);
 
   if (!res) return null;
 
   return res.data;
 };
 
-const getUsersThatMostUsedCommands = async (): Promise<false | { id: string; uses: number }[]> => {
-  const res = await dataRequest.get('/usages/top/user').catch(() => null);
+const getUsersThatMostUsedCommands = async (
+  skip: number,
+): Promise<null | { id: string; uses: number }[]> => {
+  const res = await dataRequest.get('/usages/top/users', { params: { skip } }).catch(() => null);
 
-  if (!res) return false;
+  if (!res) return null;
 
-  if (res.status === 200) return res.data;
-
-  return false;
+  return res.data;
 };
 
 const getTopHunters = async <HuntType extends ApiHuntingTypes>(

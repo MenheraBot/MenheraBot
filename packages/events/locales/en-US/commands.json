@@ -481,9 +481,10 @@
       }
     },
     "commands": "Popular Commands {{page}}º",
-    "users": "Users Who Most Used Commands",
+    "users": "Loyal Users {{page}}º",
     "used": "Used **{{times}}** times",
     "use": "Used **{{times}}** times",
+    "used-commands": "Used **{{times}}** commands",
     "user": "{{user}}'s Favorite Commands {{page}}º"
   },
   "idioma": {

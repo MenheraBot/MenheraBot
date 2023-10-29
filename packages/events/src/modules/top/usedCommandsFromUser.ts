@@ -19,7 +19,10 @@ const executeUsedCommandsFromUserTop = async (
     return ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
 
   const embed = createEmbed({
-    title: ctx.prettyResponse('smile', 'commands:top.user', { user: getDisplayName(user), page }),
+    title: ctx.prettyResponse('smile', 'commands:top.user', {
+      user: getDisplayName(user),
+      page: page > 1 ? page : 1,
+    }),
     color: hexStringToNumber(embedColor),
     fields: [],
   });

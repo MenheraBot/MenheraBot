@@ -377,7 +377,8 @@ const TopCommand = createCommand({
         const type = ctx.getOption<'command' | 'users'>('tipo', false, true);
         const page = ctx.getOption<number>('página', false) ?? 0;
 
-        if (type === 'users') return executeUserCommandsTop(ctx, page);
+        if (type === 'users')
+          return executeUserCommandsTop(ctx, page, ctx.authorData.selectedColor);
 
         return executeUsersByUsedCommandTop(ctx, page);
       }

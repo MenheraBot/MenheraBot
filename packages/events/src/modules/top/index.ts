@@ -12,6 +12,7 @@ import cacheRepository from '../../database/repositories/cacheRepository';
 import { InteractionContext } from '../../types/menhera';
 import { executeUsedCommandsTop } from './usedCommands';
 import { executeUsedCommandsFromUserTop } from './usedCommandsFromUser';
+import { executeUserCommandsTop } from './userCommands';
 
 const calculateSkipCount = (page: number): number => (page - 1) * 10;
 
@@ -38,7 +39,7 @@ const usersToIgnoreInTop = async (): Promise<string[]> =>
     cacheRepository.getDeletedAccounts(),
   ]).then((a) => a[0].concat(a[1]));
 
-type TopType = 'gambling' | 'hunt' | 'economy' | 'commands' | 'user';
+type TopType = 'gambling' | 'hunt' | 'economy' | 'commands' | 'user' | 'users';
 
 const createPaginationButtons = (
   ctx: InteractionContext,
@@ -113,6 +114,8 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
   }
 
   if (command === 'commands') return executeUsedCommandsTop(ctx, Number(page), firstInfo);
+
+  if (command === 'users') return executeUserCommandsTop(ctx, Number(page), firstInfo);
 
   if (command === 'user') {
     const user = await cacheRepository.getDiscordUser(firstInfo, true);
