@@ -485,11 +485,11 @@
         }
       }
     },
-    "commands": "Comandos Mais Usados",
+    "commands": "Comandos Populares {{page}}º",
     "users": "Usuários Que Mais Usaram Comandos",
     "members": "Membros",
-    "used": "Usado",
-    "use": "Usou",
+    "used": "Usado **{{times}}** vezes",
+    "use": "Usou **{{times}}** vezes",
     "user": "Comandos mais usados de {{user}}",
     "times": "vezes",
     "not-user": "Este usuário não usou nenhum comando meu"

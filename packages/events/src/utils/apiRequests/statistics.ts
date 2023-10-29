@@ -108,14 +108,14 @@ const getGamblingGameStats = async (
   return { error: true };
 };
 
-const getMostUsedCommands = async (): Promise<false | { name: string; usages: number }[]> => {
-  const res = await dataRequest.get('/usages/top/command').catch(() => null);
+const getMostUsedCommands = async (
+  skip: number,
+): Promise<null | { name: string; usages: number }[]> => {
+  const res = await dataRequest.get('/usages/top/command', { params: { skip } }).catch(() => null);
 
-  if (!res) return false;
+  if (!res) return null;
 
-  if (res.status === 200) return res.data;
-
-  return false;
+  return res.data;
 };
 
 const getUsersByUsedCommand = async (

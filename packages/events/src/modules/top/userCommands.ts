@@ -1,10 +1,10 @@
 import cacheRepository from '../../database/repositories/cacheRepository';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import { InteractionContext } from '../../types/menhera';
 import { getUsersThatMostUsedCommands } from '../../utils/apiRequests/statistics';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 
-const executeUserCommandsTop = async (ctx: ChatInputInteractionContext): Promise<void> => {
+const executeUserCommandsTop = async (ctx: InteractionContext, page: number): Promise<void> => {
   const res = await getUsersThatMostUsedCommands();
 
   if (!res) {

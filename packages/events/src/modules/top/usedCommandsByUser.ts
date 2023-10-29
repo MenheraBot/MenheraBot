@@ -1,12 +1,14 @@
 import { User } from 'discordeno/transformers';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
+import { InteractionContext } from '../../types/menhera';
 
-const executeUsedCommandsByUserTop = async (ctx: ChatInputInteractionContext): Promise<void> => {
-  const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
-
+const executeUsedCommandsByUserTop = async (
+  ctx: InteractionContext,
+  user: User,
+  page: number,
+): Promise<void> => {
   if (!user) {
     ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:top.not-user') });
 

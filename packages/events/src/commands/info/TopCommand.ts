@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
+import { User } from 'discordeno/transformers';
 import { ApiHuntingTypes, DatabaseHuntingTypes } from '../../modules/hunt/types';
 import { createCommand } from '../../structures/command/createCommand';
 import { COLORS, transactionableCommandOption } from '../../structures/constants';
@@ -363,16 +364,21 @@ const TopCommand = createCommand({
       }
       case 'comandos': {
         const type = ctx.getOption<'commands' | 'user'>('tipo', false, true);
+        const page = ctx.getOption<number>('página', false) ?? 0;
 
-        if (type === 'commands') return executeUsedCommandsTop(ctx);
-        return executeUsedCommandsByUserTop(ctx);
+        if (type === 'commands') return executeUsedCommandsTop(ctx, page);
+
+        const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
+
+        return executeUsedCommandsByUserTop(ctx, user, page);
       }
       case 'usuários': {
         const type = ctx.getOption<'command' | 'users'>('tipo', false, true);
+        const page = ctx.getOption<number>('página', false) ?? 0;
 
-        if (type === 'users') return executeUserCommandsTop(ctx);
+        if (type === 'users') return executeUserCommandsTop(ctx, page);
 
-        return executeUsersByUsedCommandTop(ctx);
+        return executeUsersByUsedCommandTop(ctx, page);
       }
 
       case 'caçar': {

@@ -1,9 +1,12 @@
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import { InteractionContext } from '../../types/menhera';
 import { getUsersByUsedCommand } from '../../utils/apiRequests/statistics';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 
-const executeUsersByUsedCommandTop = async (ctx: ChatInputInteractionContext): Promise<void> => {
+const executeUsersByUsedCommandTop = async (
+  ctx: InteractionContext,
+  page: number,
+): Promise<void> => {
   const res = await getUsersByUsedCommand(0);
 
   if (!res) {

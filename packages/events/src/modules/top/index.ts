@@ -10,6 +10,7 @@ import { executeGamblingTop } from './gamblingTop';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import { InteractionContext } from '../../types/menhera';
+import { executeUsedCommandsTop } from './usedCommands';
 
 const calculateSkipCount = (page: number): number => (page - 1) * 10;
 
@@ -38,7 +39,7 @@ const usersToIgnoreInTop = async (): Promise<string[]> =>
 
 const createPaginationButtons = (
   ctx: InteractionContext,
-  topType: 'gambling' | 'hunt' | 'economy',
+  topType: 'gambling' | 'hunt' | 'economy' | 'commands',
   firstInfo: string,
   secondInfo: string,
   page: number,
@@ -107,6 +108,8 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
       COLORS.Purple,
     );
   }
+
+  if (command === 'commands') return executeUsedCommandsTop(ctx, Number(page));
 
   if (command === 'hunt') {
     return executeTopHuntStatistics(

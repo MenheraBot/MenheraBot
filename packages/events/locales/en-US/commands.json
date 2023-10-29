@@ -480,11 +480,11 @@
         }
       }
     },
-    "commands": "Most Used Commands",
+    "commands": "Popular Commands {{page}}º",
     "users": "Users Who Most Used Commands",
     "members": "Members",
-    "used": "Used",
-    "use": "Used",
+    "used": "Used **{{times}}** times",
+    "use": "Used **{{times}}** times",
     "user": "Most used commands from {{user}}",
     "times": "times",
     "not-user": "this user didn't use any commands"
@@ -518,7 +518,7 @@
       "played": "Matches Played",
       "wins": "Wins",
       "loses": "Losses",
-      "earnMoney": "Earned Money",
+      "earnMoney": "Earned Money", 
       "lostMoney": "Lost Money",
       "profit": "Total Profit",
       "loss": "Total Loss",
