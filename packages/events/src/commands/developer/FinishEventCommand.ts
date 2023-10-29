@@ -40,17 +40,23 @@ const DeployCommand = createCommand({
     const option = ctx.getOption<'ver' | 'fazer'>('option', false, true);
 
     if (option === 'ver') {
+      await ctx.makeMessage({ content: ':star:' });
+
       const res = await halloweenEventModel.find({ ban: false }, ['allTimeTreats', 'id'], {
         limit: 10,
         sort: { allTimeTreats: -1 },
       });
 
-      const otherRes = await halloweenEventModel.find({ allTimeTricks: { $size: 14 } });
-
-      return ctx.makeMessage({
+      await ctx.followUp({
         content: `Pra dar a badge de top vai ser: ${JSON.stringify(
           res.map(eventRepository.parseMongoUserToRedisUser),
-        )}\n\nPra dar badge de todos vai ser: ${JSON.stringify(
+        )}`,
+      });
+
+      const otherRes = await halloweenEventModel.find({ allTimeTricks: { $size: 14 } });
+
+      return ctx.followUp({
+        content: `\n\nPra dar badge de todos vai ser: ${JSON.stringify(
           otherRes.map(eventRepository.parseMongoUserToRedisUser),
         )}`,
       });
