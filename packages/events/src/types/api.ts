@@ -37,7 +37,7 @@ export interface ApiGamblingGameStats {
 
 export interface ApiUserProfileStats {
   totalUses: number;
-  topCommand: { name: string; count: number };
+  topCommand: { name: string; uses: number };
 }
 
 export type MayReturnError<T> = T | { error: true };

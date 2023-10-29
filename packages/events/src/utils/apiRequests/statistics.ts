@@ -70,7 +70,7 @@ const postPokerRound = async (players: PokerApiUser[]): Promise<void> => {
 };
 
 const getUserProfileInfo = async (userId: string): Promise<null | ApiUserProfileStats> => {
-  const res = await dataRequest.get('/usages/user', { params: userId }).catch(() => null);
+  const res = await dataRequest.get('/usages/user', { params: { userId } }).catch(() => null);
 
   if (!res) return null;
 

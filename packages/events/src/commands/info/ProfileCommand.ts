@@ -235,7 +235,7 @@ const ProfileCommand = createCommand({
         user: getDisplayName(discordUser, true),
         usedCount: usageCommands.totalUses,
         mostUsedCommandName: usageCommands.topCommand.name,
-        mostUsedCommandCount: usageCommands.topCommand.count,
+        mostUsedCommandCount: usageCommands.topCommand.uses,
       });
 
     if (discordUser.id === bot.applicationId)
