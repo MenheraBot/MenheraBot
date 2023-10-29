@@ -6,7 +6,7 @@ import { InteractionContext } from '../../types/menhera';
 import { calculateSkipCount, createPaginationButtons } from '.';
 import { getDisplayName } from '../../utils/discord/userUtils';
 
-const executeUsedCommandsByUserTop = async (
+const executeUsedCommandsFromUserTop = async (
   ctx: InteractionContext,
   user: User,
   page: number,
@@ -40,4 +40,4 @@ const executeUsedCommandsByUserTop = async (
   ctx.makeMessage({ embeds: [embed], components: [pagination] });
 };
 
-export { executeUsedCommandsByUserTop };
+export { executeUsedCommandsFromUserTop };

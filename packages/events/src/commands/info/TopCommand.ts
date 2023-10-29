@@ -8,7 +8,7 @@ import { DatabaseUserSchema } from '../../types/database';
 import { executeGamblingTop } from '../../modules/top/gamblingTop';
 import { executeTopHuntStatistics } from '../../modules/top/huntStatistics';
 import { executeUserDataRelatedTop } from '../../modules/top/userDataRelated';
-import { executeUsedCommandsByUserTop } from '../../modules/top/usedCommandsByUser';
+import { executeUsedCommandsFromUserTop } from '../../modules/top/usedCommandsFromUser';
 import { executeUsedCommandsTop } from '../../modules/top/usedCommands';
 import { executeUserCommandsTop } from '../../modules/top/userCommands';
 import { executeTopPagination, topEmojis } from '../../modules/top';
@@ -371,7 +371,7 @@ const TopCommand = createCommand({
 
         const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
 
-        return executeUsedCommandsByUserTop(ctx, user, page, ctx.authorData.selectedColor);
+        return executeUsedCommandsFromUserTop(ctx, user, page, ctx.authorData.selectedColor);
       }
       case 'usuários': {
         const type = ctx.getOption<'command' | 'users'>('tipo', false, true);

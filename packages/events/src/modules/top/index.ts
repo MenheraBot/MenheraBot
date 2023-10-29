@@ -11,7 +11,7 @@ import blacklistRepository from '../../database/repositories/blacklistRepository
 import cacheRepository from '../../database/repositories/cacheRepository';
 import { InteractionContext } from '../../types/menhera';
 import { executeUsedCommandsTop } from './usedCommands';
-import { executeUsedCommandsByUserTop } from './usedCommandsByUser';
+import { executeUsedCommandsFromUserTop } from './usedCommandsFromUser';
 
 const calculateSkipCount = (page: number): number => (page - 1) * 10;
 
@@ -124,7 +124,7 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
         content: ctx.prettyResponse('error', 'common:api-error'),
       });
 
-    return executeUsedCommandsByUserTop(ctx, user, Number(page), secondInfo);
+    return executeUsedCommandsFromUserTop(ctx, user, Number(page), secondInfo);
   }
 
   if (command === 'hunt') {
