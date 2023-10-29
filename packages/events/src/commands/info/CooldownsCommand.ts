@@ -13,7 +13,6 @@ import { bot } from '../../index';
 import { createActionRow, createButton } from '../../utils/discord/componentUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { createCommand } from '../../structures/command/createCommand';
-import eventRepository from '../../database/repositories/eventRepository';
 
 const CooldownsCommand = createCommand({
   path: '',
@@ -39,21 +38,13 @@ const CooldownsCommand = createCommand({
       inline: false,
     });
 
-    const userEvent = await eventRepository.getEventUser(ctx.author.id);
-
     const huntCooldown = ctx.authorData.huntCooldown - Date.now();
     const voteCooldown = ctx.authorData.voteCooldown - Date.now();
-    const candyCooldown = userEvent.cooldown - Date.now();
 
     const embed = createEmbed({
       title: ctx.locale('commands:cooldowns.title'),
       color: hexStringToNumber(ctx.authorData.selectedColor),
-      fields: [
-        createField('vote', voteCooldown),
-        createField('hunt', huntCooldown),
-        createField('candy', candyCooldown),
-      ],
-      footer: { text: 'Você pode pegar doces em "/gostosuras ou travessuras"' },
+      fields: [createField('vote', voteCooldown), createField('hunt', huntCooldown)],
     });
 
     const components: ActionRow[] = [];

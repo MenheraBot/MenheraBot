@@ -22,8 +22,6 @@ import { millisToSeconds } from '../../utils/miscUtils';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
 import { debugError } from '../../utils/debugError';
-import eventRepository from '../../database/repositories/eventRepository';
-import { Tricks } from '../../commands/event/TrickOrTreatsCommand';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -123,30 +121,9 @@ const setInteractionCreateEvent = (): void => {
 
     cacheRepository.setDiscordUser(bot.transformers.reverse.user(bot, interaction.user));
 
-    let guildLocale = i18next.getFixedT(
+    const guildLocale = i18next.getFixedT(
       await guildRepository.getGuildLanguage(interaction.guildId as bigint),
     );
-
-    if (authorData) {
-      const trick = await eventRepository.getUserTrick(interaction.user.id);
-
-      if (typeof trick === 'number') {
-        switch (trick) {
-          case Tricks.CHANGE_COLOR: {
-            authorData.selectedColor = Math.random() < 0.5 ? '#eb6123' : '#215D1F';
-            break;
-          }
-          case Tricks.ENGLISH_COMMANDS: {
-            guildLocale = i18next.getFixedT('en-US');
-            break;
-          }
-          case Tricks.OTHER_INFO: {
-            authorData.info = 'Eu amo meus vizinhos queridos';
-            break;
-          }
-        }
-      }
-    }
 
     const ctx = new ChatInputInteractionContext(
       interaction,

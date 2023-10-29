@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Removed
 
+- O evento de Halloween terminou! Todas mudanças do evento foram revertidas.
 - O comando `/top comandos` foi removido.
 
 ## [5.9.4-HALLOWEEN] - 2023-10-28
