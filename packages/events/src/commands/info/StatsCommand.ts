@@ -4,7 +4,11 @@ import { TFunction } from 'i18next';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { ApiGamblingGameCompatible, ApiGamblingGameStats } from '../../types/api';
-import { getGamblingGameStats, getUserHuntStats } from '../../utils/apiRequests/statistics';
+import {
+  getFazendinhaStatistics,
+  getGamblingGameStats,
+  getUserHuntStats,
+} from '../../utils/apiRequests/statistics';
 import { COLORS, EMOJIS } from '../../structures/constants';
 import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
@@ -17,6 +21,7 @@ import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { millisToSeconds } from '../../utils/miscUtils';
 
 import { createCommand } from '../../structures/command/createCommand';
+import { Plants } from '../../modules/fazendinha/plants';
 
 const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
   const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
@@ -265,6 +270,40 @@ const executeGamblingGameStats = async (
   finishCommand();
 };
 
+const executeFazendeiroCommand = async (
+  ctx: ChatInputInteractionContext,
+  finishCommand: () => void,
+) => {
+  const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
+
+  const farmerData = await getFazendinhaStatistics(user.id);
+
+  if (!farmerData || farmerData.length === 0) {
+    ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:status.fazendeiro.error'),
+    });
+
+    return finishCommand();
+  }
+
+  const embed = createEmbed({
+    title: ctx.locale('commands:status.fazendeiro.title', { user: getDisplayName(user) }),
+    thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
+    color: hexStringToNumber(ctx.authorData.selectedColor),
+    fields: farmerData.map((data) => ({
+      inline: true,
+      name: `${Plants[data.plant].emoji} ${ctx.locale(`data:plants.${data.plant}`)}`,
+      value: ctx.locale('commands:status.fazendeiro.field-data', {
+        harvest: data.harvest,
+        rotted: data.rotted,
+      }),
+    })),
+  });
+
+  ctx.makeMessage({ embeds: [embed] });
+  finishCommand();
+};
+
 const StatsCommand = createCommand({
   path: '',
   name: 'estatísticas',
@@ -275,8 +314,8 @@ const StatsCommand = createCommand({
     {
       name: 'blackjack',
       type: ApplicationCommandOptionTypes.SubCommand,
-      description: '「🃏」・Veja os status do blackjack de alguém',
-      descriptionLocalizations: { 'en-US': "「🃏」・View someone's blackjack stats" },
+      description: '「🃏」・Veja as estatísticas do blackjack de alguém',
+      descriptionLocalizations: { 'en-US': "「🃏」・View someone's blackjack statistics" },
       options: [
         {
           name: 'user',
@@ -291,8 +330,8 @@ const StatsCommand = createCommand({
       name: 'bicho',
       nameLocalizations: { 'en-US': 'animal' },
       type: ApplicationCommandOptionTypes.SubCommand,
-      description: '「🦌」・Veja os status do jogo do bicho de alguém',
-      descriptionLocalizations: { 'en-US': "「🦌」・View someone's Animal Game stats" },
+      description: '「🦌」・Veja as estatísticas do jogo do bicho de alguém',
+      descriptionLocalizations: { 'en-US': "「🦌」・View someone's Animal Game statistics" },
       options: [
         {
           name: 'user',
@@ -307,8 +346,8 @@ const StatsCommand = createCommand({
       name: 'roleta',
       nameLocalizations: { 'en-US': 'roulette' },
       type: ApplicationCommandOptionTypes.SubCommand,
-      description: '「🎡」・Veja os status de roleta de alguém',
-      descriptionLocalizations: { 'en-US': "「🎡」・View someone's roulette stats" },
+      description: '「🎡」・Veja as estatísticas de roleta de alguém',
+      descriptionLocalizations: { 'en-US': "「🎡」・View someone's roulette statistics" },
       options: [
         {
           name: 'user',
@@ -321,8 +360,8 @@ const StatsCommand = createCommand({
     },
     {
       name: 'coinflip',
-      description: '「📀」・Veja os status de coinflip de alguém',
-      descriptionLocalizations: { 'en-US': "「📀」・View someone's coinflip stats" },
+      description: '「📀」・Veja as estatísticass de coinflip de alguém',
+      descriptionLocalizations: { 'en-US': "「📀」・View someone's coinflip statistics" },
       type: ApplicationCommandOptionTypes.SubCommand,
       options: [
         {
@@ -337,8 +376,8 @@ const StatsCommand = createCommand({
     {
       name: 'caçar',
       nameLocalizations: { 'en-US': 'hunt' },
-      description: '「🏹」・Veja os status de caças de alguém',
-      descriptionLocalizations: { 'en-US': "「🏹」・See someone's fighter stats" },
+      description: '「🏹」・Veja as estatísticas de caças de alguém',
+      descriptionLocalizations: { 'en-US': "「🏹」・See someone's fighter statistics" },
       type: ApplicationCommandOptionTypes.SubCommand,
       options: [
         {
@@ -352,14 +391,29 @@ const StatsCommand = createCommand({
     },
     {
       name: 'designer',
-      description: '「🖌️」・Veja os status de design de algum designer',
-      descriptionLocalizations: { 'en-US': "「🖌️」・See some designer's design stats" },
+      description: '「🖌️」・Veja as estatísticas de design de algum designer',
+      descriptionLocalizations: { 'en-US': "「🖌️」・See some designer's design statistics" },
       type: ApplicationCommandOptionTypes.SubCommand,
       options: [
         {
           name: 'designer',
           description: 'Designer que quer ver as informações',
           descriptionLocalizations: { 'en-US': 'Designer who wants to see the information' },
+          type: ApplicationCommandOptionTypes.User,
+          required: false,
+        },
+      ],
+    },
+    {
+      name: 'fazendeiro',
+      description: '「🚜」・Veja as estatísticas de algum fazendeiro',
+      descriptionLocalizations: { 'en-US': '「🚜」・See some farmer statistics' },
+      type: ApplicationCommandOptionTypes.SubCommand,
+      options: [
+        {
+          name: 'fazendeiro',
+          description: 'Fazendeiro que quer ver as informações',
+          descriptionLocalizations: { 'en-US': 'Farmer who wants to see the information' },
           type: ApplicationCommandOptionTypes.User,
           required: false,
         },
@@ -375,6 +429,8 @@ const StatsCommand = createCommand({
     switch (subCommand) {
       case 'designer':
         return executeDesignerStats(ctx, finishCommand);
+      case 'fazendeiro':
+        return executeFazendeiroCommand(ctx, finishCommand);
       case 'caçar':
         return executeHuntStats(ctx, finishCommand);
       case 'roleta':

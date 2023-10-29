@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Build the image
-        run: docker build . --file Dockerfile --tag beta --target events --label "runnumber=${GITHUB_RUN_ID}"
+        run: docker build . --file Dockerfile.beta --tag beta --target events --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin

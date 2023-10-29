@@ -79,6 +79,10 @@ export default class {
     return this.interaction.user;
   }
 
+  get user(): User {
+    return this.author;
+  }
+
   get commandId(): bigint {
     return this.interaction.data?.id ?? 0n;
   }

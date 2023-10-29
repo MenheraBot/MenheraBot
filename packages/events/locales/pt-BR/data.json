@@ -212,5 +212,32 @@
       "name": "Hello Kitty",
       "description": "Rosa é mais bonito quando se há amigas fofas"
     }
+  },
+  "plants": {
+    "0": "Erva",
+    "1": "Arroz",
+    "2": "Milho",
+    "3": "Batata",
+    "4": "Alho",
+    "5": "Cenoura",
+    "6": "Tomate",
+    "7": "Pepino",
+    "8": "Brócolis",
+    "9": "Girassol",
+    "10": "Menta",
+    "11": "Melancia",
+    "12": "Morango",
+    "13": "Pimenta",
+    "14": "Berinjela",
+    "15": "Abacate",
+    "16": "Manga",
+    "17": "Maçã",
+    "18": "Limão",
+    "19": "Bergamota",
+    "20": "Banana",
+    "21": "Abacaxi",
+    "22": "Pera",
+    "23": "Cereja",
+    "24": "Cogumelo"
   }
 }

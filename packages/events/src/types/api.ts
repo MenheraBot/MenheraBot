@@ -79,6 +79,8 @@ export enum ApiTransactionReason {
   VOTE_THANK = 'vote_thank',
   INACTIVITY_PUNISHMENT = 'inactivity_punishment',
   POKER_COMMAND = 'poker_command',
+  SELL_PLANT = 'sell_plant',
+  BUY_SEED = 'buy_seed',
 }
 
 type TransactionType = DatabaseHuntingTypes | 'estrelinhas';

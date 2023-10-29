@@ -18,6 +18,7 @@ import { debugError } from '../debugError';
 import { dataRequest } from './apiRequests';
 import { logger } from '../logger';
 import { PokerApiUser } from '../../modules/poker/types';
+import { AvailablePlants } from '../../modules/fazendinha/types';
 
 const postHuntExecution = async (
   userId: string,
@@ -227,16 +228,36 @@ const getUserTransactions = async (
   );
 };
 
+const postFazendinhaAction = async (
+  userId: string,
+  plant: AvailablePlants,
+  action: 'ROTTED' | 'HARVEST',
+): Promise<void> => {
+  await dataRequest.post('/statistics/fazendinha', { userId, plant, action }).catch(debugError);
+};
+
+const getFazendinhaStatistics = async (
+  userId: BigString,
+): Promise<null | { plant: AvailablePlants; rotted: number; harvest: number }[]> => {
+  const result = await dataRequest.get(`/statistics/fazendinha?userId=${userId}`).catch(debugError);
+
+  if (!result) return null;
+
+  return result.data;
+};
+
 export {
   postHuntExecution,
   postBichoResults,
   getTopCommandsByUses,
   postCoinflipMatch,
   getUserTransactions,
+  getFazendinhaStatistics,
   getGamblingGameStats,
   getTopUsersByUses,
   postRoulleteGame,
   postBlackjackGame,
+  postFazendinhaAction,
   getUserHuntStats,
   getUserProfileInfo,
   postPokerRound,

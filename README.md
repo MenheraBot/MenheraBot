@@ -18,7 +18,7 @@ Pull requests are always welcome. If you have any ideia, want to implement a new
 
 ## 🔥 | Running
 
-This monorepo is divided in 3 main packages. The REST takes care of making contact with Discord's API, with this, we can avoid rate limits before making the request to the API. The Orchestrator receives all data from the outside world. It receives the HTTP interactions from Discord, vote webhooks from top.gg and prometheus scrapes. And we got the the Events pacakge, which takes care of processing every interaction made by users. To run the bot, just follow the steps:
+This monorepo is divided in 3 main packages. The REST takes care of making contact with Discord's API, with this, we can avoid rate limits before making the request to the API **(NOT USED AT THE MOMENT)**. The Orchestrator receives all data from the outside world. It receives the HTTP interactions from Discord, vote webhooks from top.gg and prometheus scrapes. And we got the the Events pacakge, which takes care of processing every interaction made by users. To run the bot, just follow the steps:
 
 1. 🧹 Clone the repository
 
@@ -37,10 +37,10 @@ yarn install && yarn build:all
 
 4. 🏃‍♂️ Running all services
 
-> Open 3 terminals and execute each command in a different one. The EVENTS package depends on the other two packages.
+> Open 2 terminals and execute each command in a different one. The EVENTS package depends on the other package.
 
 ```bash
-yarn rest dev
+# yarn rest dev
 yarn orchestrator dev
 yarn events dev:nomicroservices
 ```
@@ -84,11 +84,11 @@ You can enter Menhera's [support server](https://discord.gg/fZMdQbA) to help fur
 
 ## 📧 | Contact
 
-Discord: **Luxanna#5757**
+Discord: **@ysnoopydogy**
 
 Twitter: **[@Luxanna_Dev](https://twitter.com/Luxanna_Dev)**
 
-Email: **luxanna@menherabot.xyz**
+Email: **[contact@luancaliel.dev](mailto:contact@luancaliel.dev)**
 
 
 ## 📜 | Source

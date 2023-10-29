@@ -1,4 +1,5 @@
 import { profileBadges } from '../modules/badges/profileBadges';
+import { AvailablePlants, Plantation } from '../modules/fazendinha/types';
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
 
@@ -101,6 +102,21 @@ export interface DatabaseCommandSchema {
   maintenance: boolean;
   maintenanceReason: string | null;
   discordId: string;
+}
+
+export type QuantitativePlant = {
+  amount: number;
+  plant: AvailablePlants;
+};
+
+export interface DatabaseFarmerSchema {
+  readonly id: string;
+  plantations: Plantation[];
+  seeds: QuantitativePlant[];
+  silo: QuantitativePlant[];
+  biggestSeed: number;
+  plantedFields: number;
+  lastPlantedSeed: AvailablePlants;
 }
 
 export type UserIdType = string | bigint;
