@@ -503,14 +503,14 @@
         }
       }
     },
-    "commands": "Comandos Mais Usados",
-    "users": "Usuários Que Mais Usaram Comandos",
-    "members": "Membros",
-    "used": "Usado",
-    "use": "Usou",
-    "user": "Comandos mais usados de {{user}}",
-    "times": "vezes",
-    "not-user": "Este usuário não usou nenhum comando meu"
+    "commands": "Comandos Populares {{page}}º",
+    "users": "Usuários Fiéis {{page}}º",
+    "users-by-commands": "Usuários Fiéis ao /{{command}} {{page}}º",
+    "user": "Comandos Favoritos de {{user}} {{page}}º",
+    "used": "Usado **{{times}}** vezes",
+    "use": "Usou **{{times}}** vezes",
+    "used-commands": "Usou **{{times}}** comandos",
+    "command-required": "Tu precisa informar qual comando tu quer buscar nesse top!"
   },
   "idioma": {
     "question": "Qual língua você quer que eu fale?",
@@ -581,6 +581,7 @@
     "no-cooldown": "Você já pode fazer isso!",
     "hunt": "Caçar",
     "vote": "Votar em Mim",
+    "candy": "Pedir doces",
     "time": "**{{time}}** {{subtime}} | **<t:{{unix}}:T>**",
     "click-to-vote": "Clique Para Votar",
     "dungeon": "Dungeon",

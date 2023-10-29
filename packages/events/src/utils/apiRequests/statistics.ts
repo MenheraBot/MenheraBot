@@ -7,10 +7,8 @@ import {
   ApiTransactionReason,
   ApiUserProfileStats,
   BanInfo,
-  BlackjackTop,
-  CoinflipTop,
   MayReturnError,
-  RouletteOrBichoTop,
+  TopGamblingUser,
   TopHunters,
   TransactionRegister,
 } from '../../types/api';
@@ -72,16 +70,12 @@ const postPokerRound = async (players: PokerApiUser[]): Promise<void> => {
   await dataRequest.post('/statistics/poker', { players }).catch(debugError);
 };
 
-const getUserProfileInfo = async (userId: BigString): Promise<false | ApiUserProfileStats> => {
-  const res = await dataRequest
-    .get('/usages/user', { data: { userId: `${userId}` } })
-    .catch(() => null);
+const getUserProfileInfo = async (userId: string): Promise<null | ApiUserProfileStats> => {
+  const res = await dataRequest.get('/usages/user', { params: { userId } }).catch(() => null);
 
-  if (!res) return false;
+  if (!res) return null;
 
-  if (res.status === 200) return res.data;
-
-  return false;
+  return res.data;
 };
 
 const getUserHuntStats = async (userId: BigString): Promise<MayReturnError<ApiHuntStats>> => {
@@ -111,24 +105,31 @@ const getGamblingGameStats = async (
   return { error: true };
 };
 
-const getMostUsedCommands = async (): Promise<false | { name: string; usages: number }[]> => {
-  const res = await dataRequest.get('/usages/top/command').catch(() => null);
+const getTopCommandsByUses = async (
+  skip: number,
+  userId?: string,
+): Promise<null | { name: string; uses: number }[]> => {
+  const res = await dataRequest
+    .get('/usages/top/commands', { params: { skip, userId } })
+    .catch(() => null);
 
-  if (!res) return false;
+  if (!res) return null;
 
-  if (res.status === 200) return res.data;
-
-  return false;
+  return res.data;
 };
 
-const getUsersThatMostUsedCommands = async (): Promise<false | { id: string; uses: number }[]> => {
-  const res = await dataRequest.get('/usages/top/user').catch(() => null);
+const getTopUsersByUses = async (
+  skip: number,
+  bannedUsers: string[],
+  commandName?: string,
+): Promise<{ id: string; uses: number; commandName: string }[] | null> => {
+  const res = await dataRequest
+    .get(`/usages/top/users`, { params: { commandName, skip }, data: { bannedUsers } })
+    .catch(() => null);
 
-  if (!res) return false;
+  if (!res) return null;
 
-  if (res.status === 200) return res.data;
-
-  return false;
+  return res.data;
 };
 
 const getTopHunters = async <HuntType extends ApiHuntingTypes>(
@@ -153,7 +154,7 @@ const getTopGamblingUsers = async (
   bannedUsers: string[],
   type: 'wins' | 'money',
   game: ApiGamblingGameCompatible,
-): Promise<RouletteOrBichoTop[] | CoinflipTop[] | BlackjackTop[] | null> => {
+): Promise<TopGamblingUser[] | null> => {
   const res = await dataRequest
     .get(`/statistics/${game}/top`, { data: { skip, bannedUsers, type } })
     .catch(() => null);
@@ -248,11 +249,12 @@ const getFazendinhaStatistics = async (
 export {
   postHuntExecution,
   postBichoResults,
+  getTopCommandsByUses,
   postCoinflipMatch,
-  getMostUsedCommands,
   getUserTransactions,
   getFazendinhaStatistics,
   getGamblingGameStats,
+  getTopUsersByUses,
   postRoulleteGame,
   postBlackjackGame,
   postFazendinhaAction,
@@ -264,5 +266,4 @@ export {
   getAllUserBans,
   postTransaction,
   getTopHunters,
-  getUsersThatMostUsedCommands,
 };

@@ -187,7 +187,7 @@ const setInteractionCreateEvent = (): void => {
 
     logger.info(`[COMMAND] ${fullCommand} - ${interaction.user.id}`);
 
-    if (!interaction.guildId || process.env.NODE_ENV !== 'production') return;
+    if (!interaction.guildId) return;
 
     const data: UsedCommandData = {
       authorId: `${interaction.user.id}`,

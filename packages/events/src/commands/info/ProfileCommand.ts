@@ -94,20 +94,12 @@ const ProfileCommand = createCommand({
         : null;
 
     const avatar = getUserAvatar(discordUser, { size: 512 });
-    const usageCommands = await getUserProfileInfo(discordUser.id);
 
     const i18n = {
       aboutme: ctx.locale('commands:perfil.about-me'),
       mamado: ctx.locale('commands:perfil.mamado'),
       mamou: ctx.locale('commands:perfil.mamou'),
-      usages: usageCommands
-        ? ctx.locale('commands:perfil.commands-usage', {
-            user: getDisplayName(discordUser, true),
-            usedCount: usageCommands.cmds.count,
-            mostUsedCommandName: usageCommands.array[0]?.name ?? '??',
-            mostUsedCommandCount: usageCommands.array[0]?.count ?? '??',
-          })
-        : ctx.locale('commands:perfil.api-down'),
+      usages: ctx.locale('commands:perfil.api-down'),
     };
 
     const userThemes = await userThemesRepository.findEnsuredUserThemes(discordUser.id);
@@ -182,6 +174,16 @@ const ProfileCommand = createCommand({
       finishCommand();
       return;
     }
+
+    const usageCommands = await getUserProfileInfo(`${discordUser.id}`);
+
+    if (usageCommands)
+      i18n.usages = ctx.locale('commands:perfil.commands-usage', {
+        user: getDisplayName(discordUser, true),
+        usedCount: usageCommands.totalUses,
+        mostUsedCommandName: usageCommands.topCommand.name,
+        mostUsedCommandCount: usageCommands.topCommand.uses,
+      });
 
     if (discordUser.id === bot.applicationId)
       // eslint-disable-next-line no-bitwise

@@ -21,6 +21,36 @@ import {
 
 export type CanResolve = 'users' | 'members' | 'attachments' | false;
 
+export const splitIfExists = (texto?: string): string => {
+  if (typeof texto !== 'string') return texto as unknown as string;
+
+  let resultado = '';
+  let excecao = '';
+  let dentroExcecao = false;
+
+  for (let i = 0; i < texto.length; i++) {
+    const char = texto[i];
+
+    if (char === '<') {
+      dentroExcecao = true;
+      excecao = '';
+    }
+
+    if (char === '>' && dentroExcecao) {
+      dentroExcecao = false;
+      excecao += char;
+      resultado += excecao;
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (dentroExcecao) excecao += char;
+    else resultado = char + resultado;
+  }
+
+  return resultado;
+};
+
 export default class {
   public replied = false;
 
@@ -30,7 +60,7 @@ export default class {
 
   constructor(
     public interaction: Interaction,
-    public authorData: Readonly<DatabaseUserSchema>,
+    public authorData: DatabaseUserSchema,
     public i18n: TFunction,
   ) {
     let options = interaction.data?.options ?? [];
@@ -114,12 +144,7 @@ export default class {
   }
 
   async defer(ephemeral = false): Promise<void> {
-    if (this.replied) {
-      logger.info(
-        `TRIED TO DEFER AN ALREADY REPLIED COMMAND. Author: ${this.author.id} Command: ${this.interaction.data?.name}`,
-      );
-      return;
-    }
+    if (this.replied) return;
 
     this.replied = true;
 

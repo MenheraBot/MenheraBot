@@ -498,14 +498,14 @@
         }
       }
     },
-    "commands": "Most Used Commands",
-    "users": "Users Who Most Used Commands",
-    "members": "Members",
-    "used": "Used",
-    "use": "Used",
-    "user": "Most used commands from {{user}}",
-    "times": "times",
-    "not-user": "this user didn't use any commands"
+    "commands": "Popular Commands {{page}}º",
+    "users-by-commands": "Users Loyal to /{{command}} {{page}}º",
+    "user": "{{user}}'s Favorite Commands {{page}}º",
+    "users": "Loyal Users {{page}}º",
+    "used": "Used **{{times}}** times",
+    "use": "Used **{{times}}** times",
+    "used-commands": "Used **{{times}}** commands",
+    "command-required": "You need to inform which command you want to search for in this top!"
   },
   "idioma": {
     "question": "What language do you want me to speak?",
