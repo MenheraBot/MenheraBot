@@ -69,19 +69,6 @@ const postPokerRound = async (players: PokerApiUser[]): Promise<void> => {
   await dataRequest.post('/statistics/poker', { players }).catch(debugError);
 };
 
-const getTopCommandsByUses = async (
-  skip: number,
-  userId?: string,
-): Promise<null | { name: string; uses: number }[]> => {
-  const res = await dataRequest
-    .get('/usages/top/commands', { params: { skip, userId } })
-    .catch(() => null);
-
-  if (!res) return null;
-
-  return res.data;
-};
-
 const getUserProfileInfo = async (userId: BigString): Promise<false | ApiUserProfileStats> => {
   const res = await dataRequest
     .get('/usages/user', { data: { userId: `${userId}` } })
@@ -121,12 +108,26 @@ const getGamblingGameStats = async (
   return { error: true };
 };
 
+const getTopCommandsByUses = async (
+  skip: number,
+  userId?: string,
+): Promise<null | { name: string; uses: number }[]> => {
+  const res = await dataRequest
+    .get('/usages/top/commands', { params: { skip, userId } })
+    .catch(() => null);
+
+  if (!res) return null;
+
+  return res.data;
+};
+
 const getTopUsersByUses = async (
   skip: number,
+  bannedUsers: string[],
   commandId?: number,
 ): Promise<{ id: string; uses: number; commandName: string }[] | null> => {
   const res = await dataRequest
-    .get(`/usages/top/users`, { params: { commandId, skip } })
+    .get(`/usages/top/users`, { params: { commandId, skip }, data: { bannedUsers } })
     .catch(() => null);
 
   if (!res) return null;

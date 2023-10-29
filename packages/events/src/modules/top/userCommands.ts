@@ -1,4 +1,4 @@
-import { calculateSkipCount, createPaginationButtons } from '.';
+import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from '.';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import { InteractionContext } from '../../types/menhera';
 import { getTopUsersByUses } from '../../utils/apiRequests/statistics';
@@ -11,7 +11,9 @@ const executeUserCommandsTop = async (
   embedColor: string,
 ): Promise<void> => {
   const skip = calculateSkipCount(page);
-  const res = await getTopUsersByUses(skip);
+
+  const usersToIgnore = await usersToIgnoreInTop();
+  const res = await getTopUsersByUses(skip, usersToIgnore);
 
   if (!res || res.length === 0)
     return ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
