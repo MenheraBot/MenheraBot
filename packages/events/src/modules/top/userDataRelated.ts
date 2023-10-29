@@ -1,10 +1,8 @@
-import { ButtonStyles } from 'discordeno/types';
-import { calculateSkipCount } from '.';
+import { calculateSkipCount, createPaginationButtons } from '.';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import userRepository from '../../database/repositories/userRepository';
 import { DatabaseUserSchema } from '../../types/database';
 import { InteractionContext } from '../../types/menhera';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 
@@ -53,35 +51,9 @@ const executeUserDataRelatedTop = async (
     });
   }
 
-  const backButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'economy',
-      label,
-      page === 0 ? 1 : page - 1,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('common:back'),
-    disabled: page < 2,
-  });
+  const pagination = createPaginationButtons(ctx, 'economy', label, 'NONE', page);
 
-  const nextButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'economy',
-      label,
-      page === 0 ? 2 : page + 1,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('common:next'),
-    disabled: page === 100,
-  });
-
-  ctx.makeMessage({ embeds: [embed], components: [createActionRow([backButton, nextButton])] });
+  ctx.makeMessage({ embeds: [embed], components: [pagination] });
 
   finishCommand();
 };

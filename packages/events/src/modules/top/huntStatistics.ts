@@ -1,14 +1,16 @@
-import { ButtonStyles } from 'discordeno/types';
-import { calculateSkipCount, topEmojis } from './index';
+import {
+  calculateSkipCount,
+  createPaginationButtons,
+  topEmojis,
+  usersToIgnoreInTop,
+} from './index';
 import { InteractionContext } from '../../types/menhera';
 import { ApiHuntingTypes } from '../hunt/types';
-import blacklistRepository from '../../database/repositories/blacklistRepository';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import { getTopHunters } from '../../utils/apiRequests/statistics';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { COLORS } from '../../structures/constants';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 
 const executeTopHuntStatistics = async (
   ctx: InteractionContext,
@@ -19,15 +21,12 @@ const executeTopHuntStatistics = async (
 ): Promise<void> => {
   const skip = calculateSkipCount(page);
 
-  const usersToIgnore = await Promise.all([
-    blacklistRepository.getAllBannedUsersId(),
-    cacheRepository.getDeletedAccounts(),
-  ]).then((a) => a[0].concat(a[1]));
+  const usersToIgnore = await usersToIgnoreInTop();
 
   const results = await getTopHunters(skip, usersToIgnore, type, topMode);
 
   if (!results) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
+    ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
 
     return finishCommand();
   }
@@ -69,37 +68,9 @@ const executeTopHuntStatistics = async (
     });
   }
 
-  const backButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'hunt',
-      type,
-      topMode,
-      page === 0 ? 1 : page - 1,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('common:back'),
-    disabled: page < 2,
-  });
+  const pagination = createPaginationButtons(ctx, 'hunt', type, topMode, page);
 
-  const nextButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'hunt',
-      type,
-      topMode,
-      page === 0 ? 2 : page + 1,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('common:next'),
-    disabled: page === 100,
-  });
-
-  ctx.makeMessage({ embeds: [embed], components: [createActionRow([backButton, nextButton])] });
+  ctx.makeMessage({ embeds: [embed], components: [pagination] });
   finishCommand();
 };
 

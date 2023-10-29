@@ -10,7 +10,7 @@ const executeUsedCommandsTop = async (
   const res = await getMostUsedCommands();
 
   if (!res) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
+    ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
 
     return finishCommand();
   }

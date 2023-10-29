@@ -52,5 +52,6 @@
   "form-timesup": "You didn't submit the form on time!",
   "unregistered": "You still haven't reincarnated in the Bulletin World! Register first and try again!",
   "waiting-form": "Waiting Form...",
+  "api-error": "Wow! I couldn't find this data in my room... Everything is a mess (sorry about that)! I'll keep looking...",
   "http-error": "Hmmm... Some error happened while receiving the image... Maybe the image generator server is out... Please try again later"
 }

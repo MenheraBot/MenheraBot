@@ -1,12 +1,15 @@
-import { ButtonStyles } from 'discordeno/types';
+import { ActionRow, ButtonStyles } from 'discordeno/types';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { COLORS, EMOJIS } from '../../structures/constants';
-import { createActionRow, createButton } from '../../utils/discord/componentUtils';
+import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { executeUserDataRelatedTop } from './userDataRelated';
 import { DatabaseUserSchema } from '../../types/database';
 import { executeTopHuntStatistics } from './huntStatistics';
 import { ApiHuntingTypes } from '../hunt/types';
 import { executeGamblingTop } from './gamblingTop';
+import blacklistRepository from '../../database/repositories/blacklistRepository';
+import cacheRepository from '../../database/repositories/cacheRepository';
+import { InteractionContext } from '../../types/menhera';
 
 const calculateSkipCount = (page: number): number => (page - 1) * 10;
 
@@ -27,8 +30,52 @@ const topEmojis: { [key: string]: string } = {
   bicho: '🦌',
 };
 
+const usersToIgnoreInTop = async (): Promise<string[]> =>
+  Promise.all([
+    blacklistRepository.getAllBannedUsersId(),
+    cacheRepository.getDeletedAccounts(),
+  ]).then((a) => a[0].concat(a[1]));
+
+const createPaginationButtons = (
+  ctx: InteractionContext,
+  topType: 'gambling' | 'hunt' | 'economy',
+  firstInfo: string,
+  secondInfo: string,
+  page: number,
+): ActionRow =>
+  createActionRow([
+    createButton({
+      customId: createCustomId(
+        0,
+        ctx.interaction.user.id,
+        ctx.commandId,
+        topType,
+        firstInfo,
+        secondInfo,
+        page === 0 ? 1 : page - 1,
+      ),
+      style: ButtonStyles.Primary,
+      label: ctx.locale('common:back'),
+      disabled: page < 2,
+    }),
+    createButton({
+      customId: createCustomId(
+        0,
+        ctx.interaction.user.id,
+        ctx.commandId,
+        topType,
+        firstInfo,
+        secondInfo,
+        page === 0 ? 2 : page + 1,
+      ),
+      style: ButtonStyles.Primary,
+      label: ctx.locale('common:next'),
+      disabled: page === 99,
+    }),
+  ]);
+
 const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [command] = ctx.sentData;
+  const [command, firstInfo, secondInfo, page] = ctx.sentData;
 
   const noop = () => undefined;
 
@@ -52,14 +99,12 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
   });
 
   if (command === 'economy') {
-    const [, type, page] = ctx.sentData;
-
     return executeUserDataRelatedTop(
       ctx,
-      type as keyof DatabaseUserSchema,
-      topEmojis[type],
-      ctx.locale(`commands:top.economia.${type as 'mamou'}-title`),
-      ctx.locale(`commands:top.economia.${type as 'mamou'}`),
+      firstInfo as keyof DatabaseUserSchema,
+      topEmojis[firstInfo],
+      ctx.locale(`commands:top.economia.${firstInfo as 'mamou'}-title`),
+      ctx.locale(`commands:top.economia.${firstInfo as 'mamou'}`),
       Number(page),
       COLORS.Purple,
       noop,
@@ -67,21 +112,23 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
   }
 
   if (command === 'hunt') {
-    const [, type, topMode, page] = ctx.sentData;
-
     return executeTopHuntStatistics(
       ctx,
-      type as ApiHuntingTypes,
-      topMode as 'success',
+      firstInfo as ApiHuntingTypes,
+      secondInfo as 'success',
       Number(page),
       noop,
     );
   }
 
-  const [, gameMode, topMode, page] = ctx.sentData;
-
   if (command === 'gambling')
-    return executeGamblingTop(ctx, gameMode as 'bicho', topMode as 'money', Number(page), noop);
+    return executeGamblingTop(ctx, firstInfo as 'bicho', secondInfo as 'money', Number(page), noop);
 };
 
-export { calculateSkipCount, topEmojis, executeTopPagination };
+export {
+  calculateSkipCount,
+  topEmojis,
+  executeTopPagination,
+  usersToIgnoreInTop,
+  createPaginationButtons,
+};

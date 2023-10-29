@@ -50,5 +50,6 @@
   "unregistered": "Tu ainda não reencarnou no Mundo de Boleham! Registre-se primeiro e tente novamente!",
   "form-timesup": "Você não enviou o formulário a tempo!",
   "waiting-form": "Esperando Formulário...",
+  "api-error": "Eita! Não consegui encontrar esses dados no meu quarto... Ta tudo uma bagunça (desculpa por isso)! Vou continuar procurando...",
   "http-error": "Hmmm... Algum erro aconteceu ao processar a imagem... Talvez o servidor de processamento de imagens esteja fora do ar... Tente novamente mais tarde!"
 }
