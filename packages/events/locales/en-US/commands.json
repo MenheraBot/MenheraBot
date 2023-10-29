@@ -481,11 +481,13 @@
       }
     },
     "commands": "Popular Commands {{page}}º",
+    "users-by-commands": "Users Loyal to /{{command}} {{page}}º",
+    "user": "{{user}}'s Favorite Commands {{page}}º",
     "users": "Loyal Users {{page}}º",
     "used": "Used **{{times}}** times",
     "use": "Used **{{times}}** times",
     "used-commands": "Used **{{times}}** commands",
-    "user": "{{user}}'s Favorite Commands {{page}}º"
+    "command-required": "You need to inform which command you want to search for in this top!"
   },
   "idioma": {
     "question": "What language do you want me to speak?",
@@ -516,7 +518,7 @@
       "played": "Matches Played",
       "wins": "Wins",
       "loses": "Losses",
-      "earnMoney": "Earned Money", 
+      "earnMoney": "Earned Money",
       "lostMoney": "Lost Money",
       "profit": "Total Profit",
       "loss": "Total Loss",

@@ -380,7 +380,14 @@ const TopCommand = createCommand({
         if (type === 'users')
           return executeUserCommandsTop(ctx, page, ctx.authorData.selectedColor);
 
-        return executeUsersByUsedCommandTop(ctx, page);
+        const commandId = ctx.getOption<number>('comando', false);
+
+        if (!commandId)
+          return ctx.makeMessage({
+            content: ctx.prettyResponse('error', 'commands:top.command-required'),
+          });
+
+        return executeUsersByUsedCommandTop(ctx, 0, page, ctx.authorData.selectedColor);
       }
 
       case 'caçar': {

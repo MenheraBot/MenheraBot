@@ -1,6 +1,6 @@
 import { calculateSkipCount, createPaginationButtons } from '.';
 import { InteractionContext } from '../../types/menhera';
-import { getMostUsedCommands } from '../../utils/apiRequests/statistics';
+import { getTopCommandsByUses } from '../../utils/apiRequests/statistics';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 
@@ -10,7 +10,7 @@ const executeUsedCommandsTop = async (
   embedColor: string,
 ): Promise<void> => {
   const skip = calculateSkipCount(page);
-  const res = await getMostUsedCommands(skip);
+  const res = await getTopCommandsByUses(skip);
 
   if (!res || res.length === 0)
     return ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });

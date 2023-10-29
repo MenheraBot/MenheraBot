@@ -1,7 +1,7 @@
 import { calculateSkipCount, createPaginationButtons } from '.';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import { InteractionContext } from '../../types/menhera';
-import { getUsersThatMostUsedCommands } from '../../utils/apiRequests/statistics';
+import { getTopUsersByUses } from '../../utils/apiRequests/statistics';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 
@@ -11,13 +11,10 @@ const executeUserCommandsTop = async (
   embedColor: string,
 ): Promise<void> => {
   const skip = calculateSkipCount(page);
-  const res = await getUsersThatMostUsedCommands(skip);
+  const res = await getTopUsersByUses(skip);
 
-  if (!res) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
-
-    return;
-  }
+  if (!res || res.length === 0)
+    return ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
 
   const embed = createEmbed({
     title: ctx.prettyResponse('smile', 'commands:top.users', { page: page > 1 ? page : 1 }),
@@ -25,7 +22,9 @@ const executeUserCommandsTop = async (
     fields: [],
   });
 
-  const members = await Promise.all(res.map((a) => cacheRepository.getDiscordUser(`${a.id}`)));
+  const members = await Promise.all(
+    res.map((a) => cacheRepository.getDiscordUser(`${a.id}`, page <= 3)),
+  );
 
   for (let i = 0; i < res.length; i++) {
     const member = members[i];

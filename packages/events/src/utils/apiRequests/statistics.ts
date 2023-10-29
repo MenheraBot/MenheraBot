@@ -69,12 +69,12 @@ const postPokerRound = async (players: PokerApiUser[]): Promise<void> => {
   await dataRequest.post('/statistics/poker', { players }).catch(debugError);
 };
 
-const getTopCommandsByUser = async (
-  userId: BigString,
+const getTopCommandsByUses = async (
   skip: number,
+  userId?: string,
 ): Promise<null | { name: string; uses: number }[]> => {
   const res = await dataRequest
-    .get('/usages/top/commands', { params: { skip, userId: `${userId}` } })
+    .get('/usages/top/commands', { params: { skip, userId } })
     .catch(() => null);
 
   if (!res) return null;
@@ -121,32 +121,13 @@ const getGamblingGameStats = async (
   return { error: true };
 };
 
-const getMostUsedCommands = async (
+const getTopUsersByUses = async (
   skip: number,
-): Promise<null | { name: string; uses: number }[]> => {
-  const res = await dataRequest.get('/usages/top/commands', { params: { skip } }).catch(() => null);
-
-  if (!res) return null;
-
-  return res.data;
-};
-
-const getUsersByUsedCommand = async (
-  commandId: number,
-): Promise<{ id: string; uses: number }[] | null> => {
+  commandId?: number,
+): Promise<{ id: string; uses: number; commandName: string }[] | null> => {
   const res = await dataRequest
-    .get(`/usages/top/users`, { params: { commandId } })
+    .get(`/usages/top/users`, { params: { commandId, skip } })
     .catch(() => null);
-
-  if (!res) return null;
-
-  return res.data;
-};
-
-const getUsersThatMostUsedCommands = async (
-  skip: number,
-): Promise<null | { id: string; uses: number }[]> => {
-  const res = await dataRequest.get('/usages/top/users', { params: { skip } }).catch(() => null);
 
   if (!res) return null;
 
@@ -252,12 +233,11 @@ const getUserTransactions = async (
 export {
   postHuntExecution,
   postBichoResults,
-  getTopCommandsByUser,
+  getTopCommandsByUses,
   postCoinflipMatch,
-  getMostUsedCommands,
   getUserTransactions,
   getGamblingGameStats,
-  getUsersByUsedCommand,
+  getTopUsersByUses,
   postRoulleteGame,
   postBlackjackGame,
   getUserHuntStats,
@@ -268,5 +248,4 @@ export {
   getAllUserBans,
   postTransaction,
   getTopHunters,
-  getUsersThatMostUsedCommands,
 };

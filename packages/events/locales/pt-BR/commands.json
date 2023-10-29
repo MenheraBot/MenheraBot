@@ -487,10 +487,12 @@
     },
     "commands": "Comandos Populares {{page}}º",
     "users": "Usuários Fiéis {{page}}º",
+    "users-by-commands": "Usuários Fiéis ao /{{command}} {{page}}º",
+    "user": "Comandos Favoritos de {{user}} {{page}}º",
     "used": "Usado **{{times}}** vezes",
     "use": "Usou **{{times}}** vezes",
     "used-commands": "Usou **{{times}}** comandos",
-    "user": "Comandos Favoritos de {{user}} {{page}}º"
+    "command-required": "Tu precisa informar qual comando tu quer buscar nesse top!"
   },
   "idioma": {
     "question": "Qual língua você quer que eu fale?",
