@@ -118,6 +118,16 @@ const getMostUsedCommands = async (): Promise<false | { name: string; usages: nu
   return false;
 };
 
+const getUsersByUsedCommand = async (
+  commandId: number,
+): Promise<{ id: string; uses: number }[] | null> => {
+  const res = await dataRequest.get(`/usages/top/users?commandId=${commandId}`).catch(() => null);
+
+  if (!res) return null;
+
+  return res.data;
+};
+
 const getUsersThatMostUsedCommands = async (): Promise<false | { id: string; uses: number }[]> => {
   const res = await dataRequest.get('/usages/top/user').catch(() => null);
 
@@ -231,6 +241,7 @@ export {
   getMostUsedCommands,
   getUserTransactions,
   getGamblingGameStats,
+  getUsersByUsedCommand,
   postRoulleteGame,
   postBlackjackGame,
   getUserHuntStats,

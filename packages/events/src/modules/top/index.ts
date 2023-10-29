@@ -1,4 +1,12 @@
-import { EMOJIS } from '../../structures/constants';
+import { ButtonStyles } from 'discordeno/types';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { COLORS, EMOJIS } from '../../structures/constants';
+import { createActionRow, createButton } from '../../utils/discord/componentUtils';
+import { executeUserDataRelatedTop } from './userDataRelated';
+import { DatabaseUserSchema } from '../../types/database';
+import { executeTopHuntStatistics } from './huntStatistics';
+import { ApiHuntingTypes } from '../hunt/types';
+import { executeGamblingTop } from './gamblingTop';
 
 const calculateSkipCount = (page: number): number => (page - 1) * 10;
 
@@ -19,7 +27,7 @@ const topEmojis: { [key: string]: string } = {
   bicho: '🦌',
 };
 
-const executePagination = async (ctx: ComponentInteractionContext): Promise<void> => {
+const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [command] = ctx.sentData;
 
   const noop = () => undefined;
@@ -76,4 +84,4 @@ const executePagination = async (ctx: ComponentInteractionContext): Promise<void
     return executeGamblingTop(ctx, gameMode as 'bicho', topMode as 'money', Number(page), noop);
 };
 
-export { calculateSkipCount, topEmojis, executePagination };
+export { calculateSkipCount, topEmojis, executeTopPagination };

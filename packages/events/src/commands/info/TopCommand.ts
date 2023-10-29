@@ -10,7 +10,7 @@ import { executeUserDataRelatedTop } from '../../modules/top/userDataRelated';
 import { executeUsedCommandsByUserTop } from '../../modules/top/usedCommandsByUser';
 import { executeUsedCommandsTop } from '../../modules/top/usedCommands';
 import { executeUserCommandsTop } from '../../modules/top/userCommands';
-import { topEmojis } from '../../modules/top';
+import { executeTopPagination, topEmojis } from '../../modules/top';
 
 const TopCommand = createCommand({
   path: '',
@@ -311,7 +311,7 @@ const TopCommand = createCommand({
       ],
     },
   ],
-  commandRelatedExecutions: [executeButtonPressed],
+  commandRelatedExecutions: [executeTopPagination],
   authorDataFields: ['selectedColor', 'inUseItems', 'inventory', 'id'],
   execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();
