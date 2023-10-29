@@ -36,8 +36,8 @@ export interface ApiGamblingGameStats {
 }
 
 export interface ApiUserProfileStats {
-  cmds: { count: number };
-  array: Array<{ name: string; count: number }>;
+  totalUses: number;
+  topCommand: { name: string; count: number };
 }
 
 export type MayReturnError<T> = T | { error: true };

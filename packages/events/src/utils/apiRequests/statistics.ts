@@ -69,16 +69,12 @@ const postPokerRound = async (players: PokerApiUser[]): Promise<void> => {
   await dataRequest.post('/statistics/poker', { players }).catch(debugError);
 };
 
-const getUserProfileInfo = async (userId: BigString): Promise<false | ApiUserProfileStats> => {
-  const res = await dataRequest
-    .get('/usages/user', { data: { userId: `${userId}` } })
-    .catch(() => null);
+const getUserProfileInfo = async (userId: string): Promise<null | ApiUserProfileStats> => {
+  const res = await dataRequest.get('/usages/user', { params: userId }).catch(() => null);
 
-  if (!res) return false;
+  if (!res) return null;
 
-  if (res.status === 200) return res.data;
-
-  return false;
+  return res.data;
 };
 
 const getUserHuntStats = async (userId: BigString): Promise<MayReturnError<ApiHuntStats>> => {

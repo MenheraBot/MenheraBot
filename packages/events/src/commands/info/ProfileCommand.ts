@@ -228,14 +228,14 @@ const ProfileCommand = createCommand({
       return;
     }
 
-    const usageCommands = await getUserProfileInfo(discordUser.id);
+    const usageCommands = await getUserProfileInfo(`${discordUser.id}`);
 
     if (usageCommands)
       i18n.usages = ctx.locale('commands:perfil.commands-usage', {
         user: getDisplayName(discordUser, true),
-        usedCount: usageCommands.cmds.count,
-        mostUsedCommandName: usageCommands.array[0]?.name ?? 'nenhum',
-        mostUsedCommandCount: usageCommands.array[0]?.count ?? '0',
+        usedCount: usageCommands.totalUses,
+        mostUsedCommandName: usageCommands.topCommand.name,
+        mostUsedCommandCount: usageCommands.topCommand.count,
       });
 
     if (discordUser.id === bot.applicationId)
