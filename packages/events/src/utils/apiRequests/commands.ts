@@ -25,21 +25,4 @@ const postCommandsInformation = async (commands: ApiCommandInformation[]): Promi
   await statusRequest.post('/commands', { data: { commands } }).catch(debugError);
 };
 
-const serachApiCommands = async (
-  search: string,
-): Promise<null | { name: string; id: string }[]> => {
-  const result = await statusRequest
-    .get('/commands/search', { params: { search } })
-    .catch(() => null);
-
-  if (!result) return null;
-
-  return result.data;
-};
-
-export {
-  postCommandExecution,
-  updateCommandMaintenanteStatus,
-  postCommandsInformation,
-  serachApiCommands,
-};
+export { postCommandExecution, updateCommandMaintenanteStatus, postCommandsInformation };
