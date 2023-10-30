@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - _Novo comando_ `/fazendinha plantações`: Controle os campos de sua fazenda. Plante e colha suas plantações.
 - _Novo comando_ `/fazendinha silo`: Veja o silo de sua fazenda, com informações como quantas sementes e plantas tu tem.
 - _Novo comando_ `/estatísticas fazendeiro`: Veja as estatísticas das plantações de usuários.
+- _Novo comando_ `/menhera atualizações`: Veja informações da última atualização da Menhera.
 - _Novo comando_ `/loja comprar sementes`: Compre diferentes sementes para plantar em sua fazenda.
 - _Novo comando_ `/loja vender plantas`: Venda suas plantações para ganhar estrelinhas.
 - _Novas opções_ `/loja preços comprar` e `/loja preços vender`. Veja os preços de compra e venda de plantas e sementes.

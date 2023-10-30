@@ -13,6 +13,7 @@ import { initializePrometheus } from './initializePrometheus';
 import { transformDiscordUserToUser } from '../internals/transformers/reverse/transformDiscordUserToUser';
 import { transfromUserToDiscordUser } from '../internals/transformers/transformUserToDiscordUser';
 import { transformComponentToDiscordComponent } from '../internals/transformers/reverse/component';
+import { loadChangelog } from '../utils/changelog';
 
 const setupMenheraClient = (client: MenheraClient): void => {
   const { OWNER_ID } = getEnviroments(['OWNER_ID']);
@@ -29,6 +30,8 @@ const setupMenheraClient = (client: MenheraClient): void => {
 
   client.isMaster = false;
 
+  client.changelog = null;
+
   client.commandsInExecution = 0;
 
   loadCommands();
@@ -36,6 +39,7 @@ const setupMenheraClient = (client: MenheraClient): void => {
 
 const initializeServices = async (): Promise<void> => {
   await loadLocales();
+  await loadChangelog();
 
   if (process.env.NODE_ENV === 'test') return;
 

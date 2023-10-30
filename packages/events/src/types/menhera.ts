@@ -17,4 +17,17 @@ export interface MenheraClient extends Bot {
   username: string;
   isMaster: boolean;
   commandsInExecution: number;
+  changelog: {
+    versionName: string;
+    date: string;
+    info: {
+      hotfix?: string;
+      added?: string;
+      changed?: string;
+      deprecated?: string;
+      removed?: string;
+      fixed?: string;
+      security?: string;
+    };
+  } | null;
 }

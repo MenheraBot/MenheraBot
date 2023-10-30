@@ -787,6 +787,18 @@
     "badge-info": "_{{description}}_\n**Acquired in**: <t:{{unix}}:d>\n**Badge ID**: {{id}}\n**Rarity:** {{rarity}}"
   },
   "menhera": {
+    "changelog": {
+      "title": "Update {{version}}",
+      "footer": "Released in {{date}}",
+      "added": "Added",
+      "changed": "Changed",
+      "deprecated": "Deprecated",
+      "removed": "Removed",
+      "fixed": "Fixed",
+      "security": "Security",
+      "hotfix": "Hotfix",
+      "no-changelog": "The announcement of the current update has not yet been made. Wait another 10 minutes and try again >.<"
+    },
     "suporte": {
       "message": "Having a problem, or just want to chat with more people who use my commands? Join my support server: \n\nhttps://discord.gg/fZMdQbA\n ||SHHHHHhh, don't tell the moderation that I sent this invite, they might ban me for sending invites...||"
     },

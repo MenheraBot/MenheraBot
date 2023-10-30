@@ -792,6 +792,18 @@
     "badge-info": "_{{description}}_\n**Adquirida em**: <t:{{unix}}:d>\n**ID da badge**: {{id}}\n**Raridade:** {{rarity}}"
   },
   "menhera": {
+    "changelog": {
+      "title": "Atualização {{version}}",
+      "footer": "Atualização lançada dia {{date}}",
+      "added": "Adicionado",
+      "changed": "Atualizado",
+      "deprecated": "Preterido",
+      "removed": "Removido",
+      "fixed": "Resolvido",
+      "security": "Segurança",
+      "hotfix": "Hotfix",
+      "no-changelog": "O anúncio da atualização atual ainda não foi feito. Aguarde mais uns 10 minutos e tente novamente >.<"
+    },
     "suporte": {
       "message": "Está com algum problema, ou quer só conversar com mais gente que usa meus comandos? Entre em meu servidor de suporte: \n\nhttps://discord.gg/fZMdQbA\n|| SHHHHHhh, não fala pra moderação desse servidor que eu mandei esse convite, vai que eles me banam por divulgação... ||"
     },
