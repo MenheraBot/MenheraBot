@@ -20,7 +20,7 @@ const loadChangelog = async (): Promise<void> => {
 
     retryTimeout = setTimeout(() => {
       loadChangelog();
-    }, 60_000 * retries);
+    }, 60_000 * retries).unref();
     return;
   }
 
