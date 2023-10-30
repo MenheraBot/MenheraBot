@@ -5,6 +5,10 @@ import { halloweenEventModel } from '../../database/collections';
 import eventRepository from '../../database/repositories/eventRepository';
 import userRepository from '../../database/repositories/userRepository';
 import badgeRepository from '../../database/repositories/badgeRepository';
+import starsRepository from '../../database/repositories/starsRepository';
+import { postTransaction } from '../../utils/apiRequests/statistics';
+import { bot } from '../..';
+import { ApiTransactionReason } from '../../types/api';
 
 const DeployCommand = createCommand({
   path: '',
@@ -72,6 +76,8 @@ const DeployCommand = createCommand({
 
     if (!senha) return ctx.makeMessage({ content: 'sem senha' });
 
+    bot.finishedEvent = true;
+
     await ctx.makeMessage({ content: 'BORA QUE BORA :star:' });
 
     const res = await halloweenEventModel.find({ ban: false }, ['allTimeTreats', 'id'], {
@@ -94,7 +100,24 @@ const DeployCommand = createCommand({
     });
 
     ctx.makeMessage({
-      content: `Total de ruim ${otherRes.length}\nTotal de outro ${res.length}`,
+      content: `Pessoas que pegou todas coisa ${otherRes.length}\nTop 10 do evento ${res.length}`,
+    });
+
+    const usersWithStars = await halloweenEventModel.find({ candies: { $gt: 0 } });
+
+    ctx.followUp({
+      content: `Users que não gastaram os doces: ${usersWithStars.length}`,
+    });
+
+    usersWithStars.forEach((a) => {
+      starsRepository.addStars(a.id, a.candies * 1000);
+      postTransaction(
+        `${bot.id}`,
+        a.id,
+        a.candies * 1000,
+        'estrelinhas',
+        ApiTransactionReason.SIMON_SAYS_ADD,
+      );
     });
   },
 });

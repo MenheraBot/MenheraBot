@@ -23,6 +23,7 @@ import userThemesRepository from '../../database/repositories/userThemesReposito
 import starsRepository from '../../database/repositories/starsRepository';
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
 import { extractFields } from '../../utils/discord/modalUtils';
+import { bot } from '../..';
 
 const candiesProbability: { amount: number; probability: number }[] = [
   { amount: 1, probability: 37 },
@@ -179,6 +180,13 @@ const availableProducts = [
 ];
 
 const explainEvent = async (ctx: ChatInputInteractionContext): Promise<void> => {
+  if (bot.finishedEvent)
+    return ctx.makeMessage({
+      content: 'O evento de Halloween acabou! Obrigada a todos que participaram!',
+      embeds: [],
+      components: [],
+      flags: MessageFlags.EPHEMERAL,
+    });
   const embed = createEmbed({
     title: `${EMOJIS.badge_12} | Gostosuras ou Travessuras?`,
     color: hexStringToNumber(ctx.authorData.selectedColor),
@@ -211,6 +219,13 @@ const buyRollAndStar = async (
   ctx: ComponentInteractionContext<ModalInteraction>,
 ): Promise<void> => {
   const fields = extractFields(ctx.interaction)[0];
+  if (bot.finishedEvent)
+    return ctx.makeMessage({
+      content: 'O evento de Halloween acabou! Obrigada a todos que participaram!',
+      embeds: [],
+      components: [],
+      flags: MessageFlags.EPHEMERAL,
+    });
 
   const parsed = parseInt(fields.value, 10);
 
@@ -252,6 +267,13 @@ const buyRollAndStar = async (
 };
 
 const buyItem = async (ctx: ComponentInteractionContext<SelectMenuInteraction>): Promise<void> => {
+  if (bot.finishedEvent)
+    return ctx.makeMessage({
+      content: 'O evento de Halloween acabou! Obrigada a todos que participaram!',
+      embeds: [],
+      components: [],
+      flags: MessageFlags.EPHEMERAL,
+    });
   const [selectedIndex] = ctx.interaction.data.values;
 
   const eventUser = await eventRepository.getEventUser(ctx.user.id);
@@ -433,6 +455,13 @@ const buyItem = async (ctx: ComponentInteractionContext<SelectMenuInteraction>):
 };
 
 const eventShop = async (ctx: ChatInputInteractionContext): Promise<void> => {
+  if (bot.finishedEvent)
+    return ctx.makeMessage({
+      content: 'O evento de Halloween acabou! Obrigada a todos que participaram!',
+      embeds: [],
+      components: [],
+      flags: MessageFlags.EPHEMERAL,
+    });
   const eventUser = await eventRepository.getEventUser(ctx.author.id);
 
   const embed = createEmbed({
@@ -466,6 +495,13 @@ const eventShop = async (ctx: ChatInputInteractionContext): Promise<void> => {
 };
 
 const displayTop = async (ctx: ChatInputInteractionContext): Promise<void> => {
+  if (bot.finishedEvent)
+    return ctx.makeMessage({
+      content: 'O evento de Halloween acabou! Obrigada a todos que participaram!',
+      embeds: [],
+      components: [],
+      flags: MessageFlags.EPHEMERAL,
+    });
   await ctx.defer();
 
   const res = await halloweenEventModel.find({ ban: false }, ['allTimeTreats', 'id'], {
@@ -504,6 +540,13 @@ const displayTop = async (ctx: ChatInputInteractionContext): Promise<void> => {
 };
 
 const displayTricks = async (ctx: ChatInputInteractionContext): Promise<void> => {
+  if (bot.finishedEvent)
+    return ctx.makeMessage({
+      content: 'O evento de Halloween acabou! Obrigada a todos que participaram!',
+      embeds: [],
+      components: [],
+      flags: MessageFlags.EPHEMERAL,
+    });
   const eventUser = await eventRepository.getEventUser(ctx.author.id);
 
   const embed = createEmbed({
@@ -562,6 +605,14 @@ const TrickOrTreatCommand = createCommand({
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
     finishCommand();
+
+    if (bot.finishedEvent)
+      return ctx.makeMessage({
+        content: 'O evento de Halloween acabou! Obrigada a todos que participaram!',
+        embeds: [],
+        components: [],
+        flags: MessageFlags.EPHEMERAL,
+      });
 
     const action = ctx.getOption<'hunt' | 'ask' | 'shop' | 'top' | 'tricks'>('ação', false, true);
 

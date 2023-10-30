@@ -27,6 +27,8 @@ const setupMenheraClient = (client: MenheraClient): void => {
 
   client.shuttingDown = false;
 
+  client.finishedEvent = false;
+
   client.isMaster = false;
 
   client.commandsInExecution = 0;
