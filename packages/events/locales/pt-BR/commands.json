@@ -525,6 +525,12 @@
     "success": "Seu 'Sobre Mim' foi alterado com sucesso! Você pode ver as mudanças com {{command}}"
   },
   "status": {
+    "poker": {
+      "embed-title": "Estatísticas de Poker de {{user}}",
+      "no-data": "Este usuário nunca jogou uma partida de poker!",
+      "footer": "Estatísticas baseadas por cada round de Poker",
+      "description": "### Rounds Vencidos\n- **Desistência: ** {{folded}}\n- **Carta Alta:** {{high_card}}\n- **Par:** {{pair}}\n- **Dois Pares:** {{two_pair}}\n- **Trinca:** {{three_of_a_kind}}\n- **Sequência:** {{straight}}\n- **Flush:** {{flush}}\n- **Full House:** {{full_house}}\n- **Quadra:** {{four_of_a_kind}}\n- **Straight Flush:** {{straight_flush}}\n- **Royal Flush:** {{royal_flush}}"
+    },
     "designer": {
       "no-designer": "Este usuário não possui nenhum design em seu nome!",
       "title": "Designs de {{user}}",

@@ -520,6 +520,12 @@
     "success": "Your 'About Me' has been successfully changed! Use {{command}} >.<"
   },
   "status": {
+    "poker": {
+      "embed-title": "{{user}}'s Poker Statistics",
+      "no-data": "This user have never played a poker game!",
+      "footer": "Statistics based on Poker rounds",
+      "description": "### Rounds Won\n- **Fold: ** {{folded}}\n- **High Card:** {{high_card}}\n- **Pair:** {{pair}}\n- **Two Pair:** {{two_pair}}\n- **Three of a Kind:** {{three_of_a_kind}}\n- **Straight:** {{straight}}\n- **Flush:** {{flush}}\n- **Full House:** {{full_house}}\n- **Four of a Kind:** {{four_of_a_kind}}\n- **Straight Flush:** {{straight_flush}}\n- **Royal Flush:** {{royal_flush}}"
+    },
     "designer": {
       "no-designer": "This user does't own any designs",
       "title": "{{user}}'s Designs",

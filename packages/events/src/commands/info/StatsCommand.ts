@@ -7,6 +7,7 @@ import { ApiGamblingGameCompatible, ApiGamblingGameStats } from '../../types/api
 import {
   getFazendinhaStatistics,
   getGamblingGameStats,
+  getPokerStats,
   getUserHuntStats,
 } from '../../utils/apiRequests/statistics';
 import { COLORS, EMOJIS } from '../../structures/constants';
@@ -270,6 +271,32 @@ const executeGamblingGameStats = async (
   finishCommand();
 };
 
+const executePokerStats = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
+  const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
+
+  const data = await getPokerStats(`${user.id}`);
+
+  if (data.error) {
+    ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:status.coinflip.error') });
+
+    return finishCommand();
+  }
+
+  if (!data.playedGames) {
+    ctx.makeMessage({ content: ctx.prettyResponse('error', `commands:status.poker.no-data`) });
+
+    return finishCommand();
+  }
+
+  const embed = makeGamblingStatisticsEmbed(data, ctx.i18n, 'poker', getDisplayName(user));
+
+  embed.description = ctx.locale('commands:status.poker.description', { ...data });
+  embed.footer = { text: ctx.locale('commands:status.poker.footer') };
+
+  ctx.makeMessage({ embeds: [embed] });
+  finishCommand();
+};
+
 const executeFazendeiroCommand = async (
   ctx: ChatInputInteractionContext,
   finishCommand: () => void,
@@ -348,6 +375,21 @@ const StatsCommand = createCommand({
       type: ApplicationCommandOptionTypes.SubCommand,
       description: '「🎡」・Veja as estatísticas de roleta de alguém',
       descriptionLocalizations: { 'en-US': "「🎡」・View someone's roulette statistics" },
+      options: [
+        {
+          name: 'user',
+          description: 'Usuário para ver as estatísticas',
+          descriptionLocalizations: { 'en-US': 'User to see statistics' },
+          type: ApplicationCommandOptionTypes.User,
+          required: false,
+        },
+      ],
+    },
+    {
+      name: 'poker',
+      type: ApplicationCommandOptionTypes.SubCommand,
+      description: '「💰」・Veja as estatísticas de poker de alguém',
+      descriptionLocalizations: { 'en-US': "「💰」・View someone's poker statistics" },
       options: [
         {
           name: 'user',
@@ -439,6 +481,8 @@ const StatsCommand = createCommand({
       case 'blackjack':
       case 'bicho':
         return executeGamblingGameStats(ctx, finishCommand, subCommand);
+      case 'poker':
+        return executePokerStats(ctx, finishCommand);
     }
   },
 });

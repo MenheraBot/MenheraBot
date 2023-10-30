@@ -4,6 +4,7 @@ import {
   ApiGamblingGameCompatible,
   ApiGamblingGameStats,
   ApiHuntStats,
+  ApiPokerUserStats,
   ApiTransactionReason,
   ApiUserProfileStats,
   BanInfo,
@@ -103,6 +104,14 @@ const getGamblingGameStats = async (
   if (!res.data.error) return res.data;
 
   return { error: true };
+};
+
+const getPokerStats = async (userId: string): Promise<MayReturnError<ApiPokerUserStats>> => {
+  const res = await dataRequest.get(`/statistics/poker`, { params: { userId } }).catch(() => null);
+
+  if (!res) return { error: true };
+
+  return res.data;
 };
 
 const getTopCommandsByUses = async (
@@ -251,6 +260,7 @@ export {
   postBichoResults,
   getTopCommandsByUses,
   postCoinflipMatch,
+  getPokerStats,
   getUserTransactions,
   getFazendinhaStatistics,
   getGamblingGameStats,

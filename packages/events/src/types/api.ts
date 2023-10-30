@@ -1,4 +1,5 @@
 import { ApiHuntingTypes, DatabaseHuntingTypes } from '../modules/hunt/types';
+import { PokerWinReasons } from '../modules/poker/types';
 
 /* eslint-disable camelcase */
 export interface ApiHuntStats {
@@ -34,6 +35,8 @@ export interface ApiGamblingGameStats {
   lostPorcentage: string;
   error?: boolean;
 }
+
+export type ApiPokerUserStats = ApiGamblingGameStats & Record<Lowercase<PokerWinReasons>, number>;
 
 export interface ApiUserProfileStats {
   totalUses: number;
