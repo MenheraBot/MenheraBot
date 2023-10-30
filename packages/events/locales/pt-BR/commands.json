@@ -475,6 +475,10 @@
       "gods": "Deuses"
     },
     "estatisticas": {
+      "impostos": {
+        "taxes": "Financiadores da Menhera {{page}}º",
+        "paid": "Pagou **{{value}}** :star: em impostos"
+      },
       "cacar": {
         "title": "{{emoji}} | Melhores Caçadores de {{type}} {{page}}º",
         "demon": "Demônios",

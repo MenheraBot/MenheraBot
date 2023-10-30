@@ -127,6 +127,19 @@ const getTopCommandsByUses = async (
   return res.data;
 };
 
+const getTopTaxesPaid = async (
+  skip: number,
+  bannedUsers: string[],
+): Promise<{ id: string; taxes: number }[] | null> => {
+  const res = await dataRequest
+    .get(`/statistics/taxes/top`, { params: { skip }, data: { bannedUsers } })
+    .catch(() => null);
+
+  if (!res) return null;
+
+  return res.data;
+};
+
 const getTopUsersByUses = async (
   skip: number,
   bannedUsers: string[],
@@ -262,6 +275,7 @@ export {
   postCoinflipMatch,
   getPokerStats,
   getUserTransactions,
+  getTopTaxesPaid,
   getFazendinhaStatistics,
   getGamblingGameStats,
   getTopUsersByUses,

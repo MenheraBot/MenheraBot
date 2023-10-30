@@ -470,6 +470,10 @@
       "estrelinhas": "Estrelinhas"
     },
     "estatisticas": {
+      "impostos": {
+        "taxes": "Menhera's Financiers {{page}}º",
+        "paid": "Paid **{{value}}** :star: in taxes"
+      },
       "cacar": {
         "title": "{{emoji}} | Best Hunters of {{type}} {{page}}º",
         "demon": "Demons",
