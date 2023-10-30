@@ -111,6 +111,7 @@ const DeployCommand = createCommand({
 
     usersWithStars.forEach((a) => {
       starsRepository.addStars(a.id, a.candies * 1000);
+      eventRepository.updateUser(a.id, { candies: 0 });
       postTransaction(
         `${bot.id}`,
         a.id,
