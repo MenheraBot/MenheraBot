@@ -17,11 +17,13 @@ const getThemesByType = <T extends ThemeFile = ThemeFile>(
 
 const getUserActiveThemes = (
   userData: DatabaseUserThemesSchema,
-): Array<{ id: number; inUse: boolean }> => {
-  const allThemes: Array<{ id: number; inUse: boolean }> = [];
+): Array<{ id: number; inUse: boolean; aquiredAt: number }> => {
+  const allThemes: Array<{ id: number; inUse: boolean; aquiredAt: number }> = [];
 
   const pushToAllItems = (themes: UserBuyableTheme[], activeTheme: number) =>
-    themes.forEach((theme) => allThemes.push({ id: theme.id, inUse: activeTheme === theme.id }));
+    themes.forEach((theme) =>
+      allThemes.push({ id: theme.id, inUse: activeTheme === theme.id, aquiredAt: theme.aquiredAt }),
+    );
 
   pushToAllItems(userData.cardsBackgroundThemes, userData.selectedCardBackgroundTheme);
   pushToAllItems(userData.cardsThemes, userData.selectedCardTheme);

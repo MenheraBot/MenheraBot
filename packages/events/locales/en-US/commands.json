@@ -689,6 +689,7 @@
     "no-themes": "You don't have any such themes to change!",
     "selected": "Your theme was successfully changed!",
     "choose": "Choose down bellow your new theme!",
+    "aquired-at": "Aquired on <t:{{unix}}>",
     "edit-profile": {
       "customize": "Customize Theme",
       "not-customizable": "Your current profile theme is not customizable",

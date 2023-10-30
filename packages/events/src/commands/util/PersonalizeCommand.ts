@@ -37,7 +37,7 @@ import {
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import { getCustomThemeField, toWritableUtf } from '../../utils/miscUtils';
+import { getCustomThemeField, millisToSeconds, toWritableUtf } from '../../utils/miscUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 
 const executeAboutMeCommand = async (
@@ -582,7 +582,10 @@ const executeThemesCommand = async (
 
       embed.fields?.push({
         name: ctx.locale(`data:themes.${c.id as 1}.name`),
-        value: ctx.locale(`data:themes.${c.id as 1}.description`),
+        value: `${ctx.locale(`data:themes.${c.id as 1}.description`)}\n${ctx.locale(
+          'commands:temas.aquired-at',
+          { unix: millisToSeconds(c.aquiredAt) },
+        )}`,
         inline: true,
       });
 

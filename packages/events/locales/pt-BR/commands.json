@@ -694,6 +694,7 @@
     "no-themes": "Você não tem nenhum tema deste tipo para alterar!",
     "selected": "Seu tema foi alterado com sucesso!",
     "choose": "Escolha abaixo o seu novo Tema!",
+    "aquired-at": "Adquirido em <t:{{unix}}>",
     "edit-profile": {
       "customize": "Customizar Tema",
       "not-customizable": "O seu tema de perfil atual não é customizável",
