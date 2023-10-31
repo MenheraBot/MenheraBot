@@ -4,6 +4,7 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { createCommand } from '../../structures/command/createCommand';
 import { toWritableUtf } from '../../utils/miscUtils';
+import { getDisplayName } from '../../utils/discord/userUtils';
 
 const PhiloCommand = createCommand({
   path: '',
@@ -27,7 +28,12 @@ const PhiloCommand = createCommand({
   category: 'fun',
   authorDataFields: [],
   execute: async (ctx, finishCommand) => {
-    const text = ctx.getOption<string>('frase', false, true);
+    let text = ctx.getOption<string>('frase', false, true);
+
+    if (ctx.interaction.data?.resolved?.users)
+      ctx.interaction.data.resolved.users.forEach((resolved) => {
+        text = text.replaceAll(`<@${resolved.id}>`, getDisplayName(resolved, true));
+      });
 
     await ctx.defer();
 

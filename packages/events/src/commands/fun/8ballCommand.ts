@@ -156,7 +156,12 @@ const EightballCommand = createCommand({
   execute: async (ctx, finishCommand) => {
     const randomAnswer = randomFromArray(EighballAnswers) as { id: 0; type: 'positive' };
 
-    const question = ctx.getOption<string>('pergunta', false, true);
+    let question = ctx.getOption<string>('pergunta', false, true);
+
+    if (ctx.interaction.data?.resolved?.users)
+      ctx.interaction.data.resolved.users.forEach((resolved) => {
+        question = question.replaceAll(`<@${resolved.id}>`, getDisplayName(resolved, true));
+      });
 
     await ctx.defer();
 
