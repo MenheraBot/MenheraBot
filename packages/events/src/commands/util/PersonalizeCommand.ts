@@ -8,6 +8,8 @@ import {
   TextStyles,
 } from 'discordeno/types';
 
+import { User } from 'discordeno';
+
 import md5 from 'md5';
 import { usersModel } from '../../database/collections';
 import commandRepository from '../../database/repositories/commandRepository';
@@ -422,11 +424,18 @@ const executeBadgesCommand = async (
   ctx: ChatInputInteractionContext,
   finishCommand: () => void,
 ) => {
+  const user = ctx.getOption<User>('usuário', 'users', false) ?? ctx.author;
+  const userData =
+    user.id === ctx.user.id ? ctx.authorData : await userRepository.ensureFindUser(user.id);
+
   const toSendEmbeds: Embed[] = [
     createEmbed({
-      author: { name: ctx.locale('commands:badges.title'), iconUrl: getUserAvatar(ctx.author) },
+      author: {
+        name: ctx.locale('commands:badges.title', { user: getDisplayName(user) }),
+        iconUrl: getUserAvatar(user),
+      },
       footer: { text: ctx.locale('commands:badges.footer') },
-      color: hexStringToNumber(ctx.authorData.selectedColor),
+      color: hexStringToNumber(userData.selectedColor),
       fields: [],
     }),
   ];
@@ -434,6 +443,7 @@ const executeBadgesCommand = async (
   const selectMenu = createSelectMenu({
     customId: createCustomId(0, ctx.author.id, ctx.commandId, 'SELECT'),
     minValues: 1,
+    disabled: user.id !== ctx.user.id,
     options: [
       {
         label: ctx.locale('commands:badges.select-all'),
@@ -448,15 +458,15 @@ const executeBadgesCommand = async (
     ],
   });
 
-  const userBadges = getUserBadges(ctx.authorData, ctx.author);
+  const userBadges = getUserBadges(userData, user);
 
   if (userBadges.length > 9)
     toSendEmbeds.push(
-      createEmbed({ color: hexStringToNumber(ctx.authorData.selectedColor), fields: [] }),
+      createEmbed({ color: hexStringToNumber(userData.selectedColor), fields: [] }),
     );
 
   userBadges.forEach((a, i) => {
-    const isSelected = ctx.authorData.hiddingBadges.includes(a.id);
+    const isSelected = userData.hiddingBadges.includes(a.id);
 
     if (!selectMenu.options.some((b) => b.value === `${a.id}`))
       selectMenu.options.push({
@@ -477,6 +487,11 @@ const executeBadgesCommand = async (
       inline: true,
     });
   });
+
+  if (userBadges.length === 0)
+    toSendEmbeds[0].description = ctx.locale('commands:badges.no-badges', {
+      user: getDisplayName(user),
+    });
 
   selectMenu.maxValues = selectMenu.options.length;
 
@@ -884,6 +899,16 @@ const PersonalizeCommand = createCommand({
         'en-US': '「📌」・Choose which badges should appear on your profile',
       },
       type: ApplicationCommandOptionTypes.SubCommand,
+      options: [
+        {
+          type: ApplicationCommandOptionTypes.User,
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
+          description: 'Usuário para ver as badges',
+          descriptionLocalizations: { 'en-US': 'User to see the badges ' },
+          required: false,
+        },
+      ],
     },
   ],
   category: 'util',

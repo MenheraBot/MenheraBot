@@ -790,7 +790,8 @@
     "success": "Your bet has been successfully placed! Stay tuned to the results to see if you've won anything. But don't worry, the credit will be automatically added from your account!"
   },
   "badges": {
-    "title": "Your Badges",
+    "title": "{{user}}'s Badges",
+    "no-badges": "_There is nothing here..._",
     "footer": "Select the badges that you want to NOT appears in your profile",
     "select-all": "Select All",
     "diselect-all": "Remove All Options",

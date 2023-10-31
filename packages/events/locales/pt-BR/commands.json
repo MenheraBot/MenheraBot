@@ -795,7 +795,8 @@
     "success": "Sua aposta foi feita com sucesso! Fique ligado nos resultados para saber se ganhou algo. Mas não se preocupe, o crédito vai ser adicionado automaticamente em sua conta!"
   },
   "badges": {
-    "title": "Suas Badges",
+    "title": "Badges de {{user}}",
+    "no-badges": "_Nada por aqui..._",
     "footer": "Selecione as Badges que você quer que NÃO apareça em seu perfil",
     "select-all": "Selecionar Todas",
     "diselect-all": "Remover Todas Seleções",
