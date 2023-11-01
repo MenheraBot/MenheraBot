@@ -70,7 +70,7 @@ const userSchema = new Schema({
   estrelinhas: { type: Number, default: 0 },
   votes: { type: Number, default: 0 },
   badges: { type: Array, default: [] },
-  titles: { Type: Array, default: [] },
+  titles: { type: Array, default: [] },
   currentTitle: { type: Number, default: 0 },
   hiddingBadges: { type: Array, default: [] },
   voteCooldown: { type: Number, default: 0 },
