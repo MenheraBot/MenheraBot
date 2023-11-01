@@ -1,10 +1,12 @@
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import { Plants } from '../fazendinha/plants';
 import { huntValues } from './constants';
 
 const sellInfo = async (
   ctx: ChatInputInteractionContext,
   finishCommand: () => void,
 ): Promise<void> => {
+  finishCommand();
   const type = ctx.getOption('tipo', false, true);
 
   if (type === 'hunts') {
@@ -30,7 +32,26 @@ const sellInfo = async (
       ],
     };
     ctx.makeMessage({ embeds: [dataVender] });
-    finishCommand();
+    return;
+  }
+
+  if (type === 'plants') {
+    const dataVender = {
+      title: ctx.locale('commands:loja.embed_title'),
+      color: 0xe77fa1,
+      thumbnail: {
+        url: 'https://i.imgur.com/t94XkgG.png',
+      },
+      fields: Object.entries(Plants).map((c) => {
+        return {
+          name: `${Plants[c[0] as '1'].emoji} ${ctx.locale(`data:plants.${c[0] as '1'}`)}`,
+          value: `${c[1].sellValue} :star:`,
+          inline: true,
+        };
+      }),
+    };
+
+    ctx.makeMessage({ embeds: [dataVender] });
   }
 };
 

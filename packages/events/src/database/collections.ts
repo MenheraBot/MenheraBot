@@ -3,12 +3,12 @@ import mongoose from 'mongoose';
 import {
   DatabaseCommandSchema,
   DatabaseCreditsSchema,
+  DatabaseFarmerSchema,
   DatabaseGuildSchema,
   DatabaseProfileImagesSchema,
   DatabaseUserSchema,
   DatabaseUserThemesSchema,
 } from '../types/database';
-import { Tricks } from '../commands/event/TrickOrTreatsCommand';
 
 const { Schema, model } = mongoose;
 
@@ -70,7 +70,7 @@ const userSchema = new Schema({
   estrelinhas: { type: Number, default: 0 },
   votes: { type: Number, default: 0 },
   badges: { type: Array, default: [] },
-  titles: { Type: Array, default: [] },
+  titles: { type: Array, default: [] },
   currentTitle: { type: Number, default: 0 },
   hiddingBadges: { type: Array, default: [] },
   voteCooldown: { type: Number, default: 0 },
@@ -101,22 +101,14 @@ const profileImagesSchema = new Schema({
   isPublic: { type: Boolean, default: true },
 });
 
-export type Halloween2023User = {
-  id: string;
-  candies: number;
-  cooldown: number;
-  currentTrick: { id: Tricks; endsIn: number } | null;
-  allTimeTricks: Tricks[];
-  allTimeTreats: number;
-};
-
-const eventHalloween2023 = new Schema({
+const farmerSchema = new Schema({
   id: { type: String, unique: true, index: true },
-  candies: { type: Number, default: 0 },
-  cooldown: { type: Number, default: 0 },
-  currentTrick: { type: Object, default: null },
-  allTimeTricks: { type: Array, default: [] },
-  allTimeTreats: { type: Number, default: 0 },
+  plantations: { type: Array, default: [{ isPlanted: false }] },
+  seeds: { type: Array, default: [] },
+  silo: { type: Array, default: [] },
+  biggestSeed: { type: Number, default: 0 },
+  plantedFields: { type: Number, default: 0 },
+  lastPlantedSeed: { type: Number, default: 0 },
 });
 
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
@@ -125,4 +117,4 @@ export const usersModel = model<DatabaseUserSchema>('usersdb', userSchema);
 export const userThemesModel = model<DatabaseUserThemesSchema>('themes', userThemes);
 export const themeCreditsModel = model<DatabaseCreditsSchema>('credits', themeCredits);
 export const profileImagesModel = model<DatabaseProfileImagesSchema>('images', profileImagesSchema);
-export const halloweenEventModel = model<Halloween2023User>('halloween2023', eventHalloween2023);
+export const farmerModel = model<DatabaseFarmerSchema>('farmer', farmerSchema);

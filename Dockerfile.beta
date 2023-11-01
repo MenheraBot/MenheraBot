@@ -1,0 +1,17 @@
+FROM node:18-alpine as build
+WORKDIR /app
+COPY . .
+RUN yarn install
+RUN yarn events build
+RUN rm -rf node_modules
+RUN yarn install --production
+RUN mv docker/.yarnclean .yarnclean
+RUN yarn autoclean --force
+
+FROM node:18-alpine as events
+WORKDIR /app
+COPY --from=build /app/packages/events/dist  ./dist/
+COPY --from=build /app/packages/events/locales  ./locales/
+COPY --from=build /app/packages/events/package.json  ./
+COPY --from=build /app/packages/events/node_modules ./node_modules 
+CMD ["yarn", "beta"]

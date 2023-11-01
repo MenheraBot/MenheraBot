@@ -13,9 +13,21 @@ export type InteractionContext = ChatInputInteractionContext | ComponentInteract
 export interface MenheraClient extends Bot {
   commands: Collection<string, ChatInputInteractionCommand>;
   ownerId: bigint;
-  finishedEvent: boolean;
   shuttingDown: boolean;
   username: string;
   isMaster: boolean;
   commandsInExecution: number;
+  changelog: {
+    versionName: string;
+    date: string;
+    info: {
+      hotfix?: string;
+      added?: string;
+      changed?: string;
+      deprecated?: string;
+      removed?: string;
+      fixed?: string;
+      security?: string;
+    };
+  } | null;
 }

@@ -26,6 +26,12 @@ const mergeMetrics = (
   connectedClients: number,
   missedInteractions: number,
 ): PrometheusResponse => {
+  if (validMetrics.length === 0)
+    return {
+      contentType: 'text/plain; version=0.0.4; charset=utf-8',
+      data: appendClientCounts('', connectedClients, missedInteractions),
+    };
+
   const firstMetric = validMetrics[0];
 
   if (validMetrics.length === 1) {

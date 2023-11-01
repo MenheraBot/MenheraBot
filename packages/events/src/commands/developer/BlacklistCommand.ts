@@ -1,10 +1,26 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
 
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import userRepository from '../../database/repositories/userRepository';
 import { createCommand } from '../../structures/command/createCommand';
 import { getAllUserBans } from '../../utils/apiRequests/statistics';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
+
+const executeAllTimeBans = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [userId] = ctx.sentData;
+
+  await ctx.visibleAck(false);
+
+  const allTimeBans = await getAllUserBans(userId);
+
+  ctx.makeMessage({
+    content: `\`\`\`js\n\n\n== ALL TIME BANS ==\n${allTimeBans
+      .map((a) => `• ${new Date(Number(a.date)).toISOString()} :: "${a.reason}"`)
+      .join('\n')}\n\`\`\`\n\n**Parabéns por foder com o Postgres**`,
+  });
+};
 
 const BlacklistCommand = createCommand({
   path: '',
@@ -47,6 +63,7 @@ const BlacklistCommand = createCommand({
   devsOnly: true,
   category: 'dev',
   authorDataFields: [],
+  commandRelatedExecutions: [executeAllTimeBans],
   execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', true);
 
@@ -87,18 +104,22 @@ const BlacklistCommand = createCommand({
 
         if (!usr) return finishCommand(ctx.makeMessage({ content: 'Nenhum user na DB' }));
 
-        const allTimeBans = await getAllUserBans(user.id);
-
         const msg = `== CURRENT BAN INFO ==\n\n• User :: ${user.username} [${
           // @ts-expect-error It dont exists yet
           user.displayName
-        }] - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${
-          usr.banReason
-        }\n\n== ALL TIME BANS ==\n${allTimeBans
-          .map((a) => `• ${new Date(Number(a.date)).toISOString()} :: "${a.reason}"`)
-          .join('\n')}`;
+        }] - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${usr.banReason}`;
 
-        await ctx.makeMessage({ content: `\`\`\`js\n${msg}\`\`\`` });
+        const button = createButton({
+          customId: createCustomId(0, ctx.user.id, ctx.commandId, user.id),
+          label: 'Ver todos Bans',
+          style: ButtonStyles.Danger,
+          emoji: { id: 759603958418767922n, name: 'atencao' },
+        });
+
+        await ctx.makeMessage({
+          content: `\`\`\`js\n${msg}\`\`\``,
+          components: [createActionRow([button])],
+        });
         finishCommand();
       }
     }

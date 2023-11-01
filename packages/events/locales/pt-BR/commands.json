@@ -235,6 +235,24 @@
       "profileCompatibles": "\n`Compatibilidades`\n**Cor**: {{colorCompatible}}\n**Imagem**: {{imageCompatible}}",
       "customEdits": "\n**Configurações extras**: {{customEdits}}"
     },
+    "sell_plants": {
+      "not-enough": "Tu não tem **{{amount}}** {{plant}} para vender",
+      "invalid-amount": "Tu informou um número inválido de plantas para vender",
+      "success": "Suas plantas foram vendidas por **{{amount}}** :star: estrelinhas"
+    },
+    "buy_seeds": {
+      "buy-seed-of": "Comprar semente de {{plant}}",
+      "plant-stats": "**Preço de Compra:** {{buyValue}} :star:\n**Valor de venda:** {{sellValue}} :star:\n**Amadurece em:** {{harvestTime}} minutos\n**Apodrece em** {{rotTime}} minutos",
+      "seed": "Semente de {{plant}}",
+      "success": "Você gastou **{{amount}}** :star: estrelinhas comprando sementes. Hora de plantá-las {{command}}",
+      "not-enough-stars": "Tu não possui **{{amount}}** :star: estrelinhas para comprar todas essas sementes",
+      "invalid-amount": "Tu informou um número inválido de sementes para comprar",
+      "select-amount": "Digite quantas sementes tu quer comprar",
+      "harvest-more": "Colha mais {{amount}} {{emoji}} para liberar a próxima semente",
+      "embed-title": "Comprar Sementes",
+      "select": "Selecione as sementes que tu quer comprar",
+      "seed-limit": "Tu precisa colher mais **{{amount}}** {{emoji}} para poder comprar sementes"
+    },
     "buy_images": {
       "price": "Preço: {{price}} ⭐",
       "need_profile_theme": "Para que tu consiga usar uma imagem em seu tema de perfil, é preciso que tu tenha um perfil compatível com imagens. Tu pode comprar temas de perfil em {{command}}.\nExemplos de perfis compatíveis com imagens são: **{{examples, list}}**",
@@ -457,6 +475,10 @@
       "gods": "Deuses"
     },
     "estatisticas": {
+      "impostos": {
+        "taxes": "Financiadores da Menhera {{page}}º",
+        "paid": "Pagou **{{value}}** :star: em impostos"
+      },
       "cacar": {
         "title": "{{emoji}} | Melhores Caçadores de {{type}} {{page}}º",
         "demon": "Demônios",
@@ -485,14 +507,14 @@
         }
       }
     },
-    "commands": "Comandos Mais Usados",
-    "users": "Usuários Que Mais Usaram Comandos",
-    "members": "Membros",
-    "used": "Usado",
-    "use": "Usou",
-    "user": "Comandos mais usados de {{user}}",
-    "times": "vezes",
-    "not-user": "Este usuário não usou nenhum comando meu"
+    "commands": "Comandos Populares {{page}}º",
+    "users": "Usuários Fiéis {{page}}º",
+    "users-by-commands": "Usuários Fiéis ao /{{command}} {{page}}º",
+    "user": "Comandos Favoritos de {{user}} {{page}}º",
+    "used": "Usado **{{times}}** vezes",
+    "use": "Usou **{{times}}** vezes",
+    "used-commands": "Usou **{{times}}** comandos",
+    "command-required": "Tu precisa informar qual comando tu quer buscar nesse top!"
   },
   "idioma": {
     "question": "Qual língua você quer que eu fale?",
@@ -507,6 +529,12 @@
     "success": "Seu 'Sobre Mim' foi alterado com sucesso! Você pode ver as mudanças com {{command}}"
   },
   "status": {
+    "poker": {
+      "embed-title": "Estatísticas de Poker de {{user}}",
+      "no-data": "Este usuário nunca jogou uma partida de poker!",
+      "footer": "Estatísticas baseadas por cada round de Poker",
+      "description": "### Rounds Vencidos\n- **Desistência: ** {{folded}}\n- **Carta Alta:** {{high_card}}\n- **Par:** {{pair}}\n- **Dois Pares:** {{two_pair}}\n- **Trinca:** {{three_of_a_kind}}\n- **Sequência:** {{straight}}\n- **Flush:** {{flush}}\n- **Full House:** {{full_house}}\n- **Quadra:** {{four_of_a_kind}}\n- **Straight Flush:** {{straight_flush}}\n- **Royal Flush:** {{royal_flush}}"
+    },
     "designer": {
       "no-designer": "Este usuário não possui nenhum design em seu nome!",
       "title": "Designs de {{user}}",
@@ -515,6 +543,11 @@
       "success": "Suas configurações de notificação de compras foram alteradas!",
       "notify-footer": "Com notificar compras ativo, toda vez que um usuário comprar um design seu, a Menhera tentará enviar uma mensagem em sua DM mostrando isso",
       "description": "**Tipo:** $t(common:theme_types.{{type}})\n**Royalty:**: {{royalty}}%\n**Lucro:** {{profit}} :star:\n**Vendidos:** {{sold}}\nRegistrado em {{registered}}"
+    },
+    "fazendeiro": {
+      "title": "Estatísticas da Fazenda de {{user}}",
+      "field-data": "**Colheu:** {{harvest}}\n**Estragou:** {{rotted}}",
+      "error": "Oops! Não encontrei os dados desse fazendeiro... Ele pode nunca ter usado o comando, ou eu posso estar doente :("
     },
     "coinflip": {
       "embed-title": "Estatísticas do Coinflip de {{user}}",
@@ -671,6 +704,7 @@
     "no-themes": "Você não tem nenhum tema deste tipo para alterar!",
     "selected": "Seu tema foi alterado com sucesso!",
     "choose": "Escolha abaixo o seu novo Tema!",
+    "aquired-at": "Adquirido em <t:{{unix}}>",
     "edit-profile": {
       "customize": "Customizar Tema",
       "not-customizable": "O seu tema de perfil atual não é customizável",
@@ -761,7 +795,8 @@
     "success": "Sua aposta foi feita com sucesso! Fique ligado nos resultados para saber se ganhou algo. Mas não se preocupe, o crédito vai ser adicionado automaticamente em sua conta!"
   },
   "badges": {
-    "title": "Suas Badges",
+    "title": "Badges de {{user}}",
+    "no-badges": "_Nada por aqui..._",
     "footer": "Selecione as Badges que você quer que NÃO apareça em seu perfil",
     "select-all": "Selecionar Todas",
     "diselect-all": "Remover Todas Seleções",
@@ -769,6 +804,18 @@
     "badge-info": "_{{description}}_\n**Adquirida em**: <t:{{unix}}:d>\n**ID da badge**: {{id}}\n**Raridade:** {{rarity}}"
   },
   "menhera": {
+    "changelog": {
+      "title": "Atualização {{version}}",
+      "footer": "Atualização lançada dia {{date}}",
+      "added": "Adicionado",
+      "changed": "Atualizado",
+      "deprecated": "Preterido",
+      "removed": "Removido",
+      "fixed": "Resolvido",
+      "security": "Segurança",
+      "hotfix": "Hotfix",
+      "no-changelog": "O anúncio da atualização atual ainda não foi feito. Aguarde mais uns 10 minutos e tente novamente >.<"
+    },
     "suporte": {
       "message": "Está com algum problema, ou quer só conversar com mais gente que usa meus comandos? Entre em meu servidor de suporte: \n\nhttps://discord.gg/fZMdQbA\n|| SHHHHHhh, não fala pra moderação desse servidor que eu mandei esse convite, vai que eles me banam por divulgação... ||"
     },
@@ -858,7 +905,9 @@
       "buy_theme_royalty": "participação de lucros em tema",
       "vote_thank": "votar em mim >,<",
       "inactivity_punishment": "ficar inativo na Menhera",
-      "poker_command": "apostar no poker"
+      "poker_command": "apostar no poker",
+      "sell_plant": "vender plantas",
+      "buy_seed": "comprar sementes"
     }
   },
   "poker": {
@@ -960,6 +1009,44 @@
       "RAISE": "{{user}} dobrou a aposta atual para **{{chips}}** fichas.",
       "RAISE-CUSTOM": "{{user}} aumentou a aposta para **{{chips}}** fichas.",
       "ALLIN": "{{user}} apostou todas suas fichas, colocando sua aposta em **{{chips}}** fichas."
+    }
+  },
+  "fazendinha": {
+    "plant-states-message": {
+      "ROTTEN": "Apodrecido",
+      "MATURE": "Apodrecerá",
+      "GROWING": "Maduro",
+      "EMPTY": "Disponível",
+      "message": "{{emojis}}\n{{state}}\n{{unix}}"
+    },
+    "plantations": {
+      "field": "Campo ({{index}})",
+      "seeds": "Sementes",
+      "silo": "Plantas",
+      "harvest": "Colher",
+      "plant": "Plantar",
+      "field-action": "{{action}} ({{index}})",
+      "embed-title": "Fazenda de {{user}}",
+      "available-seed": "{{name}} {{amount}}x"
+    },
+    "silo": {
+      "embed-title": "Silo de {{user}}",
+      "nothing": "**Nada**",
+      "not-enough-plants": "Tu não possui mais essas plantas pra vender",
+      "max": "{{plant}} (Max. {{amount}})",
+      "sell-plants": "Vender plantas",
+      "sell-plant": "Vender {{plant}}",
+      "sell-all": "Vender tudo",
+      "sell-title": "Venda suas plantas",
+      "no-plants": "Tu não possui plantas para vender",
+      "description": "{{text}}\n- {{emoji}} **{{amount}}x** - {{plant}} (**{{value}}** :star:)",
+      "select": "Selecione a quantidade de {{plant}} que você quer vender",
+      "display-mate": "- {{emoji}} **∞** - {{plant}}",
+      "display-other": "- {{emoji}} **{{amount}}x** - {{plant}}"
+    },
+    "field-action": {
+      "not-enough-seeds": "Você não possui sementes de **{{plant}}** para plantar!",
+      "field-still-growing": "Este campo ainda está crescendo. Tu não pode o colher ainda!"
     }
   }
 }

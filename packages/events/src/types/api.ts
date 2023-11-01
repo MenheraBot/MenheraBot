@@ -1,4 +1,5 @@
 import { ApiHuntingTypes, DatabaseHuntingTypes } from '../modules/hunt/types';
+import { PokerWinReasons } from '../modules/poker/types';
 
 /* eslint-disable camelcase */
 export interface ApiHuntStats {
@@ -35,9 +36,11 @@ export interface ApiGamblingGameStats {
   error?: boolean;
 }
 
+export type ApiPokerUserStats = ApiGamblingGameStats & Record<Lowercase<PokerWinReasons>, number>;
+
 export interface ApiUserProfileStats {
-  cmds: { count: number };
-  array: Array<{ name: string; count: number }>;
+  totalUses: number;
+  topCommand: { name: string; uses: number };
 }
 
 export type MayReturnError<T> = T | { error: true };
@@ -79,6 +82,8 @@ export enum ApiTransactionReason {
   VOTE_THANK = 'vote_thank',
   INACTIVITY_PUNISHMENT = 'inactivity_punishment',
   POKER_COMMAND = 'poker_command',
+  SELL_PLANT = 'sell_plant',
+  BUY_SEED = 'buy_seed',
 }
 
 type TransactionType = DatabaseHuntingTypes | 'estrelinhas';

@@ -212,5 +212,32 @@
       "name": "Hello Kitty",
       "description": "Pink is prettier with cute friends"
     }
+  },
+  "plants": {
+    "0": "Mate",
+    "1": "Rice",
+    "2": "Corn",
+    "3": "Potato",
+    "4": "Garlic",
+    "5": "Carrot",
+    "6": "Tomato",
+    "7": "Cucumber",
+    "8": "Broccoli",
+    "9": "Sunflower",
+    "10": "Mint",
+    "11": "Watermelon",
+    "12": "Strawberry",
+    "13": "Pepper",
+    "14": "Eggplant",
+    "15": "Avocado",
+    "16": "Mango",
+    "17": "Apple",
+    "18": "Lemon",
+    "19": "Tangerine",
+    "20": "Banana",
+    "21": "Pineapple",
+    "22": "Pear",
+    "23": "Cherry",
+    "24": "Mushroom"
   }
 }

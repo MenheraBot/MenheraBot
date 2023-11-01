@@ -4,6 +4,7 @@ import {
   ApiGamblingGameCompatible,
   ApiGamblingGameStats,
   ApiHuntStats,
+  ApiPokerUserStats,
   ApiTransactionReason,
   ApiUserProfileStats,
   BanInfo,
@@ -18,6 +19,7 @@ import { debugError } from '../debugError';
 import { dataRequest } from './apiRequests';
 import { logger } from '../logger';
 import { PokerApiUser } from '../../modules/poker/types';
+import { AvailablePlants } from '../../modules/fazendinha/types';
 
 const postHuntExecution = async (
   userId: string,
@@ -69,16 +71,12 @@ const postPokerRound = async (players: PokerApiUser[]): Promise<void> => {
   await dataRequest.post('/statistics/poker', { players }).catch(debugError);
 };
 
-const getUserProfileInfo = async (userId: BigString): Promise<false | ApiUserProfileStats> => {
-  const res = await dataRequest
-    .get('/usages/user', { data: { userId: `${userId}` } })
-    .catch(() => null);
+const getUserProfileInfo = async (userId: string): Promise<null | ApiUserProfileStats> => {
+  const res = await dataRequest.get('/usages/user', { params: { userId } }).catch(() => null);
 
-  if (!res) return false;
+  if (!res) return null;
 
-  if (res.status === 200) return res.data;
-
-  return false;
+  return res.data;
 };
 
 const getUserHuntStats = async (userId: BigString): Promise<MayReturnError<ApiHuntStats>> => {
@@ -108,24 +106,52 @@ const getGamblingGameStats = async (
   return { error: true };
 };
 
-const getMostUsedCommands = async (): Promise<false | { name: string; usages: number }[]> => {
-  const res = await dataRequest.get('/usages/top/command').catch(() => null);
+const getPokerStats = async (userId: string): Promise<MayReturnError<ApiPokerUserStats>> => {
+  const res = await dataRequest.get(`/statistics/poker`, { params: { userId } }).catch(() => null);
 
-  if (!res) return false;
+  if (!res) return { error: true };
 
-  if (res.status === 200) return res.data;
-
-  return false;
+  return res.data;
 };
 
-const getUsersThatMostUsedCommands = async (): Promise<false | { id: string; uses: number }[]> => {
-  const res = await dataRequest.get('/usages/top/user').catch(() => null);
+const getTopCommandsByUses = async (
+  skip: number,
+  userId?: string,
+): Promise<null | { name: string; uses: number }[]> => {
+  const res = await dataRequest
+    .get('/usages/top/commands', { params: { skip, userId } })
+    .catch(() => null);
 
-  if (!res) return false;
+  if (!res) return null;
 
-  if (res.status === 200) return res.data;
+  return res.data;
+};
 
-  return false;
+const getTopTaxesPaid = async (
+  skip: number,
+  bannedUsers: string[],
+): Promise<{ id: string; taxes: number }[] | null> => {
+  const res = await dataRequest
+    .get(`/statistics/taxes/top`, { params: { skip }, data: { bannedUsers } })
+    .catch(() => null);
+
+  if (!res) return null;
+
+  return res.data;
+};
+
+const getTopUsersByUses = async (
+  skip: number,
+  bannedUsers: string[],
+  commandName?: string,
+): Promise<{ id: string; uses: number; commandName: string }[] | null> => {
+  const res = await dataRequest
+    .get(`/usages/top/users`, { params: { commandName, skip }, data: { bannedUsers } })
+    .catch(() => null);
+
+  if (!res) return null;
+
+  return res.data;
 };
 
 const getTopHunters = async <HuntType extends ApiHuntingTypes>(
@@ -224,15 +250,38 @@ const getUserTransactions = async (
   );
 };
 
+const postFazendinhaAction = async (
+  userId: string,
+  plant: AvailablePlants,
+  action: 'ROTTED' | 'HARVEST',
+): Promise<void> => {
+  await dataRequest.post('/statistics/fazendinha', { userId, plant, action }).catch(debugError);
+};
+
+const getFazendinhaStatistics = async (
+  userId: BigString,
+): Promise<null | { plant: AvailablePlants; rotted: number; harvest: number }[]> => {
+  const result = await dataRequest.get(`/statistics/fazendinha?userId=${userId}`).catch(debugError);
+
+  if (!result) return null;
+
+  return result.data;
+};
+
 export {
   postHuntExecution,
   postBichoResults,
+  getTopCommandsByUses,
   postCoinflipMatch,
-  getMostUsedCommands,
+  getPokerStats,
   getUserTransactions,
+  getTopTaxesPaid,
+  getFazendinhaStatistics,
   getGamblingGameStats,
+  getTopUsersByUses,
   postRoulleteGame,
   postBlackjackGame,
+  postFazendinhaAction,
   getUserHuntStats,
   getUserProfileInfo,
   postPokerRound,
@@ -241,5 +290,4 @@ export {
   getAllUserBans,
   postTransaction,
   getTopHunters,
-  getUsersThatMostUsedCommands,
 };

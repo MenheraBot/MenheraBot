@@ -3,6 +3,7 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { toWritableUtf } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
+import { getDisplayName } from '../../utils/discord/userUtils';
 
 const AstolfoCommand = createCommand({
   path: '',
@@ -25,7 +26,12 @@ const AstolfoCommand = createCommand({
   category: 'fun',
   authorDataFields: [],
   execute: async (ctx, finishCommand) => {
-    const text = ctx.getOption<string>('frase', false, true);
+    let text = ctx.getOption<string>('frase', false, true);
+
+    if (ctx.interaction.data?.resolved?.users)
+      ctx.interaction.data.resolved.users.forEach((resolved) => {
+        text = text.replaceAll(`<@${resolved.id}>`, getDisplayName(resolved, true));
+      });
 
     await ctx.defer();
 

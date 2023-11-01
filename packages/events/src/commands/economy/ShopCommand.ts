@@ -11,6 +11,9 @@ import { buyThemes, executeClickButton } from '../../modules/shop/buyThemes';
 import { sellHunts } from '../../modules/shop/sellHunts';
 import { sellInfo } from '../../modules/shop/sellInfo';
 import { transactionableCommandOption } from '../../structures/constants';
+import { buySeeds, handleBuySeedsInteractions } from '../../modules/shop/buySeeds';
+import { buildSellPlantsMessage } from '../../modules/fazendinha/displaySilo';
+import farmerRepository from '../../database/repositories/farmerRepository';
 
 const ShopCommand = createCommand({
   path: '',
@@ -32,6 +35,15 @@ const ShopCommand = createCommand({
           description: '「🔮」・ Compre itens mágicos para melhorar suas habilidades',
           descriptionLocalizations: {
             'en-US': '「🔮」・Buy magic items to improve your skills',
+          },
+          type: ApplicationCommandOptionTypes.SubCommand,
+        },
+        {
+          name: 'sementes',
+          nameLocalizations: { 'en-US': 'seeds' },
+          description: '「🌱」・ Compre sementes para plantar em sua fazendinha',
+          descriptionLocalizations: {
+            'en-US': '「🌱」・Buy seeds to plant in your farm',
           },
           type: ApplicationCommandOptionTypes.SubCommand,
         },
@@ -92,27 +104,43 @@ const ShopCommand = createCommand({
     {
       name: 'vender',
       nameLocalizations: { 'en-US': 'sell' },
-      description: '「💸」・ Venda suas caças',
+      description: 'Venda suas caças',
       descriptionLocalizations: { 'en-US': '「💸」・ Sell your fighters' },
-      type: ApplicationCommandOptionTypes.SubCommand,
+      type: ApplicationCommandOptionTypes.SubCommandGroup,
       options: [
         {
-          name: 'tipo',
-          nameLocalizations: { 'en-US': 'type' },
-          description: 'Tipo de caça para vender',
-          descriptionLocalizations: { 'en-US': 'Type of hunting to sell' },
-          type: ApplicationCommandOptionTypes.String,
-          required: true,
-          choices: transactionableCommandOption.filter((a) => a.value !== 'estrelinhas'),
+          name: 'caças',
+          nameLocalizations: { 'en-US': 'hunts' },
+          description: '「🐾」・ Venda as suas caças',
+          descriptionLocalizations: { 'en-US': '「🐾」・ Sell your hunts' },
+          type: ApplicationCommandOptionTypes.SubCommand,
+          options: [
+            {
+              name: 'tipo',
+              nameLocalizations: { 'en-US': 'type' },
+              description: 'Tipo de caça para vender',
+              descriptionLocalizations: { 'en-US': 'Type of hunting to sell' },
+              type: ApplicationCommandOptionTypes.String,
+              required: true,
+              choices: transactionableCommandOption.filter((a) => a.value !== 'estrelinhas'),
+            },
+            {
+              name: 'quantidade',
+              nameLocalizations: { 'en-US': 'amount' },
+              description: 'Quantidade de caças para vender',
+              descriptionLocalizations: { 'en-US': 'Number of huntings to sell' },
+              type: ApplicationCommandOptionTypes.Integer,
+              required: true,
+              minValue: 1,
+            },
+          ],
         },
         {
-          name: 'quantidade',
-          nameLocalizations: { 'en-US': 'amount' },
-          description: 'Quantidade de caças para vender',
-          descriptionLocalizations: { 'en-US': 'Number of huntings to sell' },
-          type: ApplicationCommandOptionTypes.Integer,
-          required: true,
-          minValue: 1,
+          name: 'plantas',
+          nameLocalizations: { 'en-US': 'plants' },
+          description: '「🌿」・Venda as suas plantas',
+          descriptionLocalizations: { 'en-US': '「🌿」・Sell your plants' },
+          type: ApplicationCommandOptionTypes.SubCommand,
         },
       ],
     },
@@ -152,6 +180,11 @@ const ShopCommand = createCommand({
                   nameLocalizations: { 'en-US': '🔮 | Magic Items' },
                   value: 'items',
                 },
+                {
+                  name: '🌿 | Sementes',
+                  nameLocalizations: { 'en-US': '🌿 | Seeds' },
+                  value: 'seeds',
+                },
               ],
             },
           ],
@@ -175,6 +208,11 @@ const ShopCommand = createCommand({
                   name: '🐾 | Caças',
                   nameLocalizations: { 'en-US': '🐾 | Hunts' },
                   value: 'hunts',
+                },
+                {
+                  name: '🌿 | Plantas',
+                  nameLocalizations: { 'en-US': '🌿 | Plants' },
+                  value: 'plants',
                 },
               ],
             },
@@ -204,11 +242,21 @@ const ShopCommand = createCommand({
     executeSelectItem,
     executeClickButton,
     executeBuyImagesSelectComponent,
+    handleBuySeedsInteractions,
   ],
   execute: async (ctx, finishCommand) => {
     const subCommandGroup = ctx.getSubCommandGroup();
 
-    if (!subCommandGroup) return sellHunts(ctx, finishCommand);
+    if (subCommandGroup === 'vender') {
+      const subCommand = ctx.getSubCommand();
+
+      if (subCommand === 'caças') return sellHunts(ctx, finishCommand);
+
+      if (subCommand === 'plantas') {
+        const farmer = await farmerRepository.getFarmer(ctx.user.id);
+        return finishCommand(buildSellPlantsMessage(ctx, farmer, ctx.authorData.selectedColor));
+      }
+    }
 
     if (subCommandGroup === 'comprar') {
       const subCommand = ctx.getSubCommand();
@@ -222,6 +270,8 @@ const ShopCommand = createCommand({
       if (subCommand === 'itens') return buyItems(ctx, finishCommand);
 
       if (subCommand === 'temas') return buyThemes(ctx, finishCommand);
+
+      if (subCommand === 'sementes') return buySeeds(ctx, finishCommand);
     }
 
     if (subCommandGroup === 'preços') {
