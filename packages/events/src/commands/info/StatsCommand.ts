@@ -301,7 +301,7 @@ const executeFazendeiroCommand = async (
   ctx: ChatInputInteractionContext,
   finishCommand: () => void,
 ) => {
-  const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
+  const user = ctx.getOption<User>('fazendeiro', 'users') ?? ctx.author;
 
   const farmerData = await getFazendinhaStatistics(user.id);
 
