@@ -2,6 +2,7 @@ import { BigString } from 'discordeno/types';
 import { DatabaseHuntingTypes } from '../../modules/hunt/types';
 import { negate } from '../../utils/miscUtils';
 import userRepository from './userRepository';
+import { profileBadges } from '../../modules/badges/profileBadges';
 
 const executeGive = async (
   field: DatabaseHuntingTypes | 'estrelinhas',
@@ -13,4 +14,19 @@ const executeGive = async (
   await userRepository.updateUserWithSpecialData(toUser, { $inc: { [field]: amount } });
 };
 
-export default { executeGive };
+const giveBadgeToUser = async (
+  userId: BigString,
+  badgeId: keyof typeof profileBadges,
+): Promise<void> => {
+  await userRepository.updateUserWithSpecialData(userId, {
+    $addToSet: { badges: { id: badgeId, obtainAt: `${Date.now()}` } },
+  });
+};
+
+const giveTitleToUser = async (userId: BigString, titleId: number): Promise<void> => {
+  await userRepository.updateUserWithSpecialData(userId, {
+    $addToSet: { titles: { id: titleId, aquiredAt: Date.now() } },
+  });
+};
+
+export default { executeGive, giveBadgeToUser, giveTitleToUser };
