@@ -17,6 +17,8 @@ const registerTitle = async (
   });
 };
 
+const getTitlesCount = async (): Promise<number> => titlesModel.countDocuments();
+
 const getTitleInfo = async (titleId: number): Promise<DatabaseTitlesSchema | null> => {
   const fromRedis = await MainRedisClient.get(`title:${titleId}`);
 
@@ -38,4 +40,4 @@ const getTitleInfo = async (titleId: number): Promise<DatabaseTitlesSchema | nul
   return fromMongo;
 };
 
-export default { registerTitle, getTitleInfo };
+export default { registerTitle, getTitleInfo, getTitlesCount };

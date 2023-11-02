@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
+- **Títulos** - O sistema de títulos lançou! Atualmente, apenas usuários que compraram um título no evento de Halloween devem possuir um título, que pode ser ativado em `/personalizar títulos`
 - Novas badges de votos adicionadas! Agora existem badges de votos para: 50, 100, 200, 300, 400, 500 e 1000 votos!
 - Os TOPs que mostravam dados de caças agora possuem um botão para acessar o ranking semanal.
 - Novos GIFs para os comandos `/carinho`, `/raiva` e `/abraçar`
@@ -20,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Os comandos `/8ball`, `/filosofia`, `/macetava` e `/astlolfo` ficaram bem mais rápidos!
 - O texto que aparece no perfil de quando alguém não tem dados de comandos foi alterado
 - O comando `/personalizar badges` está mostrando informações mais úteis.
+- O multiplicador dos prêmios do jogo do bicho foram alterados.
 
 ## [5.10.0] - 2023-11-01
 

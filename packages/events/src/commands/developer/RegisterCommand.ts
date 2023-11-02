@@ -12,6 +12,7 @@ import { createCommand } from '../../structures/command/createCommand';
 import { getThemeById } from '../../modules/themes/getThemes';
 import { debugError } from '../../utils/debugError';
 import { AvailableThemeTypes } from '../../modules/themes/types';
+import titlesRepository from '../../database/repositories/titlesRepository';
 
 const snakeCaseToCamelCase = <T extends string>(input: T): CamelCase<T> =>
   input
@@ -64,6 +65,21 @@ const registerCredit = async (ctx: ChatInputInteractionContext) => {
 
   if (userBadges.badges.some((a) => a.id === 15)) return;
   await badgeRepository.giveBadgeToUser(user.id, 15);
+};
+
+const registerTitle = async (ctx: ChatInputInteractionContext): Promise<void> => {
+  const ptBr = ctx.getOption<string>('portugues', false, true);
+  const enUs = ctx.getOption<string>('ingles', false, true);
+
+  const totalTitles = await titlesRepository.getTitlesCount();
+
+  await titlesRepository.registerTitle(totalTitles + 1, ptBr, { 'en-US': enUs });
+
+  await ctx.makeMessage({
+    content: `Novo titulo registrado!\n**ID**: ${
+      totalTitles + 1
+    }\n\n**pt-BR**: \`${ptBr}\`\n**en-US**: \`${enUs}\``,
+  });
 };
 
 const RegisterCommand = createCommand({
@@ -133,6 +149,25 @@ const RegisterCommand = createCommand({
         },
       ],
     },
+    {
+      name: 'titulo',
+      description: 'Registra um titulo irra',
+      type: ApplicationCommandOptionTypes.SubCommand,
+      options: [
+        {
+          name: 'portugues',
+          description: 'Texto do titulo em portugues',
+          type: ApplicationCommandOptionTypes.String,
+          required: true,
+        },
+        {
+          name: 'ingles',
+          description: 'traducao desse titulo em ingles',
+          type: ApplicationCommandOptionTypes.Boolean,
+          required: true,
+        },
+      ],
+    },
   ],
   devsOnly: true,
   category: 'dev',
@@ -143,6 +178,8 @@ const RegisterCommand = createCommand({
     const subCommand = ctx.getSubCommand();
 
     if (subCommand === 'credits') return registerCredit(ctx);
+
+    if (subCommand === 'titulo') return registerTitle(ctx);
 
     const uploader = ctx.getOption<User>('uploader', 'users', true);
     const imageId = ctx.getOption<number>('id', false, true);
