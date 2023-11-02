@@ -1,7 +1,6 @@
 import { ActionRow, ButtonStyles, InteractionResponseTypes } from 'discordeno/types';
 
 import md5 from 'md5';
-import badgeRepository from '../../database/repositories/badgeRepository';
 import commandRepository from '../../database/repositories/commandRepository';
 import shopRepository from '../../database/repositories/shopRepository';
 import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
@@ -28,6 +27,7 @@ import {
   editOriginalInteractionResponse,
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests';
+import giveRepository from '../../database/repositories/giveRepository';
 
 const themeByIndex = {
   0: 'profile',
@@ -402,7 +402,7 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
         ];
 
         if (helloKittyThemes.every((a) => allThemes.some((b) => b.id === a)))
-          await badgeRepository.giveBadgeToUser(ctx.user.id, 24);
+          await giveRepository.giveBadgeToUser(ctx.user.id, 24);
       }
 
       const { notifyPurchase } = await userThemesRepository.findEnsuredUserThemes(credits.ownerId);

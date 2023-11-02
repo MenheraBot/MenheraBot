@@ -3,6 +3,7 @@ import { DatabaseHuntingTypes } from '../../modules/hunt/types';
 import { negate } from '../../utils/miscUtils';
 import userRepository from './userRepository';
 import { profileBadges } from '../../modules/badges/profileBadges';
+import { MainRedisClient } from '../databases';
 
 const executeGive = async (
   field: DatabaseHuntingTypes | 'estrelinhas',
@@ -27,6 +28,8 @@ const giveTitleToUser = async (userId: BigString, titleId: number): Promise<void
   await userRepository.updateUserWithSpecialData(userId, {
     $addToSet: { titles: { id: titleId, aquiredAt: Date.now() } },
   });
+
+  await MainRedisClient.del(`titles:${userId}`);
 };
 
 export default { executeGive, giveBadgeToUser, giveTitleToUser };

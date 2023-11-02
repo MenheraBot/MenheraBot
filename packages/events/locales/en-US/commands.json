@@ -1044,5 +1044,14 @@
       "not-enough-seeds": "You don't have **{{plant}}** seeds to plant!",
       "field-still-growing": "This field is still growing. You can't harvest it yet!"
     }
+  },
+  "titulo": {
+    "no-titles": "{{user}} does not have any titles!",
+    "no-titles-autocomplete": "❌ | You don't have titles!",
+    "footer": "To choose a title, use the command again selecting the title",
+    "title": "{{user}}'s Titles",
+    "not-your-title": "You need to have the title you want to equip",
+    "unknown-title": "This title does not exist!",
+    "success": "O teu título foi alterado com sucesso!"
   }
 }

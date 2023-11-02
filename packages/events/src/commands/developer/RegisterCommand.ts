@@ -2,7 +2,6 @@ import { ApplicationCommandOptionTypes, CamelCase } from 'discordeno/types';
 
 import { User } from 'discordeno/transformers';
 import { bot } from '../..';
-import badgeRepository from '../../database/repositories/badgeRepository';
 import profileImagesRepository from '../../database/repositories/profileImagesRepository';
 import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
 import userRepository from '../../database/repositories/userRepository';
@@ -13,6 +12,7 @@ import { getThemeById } from '../../modules/themes/getThemes';
 import { debugError } from '../../utils/debugError';
 import { AvailableThemeTypes } from '../../modules/themes/types';
 import titlesRepository from '../../database/repositories/titlesRepository';
+import giveRepository from '../../database/repositories/giveRepository';
 
 const snakeCaseToCamelCase = <T extends string>(input: T): CamelCase<T> =>
   input
@@ -64,7 +64,7 @@ const registerCredit = async (ctx: ChatInputInteractionContext) => {
   const userBadges = await userRepository.ensureFindUser(user.id);
 
   if (userBadges.badges.some((a) => a.id === 15)) return;
-  await badgeRepository.giveBadgeToUser(user.id, 15);
+  await giveRepository.giveBadgeToUser(user.id, 15);
 };
 
 const registerTitle = async (ctx: ChatInputInteractionContext): Promise<void> => {
@@ -163,7 +163,7 @@ const RegisterCommand = createCommand({
         {
           name: 'ingles',
           description: 'traducao desse titulo em ingles',
-          type: ApplicationCommandOptionTypes.Boolean,
+          type: ApplicationCommandOptionTypes.String,
           required: true,
         },
       ],

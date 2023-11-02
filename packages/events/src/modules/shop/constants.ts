@@ -1,4 +1,3 @@
-import { bot } from '../..';
 import { VangoghUserprofileData } from '../../commands/info/ProfileCommand';
 import { getProfileImageUrl } from '../../structures/cdnManager';
 
@@ -34,7 +33,7 @@ const previewProfileData: {
   user: {
     color: '#70c9f9' as const,
     image: getProfileImageUrl(1),
-    avatar: bot.helpers.getAvatarURL(bot.applicationId, '4444'),
+    avatar: 'https://menherabot.xyz/favicon.png',
     votes: 666,
     info: 'Gostou desse perfil? E que tal comprar? Nem vai ser tao caro, eu confio que tu vai querer, boa sorte UwU',
     badges: [6],

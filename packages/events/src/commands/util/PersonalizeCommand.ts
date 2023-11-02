@@ -1,9 +1,10 @@
-import { Embed } from 'discordeno/transformers';
+import { ApplicationCommandOptionChoice, Embed, Interaction } from 'discordeno/transformers';
 import {
   ActionRow,
   ApplicationCommandOptionTypes,
   ButtonStyles,
   InputTextComponent,
+  InteractionResponseTypes,
   SelectMenuComponent,
   TextStyles,
 } from 'discordeno/types';
@@ -11,6 +12,8 @@ import {
 import { User } from 'discordeno';
 
 import md5 from 'md5';
+import { findBestMatch } from 'string-similarity';
+import i18next from 'i18next';
 import { usersModel } from '../../database/collections';
 import commandRepository from '../../database/repositories/commandRepository';
 import profileImagesRepository from '../../database/repositories/profileImagesRepository';
@@ -38,9 +41,13 @@ import {
 } from '../../utils/discord/componentUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
+import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { getCustomThemeField, millisToSeconds, toWritableUtf } from '../../utils/miscUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
+import titlesRepository from '../../database/repositories/titlesRepository';
+import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
+import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
+import { debugError } from '../../utils/debugError';
 
 const executeAboutMeCommand = async (
   ctx: ChatInputInteractionContext,
@@ -389,6 +396,63 @@ const executeImageCommand = async (ctx: ChatInputInteractionContext, finishComma
   finishCommand();
 };
 
+export const executeTituleAutocompleteInteraction = async (
+  interaction: Interaction,
+): Promise<void | null> => {
+  const respondWithChoices = (choices: ApplicationCommandOptionChoice[]) =>
+    sendInteractionResponse(interaction.id, interaction.token, {
+      type: InteractionResponseTypes.ApplicationCommandAutocompleteResult,
+      data: {
+        choices,
+      },
+    }).catch(debugError);
+
+  const input = getOptionFromInteraction<string>(interaction, 'título', false, true);
+
+  if (`${input}`.length < 3) return respondWithChoices([]);
+
+  const userData = await userRepository.ensureFindUser(interaction.user.id);
+
+  if (userData.titles.length === 0)
+    return respondWithChoices([
+      {
+        value: 0,
+        name: i18next.getFixedT('pt-BR')('commands:titulo.no-titles-autocomplete'),
+        nameLocalizations: {
+          'en-US': i18next.getFixedT('en-US')('commands:titulo.no-titles-autocomplete'),
+        },
+      },
+    ]);
+
+  const userTitles = await titlesRepository.getTitles(
+    interaction.user.id,
+    userData.titles.map((a) => a.id),
+  );
+
+  const ratings = findBestMatch(
+    `${input}`,
+    userTitles.map((a) => a.textLocalizations?.[interaction.locale as 'pt-BR'] ?? a.text),
+  ).ratings.reduce<ApplicationCommandOptionChoice[]>((p, c) => {
+    if (p.length >= 25 || c.rating < 0.3) return p;
+
+    const title = userTitles.find(
+      (a) => a.text === c.target || a.textLocalizations?.['en-US'] === c.target,
+    );
+
+    if (!title) return p;
+
+    p.push({
+      name: title.text,
+      nameLocalizations: title.textLocalizations ?? undefined,
+      value: title.titleId,
+    });
+
+    return p;
+  }, []);
+
+  return respondWithChoices(ratings);
+};
+
 const executeBadgesSelected = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
 ): Promise<void> => {
@@ -418,6 +482,75 @@ const executeBadgesSelected = async (
     components: [],
     embeds: [],
   });
+};
+
+const executeTitleCommand = async (ctx: ChatInputInteractionContext): Promise<void> => {
+  const user = ctx.getOption<User>('usuário', 'users', false) ?? ctx.author;
+  const titleId = ctx.getOption<number>('título', false, false);
+
+  if (!titleId) {
+    const userData =
+      user.id === ctx.user.id ? ctx.authorData : await userRepository.ensureFindUser(user.id);
+
+    if (userData.titles.length === 0)
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:titulo.no-titles', {
+          user: mentionUser(user.id),
+        }),
+      });
+
+    const allTitles = await titlesRepository.getTitles(
+      user.id,
+      userData.titles.map((a) => a.id),
+    );
+
+    if (allTitles.length === 0)
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:titulo.no-titles', {
+          user: mentionUser(user.id),
+        }),
+      });
+
+    const embed = createEmbed({
+      author: {
+        name: ctx.locale('commands:titulo.title', { user: getDisplayName(user) }),
+        iconUrl: getUserAvatar(user),
+      },
+      description: allTitles
+        .map(
+          (title) =>
+            `${
+              title.textLocalizations?.[ctx.guildLocale as 'pt-BR'] ?? title.text
+            } - <t:${millisToSeconds(
+              userData.titles.find((a) => a.id === title.titleId)?.aquiredAt ?? 0,
+            )}>`,
+        )
+        .join('\n'),
+      footer: { text: ctx.locale('commands:titulo.footer') },
+      color: hexStringToNumber(userData.selectedColor),
+      fields: [],
+    });
+
+    return ctx.makeMessage({ embeds: [embed] });
+  }
+
+  if (!ctx.authorData.titles.some((a) => a.id === titleId))
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:titulo.not-your-title'),
+    });
+
+  const title = await titlesRepository.getTitleInfo(titleId);
+
+  if (!title)
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:titulo.unknown-title'),
+    });
+
+  await userRepository.updateUser(ctx.user.id, {
+    currentTitle: titleId,
+  });
+
+  ctx.makeMessage({ content: ctx.prettyResponse('success', 'commands:titulo.success') });
 };
 
 const executeBadgesCommand = async (
@@ -460,7 +593,7 @@ const executeBadgesCommand = async (
 
   const userBadges = getUserBadges(userData, user);
 
-  if (userBadges.length > 9)
+  if (userBadges.length > 12)
     toSendEmbeds.push(
       createEmbed({ color: hexStringToNumber(userData.selectedColor), fields: [] }),
     );
@@ -910,6 +1043,33 @@ const PersonalizeCommand = createCommand({
         },
       ],
     },
+    {
+      name: 'título',
+      description: '「🎟️」・Escolha o título que aparece em seu perfil',
+      descriptionLocalizations: {
+        'en-US': '「🎟️」・Choose the title that appears on your profile',
+      },
+      type: ApplicationCommandOptionTypes.SubCommand,
+      options: [
+        {
+          type: ApplicationCommandOptionTypes.User,
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
+          description: 'Usuário para ver os títulos',
+          descriptionLocalizations: { 'en-US': 'User to see the titles ' },
+          required: false,
+        },
+        {
+          type: ApplicationCommandOptionTypes.Integer,
+          name: 'título',
+          nameLocalizations: { 'en-US': 'title' },
+          description: 'Escreva o título',
+          descriptionLocalizations: { 'en-US': 'Input the title' },
+          required: false,
+          autocomplete: true,
+        },
+      ],
+    },
   ],
   category: 'util',
   authorDataFields: [
@@ -940,6 +1100,8 @@ const PersonalizeCommand = createCommand({
     if (command === 'temas') return executeThemesCommand(ctx, finishCommand);
 
     if (command === 'badges') return executeBadgesCommand(ctx, finishCommand);
+
+    if (command === 'título') return finishCommand(executeTitleCommand(ctx));
   },
 });
 

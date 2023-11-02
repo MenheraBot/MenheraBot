@@ -1049,5 +1049,14 @@
       "not-enough-seeds": "Você não possui sementes de **{{plant}}** para plantar!",
       "field-still-growing": "Este campo ainda está crescendo. Tu não pode o colher ainda!"
     }
+  },
+  "titulo": {
+    "no-titles": "{{user}} não possui nenhum título!",
+    "no-titles-autocomplete": "❌ | Tu não tem nenhum título",
+    "footer": "Para escolher um título, use o comando novamente selecionando o título",
+    "title": "Títulos de {{user}}",
+    "not-your-title": "Tu precisa ter o título que quer equipar",
+    "unknown-title": "Esse título não existe!",
+    "success": "O teu título foi alterado com sucesso!"
   }
 }

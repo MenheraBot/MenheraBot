@@ -1,8 +1,15 @@
-import { Localization } from 'discordeno/types';
+import { BigString, Localization } from 'discordeno/types';
 
 import { MainRedisClient } from '../databases';
 import { titlesModel } from '../collections';
 import { DatabaseTitlesSchema } from '../../types/database';
+
+const parseMongoDataToRedis = (title: DatabaseTitlesSchema): DatabaseTitlesSchema => ({
+  registeredAt: title.registeredAt,
+  text: title.text,
+  textLocalizations: title.textLocalizations,
+  titleId: title.titleId,
+});
 
 const registerTitle = async (
   titleId: number,
@@ -40,4 +47,20 @@ const getTitleInfo = async (titleId: number): Promise<DatabaseTitlesSchema | nul
   return fromMongo;
 };
 
-export default { registerTitle, getTitleInfo, getTitlesCount };
+const getTitles = async (userId: BigString, titles: number[]): Promise<DatabaseTitlesSchema[]> => {
+  const fromRedis = await MainRedisClient.get(`titles:${userId}`);
+
+  if (fromRedis) return JSON.parse(fromRedis);
+
+  const allTitles = await titlesModel.find({ titleId: { $in: titles } });
+
+  MainRedisClient.setex(
+    `titles:${userId}`,
+    3600,
+    JSON.stringify(allTitles.map(parseMongoDataToRedis)),
+  );
+
+  return allTitles;
+};
+
+export default { registerTitle, getTitleInfo, getTitlesCount, getTitles };
