@@ -18,24 +18,21 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 
-interface VangoghUserprofileData {
+export interface VangoghUserprofileData {
   id: string;
   color: string;
   image: string;
   avatar: string;
   votes: number;
   info: string;
-  tag: string;
   badges: Array<number>;
   hiddingBadges: Array<number>;
   username: string;
-  marryDate: string;
   mamadas: number;
   mamou: number;
-  marry: {
-    username: string;
-    tag: string;
-  } | null;
+  marryUsername: string;
+  marryDate: string;
+  title: string;
   married: boolean;
 }
 
@@ -111,23 +108,20 @@ const ProfileCommand = createCommand({
       avatar,
       votes: user.votes,
       info: user.info,
-      tag: getDisplayName(discordUser, true),
       badges: getUserBadges(user, discordUser).map((a) => a.id),
       username: getDisplayName(discordUser, true),
-      marryDate: user.marriedDate as string,
       mamadas: user.mamado,
       mamou: user.mamou,
       hiddingBadges: user.hiddingBadges,
-      marry: null,
+      marryUsername: '',
+      marryDate: user.marriedDate ?? '',
+      title: 'Caçador de Doces Nato',
       married: false,
     };
 
     if (marryData) {
       userData.married = true;
-      userData.marry = {
-        username: getDisplayName(marryData, true),
-        tag: getDisplayName(marryData, true),
-      };
+      userData.marryUsername = getDisplayName(marryData, true);
 
       if (user.marriedAt && user.marriedAt > 0)
         userData.marryDate = dayjs(user.marriedAt).format('DD/MM/YYYY');

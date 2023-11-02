@@ -448,7 +448,7 @@
     "unknow-user": "Usuário não encontrado",
     "mamado": "Mamado",
     "about-me": "Sobre Mim",
-    "api-down": "Eh.. o servidor de comandos está offline! Fique com uma frase bacana: 'É um caminho mais curto, mas não tem nada a ver com meu tamanho'",
+    "api-down": "Esse usuário nunca usou nenhum comando meu XD",
     "commands-usage": "{{user}} usou meus comandos {{usedCount}} vezes. Seu comando mais usado foi {{mostUsedCommandName}}, usou {{mostUsedCommandCount}} vezes"
   },
   "top": {

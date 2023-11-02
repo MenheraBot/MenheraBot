@@ -213,6 +213,25 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     type: 'eb_background',
     theme: 'hello_kitty',
   },
+  38: {
+    price: 85_000,
+    type: 'card_background',
+    theme: 'nocturnal',
+  },
+  39: {
+    price: 105_000,
+    type: 'profile',
+    theme: 'sunflower',
+    colorCompatible: true,
+    imageCompatible: false,
+  },
+  40: {
+    price: 80_000,
+    type: 'profile',
+    theme: 'gallery',
+    colorCompatible: true,
+    imageCompatible: false,
+  },
 };
 
 export default Themes;

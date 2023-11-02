@@ -721,6 +721,7 @@ const createCustomizeMessage = async (
       marryDate: userData.marriedDate as string,
       mamadas: userData.mamado,
       mamou: userData.mamou,
+      title: userData.titles,
       hiddingBadges: userData.hiddingBadges,
       marry: null,
       married: false,
