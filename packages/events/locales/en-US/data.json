@@ -211,6 +211,18 @@
     "37": {
       "name": "Hello Kitty",
       "description": "Pink is prettier with cute friends"
+    },
+    "38": {
+      "name": "Nocturnal",
+      "description": "A card background representing the simplest of nights"
+    },
+    "39": {
+      "name": "Sunflowers",
+      "description": "A beautiful sunflower collection for lovers of this flower"
+    },
+    "40": {
+      "name": "Gallery",
+      "description": "An art gallery with your face"
     }
   },
   "plants": {
