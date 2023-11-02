@@ -70,6 +70,7 @@ export interface ProfileTheme extends BaseTheme {
   theme: AvailableProfilesThemes;
   colorCompatible: boolean;
   imageCompatible: boolean;
+  needApiData: boolean;
   customEdits?: string[];
 }
 

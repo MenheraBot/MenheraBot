@@ -9,7 +9,7 @@ import cacheRepository from '../../database/repositories/cacheRepository';
 import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { getUserBadges } from '../../modules/badges/getUserBadges';
-import { getThemesByType } from '../../modules/themes/getThemes';
+import { getThemeById, getThemesByType } from '../../modules/themes/getThemes';
 import { ProfileTheme } from '../../modules/themes/types';
 import { getProfileImageUrl } from '../../structures/cdnManager';
 import { createCommand } from '../../structures/command/createCommand';
@@ -100,6 +100,7 @@ const ProfileCommand = createCommand({
     };
 
     const userThemes = await userThemesRepository.findEnsuredUserThemes(discordUser.id);
+    const profileThemeFile = getThemeById<ProfileTheme>(userThemes.selectedProfileTheme);
 
     const userData: VangoghUserprofileData = {
       id: user.id,
@@ -127,7 +128,8 @@ const ProfileCommand = createCommand({
         userData.marryDate = dayjs(user.marriedAt).format('DD/MM/YYYY');
     }
 
-    let profileTheme = await userThemesRepository.getProfileTheme(discordUser.id);
+    let profileTheme = profileThemeFile.data.theme;
+
     let customEdits: string[] = userThemes.customizedProfile ?? [];
 
     if (discordUser.id === bot.applicationId) {
@@ -169,15 +171,17 @@ const ProfileCommand = createCommand({
       return;
     }
 
-    const usageCommands = await getUserProfileInfo(`${discordUser.id}`);
+    if (profileThemeFile.data.needApiData) {
+      const usageCommands = await getUserProfileInfo(`${discordUser.id}`);
 
-    if (usageCommands)
-      i18n.usages = ctx.locale('commands:perfil.commands-usage', {
-        user: getDisplayName(discordUser, true),
-        usedCount: usageCommands.totalUses,
-        mostUsedCommandName: usageCommands.topCommand.name,
-        mostUsedCommandCount: usageCommands.topCommand.uses,
-      });
+      if (usageCommands)
+        i18n.usages = ctx.locale('commands:perfil.commands-usage', {
+          user: getDisplayName(discordUser, true),
+          usedCount: usageCommands.totalUses,
+          mostUsedCommandName: usageCommands.topCommand.name,
+          mostUsedCommandCount: usageCommands.topCommand.uses,
+        });
+    }
 
     if (discordUser.id === bot.applicationId)
       // eslint-disable-next-line no-bitwise

@@ -13,6 +13,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     type: 'profile',
     colorCompatible: true,
     imageCompatible: false,
+    needApiData: true,
   },
   3: {
     price: 0,
@@ -20,6 +21,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     type: 'profile',
     colorCompatible: true,
     imageCompatible: false,
+    needApiData: true,
   },
   4: {
     price: 0,
@@ -78,6 +80,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     colorCompatible: true,
     imageCompatible: true,
     customEdits: ['useImage'],
+    needApiData: true,
   },
   15: {
     price: 240_000,
@@ -86,6 +89,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     colorCompatible: true,
     imageCompatible: true,
     customEdits: ['useImage'],
+    needApiData: true,
   },
   16: {
     price: 240_000,
@@ -94,6 +98,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     colorCompatible: true,
     imageCompatible: true,
     customEdits: ['useImage'],
+    needApiData: true,
   },
   17: {
     price: 190_000,
@@ -101,6 +106,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     theme: 'kawaii',
     colorCompatible: true,
     imageCompatible: false,
+    needApiData: true,
   },
   18: {
     price: 90_000,
@@ -123,6 +129,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     type: 'profile',
     colorCompatible: true,
     imageCompatible: false,
+    needApiData: false,
   },
   22: {
     price: 350_000,
@@ -130,6 +137,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     type: 'profile',
     colorCompatible: true,
     imageCompatible: false,
+    needApiData: true,
   },
   23: {
     price: 200_000,
@@ -142,6 +150,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     theme: 'gatito',
     colorCompatible: false,
     imageCompatible: false,
+    needApiData: true,
   },
   25: {
     price: 0,
@@ -175,6 +184,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     colorCompatible: true,
     imageCompatible: true,
     customEdits: ['textBoxFilled', 'whiteUpperText', 'whiteBottomText'],
+    needApiData: true,
   },
   31: {
     price: 260_000,
@@ -182,6 +192,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     theme: 'hello_kitty',
     colorCompatible: false,
     imageCompatible: false,
+    needApiData: true,
   },
   32: {
     price: 550_001,
@@ -224,6 +235,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     theme: 'sunflower',
     colorCompatible: true,
     imageCompatible: false,
+    needApiData: false,
   },
   40: {
     price: 80_000,
@@ -231,6 +243,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     theme: 'gallery',
     colorCompatible: true,
     imageCompatible: false,
+    needApiData: false,
   },
 };
 
