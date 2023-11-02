@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.10.1] - 2023-11-02
+
+### Added
+
+- Novas badges de votos adicionadas! Agora existem badges de votos para: 50, 100, 200, 300, 400, 500 e 1000 votos!
+- Os TOPs que mostravam dados de caças agora possuem um botão para acessar o ranking semanal.
+- Novos GIFs para os comandos `/carinho`, `/raiva` e `/abraçar`
+
+### Changed
+
+- Todos os perfis foram alterados para mostrarem o título do usuário
+- O comando `/perfil` ficou mais rápido para os temas que não mostram o uso de comandos!
+- Os comandos `/8ball`, `/filosofia`, `/macetava` e `/astlolfo` ficaram bem mais rápidos!
+- O texto que aparece no perfil de quando alguém não tem dados de comandos foi alterado
+- O comando `/personalizar badges` está mostrando informações mais úteis.
+
 ## [5.10.0] - 2023-11-01
 
 ### Added

@@ -1,4 +1,5 @@
 import { bot } from '../..';
+import { VangoghUserprofileData } from '../../commands/info/ProfileCommand';
 import { getProfileImageUrl } from '../../structures/cdnManager';
 
 const huntValues = {
@@ -26,24 +27,25 @@ const customImagePrice = 150_000;
 const unbuyableThemes = [3, 4, 5, 6, 25, 26, 27];
 const helloKittyThemes = [31, 32, 33, 34, 35, 36, 37];
 
-const previewProfileData = {
+const previewProfileData: {
+  user: VangoghUserprofileData;
+  usageCommands: { cmds: { count: number }; array: { name: string; count: number }[] };
+} = {
   user: {
     color: '#70c9f9' as const,
     image: getProfileImageUrl(1),
     avatar: bot.helpers.getAvatarURL(bot.applicationId, '4444'),
     votes: 666,
     info: 'Gostou desse perfil? E que tal comprar? Nem vai ser tao caro, eu confio que tu vai querer, boa sorte UwU',
-    tag: 'PreviewMode#6666',
     badges: [6],
     hiddingBadges: [],
     username: 'PreviewMode',
     marryDate: '16/02/2004 às 22:23',
     mamadas: 23,
     mamou: 22,
-    marry: {
-      username: 'Luxanna',
-      tag: 'Luxanna#5757',
-    },
+    id: '',
+    marryUsername: 'Luxanna',
+    title: 'Observador',
     married: true,
   },
   usageCommands: {

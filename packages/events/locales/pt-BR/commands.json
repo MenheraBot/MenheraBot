@@ -448,7 +448,7 @@
     "unknow-user": "Usuário não encontrado",
     "mamado": "Mamado",
     "about-me": "Sobre Mim",
-    "api-down": "Eh.. o servidor de comandos está offline! Fique com uma frase bacana: 'É um caminho mais curto, mas não tem nada a ver com meu tamanho'",
+    "api-down": "Esse usuário nunca usou nenhum comando meu XD",
     "commands-usage": "{{user}} usou meus comandos {{usedCount}} vezes. Seu comando mais usado foi {{mostUsedCommandName}}, usou {{mostUsedCommandCount}} vezes"
   },
   "top": {
@@ -487,6 +487,7 @@
         "archangel": "Arcanjos",
         "demigod": "Semideuses",
         "god": "Deuses",
+        "weekly": "Ranking semanal",
         "description": {
           "success": "Ordenado por **caças bem-sucedidas**",
           "tries": "Ordenado por **quem mais caçou**",
@@ -801,7 +802,7 @@
     "select-all": "Selecionar Todas",
     "diselect-all": "Remover Todas Seleções",
     "success": "Suas escolhas foram salvas!",
-    "badge-info": "_{{description}}_\n**Adquirida em**: <t:{{unix}}:d>\n**ID da badge**: {{id}}\n**Raridade:** {{rarity}}"
+    "badge-info": "_{{description}}_\n**Adquirida em**: <t:{{unix}}:d>\n**Raridade:** {{rarity}}"
   },
   "menhera": {
     "changelog": {

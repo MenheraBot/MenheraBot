@@ -7,6 +7,7 @@ export type AvailableCardBackgroundThemes =
   | 'premium'
   | 'kawaii'
   | 'hello_kitty'
+  | 'nocturnal'
   | 'lamenta_caelorum';
 
 export type AvailableTableThemes =
@@ -27,6 +28,8 @@ export type AvailableProfilesThemes =
   | 'warrior'
   | 'fortification'
   | 'without_soul'
+  | 'sunflower'
+  | 'gallery'
   | 'id03'
   | 'gatito'
   | 'hello_kitty'
@@ -67,6 +70,7 @@ export interface ProfileTheme extends BaseTheme {
   theme: AvailableProfilesThemes;
   colorCompatible: boolean;
   imageCompatible: boolean;
+  needApiData: boolean;
   customEdits?: string[];
 }
 

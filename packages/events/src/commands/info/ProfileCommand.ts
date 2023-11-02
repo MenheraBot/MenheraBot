@@ -9,7 +9,7 @@ import cacheRepository from '../../database/repositories/cacheRepository';
 import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { getUserBadges } from '../../modules/badges/getUserBadges';
-import { getThemesByType } from '../../modules/themes/getThemes';
+import { getThemeById, getThemesByType } from '../../modules/themes/getThemes';
 import { ProfileTheme } from '../../modules/themes/types';
 import { getProfileImageUrl } from '../../structures/cdnManager';
 import { createCommand } from '../../structures/command/createCommand';
@@ -18,24 +18,21 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 
-interface VangoghUserprofileData {
+export interface VangoghUserprofileData {
   id: string;
   color: string;
   image: string;
   avatar: string;
   votes: number;
   info: string;
-  tag: string;
   badges: Array<number>;
   hiddingBadges: Array<number>;
   username: string;
-  marryDate: string;
   mamadas: number;
   mamou: number;
-  marry: {
-    username: string;
-    tag: string;
-  } | null;
+  marryUsername: string;
+  marryDate: string;
+  title: string;
   married: boolean;
 }
 
@@ -103,6 +100,7 @@ const ProfileCommand = createCommand({
     };
 
     const userThemes = await userThemesRepository.findEnsuredUserThemes(discordUser.id);
+    const profileThemeFile = getThemeById<ProfileTheme>(userThemes.selectedProfileTheme);
 
     const userData: VangoghUserprofileData = {
       id: user.id,
@@ -111,29 +109,27 @@ const ProfileCommand = createCommand({
       avatar,
       votes: user.votes,
       info: user.info,
-      tag: getDisplayName(discordUser, true),
       badges: getUserBadges(user, discordUser).map((a) => a.id),
       username: getDisplayName(discordUser, true),
-      marryDate: user.marriedDate as string,
       mamadas: user.mamado,
       mamou: user.mamou,
       hiddingBadges: user.hiddingBadges,
-      marry: null,
+      marryUsername: '',
+      marryDate: user.marriedDate ?? '',
+      title: 'Caçador de Doces Nato',
       married: false,
     };
 
     if (marryData) {
       userData.married = true;
-      userData.marry = {
-        username: getDisplayName(marryData, true),
-        tag: getDisplayName(marryData, true),
-      };
+      userData.marryUsername = getDisplayName(marryData, true);
 
       if (user.marriedAt && user.marriedAt > 0)
         userData.marryDate = dayjs(user.marriedAt).format('DD/MM/YYYY');
     }
 
-    let profileTheme = await userThemesRepository.getProfileTheme(discordUser.id);
+    let profileTheme = profileThemeFile.data.theme;
+
     let customEdits: string[] = userThemes.customizedProfile ?? [];
 
     if (discordUser.id === bot.applicationId) {
@@ -175,15 +171,17 @@ const ProfileCommand = createCommand({
       return;
     }
 
-    const usageCommands = await getUserProfileInfo(`${discordUser.id}`);
+    if (profileThemeFile.data.needApiData) {
+      const usageCommands = await getUserProfileInfo(`${discordUser.id}`);
 
-    if (usageCommands)
-      i18n.usages = ctx.locale('commands:perfil.commands-usage', {
-        user: getDisplayName(discordUser, true),
-        usedCount: usageCommands.totalUses,
-        mostUsedCommandName: usageCommands.topCommand.name,
-        mostUsedCommandCount: usageCommands.topCommand.uses,
-      });
+      if (usageCommands)
+        i18n.usages = ctx.locale('commands:perfil.commands-usage', {
+          user: getDisplayName(discordUser, true),
+          usedCount: usageCommands.totalUses,
+          mostUsedCommandName: usageCommands.topCommand.name,
+          mostUsedCommandCount: usageCommands.topCommand.uses,
+        });
+    }
 
     if (discordUser.id === bot.applicationId)
       // eslint-disable-next-line no-bitwise

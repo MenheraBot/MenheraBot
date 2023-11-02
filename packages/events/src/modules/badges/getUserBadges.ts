@@ -20,14 +20,20 @@ const discordBitFlagsToMenheraBadges = {
 
 const oneYearInMillis = 31_536_000_000;
 
-const getYearBadgeId = (yearsWithMenhera: number): UserBadge['id'] => {
-  if (yearsWithMenhera === 1) return 19;
+const deletedBadges = [9];
 
-  return (19 + yearsWithMenhera) as 20;
+const getYearBadgeId = (yearsWithMenhera: number): UserBadge['id'] =>
+  (199 + yearsWithMenhera) as 200;
+
+const getVotesBadgeId = (votes: number): UserBadge['id'] => {
+  if (votes >= 1000) return 106;
+  if (votes >= 500) return 105;
+  if (votes >= 100) return (100 + Math.floor(votes / 100)) as 101;
+  return 100;
 };
 
 const getUserBadges = (user: DatabaseUserSchema, discordUser: User): UserBadge[] => {
-  const userBadges = user.badges;
+  const userBadges = user.badges.filter((a) => !deletedBadges.includes(a.id));
 
   const creationTime = new mongoose.Types.ObjectId(`${user._id}`).getTimestamp().getTime();
 
@@ -42,6 +48,9 @@ const getUserBadges = (user: DatabaseUserSchema, discordUser: User): UserBadge[]
   const userFlagsBitfield = new ToggleBitfield(discordUser.publicFlags);
 
   if (discordUser.toggles.bot) userBadges.push({ id: 14, obtainAt: `${Date.now()}` });
+
+  if (user.votes >= 50)
+    userBadges.push({ id: getVotesBadgeId(user.votes), obtainAt: `${Date.now()}` });
 
   if (user.married && user.married !== 'false')
     userBadges.push({ id: 17, obtainAt: `${user.marriedAt ?? Date.now()}` });

@@ -1,3 +1,4 @@
+import { ButtonComponent, ButtonStyles } from 'discordeno/types';
 import { calculateSkipCount, createPaginationButtons } from '.';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import userRepository from '../../database/repositories/userRepository';
@@ -5,6 +6,7 @@ import { DatabaseUserSchema } from '../../types/database';
 import { InteractionContext } from '../../types/menhera';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
+import { createActionRow, createButton } from '../../utils/discord/componentUtils';
 
 const executeUserDataRelatedTop = async (
   ctx: InteractionContext,
@@ -50,9 +52,25 @@ const executeUserDataRelatedTop = async (
     });
   }
 
-  const pagination = createPaginationButtons(ctx, 'economy', label, 'NONE', page);
+  const [next, back] = createPaginationButtons(ctx, 'economy', label, 'NONE', page).components;
 
-  ctx.makeMessage({ embeds: [embed], components: [pagination] });
+  const toSendComponents = [next];
+
+  if (['demons', 'giants', 'angels', 'archangels', 'demigods', 'gods'].includes(label))
+    toSendComponents.push(
+      createButton({
+        style: ButtonStyles.Link,
+        label: ctx.locale('commands:top.estatisticas.cacar.weekly'),
+        url: 'https://menherabot.xyz/?utm_source=discord&utm_medium=button_component#ranking',
+      }),
+    );
+
+  toSendComponents.push(back as ButtonComponent);
+
+  ctx.makeMessage({
+    embeds: [embed],
+    components: [createActionRow(toSendComponents as [ButtonComponent])],
+  });
 };
 
 export { executeUserDataRelatedTop };

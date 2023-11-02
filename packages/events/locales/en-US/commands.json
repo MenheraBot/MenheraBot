@@ -443,7 +443,7 @@
     "mamado_uncensored": "Suckled",
     "mamado": "Licked",
     "about-me": "About Me",
-    "api-down": "Yep, the Commands Server is Down! But dont worry! This text is to say that you incredible.",
+    "api-down": "This user has never used my commands lol",
     "commands-usage": "{{user}} used my commands {{usedCount}} times. His most used command was {{mostUsedCommandName}}, used {{mostUsedCommandCount}} times"
   },
   "top": {
@@ -482,6 +482,7 @@
         "archangel": "Archangels",
         "demigod": "Demigods",
         "god": "Gods",
+        "weekly": "Weekly ranking",
         "description": {
           "success": "Sorted by **successful hunts**",
           "tries": "Ordered by who **hunted the most**",
@@ -796,7 +797,7 @@
     "select-all": "Select All",
     "diselect-all": "Remove All Options",
     "success": "Your choices has been selected",
-    "badge-info": "_{{description}}_\n**Acquired in**: <t:{{unix}}:d>\n**Badge ID**: {{id}}\n**Rarity:** {{rarity}}"
+    "badge-info": "_{{description}}_\n**Acquired in**: <t:{{unix}}:d>\n**Rarity:** {{rarity}}"
   },
   "menhera": {
     "changelog": {
