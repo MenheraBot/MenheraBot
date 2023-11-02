@@ -48,6 +48,7 @@ import titlesRepository from '../../database/repositories/titlesRepository';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
 import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
 import { debugError } from '../../utils/debugError';
+import { VangoghUserprofileData } from '../info/ProfileCommand';
 
 const executeAboutMeCommand = async (
   ctx: ChatInputInteractionContext,
@@ -839,6 +840,9 @@ const createCustomizeMessage = async (
 
   const userData = await userRepository.ensureFindUser(ctx.user.id);
 
+  const userTitle =
+    userData.currentTitle === 0 ? null : await titlesRepository.getTitleInfo(userData.currentTitle);
+
   const res = await vanGoghRequest(VanGoghEndpoints.Profile, {
     user: {
       id: userData.id,
@@ -847,17 +851,18 @@ const createCustomizeMessage = async (
       avatar: getUserAvatar(ctx.user, { size: 512 }),
       votes: userData.votes,
       info: userData.info,
-      tag: getDisplayName(ctx.user, true),
       badges: getUserBadges(userData, ctx.user).map((a) => a.id),
       username: getDisplayName(ctx.user, true),
       marryDate: userData.marriedDate as string,
       mamadas: userData.mamado,
       mamou: userData.mamou,
-      title: userData.titles,
+      title: userTitle
+        ? userTitle.textLocalizations?.[ctx.interaction.locale as 'en-US'] ?? userTitle.text
+        : '',
       hiddingBadges: userData.hiddingBadges,
-      marry: null,
+      marryUsername: '',
       married: false,
-    },
+    } satisfies VangoghUserprofileData,
     i18n: {
       aboutme: ctx.locale('commands:perfil.about-me'),
       mamado: ctx.locale('commands:perfil.mamado'),
