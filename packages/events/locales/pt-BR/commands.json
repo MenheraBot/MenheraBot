@@ -487,6 +487,7 @@
         "archangel": "Arcanjos",
         "demigod": "Semideuses",
         "god": "Deuses",
+        "weekly": "Ranking semanal",
         "description": {
           "success": "Ordenado por **caças bem-sucedidas**",
           "tries": "Ordenado por **quem mais caçou**",

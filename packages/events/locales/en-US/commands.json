@@ -482,6 +482,7 @@
         "archangel": "Archangels",
         "demigod": "Demigods",
         "god": "Gods",
+        "weekly": "Weekly ranking",
         "description": {
           "success": "Sorted by **successful hunts**",
           "tries": "Ordered by who **hunted the most**",

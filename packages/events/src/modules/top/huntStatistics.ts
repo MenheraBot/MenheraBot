@@ -1,3 +1,4 @@
+import { ButtonComponent, ButtonStyles } from 'discordeno/types';
 import {
   calculateSkipCount,
   createPaginationButtons,
@@ -11,6 +12,7 @@ import { getTopHunters } from '../../utils/apiRequests/statistics';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { COLORS } from '../../structures/constants';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
+import { createActionRow, createButton } from '../../utils/discord/componentUtils';
 
 const executeTopHuntStatistics = async (
   ctx: InteractionContext,
@@ -67,9 +69,16 @@ const executeTopHuntStatistics = async (
     });
   }
 
-  const pagination = createPaginationButtons(ctx, 'hunt', type, topMode, page);
+  const [back, next] = createPaginationButtons(ctx, 'hunt', type, topMode, page)
+    .components as ButtonComponent[];
 
-  ctx.makeMessage({ embeds: [embed], components: [pagination] });
+  const weeklyRank = createButton({
+    style: ButtonStyles.Link,
+    label: ctx.locale('commands:top.estatisticas.cacar.weekly'),
+    url: 'https://menherabot.xyz/?utm_source=discord&utm_medium=button_component#ranking',
+  });
+
+  ctx.makeMessage({ embeds: [embed], components: [createActionRow([back, weeklyRank, next])] });
 };
 
 export { executeTopHuntStatistics };

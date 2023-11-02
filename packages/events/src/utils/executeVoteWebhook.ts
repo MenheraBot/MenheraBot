@@ -76,9 +76,6 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
     },
   };
 
-  if (user.votes >= 100 && !user.badges.some((a) => a.id === 9))
-    updateData.$push = { badges: { id: 9, obtainAt: `${Date.now()}` } };
-
   await userRepository.updateUserWithSpecialData(userId, updateData);
 
   await postTransaction(
