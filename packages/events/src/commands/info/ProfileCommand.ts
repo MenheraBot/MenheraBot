@@ -104,9 +104,7 @@ const ProfileCommand = createCommand({
     const profileThemeFile = getThemeById<ProfileTheme>(userThemes.selectedProfileTheme);
 
     const userTitle =
-      ctx.authorData.currentTitle === 0
-        ? null
-        : await titlesRepository.getTitleInfo(ctx.authorData.currentTitle);
+      user.currentTitle === 0 ? null : await titlesRepository.getTitleInfo(user.currentTitle);
 
     const userData: VangoghUserprofileData = {
       id: user.id,
