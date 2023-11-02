@@ -5,7 +5,7 @@ import {
   InteractionResponseTypes,
 } from 'discordeno';
 import { Interaction, User } from 'discordeno/transformers';
-import { TFunction } from 'i18next';
+import i18next, { TFunction } from 'i18next';
 
 import { DatabaseUserSchema } from '../../types/database';
 import { Translation } from '../../types/i18next';
@@ -21,36 +21,6 @@ import {
 
 export type CanResolve = 'users' | 'members' | 'attachments' | false;
 
-export const splitIfExists = (texto?: string): string => {
-  if (typeof texto !== 'string') return texto as unknown as string;
-
-  let resultado = '';
-  let excecao = '';
-  let dentroExcecao = false;
-
-  for (let i = 0; i < texto.length; i++) {
-    const char = texto[i];
-
-    if (char === '<') {
-      dentroExcecao = true;
-      excecao = '';
-    }
-
-    if (char === '>' && dentroExcecao) {
-      dentroExcecao = false;
-      excecao += char;
-      resultado += excecao;
-      // eslint-disable-next-line no-continue
-      continue;
-    }
-
-    if (dentroExcecao) excecao += char;
-    else resultado = char + resultado;
-  }
-
-  return resultado;
-};
-
 export default class {
   public replied = false;
 
@@ -58,11 +28,15 @@ export default class {
 
   public subCommandGroup: string | undefined;
 
+  public i18n: TFunction;
+
   constructor(
     public interaction: Interaction,
     public authorData: DatabaseUserSchema,
-    public i18n: TFunction,
+    public guildLocale: string,
   ) {
+    this.i18n = i18next.getFixedT(guildLocale);
+
     let options = interaction.data?.options ?? [];
 
     if (options[0]?.type === ApplicationCommandOptionTypes.SubCommandGroup) {

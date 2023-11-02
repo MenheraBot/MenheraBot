@@ -17,6 +17,7 @@ import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
+import titlesRepository from '../../database/repositories/titlesRepository';
 
 export interface VangoghUserprofileData {
   id: string;
@@ -102,6 +103,11 @@ const ProfileCommand = createCommand({
     const userThemes = await userThemesRepository.findEnsuredUserThemes(discordUser.id);
     const profileThemeFile = getThemeById<ProfileTheme>(userThemes.selectedProfileTheme);
 
+    const userTitle =
+      ctx.authorData.currentTitle === 0
+        ? null
+        : await titlesRepository.getTitleInfo(ctx.authorData.currentTitle);
+
     const userData: VangoghUserprofileData = {
       id: user.id,
       color: user.selectedColor,
@@ -116,7 +122,9 @@ const ProfileCommand = createCommand({
       hiddingBadges: user.hiddingBadges,
       marryUsername: '',
       marryDate: user.marriedDate ?? '',
-      title: 'Caçador de Doces Nato',
+      title: userTitle
+        ? userTitle.textLocalizations?.[ctx.guildLocale as 'en-US'] ?? userTitle.text
+        : '',
       married: false,
     };
 

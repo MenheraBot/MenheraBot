@@ -121,9 +121,7 @@ const setInteractionCreateEvent = (): void => {
 
     cacheRepository.setDiscordUser(bot.transformers.reverse.user(bot, interaction.user));
 
-    const guildLocale = i18next.getFixedT(
-      await guildRepository.getGuildLanguage(interaction.guildId as bigint),
-    );
+    const guildLocale = await guildRepository.getGuildLanguage(interaction.guildId as bigint);
 
     const ctx = new ChatInputInteractionContext(
       interaction,

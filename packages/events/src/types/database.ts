@@ -1,3 +1,4 @@
+import { Localization } from 'discordeno/types';
 import { profileBadges } from '../modules/badges/profileBadges';
 import { AvailablePlants, Plantation } from '../modules/fazendinha/types';
 import { HuntMagicItem } from '../modules/hunt/types';
@@ -40,7 +41,7 @@ export interface DatabaseUserSchema {
   votes: number;
   badges: UserBadge[];
   hiddingBadges: Array<UserBadge['id']>;
-  titles: number[];
+  titles: UserBuyableTheme[];
   currentTitle: number;
   huntCooldown: number;
   voteCooldown: number;
@@ -117,6 +118,13 @@ export interface DatabaseFarmerSchema {
   biggestSeed: number;
   plantedFields: number;
   lastPlantedSeed: AvailablePlants;
+}
+
+export interface DatabaseTitlesSchema {
+  titleId: number;
+  text: string;
+  textLocalizations: Localization | null;
+  registeredAt: number;
 }
 
 export type UserIdType = string | bigint;
