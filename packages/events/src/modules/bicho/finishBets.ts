@@ -33,10 +33,10 @@ const BICHO_BET_MULTIPLIER = {
   unity: 2,
   ten: 5,
   hundred: 20,
-  thousand: 100,
+  thousand: 40,
   animal: 3,
-  sequence: 19,
-  corner: 500,
+  sequence: 15,
+  corner: 100,
 };
 
 const BICHO_TAXES = {
