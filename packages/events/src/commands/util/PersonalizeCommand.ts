@@ -476,13 +476,12 @@ const executeBadgesCommand = async (
         emoji: extractNameAndIdFromEmoji(EMOJIS[`badge_${a.id}` as 'angels']),
       });
 
-    toSendEmbeds[i < 9 ? 0 : 1].fields?.push({
+    toSendEmbeds[i < 12 ? 0 : 1].fields?.push({
       name: `${EMOJIS[`badge_${a.id}` as 'angels']} | ${profileBadges[a.id as 1].name}`,
       value: ctx.locale('commands:badges.badge-info', {
         unix: Math.floor(Number(a.obtainAt) / 1000),
         description: profileBadges[a.id as 1].description,
-        rarity: profileBadges[a.id as 1].rarityLevel,
-        id: a.id,
+        rarity: ctx.locale(`common:rarities.${profileBadges[a.id as 1].rarityLevel}`),
       }),
       inline: true,
     });

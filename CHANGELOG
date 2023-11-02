@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O comando `/perfil` ficou mais rápido para os temas que não mostram o uso de comandos!
 - Os comandos `/8ball`, `/filosofia`, `/macetava` e `/astlolfo` ficaram bem mais rápidos!
 - O texto que aparece no perfil de quando alguém não tem dados de comandos foi alterado
+- O comando `/personalizar badges` está mostrando informações mais úteis.
 
 ## [5.10.0] - 2023-11-01
 

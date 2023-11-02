@@ -9,12 +9,12 @@
 */
 
 enum BadgeRarity {
-  DiscordBadge = 0,
-  CommandBased = 2,
-  HelpingDevelopment = 4,
-  SpecialEvents = 5,
-  SelectedPeople = 6,
-  Exclusive = 7,
+  DiscordBadge,
+  CommandBased,
+  HelpingDevelopment,
+  SpecialEvents,
+  SelectedPeople,
+  Exclusive,
 }
 
 const profileBadges = {

@@ -33,7 +33,13 @@
     "epic": "Epic",
     "legendary": "Legendary",
     "mythical": "Mythical",
-    "divine": "Divine"
+    "divine": "Divine",
+    "0": "Common",
+    "1": "Rare",
+    "2": "Epic",
+    "3": "Legendary",
+    "4": "Mythical",
+    "5": "Divine"
   },
   "theme_types": {
     "profile": "Profile",

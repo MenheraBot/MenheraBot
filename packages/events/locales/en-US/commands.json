@@ -796,7 +796,7 @@
     "select-all": "Select All",
     "diselect-all": "Remove All Options",
     "success": "Your choices has been selected",
-    "badge-info": "_{{description}}_\n**Acquired in**: <t:{{unix}}:d>\n**Badge ID**: {{id}}\n**Rarity:** {{rarity}}"
+    "badge-info": "_{{description}}_\n**Acquired in**: <t:{{unix}}:d>\n**Rarity:** {{rarity}}"
   },
   "menhera": {
     "changelog": {

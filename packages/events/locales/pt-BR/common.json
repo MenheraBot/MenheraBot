@@ -31,7 +31,13 @@
     "epic": "Épico",
     "legendary": "Lendário",
     "mythical": "Mítico",
-    "divine": "Divino"
+    "divine": "Divino",
+    "0": "Comum",
+    "1": "Raro",
+    "2": "Épico",
+    "3": "Lendário",
+    "4": "Mítico",
+    "5": "Divino"
   },
   "theme_types": {
     "profile": "Perfil",

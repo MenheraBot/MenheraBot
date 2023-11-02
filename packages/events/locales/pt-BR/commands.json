@@ -801,7 +801,7 @@
     "select-all": "Selecionar Todas",
     "diselect-all": "Remover Todas Seleções",
     "success": "Suas escolhas foram salvas!",
-    "badge-info": "_{{description}}_\n**Adquirida em**: <t:{{unix}}:d>\n**ID da badge**: {{id}}\n**Raridade:** {{rarity}}"
+    "badge-info": "_{{description}}_\n**Adquirida em**: <t:{{unix}}:d>\n**Raridade:** {{rarity}}"
   },
   "menhera": {
     "changelog": {
