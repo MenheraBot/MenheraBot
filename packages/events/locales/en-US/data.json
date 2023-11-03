@@ -179,7 +179,8 @@
       "name": "Mural",
       "description": "For those who want to customize their profile freedomly",
       "customFields": {
-        "textBoxFilled": "Text box filled",
+        "bottomTextBoxFilled": "Bottom text box filled",
+        "upperTextBoxFilled": "Upper text box filled",
         "whiteUpperText": "Upper text white",
         "whiteBottomText": "Bottom text white"
       }

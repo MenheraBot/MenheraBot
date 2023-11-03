@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Novas badges de votos adicionadas! Agora existem badges de votos para: 50, 100, 200, 300, 400, 500 e 1000 votos!
 - Os TOPs que mostravam dados de caças agora possuem um botão para acessar o ranking semanal.
 - Novos GIFs para os comandos `/carinho`, `/raiva` e `/abraçar`
+- O perfil `Mural` recebeu uma nova customização para separar as caixas de texto preenchidas.
 
 ### Changed
 

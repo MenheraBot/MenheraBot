@@ -808,7 +808,7 @@ const createCustomizeMessage = async (
       .map(
         (field) =>
           `${ctx.locale(
-            `data:themes.${currentTheme.id as 30}.customFields.${field as 'textBoxFilled'}`,
+            `data:themes.${currentTheme.id as 30}.customFields.${field as 'upperTextBoxFilled'}`,
           )}: ${ctx.locale(`common:${getCustomThemeField(field, fieldToUse)}`)}`,
       )
       .join('\n'),
@@ -820,7 +820,7 @@ const createCustomizeMessage = async (
     maxValues: currentTheme.data.customEdits.length,
     options: currentTheme.data.customEdits.map((field) => ({
       label: ctx.locale(
-        `data:themes.${currentTheme.id as 30}.customFields.${field as 'textBoxFilled'}`,
+        `data:themes.${currentTheme.id as 30}.customFields.${field as 'upperTextBoxFilled'}`,
       ),
       value: `${field}|${getCustomThemeField(field, fieldToUse)}`,
       emoji: {

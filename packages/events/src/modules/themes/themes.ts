@@ -183,7 +183,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     theme: 'mural',
     colorCompatible: true,
     imageCompatible: true,
-    customEdits: ['textBoxFilled', 'whiteUpperText', 'whiteBottomText'],
+    customEdits: ['upperTextBoxFilled', 'bottomTextBoxFilled', 'whiteUpperText', 'whiteBottomText'],
     needApiData: true,
   },
   31: {

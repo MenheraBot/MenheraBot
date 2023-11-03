@@ -179,7 +179,8 @@
       "name": "Mural",
       "description": "Para aqueles que querer personalizar seu perfil com um pouco mais de liberdade.",
       "customFields": {
-        "textBoxFilled": "Caixa de texto preenchida",
+        "upperTextBoxFilled": "Caixa de texto suerior preenchida",
+        "bottomTextBoxFilled": "Caixa de texto inferior preenchida",
         "whiteUpperText": "Texto superior branco",
         "whiteBottomText": "Texto inferior branco"
       }
