@@ -1,13 +1,15 @@
 FROM node:18-alpine as build
 WORKDIR /app
 COPY . .
+RUN apk --no-cache add curl
+RUN curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION="2.21.2" sh
+
 RUN yarn install
 RUN yarn build:all
 RUN rm -rf node_modules
 RUN yarn install --production
 RUN mv docker/.yarnclean .yarnclean
 RUN yarn autoclean --force
-RUN curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION="2.21.2" bash
 RUN cd packages/events
 RUN sentry-cli sourcemaps inject ./dist
 
