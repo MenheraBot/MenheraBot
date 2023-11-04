@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - Agora é possível filtrar as transações em `/transações`
+- Ao comprar um tema na Menhera, você pode ativá-lo rapidamente clicando no botão da mensagem.
 
 ### Changed
 

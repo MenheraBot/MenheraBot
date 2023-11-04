@@ -7,7 +7,7 @@ import { buyImages, executeBuyImagesSelectComponent } from '../../modules/shop/b
 import { buyInfo } from '../../modules/shop/buyInfo';
 import { buyItems, executeSelectItem } from '../../modules/shop/buyItems';
 import { buyRolls } from '../../modules/shop/buyRolls';
-import { buyThemes, executeClickButton } from '../../modules/shop/buyThemes';
+import { buyThemes, executeActivateTheme, executeClickButton } from '../../modules/shop/buyThemes';
 import { sellHunts } from '../../modules/shop/sellHunts';
 import { sellInfo } from '../../modules/shop/sellInfo';
 import { transactionableCommandOption } from '../../structures/constants';
@@ -243,6 +243,7 @@ const ShopCommand = createCommand({
     executeClickButton,
     executeBuyImagesSelectComponent,
     handleBuySeedsInteractions,
+    executeActivateTheme,
   ],
   execute: async (ctx, finishCommand) => {
     const subCommandGroup = ctx.getSubCommandGroup();

@@ -57,7 +57,7 @@ type UserThemeArrayTypes = keyof Pick<
   | 'profileImages'
 >;
 
-type UserSelectedThemeTypes = keyof Pick<
+export type UserSelectedThemeTypes = keyof Pick<
   DatabaseUserThemesSchema,
   | 'selectedTableTheme'
   | 'selectedCardTheme'
@@ -317,6 +317,7 @@ export default {
   getProfileTheme,
   getEbBackgroundTheme,
   getEbTextBoxTheme,
+  setThemeToUserAccount,
   getEbMenheraTheme,
   addProfileImage,
   setTableTheme,

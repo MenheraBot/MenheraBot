@@ -225,12 +225,14 @@
     },
     "buy_themes": {
       "title": "🎊 | Comprar Temas",
+      "activate": "Usar tema",
+      "activated": "O seu tema foi equipado! Eu achei que tu ficou impecável com ele >..<",
       "description": "Abaixo estão alguns temas que você pode comprar imediatamente",
       "poor": "Tu não possui todas essas estrelinhas para comprar isso!",
       "owned": "(Possui)",
       "not-registered": "Esse tema ainda não está disponível! Tente novamente mais tarde",
       "preview-mode": "Alternar Modo Preview",
-      "success": "**Compra efetuada com sucesso!** Você já pode habilitá-la no {{command}}",
+      "success": "**Compra efetuada com sucesso!** Você já pode habilitá-la no {{command}} ou clicando no botão",
       "data": "_{{description}}_\n**Preço**: {{price}} :star:\n**Autor**: <@{{author}}>",
       "profileCompatibles": "\n`Compatibilidades`\n**Cor**: {{colorCompatible}}\n**Imagem**: {{imageCompatible}}",
       "customEdits": "\n**Configurações extras**: {{customEdits}}"

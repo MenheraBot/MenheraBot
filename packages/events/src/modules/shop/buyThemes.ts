@@ -5,7 +5,9 @@ import commandRepository from '../../database/repositories/commandRepository';
 import shopRepository from '../../database/repositories/shopRepository';
 import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
 import userRepository from '../../database/repositories/userRepository';
-import userThemesRepository from '../../database/repositories/userThemesRepository';
+import userThemesRepository, {
+  UserSelectedThemeTypes,
+} from '../../database/repositories/userThemesRepository';
 import { bot } from '../../index';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
@@ -21,7 +23,7 @@ import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { getThemeById, getThemesByType, getUserActiveThemes } from '../themes/getThemes';
-import { ProfileTheme } from '../themes/types';
+import { ProfileTheme, ThemeFile } from '../themes/types';
 import { helloKittyThemes, previewProfileData, unbuyableThemes } from './constants';
 import {
   editOriginalInteractionResponse,
@@ -38,6 +40,30 @@ const themeByIndex = {
   5: 'eb_text_box',
   6: 'eb_menhera',
 } as const;
+
+const themeTypeToDatabaseField: { [x in ThemeFile['type']]: UserSelectedThemeTypes } = {
+  card_background: 'selectedCardBackgroundTheme',
+  cards: 'selectedCardTheme',
+  eb_background: 'selectedEbBackgroundTheme',
+  eb_menhera: 'selectedEbMenheraTheme',
+  eb_text_box: 'selectedEbTextBoxTheme',
+  profile: 'selectedProfileTheme',
+  table: 'selectedTableTheme',
+};
+
+const executeActivateTheme = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [themeType, themeId] = ctx.sentData;
+  await userThemesRepository.setThemeToUserAccount(
+    ctx.user.id,
+    themeType as 'selectedImage',
+    Number(themeId),
+  );
+
+  ctx.makeMessage({
+    components: [],
+    content: ctx.prettyResponse('success', 'commands:loja.buy_themes.activated'),
+  });
+};
 
 const createThemeComponents = (
   ctx: ChatInputInteractionContext | ComponentInteractionContext,
@@ -380,8 +406,20 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
 
       const commandInfo = await commandRepository.getCommandInfo('personalizar');
 
-      ctx.makeMessage({
-        components: [],
+      const activateButton = createButton({
+        customId: createCustomId(
+          5,
+          ctx.user.id,
+          ctx.commandId,
+          themeTypeToDatabaseField[selectedItem.data.type],
+          selectedItem.id,
+        ),
+        label: ctx.locale('commands:loja.buy_themes.activate'),
+        style: ButtonStyles.Success,
+      });
+
+      await ctx.makeMessage({
+        components: [createActionRow([activateButton])],
         embeds: [],
         content: ctx.prettyResponse('success', 'commands:loja.buy_themes.success', {
           command: `</personalizar temas:${commandInfo?.discordId}>`,
@@ -479,4 +517,4 @@ const buyThemes = async (
   finishCommand();
 };
 
-export { buyThemes, executeClickButton };
+export { buyThemes, executeClickButton, executeActivateTheme };
