@@ -84,6 +84,7 @@ jobs:
             docker tag $imgName $IMAGE_ID:latest
             if [ $imgName == "events" ]; then
               docker tag $imgName $IMAGE_ID:$version
+              docker push $IMAGE_ID:$version
             fi
             docker push $IMAGE_ID:latest
           done
