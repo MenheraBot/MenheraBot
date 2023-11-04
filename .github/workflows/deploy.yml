@@ -40,7 +40,7 @@ jobs:
         run: yarn test
 
       - name: Tar events build
-        run: tar -cvf events.tar ./packages/events/dist
+        run: cd packages/events && tar -cvf events.tar dist
 
       - id: version
         name: Store version in Github Output
