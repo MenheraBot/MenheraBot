@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/node';
 import { InteractionCallbackData, InteractionResponseTypes } from 'discordeno';
 import { User } from 'discordeno/transformers';
-import { TFunction } from 'i18next';
+import i18next, { TFunction } from 'i18next';
 
 import { Translation } from '../../types/i18next';
 import { ComponentInteraction } from '../../types/interaction';
@@ -19,7 +19,11 @@ export type CanResolve = 'users' | 'members' | false;
 export default class<InteractionType extends ComponentInteraction = ComponentInteraction> {
   private replied = false;
 
-  constructor(public interaction: InteractionType, public i18n: TFunction) {}
+  public i18n: TFunction;
+
+  constructor(public interaction: InteractionType, public guildLocale: string) {
+    this.i18n = i18next.getFixedT(guildLocale);
+  }
 
   get user(): User {
     return this.interaction.user;

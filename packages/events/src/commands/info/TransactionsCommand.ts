@@ -121,8 +121,9 @@ const getTransactionComponents = (
       embedColor,
       'T',
     ),
+    placeholder: ctx.locale('commands:transactions.select-type'),
     options: TRANSACTION_REASONS.map((t) => ({
-      label: t,
+      label: ctx.locale(`commands:transactions.reasons.${t}_title`),
       value: t,
       default: selectedTypes.includes(t),
     })),
@@ -142,8 +143,9 @@ const getTransactionComponents = (
       embedColor,
       'C',
     ),
+    placeholder: ctx.locale('commands:transactions.select-currency'),
     options: transactionableCommandOption.map((t) => ({
-      label: t.name,
+      label: t.nameLocalizations[ctx.guildLocale as 'en-US'] ?? t.name,
       value: t.value,
       default: selectedCurrencies.includes(t.value),
     })),
@@ -162,6 +164,7 @@ const getTransactionComponents = (
       secondUserId || 'N',
       embedColor,
     ),
+    placeholder: ctx.locale('commands:transactions.select-user'),
     minValues: 0,
     maxValues: 1,
     defaultValues: secondUserId && secondUserId !== 'N' ? [{ type: 'user', id: secondUserId }] : [],
@@ -292,6 +295,7 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
         content: ctx.prettyResponse('error', 'commands:transactions.no-transactions', {
           user: getDisplayName(toFindUser),
         }),
+        embeds: [],
       });
 
     const components = getTransactionComponents(
@@ -308,11 +312,11 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
     );
 
     return ctx.makeMessage({
+      embeds: [],
       content: ctx.prettyResponse('error', 'commands:transactions.no-transactions', {
         user: getDisplayName(toFindUser),
       }),
       components,
-      embeds: [],
     });
   }
 
@@ -386,7 +390,7 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
       : getSentOptions(ctx as ComponentInteractionContext, 1).reduce<string[]>(getDefault, []),
   );
 
-  ctx.makeMessage({ embeds: [embed], components });
+  ctx.makeMessage({ embeds: [embed], components, content: '' });
 };
 
 const TransactionsCommand = createCommand({
