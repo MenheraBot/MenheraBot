@@ -181,7 +181,7 @@ const buildSellPlantsMessage = async (
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: ctx.locale('commands:fazendinha.silo.no-plants'),
+      content: ctx.prettyResponse('error', 'commands:fazendinha.silo.no-plants'),
     });
   }
 
