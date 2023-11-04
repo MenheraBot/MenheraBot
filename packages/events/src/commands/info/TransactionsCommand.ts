@@ -5,6 +5,7 @@ import {
   ButtonComponent,
   ButtonStyles,
   SelectMenuComponent,
+  SelectOption,
 } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
 import { createCommand } from '../../structures/command/createCommand';
@@ -25,12 +26,28 @@ import {
 } from '../../utils/discord/componentUtils';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { ApiTransactionReason } from '../../types/api';
+import { ApiTransactionReason, TransactionRegister } from '../../types/api';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { InteractionContext } from '../../types/menhera';
-import { logger } from '../../utils/logger';
 
 const TRANSACTION_REASONS = Object.freeze(Object.values(ApiTransactionReason));
+
+const getDefault = <T>(p: T[], c: SelectOption): T[] => {
+  if (!c.default) return p;
+  p.push(c.value as T);
+  return p;
+};
+
+const resolveUser = (
+  map: Map<string, Promise<User | null>>,
+  c: TransactionRegister,
+  actor: 'authorId' | 'targetId',
+): void => {
+  if (!map.has(c[actor])) map.set(c[actor], cacheRepository.getDiscordUser(c[actor], false));
+};
+
+const getSentOptions = (ctx: ComponentInteractionContext, index: number): SelectOption[] =>
+  (ctx.interaction.message?.components?.[index]?.components?.[0] as SelectMenuComponent).options;
 
 const getTransactionComponents = (
   ctx: InteractionContext,
@@ -183,13 +200,7 @@ const executeButtonClick = async (ctx: ComponentInteractionContext): Promise<voi
         false,
         disablePagination,
         ctx.interaction.data.values,
-        (
-          ctx.interaction.message?.components?.[1].components?.[0] as SelectMenuComponent
-        ).options.reduce<string[]>((p, c) => {
-          if (!c.default) return p;
-          p.push(c.value);
-          return p;
-        }, []),
+        getSentOptions(ctx, 1).reduce<string[]>(getDefault, []),
       );
     }
 
@@ -203,13 +214,7 @@ const executeButtonClick = async (ctx: ComponentInteractionContext): Promise<voi
         disableNext,
         false,
         disablePagination,
-        (
-          ctx.interaction.message?.components?.[0].components?.[0] as SelectMenuComponent
-        ).options.reduce<string[]>((p, c) => {
-          if (!c.default) return p;
-          p.push(c.value);
-          return p;
-        }, []),
+        getSentOptions(ctx, 0).reduce<string[]>(getDefault, []),
         ctx.interaction.data.values,
       );
     }
@@ -236,20 +241,8 @@ const executeButtonClick = async (ctx: ComponentInteractionContext): Promise<voi
       disableNext,
       false,
       disablePagination,
-      (
-        ctx.interaction.message?.components?.[0].components?.[0] as SelectMenuComponent
-      ).options.reduce<string[]>((p, c) => {
-        if (!c.default) return p;
-        p.push(c.value);
-        return p;
-      }, []),
-      (
-        ctx.interaction.message?.components?.[1].components?.[0] as SelectMenuComponent
-      ).options.reduce<string[]>((p, c) => {
-        if (!c.default) return p;
-        p.push(c.value);
-        return p;
-      }, []),
+      getSentOptions(ctx, 0).reduce<string[]>(getDefault, []),
+      getSentOptions(ctx, 1).reduce<string[]>(getDefault, []),
     );
 
     return ctx.makeMessage({ components });
@@ -257,11 +250,9 @@ const executeButtonClick = async (ctx: ComponentInteractionContext): Promise<voi
 
   const firstUser = await cacheRepository.getDiscordUser(firstUserId, true);
 
-  const noop = () => undefined;
-
   await ctx.ack();
 
-  executeTransactionsCommand(ctx, firstUser ?? ctx.user, Number(page), embedColor, noop, false);
+  executeTransactionsCommand(ctx, firstUser ?? ctx.user, Number(page), embedColor, false);
 };
 
 const executeTransactionsCommand = async <FirstTime extends boolean>(
@@ -269,7 +260,6 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
   toFindUser: User,
   page: number,
   embedColor: string,
-  finishCommand: (args?: unknown) => void,
   firstTime: FirstTime,
 ): Promise<void> => {
   let types = TRANSACTION_REASONS;
@@ -277,51 +267,32 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
   let users = [`${toFindUser.id}`];
 
   if (!firstTime) {
-    const sentTypes = (
-      ctx.interaction.message?.components?.[0]?.components?.[0] as SelectMenuComponent
-    ).options.filter((a) => a.default);
+    const sentTypes = getSentOptions(ctx as ComponentInteractionContext, 0).reduce<
+      ApiTransactionReason[]
+    >(getDefault, []);
 
-    const sentCurrency = (
-      ctx.interaction.message?.components?.[1].components?.[0] as SelectMenuComponent
-    ).options.filter((a) => a.default);
-
-    logger.debug('sentTypes', sentTypes);
-    logger.debug('sentCurrency', sentCurrency);
+    const sentCurrency = getSentOptions(ctx as ComponentInteractionContext, 1).reduce<
+      typeof currency
+    >(getDefault, []);
 
     const sentUserId = (ctx as ComponentInteractionContext).sentData[3];
 
-    if (sentTypes.length > 0)
-      types = sentTypes.reduce<ApiTransactionReason[]>((p, c) => {
-        if (!c.default) return p;
-        p.push(c.value as ApiTransactionReason);
-        return p;
-      }, []);
+    if (sentTypes.length > 0) types = sentTypes;
 
-    if (sentCurrency.length > 0)
-      currency = sentCurrency.reduce<typeof currency>((p, c) => {
-        if (!c.default) return p;
-        p.push(c.value as 'estrelinhas');
-        return p;
-      }, []);
+    if (sentCurrency.length > 0) currency = sentCurrency;
 
     users = [`${toFindUser.id}`, `${sentUserId}`];
   }
-  logger.debug('First time', firstTime);
-  logger.debug('types', types.length);
-  logger.debug('currency', currency.length);
-  logger.debug('users', users);
 
   const transactions = await getUserTransactions(users, page, types, currency);
 
   if (!transactions || transactions.length === 0) {
     if (firstTime)
-      return finishCommand(
-        ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'commands:transactions.no-transactions', {
-            user: getDisplayName(toFindUser),
-          }),
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:transactions.no-transactions', {
+          user: getDisplayName(toFindUser),
         }),
-      );
+      });
 
     const components = getTransactionComponents(
       ctx as ComponentInteractionContext,
@@ -336,24 +307,18 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
       currency.length === transactionableCommandOption.length && !firstTime ? [] : currency,
     );
 
-    return finishCommand(
-      ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:transactions.no-transactions', {
-          user: getDisplayName(toFindUser),
-        }),
-        components,
-        embeds: [],
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:transactions.no-transactions', {
+        user: getDisplayName(toFindUser),
       }),
-    );
+      components,
+      embeds: [],
+    });
   }
 
   const toResolve = transactions.reduce<Map<string, Promise<User | null>>>((map, c) => {
-    if (!map.has(c.authorId))
-      map.set(c.authorId, cacheRepository.getDiscordUser(c.authorId, false));
-
-    if (!map.has(c.targetId))
-      map.set(c.targetId, cacheRepository.getDiscordUser(c.targetId, false));
-
+    resolveUser(map, c, 'authorId');
+    resolveUser(map, c, 'targetId');
     return map;
   }, new Map<string, Promise<User | null>>());
 
@@ -404,25 +369,6 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
     description: parsedData.join('\n'),
   });
 
-  logger.debug(
-    'selectedTypes',
-    (
-      ctx.interaction.message?.components?.[0].components?.[0] as SelectMenuComponent
-    )?.options?.reduce<string[]>((p, c) => {
-      if (!c.default) return p;
-      p.push(c.value);
-      return p;
-    }, []),
-    'selectedCurrencies',
-    (
-      ctx.interaction.message?.components?.[1].components?.[0] as SelectMenuComponent
-    )?.options?.reduce<string[]>((p, c) => {
-      if (!c.default) return p;
-      p.push(c.value);
-      return p;
-    }, []),
-  );
-
   const components = getTransactionComponents(
     ctx,
     page,
@@ -434,26 +380,13 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
     false,
     firstTime
       ? []
-      : (
-          ctx.interaction.message?.components?.[0].components?.[0] as SelectMenuComponent
-        ).options.reduce<string[]>((p, c) => {
-          if (!c.default) return p;
-          p.push(c.value);
-          return p;
-        }, []),
+      : getSentOptions(ctx as ComponentInteractionContext, 0).reduce<string[]>(getDefault, []),
     firstTime
       ? []
-      : (
-          ctx.interaction.message?.components?.[1].components?.[0] as SelectMenuComponent
-        ).options.reduce<string[]>((p, c) => {
-          if (!c.default) return p;
-          p.push(c.value);
-          return p;
-        }, []),
+      : getSentOptions(ctx as ComponentInteractionContext, 1).reduce<string[]>(getDefault, []),
   );
 
   ctx.makeMessage({ embeds: [embed], components });
-  finishCommand();
 };
 
 const TransactionsCommand = createCommand({
@@ -524,14 +457,9 @@ const TransactionsCommand = createCommand({
 
     await ctx.defer();
 
-    executeTransactionsCommand(
-      ctx,
-      toFindUser,
-      page,
-      userExists.selectedColor,
-      finishCommand,
-      true,
-    );
+    finishCommand();
+
+    executeTransactionsCommand(ctx, toFindUser, page, userExists.selectedColor, true);
   },
 });
 
