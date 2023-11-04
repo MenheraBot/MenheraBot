@@ -31,7 +31,7 @@ jobs:
         run: yarn run:lint
 
       - name: Build Events package
-        run: yarn events build:test
+        run: yarn events build
 
       - name: Execute typecheck in Orchestrator
         run: yarn orchestrator typecheck
