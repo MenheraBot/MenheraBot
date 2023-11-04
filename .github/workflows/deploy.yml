@@ -108,7 +108,7 @@ jobs:
 
       - name: Untar evets
         run: tar -xvf ~/events.tar
-
+#
       - name: debugga essa bomBAAAAAH
         run: |
           ls -lah
