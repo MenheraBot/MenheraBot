@@ -109,6 +109,13 @@ jobs:
       - name: Untar evets
         run: tar -xvf ~/events.tar
 
+      - name: debugga essa bomBAAAAAH
+        run: |
+          ls -lah
+          cd ~/
+          ls -lah
+          ls ~/dist
+
       - name: Inject sentry debug IDs
         run: sentry-cli sourcemaps inject ~/dist
 
