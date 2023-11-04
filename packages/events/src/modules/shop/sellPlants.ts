@@ -1,6 +1,7 @@
 import { bot } from '../..';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import starsRepository from '../../database/repositories/starsRepository';
+import userRepository from '../../database/repositories/userRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { ApiTransactionReason } from '../../types/api';
 import { DatabaseFarmerSchema, QuantitativePlant } from '../../types/database';
@@ -78,7 +79,7 @@ const executeSellPlant = async (
       content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
     });
 
-  starsRepository.addStars(ctx.user.id, totalStars);
+  await starsRepository.addStars(ctx.user.id, totalStars);
 
   postTransaction(
     `${bot.id}`,
@@ -90,9 +91,12 @@ const executeSellPlant = async (
 
   await farmerRepository.updateSilo(ctx.user.id, farmer.silo);
 
+  const userData = await userRepository.ensureFindUser(ctx.user.id);
+
   ctx.makeMessage({
     content: ctx.prettyResponse('success', 'commands:loja.sell_plants.success', {
       amount: totalStars,
+      stars: userData.estrelinhas,
     }),
     components: [],
     embeds: [],

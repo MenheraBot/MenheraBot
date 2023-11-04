@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Agora é possível filtrar as transações em `/transações`
 
+### Changed
+
+- A mensagem de vender plantas mostra quantas estrelinhas você possui.
+
 ## [5.10.1] - 2023-11-02
 
 ### Added

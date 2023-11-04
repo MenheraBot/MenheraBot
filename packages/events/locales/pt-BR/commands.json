@@ -238,7 +238,7 @@
     "sell_plants": {
       "not-enough": "Tu não tem **{{amount}}** {{plant}} para vender",
       "invalid-amount": "Tu informou um número inválido de plantas para vender",
-      "success": "Suas plantas foram vendidas por **{{amount}}** :star: estrelinhas"
+      "success": "Suas plantas foram vendidas por **{{amount}}** :star: estrelinhas\nAgora você tem **{{stars}}**⭐"
     },
     "buy_seeds": {
       "buy-seed-of": "Comprar semente de {{plant}}",
