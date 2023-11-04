@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/node';
-import '@sentry/tracing';
 import { getEnviroments } from '../utils/getEnviroments';
 
 const initializeSentry = (): void => {

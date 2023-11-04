@@ -1,4 +1,4 @@
-name: Build and publish Menhera images
+name: Deploy Menhera from production branch
 
 on:
   push:
@@ -6,12 +6,59 @@ on:
       - production
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group:  ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build-and-publish-images:
+  test-release-version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.4.0
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run eslint
+        run: yarn run:lint
+
+      - name: Build Events package
+        run: yarn events build:test
+
+      - name: Execute typecheck in Orchestrator
+        run: yarn orchestrator typecheck
+
+      - name: Execute Jest in all packages
+        run: yarn test
+
+      - name: Tar events build
+        run: tar -cvf events.tar ./packages/events/dist
+
+      - id: version
+        name: Store version in Github Output
+        run: yarn --silent events print-version | tail -n1 >> "$GITHUB_OUTPUT"
+
+      - name: Archive build output
+        uses: actions/upload-artifact@v3
+        with:
+          name: events
+          path: events.tar
+          if-no-files-found: error
+          retention-days: 1
+
+  publish-docker-image:
+    needs: test-release-version
+    runs-on: ubuntu-latest
+    env:
+      version: ${{ needs.test-release-version.outputs.version }}
     permissions:
       packages: write
       contents: read
@@ -19,11 +66,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-#     - name: Build rest image
-#       run: docker build . --file Dockerfile --tag rest --target rest --label "runnumber=${GITHUB_RUN_ID}"
-
       - name: Build events image
-        run: docker build . --file Dockerfile --tag events --target events --label "runnumber=${GITHUB_RUN_ID}"
+        run: docker build . --file Dockerfile --tag events:$version --tag events:latest --target events --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Build orchestrator image
         run: docker build . --file Dockerfile --tag orchestrator --target orchestrator --label "runnumber=${GITHUB_RUN_ID}"
@@ -39,7 +83,35 @@ jobs:
           do
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$imgName
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          VERSION=latest
-          docker tag $imgName $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$version
           done
+
+  upload-sentry-sourcemaps:
+    needs: [publish-docker-image, test-release-version]
+    runs-on: ubuntu-latest
+    env:
+      version: ${{ needs.test-release-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download sentry cli
+        run: curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION="2.21.2" bash
+
+      - name: Download events build
+        uses: actions/download-artifact@v3
+        with:
+          name: events
+          path: ~/
+
+      - name: Untar evets
+        run: tar -xvf ~/events.tar
+
+      - name: Inject sentry debug IDs
+        run: sentry-cli sourcemaps inject ~/dist
+
+      - name: Upload sourcemaps to sentry
+        env:
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: sentry-cli sourcemaps upload ~/dist

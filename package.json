@@ -25,7 +25,11 @@
     "packages": [
       "packages/*"
     ],
-    "nohoist": ["**/events/**", "**/rest/**", "**/orchestrator/**"]
+    "nohoist": [
+      "**/events/**",
+      "**/rest/**",
+      "**/orchestrator/**"
+    ]
   },
   "homepage": "https://github.com/MenheraBot/MenheraBot#readme",
   "devDependencies": {
