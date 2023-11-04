@@ -1,4 +1,5 @@
 import { ApplicationCommandOptionChoice, Embed, Interaction } from 'discordeno/transformers';
+import * as Sentry from '@sentry/node';
 import {
   ActionRow,
   ApplicationCommandOptionTypes,
@@ -49,6 +50,7 @@ import { getOptionFromInteraction } from '../../structures/command/getCommandOpt
 import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
 import { debugError } from '../../utils/debugError';
 import { VangoghUserprofileData } from '../info/ProfileCommand';
+import { logger } from '../../utils/logger';
 
 const executeAboutMeCommand = async (
   ctx: ChatInputInteractionContext,
@@ -430,28 +432,41 @@ export const executeTituleAutocompleteInteraction = async (
     userData.titles.map((a) => a.id),
   );
 
-  const ratings = findBestMatch(
-    `${input}`,
-    userTitles.map((a) => a.textLocalizations?.[interaction.locale as 'pt-BR'] ?? a.text),
-  ).ratings.reduce<ApplicationCommandOptionChoice[]>((p, c) => {
-    if (p.length >= 25 || c.rating < 0.3) return p;
+  try {
+    const ratings = findBestMatch(
+      `${input}`,
+      userTitles.map((a) => a.textLocalizations?.[interaction.locale as 'pt-BR'] ?? a.text),
+    ).ratings.reduce<ApplicationCommandOptionChoice[]>((p, c) => {
+      if (p.length >= 25 || c.rating < 0.3) return p;
 
-    const title = userTitles.find(
-      (a) => a.text === c.target || a.textLocalizations?.['en-US'] === c.target,
-    );
+      const title = userTitles.find(
+        (a) => a.text === c.target || a.textLocalizations?.['en-US'] === c.target,
+      );
 
-    if (!title) return p;
+      if (!title) return p;
 
-    p.push({
-      name: title.text,
-      nameLocalizations: title.textLocalizations ?? undefined,
-      value: title.titleId,
+      p.push({
+        name: title.text,
+        nameLocalizations: title.textLocalizations ?? undefined,
+        value: title.titleId,
+      });
+
+      return p;
+    }, []);
+
+    return respondWithChoices(ratings);
+  } catch (e) {
+    logger.error(`Error in title autocomplete`, input, userTitles);
+
+    Sentry.captureException(e, {
+      contexts: {
+        infos: {
+          input,
+          userTitles,
+        },
+      },
     });
-
-    return p;
-  }, []);
-
-  return respondWithChoices(ratings);
+  }
 };
 
 const executeBadgesSelected = async (

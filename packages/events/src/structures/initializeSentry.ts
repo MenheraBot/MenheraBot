@@ -12,6 +12,19 @@ const initializeSentry = (): void => {
     release: process.env.VERSION,
     serverName: 'ctb1-menhera1',
     tracesSampleRate: 1.0,
+    enableTracing: true,
+    integrations: [
+      new Sentry.Integrations.Console(),
+      new Sentry.Integrations.Http({ tracing: true }),
+      new Sentry.Integrations.Modules(),
+      new Sentry.Integrations.RequestData({ include: { data: true } }),
+      new Sentry.Integrations.OnUncaughtException(),
+      new Sentry.Integrations.OnUnhandledRejection(),
+      new Sentry.Integrations.Mongo({
+        useMongoose: true,
+        operations: ['aggregate', 'countDocuments', 'find', 'initializeOrderedBulkOp'],
+      }),
+    ],
   });
 };
 
