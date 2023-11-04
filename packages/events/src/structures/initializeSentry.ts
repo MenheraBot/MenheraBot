@@ -9,6 +9,7 @@ const initializeSentry = (): void => {
   Sentry.init({
     dsn: SENTRY_DSN,
     environment: process.env.NODE_ENV ?? 'Unknown',
+    release: process.env.VERSION,
     serverName: 'ctb1-menhera1',
     tracesSampleRate: 1.0,
   });
