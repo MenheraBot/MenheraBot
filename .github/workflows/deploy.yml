@@ -67,11 +67,10 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Build events image
-        run: docker build . --file Dockerfile --tag events:$version --tag events:latest --target events --label "runnumber=${GITHUB_RUN_ID}"
+        run: docker build . --file Dockerfile --tag ghcr.io/menhrabot/events:$version --tag ghcr.io/menhrabot/events:latest --target events --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Build orchestrator image
-        run: docker build . --file Dockerfile --tag orchestrator --target orchestrator --label "runnumber=${GITHUB_RUN_ID}"
-
+        run: docker build . --file Dockerfile --tag ghcr.io/menhrabot/orchestrator --target orchestrator --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
