@@ -7,6 +7,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🌿',
     sellValue: 300,
     buyValue: 0,
+    bestSeason: 'spring',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Rice]: {
     minutesToHarvest: 30,
@@ -14,6 +16,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🌾',
     sellValue: 790,
     buyValue: 30,
+    bestSeason: 'summer',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Corn]: {
     minutesToHarvest: 30,
@@ -21,6 +25,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🌽',
     sellValue: 700,
     buyValue: 30,
+    bestSeason: 'summer',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Potato]: {
     minutesToHarvest: 45,
@@ -28,6 +34,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🥔',
     sellValue: 1120,
     buyValue: 100,
+    bestSeason: 'autumn',
+    worstSeason: 'summer',
   },
   [AvailablePlants.Garlic]: {
     minutesToHarvest: 45,
@@ -35,6 +43,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🧄',
     sellValue: 1100,
     buyValue: 100,
+    bestSeason: 'winter',
+    worstSeason: 'summer',
   },
   [AvailablePlants.Carrot]: {
     minutesToHarvest: 45,
@@ -42,6 +52,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🥕',
     sellValue: 1900,
     buyValue: 300,
+    bestSeason: 'spring',
+    worstSeason: 'summer',
   },
   [AvailablePlants.Tomato]: {
     minutesToHarvest: 60,
@@ -49,6 +61,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🍅',
     sellValue: 2500,
     buyValue: 400,
+    bestSeason: 'spring',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Cucumber]: {
     minutesToHarvest: 60,
@@ -56,6 +70,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🥒',
     sellValue: 2700,
     buyValue: 400,
+    bestSeason: 'summer',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Broccoli]: {
     minutesToHarvest: 75,
@@ -63,6 +79,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🥦',
     sellValue: 3100,
     buyValue: 500,
+    bestSeason: 'winter',
+    worstSeason: 'summer',
   },
   [AvailablePlants.Sunflower]: {
     minutesToHarvest: 75,
@@ -70,6 +88,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🌻',
     sellValue: 2950,
     buyValue: 500,
+    bestSeason: 'spring',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Mint]: {
     minutesToHarvest: 80,
@@ -77,6 +97,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🍃',
     sellValue: 3910,
     buyValue: 600,
+    bestSeason: 'spring',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Watermelon]: {
     minutesToHarvest: 100,
@@ -84,6 +106,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🍉',
     sellValue: 5000,
     buyValue: 900,
+    bestSeason: 'summer',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Strawberry]: {
     minutesToHarvest: 100,
@@ -91,6 +115,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🍓',
     sellValue: 6200,
     buyValue: 1300,
+    bestSeason: 'autumn',
+    worstSeason: 'winter',
   },
   [AvailablePlants.HotPepper]: {
     minutesToHarvest: 100,
@@ -98,6 +124,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🌶',
     sellValue: 7500,
     buyValue: 1500,
+    bestSeason: 'spring',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Eggplant]: {
     minutesToHarvest: 80,
@@ -105,6 +133,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🍆',
     sellValue: 11_000,
     buyValue: 3400,
+    bestSeason: 'summer',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Avocado]: {
     minutesToHarvest: 60,
@@ -112,6 +142,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🥑',
     sellValue: 12_540,
     buyValue: 4230,
+    bestSeason: 'summer',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Mango]: {
     minutesToHarvest: 90,
@@ -119,6 +151,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🥭',
     sellValue: 14_000,
     buyValue: 4500,
+    bestSeason: 'spring',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Apple]: {
     minutesToHarvest: 70,
@@ -126,6 +160,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🍎',
     sellValue: 19_000,
     buyValue: 6342,
+    bestSeason: 'spring',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Lemon]: {
     minutesToHarvest: 60,
@@ -133,6 +169,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🍋',
     sellValue: 21_000,
     buyValue: 7112,
+    bestSeason: 'spring',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Tangerine]: {
     minutesToHarvest: 80,
@@ -140,6 +178,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🍊',
     sellValue: 23_000,
     buyValue: 8060,
+    bestSeason: 'spring',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Banana]: {
     minutesToHarvest: 100,
@@ -147,6 +187,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🍌',
     sellValue: 26_000,
     buyValue: 9230,
+    bestSeason: 'summer',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Pineapple]: {
     minutesToHarvest: 90,
@@ -154,6 +196,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🍍',
     sellValue: 33_000,
     buyValue: 11_231,
+    bestSeason: 'summer',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Peach]: {
     minutesToHarvest: 130,
@@ -161,6 +205,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🍑',
     sellValue: 39_000,
     buyValue: 14_756,
+    bestSeason: 'summer',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Cherry]: {
     minutesToHarvest: 160,
@@ -168,6 +214,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🍒',
     sellValue: 45_000,
     buyValue: 16_231,
+    bestSeason: 'autumn',
+    worstSeason: 'winter',
   },
   [AvailablePlants.Mushroom]: {
     minutesToHarvest: 200,
@@ -175,6 +223,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🍄',
     sellValue: 57_225,
     buyValue: 18_123,
+    bestSeason: 'winter',
+    worstSeason: 'summer',
   },
 };
 

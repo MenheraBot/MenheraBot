@@ -40,10 +40,14 @@ export type PlantationState = 'EMPTY' | 'GROWING' | 'MATURE' | 'ROTTEN';
 
 export type Plantation = PlantedField | EmptyField;
 
+type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
+
 export interface PlantsFile {
   minutesToHarvest: number;
   minutesToRot: number;
   emoji: string;
   sellValue: number;
   buyValue: number;
+  bestSeason: Seasons;
+  worstSeason: Seasons;
 }
