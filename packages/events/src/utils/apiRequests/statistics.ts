@@ -222,11 +222,20 @@ const postTransaction = async (
 };
 
 const getUserTransactions = async (
-  userId: string,
+  users: string[],
   page: number,
+  types: Readonly<ApiTransactionReason[]>,
+  currency: string[],
 ): Promise<TransactionRegister[] | null> => {
   const result = await dataRequest
-    .get(`/statistics/transaction?userId=${userId}&page=${page}`)
+    .get(`/statistics/transaction`, {
+      params: {
+        page,
+        users,
+        types,
+        currency,
+      },
+    })
     .catch(() => null);
 
   if (!result) return null;

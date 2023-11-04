@@ -54,18 +54,18 @@ const ReloadLocalesCommand = createCommand({
           `${id}`,
           value,
           'estrelinhas',
-          ApiTransactionReason.SIMON_SAYS_ADD,
+          ApiTransactionReason.SIMON_SAYS,
         );
         break;
       case 'remove':
         await starsRepository.removeStars(id, value);
 
         await postTransaction(
-          `${bot.ownerId}`,
           `${id}`,
+          `${bot.ownerId}`,
           value,
           'estrelinhas',
-          ApiTransactionReason.SIMON_SAYS_REMOVE,
+          ApiTransactionReason.SIMON_SAYS,
         );
         break;
       case 'set':
@@ -76,7 +76,7 @@ const ReloadLocalesCommand = createCommand({
           `${id}`,
           value,
           'estrelinhas',
-          ApiTransactionReason.SIMON_SAYS_SET,
+          ApiTransactionReason.SIMON_SAYS,
         );
         break;
     }

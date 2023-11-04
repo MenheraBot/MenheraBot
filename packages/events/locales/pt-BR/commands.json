@@ -886,6 +886,7 @@
     },
     "reasons": {
       "simon_says_add": "que o mestre mandou",
+      "simon_says": "que o mestre mandou",
       "simon_says_remove": "que o mestre mandou",
       "simon_says_set": "que o mestre mandou",
       "pix_command": "presente no pix",

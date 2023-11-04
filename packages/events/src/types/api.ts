@@ -60,9 +60,7 @@ export type TopGamblingUser = {
 };
 
 export enum ApiTransactionReason {
-  SIMON_SAYS_ADD = 'simon_says_add',
-  SIMON_SAYS_REMOVE = 'simon_says_remove',
-  SIMON_SAYS_SET = 'simon_says_set',
+  SIMON_SAYS = 'simon_says',
   PIX_COMMAND = 'pix_command',
   BLACKJACK_COMMAND = 'blackjack_command',
   BLACKJACK_LOST_DATA = 'blackjack_lost_data',
