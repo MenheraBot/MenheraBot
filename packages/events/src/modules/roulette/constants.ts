@@ -1,6 +1,12 @@
 import { TaxedGameLimts } from '../../utils/taxesUtils';
 
-export const ROULETTE_NUMBERS = [
+export const ROULETTE_NUMBERS: {
+  value: number;
+  color: 'red' | 'green' | 'black';
+  parity: 'odd' | 'even' | '?';
+  size: '?' | 'low' | 'high';
+  dozen: 'first' | 'second' | 'third' | '?';
+}[] = [
   { value: 0, color: 'green', parity: '?', size: '?', dozen: '?' },
   { value: 1, color: 'red', parity: 'odd', size: 'low', dozen: 'first' },
   { value: 2, color: 'black', parity: 'even', size: 'low', dozen: 'first' },
