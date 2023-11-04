@@ -244,7 +244,7 @@
       "buy-seed-of": "Comprar semente de {{plant}}",
       "plant-stats": "**Preço de Compra:** {{buyValue}} :star:\n**Valor de venda:** {{sellValue}} :star:\n**Amadurece em:** {{harvestTime}} minutos\n**Apodrece em** {{rotTime}} minutos",
       "seed": "Semente de {{plant}}",
-      "success": "Você gastou **{{amount}}** :star: estrelinhas comprando sementes. Hora de plantá-las {{command}}",
+      "success": "Você gastou **{{amount}}** :star: estrelinhas comprando sementes. Agora você tem **{{stars}}** ⭐.\nHora de plantá-las {{command}}",
       "not-enough-stars": "Tu não possui **{{amount}}** :star: estrelinhas para comprar todas essas sementes",
       "invalid-amount": "Tu informou um número inválido de sementes para comprar",
       "select-amount": "Digite quantas sementes tu quer comprar",

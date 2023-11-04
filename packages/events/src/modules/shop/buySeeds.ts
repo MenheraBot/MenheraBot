@@ -90,6 +90,7 @@ const parseModalSumbit = async (
     content: ctx.prettyResponse('success', 'commands:loja.buy_seeds.success', {
       amount: totalPrice,
       command: `</fazendinha plantações:${commandInfo?.discordId}>`,
+      stars: userData.estrelinhas - totalPrice,
     }),
   });
 };
