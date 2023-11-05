@@ -36,6 +36,15 @@ const FazendinhaCommand = createCommand({
       },
       type: ApplicationCommandOptionTypes.SubCommand,
     },
+    {
+      name: 'administrar',
+      nameLocalizations: { 'en-US': 'manage' },
+      description: '「⚙️」・Administre toda a sua fazenda',
+      descriptionLocalizations: {
+        'en-US': '「⚙️」・Manage all of your farm',
+      },
+      type: ApplicationCommandOptionTypes.SubCommand,
+    },
   ],
   category: 'economy',
   commandRelatedExecutions: [executeFieldAction, changeSelectedSeed, handleButtonAction],
