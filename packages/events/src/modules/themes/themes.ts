@@ -3,12 +3,12 @@ import { ThemeFile } from './types';
 
 const Themes: { [id: number]: ThemeFile } & Object = {
   1: {
-    price: 100_000,
+    price: 70_000,
     type: 'table',
     theme: 'blue',
   },
   2: {
-    price: 200_000,
+    price: 140_000,
     theme: 'upsidedown',
     type: 'profile',
     colorCompatible: true,
@@ -39,42 +39,42 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     type: 'card_background',
   },
   7: {
-    price: 666_666,
+    price: 420_666,
     theme: 'death',
     type: 'cards',
   },
   8: {
-    price: 60_000,
+    price: 42_000,
     theme: 'blue',
     type: 'card_background',
   },
   9: {
-    price: 70_000,
+    price: 49_000,
     theme: 'cute_menhera',
     type: 'card_background',
   },
   10: {
-    price: 90_000,
+    price: 63_000,
     theme: 'premium',
     type: 'card_background',
   },
   11: {
-    price: 100_000,
+    price: 70_000,
     theme: 'red',
     type: 'table',
   },
   12: {
-    price: 120_000,
+    price: 84_000,
     theme: 'pink',
     type: 'table',
   },
   13: {
-    price: 150_000,
+    price: 105_000,
     theme: 'rounded',
     type: 'table',
   },
   14: {
-    price: 250_000,
+    price: 175_000,
     type: 'profile',
     theme: 'christmas_2021',
     colorCompatible: true,
@@ -83,7 +83,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     needApiData: true,
   },
   15: {
-    price: 240_000,
+    price: 168_000,
     type: 'profile',
     theme: 'warrior',
     colorCompatible: true,
@@ -92,7 +92,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     needApiData: true,
   },
   16: {
-    price: 240_000,
+    price: 168_000,
     type: 'profile',
     theme: 'fortification',
     colorCompatible: true,
@@ -101,7 +101,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     needApiData: true,
   },
   17: {
-    price: 190_000,
+    price: 133_000,
     type: 'profile',
     theme: 'kawaii',
     colorCompatible: true,
@@ -109,22 +109,22 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     needApiData: true,
   },
   18: {
-    price: 90_000,
+    price: 63_000,
     theme: 'kawaii',
     type: 'card_background',
   },
   19: {
-    price: 170_000,
+    price: 119_000,
     type: 'table',
     theme: 'gauderios',
   },
   20: {
-    price: 100_000,
+    price: 70_000,
     type: 'card_background',
     theme: 'lamenta_caelorum',
   },
   21: {
-    price: 390_000,
+    price: 273_000,
     theme: 'without_soul',
     type: 'profile',
     colorCompatible: true,
@@ -132,7 +132,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     needApiData: false,
   },
   22: {
-    price: 350_000,
+    price: 245_000,
     theme: 'id03',
     type: 'profile',
     colorCompatible: true,
@@ -140,12 +140,12 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     needApiData: true,
   },
   23: {
-    price: 200_000,
+    price: 140_000,
     theme: 'atemporal',
     type: 'table',
   },
   24: {
-    price: 250_000,
+    price: 175_000,
     type: 'profile',
     theme: 'gatito',
     colorCompatible: false,
@@ -168,17 +168,17 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     theme: 'default',
   },
   28: {
-    price: 50_000,
+    price: 35_000,
     type: 'eb_text_box',
     theme: 'xp',
   },
   29: {
-    price: 75_000,
+    price: 52_500,
     type: 'eb_background',
     theme: 'xp',
   },
   30: {
-    price: 175_000,
+    price: 122_500,
     type: 'profile',
     theme: 'mural',
     colorCompatible: true,
@@ -187,7 +187,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     needApiData: true,
   },
   31: {
-    price: 260_000,
+    price: 182_000,
     type: 'profile',
     theme: 'hello_kitty',
     colorCompatible: false,
@@ -195,42 +195,42 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     needApiData: true,
   },
   32: {
-    price: 550_001,
+    price: 385_001,
     type: 'cards',
     theme: 'hello_kitty',
   },
   33: {
-    price: 210_000,
+    price: 147_000,
     type: 'table',
     theme: 'hello_kitty',
   },
   34: {
-    price: 120_000,
+    price: 84_000,
     type: 'card_background',
     theme: 'hello_kitty',
   },
   35: {
-    price: 80_000,
+    price: 56_000,
     type: 'eb_text_box',
     theme: 'hello_kitty',
   },
   36: {
-    price: 300_000,
+    price: 210_000,
     type: 'eb_menhera',
     theme: 'hello_kitty',
   },
   37: {
-    price: 85_000,
+    price: 59_500,
     type: 'eb_background',
     theme: 'hello_kitty',
   },
   38: {
-    price: 85_000,
+    price: 59_500,
     type: 'card_background',
     theme: 'nocturnal',
   },
   39: {
-    price: 105_000,
+    price: 73_500,
     type: 'profile',
     theme: 'sunflower',
     colorCompatible: true,
@@ -238,7 +238,7 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     needApiData: false,
   },
   40: {
-    price: 80_000,
+    price: 56_000,
     type: 'profile',
     theme: 'gallery',
     colorCompatible: true,

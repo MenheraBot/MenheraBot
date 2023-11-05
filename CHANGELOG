@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - O comando `/roleta` agora define a cor da mensagem para a cor do número que saiu.
+- Todos os temas tiveram uma redução em seu preço de **30%**
 
 ## [5.10.2] - 2023-11-04
 
