@@ -29,7 +29,7 @@ export enum AvailablePlants {
 export type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
 
 export interface PlantedField {
-  // FIXME(ySnoopyDogy): Remove plantedAt field
+  // FIXME(ySnoopyDogy): Remove plantedAt field in next version
   plantedAt: number;
   harvestAt?: number;
   plantedSeason: Seasons;
