@@ -137,7 +137,7 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     worstSeason: 'spring',
   },
   [AvailablePlants.Avocado]: {
-    minutesToHarvest: 60,
+    minutesToHarvest: 85,
     minutesToRot: 20,
     emoji: '🥑',
     sellValue: 12_540,
@@ -155,7 +155,7 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     worstSeason: 'winter',
   },
   [AvailablePlants.Apple]: {
-    minutesToHarvest: 70,
+    minutesToHarvest: 110,
     minutesToRot: 30,
     emoji: '🍎',
     sellValue: 19_000,
@@ -164,7 +164,7 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     worstSeason: 'winter',
   },
   [AvailablePlants.Lemon]: {
-    minutesToHarvest: 60,
+    minutesToHarvest: 130,
     minutesToRot: 10,
     emoji: '🍋',
     sellValue: 21_000,
@@ -173,7 +173,7 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     worstSeason: 'winter',
   },
   [AvailablePlants.Tangerine]: {
-    minutesToHarvest: 80,
+    minutesToHarvest: 140,
     minutesToRot: 60,
     emoji: '🍊',
     sellValue: 23_000,
@@ -182,7 +182,7 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     worstSeason: 'autumn',
   },
   [AvailablePlants.Banana]: {
-    minutesToHarvest: 100,
+    minutesToHarvest: 140,
     minutesToRot: 100,
     emoji: '🍌',
     sellValue: 26_000,
@@ -191,7 +191,7 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     worstSeason: 'autumn',
   },
   [AvailablePlants.Pineapple]: {
-    minutesToHarvest: 90,
+    minutesToHarvest: 160,
     minutesToRot: 30,
     emoji: '🍍',
     sellValue: 33_000,
@@ -200,7 +200,7 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     worstSeason: 'spring',
   },
   [AvailablePlants.Peach]: {
-    minutesToHarvest: 130,
+    minutesToHarvest: 170,
     minutesToRot: 60,
     emoji: '🍑',
     sellValue: 39_000,
@@ -209,7 +209,7 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     worstSeason: 'winter',
   },
   [AvailablePlants.Cherry]: {
-    minutesToHarvest: 160,
+    minutesToHarvest: 180,
     minutesToRot: 60,
     emoji: '🍒',
     sellValue: 45_000,
