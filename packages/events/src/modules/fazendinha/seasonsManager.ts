@@ -2,8 +2,9 @@ import farmerRepository from '../../database/repositories/farmerRepository';
 import { daysToMillis } from '../../utils/miscUtils';
 import { SeasonData, Seasons } from './types';
 
-export const SEASONAL_TIME_DEBUFF = 35 / 100;
-export const SEASONAL_TIME_BUFF = 25 / 100;
+export const SEASONAL_HARVEST_DEBUFF = 35 / 100;
+export const SEASONAL_HARVEST_BUFF = 25 / 100;
+export const SEASONAL_ROT_DEBUFF = 50 / 100;
 
 const MIN_DAYS = 3;
 const MAX_DAYS = 8;

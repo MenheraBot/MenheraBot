@@ -1,17 +1,26 @@
 import { minutesToMillis } from '../../utils/miscUtils';
 import { Plants } from './plants';
-import { SEASONAL_TIME_BUFF, SEASONAL_TIME_DEBUFF } from './seasonsManager';
+import {
+  SEASONAL_HARVEST_BUFF,
+  SEASONAL_HARVEST_DEBUFF,
+  SEASONAL_ROT_DEBUFF,
+} from './seasonsManager';
 import { AvailablePlants, Plantation, PlantationState, Seasons } from './types';
 
 const getPlantationState = (field: Plantation): [PlantationState, number] => {
   if (!field.isPlanted) return ['EMPTY', -1];
 
+  const plant = Plants[field.plantType];
+
   const timeToHarvest =
-    field.harvestAt || field.plantedAt + minutesToMillis(Plants[field.plantType].minutesToHarvest);
+    field.harvestAt || field.plantedAt + minutesToMillis(plant.minutesToHarvest);
 
   if (Date.now() < timeToHarvest) return ['GROWING', timeToHarvest];
 
-  const timeToRot = timeToHarvest + minutesToMillis(Plants[field.plantType].minutesToRot);
+  const timeToReduce =
+    field.plantedSeason === plant.worstSeason ? plant.minutesToRot * SEASONAL_ROT_DEBUFF : 0;
+
+  const timeToRot = timeToHarvest + minutesToMillis(plant.minutesToRot - timeToReduce);
 
   if (Date.now() >= timeToRot) return ['ROTTEN', timeToRot];
 
@@ -25,7 +34,7 @@ const getHarvestTime = (currentSeason: Seasons, plant: AvailablePlants): number 
     return (
       Date.now() +
       minutesToMillis(
-        Math.floor(plantFile.minutesToHarvest - plantFile.minutesToHarvest * SEASONAL_TIME_BUFF),
+        Math.floor(plantFile.minutesToHarvest - plantFile.minutesToHarvest * SEASONAL_HARVEST_BUFF),
       )
     );
 
@@ -33,7 +42,9 @@ const getHarvestTime = (currentSeason: Seasons, plant: AvailablePlants): number 
     return (
       Date.now() +
       minutesToMillis(
-        Math.floor(plantFile.minutesToHarvest + plantFile.minutesToHarvest * SEASONAL_TIME_DEBUFF),
+        Math.floor(
+          plantFile.minutesToHarvest + plantFile.minutesToHarvest * SEASONAL_HARVEST_DEBUFF,
+        ),
       )
     );
 
