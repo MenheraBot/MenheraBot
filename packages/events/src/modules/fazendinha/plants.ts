@@ -172,14 +172,14 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     bestSeason: 'spring',
     worstSeason: 'winter',
   },
-  [AvailablePlants.Tangerine]: {
+  [AvailablePlants.Cabbage]: {
     minutesToHarvest: 140,
     minutesToRot: 60,
-    emoji: '🍊',
+    emoji: '🥬',
     sellValue: 23_000,
     buyValue: 8060,
-    bestSeason: 'spring',
-    worstSeason: 'autumn',
+    bestSeason: 'winter',
+    worstSeason: 'spring',
   },
   [AvailablePlants.Banana]: {
     minutesToHarvest: 140,

@@ -1,7 +1,7 @@
 import { ButtonComponent, ButtonStyles, DiscordEmbedField, SelectOption } from 'discordeno/types';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getDisplayName } from '../../utils/discord/userUtils';
-import { AvailablePlants, Plantation, PlantationState, PlantedField } from './types';
+import { AvailablePlants, Plantation, PlantationState, PlantedField, Seasons } from './types';
 import { DatabaseFarmerSchema } from '../../types/database';
 import {
   createActionRow,
@@ -20,6 +20,13 @@ const PlantStateIcon: Record<PlantationState, string> = {
   GROWING: '🌱',
   ROTTEN: '🍂',
   MATURE: '',
+};
+
+const SeasonEmojis: Record<Seasons, string> = {
+  autumn: '🍁',
+  winter: '❄️',
+  spring: '🍃',
+  summer: '☀️',
 };
 
 const getPlantationDisplay = (
@@ -131,15 +138,16 @@ const displayPlantations = async (
 ): Promise<void> => {
   const [fields, buttons] = parseUserPlantations(ctx, farmer.plantations, embedColor, selectedSeed);
 
-  const currentSeason = await getSeasonalInfo();
+  const seasonalInfo = await getSeasonalInfo();
 
   const embed = createEmbed({
     title: ctx.locale('commands:fazendinha.plantations.embed-title', {
       user: getDisplayName(ctx.user),
     }),
     description: ctx.locale('commands:fazendinha.plantations.description', {
-      season: ctx.locale(`commands:fazendinha.seasons.${currentSeason.currentSeason}`),
-      unix: millisToSeconds(currentSeason.endsAt),
+      season: ctx.locale(`commands:fazendinha.seasons.${seasonalInfo.currentSeason}`),
+      unix: millisToSeconds(seasonalInfo.endsAt),
+      emoji: SeasonEmojis[seasonalInfo.currentSeason],
     }),
     color: hexStringToNumber(embedColor),
     fields,

@@ -520,7 +520,7 @@
     "english": "American English",
     "portuguese": "Brazilian Portuguese",
     "pt-response": "Perfeito, vou falar português nesse servidor",
-    "en-response": "A you wish, I will speak english on this server"
+    "en-response": "As you wish, I will speak english on this server"
   },
   "sobremim": {
     "args-limit": "Your sobremim cannot be longer than 200 characters",
@@ -1055,7 +1055,7 @@
     "plantations": {
       "field": "Field ({{index}})",
       "seeds": "Seeds",
-      "description": "**Current season:** {{seaons}}\n**Ends** <t:{{unix}}:R>",
+      "description": "**Current season:** {{emoji}} _{{season}}_\n**Ends** <t:{{unix}}:R>",
       "silo": "Plants",
       "harvest": "Harvest",
       "plant": "Plant",

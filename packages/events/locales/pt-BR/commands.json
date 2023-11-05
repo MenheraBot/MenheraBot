@@ -525,7 +525,7 @@
     "english": "Inglês Americano",
     "portuguese": "Português Brasileiro",
     "pt-response": "Perfeito, vou falar português nesse servidor",
-    "en-response": "A you wish, I will speak english on this server"
+    "en-response": "As you wish, I will speak english on this server"
   },
   "sobremim": {
     "args-limit": "Seu sobremim não pode ser maior que 200 caracteres",
@@ -1059,7 +1059,7 @@
     },
     "plantations": {
       "field": "Campo ({{index}})",
-      "description": "**Estação atual**: {{season}}\n**Termina** <t:{{unix}}:R>",
+      "description": "**Estação atual**: {{emoji}} _{{season}}_\n**Termina** <t:{{unix}}:R>",
       "seeds": "Sementes",
       "silo": "Plantas",
       "harvest": "Colher",

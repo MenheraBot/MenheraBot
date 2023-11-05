@@ -18,7 +18,7 @@ export enum AvailablePlants {
   Mango,
   Apple,
   Lemon,
-  Tangerine,
+  Cabbage,
   Banana,
   Pineapple,
   Peach,
