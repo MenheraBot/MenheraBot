@@ -10,7 +10,9 @@ const millisToSeconds = (milli: number): number => Math.floor(milli / 1000);
 
 const millisToHours = (milli: number): number => Math.floor(milli / 1000 / 60 / 60);
 
-const minutesToMillis = (minutes: number): number => minutes * 60 * 1000;
+const minutesToMillis = (minutes: number): number => 1000 * 60 * minutes;
+
+const daysToMillis = (days: number): number => 1000 * 60 * 60 * 24 * days;
 
 const negate = (value: number): number => value * -1;
 
@@ -39,6 +41,7 @@ const getCustomThemeField = (field: string, customFields: string[]): boolean => 
 
 export {
   capitalize,
+  daysToMillis,
   randomFromArray,
   toWritableUtf,
   getCustomThemeField,

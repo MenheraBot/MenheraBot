@@ -26,11 +26,21 @@ export enum AvailablePlants {
   Mushroom,
 }
 
+export type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
+
 export interface PlantedField {
+  // FIXME(ySnoopyDogy): Remove plantedAt field
   plantedAt: number;
+  harvestAt?: number;
+  plantedSeason: Seasons;
   isPlanted: true;
   plantType: AvailablePlants;
 }
+
+export type SeasonData = {
+  currentSeason: Seasons;
+  endsAt: number;
+};
 
 export interface EmptyField {
   isPlanted: false;
@@ -39,8 +49,6 @@ export interface EmptyField {
 export type PlantationState = 'EMPTY' | 'GROWING' | 'MATURE' | 'ROTTEN';
 
 export type Plantation = PlantedField | EmptyField;
-
-type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
 
 export interface PlantsFile {
   minutesToHarvest: number;

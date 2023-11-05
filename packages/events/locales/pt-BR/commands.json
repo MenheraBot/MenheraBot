@@ -1051,8 +1051,15 @@
       "EMPTY": "Disponível",
       "message": "{{emojis}}\n{{state}}\n{{unix}}"
     },
+    "seasons": {
+      "winter": "Inverno",
+      "summer": "Verão",
+      "autumn": "Outono",
+      "spring": "Primavera"
+    },
     "plantations": {
       "field": "Campo ({{index}})",
+      "description": "**Estação atual**: {{season}}\n**Termina** <t:{{unix}}:R>",
       "seeds": "Sementes",
       "silo": "Plantas",
       "harvest": "Colher",

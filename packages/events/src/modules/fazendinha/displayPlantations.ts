@@ -13,6 +13,7 @@ import { chunkArray, millisToSeconds } from '../../utils/miscUtils';
 import { InteractionContext } from '../../types/menhera';
 import { getPlantationState } from './plantationState';
 import { Plants } from './plants';
+import { getSeasonalInfo } from './seasonsManager';
 
 const PlantStateIcon: Record<PlantationState, string> = {
   EMPTY: '🟫',
@@ -130,9 +131,15 @@ const displayPlantations = async (
 ): Promise<void> => {
   const [fields, buttons] = parseUserPlantations(ctx, farmer.plantations, embedColor, selectedSeed);
 
+  const currentSeason = await getSeasonalInfo();
+
   const embed = createEmbed({
     title: ctx.locale('commands:fazendinha.plantations.embed-title', {
       user: getDisplayName(ctx.user),
+    }),
+    description: ctx.locale('commands:fazendinha.plantations.description', {
+      season: ctx.locale(`commands:fazendinha.seasons.${currentSeason.currentSeason}`),
+      unix: millisToSeconds(currentSeason.endsAt),
     }),
     color: hexStringToNumber(embedColor),
     fields,

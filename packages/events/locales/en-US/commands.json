@@ -1046,9 +1046,16 @@
       "EMPTY": "Available",
       "message": "{{emojis}}\n{{state}}\n{{unix}}"
     },
+    "seasons": {
+      "winter": "Winter",
+      "summer": "Summer",
+      "autumn": "Autumn",
+      "spring": "Spring"
+    },
     "plantations": {
       "field": "Field ({{index}})",
       "seeds": "Seeds",
+      "description": "**Current season:** {{seaons}}\n**Ends** <t:{{unix}}:R>",
       "silo": "Plants",
       "harvest": "Harvest",
       "plant": "Plant",
