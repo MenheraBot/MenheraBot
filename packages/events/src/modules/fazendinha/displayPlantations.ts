@@ -29,6 +29,13 @@ const SeasonEmojis: Record<Seasons, string> = {
   summer: '☀️',
 };
 
+const ButtonStyleForPlantState: { [State in PlantationState]: ButtonStyles } = {
+  EMPTY: ButtonStyles.Primary,
+  GROWING: ButtonStyles.Danger,
+  MATURE: ButtonStyles.Success,
+  ROTTEN: ButtonStyles.Secondary,
+};
+
 const getPlantationDisplay = (
   ctx: InteractionContext,
   state: PlantationState,
@@ -67,13 +74,6 @@ const parseUserPlantations = (
       inline: true,
     });
 
-    // eslint-disable-next-line no-nested-ternary
-    const buttonStyle = !field.isPlanted
-      ? ButtonStyles.Primary
-      : plantState === 'MATURE'
-      ? ButtonStyles.Success
-      : ButtonStyles.Secondary;
-
     buttons.push(
       createButton({
         label: ctx.locale(`commands:fazendinha.plantations.field-action`, {
@@ -82,8 +82,7 @@ const parseUserPlantations = (
             `commands:fazendinha.plantations.${field.isPlanted ? 'harvest' : 'plant'}`,
           ),
         }),
-        style: buttonStyle,
-        disabled: plantState === 'GROWING',
+        style: ButtonStyleForPlantState[plantState],
         customId: createCustomId(
           0,
           ctx.user.id,
@@ -103,17 +102,27 @@ const getAvailableSeeds = (
   ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   selectedSeed: AvailablePlants,
+  currentSeason: Seasons,
 ): SelectOption[] =>
-  farmer.seeds.reduce(
+  farmer.seeds.reduce<SelectOption[]>(
     (allSeeds, seed) => {
       if (seed.amount <= 0 || seed.plant === AvailablePlants.Mate) return allSeeds;
+
+      const plant = Plants[seed.plant];
+
+      const includeDescription = [plant.bestSeason, plant.worstSeason].includes(currentSeason);
 
       allSeeds.push({
         label: ctx.locale('commands:fazendinha.plantations.available-seed', {
           name: ctx.locale(`data:plants.${seed.plant}`),
           amount: seed.amount,
         }),
-        emoji: { name: Plants[seed.plant].emoji },
+        description: includeDescription
+          ? ctx.locale(
+              `commands:fazendinha.plantations.season-boost-${plant.bestSeason === currentSeason}`,
+            )
+          : undefined,
+        emoji: { name: plant.emoji },
         value: `${seed.plant}`,
         default: selectedSeed === seed.plant,
       });
@@ -125,6 +134,16 @@ const getAvailableSeeds = (
         label: `${ctx.locale('data:plants.0')} ∞`,
         emoji: { name: Plants[AvailablePlants.Mate].emoji },
         value: `${AvailablePlants.Mate}`,
+        description: [
+          Plants[AvailablePlants.Mate].bestSeason,
+          Plants[AvailablePlants.Mate].worstSeason,
+        ].includes(currentSeason)
+          ? ctx.locale(
+              `commands:fazendinha.plantations.season-boost-${
+                Plants[AvailablePlants.Mate].bestSeason === currentSeason
+              }`,
+            )
+          : undefined,
         default: selectedSeed === AvailablePlants.Mate,
       },
     ],
@@ -155,7 +174,7 @@ const displayPlantations = async (
 
   const actionRows = chunkArray(buttons, 3).map((a) => createActionRow(a as [ButtonComponent]));
 
-  const seeds = getAvailableSeeds(ctx, farmer, selectedSeed);
+  const seeds = getAvailableSeeds(ctx, farmer, selectedSeed, seasonalInfo.currentSeason);
 
   ctx.makeMessage({
     embeds: [embed],
