@@ -1059,6 +1059,7 @@
       "description": "**Current season:** {{emoji}} _{{season}}_\n**Ends** <t:{{unix}}:R>",
       "silo": "Plants",
       "harvest": "Harvest",
+      "discart": "Discart",
       "season-boost-false": "⚠️ The current season is bad for this plant",
       "season-boost-true": "✨ The current season is perfect for this plant",
       "plant": "Plant",
@@ -1083,7 +1084,7 @@
     },
     "field-action": {
       "not-enough-seeds": "You don't have **{{plant}}** seeds to plant!",
-      "field-still-growing": "This field is still growing. You can't harvest it yet!"
+      "imature-warning": "The field plant **{{field}}** is still growing! If you want to discard this **{{plant}}** {{emoji}} field, click the button again."
     }
   },
   "titulo": {

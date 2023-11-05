@@ -6,6 +6,7 @@ import { postFazendinhaAction } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { displayPlantations } from './displayPlantations';
 import { getHarvestTime, getPlantationState } from './plantationState';
+import { Plants } from './plants';
 import { getCurrentSeason } from './seasonsManager';
 import { AvailablePlants, PlantedField } from './types';
 
@@ -48,13 +49,14 @@ const plantField = async (
     farmer,
     embedColor,
     !userSeeds || userSeeds.amount <= 0 ? AvailablePlants.Mate : seed,
+    -1,
   );
 };
 
 const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<void> => {
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
-  const [selectedFieldString, embedColor, selectedSeedString] = ctx.sentData;
+  const [selectedFieldString, embedColor, selectedSeedString, force] = ctx.sentData;
   const selectedField = Number(selectedFieldString);
   const seed = Number(selectedSeedString);
 
@@ -62,11 +64,26 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   const state = getPlantationState(field)[0];
 
-  if (state === 'GROWING')
-    return ctx.respondInteraction({
-      content: ctx.prettyResponse('error', 'commands:fazendinha.field-action.field-still-growing'),
+  const userSeeds = farmer.seeds.find((a) => a.plant === seed);
+
+  if (state === 'GROWING' && force !== 'Y') {
+    await displayPlantations(
+      ctx,
+      farmer,
+      embedColor,
+      !userSeeds || userSeeds.amount <= 0 ? AvailablePlants.Mate : seed,
+      selectedField,
+    );
+
+    return ctx.followUp({
+      content: ctx.prettyResponse('warn', 'commands:fazendinha.field-action.imature-warning', {
+        field: selectedField + 1,
+        plant: ctx.locale(`data:plants.${(field as PlantedField).plantType}`),
+        emoji: Plants[(field as PlantedField).plantType].emoji,
+      }),
       flags: MessageFlags.EPHEMERAL,
     });
+  }
 
   if (!field.isPlanted) return plantField(ctx, farmer, selectedField, seed, embedColor);
 
@@ -90,19 +107,19 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
     updateStats && farmer.plantedFields === 9 ? farmer.biggestSeed + 1 : farmer.biggestSeed,
   );
 
-  const userSeeds = farmer.seeds.find((a) => a.plant === seed);
-
-  postFazendinhaAction(
-    `${ctx.user.id}`,
-    field.plantType,
-    state === 'ROTTEN' ? 'ROTTED' : 'HARVEST',
-  );
+  if (state !== 'GROWING')
+    postFazendinhaAction(
+      `${ctx.user.id}`,
+      field.plantType,
+      state === 'MATURE' ? 'HARVEST' : 'ROTTED',
+    );
 
   displayPlantations(
     ctx,
     farmer,
     embedColor,
     !userSeeds || userSeeds.amount <= 0 ? AvailablePlants.Mate : seed,
+    -1,
   );
 };
 
@@ -113,7 +130,7 @@ const changeSelectedSeed = async (
 
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
-  displayPlantations(ctx, farmer, embedColor, Number(ctx.interaction.data.values[0]));
+  displayPlantations(ctx, farmer, embedColor, Number(ctx.interaction.data.values[0]), -1);
 };
 
 export { executeFieldAction, changeSelectedSeed };

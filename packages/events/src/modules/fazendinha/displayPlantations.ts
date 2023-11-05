@@ -60,6 +60,7 @@ const parseUserPlantations = (
   plantations: Plantation[],
   embedColor: string,
   selectedSeed: AvailablePlants,
+  forceField: number,
 ): [DiscordEmbedField[], ButtonComponent[]] => {
   const fields: DiscordEmbedField[] = [];
   const buttons: ButtonComponent[] = [];
@@ -79,7 +80,10 @@ const parseUserPlantations = (
         label: ctx.locale(`commands:fazendinha.plantations.field-action`, {
           index: i + 1,
           action: ctx.locale(
-            `commands:fazendinha.plantations.${field.isPlanted ? 'harvest' : 'plant'}`,
+            `commands:fazendinha.plantations.${
+              // eslint-disable-next-line no-nested-ternary
+              field.isPlanted ? (plantState === 'MATURE' ? 'harvest' : 'discart') : 'plant'
+            }`,
           ),
         }),
         style: ButtonStyleForPlantState[plantState],
@@ -90,6 +94,7 @@ const parseUserPlantations = (
           `${i}`,
           embedColor,
           `${selectedSeed}`,
+          forceField === i ? 'Y' : 'N',
         ),
       }),
     );
@@ -154,8 +159,15 @@ const displayPlantations = async (
   farmer: DatabaseFarmerSchema,
   embedColor: string,
   selectedSeed: AvailablePlants,
+  forceField: number,
 ): Promise<void> => {
-  const [fields, buttons] = parseUserPlantations(ctx, farmer.plantations, embedColor, selectedSeed);
+  const [fields, buttons] = parseUserPlantations(
+    ctx,
+    farmer.plantations,
+    embedColor,
+    selectedSeed,
+    forceField,
+  );
 
   const seasonalInfo = await getSeasonalInfo();
 
@@ -176,7 +188,7 @@ const displayPlantations = async (
 
   const seeds = getAvailableSeeds(ctx, farmer, selectedSeed, seasonalInfo.currentSeason);
 
-  ctx.makeMessage({
+  await ctx.makeMessage({
     embeds: [embed],
     components: [
       createActionRow([

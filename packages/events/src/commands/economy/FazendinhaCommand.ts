@@ -58,6 +58,7 @@ const FazendinhaCommand = createCommand({
         typeof lastPlantedSeedFromSilo === 'undefined' || lastPlantedSeedFromSilo.amount <= 0
           ? AvailablePlants.Mate
           : lastPlantedSeedFromSilo.plant,
+        -1,
       );
 
     if (command === 'silo') return displaySilo(ctx, farmer, ctx.authorData.selectedColor);

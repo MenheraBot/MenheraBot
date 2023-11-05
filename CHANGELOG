@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - **Sistema de Estações** - A fazendinha agora possui _Estações do ano_. Cada estação pode durar de 3 a 8 dias. Durante as estações, as plantas podem ser beneficiadas e prejudicadas. Cada planta tem a sua melhor e pior estação para ser plantada. As plantas plantadas em sua melhor estação podem ser colhidas **25%** mais rápido. Já as plantadas em sua pior estação demoram **35%** de tempo a mais para poder ser colhida, e aprodrecem **50%** mais rápido.
-- A **sua mão** do poker agora mostra quantas fichas você tem
+- A **sua mão** do poker agora mostra quantas fichas você tem.
+- Agora é possível _descartar_ plantações da `/fazendinha`. Útil para caso tu tenha plantado uma erva sem querer.
 
 ### Changed
 

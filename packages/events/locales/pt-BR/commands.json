@@ -1065,6 +1065,7 @@
       "silo": "Plantas",
       "harvest": "Colher",
       "plant": "Plantar",
+      "discart": "Descartar",
       "season-boost-false": "⚠️ A estação atual é ruim para essa planta",
       "season-boost-true": "✨ A estação atual é perfeita para essa planta",
       "field-action": "{{action}} ({{index}})",
@@ -1088,7 +1089,7 @@
     },
     "field-action": {
       "not-enough-seeds": "Você não possui sementes de **{{plant}}** para plantar!",
-      "field-still-growing": "Este campo ainda está crescendo. Tu não pode o colher ainda!"
+      "imature-warning": "A planta do campo **{{field}}** ainda está crescendo! Caso tu queira descartar esse campo de **{{plant}}** {{emoji}}, clique novamente no botão."
     }
   },
   "titulo": {
