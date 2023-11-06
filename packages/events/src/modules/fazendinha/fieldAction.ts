@@ -6,7 +6,7 @@ import { postFazendinhaAction } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { displayPlantations } from './displayPlantations';
 import { getHarvestTime, getPlantationState } from './plantationState';
-import { Plants } from './plants';
+import { Plants } from './constainst';
 import { getCurrentSeason } from './seasonsManager';
 import { AvailablePlants, PlantedField } from './types';
 

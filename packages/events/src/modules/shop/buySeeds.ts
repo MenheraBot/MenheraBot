@@ -3,7 +3,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { Plants } from '../fazendinha/plants';
+import { Plants } from '../fazendinha/constainst';
 import {
   createActionRow,
   createCustomId,

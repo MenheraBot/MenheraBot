@@ -12,7 +12,7 @@ import {
 import { chunkArray, millisToSeconds } from '../../utils/miscUtils';
 import { InteractionContext } from '../../types/menhera';
 import { getPlantationState } from './plantationState';
-import { Plants } from './plants';
+import { Plants } from './constainst';
 import { getSeasonalInfo } from './seasonsManager';
 
 const PlantStateIcon: Record<PlantationState, string> = {
@@ -36,15 +36,15 @@ const ButtonStyleForPlantState: { [State in PlantationState]: ButtonStyles } = {
   ROTTEN: ButtonStyles.Secondary,
 };
 
+const repeatIcon = (icon: string): string =>
+  `${icon}${icon}${icon}\n${icon}${icon}${icon}\n${icon}${icon}${icon}`;
+
 const getPlantationDisplay = (
   ctx: InteractionContext,
   state: PlantationState,
   timeToAction: number,
   field: Plantation,
 ): string => {
-  const repeatIcon = (icon: string) =>
-    `${icon}${icon}${icon}\n${icon}${icon}${icon}\n${icon}${icon}${icon}`;
-
   const toUseEmoji =
     state === 'MATURE' ? Plants[(field as PlantedField).plantType].emoji : PlantStateIcon[state];
 
@@ -204,4 +204,4 @@ const displayPlantations = async (
   });
 };
 
-export { displayPlantations };
+export { displayPlantations, repeatIcon, PlantStateIcon };

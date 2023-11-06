@@ -1,3 +1,5 @@
+import { QuantitativePlant } from '../../types/database';
+
 export enum AvailablePlants {
   Mate,
   Rice,
@@ -58,4 +60,9 @@ export interface PlantsFile {
   buyValue: number;
   bestSeason: Seasons;
   worstSeason: Seasons;
+}
+
+export interface UnlockFieldFile {
+  neededPlants: QuantitativePlant[];
+  cost: number;
 }

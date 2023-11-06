@@ -1,5 +1,5 @@
 import { minutesToMillis } from '../../utils/miscUtils';
-import { Plants } from './plants';
+import { Plants } from './constainst';
 import {
   SEASONAL_HARVEST_BUFF,
   SEASONAL_HARVEST_DEBUFF,

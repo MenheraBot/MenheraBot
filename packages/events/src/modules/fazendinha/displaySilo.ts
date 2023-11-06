@@ -10,7 +10,7 @@ import { DatabaseFarmerSchema } from '../../types/database';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getDisplayName } from '../../utils/discord/userUtils';
 import { AvailablePlants } from './types';
-import { Plants } from './plants';
+import { Plants } from './constainst';
 import {
   createActionRow,
   createButton,
