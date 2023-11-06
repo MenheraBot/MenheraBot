@@ -313,6 +313,12 @@ const BichoCommand = createCommand({
         style: ButtonStyles.Primary,
       });
 
+      const supportLink = createButton({
+        label: ctx.locale('commands:bicho.support'),
+        style: ButtonStyles.Link,
+        url: 'https://discord.gg/fZMdQbA',
+      });
+
       if (await didUserAlreadyBet(ctx.author.id)) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const userBet = (await bichoRepository.getAllUserBets()).find(
@@ -331,7 +337,10 @@ const BichoCommand = createCommand({
         });
       }
 
-      ctx.makeMessage({ embeds: [embed], components: [createActionRow([animalNumbersButtons])] });
+      ctx.makeMessage({
+        embeds: [embed],
+        components: [createActionRow([animalNumbersButtons, supportLink])],
+      });
       return finishCommand();
     }
 

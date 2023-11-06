@@ -762,6 +762,7 @@
   },
   "bicho": {
     "sorted-title": "🐾 | Jogo do Bicho",
+    "support": "Últimos sorteios",
     "sorted-description": "**Último Sorteio:** {{lastDate}}\nNúmeros Sorteados:\n1º - `{{first}}` - {{firstAnimal}}\n2º - `{{second}}` - {{secondAnimal}}\n3º - `{{third}}` - {{thirdAnimal}}\n4º - `{{fourth}}` - {{fourthAnimal}}\n5º - `{{fifth}}` - {{fifthAnimal}}\nMaior Lucro: **{{biggestProfit}}** :star:\n\nPróximo Sorteio: {{nextDate}}\n\n**Usuários Apostando:** {{users}}\n**Valor Acumulado:** {{value}} :star:",
     "no-register": "Sem Registro",
     "invalid-bet": "Você inseriu uma aposta inválida! Verifique novamente sua seleção",

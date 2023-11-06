@@ -757,6 +757,7 @@
   },
   "bicho": {
     "sorted-title": "🐾 | Animal Game",
+    "support": "Latest draws",
     "label": "Type a number between {{min}} and {{max}}",
     "sorted-description": "**Last Draw:** {{lastDate}}\nNumbers Drawn:\n1st - `{{first}}` - {{firstAnimal}}\n2nd - `{{second}}` - {{secondAnimal}}\n3rd - `{{third}}` - {{thirdAnimal}}\n4th - `{{fourth}}` - {{fourthAnimal}}\n5th - `{{fifth}}` - {{fifthAnimal}}\nBiggest Profit: **{{biggestProfit}}** :star:\n\nNext Draw: {{nextDate}}\n\n**Users Betting** {{users}}\n**Accumulated Value:** {{value}} :star:",
     "no-register": "No registry",
