@@ -399,6 +399,12 @@ const executeImageCommand = async (ctx: ChatInputInteractionContext, finishComma
   finishCommand();
 };
 
+const resetTitle: ApplicationCommandOptionChoice = {
+  name: '⭕ Remover título',
+  value: 0,
+  nameLocalizations: { 'en-US': '⭕ Remove title' },
+};
+
 export const executeTituleAutocompleteInteraction = async (
   interaction: Interaction,
 ): Promise<void | null> => {
@@ -412,12 +418,13 @@ export const executeTituleAutocompleteInteraction = async (
 
   const input = getOptionFromInteraction<string>(interaction, 'título', false, true);
 
-  if (`${input}`.length < 3) return respondWithChoices([]);
+  if (`${input}`.length < 3) return respondWithChoices([resetTitle]);
 
   const userData = await userRepository.ensureFindUser(interaction.user.id);
 
   if (userData.titles.length === 0)
     return respondWithChoices([
+      resetTitle,
       {
         value: 0,
         name: i18next.getFixedT('pt-BR')('commands:titulo.no-titles-autocomplete'),
@@ -436,23 +443,26 @@ export const executeTituleAutocompleteInteraction = async (
     const ratings = findBestMatch(
       `${input}`,
       userTitles.map((a) => a.textLocalizations?.[interaction.locale as 'pt-BR'] ?? a.text),
-    ).ratings.reduce<ApplicationCommandOptionChoice[]>((p, c) => {
-      if (p.length >= 25 || c.rating < 0.3) return p;
+    ).ratings.reduce<ApplicationCommandOptionChoice[]>(
+      (p, c) => {
+        if (p.length >= 23 || c.rating < 0.3) return p;
 
-      const title = userTitles.find(
-        (a) => a.text === c.target || a.textLocalizations?.['en-US'] === c.target,
-      );
+        const title = userTitles.find(
+          (a) => a.text === c.target || a.textLocalizations?.['en-US'] === c.target,
+        );
 
-      if (!title) return p;
+        if (!title) return p;
 
-      p.push({
-        name: title.text,
-        nameLocalizations: title.textLocalizations ?? undefined,
-        value: title.titleId,
-      });
+        p.push({
+          name: title.text,
+          nameLocalizations: title.textLocalizations ?? undefined,
+          value: title.titleId,
+        });
 
-      return p;
-    }, []);
+        return p;
+      },
+      [resetTitle],
+    );
 
     return respondWithChoices(ratings);
   } catch (e) {
@@ -504,7 +514,7 @@ const executeTitleCommand = async (ctx: ChatInputInteractionContext): Promise<vo
   const user = ctx.getOption<User>('usuário', 'users', false) ?? ctx.author;
   const titleId = ctx.getOption<number>('título', false, false);
 
-  if (!titleId) {
+  if (typeof titleId === 'undefined') {
     const userData =
       user.id === ctx.user.id ? ctx.authorData : await userRepository.ensureFindUser(user.id);
 
@@ -548,6 +558,14 @@ const executeTitleCommand = async (ctx: ChatInputInteractionContext): Promise<vo
     });
 
     return ctx.makeMessage({ embeds: [embed] });
+  }
+
+  if (titleId === 0) {
+    await userRepository.updateUser(ctx.user.id, {
+      currentTitle: 0,
+    });
+
+    return ctx.makeMessage({ content: ctx.prettyResponse('success', 'commands:titulo.success') });
   }
 
   if (!ctx.authorData.titles.some((a) => a.id === titleId))

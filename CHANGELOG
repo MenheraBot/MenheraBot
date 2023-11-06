@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Agora é possível _descartar_ plantações da `/fazendinha`. Útil para caso tu tenha plantado uma erva sem querer.
 - **Novos Campos** - Agora é possível comprar novos campos para a sua fazenda! Use o comando `/fazendinha administrar campos` para comprá-los!
 - Os botões da fazendinha agora mostram qual planta está plantada no campo.
+- Agora é possível remover o seu título do perfil no `/personalizar título`
 
 ### Changed
 
