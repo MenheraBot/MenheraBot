@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Todos os temas tiveram uma redução em seu preço de **30%**
 - A planta `bergamota` foi renomeada para `couve`.
 
+### Fixed
+
+- Corrigido um bug no perfil `Girassóis` onde caso o usuário não tivesse nenhum título equipado, o comando gerava um erro.
+
 ## [5.10.2] - 2023-11-04
 
 ### Added
@@ -83,7 +87,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Atualizado a descrição dos comandos `/estatísticas`
 - O comando `/personalizar temas` agora mostra a data que tu comprou os temas.
 - Agora é possível ver as Badges de um usuário com o `/personalizar badges`
-- Os comandos `/8ball`, `/astolfo` e `/filosofia` agora aceitam menções! Caso você mencione um usuário no meio do texto, o nome dele aparecerá na imagem, ao invés de um monte de número. 
+- Os comandos `/8ball`, `/astolfo` e `/filosofia` agora aceitam menções! Caso você mencione um usuário no meio do texto, o nome dele aparecerá na imagem, ao invés de um monte de número.
 
 ### Removed
 

@@ -143,6 +143,19 @@ const executePlant = async (
     ).catch(debugError);
 };
 
+const unlockField = async (farmerId: BigString): Promise<void> => {
+  await farmerModel.updateOne(
+    {
+      id: `${farmerId}`,
+    },
+    {
+      $push: { plantations: { isPlanted: false } },
+    },
+  );
+
+  MainRedisClient.del(`farmer:${farmerId}`);
+};
+
 const updateSilo = async (
   farmerId: BigString,
   silo: DatabaseFarmerSchema['silo'],
@@ -198,6 +211,7 @@ export default {
   executePlant,
   getCurrentSeason,
   getSeasonalInfo,
+  unlockField,
   updateSeason,
   updateSilo,
   updateSeeds,
