@@ -12,6 +12,9 @@ import farmerRepository from '../../database/repositories/farmerRepository';
 import { checkNeededItems, removeItems } from './siloUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import starsRepository from '../../database/repositories/starsRepository';
+import { postTransaction } from '../../utils/apiRequests/statistics';
+import { bot } from '../..';
+import { ApiTransactionReason } from '../../types/api';
 
 const handleAdministrativeComponents = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [action] = ctx.sentData;
@@ -48,6 +51,13 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
     starsRepository.removeStars(ctx.user.id, neededItems.cost),
     farmerRepository.updateSilo(ctx.user.id, removeItems(farmer.silo, neededItems.neededPlants)),
     farmerRepository.unlockField(ctx.user.id),
+    postTransaction(
+      `${ctx.user.id}`,
+      `${bot.id}`,
+      neededItems.cost,
+      'estrelinhas',
+      ApiTransactionReason.UPGRADE_FARM,
+    ),
   ]);
 
   ctx.makeMessage({

@@ -934,7 +934,9 @@
       "sell_plant": "selling plants",
       "sell_plant__title": "Sell Plants",
       "buy_seed": "buying seeds",
-      "buy_seed_title": "Buy Seeds"
+      "buy_seed_title": "Buy Seeds",
+      "upgrade_farm_title": "Upgrade Farm",
+      "upgrade_farm": "upgrading your farm"
     }
   },
   "poker": {

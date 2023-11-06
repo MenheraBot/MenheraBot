@@ -939,7 +939,9 @@
       "sell_plant": "vender plantas",
       "sell_plant_title": "Vender Plantas",
       "buy_seed": "comprar sementes",
-      "buy_seed_title": "Comprar Sementes"
+      "buy_seed_title": "Comprar Sementes",
+      "upgrade_farm_title": "Melhorar a Fazenda",
+      "upgrade_farm": "melhorar sua fazenda"
     }
   },
   "poker": {
