@@ -86,6 +86,10 @@ const parseUserPlantations = (
             }`,
           ),
         }),
+        emoji:
+          plantState === 'EMPTY'
+            ? undefined
+            : { name: Plants[(field as PlantedField).plantType].emoji },
         style: ButtonStyleForPlantState[plantState],
         customId: createCustomId(
           0,

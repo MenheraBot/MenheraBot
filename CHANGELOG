@@ -12,12 +12,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - **Sistema de Estações** - A fazendinha agora possui _Estações do ano_. Cada estação pode durar de 3 a 8 dias. Durante as estações, as plantas podem ser beneficiadas e prejudicadas. Cada planta tem a sua melhor e pior estação para ser plantada. As plantas plantadas em sua melhor estação podem ser colhidas **25%** mais rápido. Já as plantadas em sua pior estação demoram **35%** de tempo a mais para poder ser colhida, e aprodrecem **50%** mais rápido.
 - A **sua mão** do poker agora mostra quantas fichas você tem.
 - Agora é possível _descartar_ plantações da `/fazendinha`. Útil para caso tu tenha plantado uma erva sem querer.
+- **Novos Campos** - Agora é possível comprar novos campos para a sua fazenda! Use o comando `/fazendinha administrar campos` para comprá-los!
+- Os botões da fazendinha agora mostram qual planta está plantada no campo.
 
 ### Changed
 
 - O comando `/roleta` agora define a cor da mensagem para a cor do número que saiu.
 - Todos os temas tiveram uma redução em seu preço de **30%**
 - A planta `bergamota` foi renomeada para `couve`.
+- O campo que está plantado agora aparece no botão de seus campos no `/fazendinha plantações`
 
 ### Fixed
 
