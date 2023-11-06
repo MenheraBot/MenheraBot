@@ -386,7 +386,7 @@
     "gods": "Deuses",
     "invalid-rolls": "Este número de rolls é invalido!",
     "rolls-poor": "Você não tem essa quantidade de rolls",
-    "cooldown": "Descanse campeão, você já saiu na sua caçada. Tente novamente em **{{time}}** minutos ou use um `roll` em sua próxima caça"
+    "cooldown": "Descanse campeão, você já saiu na sua caçada. Tente novamente **<t:{{unix}}:R>** ou use um `roll` em sua próxima caça"
   },
   "casar": {
     "bot": "Tu não pode se casar com bots",
@@ -595,10 +595,8 @@
     "hunt": "Caçar",
     "vote": "Votar em Mim",
     "candy": "Pedir doces",
-    "time": "**{{time}}** {{subtime}} | **<t:{{unix}}:T>**",
-    "click-to-vote": "Clique Para Votar",
-    "dungeon": "Dungeon",
-    "no-dungeon": "Você ainda não reencarnou no Mundo de Boleham. Use `/ficha`!"
+    "time": "**<t:{{unix}}:T>** | **<t:{{unix}}:R>**",
+    "click-to-vote": "Clique Para Votar"
   },
   "trisal": {
     "title": "❤️ Trisal ❤️",

@@ -20,11 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - O comando `/roleta` agora define a cor da mensagem para a cor do número que saiu.
-- Todos os temas tiveram uma redução em seu preço de **30%**
+- Todos os temas tiveram uma redução em seu preço de **30%**.
 - A planta `bergamota` foi renomeada para `couve`.
-- O campo que está plantado agora aparece no botão de seus campos no `/fazendinha plantações`
-- Comandos com usos negativos (comandos renomeados) não aparecem mais no `/top usos comandos`
-- Ao clicar no botão `Buscar` do `/top transações`, a página buscada volta a ser a primeira
+- O campo que está plantado agora aparece no botão de seus campos no `/fazendinha plantações`.
+- Comandos com usos negativos (comandos renomeados) não aparecem mais no `/top usos comandos`.
+- Ao clicar no botão `Buscar` do `/top transações`, a página buscada volta a ser a primeira.
+- Os comandos `/caçar` e `/cooldowns` agora mostram tempos relativos.
 
 ### Fixed
 

@@ -1,10 +1,9 @@
-import dayjs from 'dayjs';
 import { ApplicationCommandOptionTypes, DiscordEmbedField } from 'discordeno/types';
 
 import userRepository from '../../database/repositories/userRepository';
 import huntRepository from '../../database/repositories/huntRepository';
 import commandRepository from '../../database/repositories/commandRepository';
-import { capitalize } from '../../utils/miscUtils';
+import { capitalize, millisToSeconds } from '../../utils/miscUtils';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { COLORS, transactionableCommandOption } from '../../structures/constants';
 import { MessageFlags } from '../../utils/discord/messageUtils';
@@ -118,7 +117,7 @@ const HuntCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:cacar.cooldown', {
-            time: dayjs(ctx.authorData.huntCooldown - Date.now()).format('mm:ss'),
+            unix: millisToSeconds(ctx.authorData.huntCooldown),
           }),
           flags: MessageFlags.EPHEMERAL,
         }),

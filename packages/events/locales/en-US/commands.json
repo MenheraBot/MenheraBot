@@ -378,7 +378,7 @@
     "gods": "Gods",
     "invalid-rolls": "This amount of rolls is invalid!",
     "rolls-poor": "You dont have all this rolls!",
-    "cooldown": "Rest champion, you've already gone on your hunt. Try again in ** {{time}} ** minutes or use a roll in your next hunt"
+    "cooldown": "Rest champion, you've already gone on your hunt. Try again **<t:{{unix}}:R>** or use a roll in your next hunt"
   },
   "casar": {
     "bot": "you can't marry bots",
@@ -590,9 +590,7 @@
     "hunt": "Hunt",
     "vote": "Vote for Me",
     "click-to-vote": "Click to Vote",
-    "time": "**{{time}}** {{subtime}} | **<t:{{unix}}:T>**",
-    "dungeon": "Dungeon",
-    "no-dungeon": "You have not yet reincarnated in Boleham's World. Use `/ficha`!"
+    "time": "**<t:{{unix}}:T>** | **<t:{{unix}}:R>**"
   },
   "trisal": {
     "title": "❤️ Polyamory ❤️",
