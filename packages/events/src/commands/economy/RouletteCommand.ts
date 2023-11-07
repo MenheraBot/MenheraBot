@@ -24,6 +24,12 @@ import { createCommand } from '../../structures/command/createCommand';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
 
+const colorInHexa = {
+  red: '#ff0000',
+  green: '#00ff00',
+  black: '#000001',
+};
+
 const finishRouletteBet = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
 ): Promise<void> => {
@@ -48,7 +54,7 @@ const finishRouletteBet = async (
     const winOrLose = didWin ? 'win' : 'lose';
 
     const finishEmbed = createEmbed({
-      color: hexStringToNumber(authorData.selectedColor),
+      color: hexStringToNumber(colorInHexa[randomValue.color]),
       title: ctx.locale(`commands:roleta.${winOrLose}-title`),
       description: ctx.locale(`commands:roleta.${winOrLose}`, {
         bet,

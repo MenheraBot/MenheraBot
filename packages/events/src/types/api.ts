@@ -82,6 +82,7 @@ export enum ApiTransactionReason {
   POKER_COMMAND = 'poker_command',
   SELL_PLANT = 'sell_plant',
   BUY_SEED = 'buy_seed',
+  UPGRADE_FARM = 'upgrade_farm',
 }
 
 type TransactionType = DatabaseHuntingTypes | 'estrelinhas';

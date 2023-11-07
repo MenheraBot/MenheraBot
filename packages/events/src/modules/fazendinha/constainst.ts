@@ -1,4 +1,26 @@
-import { AvailablePlants, PlantsFile } from './types';
+import { AvailablePlants, PlantsFile, UnlockFieldFile } from './types';
+
+const UnloadFields: { [field: number]: UnlockFieldFile } = {
+  1: {
+    cost: 50_000,
+    neededPlants: [
+      { amount: 5, plant: AvailablePlants.Mate },
+      { amount: 3, plant: AvailablePlants.Sunflower },
+      { amount: 2, plant: AvailablePlants.Tomato },
+      { amount: 10, plant: AvailablePlants.Garlic },
+    ],
+  },
+  2: {
+    cost: 100_000,
+    neededPlants: [
+      { amount: 10, plant: AvailablePlants.Mate },
+      { amount: 5, plant: AvailablePlants.Potato },
+      { amount: 3, plant: AvailablePlants.Apple },
+      { amount: 4, plant: AvailablePlants.Mango },
+      { amount: 6, plant: AvailablePlants.Pineapple },
+    ],
+  },
+};
 
 const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
   [AvailablePlants.Mate]: {
@@ -7,8 +29,8 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     emoji: '🌿',
     sellValue: 300,
     buyValue: 0,
-    bestSeason: 'spring',
-    worstSeason: 'winter',
+    bestSeason: 'winter',
+    worstSeason: 'spring',
   },
   [AvailablePlants.Rice]: {
     minutesToHarvest: 30,
@@ -89,7 +111,7 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     sellValue: 2950,
     buyValue: 500,
     bestSeason: 'spring',
-    worstSeason: 'winter',
+    worstSeason: 'autumn',
   },
   [AvailablePlants.Mint]: {
     minutesToHarvest: 80,
@@ -98,7 +120,7 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     sellValue: 3910,
     buyValue: 600,
     bestSeason: 'spring',
-    worstSeason: 'winter',
+    worstSeason: 'autumn',
   },
   [AvailablePlants.Watermelon]: {
     minutesToHarvest: 100,
@@ -134,10 +156,10 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     sellValue: 11_000,
     buyValue: 3400,
     bestSeason: 'summer',
-    worstSeason: 'winter',
+    worstSeason: 'spring',
   },
   [AvailablePlants.Avocado]: {
-    minutesToHarvest: 60,
+    minutesToHarvest: 85,
     minutesToRot: 20,
     emoji: '🥑',
     sellValue: 12_540,
@@ -155,7 +177,7 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     worstSeason: 'winter',
   },
   [AvailablePlants.Apple]: {
-    minutesToHarvest: 70,
+    minutesToHarvest: 110,
     minutesToRot: 30,
     emoji: '🍎',
     sellValue: 19_000,
@@ -164,7 +186,7 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     worstSeason: 'winter',
   },
   [AvailablePlants.Lemon]: {
-    minutesToHarvest: 60,
+    minutesToHarvest: 130,
     minutesToRot: 10,
     emoji: '🍋',
     sellValue: 21_000,
@@ -172,35 +194,35 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     bestSeason: 'spring',
     worstSeason: 'winter',
   },
-  [AvailablePlants.Tangerine]: {
-    minutesToHarvest: 80,
+  [AvailablePlants.Cabbage]: {
+    minutesToHarvest: 140,
     minutesToRot: 60,
-    emoji: '🍊',
+    emoji: '🥬',
     sellValue: 23_000,
     buyValue: 8060,
-    bestSeason: 'spring',
-    worstSeason: 'winter',
+    bestSeason: 'winter',
+    worstSeason: 'spring',
   },
   [AvailablePlants.Banana]: {
-    minutesToHarvest: 100,
+    minutesToHarvest: 140,
     minutesToRot: 100,
     emoji: '🍌',
     sellValue: 26_000,
     buyValue: 9230,
     bestSeason: 'summer',
-    worstSeason: 'winter',
+    worstSeason: 'autumn',
   },
   [AvailablePlants.Pineapple]: {
-    minutesToHarvest: 90,
+    minutesToHarvest: 160,
     minutesToRot: 30,
     emoji: '🍍',
     sellValue: 33_000,
     buyValue: 11_231,
     bestSeason: 'summer',
-    worstSeason: 'winter',
+    worstSeason: 'spring',
   },
   [AvailablePlants.Peach]: {
-    minutesToHarvest: 130,
+    minutesToHarvest: 170,
     minutesToRot: 60,
     emoji: '🍑',
     sellValue: 39_000,
@@ -209,7 +231,7 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     worstSeason: 'winter',
   },
   [AvailablePlants.Cherry]: {
-    minutesToHarvest: 160,
+    minutesToHarvest: 180,
     minutesToRot: 60,
     emoji: '🍒',
     sellValue: 45_000,
@@ -228,4 +250,4 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
   },
 };
 
-export { Plants };
+export { Plants, UnloadFields };

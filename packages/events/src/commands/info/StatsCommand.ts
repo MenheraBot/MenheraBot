@@ -22,7 +22,7 @@ import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { millisToSeconds } from '../../utils/miscUtils';
 
 import { createCommand } from '../../structures/command/createCommand';
-import { Plants } from '../../modules/fazendinha/plants';
+import { Plants } from '../../modules/fazendinha/constainst';
 
 const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
   const user = ctx.getOption<User>('user', 'users') ?? ctx.author;

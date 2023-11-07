@@ -34,7 +34,9 @@ const showPlayerCards = async (
 
   const embed = createEmbed({
     title: ctx.locale('commands:poker.player.your-hand'),
-    description: `**${player.cards.map((a) => getPokerCard(a).displayValue).join(' ')}**`,
+    description: `**${player.cards
+      .map((a) => getPokerCard(a).displayValue)
+      .join(' ')}**\n\n${ctx.locale('commands:poker.player.chips', { chips: player.chips })}`,
     footer: player.folded ? { text: ctx.locale('commands:poker.player.not-in-round') } : undefined,
     color: hexStringToNumber(authorData.selectedColor),
     image: image.err ? undefined : { url: 'attachment://poker.png' },

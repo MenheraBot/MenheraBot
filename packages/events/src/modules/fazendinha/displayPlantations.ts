@@ -1,7 +1,7 @@
 import { ButtonComponent, ButtonStyles, DiscordEmbedField, SelectOption } from 'discordeno/types';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getDisplayName } from '../../utils/discord/userUtils';
-import { AvailablePlants, Plantation, PlantationState, PlantedField } from './types';
+import { AvailablePlants, Plantation, PlantationState, PlantedField, Seasons } from './types';
 import { DatabaseFarmerSchema } from '../../types/database';
 import {
   createActionRow,
@@ -12,7 +12,8 @@ import {
 import { chunkArray, millisToSeconds } from '../../utils/miscUtils';
 import { InteractionContext } from '../../types/menhera';
 import { getPlantationState } from './plantationState';
-import { Plants } from './plants';
+import { Plants } from './constainst';
+import { getSeasonalInfo } from './seasonsManager';
 
 const PlantStateIcon: Record<PlantationState, string> = {
   EMPTY: '🟫',
@@ -21,15 +22,29 @@ const PlantStateIcon: Record<PlantationState, string> = {
   MATURE: '',
 };
 
+const SeasonEmojis: Record<Seasons, string> = {
+  autumn: '🍁',
+  winter: '❄️',
+  spring: '🍃',
+  summer: '☀️',
+};
+
+const ButtonStyleForPlantState: { [State in PlantationState]: ButtonStyles } = {
+  EMPTY: ButtonStyles.Primary,
+  GROWING: ButtonStyles.Danger,
+  MATURE: ButtonStyles.Success,
+  ROTTEN: ButtonStyles.Secondary,
+};
+
+const repeatIcon = (icon: string): string =>
+  `${icon}${icon}${icon}\n${icon}${icon}${icon}\n${icon}${icon}${icon}`;
+
 const getPlantationDisplay = (
   ctx: InteractionContext,
   state: PlantationState,
   timeToAction: number,
   field: Plantation,
 ): string => {
-  const repeatIcon = (icon: string) =>
-    `${icon}${icon}${icon}\n${icon}${icon}${icon}\n${icon}${icon}${icon}`;
-
   const toUseEmoji =
     state === 'MATURE' ? Plants[(field as PlantedField).plantType].emoji : PlantStateIcon[state];
 
@@ -45,6 +60,7 @@ const parseUserPlantations = (
   plantations: Plantation[],
   embedColor: string,
   selectedSeed: AvailablePlants,
+  forceField: number,
 ): [DiscordEmbedField[], ButtonComponent[]] => {
   const fields: DiscordEmbedField[] = [];
   const buttons: ButtonComponent[] = [];
@@ -59,23 +75,22 @@ const parseUserPlantations = (
       inline: true,
     });
 
-    // eslint-disable-next-line no-nested-ternary
-    const buttonStyle = !field.isPlanted
-      ? ButtonStyles.Primary
-      : plantState === 'MATURE'
-      ? ButtonStyles.Success
-      : ButtonStyles.Secondary;
-
     buttons.push(
       createButton({
         label: ctx.locale(`commands:fazendinha.plantations.field-action`, {
           index: i + 1,
           action: ctx.locale(
-            `commands:fazendinha.plantations.${field.isPlanted ? 'harvest' : 'plant'}`,
+            `commands:fazendinha.plantations.${
+              // eslint-disable-next-line no-nested-ternary
+              field.isPlanted ? (plantState === 'MATURE' ? 'harvest' : 'discart') : 'plant'
+            }`,
           ),
         }),
-        style: buttonStyle,
-        disabled: plantState === 'GROWING',
+        emoji:
+          plantState === 'EMPTY'
+            ? undefined
+            : { name: Plants[(field as PlantedField).plantType].emoji },
+        style: ButtonStyleForPlantState[plantState],
         customId: createCustomId(
           0,
           ctx.user.id,
@@ -83,6 +98,7 @@ const parseUserPlantations = (
           `${i}`,
           embedColor,
           `${selectedSeed}`,
+          forceField === i ? 'Y' : 'N',
         ),
       }),
     );
@@ -95,17 +111,27 @@ const getAvailableSeeds = (
   ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   selectedSeed: AvailablePlants,
+  currentSeason: Seasons,
 ): SelectOption[] =>
-  farmer.seeds.reduce(
+  farmer.seeds.reduce<SelectOption[]>(
     (allSeeds, seed) => {
       if (seed.amount <= 0 || seed.plant === AvailablePlants.Mate) return allSeeds;
+
+      const plant = Plants[seed.plant];
+
+      const includeDescription = [plant.bestSeason, plant.worstSeason].includes(currentSeason);
 
       allSeeds.push({
         label: ctx.locale('commands:fazendinha.plantations.available-seed', {
           name: ctx.locale(`data:plants.${seed.plant}`),
           amount: seed.amount,
         }),
-        emoji: { name: Plants[seed.plant].emoji },
+        description: includeDescription
+          ? ctx.locale(
+              `commands:fazendinha.plantations.season-boost-${plant.bestSeason === currentSeason}`,
+            )
+          : undefined,
+        emoji: { name: plant.emoji },
         value: `${seed.plant}`,
         default: selectedSeed === seed.plant,
       });
@@ -117,6 +143,16 @@ const getAvailableSeeds = (
         label: `${ctx.locale('data:plants.0')} ∞`,
         emoji: { name: Plants[AvailablePlants.Mate].emoji },
         value: `${AvailablePlants.Mate}`,
+        description: [
+          Plants[AvailablePlants.Mate].bestSeason,
+          Plants[AvailablePlants.Mate].worstSeason,
+        ].includes(currentSeason)
+          ? ctx.locale(
+              `commands:fazendinha.plantations.season-boost-${
+                Plants[AvailablePlants.Mate].bestSeason === currentSeason
+              }`,
+            )
+          : undefined,
         default: selectedSeed === AvailablePlants.Mate,
       },
     ],
@@ -127,12 +163,26 @@ const displayPlantations = async (
   farmer: DatabaseFarmerSchema,
   embedColor: string,
   selectedSeed: AvailablePlants,
+  forceField: number,
 ): Promise<void> => {
-  const [fields, buttons] = parseUserPlantations(ctx, farmer.plantations, embedColor, selectedSeed);
+  const [fields, buttons] = parseUserPlantations(
+    ctx,
+    farmer.plantations,
+    embedColor,
+    selectedSeed,
+    forceField,
+  );
+
+  const seasonalInfo = await getSeasonalInfo();
 
   const embed = createEmbed({
     title: ctx.locale('commands:fazendinha.plantations.embed-title', {
       user: getDisplayName(ctx.user),
+    }),
+    description: ctx.locale('commands:fazendinha.plantations.description', {
+      season: ctx.locale(`commands:fazendinha.seasons.${seasonalInfo.currentSeason}`),
+      unix: millisToSeconds(seasonalInfo.endsAt),
+      emoji: SeasonEmojis[seasonalInfo.currentSeason],
     }),
     color: hexStringToNumber(embedColor),
     fields,
@@ -140,9 +190,9 @@ const displayPlantations = async (
 
   const actionRows = chunkArray(buttons, 3).map((a) => createActionRow(a as [ButtonComponent]));
 
-  const seeds = getAvailableSeeds(ctx, farmer, selectedSeed);
+  const seeds = getAvailableSeeds(ctx, farmer, selectedSeed, seasonalInfo.currentSeason);
 
-  ctx.makeMessage({
+  await ctx.makeMessage({
     embeds: [embed],
     components: [
       createActionRow([
@@ -158,4 +208,4 @@ const displayPlantations = async (
   });
 };
 
-export { displayPlantations };
+export { displayPlantations, repeatIcon, PlantStateIcon };

@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.10.3] - 2023-11-06
+
+### Added
+
+- **Sistema de Estações** - A fazendinha agora possui _Estações do ano_. Cada estação pode durar de 3 a 8 dias. Durante as estações, as plantas podem ser beneficiadas e prejudicadas. Cada planta tem a sua melhor e pior estação para ser plantada. As plantas plantadas em sua melhor estação podem ser colhidas **25%** mais rápido. Já as plantadas em sua pior estação demoram **35%** de tempo a mais para poder ser colhida, e aprodrecem **50%** mais rápido.
+- A **sua mão** do poker agora mostra quantas fichas você tem.
+- Agora é possível _descartar_ plantações da `/fazendinha`. Útil para caso tu tenha plantado uma erva sem querer.
+- **Novos Campos** - Agora é possível comprar novos campos para a sua fazenda! Use o comando `/fazendinha administrar campos` para comprá-los!
+- Os botões da fazendinha agora mostram qual planta está plantada no campo.
+- Agora é possível remover o seu título do perfil no `/personalizar título`.
+- O `/bicho` possui um botão para entrar no servidor de suporte. 
+
+### Changed
+
+- O comando `/roleta` agora define a cor da mensagem para a cor do número que saiu.
+- Todos os temas tiveram uma redução em seu preço de **30%**.
+- A planta `bergamota` foi renomeada para `couve`.
+- O campo que está plantado agora aparece no botão de seus campos no `/fazendinha plantações`.
+- Comandos com usos negativos (comandos renomeados) não aparecem mais no `/top usos comandos`.
+- Ao clicar no botão `Buscar` do `/top transações`, a página buscada volta a ser a primeira.
+- Os comandos `/caçar` e `/cooldowns` agora mostram tempos relativos.
+
+### Fixed
+
+- Corrigido um bug no perfil `Girassóis` onde caso o usuário não tivesse nenhum título equipado, o comando gerava um erro.
+
 ## [5.10.2] - 2023-11-04
 
 ### Added
@@ -69,7 +95,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Atualizado a descrição dos comandos `/estatísticas`
 - O comando `/personalizar temas` agora mostra a data que tu comprou os temas.
 - Agora é possível ver as Badges de um usuário com o `/personalizar badges`
-- Os comandos `/8ball`, `/astolfo` e `/filosofia` agora aceitam menções! Caso você mencione um usuário no meio do texto, o nome dele aparecerá na imagem, ao invés de um monte de número. 
+- Os comandos `/8ball`, `/astolfo` e `/filosofia` agora aceitam menções! Caso você mencione um usuário no meio do texto, o nome dele aparecerá na imagem, ao invés de um monte de número.
 
 ### Removed
 

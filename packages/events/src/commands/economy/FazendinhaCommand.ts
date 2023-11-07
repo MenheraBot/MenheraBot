@@ -5,6 +5,10 @@ import { displayPlantations } from '../../modules/fazendinha/displayPlantations'
 import { changeSelectedSeed, executeFieldAction } from '../../modules/fazendinha/fieldAction';
 import { displaySilo, handleButtonAction } from '../../modules/fazendinha/displaySilo';
 import { AvailablePlants } from '../../modules/fazendinha/types';
+import {
+  executeAdministrateFields,
+  handleAdministrativeComponents,
+} from '../../modules/fazendinha/administrateFields';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -36,9 +40,32 @@ const FazendinhaCommand = createCommand({
       },
       type: ApplicationCommandOptionTypes.SubCommand,
     },
+    {
+      name: 'administrar',
+      nameLocalizations: { 'en-US': 'manage' },
+      description: '「⚙️」・Administre toda a sua fazenda',
+      descriptionLocalizations: {
+        'en-US': '「⚙️」・Manage all of your farm',
+      },
+      type: ApplicationCommandOptionTypes.SubCommandGroup,
+      options: [
+        {
+          name: 'campos',
+          nameLocalizations: { 'en-US': 'fields' },
+          description: '「🟫」・Administre os campos de sua fazenda',
+          descriptionLocalizations: { 'en-US': '「🟫」・Manage your farm fields' },
+          type: ApplicationCommandOptionTypes.SubCommand,
+        },
+      ],
+    },
   ],
   category: 'economy',
-  commandRelatedExecutions: [executeFieldAction, changeSelectedSeed, handleButtonAction],
+  commandRelatedExecutions: [
+    executeFieldAction,
+    changeSelectedSeed,
+    handleButtonAction,
+    handleAdministrativeComponents,
+  ],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
     finishCommand();
@@ -50,6 +77,12 @@ const FazendinhaCommand = createCommand({
       (b) => b.plant === farmer.lastPlantedSeed ?? AvailablePlants.Mate,
     );
 
+    const group = ctx.getSubCommandGroup();
+
+    if (group === 'administrar') {
+      if (command === 'campos') return executeAdministrateFields(ctx, farmer);
+    }
+
     if (command === 'plantações')
       return displayPlantations(
         ctx,
@@ -58,6 +91,7 @@ const FazendinhaCommand = createCommand({
         typeof lastPlantedSeedFromSilo === 'undefined' || lastPlantedSeedFromSilo.amount <= 0
           ? AvailablePlants.Mate
           : lastPlantedSeedFromSilo.plant,
+        -1,
       );
 
     if (command === 'silo') return displaySilo(ctx, farmer, ctx.authorData.selectedColor);

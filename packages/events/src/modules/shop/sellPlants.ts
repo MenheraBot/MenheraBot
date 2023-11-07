@@ -9,7 +9,7 @@ import { ModalInteraction } from '../../types/interaction';
 import { InteractionContext } from '../../types/menhera';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { extractFields } from '../../utils/discord/modalUtils';
-import { Plants } from '../fazendinha/plants';
+import { Plants } from '../fazendinha/constainst';
 
 const receiveModal = async (
   ctx: ComponentInteractionContext<ModalInteraction>,
@@ -70,6 +70,12 @@ const executeSellPlant = async (
 
     totalStars += currentPlant.amount * Plants[currentPlant.plant].sellValue;
     fromSilo.amount -= currentPlant.amount;
+
+    if (fromSilo.amount <= 0)
+      farmer.silo.splice(
+        farmer.silo.findIndex((a) => a.plant === fromSilo.plant),
+        1,
+      );
   }
 
   if (totalStars === 0)
@@ -79,17 +85,17 @@ const executeSellPlant = async (
       content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
     });
 
-  await starsRepository.addStars(ctx.user.id, totalStars);
-
-  postTransaction(
-    `${bot.id}`,
-    `${ctx.user.id}`,
-    totalStars,
-    'estrelinhas',
-    ApiTransactionReason.SELL_PLANT,
-  );
-
-  await farmerRepository.updateSilo(ctx.user.id, farmer.silo);
+  await Promise.all([
+    starsRepository.addStars(ctx.user.id, totalStars),
+    postTransaction(
+      `${bot.id}`,
+      `${ctx.user.id}`,
+      totalStars,
+      'estrelinhas',
+      ApiTransactionReason.SELL_PLANT,
+    ),
+    farmerRepository.updateSilo(ctx.user.id, farmer.silo),
+  ]);
 
   const userData = await userRepository.ensureFindUser(ctx.user.id);
 

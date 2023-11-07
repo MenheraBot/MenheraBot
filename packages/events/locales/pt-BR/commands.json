@@ -386,7 +386,7 @@
     "gods": "Deuses",
     "invalid-rolls": "Este número de rolls é invalido!",
     "rolls-poor": "Você não tem essa quantidade de rolls",
-    "cooldown": "Descanse campeão, você já saiu na sua caçada. Tente novamente em **{{time}}** minutos ou use um `roll` em sua próxima caça"
+    "cooldown": "Descanse campeão, você já saiu na sua caçada. Tente novamente **<t:{{unix}}:R>** ou use um `roll` em sua próxima caça"
   },
   "casar": {
     "bot": "Tu não pode se casar com bots",
@@ -525,7 +525,7 @@
     "english": "Inglês Americano",
     "portuguese": "Português Brasileiro",
     "pt-response": "Perfeito, vou falar português nesse servidor",
-    "en-response": "A you wish, I will speak english on this server"
+    "en-response": "As you wish, I will speak english on this server"
   },
   "sobremim": {
     "args-limit": "Seu sobremim não pode ser maior que 200 caracteres",
@@ -595,10 +595,8 @@
     "hunt": "Caçar",
     "vote": "Votar em Mim",
     "candy": "Pedir doces",
-    "time": "**{{time}}** {{subtime}} | **<t:{{unix}}:T>**",
-    "click-to-vote": "Clique Para Votar",
-    "dungeon": "Dungeon",
-    "no-dungeon": "Você ainda não reencarnou no Mundo de Boleham. Use `/ficha`!"
+    "time": "**<t:{{unix}}:T>** | **<t:{{unix}}:R>**",
+    "click-to-vote": "Clique Para Votar"
   },
   "trisal": {
     "title": "❤️ Trisal ❤️",
@@ -762,6 +760,7 @@
   },
   "bicho": {
     "sorted-title": "🐾 | Jogo do Bicho",
+    "support": "Últimos sorteios",
     "sorted-description": "**Último Sorteio:** {{lastDate}}\nNúmeros Sorteados:\n1º - `{{first}}` - {{firstAnimal}}\n2º - `{{second}}` - {{secondAnimal}}\n3º - `{{third}}` - {{thirdAnimal}}\n4º - `{{fourth}}` - {{fourthAnimal}}\n5º - `{{fifth}}` - {{fifthAnimal}}\nMaior Lucro: **{{biggestProfit}}** :star:\n\nPróximo Sorteio: {{nextDate}}\n\n**Usuários Apostando:** {{users}}\n**Valor Acumulado:** {{value}} :star:",
     "no-register": "Sem Registro",
     "invalid-bet": "Você inseriu uma aposta inválida! Verifique novamente sua seleção",
@@ -939,7 +938,9 @@
       "sell_plant": "vender plantas",
       "sell_plant_title": "Vender Plantas",
       "buy_seed": "comprar sementes",
-      "buy_seed_title": "Comprar Sementes"
+      "buy_seed_title": "Comprar Sementes",
+      "upgrade_farm_title": "Melhorar a Fazenda",
+      "upgrade_farm": "melhorar sua fazenda"
     }
   },
   "poker": {
@@ -967,6 +968,7 @@
     "not-in-match": "Você não está participando desta partida de Poker!",
     "player": {
       "your-hand": "Sua mão",
+      "chips": "Tu tens **{{chips}}** :coin: fichas",
       "not-in-round": "Você não está mais participando dessa rodada!",
       "cant-control-off-game": "Você não pode remover jogadores fora de um round!",
       "remove-players-zero": "Nenhum jogador foi marcado para ser removido na da partida ao fim da rodada. Todos continuam jogando!",
@@ -1051,12 +1053,22 @@
       "EMPTY": "Disponível",
       "message": "{{emojis}}\n{{state}}\n{{unix}}"
     },
+    "seasons": {
+      "winter": "Inverno",
+      "summer": "Verão",
+      "autumn": "Outono",
+      "spring": "Primavera"
+    },
     "plantations": {
       "field": "Campo ({{index}})",
+      "description": "**Estação atual**: {{emoji}} _{{season}}_\n**Termina** <t:{{unix}}:R>",
       "seeds": "Sementes",
       "silo": "Plantas",
       "harvest": "Colher",
       "plant": "Plantar",
+      "discart": "Descartar",
+      "season-boost-false": "⚠️ A estação atual é ruim para essa planta",
+      "season-boost-true": "✨ A estação atual é perfeita para essa planta",
       "field-action": "{{action}} ({{index}})",
       "embed-title": "Fazenda de {{user}}",
       "available-seed": "{{name}} {{amount}}x"
@@ -1078,7 +1090,14 @@
     },
     "field-action": {
       "not-enough-seeds": "Você não possui sementes de **{{plant}}** para plantar!",
-      "field-still-growing": "Este campo ainda está crescendo. Tu não pode o colher ainda!"
+      "imature-warning": "A planta do campo **{{field}}** ainda está crescendo! Caso tu queira descartar esse campo de **{{plant}}** {{emoji}}, clique novamente no botão."
+    },
+    "admin": {
+      "unlocked-field": "Você comprou esse terreno de seu vizinho!",
+      "your-fields": "Seus Campos",
+      "admin": "Administrar {{field}}",
+      "buy": "Comprar {{field}}",
+      "needed-items": "Esse campo está no terreno de seu vizinho. Ele concordou em te vender. Ele quer **{{star}}** :star: e **{{plants, list}}** por isso."
     }
   },
   "titulo": {

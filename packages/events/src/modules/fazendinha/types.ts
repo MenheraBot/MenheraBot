@@ -1,3 +1,5 @@
+import { QuantitativePlant } from '../../types/database';
+
 export enum AvailablePlants {
   Mate,
   Rice,
@@ -18,7 +20,7 @@ export enum AvailablePlants {
   Mango,
   Apple,
   Lemon,
-  Tangerine,
+  Cabbage,
   Banana,
   Pineapple,
   Peach,
@@ -26,11 +28,21 @@ export enum AvailablePlants {
   Mushroom,
 }
 
+export type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
+
 export interface PlantedField {
+  // FIXME(ySnoopyDogy): Remove plantedAt field in next version
   plantedAt: number;
+  harvestAt?: number;
+  plantedSeason: Seasons;
   isPlanted: true;
   plantType: AvailablePlants;
 }
+
+export type SeasonData = {
+  currentSeason: Seasons;
+  endsAt: number;
+};
 
 export interface EmptyField {
   isPlanted: false;
@@ -40,8 +52,6 @@ export type PlantationState = 'EMPTY' | 'GROWING' | 'MATURE' | 'ROTTEN';
 
 export type Plantation = PlantedField | EmptyField;
 
-type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
-
 export interface PlantsFile {
   minutesToHarvest: number;
   minutesToRot: number;
@@ -50,4 +60,9 @@ export interface PlantsFile {
   buyValue: number;
   bestSeason: Seasons;
   worstSeason: Seasons;
+}
+
+export interface UnlockFieldFile {
+  neededPlants: QuantitativePlant[];
+  cost: number;
 }

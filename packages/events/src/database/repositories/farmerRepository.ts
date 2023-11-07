@@ -4,7 +4,14 @@ import { farmerModel } from '../collections';
 import { DatabaseFarmerSchema, QuantitativePlant } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
-import { AvailablePlants, Plantation, PlantedField } from '../../modules/fazendinha/types';
+import {
+  AvailablePlants,
+  Plantation,
+  PlantedField,
+  SeasonData,
+  Seasons,
+} from '../../modules/fazendinha/types';
+import { millisToSeconds } from '../../utils/miscUtils';
 
 const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSchema => ({
   id: `${user.id}`,
@@ -136,6 +143,19 @@ const executePlant = async (
     ).catch(debugError);
 };
 
+const unlockField = async (farmerId: BigString): Promise<void> => {
+  await farmerModel.updateOne(
+    {
+      id: `${farmerId}`,
+    },
+    {
+      $push: { plantations: { isPlanted: false } },
+    },
+  );
+
+  MainRedisClient.del(`farmer:${farmerId}`);
+};
+
 const updateSilo = async (
   farmerId: BigString,
   silo: DatabaseFarmerSchema['silo'],
@@ -160,9 +180,39 @@ const updateSilo = async (
   }
 };
 
+const getCurrentSeason = (): Promise<Seasons | null> =>
+  MainRedisClient.get('current_season') as Promise<Seasons | null>;
+
+const getSeasonalInfo = async (): Promise<SeasonData | null> => {
+  const result = await MainRedisClient.get('seasonal_info');
+
+  if (!result) return null;
+
+  return JSON.parse(result);
+};
+
+const updateSeason = async (nextSeason: Seasons, endsAt: number): Promise<void> => {
+  const secondsToExpire = millisToSeconds(endsAt - Date.now());
+
+  await Promise.all([
+    MainRedisClient.setex('current_season', secondsToExpire, nextSeason),
+    MainRedisClient.set(
+      'seasonal_info',
+      JSON.stringify({
+        currentSeason: nextSeason,
+        endsAt,
+      } satisfies SeasonData),
+    ),
+  ]);
+};
+
 export default {
   getFarmer,
   executePlant,
+  getCurrentSeason,
+  getSeasonalInfo,
+  unlockField,
+  updateSeason,
   updateSilo,
   updateSeeds,
   executeHarvest,

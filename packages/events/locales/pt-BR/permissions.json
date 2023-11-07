@@ -29,6 +29,7 @@
   "MANAGE_EMOJIS": "Gerenciar Emojis",
   "ONLY_DEVS": "Este comando é de uso esclusivo da minha dona >...<",
   "UNKNOWN_SLASH": "Este comando não existe mais!",
+  "WIP": "Essa funcionalidade ainda não está pronta! Minha dona está trabalhando para conseguir finalizá-la o mais breve possível.",
   "USER_MISSING_PERMISSION": "Você não tem a permissão de `{{perm}}` para poder executar este comando.",
   "CLIENT_MISSING_PERMISSION": "Eu não tenho permissão de `{{perm}}` para poder executar este comando.",
   "BANNED_INFO": "Você está banido de utilizar a Menhera desde {{bannedSince}}!\n\nMotivo: `{{banReason}}`\n\nBanido injustamente? Entre em meu servidor de suporte https://discord.com/invite/fZMdQbA",

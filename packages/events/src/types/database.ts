@@ -6,6 +6,8 @@ import { UserBuyableTheme } from '../modules/themes/types';
 
 export type ColorResolvable = `#${string}`;
 
+export type UserIdType = string | bigint;
+
 export interface UserColor {
   nome: string;
   cor: `#${string}`;
@@ -110,6 +112,13 @@ export type QuantitativePlant = {
   plant: AvailablePlants;
 };
 
+export interface DatabaseTitlesSchema {
+  titleId: number;
+  text: string;
+  textLocalizations: Localization | null;
+  registeredAt: number;
+}
+
 export interface DatabaseFarmerSchema {
   readonly id: string;
   plantations: Plantation[];
@@ -119,12 +128,3 @@ export interface DatabaseFarmerSchema {
   plantedFields: number;
   lastPlantedSeed: AvailablePlants;
 }
-
-export interface DatabaseTitlesSchema {
-  titleId: number;
-  text: string;
-  textLocalizations: Localization | null;
-  registeredAt: number;
-}
-
-export type UserIdType = string | bigint;

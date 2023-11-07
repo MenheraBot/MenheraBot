@@ -1,5 +1,5 @@
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { Plants } from '../fazendinha/plants';
+import { Plants } from '../fazendinha/constainst';
 import { huntValues } from './constants';
 
 const sellInfo = async (

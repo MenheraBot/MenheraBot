@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import md5 from 'md5';
@@ -131,7 +130,9 @@ const ProfileCommand = createCommand({
       userData.marryUsername = getDisplayName(marryData, true);
 
       if (user.marriedAt && user.marriedAt > 0)
-        userData.marryDate = dayjs(user.marriedAt).format('DD/MM/YYYY');
+        userData.marryDate = Intl.DateTimeFormat(ctx.guildLocale, { dateStyle: 'short' }).format(
+          user.marriedAt,
+        );
     }
 
     let profileTheme = profileThemeFile.data.theme;
