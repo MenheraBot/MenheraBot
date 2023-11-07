@@ -6,7 +6,7 @@ import { InteractionContext } from '../../types/menhera';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { PlantStateIcon, repeatIcon } from './displayPlantations';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { UnloadFields } from './constainst';
+import { Plants, UnloadFields } from './constainst';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { checkNeededItems, removeItems } from './siloUtils';
@@ -40,11 +40,13 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
 
   if (!canUnlock || userData.estrelinhas < neededItems.cost)
     return ctx.respondInteraction({
-      content: `Para comprar isso, precisa de ${
-        neededItems.cost
-      } :star: e ${neededItems.neededPlants
-        .map((a) => `${a.amount}x ${ctx.locale(`data:plants.${a.plant}`)}`)
-        .join(', ')}`,
+      flags: MessageFlags.EPHEMERAL,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.admin.needed-items', {
+        star: neededItems.cost,
+        plants: neededItems.neededPlants.map(
+          (a) => `${a.amount}x ${ctx.locale(`data:plants.${a.plant}`)} ${Plants[a.plant].emoji}`,
+        ),
+      }),
     });
 
   await Promise.all([
@@ -61,7 +63,7 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
   ]);
 
   ctx.makeMessage({
-    content: 'Campo desbloqueado! Você já pode plantar nele!',
+    content: ctx.prettyResponse('success', 'commands:fazendinha.admin.unlocked-field'),
     components: [],
     embeds: [],
   });
@@ -77,7 +79,7 @@ const executeAdministrateFields = async (
       : await userRepository.ensureFindUser(ctx.user.id);
 
   const embed = createEmbed({
-    title: 'Campos da fazenda de {{user}}',
+    title: ctx.locale('commands:fazendinha.admin.your-fields'),
     color: hexStringToNumber(userData.selectedColor),
     fields: [],
   });
@@ -101,7 +103,9 @@ const executeAdministrateFields = async (
 
     buttonsToSend.push(
       createButton({
-        label: i < plantationsLength ? `Administrar (${i + 1}) ` : `Expandir (${i + 1})`,
+        label: ctx.locale(`commands:fazendinha.admin.${i < plantationsLength ? 'admin' : 'buy'}`, {
+          field: i + 1,
+        }),
         style: ButtonStyles.Primary,
         customId: createCustomId(
           3,

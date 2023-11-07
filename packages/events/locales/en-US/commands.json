@@ -1086,6 +1086,13 @@
     "field-action": {
       "not-enough-seeds": "You don't have **{{plant}}** seeds to plant!",
       "imature-warning": "The field plant **{{field}}** is still growing! If you want to discard this **{{plant}}** {{emoji}} field, click the button again."
+    },
+    "admin": {
+      "unlocked-field": "You bought this land from your neighbor!",
+      "your-fields": "Your Fields",
+      "admin": "Manage {{field}}",
+      "buy": "Buy {{field}}",
+      "needed-items": "This field is not on your neighbor's land. He was paid to sell you. He is asking for **{{star}}** :star: and **{{plants, list}}** for it."
     }
   },
   "titulo": {
