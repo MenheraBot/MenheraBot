@@ -1084,6 +1084,8 @@
       "sell-title": "Venda suas plantas",
       "no-plants": "Tu não possui plantas para vender",
       "description": "{{text}}\n- {{emoji}} **{{amount}}x** - {{plant}} (**{{value}}** :star:)",
+      "footer": "Limite do silo: {{used}}/{{limit}}",
+      "silo-is-full": "O seu silo está cheio! Seu silo tem espaço máximo de **{{limit}}** itens. Libere espaço vendendo plantas >_<",
       "select": "Selecione a quantidade de {{plant}} que você quer vender",
       "display-mate": "- {{emoji}} **∞** - {{plant}}",
       "display-other": "- {{emoji}} **{{amount}}x** - {{plant}}"

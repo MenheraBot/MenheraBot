@@ -1,4 +1,5 @@
-import { QuantitativePlant } from '../../types/database';
+import { DatabaseFarmerSchema, QuantitativePlant } from '../../types/database';
+import { INITIAL_LIMIT_FOR_SILO, SILO_LIMIT_INCREASE_BY_LEVEL } from './constants';
 
 const checkNeededItems = (need: QuantitativePlant[], has: QuantitativePlant[]): boolean =>
   need.every((needed) =>
@@ -24,4 +25,19 @@ const removeItems = (
   return final;
 };
 
-export { checkNeededItems, removeItems };
+interface SiloLimits {
+  limit: number;
+  used: number;
+}
+
+const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
+  const countQuantitative = (items: QuantitativePlant[]): number =>
+    items.reduce((p, c) => p + (c.amount > 0 ? c.amount : 0), 0);
+
+  const used = countQuantitative(user.silo) + countQuantitative(user.seeds);
+  const limit = INITIAL_LIMIT_FOR_SILO + SILO_LIMIT_INCREASE_BY_LEVEL * user.siloUpgrades;
+
+  return { used, limit };
+};
+
+export { checkNeededItems, removeItems, getSiloLimits };

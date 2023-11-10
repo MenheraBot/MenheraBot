@@ -19,6 +19,7 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
   biggestSeed: user.biggestSeed,
   plantedFields: user.plantedFields,
   seeds: user.seeds,
+  siloUpgrades: user.siloUpgrades,
   silo: user.silo,
   lastPlantedSeed: user.lastPlantedSeed,
 });

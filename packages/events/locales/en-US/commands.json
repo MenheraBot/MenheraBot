@@ -1079,6 +1079,8 @@
       "sell-title": "Sell your plants",
       "no-plants": "You don't have plants to sell",
       "description": "{{text}}\n- {{emoji}} **{{amount}}x** - {{plant}} (**{{value}}** :star:)",
+      "silo-is-full": "Your silo is full! Your silo has a maximum space of **{{limit}}** items. Free space selling plants >_<",
+      "footer": "Silo's limit: {{used}}/{{limit}}",
       "select": "Select the quantity of {{plant}} you want to sell",
       "display-mate": "- {{emoji}} **∞** - {{plant}}",
       "display-other": "- {{emoji}} **{{amount}}x** - {{plant}}"

@@ -1,6 +1,9 @@
 import { AvailablePlants, PlantsFile, UnlockFieldFile } from './types';
 
-const UnloadFields: { [field: number]: UnlockFieldFile } = {
+export const INITIAL_LIMIT_FOR_SILO = 35;
+export const SILO_LIMIT_INCREASE_BY_LEVEL = 5;
+
+export const UnloadFields: { [field: number]: UnlockFieldFile } = {
   1: {
     cost: 50_000,
     neededPlants: [
@@ -22,7 +25,7 @@ const UnloadFields: { [field: number]: UnlockFieldFile } = {
   },
 };
 
-const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
+export const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
   [AvailablePlants.Mate]: {
     minutesToHarvest: 15,
     minutesToRot: 60,
@@ -249,5 +252,3 @@ const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     worstSeason: 'summer',
   },
 };
-
-export { Plants, UnloadFields };

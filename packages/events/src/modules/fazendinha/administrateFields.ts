@@ -6,7 +6,7 @@ import { InteractionContext } from '../../types/menhera';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { PlantStateIcon, repeatIcon } from './displayPlantations';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { Plants, UnloadFields } from './constainst';
+import { Plants, UnloadFields } from './constants';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { checkNeededItems, removeItems } from './siloUtils';

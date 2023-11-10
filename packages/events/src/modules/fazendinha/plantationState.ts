@@ -1,5 +1,5 @@
 import { minutesToMillis } from '../../utils/miscUtils';
-import { Plants } from './constainst';
+import { Plants } from './constants';
 import {
   SEASONAL_HARVEST_BUFF,
   SEASONAL_HARVEST_DEBUFF,
@@ -12,15 +12,12 @@ const getPlantationState = (field: Plantation): [PlantationState, number] => {
 
   const plant = Plants[field.plantType];
 
-  const timeToHarvest =
-    field.harvestAt || field.plantedAt + minutesToMillis(plant.minutesToHarvest);
-
-  if (Date.now() < timeToHarvest) return ['GROWING', timeToHarvest];
+  if (Date.now() < field.harvestAt) return ['GROWING', field.harvestAt];
 
   const timeToReduce =
     field.plantedSeason === plant.worstSeason ? plant.minutesToRot * SEASONAL_ROT_DEBUFF : 0;
 
-  const timeToRot = timeToHarvest + minutesToMillis(plant.minutesToRot - timeToReduce);
+  const timeToRot = field.harvestAt + minutesToMillis(plant.minutesToRot - timeToReduce);
 
   if (Date.now() >= timeToRot) return ['ROTTEN', timeToRot];
 

@@ -3,7 +3,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { Plants } from '../fazendinha/constainst';
+import { Plants } from '../fazendinha/constants';
 import {
   createActionRow,
   createCustomId,
@@ -19,6 +19,8 @@ import { postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
 import commandRepository from '../../database/repositories/commandRepository';
+import { getSiloLimits } from '../fazendinha/siloUtils';
+import { MessageFlags } from '../../utils/discord/messageUtils';
 
 const handleBuySeedsInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [option] = ctx.sentData;
@@ -59,6 +61,16 @@ const parseModalSumbit = async (
 
     totalPrice += plant.amount * Plants[plant.plant].buyValue;
   }
+
+  const userLimits = getSiloLimits(farmer);
+
+  if (userLimits.used > getSiloLimits(farmer).limit)
+    return ctx.respondInteraction({
+      content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
+        limit: userLimits.limit,
+      }),
+      flags: MessageFlags.EPHEMERAL,
+    });
 
   const userData = await userRepository.ensureFindUser(ctx.user.id);
 

@@ -9,7 +9,7 @@ import { ModalInteraction } from '../../types/interaction';
 import { InteractionContext } from '../../types/menhera';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { extractFields } from '../../utils/discord/modalUtils';
-import { Plants } from '../fazendinha/constainst';
+import { Plants } from '../fazendinha/constants';
 
 const receiveModal = async (
   ctx: ComponentInteractionContext<ModalInteraction>,
