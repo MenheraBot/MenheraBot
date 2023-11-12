@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - **Limites no Silo** - O silo agora possui limite! O limite inicial é de `35` itens, e pode ser aumentado por `5` comprando *Melhorias para a fazendinha*.
+- **Entregas Diárias** - Agora existem as entregas diárias da fazendinha! Ganhe dinheiro realizando entregas no `/fazendinha entregas`. Todo dia um caminhão aparecerá para você fazer entregas. Finalize todas entregas antes do caminhão partir, e ganhe um bônus.
 
 ## [5.10.3] - 2023-11-06
 

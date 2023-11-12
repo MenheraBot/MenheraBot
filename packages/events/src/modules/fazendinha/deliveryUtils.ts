@@ -4,6 +4,7 @@ import {
   MAX_DAILY_AT_FULL_LEVEL,
   MAX_DAILY_PLANTATION_REQUIREMENT_AT_FULL_LEVEL,
   MIN_DAILY_AT_LEVEL_ZERO,
+  Plants,
 } from './constants';
 import { AvailablePlants, DeliveryMission } from './types';
 
@@ -34,7 +35,7 @@ const calculateUserDailyDeliveries = (farmer: DatabaseFarmerSchema): DeliveryMis
   for (let i = 0; i < maxUserDailies; i++) {
     const neededPlants = getRandomAmount(userLevel);
     const plantType = Math.floor(Math.random() * (farmer.biggestSeed + 1));
-    const maxAward = (plantType + 1) * neededPlants * 69;
+    const maxAward = (plantType + 1) * neededPlants * 69 + 10 * Plants[plantType as 1].sellValue;
     const minAward = maxAward * 0.8;
 
     const award = Math.floor(Math.random() * (maxAward - minAward) + minAward);
