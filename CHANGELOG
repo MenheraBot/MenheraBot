@@ -5,11 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased] 
+## [Unreleased]
 
 ### Added
 
-- **Limites no Silo** - O silo agora possui limite! O limite inicial é de `35` itens, e pode ser aumentado por `5` comprando *Melhorias para a fazendinha*.
+- **Limites no Silo** - O silo agora possui limite! O limite inicial é de `35` itens, e pode ser aumentado por `5` comprando _Melhorias para a fazendinha_.
+- **Melhoria do silo** - Aumente o limite de itens de seu silo com `/fazendinha administrar silo`.
 - **Entregas Diárias** - Agora existem as entregas diárias da fazendinha! Ganhe dinheiro realizando entregas no `/fazendinha entregas`. Todo dia um caminhão aparecerá para você fazer entregas. Finalize todas entregas antes do caminhão partir, e ganhe um bônus.
 
 ## [5.10.3] - 2023-11-06
@@ -22,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - **Novos Campos** - Agora é possível comprar novos campos para a sua fazenda! Use o comando `/fazendinha administrar campos` para comprá-los!
 - Os botões da fazendinha agora mostram qual planta está plantada no campo.
 - Agora é possível remover o seu título do perfil no `/personalizar título`.
-- O `/bicho` possui um botão para entrar no servidor de suporte. 
+- O `/bicho` possui um botão para entrar no servidor de suporte.
 
 ### Changed
 

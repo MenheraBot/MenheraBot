@@ -185,6 +185,22 @@ const updateSilo = async (
   }
 };
 
+const upgradeSilo = async (farmerId: BigString): Promise<void> => {
+  await farmerModel.updateOne({ id: `${farmerId}` }, { $inc: { siloUpgrades: 1 } });
+
+  const fromRedis = await MainRedisClient.get(`farmer:${farmerId}`);
+
+  if (fromRedis) {
+    const data = JSON.parse(fromRedis);
+
+    await MainRedisClient.setex(
+      `farmer:${farmerId}`,
+      3600,
+      JSON.stringify(parseMongoUserToRedisUser({ ...data, siloUpgrades: data.siloUpgrades + 1 })),
+    ).catch(debugError);
+  }
+};
+
 const updateDailies = async (farmerId: BigString, dailies: DeliveryMission[]): Promise<void> => {
   await farmerModel.updateOne(
     { id: `${farmerId}` },
@@ -250,6 +266,7 @@ export default {
   getFarmer,
   executePlant,
   getCurrentSeason,
+  upgradeSilo,
   getSeasonalInfo,
   unlockField,
   updateSeason,

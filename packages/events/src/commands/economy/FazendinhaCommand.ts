@@ -10,6 +10,10 @@ import {
   handleAdministrativeComponents,
 } from '../../modules/fazendinha/administrateFields';
 import { executeButtonPressed, executeDailyDelivery } from '../../modules/fazendinha/dailyDelivery';
+import {
+  executeAdministrateSilo,
+  handleUpgradeSilo,
+} from '../../modules/fazendinha/administrateSilo';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -64,6 +68,12 @@ const FazendinhaCommand = createCommand({
           descriptionLocalizations: { 'en-US': '「🟫」・Manage your farm fields' },
           type: ApplicationCommandOptionTypes.SubCommand,
         },
+        {
+          name: 'silo',
+          description: '「🧺」・Administre o limite do seu silo',
+          descriptionLocalizations: { 'en-US': '「🧺」・Manage the limits from your silo' },
+          type: ApplicationCommandOptionTypes.SubCommand,
+        },
       ],
     },
   ],
@@ -74,6 +84,7 @@ const FazendinhaCommand = createCommand({
     handleButtonAction,
     handleAdministrativeComponents,
     executeButtonPressed,
+    handleUpgradeSilo,
   ],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
@@ -90,6 +101,8 @@ const FazendinhaCommand = createCommand({
 
     if (group === 'administrar') {
       if (command === 'campos') return executeAdministrateFields(ctx, farmer);
+
+      if (command === 'silo') return executeAdministrateSilo(ctx, farmer);
     }
 
     if (command === 'entregas')
