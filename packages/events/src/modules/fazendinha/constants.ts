@@ -3,6 +3,10 @@ import { AvailablePlants, PlantsFile, UnlockFieldFile } from './types';
 export const INITIAL_LIMIT_FOR_SILO = 35;
 export const SILO_LIMIT_INCREASE_BY_LEVEL = 5;
 
+export const MAX_DAILY_AT_FULL_LEVEL = 9;
+export const MIN_DAILY_AT_LEVEL_ZERO = 3;
+export const MAX_DAILY_PLANTATION_REQUIREMENT_AT_FULL_LEVEL = 14;
+
 export const UnloadFields: { [field: number]: UnlockFieldFile } = {
   1: {
     cost: 50_000,

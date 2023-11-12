@@ -60,6 +60,12 @@ export interface PlantsFile {
   worstSeason: Seasons;
 }
 
+export interface DeliveryMission {
+  needs: QuantitativePlant[];
+  award: number;
+  experience: number;
+}
+
 export interface UnlockFieldFile {
   neededPlants: QuantitativePlant[];
   cost: number;

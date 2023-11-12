@@ -9,6 +9,7 @@ import {
   executeAdministrateFields,
   handleAdministrativeComponents,
 } from '../../modules/fazendinha/administrateFields';
+import { executeDailyDelivery } from '../../modules/fazendinha/dailyDelivery';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -38,6 +39,13 @@ const FazendinhaCommand = createCommand({
       descriptionLocalizations: {
         'en-US': "「🧺」・Take a look on your farm's silo",
       },
+      type: ApplicationCommandOptionTypes.SubCommand,
+    },
+    {
+      name: 'entregas',
+      description: '「🚚」・ Veja e gerencie as tuas entregas diárias',
+      nameLocalizations: { 'en-US': 'deliveries' },
+      descriptionLocalizations: { 'en-US': '「🚚」・ View and manage your daily deliveries' },
       type: ApplicationCommandOptionTypes.SubCommand,
     },
     {
@@ -82,6 +90,9 @@ const FazendinhaCommand = createCommand({
     if (group === 'administrar') {
       if (command === 'campos') return executeAdministrateFields(ctx, farmer);
     }
+
+    if (command === 'entregas')
+      return executeDailyDelivery(ctx, farmer, ctx.authorData.selectedColor);
 
     if (command === 'plantações')
       return displayPlantations(
