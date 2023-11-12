@@ -33,10 +33,14 @@ const calculateUserDailyDeliveries = (farmer: DatabaseFarmerSchema): DeliveryMis
 
   for (let i = 0; i < maxUserDailies; i++) {
     const neededPlants = getRandomAmount(userLevel);
-    const plantType = Math.floor(Math.random() * farmer.biggestSeed);
+    const plantType = Math.floor(Math.random() * (farmer.biggestSeed + 1));
+    const maxAward = (plantType + 1) * neededPlants * 69;
+    const minAward = maxAward * 0.8;
+
+    const award = Math.floor(Math.random() * (maxAward - minAward) + minAward);
 
     toReturnDailies.push({
-      award: (plantType || 1) * neededPlants * 100,
+      award,
       experience: (plantType + 1) * 10,
       needs: [{ amount: neededPlants, plant: plantType }],
       finished: false,
@@ -58,4 +62,7 @@ const getUserDailies = (farmer: DatabaseFarmerSchema): DeliveryMission[] => {
   return newDailies;
 };
 
-export { calculateUserDailyDeliveries, getUserDailies };
+const getFinishAllBonus = (dailies: DeliveryMission[]): number =>
+  Math.floor(dailies.reduce((p, c) => p + c.award, 0) / 2);
+
+export { calculateUserDailyDeliveries, getUserDailies, getFinishAllBonus };

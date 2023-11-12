@@ -4,7 +4,7 @@ import { InteractionContext } from '../../types/menhera';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils';
 import { Plants } from './constants';
-import { getUserDailies } from './deliveryUtils';
+import { getFinishAllBonus, getUserDailies } from './deliveryUtils';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import farmerRepository from '../../database/repositories/farmerRepository';
@@ -63,6 +63,22 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
     ),
   ]);
 
+  if (farmer.dailies.every((a) => a.finished)) {
+    const bonus = getFinishAllBonus(farmer.dailies);
+
+    await Promise.all([
+      postTransaction(
+        `${bot.id}`,
+        `${ctx.user.id}`,
+        bonus,
+        'estrelinhas',
+        ApiTransactionReason.DAILY_FARM,
+        0,
+      ),
+      starsRepository.addStars(ctx.user.id, bonus),
+    ]);
+  }
+
   ctx.makeMessage({
     content: `Você completou essa entrega! Tu recebeu **${dailyUser.award}** :star: e ${dailyUser.experience} XP`,
     components: [],
@@ -76,16 +92,17 @@ const executeDailyDelivery = async (
   embedColor: string,
 ): Promise<void> => {
   const endsIn = getMillisecondsToTheEndOfDay() + Date.now();
+
+  const userDailies = getUserDailies(farmer);
+
   const embed = createEmbed({
     title: 'Entregas Diárias',
     color: hexStringToNumber(embedColor),
     fields: [],
-    description: `Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas. Preencha todos os pedidos e ganhe prêmios\n\nO caminhão partirá <t:${millisToSeconds(
-      endsIn,
-    )}:R>`,
+    description: `### Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas.\n### Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **${getFinishAllBonus(
+      userDailies,
+    )}** :star: estrelinhas\n\n### O caminhão partirá <t:${millisToSeconds(endsIn)}:R>`,
   });
-
-  const userDailies = getUserDailies(farmer);
 
   const toSendComponents: ActionRow[] = [];
 
@@ -94,7 +111,7 @@ const executeDailyDelivery = async (
       name: `${a.finished ? '~~' : ''}Entrega ${i + 1}${a.finished ? '~~ ✅' : ''}`,
       inline: true,
       value: `Estrelinhas: **${a.award}** :star:\nExperiência: **${a.experience}**\n${a.needs.map(
-        (b) => `${b.amount}x ${Plants[b.plant].emoji}`,
+        (b) => `Necessário: **${b.amount}x** ${Plants[b.plant].emoji}`,
       )}`,
     });
 
