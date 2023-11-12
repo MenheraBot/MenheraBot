@@ -9,7 +9,7 @@ import {
   executeAdministrateFields,
   handleAdministrativeComponents,
 } from '../../modules/fazendinha/administrateFields';
-import { executeDailyDelivery } from '../../modules/fazendinha/dailyDelivery';
+import { executeButtonPressed, executeDailyDelivery } from '../../modules/fazendinha/dailyDelivery';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -73,6 +73,7 @@ const FazendinhaCommand = createCommand({
     changeSelectedSeed,
     handleButtonAction,
     handleAdministrativeComponents,
+    executeButtonPressed,
   ],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {

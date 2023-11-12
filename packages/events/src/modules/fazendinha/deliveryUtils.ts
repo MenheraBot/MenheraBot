@@ -1,5 +1,5 @@
+import farmerRepository from '../../database/repositories/farmerRepository';
 import { DatabaseFarmerSchema } from '../../types/database';
-import { logger } from '../../utils/logger';
 import {
   MAX_DAILY_AT_FULL_LEVEL,
   MAX_DAILY_PLANTATION_REQUIREMENT_AT_FULL_LEVEL,
@@ -16,8 +16,6 @@ const getMaxUserDailies = (level: number): number =>
 const getRandomAmount = (level: number): number => {
   const minimal = Math.floor(level / 4) + 1;
   const maximumCount = Math.floor(level / 3) + 3;
-
-  logger.debug(minimal, maximumCount);
 
   const maximum =
     maximumCount > MAX_DAILY_PLANTATION_REQUIREMENT_AT_FULL_LEVEL
@@ -41,10 +39,23 @@ const calculateUserDailyDeliveries = (farmer: DatabaseFarmerSchema): DeliveryMis
       award: (plantType || 1) * neededPlants * 100,
       experience: (plantType + 1) * 10,
       needs: [{ amount: neededPlants, plant: plantType }],
+      finished: false,
     });
   }
 
   return toReturnDailies;
 };
 
-export { calculateUserDailyDeliveries };
+const getUserDailies = (farmer: DatabaseFarmerSchema): DeliveryMission[] => {
+  const isUpToDate = farmer.dailyDayId === new Date().getDate();
+
+  if (isUpToDate) return farmer.dailies;
+
+  const newDailies = calculateUserDailyDeliveries(farmer);
+
+  farmerRepository.updateDailies(farmer.id, newDailies);
+
+  return newDailies;
+};
+
+export { calculateUserDailyDeliveries, getUserDailies };

@@ -107,10 +107,13 @@ const farmerSchema = new Schema({
   plantations: { type: Array, default: [{ isPlanted: false }] },
   seeds: { type: Array, default: [] },
   silo: { type: Array, default: [] },
+  experience: { type: Number, deafult: 0 },
   siloUpgrades: { type: Number, default: 0 },
   biggestSeed: { type: Number, default: 0 },
   plantedFields: { type: Number, default: 0 },
   lastPlantedSeed: { type: Number, default: 0 },
+  dailies: { type: Array, default: [] },
+  dailyDayId: { type: Number, default: 0 },
 });
 
 const titlesSchema = new Schema({

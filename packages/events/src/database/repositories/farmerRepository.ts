@@ -6,6 +6,7 @@ import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
 import {
   AvailablePlants,
+  DeliveryMission,
   Plantation,
   PlantedField,
   SeasonData,
@@ -18,6 +19,9 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
   plantations: user.plantations,
   biggestSeed: user.biggestSeed,
   plantedFields: user.plantedFields,
+  dailies: user.dailies,
+  dailyDayId: user.dailyDayId,
+  experience: user.experience,
   seeds: user.seeds,
   siloUpgrades: user.siloUpgrades,
   silo: user.silo,
@@ -181,6 +185,41 @@ const updateSilo = async (
   }
 };
 
+const updateDailies = async (farmerId: BigString, dailies: DeliveryMission[]): Promise<void> => {
+  await farmerModel.updateOne(
+    { id: `${farmerId}` },
+    { $set: { dailies, dailyDayId: new Date().getDate() } },
+  );
+
+  const fromRedis = await MainRedisClient.get(`farmer:${farmerId}`);
+
+  if (fromRedis) {
+    const data = JSON.parse(fromRedis);
+
+    await MainRedisClient.setex(
+      `farmer:${farmerId}`,
+      3600,
+      JSON.stringify(
+        parseMongoUserToRedisUser({ ...data, dailies, dailyDayId: new Date().getDate() }),
+      ),
+    ).catch(debugError);
+  }
+};
+
+const finishDaily = async (
+  farmerId: BigString,
+  dailies: DeliveryMission[],
+  silo: QuantitativePlant[],
+  experience: number,
+): Promise<void> => {
+  await farmerModel.updateOne(
+    { id: `${farmerId}` },
+    { $set: { silo, dailies, dailyDayId: new Date().getDate() }, $inc: { experience } },
+  );
+
+  await MainRedisClient.del(`farmer:${farmerId}`);
+};
+
 const getCurrentSeason = (): Promise<Seasons | null> =>
   MainRedisClient.get('current_season') as Promise<Seasons | null>;
 
@@ -215,6 +254,8 @@ export default {
   unlockField,
   updateSeason,
   updateSilo,
+  finishDaily,
   updateSeeds,
+  updateDailies,
   executeHarvest,
 };

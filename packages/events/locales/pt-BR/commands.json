@@ -940,7 +940,9 @@
       "buy_seed": "comprar sementes",
       "buy_seed_title": "Comprar Sementes",
       "upgrade_farm_title": "Melhorar a Fazenda",
-      "upgrade_farm": "melhorar sua fazenda"
+      "upgrade_farm": "melhorar sua fazenda",
+      "daily_farm": "entrega da fazendinha",
+      "daily_farm_title": "Entregas Diárias"
     }
   },
   "poker": {

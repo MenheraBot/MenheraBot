@@ -1,6 +1,6 @@
 import { Localization } from 'discordeno/types';
 import { profileBadges } from '../modules/badges/profileBadges';
-import { AvailablePlants, Plantation } from '../modules/fazendinha/types';
+import { AvailablePlants, DeliveryMission, Plantation } from '../modules/fazendinha/types';
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
 
@@ -127,5 +127,8 @@ export interface DatabaseFarmerSchema {
   siloUpgrades: number;
   biggestSeed: number;
   plantedFields: number;
+  experience: number;
   lastPlantedSeed: AvailablePlants;
+  dailies: DeliveryMission[];
+  dailyDayId: number;
 }

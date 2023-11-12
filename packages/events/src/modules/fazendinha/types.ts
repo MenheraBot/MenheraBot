@@ -64,6 +64,7 @@ export interface DeliveryMission {
   needs: QuantitativePlant[];
   award: number;
   experience: number;
+  finished: boolean;
 }
 
 export interface UnlockFieldFile {

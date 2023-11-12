@@ -935,7 +935,9 @@
       "buy_seed": "buying seeds",
       "buy_seed_title": "Buy Seeds",
       "upgrade_farm_title": "Upgrade Farm",
-      "upgrade_farm": "upgrading your farm"
+      "upgrade_farm": "upgrading your farm",
+      "daily_farm": "farm delivery",
+      "daily_farm_title": "Daily Delivery"
     }
   },
   "poker": {

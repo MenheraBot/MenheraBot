@@ -9,21 +9,21 @@ const checkNeededItems = (need: QuantitativePlant[], has: QuantitativePlant[]): 
 const removeItems = (
   user: QuantitativePlant[],
   toRemove: QuantitativePlant[],
-): QuantitativePlant[] => {
-  const final: QuantitativePlant[] = [];
+): QuantitativePlant[] =>
+  user.reduce<QuantitativePlant[]>((p, c) => {
+    const remove = toRemove.find((a) => a.plant === c.plant);
 
-  toRemove.forEach((item) => {
-    const fromUser = user.find((a) => a.plant === item.plant);
+    if (!remove) {
+      p.push(c);
+      return p;
+    }
 
-    if (!fromUser) return;
+    const newAmount = c.amount - remove.amount;
 
-    fromUser.amount -= item.amount;
+    if (newAmount > 0) p.push({ plant: c.plant, amount: newAmount });
 
-    if (fromUser.amount > 0) final.push(fromUser);
-  });
-
-  return final;
-};
+    return p;
+  }, []);
 
 interface SiloLimits {
   limit: number;
