@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import { Interaction } from 'discordeno/transformers';
 import fairRepository from '../../database/repositories/fairRepository';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { DatabaseFarmerSchema } from '../../types/database';
@@ -7,6 +8,11 @@ import { checkNeededItems, removeItems } from './siloUtils';
 import { AvailablePlants } from './types';
 import { getDisplayName } from '../../utils/discord/userUtils';
 import farmerRepository from '../../database/repositories/farmerRepository';
+import { logger } from '../../utils/logger';
+
+const announceAutocomplete = async (interaction: Interaction): Promise<void> => {
+  logger.debug(interaction.data?.options?.[0].options?.[0].options);
+};
 
 const executeAnnounceProduct = async (
   ctx: ChatInputInteractionContext,
@@ -58,4 +64,4 @@ const executeAnnounceProduct = async (
   });
 };
 
-export { executeAnnounceProduct };
+export { executeAnnounceProduct, announceAutocomplete };
