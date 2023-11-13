@@ -4,6 +4,7 @@ import {
   DatabaseCommandSchema,
   DatabaseCreditsSchema,
   DatabaseFarmerSchema,
+  DatabaseFeirinhaSchema,
   DatabaseGuildSchema,
   DatabaseProfileImagesSchema,
   DatabaseTitlesSchema,
@@ -123,6 +124,15 @@ const titlesSchema = new Schema({
   registeredAt: { type: Number, default: Date.now },
 });
 
+const feirinhaSchema = new Schema({
+  userId: { type: String },
+  plantType: { type: Number },
+  amount: { type: Number },
+  price: { type: Number },
+  [`name_pt-BR`]: { type: String },
+  [`name_en-US`]: { type: String },
+});
+
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
 export const guildsModel = model<DatabaseGuildSchema>('guild', guildSchema);
 export const usersModel = model<DatabaseUserSchema>('usersdb', userSchema);
@@ -131,3 +141,4 @@ export const themeCreditsModel = model<DatabaseCreditsSchema>('credits', themeCr
 export const profileImagesModel = model<DatabaseProfileImagesSchema>('images', profileImagesSchema);
 export const farmerModel = model<DatabaseFarmerSchema>('farmer', farmerSchema);
 export const titlesModel = model<DatabaseTitlesSchema>('titles', titlesSchema);
+export const feirinhaModel = model<DatabaseFeirinhaSchema>('feirinha', feirinhaSchema);

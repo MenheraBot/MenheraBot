@@ -2,6 +2,9 @@ import { AvailablePlants, PlantsFile, UnlockFieldFile } from './types';
 
 export const INITIAL_LIMIT_FOR_SILO = 35;
 export const SILO_LIMIT_INCREASE_BY_LEVEL = 5;
+export const MAX_SILO_UPGRADES = 15;
+
+export const MAX_ITEMS_IN_FAIR_PER_USER = 6;
 
 export const MAX_DAILY_AT_FULL_LEVEL = 9;
 export const MIN_DAILY_AT_LEVEL_ZERO = 3;

@@ -119,6 +119,15 @@ export interface DatabaseTitlesSchema {
   registeredAt: number;
 }
 
+export interface DatabaseFeirinhaSchema {
+  userId: string;
+  plantType: AvailablePlants;
+  amount: number;
+  price: number;
+  [`name_pt-BR`]: string;
+  [`name_en-US`]: string;
+}
+
 export interface DatabaseFarmerSchema {
   readonly id: string;
   plantations: Plantation[];

@@ -14,6 +14,7 @@ import {
   executeAdministrateSilo,
   handleUpgradeSilo,
 } from '../../modules/fazendinha/administrateSilo';
+import { executeAdministrateFair } from '../../modules/fazendinha/administrateFair';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -74,6 +75,13 @@ const FazendinhaCommand = createCommand({
           descriptionLocalizations: { 'en-US': '「🧺」・Manage the limits from your silo' },
           type: ApplicationCommandOptionTypes.SubCommand,
         },
+        {
+          name: 'feira',
+          nameLocalizations: { 'en-US': 'fair' },
+          description: '「🛒」・Administre a sua feirinha da vizinhança',
+          descriptionLocalizations: { 'en-US': '「🛒」・Manage your neighborhood fair' },
+          type: ApplicationCommandOptionTypes.SubCommand,
+        },
       ],
     },
   ],
@@ -103,6 +111,8 @@ const FazendinhaCommand = createCommand({
       if (command === 'campos') return executeAdministrateFields(ctx, farmer);
 
       if (command === 'silo') return executeAdministrateSilo(ctx, farmer);
+
+      if (command === 'feira') return executeAdministrateFair(ctx);
     }
 
     if (command === 'entregas')

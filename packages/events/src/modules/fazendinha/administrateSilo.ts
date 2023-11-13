@@ -3,7 +3,7 @@ import ChatInputInteractionContext from '../../structures/command/ChatInputInter
 import { DatabaseFarmerSchema } from '../../types/database';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { SILO_LIMIT_INCREASE_BY_LEVEL } from './constants';
+import { MAX_SILO_UPGRADES, SILO_LIMIT_INCREASE_BY_LEVEL } from './constants';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import userRepository from '../../database/repositories/userRepository';
@@ -16,6 +16,13 @@ import { bot } from '../..';
 const handleUpgradeSilo = async (ctx: ComponentInteractionContext): Promise<void> => {
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
   const user = await userRepository.ensureFindUser(ctx.user.id);
+
+  if (farmer.siloUpgrades >= MAX_SILO_UPGRADES)
+    return ctx.makeMessage({
+      content: 'VOcÊ não pode mais upar o silo',
+      embeds: [],
+      components: [],
+    });
 
   const cost = 50_000 + farmer.siloUpgrades * 15_000;
 
