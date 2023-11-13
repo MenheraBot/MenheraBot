@@ -1,62 +1,49 @@
 import { ActionRow, ButtonStyles } from 'discordeno/types';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import farmerRepository from '../../database/repositories/farmerRepository';
 import userRepository from '../../database/repositories/userRepository';
-import starsRepository from '../../database/repositories/starsRepository';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { ApiTransactionReason } from '../../types/api';
-import { bot } from '../..';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import fairRepository from '../../database/repositories/fairRepository';
 import { Plants } from './constants';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
+import { InteractionContext } from '../../types/menhera';
+import { DatabaseUserSchema } from '../../types/database';
 
-const handleUpgradeSilo = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const farmer = await farmerRepository.getFarmer(ctx.user.id);
-  const user = await userRepository.ensureFindUser(ctx.user.id);
+const handleDissmissShop = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const products = await fairRepository.getUserProducts(ctx.user.id);
 
-  const cost = 50_000 + farmer.siloUpgrades * 15_000;
+  const [index] = ctx.sentData;
 
-  if (user.estrelinhas < cost)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: 'Voce não tem estrelinhas o suficiente para aumentar seu silo',
-    });
+  const announcement = products[Number(index)];
 
-  await Promise.all([
-    starsRepository.removeStars(ctx.user.id, cost),
-    farmerRepository.upgradeSilo(ctx.user.id),
-    postTransaction(
-      `${ctx.user.id}`,
-      `${bot.id}`,
-      cost,
-      'estrelinhas',
-      ApiTransactionReason.UPGRADE_FARM,
-      0,
-    ),
-  ]);
+  if (typeof announcement === 'undefined')
+    return ctx.makeMessage({ content: 'Esse anúncio não existe mais', components: [], embeds: [] });
 
-  ctx.makeMessage({ components: [], content: `Você melhorou seu silo!`, embeds: [] });
+  await fairRepository.deleteAnnouncement(announcement._id);
+
+  return executeAdministrateFair(ctx);
 };
 
-const executeAdministrateFair = async (ctx: ChatInputInteractionContext): Promise<void> => {
+const executeAdministrateFair = async (
+  ctx: InteractionContext,
+  authorData?: DatabaseUserSchema,
+): Promise<void> => {
   const fromUser = await fairRepository.getUserProducts(ctx.user.id);
+
+  const userData = authorData ?? (await userRepository.ensureFindUser(ctx.user.id));
 
   const embed = createEmbed({
     author: {
       name: getDisplayName(ctx.user),
       iconUrl: getUserAvatar(ctx.user, { enableGif: true }),
     },
-    color: hexStringToNumber(ctx.authorData.selectedColor),
+    color: hexStringToNumber(userData.selectedColor),
     fields: [],
   });
 
   if (fromUser.length === 0) {
     embed.description = 'Você não possui itens anunciados no momento';
-    return ctx.makeMessage({ embeds: [embed] });
+    return ctx.makeMessage({ embeds: [embed], components: [] });
   }
 
   const toSendComponents: ActionRow[] = [];
@@ -64,6 +51,7 @@ const executeAdministrateFair = async (ctx: ChatInputInteractionContext): Promis
   fromUser.forEach((item, i) => {
     embed.fields?.push({
       name: `(${i + 1}) ${item['name_pt-BR']}`,
+      inline: true,
       value: `${item.price} :star:\n${Plants[item.plantType].emoji} ${item.amount}x`,
     });
 
@@ -83,4 +71,4 @@ const executeAdministrateFair = async (ctx: ChatInputInteractionContext): Promis
   ctx.makeMessage({ embeds: [embed], components: toSendComponents });
 };
 
-export { executeAdministrateFair, handleUpgradeSilo };
+export { executeAdministrateFair, handleDissmissShop };

@@ -120,6 +120,7 @@ export interface DatabaseTitlesSchema {
 }
 
 export interface DatabaseFeirinhaSchema {
+  _id: string;
   userId: string;
   plantType: AvailablePlants;
   amount: number;

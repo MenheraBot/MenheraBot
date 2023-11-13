@@ -14,7 +14,11 @@ import {
   executeAdministrateSilo,
   handleUpgradeSilo,
 } from '../../modules/fazendinha/administrateSilo';
-import { executeAdministrateFair } from '../../modules/fazendinha/administrateFair';
+import {
+  executeAdministrateFair,
+  handleDissmissShop,
+} from '../../modules/fazendinha/administrateFair';
+import { executeAnnounceProduct } from '../../modules/fazendinha/announceProduct';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -52,6 +56,56 @@ const FazendinhaCommand = createCommand({
       nameLocalizations: { 'en-US': 'deliveries' },
       descriptionLocalizations: { 'en-US': '「🚚」・ View and manage your daily deliveries' },
       type: ApplicationCommandOptionTypes.SubCommand,
+    },
+    {
+      name: 'feira',
+      nameLocalizations: { 'en-US': 'fair' },
+      description: '「🛒」・Acesse a feira da vizinhança',
+      descriptionLocalizations: { 'en-US': '「🛒」・Access the neighborhood fair' },
+      type: ApplicationCommandOptionTypes.SubCommandGroup,
+      options: [
+        {
+          type: ApplicationCommandOptionTypes.SubCommand,
+          name: 'anunciar',
+          nameLocalizations: { 'en-US': 'advertise' },
+          description: '「🏷️」・Anuncie um produto na feira da vizinhança',
+          descriptionLocalizations: {
+            'en-US': '「🏷️」・Advertise a product at the neighborhood fair',
+          },
+          options: [
+            {
+              name: 'produto',
+              nameLocalizations: { 'en-US': 'product' },
+              description: 'Escolha qual produto você quer vender',
+              descriptionLocalizations: { 'en-US': 'Select which product do you wanna sell' },
+              type: ApplicationCommandOptionTypes.Integer,
+              autocomplete: true,
+              required: true,
+            },
+            {
+              name: 'quantidade',
+              nameLocalizations: { 'en-US': 'amount' },
+              description: 'Informe a quantidade de produtos a vender',
+              descriptionLocalizations: { 'en-US': 'Enter the quantity of products to sell' },
+              type: ApplicationCommandOptionTypes.Integer,
+              minValue: 1,
+              maxValue: 10,
+              required: true,
+            },
+            {
+              name: 'preço',
+              nameLocalizations: { 'en-US': 'price' },
+              description: 'Por quantas estrelinhas tu vai anunciar esse produto?',
+              descriptionLocalizations: {
+                'en-US': 'How many stars are you going to advertise this product for?',
+              },
+              type: ApplicationCommandOptionTypes.Integer,
+              autocomplete: true,
+              required: true,
+            },
+          ],
+        },
+      ],
     },
     {
       name: 'administrar',
@@ -93,6 +147,7 @@ const FazendinhaCommand = createCommand({
     handleAdministrativeComponents,
     executeButtonPressed,
     handleUpgradeSilo,
+    handleDissmissShop,
   ],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
@@ -112,7 +167,11 @@ const FazendinhaCommand = createCommand({
 
       if (command === 'silo') return executeAdministrateSilo(ctx, farmer);
 
-      if (command === 'feira') return executeAdministrateFair(ctx);
+      if (command === 'feira') return executeAdministrateFair(ctx, ctx.authorData);
+    }
+
+    if (group === 'feira') {
+      if (command === 'anunciar') return executeAnnounceProduct(ctx, farmer);
     }
 
     if (command === 'entregas')
