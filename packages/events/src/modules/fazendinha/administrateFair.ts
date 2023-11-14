@@ -50,7 +50,7 @@ const executeAdministrateFair = async (
 
   fromUser.forEach((item, i) => {
     embed.fields?.push({
-      name: `(${i + 1}) ${item['name_pt-BR']}`,
+      name: `${item['name_pt-BR']} (${i + 1})`,
       inline: true,
       value: `${item.price} :star:\n${Plants[item.plantType].emoji} ${item.amount}x`,
     });

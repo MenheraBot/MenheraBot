@@ -4,10 +4,14 @@ import { findBestMatch } from 'string-similarity';
 import fairRepository from '../../database/repositories/fairRepository';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { DatabaseFarmerSchema } from '../../types/database';
-import { MAX_ITEMS_IN_FAIR_PER_USER, Plants } from './constants';
+import {
+  MAXIMUM_PRICE_TO_SELL_IN_FAIR,
+  MAX_ITEMS_IN_FAIR_PER_USER,
+  MINIMUM_PRICE_TO_SELL_IN_FAIR,
+  Plants,
+} from './constants';
 import { checkNeededItems, removeItems } from './siloUtils';
 import { AvailablePlants } from './types';
-import { getDisplayName } from '../../utils/discord/userUtils';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { localizedResources } from '../../utils/miscUtils';
 import { respondWithChoices } from '../../utils/discord/interactionRequests';
@@ -88,8 +92,8 @@ const announceAutocomplete = async (interaction: Interaction): Promise<void | nu
     if (!plantFile) return invalidInfo();
 
     const basePrice = Math.floor(plantFile.sellValue * amount);
-    const minimumPrice = Math.floor(basePrice * 0.5);
-    const maximumPrice = Math.floor(basePrice * 1.5);
+    const minimumPrice = Math.floor(basePrice * MINIMUM_PRICE_TO_SELL_IN_FAIR);
+    const maximumPrice = Math.floor(basePrice * MAXIMUM_PRICE_TO_SELL_IN_FAIR);
 
     const choiceText = localizedResources('commands:fazendinha.feira.select-between', {
       min: minimumPrice,
@@ -125,8 +129,8 @@ const executeAnnounceProduct = async (
       content: `Você não tem **${amount}** ${plantInfo.emoji} para vender`,
     });
 
-  const maxValue = Math.floor(plantInfo.sellValue * amount * 1.5);
-  const minValue = Math.floor(plantInfo.sellValue * amount * 0.75);
+  const maxValue = Math.floor(plantInfo.sellValue * amount * MAXIMUM_PRICE_TO_SELL_IN_FAIR);
+  const minValue = Math.floor(plantInfo.sellValue * amount * MINIMUM_PRICE_TO_SELL_IN_FAIR);
 
   if (price < minValue || price > maxValue)
     return ctx.makeMessage({
@@ -145,11 +149,12 @@ const executeAnnounceProduct = async (
     plant,
     amount,
     price,
-    `[${getDisplayName(ctx.user, true)}] ${i18next.getFixedT('pt-BR')(`data:plants.${plant}`)}`,
-    `[${getDisplayName(ctx.user, true)}] ${i18next.getFixedT('en-US')(`data:plants.${plant}`)}`,
+    `[${ctx.user.username}] ${i18next.getFixedT('pt-BR')(`data:plants.${plant}`)}`,
+    `[${ctx.user.username}] ${i18next.getFixedT('en-US')(`data:plants.${plant}`)}`,
   );
 
   await farmerRepository.updateSilo(ctx.user.id, removeItems(farmer.silo, [{ amount, plant }]));
+
   ctx.makeMessage({
     content: `Item anunciado! Você anunciou **${amount}x** ${plantInfo.emoji} por ${price} :star:`,
   });
