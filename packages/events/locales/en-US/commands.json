@@ -1056,6 +1056,10 @@
       "autumn": "Autumn",
       "spring": "Spring"
     },
+    "feira": {
+      "invalid-plant-or-amount": "❌ | Please inform the amount and product before choosing the price!",
+      "select-between": "⭐ | Write any value between {{min}} and {{max}}"
+    },
     "plantations": {
       "field": "Field ({{index}})",
       "seeds": "Seeds",

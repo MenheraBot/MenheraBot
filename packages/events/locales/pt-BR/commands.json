@@ -1061,6 +1061,10 @@
       "autumn": "Outono",
       "spring": "Primavera"
     },
+    "feira": {
+      "invalid-plant-or-amount": "❌ | Informe a quantidade e o produto antes de escolher o preço!",
+      "select-between": "⭐ | Digite qualquer valor entre {{min}} e {{max}}"
+    },
     "plantations": {
       "field": "Campo ({{index}})",
       "description": "**Estação atual**: {{emoji}} _{{season}}_\n**Termina** <t:{{unix}}:R>",

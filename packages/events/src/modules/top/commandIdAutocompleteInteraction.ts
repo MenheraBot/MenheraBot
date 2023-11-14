@@ -1,18 +1,8 @@
 import { ApplicationCommandOptionChoice, Interaction } from 'discordeno/transformers';
-import { InteractionResponseTypes } from 'discordeno/types';
 import { findBestMatch } from 'string-similarity';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
-import { debugError } from '../../utils/debugError';
-import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
 import { bot } from '../..';
-
-const respondWithChoices = (interaction: Interaction, choices: ApplicationCommandOptionChoice[]) =>
-  sendInteractionResponse(interaction.id, interaction.token, {
-    type: InteractionResponseTypes.ApplicationCommandAutocompleteResult,
-    data: {
-      choices,
-    },
-  }).catch(debugError);
+import { respondWithChoices } from '../../utils/discord/interactionRequests';
 
 const namedCommands: ApplicationCommandOptionChoice[] = [];
 

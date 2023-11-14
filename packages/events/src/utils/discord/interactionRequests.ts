@@ -1,10 +1,13 @@
 import {
+  ApplicationCommandOptionChoice,
   BigString,
+  Interaction,
   InteractionCallbackData,
   InteractionResponse,
   InteractionResponseTypes,
 } from 'discordeno';
 import { bot } from '../../index';
+import { debugError } from '../debugError';
 
 const sendInteractionResponse = async (
   interactionId: BigString,
@@ -58,4 +61,20 @@ const sendFollowupMessage = async (token: string, options: InteractionResponse):
     }),
   });
 
-export { sendInteractionResponse, editOriginalInteractionResponse, sendFollowupMessage };
+const respondWithChoices = (
+  interaction: Interaction,
+  choices: ApplicationCommandOptionChoice[],
+): Promise<void | null> =>
+  sendInteractionResponse(interaction.id, interaction.token, {
+    type: InteractionResponseTypes.ApplicationCommandAutocompleteResult,
+    data: {
+      choices,
+    },
+  }).catch(debugError);
+
+export {
+  sendInteractionResponse,
+  editOriginalInteractionResponse,
+  sendFollowupMessage,
+  respondWithChoices,
+};
