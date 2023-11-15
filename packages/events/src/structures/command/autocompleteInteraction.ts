@@ -3,6 +3,7 @@ import { executeGivebadgeAutocomplete } from '../../modules/badges/givebadgeComm
 import { executeCommandNameAutocomplete } from '../../modules/top/commandIdAutocompleteInteraction';
 import { executeTituleAutocompleteInteraction } from '../../commands/util/PersonalizeCommand';
 import { announceAutocomplete } from '../../modules/fazendinha/announceProduct';
+import { listItemAutocomplete } from '../../modules/fazendinha/exploreFair';
 
 const autocompleteInteraction = (interaction: Interaction): void => {
   const commandName = interaction.data?.name;
@@ -17,8 +18,17 @@ const autocompleteInteraction = (interaction: Interaction): void => {
     case 'top':
       executeCommandNameAutocomplete(interaction);
       break;
-    case 'fazendinha':
-      announceAutocomplete(interaction);
+    case 'fazendinha': {
+      const subcommand = interaction.data?.options?.[0].options?.[0].name;
+
+      if (subcommand === 'anunciar') {
+        announceAutocomplete(interaction);
+        break;
+      }
+
+      listItemAutocomplete(interaction);
+      break;
+    }
   }
 };
 

@@ -121,7 +121,7 @@ const localizedAction = (
   chips?: number,
 ): SelectOption => ({
   label: ctx.locale(`commands:poker.actions.${action}`),
-  value: chips ? `${action} | ${chips}` : action,
+  value: chips ? `${action}|${chips}` : action,
   description: ctx.locale(`commands:poker.actions.${action}-description`, { chips }),
 });
 

@@ -149,8 +149,12 @@ const executeAnnounceProduct = async (
     plant,
     amount,
     price,
-    `[${ctx.user.username}] ${i18next.getFixedT('pt-BR')(`data:plants.${plant}`)}`,
-    `[${ctx.user.username}] ${i18next.getFixedT('en-US')(`data:plants.${plant}`)}`,
+    `[${ctx.user.username}] ${amount}x ${i18next.getFixedT('pt-BR')(
+      `data:plants.${plant}`,
+    )} ${price}⭐`,
+    `[${ctx.user.username}] ${amount}x ${i18next.getFixedT('en-US')(
+      `data:plants.${plant}`,
+    )} ${price}⭐`,
   );
 
   await farmerRepository.updateSilo(ctx.user.id, removeItems(farmer.silo, [{ amount, plant }]));

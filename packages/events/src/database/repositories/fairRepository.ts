@@ -28,8 +28,8 @@ const deleteAnnouncement = async (id: string): Promise<void> => {
   const deleted = await feirinhaModel.findByIdAndDelete(id);
   if (!deleted) return;
 
-  MainRedisClient.srem('fair_announcement:pt-BR', deleted['name_pt-BR']);
-  await MainRedisClient.srem('fair_announcement:en-US', deleted['name_en-US']);
+  MainRedisClient.srem('fair_announcement:pt-BR', `${deleted['name_pt-BR']}|${id}`);
+  await MainRedisClient.srem('fair_announcement:en-US', `${deleted['name_en-US']}|${id}`);
 };
 
 const getAnnoucementNames = async (language: AvailableLanguages): Promise<string[]> =>
@@ -77,8 +77,8 @@ const announceProduct = async (
   });
 
   MainRedisClient.sadd(`fair_announcement:all`, announcement._id);
-  MainRedisClient.sadd('fair_announcement:pt-BR', nameBr);
-  await MainRedisClient.sadd('fair_announcement:en-US', nameUs);
+  MainRedisClient.sadd('fair_announcement:pt-BR', `${nameBr}|${announcement._id}`);
+  await MainRedisClient.sadd('fair_announcement:en-US', `${nameUs}|${announcement._id}`);
 };
 
 export default {

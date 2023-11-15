@@ -1,3 +1,5 @@
+import { Interaction } from 'discordeno/transformers';
+import { findBestMatch } from 'string-similarity';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
 import { InteractionContext } from '../../types/menhera';
 import fairRepository from '../../database/repositories/fairRepository';
@@ -8,6 +10,37 @@ import starsRepository from '../../database/repositories/starsRepository';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { ApiTransactionReason } from '../../types/api';
+import { respondWithChoices } from '../../utils/discord/interactionRequests';
+import { resolveSeparatedStrings } from '../../utils/discord/componentUtils';
+
+const listItemAutocomplete = async (interaction: Interaction): Promise<void | null> => {
+  const input = getOptionFromInteraction<string>(interaction, 'item', false);
+
+  if (!input) return;
+
+  const availableItems = await fairRepository.getAnnoucementNames(
+    interaction.locale === 'en-US' ? 'en-US' : 'pt-BR',
+  );
+
+  const ratings = findBestMatch(input, availableItems)
+    .ratings.sort((a, b) => b.rating - a.rating)
+    .slice(0, 10);
+
+  if (ratings.length === 0)
+    return respondWithChoices(interaction, [{ name: 'Não há anúncios disponíveis', value: 's' }]);
+
+  respondWithChoices(
+    interaction,
+    ratings.map((item, i) => {
+      const [name, id] = resolveSeparatedStrings(item.target);
+
+      return {
+        name: `${name} (${i + 1})`,
+        value: id,
+      };
+    }),
+  );
+};
 
 const executeBuyItem = async (
   ctx: InteractionContext,
@@ -90,4 +123,4 @@ const executeExploreFair = async (
   if (item) return executeBuyItem(ctx, farmer, item);
 };
 
-export { executeExploreFair };
+export { executeExploreFair, listItemAutocomplete };
