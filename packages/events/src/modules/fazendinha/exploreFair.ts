@@ -1,4 +1,4 @@
-import { Interaction } from 'discordeno/transformers';
+import { Interaction, User } from 'discordeno/transformers';
 import { findBestMatch } from 'string-similarity';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
 import { InteractionContext } from '../../types/menhera';
@@ -12,11 +12,11 @@ import { postTransaction } from '../../utils/apiRequests/statistics';
 import { ApiTransactionReason } from '../../types/api';
 import { respondWithChoices } from '../../utils/discord/interactionRequests';
 import { resolveSeparatedStrings } from '../../utils/discord/componentUtils';
+import { createEmbed } from '../../utils/discord/embedUtils';
+import { mentionUser } from '../../utils/discord/userUtils';
 
 const listItemAutocomplete = async (interaction: Interaction): Promise<void | null> => {
-  const input = getOptionFromInteraction<string>(interaction, 'item', false);
-
-  if (!input) return;
+  const input = getOptionFromInteraction<string>(interaction, 'item', false) ?? '';
 
   const availableItems = await fairRepository.getAnnoucementNames(
     interaction.locale === 'en-US' ? 'en-US' : 'pt-BR',
@@ -113,14 +113,35 @@ const executeBuyItem = async (
   });
 };
 
+const displayFair = async (ctx: InteractionContext, farmer: DatabaseFarmerSchema, user: User) => {
+  const userAnnouncements = await fairRepository.getUserProducts(user.id);
+
+  if (userAnnouncements.length === 0)
+    return ctx.makeMessage({
+      embeds: [],
+      components: [],
+      content: `${mentionUser(user.id)} não possui nenhum item anunciado!`,
+    });
+
+  const embed = createEmbed({
+    title: 'Feirinha da Vizinhança',
+    author: { name: farmer.id },
+    description: 'Tell me lies, ooh, girl, tell me lies [...]',
+  });
+
+  ctx.makeMessage({ embeds: [embed] });
+};
+
 const executeExploreFair = async (
   ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
 ): Promise<void> => {
-  // const user = getOptionFromInteraction<User>(ctx.interaction, 'vizinho', 'users', false);
+  const user = getOptionFromInteraction<User>(ctx.interaction, 'vizinho', 'users', false);
   const item = getOptionFromInteraction<string>(ctx.interaction, 'item', false, false);
 
   if (item) return executeBuyItem(ctx, farmer, item);
+
+  if (user) return displayFair(ctx, farmer, user);
 };
 
 export { executeExploreFair, listItemAutocomplete };
