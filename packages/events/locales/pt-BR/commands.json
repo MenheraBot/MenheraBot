@@ -942,7 +942,9 @@
       "upgrade_farm_title": "Melhorar a Fazenda",
       "upgrade_farm": "melhorar sua fazenda",
       "daily_farm": "entrega da fazendinha",
-      "daily_farm_title": "Entregas Diárias"
+      "daily_farm_title": "Entregas Diárias",
+      "buy_fair": "comprar na feira",
+      "buy_fair_title": "Feirinha"
     }
   },
   "poker": {

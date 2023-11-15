@@ -937,7 +937,9 @@
       "upgrade_farm_title": "Upgrade Farm",
       "upgrade_farm": "upgrading your farm",
       "daily_farm": "farm delivery",
-      "daily_farm_title": "Daily Delivery"
+      "daily_farm_title": "Daily Delivery",
+      "buy_fair": "buying in fair",
+      "buy_fair_title": "Fair"
     }
   },
   "poker": {

@@ -99,7 +99,10 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   farmer.plantations[selectedField] = { isPlanted: false };
 
-  const updateStats = state === 'MATURE' && field.plantType === farmer.biggestSeed;
+  const updateStats =
+    state === 'MATURE' &&
+    field.plantType === farmer.biggestSeed &&
+    farmer.biggestSeed < AvailablePlants.Mushroom;
 
   await farmerRepository.executeHarvest(
     ctx.user.id,

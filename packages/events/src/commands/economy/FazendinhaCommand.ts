@@ -19,6 +19,7 @@ import {
   handleDissmissShop,
 } from '../../modules/fazendinha/administrateFair';
 import { executeAnnounceProduct } from '../../modules/fazendinha/announceProduct';
+import { executeExploreFair } from '../../modules/fazendinha/exploreFair';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -105,6 +106,34 @@ const FazendinhaCommand = createCommand({
             },
           ],
         },
+        {
+          name: 'comprar',
+          nameLocalizations: { 'en-US': 'buy' },
+          description: '「🛒」・Compre itens da feira da vizinhança',
+          descriptionLocalizations: { 'en-US': '「🛒」・Buy items from the neighborhood fair' },
+          type: ApplicationCommandOptionTypes.SubCommand,
+          options: [
+            {
+              name: 'item',
+              nameLocalizations: { 'en-US': 'item' },
+              description: 'Item que você quer comprar',
+              descriptionLocalizations: { 'en-US': 'Item that you want to buy' },
+              type: ApplicationCommandOptionTypes.String,
+              autocomplete: true,
+              required: false,
+            },
+            {
+              name: 'vizinho',
+              nameLocalizations: { 'en-US': 'neighbor' },
+              description: 'Vizinho específico que você quer ver os itens a venda',
+              descriptionLocalizations: {
+                'en-US': 'Specific neighbor you want to see items for sale',
+              },
+              type: ApplicationCommandOptionTypes.User,
+              required: false,
+            },
+          ],
+        },
       ],
     },
     {
@@ -172,6 +201,8 @@ const FazendinhaCommand = createCommand({
 
     if (group === 'feira') {
       if (command === 'anunciar') return executeAnnounceProduct(ctx, farmer);
+
+      if (command === 'comprar') return executeExploreFair(ctx, farmer);
     }
 
     if (command === 'entregas')

@@ -21,6 +21,7 @@ import { ApiTransactionReason } from '../../types/api';
 import commandRepository from '../../database/repositories/commandRepository';
 import { getSiloLimits } from '../fazendinha/siloUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
+import { AvailablePlants } from '../fazendinha/types';
 
 const handleBuySeedsInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [option] = ctx.sentData;
@@ -195,12 +196,15 @@ const buySeeds = async (
           }),
         };
       }),
-    footer: {
-      text: ctx.locale('commands:loja.buy_seeds.harvest-more', {
-        amount: 10 - farmer.plantedFields,
-        emoji: Plants[farmer.biggestSeed as 1].emoji,
-      }),
-    },
+    footer:
+      farmer.biggestSeed < AvailablePlants.Mushroom
+        ? {
+            text: ctx.locale('commands:loja.buy_seeds.harvest-more', {
+              amount: 10 - farmer.plantedFields,
+              emoji: Plants[farmer.biggestSeed as 1].emoji,
+            }),
+          }
+        : undefined,
   });
 
   selectMenu.maxValues = selectMenu.options.length > 5 ? 5 : selectMenu.options.length;

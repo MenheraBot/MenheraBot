@@ -6,6 +6,7 @@ import type events from '../../locales/pt-BR/events.json';
 import type permissions from '../../locales/pt-BR/permissions.json';
 
 export const availableLanguages = ['pt-BR' as const, 'en-US' as const];
+export type AvailableLanguages = (typeof availableLanguages)[number];
 
 export type Resources = {
   commands: typeof commands;

@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import { Translation, availableLanguages } from '../types/i18next';
+import { AvailableLanguages, Translation, availableLanguages } from '../types/i18next';
 
 const capitalize = <S extends string>(str: S): Capitalize<S> =>
   (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<S>;
@@ -22,7 +22,7 @@ const negate = (value: number): number => value * -1;
 const localizedResources = (
   key: Translation,
   options?: Record<string, unknown>,
-): Record<(typeof availableLanguages)[number], string> => {
+): Record<AvailableLanguages, string> => {
   return availableLanguages.reduce((p, c) => {
     const fixedT = i18next.getFixedT(c);
     const result = fixedT(key, options);

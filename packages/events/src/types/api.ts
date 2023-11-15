@@ -84,6 +84,7 @@ export enum ApiTransactionReason {
   BUY_SEED = 'buy_seed',
   UPGRADE_FARM = 'upgrade_farm',
   DAILY_FARM = 'daily_farm',
+  BUY_FAIR = 'buy_fair',
 }
 
 type TransactionType = DatabaseHuntingTypes | 'estrelinhas';

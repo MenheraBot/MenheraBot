@@ -6,11 +6,11 @@ import { fileURLToPath } from 'node:url';
 
 import { logger } from '../utils/logger';
 import { debugError } from '../utils/debugError';
+import { availableLanguages } from '../types/i18next';
 
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const availableLanguages = ['pt-BR', 'en-US'];
 const namespaces = readdirSync(path.resolve(__dirname, '..', '..', 'locales', 'pt-BR')).map((a) =>
   a.replace('.json', ''),
 );

@@ -6,6 +6,20 @@ const checkNeededItems = (need: QuantitativePlant[], has: QuantitativePlant[]): 
     has.some((user) => user.plant === needed.plant && user.amount >= needed.amount),
   );
 
+const addItems = (user: QuantitativePlant[], toAdd: QuantitativePlant[]): QuantitativePlant[] =>
+  toAdd.reduce<QuantitativePlant[]>((p, c) => {
+    const fromUser = p.find((a) => a.plant === c.plant);
+
+    if (!fromUser) {
+      p.push(c);
+      return p;
+    }
+
+    fromUser.amount = fromUser.amount <= 0 ? c.amount : fromUser.amount + c.amount;
+
+    return p;
+  }, user);
+
 const removeItems = (
   user: QuantitativePlant[],
   toRemove: QuantitativePlant[],
@@ -40,4 +54,4 @@ const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
   return { used, limit };
 };
 
-export { checkNeededItems, removeItems, getSiloLimits };
+export { checkNeededItems, removeItems, addItems, getSiloLimits };

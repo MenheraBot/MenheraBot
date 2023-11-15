@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - **Entregas Diárias** - Agora existem as entregas diárias da fazendinha! Ganhe dinheiro realizando entregas no `/fazendinha entregas`. Todo dia um caminhão aparecerá para você fazer entregas. Finalize todas entregas antes do caminhão partir, e ganhe um bônus.
 - **Feira de Usuários** - Com as entregas diárias, usuários vão precisar de um volume muito grande de itens. Por isso, agora usuários podem comprar plantas de outros através da feira! Com `/fazendinha feira anunciar` você pode anunciar novos itens na feira. Escolha o produto, quantos você quer vender, e por qual preço.
 - _Novo comando_ `/fazendinha administrar feira` - Permite remover o anúncio de seus produtos da feira.
-- 50 novas imagens e gifs foram adicionados aos comandos de ação (obrigada @mareys)
+- Mais de 50  imagens e gifs foram adicionados aos comandos de ação (obrigada @mareys)
 
 ### Changed
 
