@@ -13,19 +13,25 @@ const sendInteractionResponse = async (
   interactionId: BigString,
   token: string,
   options: InteractionResponse,
-): Promise<void> =>
-  bot.rest.sendRequest(bot.rest, {
-    method: 'POST',
-    url: bot.constants.routes.INTERACTION_ID_TOKEN(interactionId, token),
-    payload: bot.rest.createRequestBody(bot.rest, {
+): Promise<void> => {
+  const respond = bot.respondInteraction.get(interactionId);
+
+  if (!respond)
+    return bot.rest.sendRequest(bot.rest, {
       method: 'POST',
-      body: {
-        ...bot.transformers.reverse.interactionResponse(bot, options),
-        file: options?.data?.file,
-      },
-      unauthorized: true,
-    }),
-  });
+      url: bot.constants.routes.INTERACTION_ID_TOKEN(interactionId, token),
+      payload: bot.rest.createRequestBody(bot.rest, {
+        method: 'POST',
+        body: {
+          ...bot.transformers.reverse.interactionResponse(bot, options),
+          file: options?.data?.file,
+        },
+        unauthorized: true,
+      }),
+    });
+
+  respond(bot.transformers.reverse.interactionResponse(bot, options));
+};
 
 const editOriginalInteractionResponse = async (
   token: string,

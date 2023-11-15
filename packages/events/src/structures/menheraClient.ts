@@ -34,6 +34,8 @@ const setupMenheraClient = (client: MenheraClient): void => {
 
   client.commandsInExecution = 0;
 
+  client.respondInteraction = new Map();
+
   loadCommands();
 };
 

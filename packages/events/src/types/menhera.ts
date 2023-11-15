@@ -1,4 +1,4 @@
-import { Bot, Collection } from 'discordeno';
+import { BigString, Bot, Collection } from 'discordeno';
 import { ChatInputInteractionCommand } from './commands';
 import ComponentInteractionContext from '../structures/command/ComponentInteractionContext';
 import ChatInputInteractionContext from '../structures/command/ChatInputInteractionContext';
@@ -17,6 +17,7 @@ export interface MenheraClient extends Bot {
   username: string;
   isMaster: boolean;
   commandsInExecution: number;
+  respondInteraction: Map<BigString, (...args: unknown[]) => unknown>;
   changelog: {
     versionName: string;
     date: string;

@@ -10,9 +10,15 @@ const handleRequest = async (ctx: Context): Promise<void> => {
     return;
   }
 
-  ctx.respond = false;
+  const response = await sendEvent(RequestType.InteractionCreate, { body: ctx.request.body });
 
-  sendEvent(RequestType.InteractionCreate, { body: ctx.request.body });
+  if (!response) {
+    ctx.status = 500;
+    return;
+  }
+
+  ctx.body = response;
+  ctx.status = 200;
 };
 
 const createPostInteractionRouter = (): Router => {

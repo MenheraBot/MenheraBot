@@ -54,6 +54,11 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
 
   const toUseClient = clientsToUse[eventsCounter % clientsToUse.length];
 
+  if (type === RequestType.InteractionCreate) {
+    const result = await toUseClient.conn.request({ type, data }).catch(() => null);
+    return result;
+  }
+
   if (type !== RequestType.Prometheus) {
     toUseClient.conn.send({ type, data });
     return;
