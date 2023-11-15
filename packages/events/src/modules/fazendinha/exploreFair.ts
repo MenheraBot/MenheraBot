@@ -22,12 +22,12 @@ const listItemAutocomplete = async (interaction: Interaction): Promise<void | nu
     interaction.locale === 'en-US' ? 'en-US' : 'pt-BR',
   );
 
+  if (availableItems.length === 0)
+    return respondWithChoices(interaction, [{ name: 'Não há anúncios disponíveis', value: 's' }]);
+
   const ratings = findBestMatch(input, availableItems)
     .ratings.sort((a, b) => b.rating - a.rating)
     .slice(0, 10);
-
-  if (ratings.length === 0)
-    return respondWithChoices(interaction, [{ name: 'Não há anúncios disponíveis', value: 's' }]);
 
   respondWithChoices(
     interaction,
