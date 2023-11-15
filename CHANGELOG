@@ -12,8 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - **Limites no Silo** - O silo agora possui limite! O limite inicial é de `35` itens, e pode ser aumentado por `5` comprando _Melhorias para a fazendinha_.
 - **Melhoria do silo** - Aumente o limite de itens de seu silo com `/fazendinha administrar silo`.
 - **Entregas Diárias** - Agora existem as entregas diárias da fazendinha! Ganhe dinheiro realizando entregas no `/fazendinha entregas`. Todo dia um caminhão aparecerá para você fazer entregas. Finalize todas entregas antes do caminhão partir, e ganhe um bônus.
-- **Feira de Usuários** - Com as entregas diárias, usuários vão precisar de um volume muito grande de itens. Por isso, agora usuários podem comprar plantas de outros através da feira! Com `/fazendinha feira anunciar` você pode anunciar novos itens na feira.
-- _Novo comando_ `/fazendinha administrar feira` - Permite remover o anúncio de seus produtos da feira
+- **Feira de Usuários** - Com as entregas diárias, usuários vão precisar de um volume muito grande de itens. Por isso, agora usuários podem comprar plantas de outros através da feira! Com `/fazendinha feira anunciar` você pode anunciar novos itens na feira. Escolha o produto, quantos você quer vender, e por qual preço.
+- _Novo comando_ `/fazendinha administrar feira` - Permite remover o anúncio de seus produtos da feira.
+- 50 novas imagens e gifs foram adicionados aos comandos de ação (obrigada @mareys)
+
+### Changed
+
+- Imagens de sarrar sozinho ou com alguém no `/sarrar` não possuem mais distinção.
 
 ## [5.10.3] - 2023-11-06
 

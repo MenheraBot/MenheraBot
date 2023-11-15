@@ -28,7 +28,6 @@ interface AssetsLimit {
   punch: number;
   resurrect: number;
   sarrar: number;
-  sarrar_sozinho: number;
   shot: number;
   shy: number;
   slap: number;

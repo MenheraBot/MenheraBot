@@ -79,7 +79,7 @@ const SarrarCommand = createCommand({
       return finishCommand();
     }
 
-    const selectedImage = getAssetLink('sarrar_sozinho');
+    const selectedImage = getAssetLink('sarrar');
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
 
     const embed = createEmbed({
