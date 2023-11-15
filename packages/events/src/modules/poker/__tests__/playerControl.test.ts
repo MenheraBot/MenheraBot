@@ -23,6 +23,6 @@ describe('Checking the user options', () => {
 
     expect(options).toHaveLength(2);
     expect(options[0].value).toBe('FOLD');
-    expect(options[1].value).toBe('ALLIN | 1');
+    expect(options[1].value).toBe('ALLIN|1');
   });
 });
