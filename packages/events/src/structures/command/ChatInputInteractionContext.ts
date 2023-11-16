@@ -8,7 +8,7 @@ import { Interaction, User } from 'discordeno/transformers';
 import i18next, { TFunction } from 'i18next';
 
 import { DatabaseUserSchema } from '../../types/database';
-import { Translation } from '../../types/i18next';
+import { AvailableLanguages, Translation } from '../../types/i18next';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { logger } from '../../utils/logger';
 import { EMOJIS } from '../constants';
@@ -33,7 +33,7 @@ export default class {
   constructor(
     public interaction: Interaction,
     public authorData: DatabaseUserSchema,
-    public guildLocale: string,
+    public guildLocale: AvailableLanguages,
   ) {
     this.i18n = i18next.getFixedT(guildLocale);
 

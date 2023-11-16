@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - **Feira de Usuários** - Com as entregas diárias, usuários vão precisar de um volume muito grande de itens. Por isso, agora usuários podem comprar plantas de outros através da feira! Com `/fazendinha feira anunciar` você pode anunciar novos itens na feira. Escolha o produto, quantos você quer vender, e por qual preço.
 - Compre itens da feira com `/fazendinha feira comprar`. É possível indicar diretamente qual produto você quer comprar informando no comando, ou listar todos os itens sendo vendidos no momento.
 - _Novo comando_ `/fazendinha administrar feira` - Permite remover o anúncio de seus produtos da feira.
-- Mais de 50  imagens e gifs foram adicionados aos comandos de ação (obrigada @mareys)
+- Mais de 50 imagens e gifs foram adicionados aos comandos de ação (obrigada @mareys)
+- O título dos usuários agora aparecem no `/top`
 
 ### Changed
 

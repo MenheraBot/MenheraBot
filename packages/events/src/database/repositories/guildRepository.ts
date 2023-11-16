@@ -1,6 +1,7 @@
 import { BigString } from 'discordeno/types';
 import { guildsModel } from '../collections';
 import { MainRedisClient } from '../databases';
+import { AvailableLanguages } from '../../types/i18next';
 
 const updateGuildLanguage = async (guildId: BigString, language: string): Promise<void> => {
   MainRedisClient.hset(`guild:${guildId}`, 'language', language);
@@ -8,10 +9,10 @@ const updateGuildLanguage = async (guildId: BigString, language: string): Promis
   await guildsModel.updateOne({ id: `${guildId}` }, { lang: language });
 };
 
-const getGuildLanguage = async (guildId: BigString): Promise<string> => {
+const getGuildLanguage = async (guildId: BigString): Promise<AvailableLanguages> => {
   const fromRedis = await MainRedisClient.hget(`guild:${guildId}`, 'language');
 
-  if (fromRedis) return fromRedis;
+  if (fromRedis) return fromRedis as AvailableLanguages;
 
   const fromMongo = await guildsModel.findOne({ id: `${guildId}` });
 

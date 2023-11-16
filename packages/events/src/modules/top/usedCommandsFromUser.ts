@@ -5,6 +5,8 @@ import { InteractionContext } from '../../types/menhera';
 import { calculateSkipCount, createPaginationButtons } from '.';
 import { getDisplayName } from '../../utils/discord/userUtils';
 import { getTopCommandsByUses } from '../../utils/apiRequests/statistics';
+import userRepository from '../../database/repositories/userRepository';
+import titlesRepository from '../../database/repositories/titlesRepository';
 
 const executeUsedCommandsFromUserTop = async (
   ctx: InteractionContext,
@@ -18,12 +20,20 @@ const executeUsedCommandsFromUserTop = async (
   if (!res || res.length === 0)
     return ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
 
+  const userData = await userRepository.ensureFindUser(user.id);
+
+  const rawTitle = await titlesRepository.getTitleInfo(userData.currentTitle);
+
+  const translatedTitle =
+    ctx.guildLocale === 'en-US' ? rawTitle?.textLocalizations?.['en-US'] : rawTitle?.text;
+
   const embed = createEmbed({
     title: ctx.prettyResponse('smile', 'commands:top.user', {
       user: getDisplayName(user),
       page: page > 1 ? page : 1,
     }),
     color: hexStringToNumber(embedColor),
+    footer: { text: translatedTitle ?? '🤓☝️' },
     fields: [],
   });
 

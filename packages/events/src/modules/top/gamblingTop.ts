@@ -1,4 +1,6 @@
 import cacheRepository from '../../database/repositories/cacheRepository';
+import titlesRepository from '../../database/repositories/titlesRepository';
+import userRepository from '../../database/repositories/userRepository';
 import { COLORS } from '../../structures/constants';
 import { ApiGamblingGameCompatible } from '../../types/api';
 import { InteractionContext } from '../../types/menhera';
@@ -41,12 +43,30 @@ const executeGamblingTop = async (
     fields: [],
   });
 
-  const members = await Promise.all(
-    results.map((a) => cacheRepository.getDiscordUser(`${a.user_id}`, page <= 3)),
+  const [members, titles] = await Promise.all([
+    Promise.all(
+      results.map(async (a) => cacheRepository.getDiscordUser(`${a.user_id}`, page <= 3)),
+    ),
+    Promise.all(results.map(async (a) => userRepository.ensureFindUser(`${a.user_id}`))),
+  ]);
+
+  const resolvedTitles = await Promise.all(
+    titles.map(async (a) => ({
+      text: await titlesRepository.getTitleInfo(a.currentTitle),
+      id: a.currentTitle,
+    })),
   );
 
   for (let i = 0; i < results.length; i++) {
     const member = members[i];
+    const rawTitle = resolvedTitles.find(
+      (a) => a.id === titles.find((b) => b.id === `${member?.id}`)?.currentTitle,
+    );
+
+    const translatedTitle =
+      ctx.guildLocale === 'en-US'
+        ? rawTitle?.text?.textLocalizations?.['en-US']
+        : rawTitle?.text?.text;
 
     if (member) {
       if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
@@ -59,7 +79,7 @@ const executeGamblingTop = async (
 
     embed.fields?.push({
       name: `**${skip + i + 1} -** ${member ? getDisplayName(member) : `ID ${results[i].user_id}`}`,
-      value: ctx.locale('commands:top.estatisticas.apostas.description.text', {
+      value: `${ctx.locale('commands:top.estatisticas.apostas.description.text', {
         earnMoney: userData.earn_money.toLocaleString(ctx.interaction.locale),
         lostMoney: userData.lost_money.toLocaleString(ctx.interaction.locale),
         lostGames: userData.lost_games,
@@ -72,7 +92,7 @@ const executeGamblingTop = async (
           (((userData.lost_games ?? 0) / (userData.won_games + userData.lost_games)) * 100).toFixed(
             2,
           ) || 0,
-      }),
+      })}\n> ${translatedTitle ?? '🤓☝️'}`,
       inline: false,
     });
   }

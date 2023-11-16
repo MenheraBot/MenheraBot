@@ -13,6 +13,8 @@ import { createEmbed } from '../../utils/discord/embedUtils';
 import { COLORS } from '../../structures/constants';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { createActionRow, createButton } from '../../utils/discord/componentUtils';
+import userRepository from '../../database/repositories/userRepository';
+import titlesRepository from '../../database/repositories/titlesRepository';
 
 const executeTopHuntStatistics = async (
   ctx: InteractionContext,
@@ -43,12 +45,30 @@ const executeTopHuntStatistics = async (
     fields: [],
   });
 
-  const members = await Promise.all(
-    results.map((a) => cacheRepository.getDiscordUser(`${a.user_id}`, page <= 3)),
+  const [members, titles] = await Promise.all([
+    Promise.all(
+      results.map(async (a) => cacheRepository.getDiscordUser(`${a.user_id}`, page <= 3)),
+    ),
+    Promise.all(results.map(async (a) => userRepository.ensureFindUser(`${a.user_id}`))),
+  ]);
+
+  const resolvedTitles = await Promise.all(
+    titles.map(async (a) => ({
+      text: await titlesRepository.getTitleInfo(a.currentTitle),
+      id: a.currentTitle,
+    })),
   );
 
   for (let i = 0; i < results.length; i++) {
     const member = members[i];
+    const rawTitle = resolvedTitles.find(
+      (a) => a.id === titles.find((b) => b.id === `${member?.id}`)?.currentTitle,
+    );
+
+    const translatedTitle =
+      ctx.guildLocale === 'en-US'
+        ? rawTitle?.text?.textLocalizations?.['en-US']
+        : rawTitle?.text?.text;
 
     if (member) {
       if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
@@ -60,11 +80,11 @@ const executeTopHuntStatistics = async (
 
     embed.fields?.push({
       name: `**${skip + i + 1} -** ${member ? getDisplayName(member) : `ID ${userData.user_id}`}`,
-      value: ctx.locale('commands:top.estatisticas.cacar.description.text', {
+      value: `${ctx.locale('commands:top.estatisticas.cacar.description.text', {
         hunted: userData[`${type}_hunted`],
         success: userData[`${type}_success`],
         tries: userData[`${type}_tries`],
-      }),
+      })}\n> ${translatedTitle ?? '🤓☝️'}`,
       inline: true,
     });
   }

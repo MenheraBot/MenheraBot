@@ -3,6 +3,7 @@ import { profileBadges } from '../modules/badges/profileBadges';
 import { AvailablePlants, DeliveryMission, Plantation } from '../modules/fazendinha/types';
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
+import { AvailableLanguages } from './i18next';
 
 export type ColorResolvable = `#${string}`;
 
@@ -98,7 +99,7 @@ export interface DatabaseUserThemesSchema {
 
 export interface DatabaseGuildSchema {
   readonly id: string;
-  lang: string;
+  lang: AvailableLanguages;
 }
 export interface DatabaseCommandSchema {
   readonly _id: string;

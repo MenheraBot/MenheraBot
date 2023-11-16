@@ -3,7 +3,7 @@ import { InteractionCallbackData, InteractionResponseTypes } from 'discordeno';
 import { User } from 'discordeno/transformers';
 import i18next, { TFunction } from 'i18next';
 
-import { Translation } from '../../types/i18next';
+import { AvailableLanguages, Translation } from '../../types/i18next';
 import { ComponentInteraction } from '../../types/interaction';
 import { logger } from '../../utils/logger';
 import { EMOJIS } from '../constants';
@@ -21,7 +21,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
 
   public i18n: TFunction;
 
-  constructor(public interaction: InteractionType, public guildLocale: string) {
+  constructor(public interaction: InteractionType, public guildLocale: AvailableLanguages) {
     this.i18n = i18next.getFixedT(guildLocale);
   }
 
