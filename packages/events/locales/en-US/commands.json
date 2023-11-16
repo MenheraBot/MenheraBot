@@ -1071,7 +1071,13 @@
         "silo-limit": "You don't have enough silo space to buy this!",
         "not-enough-stars": "You don't have enough stars to buy this!",
         "item-locked": "You can't buy this item because you haven't unlocked it yet.",
-        "success": "All done, {{author}}. This item was purchased by you"
+        "success": "All done, {{author}}. This item was purchased by you",
+        "no-announcements": "There are currently no announcements in the neighborhood fair",
+        "fair": "Neighborhood Fair",
+        "description": "\n- {{amount}}x {{emoji}} **{{plant}}** for {{price}} :star:",
+        "user-info": "{{user}} ({{index}})",
+        "user-fair": "{{user}}'s Fair",
+        "select-item": "Select what you want to buy"
       },
       "invalid-plant-or-amount": "❌ | Please inform the amount and product before choosing the price!",
       "select-between": "⭐ | Write any value between {{min}} and {{max}}"

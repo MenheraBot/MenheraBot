@@ -25,6 +25,7 @@ import { MAX_ITEMS_PER_FAIR_PAGE, Plants } from './constants';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../types/interaction';
+import { localizedResources } from '../../utils/miscUtils';
 
 const listItemAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'item', false) ?? '';
@@ -33,8 +34,13 @@ const listItemAutocomplete = async (interaction: Interaction): Promise<void | nu
     interaction.locale === 'en-US' ? 'en-US' : 'pt-BR',
   );
 
-  if (availableItems.length === 0)
-    return respondWithChoices(interaction, [{ name: 'Não há anúncios disponíveis', value: 's' }]);
+  if (availableItems.length === 0) {
+    const noItems = localizedResources('commands:fazendinha.feira.comprar.no-announcements');
+
+    return respondWithChoices(interaction, [
+      { name: noItems['pt-BR'], value: 'NONE', nameLocalizations: noItems },
+    ]);
+  }
 
   const ratings = findBestMatch(input, availableItems)
     .ratings.sort((a, b) => b.rating - a.rating)
@@ -155,18 +161,20 @@ const displayFair = async (
     return ctx.makeMessage({
       embeds: [],
       components: [],
-      content: `Não há anúncios disponíveis no momento`,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.no-announcements'),
     });
 
   const embed = createEmbed({
     author: {
-      name: `Feirinha ${user ? `de ${getDisplayName(user)}` : ''}`,
+      name: ctx.locale(`commands:fazendinha.feira.comprar.${user ? 'user-fair' : 'fair'}`, {
+        user: user ? getDisplayName(user) : undefined,
+      }),
       iconUrl: user ? getUserAvatar(user, { enableGif: true }) : undefined,
     },
     color: hexStringToNumber(embedColor),
     description: '',
     fields: [],
-    footer: page ? { text: `Página ${page + 1}` } : undefined,
+    footer: page ? { text: ctx.locale('common:page', { page: page + 1 }) } : undefined,
   });
 
   const selectMenu = createSelectMenu({
@@ -174,15 +182,25 @@ const displayFair = async (
     options: [],
     minValues: 1,
     maxValues: 1,
-    placeholder: 'Selecione o que você quer comprar',
+    placeholder: ctx.locale('commands:fazendinha.feira.comprar.select-item'),
   });
 
   annonucements.forEach((item, i) => {
     if (!item) return;
 
-    embed.description += `\n- ${item.amount}x ${Plants[item.plantType].emoji} **${ctx.locale(
-      `data:plants.${item.plantType}`,
-    )}** por ${item.price} :star:${user ? '' : ` - ${mentionUser(item.userId)} (${i + 1})`}`;
+    embed.description += `${ctx.locale('commands:fazendinha.feira.comprar.description', {
+      amount: item.amount,
+      emoji: Plants[item.plantType].emoji,
+      plant: ctx.locale(`data:plants.${item.plantType}`),
+      price: item.price,
+    })}${
+      user
+        ? ctx.locale('commands:fazendinha.feira.comprar.user-info', {
+            user: mentionUser(item.userId),
+            index: i + 1,
+          })
+        : ''
+    }`;
 
     selectMenu.options.push({
       label: `${item.amount}x ${ctx.locale(`data:plants.${item.plantType}`)}${

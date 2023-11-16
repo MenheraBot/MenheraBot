@@ -1076,7 +1076,13 @@
         "silo-limit": "Tu não tem espaço suficiente no silo para comprar isso!",
         "not-enough-stars": "Tu não tem estrelinhas o suficiente para comprar isso!",
         "item-locked": "Tu não pode comprar esse item porque tu ainda não desbloqueou ele.",
-        "success": "Tudo feito, {{author}}. Esse item foi comprado por ti"
+        "success": "Tudo feito, {{author}}. Esse item foi comprado por ti",
+        "no-announcements": "Não há anúncios na feira da vizinhança atualmente",
+        "fair": "Feirinha da Vizinhança",
+        "description": "\n- {{amount}}x {{emoji}} **{{plant}}** por {{price}} :star:",
+        "user-info": "{{user}} ({{index}})",
+        "user-fair": "Feirinha de {{user}}",
+        "select-item": "Selecione o que tu quer comprar"
       },
       "invalid-plant-or-amount": "❌ | Informe a quantidade e o produto antes de escolher o preço!",
       "select-between": "⭐ | Digite qualquer valor entre {{min}} e {{max}}"
