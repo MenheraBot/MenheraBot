@@ -94,7 +94,7 @@ const createIpcConnection = async (): Promise<void> => {
             type: numberTypeToName[msg.data.body.type as 1],
           });
 
-        logger.logSwitch('Interaction Create', ack, msg);
+        logger.logSwitch(bot, 'Interaction Create', ack, msg);
 
         bot.respondInteraction.set((msg.data.body as DiscordInteraction).id, ack);
 

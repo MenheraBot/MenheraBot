@@ -17,7 +17,7 @@ const sendInteractionResponse = async (
 ): Promise<void> => {
   const respond = bot.respondInteraction.get(interactionId);
 
-  logger.logSwitch('Interaction Response, respond get', respond);
+  logger.logSwitch(bot, 'Interaction Response, respond get', respond);
 
   if (!respond)
     return bot.rest.sendRequest(bot.rest, {

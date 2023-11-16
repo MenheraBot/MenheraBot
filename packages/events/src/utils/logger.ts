@@ -1,4 +1,4 @@
-import { bot } from '..';
+import { MenheraClient } from '../types/menhera';
 
 /* eslint-disable no-console */
 const logger = {
@@ -15,7 +15,7 @@ const logger = {
     console.info(new Date().toISOString(), ...args);
   },
 
-  logSwitch: (...args: unknown[]): void => {
+  logSwitch: (bot: MenheraClient, ...args: unknown[]): void => {
     if (!bot.prodLogSwitch) return;
     console.info(new Date().toISOString(), ...args);
   },
