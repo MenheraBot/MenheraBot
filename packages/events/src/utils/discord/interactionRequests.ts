@@ -15,11 +15,11 @@ const sendInteractionResponse = async (
   token: string,
   options: InteractionResponse,
 ): Promise<void> => {
-  const respond = bot.respondInteraction.get(interactionId);
+  const respond = bot.respondInteraction.get(`${interactionId}`);
 
   logger.logSwitch(bot, 'Interaction Response, respond get', respond);
 
-  if (!respond)
+  if (!respond || bot.prodLogSwitch)
     return bot.rest.sendRequest(bot.rest, {
       method: 'POST',
       url: bot.constants.routes.INTERACTION_ID_TOKEN(interactionId, token),
