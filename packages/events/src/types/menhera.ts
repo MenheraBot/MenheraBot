@@ -14,6 +14,7 @@ export interface MenheraClient extends Bot {
   commands: Collection<string, ChatInputInteractionCommand>;
   ownerId: bigint;
   shuttingDown: boolean;
+  prodLogSwitch: boolean;
   username: string;
   isMaster: boolean;
   commandsInExecution: number;

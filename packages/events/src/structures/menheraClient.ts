@@ -30,6 +30,8 @@ const setupMenheraClient = (client: MenheraClient): void => {
 
   client.isMaster = false;
 
+  client.prodLogSwitch = false;
+
   client.changelog = null;
 
   client.commandsInExecution = 0;
