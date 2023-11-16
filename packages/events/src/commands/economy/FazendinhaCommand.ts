@@ -19,7 +19,7 @@ import {
   handleDissmissShop,
 } from '../../modules/fazendinha/administrateFair';
 import { executeAnnounceProduct } from '../../modules/fazendinha/announceProduct';
-import { executeExploreFair } from '../../modules/fazendinha/exploreFair';
+import { executeButtonAction, executeExploreFair } from '../../modules/fazendinha/exploreFair';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -177,6 +177,7 @@ const FazendinhaCommand = createCommand({
     executeButtonPressed,
     handleUpgradeSilo,
     handleDissmissShop,
+    executeButtonAction,
   ],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {

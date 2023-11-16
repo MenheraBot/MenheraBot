@@ -19,10 +19,12 @@ import {
   createSelectMenu,
   resolveSeparatedStrings,
 } from '../../utils/discord/componentUtils';
-import { createEmbed } from '../../utils/discord/embedUtils';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { MAX_ITEMS_PER_FAIR_PAGE, Plants } from './constants';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { SelectMenuInteraction } from '../../types/interaction';
 
 const listItemAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'item', false) ?? '';
@@ -122,7 +124,12 @@ const executeBuyItem = async (
   });
 };
 
-const displayFair = async (ctx: InteractionContext, page: number, user?: User) => {
+const displayFair = async (
+  ctx: InteractionContext,
+  page: number,
+  embedColor: string,
+  user?: User,
+) => {
   const annonucements = user
     ? await fairRepository.getUserProducts(user.id)
     : await Promise.all(
@@ -146,15 +153,17 @@ const displayFair = async (ctx: InteractionContext, page: number, user?: User) =
       name: `Feirinha ${user ? `de ${getDisplayName(user)}` : ''}`,
       iconUrl: user ? getUserAvatar(user, { enableGif: true }) : undefined,
     },
+    color: hexStringToNumber(embedColor),
     description: '',
     fields: [],
     footer: page ? { text: `Página ${page + 1}` } : undefined,
   });
 
   const selectMenu = createSelectMenu({
-    customId: createCustomId(7, ctx.user.id, ctx.commandId, 'BUY'),
+    customId: createCustomId(7, ctx.user.id, ctx.commandId, 'BUY', embedColor),
     options: [],
     minValues: 1,
+    maxValues: 1,
     placeholder: 'Selecione o que você quer comprar',
   });
 
@@ -175,20 +184,18 @@ const displayFair = async (ctx: InteractionContext, page: number, user?: User) =
     });
   });
 
-  selectMenu.maxValues = selectMenu.options.length;
-
   const componentsToSend = [createActionRow([selectMenu])];
 
   if (!user) {
     const backButton = createButton({
-      customId: createCustomId(7, ctx.user.id, ctx.commandId, 'PAGINATION', page - 1),
+      customId: createCustomId(7, ctx.user.id, ctx.commandId, 'PAGINATION', embedColor, page - 1),
       label: ctx.locale('common:back'),
       style: ButtonStyles.Primary,
       disabled: page < 1,
     });
 
     const nextButton = createButton({
-      customId: createCustomId(7, ctx.user.id, ctx.commandId, 'PAGINATION', page + 1),
+      customId: createCustomId(7, ctx.user.id, ctx.commandId, 'PAGINATION', embedColor, page + 1),
       label: ctx.locale('common:next'),
       style: ButtonStyles.Primary,
       disabled: selectMenu.options.length < MAX_ITEMS_PER_FAIR_PAGE,
@@ -212,7 +219,19 @@ const executeExploreFair = async (
 
   if (item) return executeBuyItem(ctx, farmer, item);
 
-  return displayFair(ctx, 0, user);
+  return displayFair(ctx, 0, ctx.authorData.selectedColor, user);
 };
 
-export { executeExploreFair, listItemAutocomplete };
+const executeButtonAction = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [action, embedColor, page] = ctx.sentData;
+
+  if (action === 'PAGINATION') return displayFair(ctx, Number(page), embedColor);
+
+  return executeBuyItem(
+    ctx,
+    await farmerRepository.getFarmer(ctx.user.id),
+    (ctx.interaction as SelectMenuInteraction).data.values[0],
+  );
+};
+
+export { executeExploreFair, listItemAutocomplete, executeButtonAction };
