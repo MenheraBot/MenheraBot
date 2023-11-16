@@ -8,6 +8,7 @@ import {
 } from 'discordeno';
 import { bot } from '../../index';
 import { debugError } from '../debugError';
+import { logger } from '../logger';
 
 const sendInteractionResponse = async (
   interactionId: BigString,
@@ -15,6 +16,8 @@ const sendInteractionResponse = async (
   options: InteractionResponse,
 ): Promise<void> => {
   const respond = bot.respondInteraction.get(interactionId);
+
+  logger.logSwitch('Interaction Response, respond get', respond);
 
   if (!respond)
     return bot.rest.sendRequest(bot.rest, {
