@@ -8,7 +8,6 @@ import {
 } from 'discordeno';
 import { bot } from '../../index';
 import { debugError } from '../debugError';
-import { logger } from '../logger';
 
 const sendInteractionResponse = async (
   interactionId: BigString,
@@ -17,9 +16,7 @@ const sendInteractionResponse = async (
 ): Promise<void> => {
   const respond = bot.respondInteraction.get(`${interactionId}`);
 
-  logger.logSwitch(bot, 'Interaction Response, respond get', respond);
-
-  if (!respond || bot.prodLogSwitch)
+  if (!respond)
     return bot.rest.sendRequest(bot.rest, {
       method: 'POST',
       url: bot.constants.routes.INTERACTION_ID_TOKEN(interactionId, token),
