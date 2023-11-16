@@ -31,6 +31,7 @@ const sendInteractionResponse = async (
     });
 
   respond(bot.transformers.reverse.interactionResponse(bot, options));
+  bot.respondInteraction.delete(`${interactionId}`);
 };
 
 const editOriginalInteractionResponse = async (
