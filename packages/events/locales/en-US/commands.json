@@ -1098,6 +1098,11 @@
       "imature-warning": "The field plant **{{field}}** is still growing! If you want to discard this **{{plant}}** {{emoji}} field, click the button again."
     },
     "admin": {
+      "feirinha": {
+        "no-items-in-user-fair": "You do not have items advertised at the fair!",
+        "remove-announcement": "Remove announcement {{index}}",
+        "dont-exists": "This announcement no longer exists!"
+      },
       "unlocked-field": "You bought this land from your neighbor!",
       "your-fields": "Your Fields",
       "admin": "Manage {{field}}",

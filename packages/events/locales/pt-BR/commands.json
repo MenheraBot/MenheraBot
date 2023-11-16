@@ -1103,6 +1103,11 @@
       "imature-warning": "A planta do campo **{{field}}** ainda está crescendo! Caso tu queira descartar esse campo de **{{plant}}** {{emoji}}, clique novamente no botão."
     },
     "admin": {
+      "feirinha": {
+        "no-items-in-user-fair": "Tu não possui itens anunciados na feira!",
+        "remove-announcement": "Remover anúncio {{index}}",
+        "dont-exists": "Esse anúncio não existe mais!"
+      },
       "unlocked-field": "Você comprou esse terreno de seu vizinho!",
       "your-fields": "Seus Campos",
       "admin": "Administrar {{field}}",

@@ -17,7 +17,11 @@ const handleDissmissShop = async (ctx: ComponentInteractionContext): Promise<voi
   const announcement = products[Number(index)];
 
   if (typeof announcement === 'undefined')
-    return ctx.makeMessage({ content: 'Esse anúncio não existe mais', components: [], embeds: [] });
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:fazendinha.admin.feirinha.dont-exists'),
+      components: [],
+      embeds: [],
+    });
 
   await fairRepository.deleteAnnouncement(announcement._id);
 
@@ -42,7 +46,7 @@ const executeAdministrateFair = async (
   });
 
   if (fromUser.length === 0) {
-    embed.description = 'Você não possui itens anunciados no momento';
+    embed.description = ctx.locale('commands:fazendinha.admin.feirinha.no-items-in-user-fair');
     return ctx.makeMessage({ embeds: [embed], components: [] });
   }
 
@@ -50,7 +54,7 @@ const executeAdministrateFair = async (
 
   fromUser.forEach((item, i) => {
     embed.fields?.push({
-      name: `${item['name_pt-BR']} (${i + 1})`,
+      name: `${item[`name_${ctx.guildLocale as 'pt-BR'}`]} (${i + 1})`,
       inline: true,
       value: `${item.price} :star:\n${Plants[item.plantType].emoji} ${item.amount}x`,
     });
@@ -58,7 +62,9 @@ const executeAdministrateFair = async (
     const index = Math.floor(i / 3);
 
     const button = createButton({
-      label: `Remover anúncio ${i + 1}`,
+      label: ctx.locale('commands:fazendinha.admin.feirinha.remove-announcement', {
+        index: i + 1,
+      }),
       style: ButtonStyles.Danger,
       customId: createCustomId(6, ctx.user.id, ctx.commandId, i),
     });
