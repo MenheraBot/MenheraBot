@@ -24,14 +24,14 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: 'Essa entrega não está mais disponível!',
+      content: ctx.prettyResponse('error', 'commands:fazendinha.entregas.no-longer-available'),
     });
 
   if (dailyUser.finished)
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: 'Você já finalizou essa entrega.',
+      content: ctx.prettyResponse('error', 'commands:fazendinha.entregas.already-finished'),
     });
 
   const canFinishDaily = dailyUser.needs.every((e) => checkNeededItems([e], farmer.silo));
@@ -40,7 +40,7 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: 'Tu não tem as plantas necessárias para essa entrega',
+      content: ctx.prettyResponse('error', 'commands:fazendinha.entregas.no-plants'),
     });
 
   dailyUser.finished = true;
@@ -63,6 +63,15 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
     ),
   ]);
 
+  await ctx.makeMessage({
+    content: ctx.prettyResponse('wink', 'commands:fazendinha.entregas.deliver', {
+      award: dailyUser.award,
+      xp: dailyUser.experience,
+    }),
+    components: [],
+    embeds: [],
+  });
+
   if (farmer.dailies.every((a) => a.finished)) {
     const bonus = getFinishAllBonus(farmer.dailies);
 
@@ -77,13 +86,13 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
       ),
       starsRepository.addStars(ctx.user.id, bonus),
     ]);
-  }
 
-  ctx.makeMessage({
-    content: `Você completou essa entrega! Tu recebeu **${dailyUser.award}** :star: e ${dailyUser.experience} XP`,
-    components: [],
-    embeds: [],
-  });
+    ctx.followUp({
+      content: ctx.prettyResponse('smile', 'commands:fazendinha.entregas.finished-bonus', {
+        award: bonus,
+      }),
+    });
+  }
 };
 
 const executeDailyDelivery = async (

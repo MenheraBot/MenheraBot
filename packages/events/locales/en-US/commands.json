@@ -1113,6 +1113,13 @@
       "display-mate": "- {{emoji}} **∞** - {{plant}}",
       "display-other": "- {{emoji}} **{{amount}}x** - {{plant}}"
     },
+    "entregas": {
+      "no-longer-available": "This delivery is no longer available",
+      "already-finished": "You have already completed this delivery!",
+      "no-plants": "You do not have the necessary plans to complete the delivery",
+      "deliver": "Yayy! Delivery completed! You received **{{award}}** :star: and **{{xp}}** experience points",
+      "finished-bonus": "Complete truck! You've received a **{{award}}** :star: bonus for delivering all your daily deliveries!"
+    },
     "field-action": {
       "not-enough-seeds": "You don't have **{{plant}}** seeds to plant!",
       "imature-warning": "The field plant **{{field}}** is still growing! If you want to discard this **{{plant}}** {{emoji}} field, click the button again."
@@ -1129,7 +1136,7 @@
         "limit": "You can't upgrade your silo anymore! It is at maximum level",
         "title": "Upgrade your silo",
         "button": "Upgrade silo",
-        "description": "Increase your silo limit by **{{increase}}** spaces for just **{{cost}}** :star:\nCurrently you have **{{limit}}** limit spaces." 
+        "description": "Increase your silo limit by **{{increase}}** spaces for just **{{cost}}** :star:\nCurrently you have **{{limit}}** limit spaces."
       },
       "unlocked-field": "You bought this land from your neighbor!",
       "your-fields": "Your Fields",

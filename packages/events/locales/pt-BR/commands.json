@@ -1101,6 +1101,13 @@
       "embed-title": "Fazenda de {{user}}",
       "available-seed": "{{name}} {{amount}}x"
     },
+    "entregas": {
+      "no-longer-available": "Essa entrega não está mais disponível",
+      "already-finished": "Tu já finalizou essa entrega!",
+      "no-plants": "Tu não tem as plantas necessárias para finalizar a entrega",
+      "deliver": "Yayy! Entrega finalizada! Tu recebeu **{{award}}** :star: e **{{xp}}** pontos de experiência",
+      "finished-bonus": "Caminhão completo! Você recebeu um bônus de **{{award}}** :star: por conseguir entregar todas as suas entregas diárias!"
+    },
     "silo": {
       "embed-title": "Silo de {{user}}",
       "nothing": "**Nada**",
