@@ -92,6 +92,8 @@ const constructAnnouncements = async (): Promise<void> => {
 
   const allAnnouncements = await feirinhaModel.find({});
 
+  if (allAnnouncements.length === 0) return;
+
   const queries = allAnnouncements.reduce(
     (p, c) => {
       p.nameUs.push(`${c['name_en-US']}|${c._id}`);
