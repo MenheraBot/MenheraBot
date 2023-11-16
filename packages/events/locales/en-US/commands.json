@@ -1118,7 +1118,15 @@
       "already-finished": "You have already completed this delivery!",
       "no-plants": "You do not have the necessary plans to complete the delivery",
       "deliver": "Yayy! Delivery completed! You received **{{award}}** :star: and **{{xp}}** experience points",
-      "finished-bonus": "Complete truck! You've received a **{{award}}** :star: bonus for delivering all your daily deliveries!"
+      "finished-bonus": "Complete truck! You've received a **{{award}}** :star: bonus for delivering all your daily deliveries!",
+
+      "daily-deliveries": "Daily Deliveries",
+      "deliver-button": "Deliver {{index}}",
+      "deliver-embed-name": "Delivery {{index}}",
+      "deliver-embed-name-finished": "~~Delivery {{index}}~~ ✅",
+      "deliver-embed-field": "Stars: **{{award}}** :star:\nExperience: **{{xp}}**",
+      "deliver-embed-field-need":"Needs: **{{amount}}x** {{emoji}}",
+      "description": "### Once a day the delivery truck will appear at your farm to pick up deliveries.\n### Completing all deliveries before the truck leaves will give you an additional **{{bonus}}** :star: stars\n\n### The truck will leave <t:{{unix}}:R>"
     },
     "field-action": {
       "not-enough-seeds": "You don't have **{{plant}}** seeds to plant!",

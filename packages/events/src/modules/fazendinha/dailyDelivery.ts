@@ -105,29 +105,39 @@ const executeDailyDelivery = async (
   const userDailies = getUserDailies(farmer);
 
   const embed = createEmbed({
-    title: 'Entregas Diárias',
+    title: ctx.locale('commands:fazendinha.entregas.daily-deliveries'),
     color: hexStringToNumber(embedColor),
     fields: [],
-    description: `### Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas.\n### Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **${getFinishAllBonus(
-      userDailies,
-    )}** :star: estrelinhas\n\n### O caminhão partirá <t:${millisToSeconds(endsIn)}:R>`,
+    description: ctx.locale('commands:fazendinha.entregas.description', {
+      bonus: getFinishAllBonus(userDailies),
+      unix: millisToSeconds(endsIn),
+    }),
   });
 
   const toSendComponents: ActionRow[] = [];
 
   userDailies.forEach((a, i) => {
     embed.fields?.push({
-      name: `${a.finished ? '~~' : ''}Entrega ${i + 1}${a.finished ? '~~ ✅' : ''}`,
+      name: ctx.locale(
+        `commands:fazendinha.entregas.deliver-embed-name${a.finished ? '-finished' : ''}`,
+        { index: i + 1 },
+      ),
       inline: true,
-      value: `Estrelinhas: **${a.award}** :star:\nExperiência: **${a.experience}**\n${a.needs.map(
-        (b) => `Necessário: **${b.amount}x** ${Plants[b.plant].emoji}`,
+      value: `${ctx.locale('commands:fazendinha.entregas.deliver-embed-field', {
+        award: a.award,
+        xp: a.experience,
+      })}\n${a.needs.map((b) =>
+        ctx.locale('commands:fazendinha.entregas.deliver-embed-field-need', {
+          amount: b.amount,
+          emoji: Plants[b.plant].emoji,
+        }),
       )}`,
     });
 
     const index = Math.floor(i / 3);
 
     const button = createButton({
-      label: `Entregar ${i + 1}`,
+      label: ctx.locale('commands:fazendinha.entregas.deliver-button', { index: i + 1 }),
       style: ButtonStyles.Primary,
       customId: createCustomId(4, ctx.user.id, ctx.commandId, i),
       disabled: a.finished,

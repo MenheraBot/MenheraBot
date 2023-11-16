@@ -1106,7 +1106,15 @@
       "already-finished": "Tu já finalizou essa entrega!",
       "no-plants": "Tu não tem as plantas necessárias para finalizar a entrega",
       "deliver": "Yayy! Entrega finalizada! Tu recebeu **{{award}}** :star: e **{{xp}}** pontos de experiência",
-      "finished-bonus": "Caminhão completo! Você recebeu um bônus de **{{award}}** :star: por conseguir entregar todas as suas entregas diárias!"
+      "finished-bonus": "Caminhão completo! Você recebeu um bônus de **{{award}}** :star: por conseguir entregar todas as suas entregas diárias!",
+
+      "daily-deliveries": "Entregas Diárias",
+      "deliver-button": "Entregar {{index}}",
+      "deliver-embed-name": "Entrega {{index}}",
+      "deliver-embed-name-finished": "~~Entrega {{index}}~~ ✅",
+      "deliver-embed-field": "Estrelinhas: **{{award}}** :star:\nExperiência: **{{xp}}**",
+      "deliver-embed-field-need":"Necessário: **{{amount}}x** {{emoji}}",
+      "description": "### Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas.\n### Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas\n\n### O caminhão partirá <t:{{unix}}:R>"
     },
     "silo": {
       "embed-title": "Silo de {{user}}",
