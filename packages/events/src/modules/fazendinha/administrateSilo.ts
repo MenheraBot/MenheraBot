@@ -19,7 +19,7 @@ const handleUpgradeSilo = async (ctx: ComponentInteractionContext): Promise<void
 
   if (farmer.siloUpgrades >= MAX_SILO_UPGRADES)
     return ctx.makeMessage({
-      content: 'VOcÊ não pode mais upar o silo',
+      content: ctx.prettyResponse('error', 'commands:fazendinha.admin.silo.limit'),
       embeds: [],
       components: [],
     });
@@ -30,7 +30,7 @@ const handleUpgradeSilo = async (ctx: ComponentInteractionContext): Promise<void
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: 'Voce não tem estrelinhas o suficiente para aumentar seu silo',
+      content: ctx.prettyResponse('error', 'commands:fazendinha.admin.silo.poor'),
     });
 
   await Promise.all([
@@ -46,7 +46,11 @@ const handleUpgradeSilo = async (ctx: ComponentInteractionContext): Promise<void
     ),
   ]);
 
-  ctx.makeMessage({ components: [], content: `Você melhorou seu silo!`, embeds: [] });
+  ctx.makeMessage({
+    components: [],
+    content: ctx.prettyResponse('success', 'commands:fazendinha.admin.silo.success'),
+    embeds: [],
+  });
 };
 
 const executeAdministrateSilo = async (
@@ -56,16 +60,18 @@ const executeAdministrateSilo = async (
   const cost = 50_000 + farmer.siloUpgrades * 15_000;
 
   const embed = createEmbed({
-    title: 'Melhorar seu silo',
+    title: ctx.locale('commands:fazendinha.admin.silo.title'),
     color: hexStringToNumber(ctx.authorData.selectedColor),
     fields: [],
-    description: `Melhore seu silo em **${SILO_LIMIT_INCREASE_BY_LEVEL}** espaços por apenas **${cost}** :star:\nAtualmente você possui **${
-      getSiloLimits(farmer).limit
-    }** espaços de limite`,
+    description: ctx.locale('commands:fazendinha.admin.silo.description', {
+      increase: SILO_LIMIT_INCREASE_BY_LEVEL,
+      cost,
+      limit: getSiloLimits(farmer).limit,
+    }),
   });
 
   const buyButton = createButton({
-    label: 'Melhorar silo',
+    label: ctx.locale('commands:fazendinha.admin.silo.button'),
     style: ButtonStyles.Primary,
     customId: createCustomId(5, ctx.user.id, ctx.commandId, 'UPGRADE'),
   });

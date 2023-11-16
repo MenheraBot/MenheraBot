@@ -1128,6 +1128,14 @@
         "remove-announcement": "Remover anúncio {{index}}",
         "dont-exists": "Esse anúncio não existe mais!"
       },
+      "silo": {
+        "success": "Tudo feito! Tu aumentou o limite do teu silo",
+        "poor": "Tu não tem estrelinhas o suficiente para aumentar o espaço de seu silo",
+        "limit": "Tu não pode mais melhorar o seu silo! Ele está no nível máximo",
+        "title": "Melhore seu silo",
+        "button": "Melhorar silo",
+        "description": "Aumente o limite de seu silo em **{{increase}}** espaços por apenas **{{cost}}** :star:\nAtualmente tu tem **{{limit}}** espaços de limite."
+      },
       "unlocked-field": "Você comprou esse terreno de seu vizinho!",
       "your-fields": "Seus Campos",
       "admin": "Administrar {{field}}",

@@ -1123,6 +1123,14 @@
         "remove-announcement": "Remove announcement {{index}}",
         "dont-exists": "This announcement no longer exists!"
       },
+      "silo": {
+        "success": "All done! You increased the limit of your silo",
+        "poor": "You don't have enough stars to increase your silo space",
+        "limit": "You can't upgrade your silo anymore! It is at maximum level",
+        "title": "Upgrade your silo",
+        "button": "Upgrade silo",
+        "description": "Increase your silo limit by **{{increase}}** spaces for just **{{cost}}** :star:\nCurrently you have **{{limit}}** limit spaces." 
+      },
       "unlocked-field": "You bought this land from your neighbor!",
       "your-fields": "Your Fields",
       "admin": "Manage {{field}}",
