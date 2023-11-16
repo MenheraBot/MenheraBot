@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Imagens de sarrar sozinho ou com alguém no `/sarrar` não possuem mais distinção.
 - A descrição dos _Itens Mágicos_ foi alterada para melhor entendimento de seu uso.
+- Comandos estão Bem Mais Rápidos... É bem perceptível que a primeira interação está quase instantânea
 
 ## [5.10.3] - 2023-11-06
 
