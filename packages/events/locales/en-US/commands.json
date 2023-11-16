@@ -1066,6 +1066,13 @@
         "announce-limits": "You have no ads available! You can advertise up to a maximum of **{{limit}}** items",
         "out-needed-prices": "You cannot sell **{{amount}}** {{emoji}} for **{{price}}** :star:. The selling price of this item must be between **{{min}}** and **{{max}}** :star: stars."
       },
+      "comprar": {
+        "cant-buy-your-items": "You cannot purchase items that you announced yourself",
+        "silo-limit": "You don't have enough silo space to buy this!",
+        "not-enough-stars": "You don't have enough stars to buy this!",
+        "item-locked": "You can't buy this item because you haven't unlocked it yet.",
+        "success": "All done, {{author}}. This item was purchased by you"
+      },
       "invalid-plant-or-amount": "❌ | Please inform the amount and product before choosing the price!",
       "select-between": "⭐ | Write any value between {{min}} and {{max}}"
     },

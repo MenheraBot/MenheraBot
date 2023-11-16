@@ -1071,6 +1071,13 @@
         "announce-limits": "Tu não tem anúncios disponíveis! Tu pode anunciar até no máximo **{{limit}}** itens",
         "out-needed-prices": "Tu não pode vender **{{amount}}** {{emoji}} por **{{price}}** :star:. O preço de venda desse item deve estar entre **{{min}}** e **{{max}}** :star: estrelinhas."
       },
+      "comprar": {
+        "cant-buy-your-items": "Tu não pode comprar itens que tu mesmo anunciou",
+        "silo-limit": "Tu não tem espaço suficiente no silo para comprar isso!",
+        "not-enough-stars": "Tu não tem estrelinhas o suficiente para comprar isso!",
+        "item-locked": "Tu não pode comprar esse item porque tu ainda não desbloqueou ele.",
+        "success": "Tudo feito, {{author}}. Esse item foi comprado por ti"
+      },
       "invalid-plant-or-amount": "❌ | Informe a quantidade e o produto antes de escolher o preço!",
       "select-between": "⭐ | Digite qualquer valor entre {{min}} e {{max}}"
     },

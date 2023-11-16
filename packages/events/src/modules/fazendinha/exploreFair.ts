@@ -61,18 +61,26 @@ const executeBuyItem = async (
   const exists = await fairRepository.doesAnnouncementExists(item);
 
   if (!exists)
-    return ctx.makeMessage({ components: [], embeds: [], content: `Este anúncio não existe mais` });
+    return ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('error', 'commands:fazendinha.admin.feirinha.dont-exists'),
+    });
 
   const announcement = await fairRepository.getAnnouncement(item);
 
   if (!announcement)
-    return ctx.makeMessage({ components: [], embeds: [], content: `Este anúncio não existe mais` });
+    return ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('error', 'commands:fazendinha.admin.feirinha.dont-exists'),
+    });
 
   if (announcement.userId === `${ctx.user.id}`)
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: `Você não pode comprar seus próprios itens`,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.cant-buy-your-items'),
     });
 
   const userLimits = getSiloLimits(farmer);
@@ -81,7 +89,7 @@ const executeBuyItem = async (
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: `Você não tem espaço suficiente em seu silo para comprar isso`,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.silo-limit'),
     });
 
   const user = await userRepository.ensureFindUser(ctx.user.id);
@@ -90,14 +98,14 @@ const executeBuyItem = async (
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: `Você não tem estrelinhas o suficiente para comprar isso`,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.not-enough-stars'),
     });
 
   if (announcement.plantType > farmer.biggestSeed)
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: `Você não pode comprar esse item porque ainda não o desbloqueou!`,
+      content: ctx.prettyResponse('lock', 'commands:fazendinha.feira.comprar.item-locked'),
     });
 
   await Promise.all([
@@ -120,7 +128,9 @@ const executeBuyItem = async (
   ctx.makeMessage({
     components: [],
     embeds: [],
-    content: `Você comporu esse item`,
+    content: ctx.prettyResponse('success', 'commands:fazendinha.feira.comprar.success', {
+      author: mentionUser(ctx.user.id),
+    }),
   });
 };
 
