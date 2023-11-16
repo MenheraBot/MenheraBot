@@ -1059,6 +1059,13 @@
       "spring": "Spring"
     },
     "feira": {
+      "announce": {
+        "no-such-product": "This product does not exist!",
+        "not-enough-products": "You don't have **{{amount}}** {{emoji}} to announce.",
+        "success": "Item announced! It is now available for purchase by your neighbors",
+        "announce-limits": "You have no ads available! You can advertise up to a maximum of **{{limit}}** items",
+        "out-needed-prices": "You cannot sell **{{amount}}** {{emoji}} for **{{price}}** :star:. The selling price of this item must be between **{{min}}** and **{{max}}** :star: stars."
+      },
       "invalid-plant-or-amount": "❌ | Please inform the amount and product before choosing the price!",
       "select-between": "⭐ | Write any value between {{min}} and {{max}}"
     },

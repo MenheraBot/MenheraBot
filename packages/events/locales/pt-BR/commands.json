@@ -1064,6 +1064,13 @@
       "spring": "Primavera"
     },
     "feira": {
+      "announce": {
+        "no-such-product": "Esse produto não existe!",
+        "not-enough-products": "Tu não tem **{{amount}}** {{emoji}} para anunciar.",
+        "success": "Item anunciado! Ele já está disponível para compra por seus vizinhos",
+        "announce-limits": "Tu não tem anúncios disponíveis! Tu pode anunciar até no máximo **{{limit}}** itens",
+        "out-needed-prices": "Tu não pode vender **{{amount}}** {{emoji}} por **{{price}}** :star:. O preço de venda desse item deve estar entre **{{min}}** e **{{max}}** :star: estrelinhas."
+      },
       "invalid-plant-or-amount": "❌ | Informe a quantidade e o produto antes de escolher o preço!",
       "select-between": "⭐ | Digite qualquer valor entre {{min}} e {{max}}"
     },

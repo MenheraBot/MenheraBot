@@ -120,13 +120,19 @@ const executeAnnounceProduct = async (
   const plantInfo = Plants[plant];
 
   if (typeof plantInfo === 'undefined')
-    return ctx.makeMessage({ content: 'Esse produto não existe' });
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.announce.no-such-product'),
+    });
 
   const userHaveItems = checkNeededItems([{ amount, plant }], farmer.silo);
 
   if (!userHaveItems)
     return ctx.makeMessage({
-      content: `Você não tem **${amount}** ${plantInfo.emoji} para vender`,
+      content: ctx.prettyResponse(
+        'error',
+        'commands:fazendinha.feira.announce.not-enough-products',
+        { amount, emoji: plantInfo.emoji },
+      ),
     });
 
   const maxValue = Math.floor(plantInfo.sellValue * amount * MAXIMUM_PRICE_TO_SELL_IN_FAIR);
@@ -134,14 +140,22 @@ const executeAnnounceProduct = async (
 
   if (price < minValue || price > maxValue)
     return ctx.makeMessage({
-      content: `Você não pode vender **${amount}x** ${plantInfo.emoji} por **${amount}** :star:. Esse anúncio deve ter valor entre **${minValue}** :star: e **${maxValue}** :star:`,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.announce.out-needed-prices', {
+        amount,
+        emoji: plantInfo.emoji,
+        price,
+        min: minValue,
+        max: maxValue,
+      }),
     });
 
   const userAnnouncements = await fairRepository.getUserProducts(ctx.user.id);
 
   if (userAnnouncements.length >= MAX_ITEMS_IN_FAIR_PER_USER)
     return ctx.makeMessage({
-      content: `Você não possui anúncios disponíveis! Você só pode anunciar ${MAX_ITEMS_IN_FAIR_PER_USER} itens de uma só ves`,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.announce.announce-limits', {
+        limit: MAX_ITEMS_IN_FAIR_PER_USER,
+      }),
     });
 
   await fairRepository.announceProduct(
@@ -160,7 +174,7 @@ const executeAnnounceProduct = async (
   await farmerRepository.updateSilo(ctx.user.id, removeItems(farmer.silo, [{ amount, plant }]));
 
   ctx.makeMessage({
-    content: `Item anunciado! Você anunciou **${amount}x** ${plantInfo.emoji} por ${price} :star:`,
+    content: ctx.prettyResponse('success', 'commands:fazendinha.feira.announce.success'),
   });
 };
 
