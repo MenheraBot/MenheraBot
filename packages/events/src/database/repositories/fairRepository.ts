@@ -19,7 +19,9 @@ const doesAnnouncementExists = async (id: string): Promise<boolean> =>
   MainRedisClient.sismember(`fair_announcement:all`, id).then((res) => res === 1);
 
 const getUserProducts = async (farmerId: BigString): Promise<DatabaseFeirinhaSchema[]> =>
-  feirinhaModel.find({ userId: `${farmerId}` });
+  feirinhaModel.find({ userId: `${farmerId}` }, null, {
+    sort: { amount: -1, price: 1 },
+  });
 
 const deleteAnnouncement = async (id: string): Promise<void> => {
   MainRedisClient.srem(`fair_announcement:all`, id);
@@ -30,6 +32,12 @@ const deleteAnnouncement = async (id: string): Promise<void> => {
 
   MainRedisClient.srem('fair_announcement:pt-BR', `${deleted['name_pt-BR']}|${id}`);
   await MainRedisClient.srem('fair_announcement:en-US', `${deleted['name_en-US']}|${id}`);
+};
+
+const getAnnouncementIds = async (skip: number, take: number): Promise<string[]> => {
+  const [, result] = await MainRedisClient.sscan(`fair_announcement:all`, skip, 'COUNT', take);
+
+  return result;
 };
 
 const getAnnoucementNames = async (language: AvailableLanguages): Promise<string[]> =>
@@ -51,12 +59,6 @@ const getAnnouncement = async (announcementId: string): Promise<null | DatabaseF
   );
 
   return fromMongo;
-};
-
-const getAnnouncementIds = async (skip: number, take: number): Promise<string[]> => {
-  const [, result] = await MainRedisClient.sscan(`fair_announcement:all`, skip, 'COUNT', take);
-
-  return result;
 };
 
 const announceProduct = async (

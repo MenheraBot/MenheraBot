@@ -7,6 +7,7 @@ export const MAX_SILO_UPGRADES = 15;
 export const MAX_ITEMS_IN_FAIR_PER_USER = 6;
 export const MAXIMUM_PRICE_TO_SELL_IN_FAIR = 1.5;
 export const MINIMUM_PRICE_TO_SELL_IN_FAIR = 0.65;
+export const MAX_ITEMS_PER_FAIR_PAGE = 20;
 
 export const MAX_DAILY_AT_FULL_LEVEL = 9;
 export const MIN_DAILY_AT_LEVEL_ZERO = 3;
