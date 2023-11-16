@@ -6,9 +6,10 @@ import { postFazendinhaAction } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { displayPlantations } from './displayPlantations';
 import { getHarvestTime, getPlantationState } from './plantationState';
-import { Plants } from './constainst';
+import { Plants } from './constants';
 import { getCurrentSeason } from './seasonsManager';
 import { AvailablePlants, PlantedField } from './types';
+import { getSiloLimits } from './siloUtils';
 
 const plantField = async (
   ctx: ComponentInteractionContext,
@@ -35,7 +36,6 @@ const plantField = async (
     isPlanted: true as const,
     harvestAt,
     plantedSeason: currentSeason,
-    plantedAt: 0,
     plantType: Number(seed),
   } satisfies PlantedField;
 
@@ -87,9 +87,22 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   if (!field.isPlanted) return plantField(ctx, farmer, selectedField, seed, embedColor);
 
+  const currentLimits = getSiloLimits(farmer);
+
+  if (currentLimits.used >= currentLimits.limit)
+    return ctx.respondInteraction({
+      flags: MessageFlags.EPHEMERAL,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
+        limit: currentLimits.limit,
+      }),
+    });
+
   farmer.plantations[selectedField] = { isPlanted: false };
 
-  const updateStats = state === 'MATURE' && field.plantType === farmer.biggestSeed;
+  const updateStats =
+    state === 'MATURE' &&
+    field.plantType === farmer.biggestSeed &&
+    farmer.biggestSeed < AvailablePlants.Mushroom;
 
   await farmerRepository.executeHarvest(
     ctx.user.id,

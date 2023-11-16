@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.11.0] - 2023-11-16
+
+### Added
+
+- **Limites no Silo** - O silo agora possui limite! O limite inicial é de `35` itens, e pode ser aumentado por `5` comprando _Melhorias para a fazendinha_.
+- **Melhoria do silo** - Aumente o limite de itens de seu silo com `/fazendinha administrar silo`.
+- **Entregas Diárias** - Agora existem as entregas diárias da fazendinha! Ganhe dinheiro realizando entregas no `/fazendinha entregas`. Todo dia um caminhão aparecerá para você fazer entregas. Finalize todas entregas antes do caminhão partir, e ganhe um bônus.
+- **Feira de Usuários** - Com as entregas diárias, usuários vão precisar de um volume muito grande de itens. Por isso, agora usuários podem comprar plantas de outros através da feira! Com `/fazendinha feira anunciar` você pode anunciar novos itens na feira. Escolha o produto, quantos você quer vender, e por qual preço.
+- Compre itens da feira com `/fazendinha feira comprar`. É possível indicar diretamente qual produto você quer comprar informando no comando, ou listar todos os itens sendo vendidos no momento.
+- _Novo comando_ `/fazendinha administrar feira` - Permite remover o anúncio de seus produtos da feira.
+- Mais de 50 imagens e gifs foram adicionados aos comandos de ação (obrigada @mareys)
+- O título dos usuários agora aparecem no `/top`
+
+### Changed
+
+- Imagens de sarrar sozinho ou com alguém no `/sarrar` não possuem mais distinção.
+- A descrição dos _Itens Mágicos_ foi alterada para melhor entendimento de seu uso.
+
 ## [5.10.3] - 2023-11-06
 
 ### Added
@@ -15,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - **Novos Campos** - Agora é possível comprar novos campos para a sua fazenda! Use o comando `/fazendinha administrar campos` para comprá-los!
 - Os botões da fazendinha agora mostram qual planta está plantada no campo.
 - Agora é possível remover o seu título do perfil no `/personalizar título`.
-- O `/bicho` possui um botão para entrar no servidor de suporte. 
+- O `/bicho` possui um botão para entrar no servidor de suporte.
 
 ### Changed
 

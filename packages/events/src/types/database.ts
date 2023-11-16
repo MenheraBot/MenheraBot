@@ -1,8 +1,9 @@
 import { Localization } from 'discordeno/types';
 import { profileBadges } from '../modules/badges/profileBadges';
-import { AvailablePlants, Plantation } from '../modules/fazendinha/types';
+import { AvailablePlants, DeliveryMission, Plantation } from '../modules/fazendinha/types';
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
+import { AvailableLanguages } from './i18next';
 
 export type ColorResolvable = `#${string}`;
 
@@ -98,7 +99,7 @@ export interface DatabaseUserThemesSchema {
 
 export interface DatabaseGuildSchema {
   readonly id: string;
-  lang: string;
+  lang: AvailableLanguages;
 }
 export interface DatabaseCommandSchema {
   readonly _id: string;
@@ -119,12 +120,26 @@ export interface DatabaseTitlesSchema {
   registeredAt: number;
 }
 
+export interface DatabaseFeirinhaSchema {
+  _id: string;
+  userId: string;
+  plantType: AvailablePlants;
+  amount: number;
+  price: number;
+  [`name_pt-BR`]: string;
+  [`name_en-US`]: string;
+}
+
 export interface DatabaseFarmerSchema {
   readonly id: string;
   plantations: Plantation[];
   seeds: QuantitativePlant[];
   silo: QuantitativePlant[];
+  siloUpgrades: number;
   biggestSeed: number;
   plantedFields: number;
+  experience: number;
   lastPlantedSeed: AvailablePlants;
+  dailies: DeliveryMission[];
+  dailyDayId: number;
 }

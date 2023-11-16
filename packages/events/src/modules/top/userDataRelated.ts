@@ -7,6 +7,7 @@ import { InteractionContext } from '../../types/menhera';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { createActionRow, createButton } from '../../utils/discord/componentUtils';
+import titlesRepository from '../../database/repositories/titlesRepository';
 
 const executeUserDataRelatedTop = async (
   ctx: InteractionContext,
@@ -31,13 +32,29 @@ const executeUserDataRelatedTop = async (
     fields: [],
   });
 
-  const members = await Promise.all(
-    res.map((a) => cacheRepository.getDiscordUser(`${a.id}`, page <= 3)),
+  const [members, titles] = await Promise.all([
+    Promise.all(res.map(async (a) => cacheRepository.getDiscordUser(`${a.id}`, page <= 3))),
+    Promise.all(res.map(async (a) => userRepository.ensureFindUser(`${a.id}`))),
+  ]);
+
+  const resolvedTitles = await Promise.all(
+    titles.map(async (a) => ({
+      text: await titlesRepository.getTitleInfo(a.currentTitle),
+      id: a.currentTitle,
+    })),
   );
 
   for (let i = 0; i < res.length; i++) {
     const member = members[i];
     const memberName = member ? getDisplayName(member) : `ID ${res[i].id}`;
+    const rawTitle = resolvedTitles.find(
+      (a) => a.id === titles.find((b) => b.id === `${member?.id}`)?.currentTitle,
+    );
+
+    const translatedTitle =
+      ctx.guildLocale === 'en-US'
+        ? rawTitle?.text?.textLocalizations?.['en-US']
+        : rawTitle?.text?.text;
 
     if (member) {
       if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
@@ -47,7 +64,7 @@ const executeUserDataRelatedTop = async (
 
     embed.fields?.push({
       name: `**${skip + 1 + i} -** ${memberName}`,
-      value: `${actor}: **${res[i].value}**`,
+      value: `${actor}: **${res[i].value}**\n> ${translatedTitle ?? '🤓☝️'}`,
       inline: false,
     });
   }

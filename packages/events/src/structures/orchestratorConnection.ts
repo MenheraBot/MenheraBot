@@ -53,20 +53,6 @@ const createIpcConnection = async (): Promise<void> => {
       return;
     }
 
-    if (msg.type === 'INTERACTION_CREATE') {
-      bot.events.interactionCreate(
-        bot,
-        bot.transformers.interaction(bot, msg.data.body as DiscordInteraction),
-      );
-
-      if (!process.env.NOMICROSERVICES)
-        getInteractionsCounter().inc({
-          type: numberTypeToName[msg.data.body.type as 1],
-        });
-
-      return;
-    }
-
     if (msg.type === 'YOU_MAY_REST') {
       logger.info('[ORCHESTRATOR] I was told to sleep');
       bot.shuttingDown = true;
@@ -100,6 +86,21 @@ const createIpcConnection = async (): Promise<void> => {
         const metrics = await register.metrics();
         ack({ contentType: register.contentType, data: metrics });
         bot.commandsInExecution -= 1;
+        break;
+      }
+      case 'INTERACTION_CREATE': {
+        if (!process.env.NOMICROSERVICES)
+          getInteractionsCounter().inc({
+            type: numberTypeToName[msg.data.body.type as 1],
+          });
+
+        bot.respondInteraction.set((msg.data.body as DiscordInteraction).id, ack);
+
+        bot.events.interactionCreate(
+          bot,
+          bot.transformers.interaction(bot, msg.data.body as DiscordInteraction),
+        );
+
         break;
       }
       case 'YOU_ARE_THE_MASTER': {

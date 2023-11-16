@@ -10,7 +10,7 @@ import { DatabaseFarmerSchema } from '../../types/database';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getDisplayName } from '../../utils/discord/userUtils';
 import { AvailablePlants } from './types';
-import { Plants } from './constainst';
+import { Plants } from './constants';
 import {
   createActionRow,
   createButton,
@@ -24,6 +24,7 @@ import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction
 import { executeSellPlant, receiveModal } from '../shop/sellPlants';
 import { InteractionContext } from '../../types/menhera';
 import commandRepository from '../../database/repositories/commandRepository';
+import { getSiloLimits } from './siloUtils';
 
 const displaySilo = async (
   ctx: ChatInputInteractionContext,
@@ -68,6 +69,7 @@ const displaySilo = async (
 
       return p;
     }, []),
+    footer: { text: ctx.locale('commands:fazendinha.silo.footer', { ...getSiloLimits(farmer) }) },
   });
 
   const sellButton = createButton({
@@ -194,6 +196,7 @@ const buildSellPlantsMessage = async (
   const embed = createEmbed({
     title: ctx.locale('commands:fazendinha.silo.sell-title'),
     description,
+    footer: { text: ctx.locale('commands:fazendinha.silo.footer', { ...getSiloLimits(farmer) }) },
     color: hexStringToNumber(embedColor),
   });
 

@@ -1,7 +1,7 @@
 {
   "name": "@menhera-bot/events",
   "type": "module",
-  "version": "5.10.3",
+  "version": "5.11.0",
   "engines": {
     "node": ">=18"
   },
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@sentry/node": "^7.77.0",
-    "axios": "^0.27.2",
+    "axios": "^1.6.0",
     "discordeno": "^18.0.1",
     "i18next": "^21.8.14",
     "i18next-fs-backend": "^1.1.4",

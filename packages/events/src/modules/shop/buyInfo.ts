@@ -5,7 +5,7 @@ import { COLORS } from '../../structures/constants';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getUserAvatar } from '../../utils/discord/userUtils';
 import { colorPrices, huntValues } from './constants';
-import { Plants } from '../fazendinha/constainst';
+import { Plants } from '../fazendinha/constants';
 
 const buyInfo = async (
   ctx: ChatInputInteractionContext,

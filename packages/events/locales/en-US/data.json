@@ -2,51 +2,51 @@
   "magic-items": {
     "1": {
       "name": "The Colt",
-      "description": "Any demon that gets hit by one of your 13 bullets will die!"
+      "description": "Any demon that gets hit by one of your 13 bullets will die! _Increases the chance of success when hunting demons_"
     },
     "2": {
       "name": "Giant Cage",
-      "description": "A huge cage made especially to trap giants"
+      "description": "A huge cage made especially to trap giants! _Increases the chance of success when hunting giants_"
     },
     "3": {
       "name": "Edge of Cain",
-      "description": "The first blade made for hunting angels"
+      "description": "The first blade made for hunting angels! _Increases the chance of success when hunting angels_"
     },
     "4": {
       "name": "Silver Blade",
-      "description": "A double-edged blade specializing in the killing of Archangels"
+      "description": "A double-edged blade specializing in the killing of Archangels! _Increases the chance of success when hunting archangels_"
     },
     "5": {
       "name": "Necare Hêmítheos",
-      "description": "Physical weapons are not always effective, for the demigods it takes Greco-Latin runes to bring them down"
+      "description": "Physical weapons are not always effective, for the demigods it takes Greco-Latin runes to bring them down! _Increases the chance of success when hunting demigods_"
     },
     "6": {
       "name": "Deicide",
-      "description": "The knowledge to kill a god can only be gained from external aids"
+      "description": "The knowledge to kill a god can only be gained from external aids! _Increases the chance of success when hunting gods_"
     },
     "7": {
       "name": "Demonic Accelerator",
-      "description": "A machine that speeds up the time between hunting demons"
+      "description": "A machine that speeds up the time between hunting demons! _Decreases demon hunting cooldown_"
     },
     "8": {
       "name": "Giant Hourglass",
-      "description": "A huge hourglass capable of knowing the time when the giants will be in hunting dungeons!"
+      "description": "A huge hourglass capable of knowing the time when the giants will be in hunting dungeons! _Decreases giant hunting cooldown_"
     },
     "9": {
       "name": "Heavenly Harp",
-      "description": "Nothing better to attract angels than your own music"
+      "description": "Nothing better to attract angels than your own music! _Decreases angel hunting cooldown_"
     },
     "10": {
       "name": "Trumpets of Heaven",
-      "description": "The legend says that when blowing the trumpets of heaven, the archangels will descend to Earth for revenge"
+      "description": "The legend says that when blowing the trumpets of heaven, the archangels will descend to Earth for revenge! _Decreases archangel hunting cooldown_"
     },
     "11": {
       "name": "Key to Camp Half Blood",
-      "description": "A key to enter the camp of the demigods"
+      "description": "A key to enter the camp of the demigods! _Decreases demigod hunting cooldown_"
     },
     "12": {
       "name": "Head of Medusa",
-      "description": "All Gods fear it, so they band together to try to eliminate it, bringing an abundance of Gods to the dungeon"
+      "description": "All Gods fear it, so they band together to try to eliminate it, bringing an abundance of Gods to the dungeon! _Decreases god hunting cooldown_"
     }
   },
   "themes": {

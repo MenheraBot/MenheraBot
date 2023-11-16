@@ -51,12 +51,19 @@ const getAllBannedUsersIdFromMongo = async (): Promise<string[]> => {
   return bannedUsers.map((a) => a.id);
 };
 
+const constructBannedUsers = async (): Promise<void> => {
+  await flushBannedUsers();
+  const allBannedUsers = await getAllBannedUsersIdFromMongo();
+  await addBannedUsers(allBannedUsers);
+};
+
 export default {
   isUserBanned,
   banUser,
   unbanUser,
   getAllBannedUsersIdFromMongo,
   getAllBannedUsersId,
+  constructBannedUsers,
   addBannedUsers,
   flushBannedUsers,
 };

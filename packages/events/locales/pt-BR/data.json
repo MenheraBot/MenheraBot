@@ -2,51 +2,51 @@
   "magic-items": {
     "1": {
       "name": "O Colt",
-      "description": "Qualquer demônio que for atingido por uma de suas 13 balas morrerá!"
+      "description": "Qualquer demônio que for atingido por uma de suas 13 balas morrerá! _Aumenta a chance de sucesso na caça de demônios_"
     },
     "2": {
       "name": "Jaula Gigante",
-      "description": "Uma imensa jaula feita especialmente para aprisionar gigantes"
+      "description": "Uma imensa jaula feita especialmente para aprisionar gigantes! _Aumenta a chance de sucesso na caça de gigantes_"
     },
     "3": {
       "name": "Gume de Caim",
-      "description": "A primeira lâmina feita para caçar anjos"
+      "description": "A primeira lâmina feita para caçar anjos! _Aumenta a chance de sucesso na caça de anjos_"
     },
     "4": {
       "name": "Lâmina Prateada",
-      "description": "Uma lâmina de dois gumes com especialidade na morte de Arcanjos"
+      "description": "Uma lâmina de dois gumes com especialidade na morte de Arcanjos! _Aumenta a chance de sucesso na caça de arcanjos_"
     },
     "5": {
       "name": "Necare Hêmítheos",
-      "description": "Nem sempre armas físicas são eficases, para os semideuses é necessário runas greco-latinas para os derrubar"
+      "description": "Nem sempre armas físicas são eficases, para os semideuses é necessário runas greco-latinas para os derrubar! _Aumenta a chance de sucesso na caça de semideuses_"
     },
     "6": {
       "name": "Deicídio",
-      "description": "O conhecimento para matar um Deus só pode ser alcançado a partir de auxílios externos"
+      "description": "O conhecimento para matar um Deus só pode ser alcançado a partir de auxílios externos! _Aumenta a chance de sucesso na caça de deuses_"
     },
     "7": {
       "name": "Acelerador Demoníaco",
-      "description": "Uma máquina que acelera o tempo entre caçar de demônios"
+      "description": "Uma máquina que acelera o tempo entre caçar de demônios! _Diminui o tempo de recarga da caça de demônios_"
     },
     "8": {
       "name": "Ampulheta Gigante",
-      "description": "Uma imensa ampulheta capaz de saber o tempo em que os gigantes estarão nas dungeons de caça!"
+      "description": "Uma imensa ampulheta capaz de saber o tempo em que os gigantes estarão nas dungeons de caça! _Diminui o tempo de recarga da caça de gigantes_"
     },
     "9": {
       "name": "Harpa Celestial",
-      "description": "Nada melhor para atrair anjos do que sua própria música"
+      "description": "Nada melhor para atrair anjos do que sua própria música! _Diminui o tempo de recarga da caça de anjos_"
     },
     "10": {
       "name": "Trombetas dos Céus",
-      "description": "A lenda conta que ao tocar as trombetas dos céus, os arcanjos descerão à Terra para vingança"
+      "description": "A lenda conta que ao tocar as trombetas dos céus, os arcanjos descerão à Terra para vingança! _Diminui o tempo de recarga da caça de arcanjos_"
     },
     "11": {
       "name": "Chave do Acampamento dos Meio Sangue",
-      "description": "Uma chave para entrar no acampamento dos semideuses"
+      "description": "Uma chave para entrar no acampamento dos semideuses! _Diminui o tempo de recarga da caça de semideuses_"
     },
     "12": {
       "name": "Cabeça de Medusa",
-      "description": "Todos Deuses a temem, por isso, se agrupam para tentar eliminá-la, trazendo abundância de Deuses à dungeon"
+      "description": "Todos Deuses a temem, por isso, se agrupam para tentar eliminá-la, trazendo abundância de Deuses à dungeon! _Diminui o tempo de recarga da caça de deuses_"
     }
   },
   "themes": {

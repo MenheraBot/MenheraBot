@@ -1,3 +1,6 @@
+import i18next from 'i18next';
+import { AvailableLanguages, Translation, availableLanguages } from '../types/i18next';
+
 const capitalize = <S extends string>(str: S): Capitalize<S> =>
   (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<S>;
 
@@ -15,6 +18,20 @@ const minutesToMillis = (minutes: number): number => 1000 * 60 * minutes;
 const daysToMillis = (days: number): number => 1000 * 60 * 60 * 24 * days;
 
 const negate = (value: number): number => value * -1;
+
+const localizedResources = (
+  key: Translation,
+  options?: Record<string, unknown>,
+): Record<AvailableLanguages, string> => {
+  return availableLanguages.reduce((p, c) => {
+    const fixedT = i18next.getFixedT(c);
+    const result = fixedT(key, options);
+
+    p[c] = result;
+
+    return p;
+  }, {} as Record<string, string>);
+};
 
 const chunkArray = <T>(arr: T[], chunkSize: number): T[][] => {
   const chunks = [];
@@ -46,6 +63,7 @@ export {
   toWritableUtf,
   getCustomThemeField,
   millisToSeconds,
+  localizedResources,
   chunkArray,
   minutesToMillis,
   millisToHours,

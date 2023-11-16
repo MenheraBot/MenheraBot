@@ -17,7 +17,7 @@ const createCustomId = (
   ...data: unknown[]
 ): string => `${executorIndex}|${target}|${commandId}|${data.join('|')}`;
 
-const resolveSeparatedStrings = (string: string): string[] => string.split(' | ');
+const resolveSeparatedStrings = (string: string): string[] => string.split('|');
 
 const createButton = (component: PropertyOptional<ButtonComponent, 'type'>): ButtonComponent => ({
   ...component,

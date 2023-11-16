@@ -175,7 +175,7 @@ const finishUserBet = async (
       for (let i = 0; i < 25; i++)
         newSelectMenu.options.push({
           label: `${capitalize(BICHO_ANIMALS[i])}`,
-          value: `${ctx.interaction.data.values[0]} | ${BICHO_ANIMALS[i]}`,
+          value: `${ctx.interaction.data.values[0]}|${BICHO_ANIMALS[i]}`,
         });
 
       ctx.makeMessage({ components: [createActionRow([newSelectMenu])] });

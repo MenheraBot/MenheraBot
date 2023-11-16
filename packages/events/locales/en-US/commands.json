@@ -935,7 +935,11 @@
       "buy_seed": "buying seeds",
       "buy_seed_title": "Buy Seeds",
       "upgrade_farm_title": "Upgrade Farm",
-      "upgrade_farm": "upgrading your farm"
+      "upgrade_farm": "upgrading your farm",
+      "daily_farm": "farm delivery",
+      "daily_farm_title": "Daily Delivery",
+      "buy_fair": "buying in fair",
+      "buy_fair_title": "Fair"
     }
   },
   "poker": {
@@ -1054,6 +1058,30 @@
       "autumn": "Autumn",
       "spring": "Spring"
     },
+    "feira": {
+      "announce": {
+        "no-such-product": "This product does not exist!",
+        "not-enough-products": "You don't have **{{amount}}** {{emoji}} to announce.",
+        "success": "Item announced! It is now available for purchase by your neighbors",
+        "announce-limits": "You have no ads available! You can advertise up to a maximum of **{{limit}}** items",
+        "out-needed-prices": "You cannot sell **{{amount}}** {{emoji}} for **{{price}}** :star:. The selling price of this item must be between **{{min}}** and **{{max}}** :star: stars."
+      },
+      "comprar": {
+        "cant-buy-your-items": "You cannot purchase items that you announced yourself",
+        "silo-limit": "You don't have enough silo space to buy this!",
+        "not-enough-stars": "You don't have enough stars to buy this!",
+        "item-locked": "You can't buy this item because you haven't unlocked it yet.",
+        "success": "All done, {{author}}. This item was purchased by you",
+        "no-announcements": "There are currently no announcements in the neighborhood fair",
+        "fair": "Neighborhood Fair",
+        "description": "\n- {{amount}}x {{emoji}} **{{plant}}** for {{price}} :star:",
+        "user-info": "{{user}} ({{index}})",
+        "user-fair": "{{user}}'s Fair",
+        "select-item": "Select what you want to buy"
+      },
+      "invalid-plant-or-amount": "❌ | Please inform the amount and product before choosing the price!",
+      "select-between": "⭐ | Write any value between {{min}} and {{max}}"
+    },
     "plantations": {
       "field": "Field ({{index}})",
       "seeds": "Seeds",
@@ -1079,15 +1107,45 @@
       "sell-title": "Sell your plants",
       "no-plants": "You don't have plants to sell",
       "description": "{{text}}\n- {{emoji}} **{{amount}}x** - {{plant}} (**{{value}}** :star:)",
+      "silo-is-full": "Your silo is full! Your silo has a maximum space of **{{limit}}** items. Free space selling plants >_<",
+      "footer": "Silo's limit: {{used}}/{{limit}}",
       "select": "Select the quantity of {{plant}} you want to sell",
       "display-mate": "- {{emoji}} **∞** - {{plant}}",
       "display-other": "- {{emoji}} **{{amount}}x** - {{plant}}"
+    },
+    "entregas": {
+      "no-longer-available": "This delivery is no longer available",
+      "already-finished": "You have already completed this delivery!",
+      "no-plants": "You do not have the necessary plans to complete the delivery",
+      "deliver": "Yayy! Delivery completed! You received **{{award}}** :star: and **{{xp}}** experience points",
+      "finished-bonus": "Complete truck! You've received a **{{award}}** :star: bonus for delivering all your daily deliveries!",
+
+      "daily-deliveries": "Daily Deliveries",
+      "deliver-button": "Deliver {{index}}",
+      "deliver-embed-name": "Delivery {{index}}",
+      "deliver-embed-name-finished": "~~Delivery {{index}}~~ ✅",
+      "deliver-embed-field": "Stars: **{{award}}** :star:\nExperience: **{{xp}}**",
+      "deliver-embed-field-need":"Needs: **{{amount}}x** {{emoji}}",
+      "description": "### Once a day the delivery truck will appear at your farm to pick up deliveries.\n### Completing all deliveries before the truck leaves will give you an additional **{{bonus}}** :star: stars\n\n### The truck will leave <t:{{unix}}:R>"
     },
     "field-action": {
       "not-enough-seeds": "You don't have **{{plant}}** seeds to plant!",
       "imature-warning": "The field plant **{{field}}** is still growing! If you want to discard this **{{plant}}** {{emoji}} field, click the button again."
     },
     "admin": {
+      "feirinha": {
+        "no-items-in-user-fair": "You do not have items advertised at the fair!",
+        "remove-announcement": "Remove announcement {{index}}",
+        "dont-exists": "This announcement no longer exists!"
+      },
+      "silo": {
+        "success": "All done! You increased the limit of your silo",
+        "poor": "You don't have enough stars to increase your silo space",
+        "limit": "You can't upgrade your silo anymore! It is at maximum level",
+        "title": "Upgrade your silo",
+        "button": "Upgrade silo",
+        "description": "Increase your silo limit by **{{increase}}** spaces for just **{{cost}}** :star:\nCurrently you have **{{limit}}** limit spaces."
+      },
       "unlocked-field": "You bought this land from your neighbor!",
       "your-fields": "Your Fields",
       "admin": "Manage {{field}}",

@@ -31,9 +31,7 @@ export enum AvailablePlants {
 export type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
 
 export interface PlantedField {
-  // FIXME(ySnoopyDogy): Remove plantedAt field in next version
-  plantedAt: number;
-  harvestAt?: number;
+  harvestAt: number;
   plantedSeason: Seasons;
   isPlanted: true;
   plantType: AvailablePlants;
@@ -60,6 +58,13 @@ export interface PlantsFile {
   buyValue: number;
   bestSeason: Seasons;
   worstSeason: Seasons;
+}
+
+export interface DeliveryMission {
+  needs: QuantitativePlant[];
+  award: number;
+  experience: number;
+  finished: boolean;
 }
 
 export interface UnlockFieldFile {

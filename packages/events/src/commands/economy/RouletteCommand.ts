@@ -114,40 +114,40 @@ const finishRouletteBet = async (
     if (numberSelected < 36 && numberSelected !== 0)
       menu.options.push({
         label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 1}`,
-        value: `${numberSelected} | ${numberSelected + 1}`,
+        value: `${numberSelected}|${numberSelected + 1}`,
       });
 
     if (numberSelected < 34 && numberSelected !== 0)
       menu.options.push({
         label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 3}`,
-        value: `${numberSelected} | ${numberSelected + 3}`,
+        value: `${numberSelected}|${numberSelected + 3}`,
       });
 
     if (numberSelected > 2)
       menu.options.push({
         label: `${ctx.locale('commands:roleta.number')} ${numberSelected - 3}`,
-        value: `${numberSelected} | ${numberSelected - 3}`,
+        value: `${numberSelected}|${numberSelected - 3}`,
       });
 
     if (numberSelected > 0)
       menu.options.push({
         label: `${ctx.locale('commands:roleta.number')} ${numberSelected - 1}`,
-        value: `${numberSelected} | ${numberSelected - 1}`,
+        value: `${numberSelected}|${numberSelected - 1}`,
       });
 
     if (numberSelected === 0)
       menu.options.push(
         {
           label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 1}`,
-          value: `${numberSelected} | ${numberSelected + 1}`,
+          value: `${numberSelected}|${numberSelected + 1}`,
         },
         {
           label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 2}`,
-          value: `${numberSelected} | ${numberSelected + 2}`,
+          value: `${numberSelected}|${numberSelected + 2}`,
         },
         {
           label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 3}`,
-          value: `${numberSelected} | ${numberSelected + 3}`,
+          value: `${numberSelected}|${numberSelected + 3}`,
         },
       );
 

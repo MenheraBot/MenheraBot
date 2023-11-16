@@ -4,6 +4,7 @@ import {
   DatabaseCommandSchema,
   DatabaseCreditsSchema,
   DatabaseFarmerSchema,
+  DatabaseFeirinhaSchema,
   DatabaseGuildSchema,
   DatabaseProfileImagesSchema,
   DatabaseTitlesSchema,
@@ -107,9 +108,13 @@ const farmerSchema = new Schema({
   plantations: { type: Array, default: [{ isPlanted: false }] },
   seeds: { type: Array, default: [] },
   silo: { type: Array, default: [] },
+  experience: { type: Number, deafult: 0 },
+  siloUpgrades: { type: Number, default: 0 },
   biggestSeed: { type: Number, default: 0 },
   plantedFields: { type: Number, default: 0 },
   lastPlantedSeed: { type: Number, default: 0 },
+  dailies: { type: Array, default: [] },
+  dailyDayId: { type: Number, default: 0 },
 });
 
 const titlesSchema = new Schema({
@@ -117,6 +122,15 @@ const titlesSchema = new Schema({
   text: { type: String },
   textLocalizations: { type: Object, default: null },
   registeredAt: { type: Number, default: Date.now },
+});
+
+const feirinhaSchema = new Schema({
+  userId: { type: String },
+  plantType: { type: Number },
+  amount: { type: Number },
+  price: { type: Number },
+  [`name_pt-BR`]: { type: String },
+  [`name_en-US`]: { type: String },
 });
 
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
@@ -127,3 +141,4 @@ export const themeCreditsModel = model<DatabaseCreditsSchema>('credits', themeCr
 export const profileImagesModel = model<DatabaseProfileImagesSchema>('images', profileImagesSchema);
 export const farmerModel = model<DatabaseFarmerSchema>('farmer', farmerSchema);
 export const titlesModel = model<DatabaseTitlesSchema>('titles', titlesSchema);
+export const feirinhaModel = model<DatabaseFeirinhaSchema>('feirinha', feirinhaSchema);
