@@ -166,7 +166,7 @@ const displayFair = async (
 
   const embed = createEmbed({
     author: {
-      name: ctx.locale(`commands:fazendinha.feira.comprar.${user ? 'user-fair' : 'fair'}`, {
+      name: ctx.locale(`commands:fazendinha.feira.comprar.${!user ? 'user-fair' : 'fair'}`, {
         user: user ? getDisplayName(user) : undefined,
       }),
       iconUrl: user ? getUserAvatar(user, { enableGif: true }) : undefined,
@@ -194,7 +194,7 @@ const displayFair = async (
       plant: ctx.locale(`data:plants.${item.plantType}`),
       price: item.price,
     })}${
-      user
+      !user
         ? ctx.locale('commands:fazendinha.feira.comprar.user-info', {
             user: mentionUser(item.userId),
             index: i + 1,

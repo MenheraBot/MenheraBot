@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - A descrição dos _Itens Mágicos_ foi alterada para melhor entendimento de seu uso.
 - Comandos estão Bem Mais Rápidos... É bem perceptível que a primeira interação está quase instantânea
 
+### Hotfix
+
+- O display da feira da vizinhança e da feira de um usuário estavam invertidos
+
 ## [5.10.3] - 2023-11-06
 
 ### Added
