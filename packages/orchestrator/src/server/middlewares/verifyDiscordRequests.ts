@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { verifySignature } from 'discordeno';
 import { Context, Next } from 'koa';
 import { getEnviroments } from '../../getEnviroments';
@@ -26,7 +27,10 @@ const verifyDiscordRequests = (ctx: Context, next: Next): void | Promise<unknown
     timestamp,
   });
 
-  if (!isValid) return ctx.throw(401, 'Invalid request signature');
+  if (!isValid) {
+    console.log(new Date().toISOString(), 'Invalid request signature', rawBody);
+    return ctx.throw(401, 'Invalid request signature');
+  }
 
   return next();
 };
