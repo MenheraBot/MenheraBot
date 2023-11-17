@@ -1,4 +1,4 @@
-import { TaxedGameLimts } from '../../utils/taxesUtils';
+import { TaxedGameLimts, getTaxedProfit } from '../../utils/taxesUtils';
 import { BetPlayer, BichoBetType, BichoWinner } from './types';
 
 const BICHO_ANIMALS = [
@@ -102,6 +102,11 @@ const makePlayerResults = (bets: BetPlayer[], gameResults: number[][]): BichoWin
   return bets.map<BichoWinner>((player) => ({
     didWin: didUserWin(gameResults, player.option, getBetType(player.option)),
     id: `${player.id}`,
+    option: player.option,
+    taxed: getTaxedProfit(
+      player.bet * BICHO_BET_MULTIPLIER[getBetType(player.option)],
+      BICHO_TAXES,
+    ),
     profit: player.bet * BICHO_BET_MULTIPLIER[getBetType(player.option)],
     bet: player.bet,
   }));

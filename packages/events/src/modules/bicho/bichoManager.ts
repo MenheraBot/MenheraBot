@@ -41,24 +41,22 @@ const finishGame = async (): Promise<void> => {
 
   const players = makePlayerResults(playerBets, results);
 
-  postBichoResults(players);
+  postBichoResults(players, Date.now(), JSON.stringify(results));
 
   let biggestProfit = 0;
 
   players.forEach((a) => {
     if (a.didWin) {
-      const taxedProfit = getTaxedProfit(a.profit, BICHO_TAXES);
-
-      starsRepository.addStars(a.id, taxedProfit);
+      starsRepository.addStars(a.id, a.taxed);
       postTransaction(
         `${bot.id}`,
         `${a.id}`,
-        taxedProfit,
+        a.taxed,
         'estrelinhas',
         ApiTransactionReason.WIN_BICHO,
-        a.profit - taxedProfit,
+        a.profit - a.taxed,
       );
-      if (taxedProfit > biggestProfit) biggestProfit = taxedProfit;
+      if (a.taxed > biggestProfit) biggestProfit = a.taxed;
     }
   });
 

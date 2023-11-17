@@ -15,6 +15,8 @@ export interface BichoGameInfo {
 export interface BichoWinner {
   id: string;
   profit: number;
+  option: string;
+  taxed: number;
   bet: number;
   didWin: boolean;
 }

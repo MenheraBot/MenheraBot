@@ -32,8 +32,12 @@ const postHuntExecution = async (
     .catch(debugError);
 };
 
-const postBichoResults = async (players: BichoWinner[]): Promise<void> => {
-  await dataRequest.post('/statistics/bicho', { players }).catch(debugError);
+const postBichoResults = async (
+  players: BichoWinner[],
+  date: number,
+  results: string,
+): Promise<void> => {
+  await dataRequest.post('/statistics/bicho', { players, date, results }).catch(debugError);
 };
 
 const postCoinflipMatch = async (
