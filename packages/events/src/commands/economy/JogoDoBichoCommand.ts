@@ -316,7 +316,7 @@ const BichoCommand = createCommand({
       const supportLink = createButton({
         label: ctx.locale('commands:bicho.support'),
         style: ButtonStyles.Link,
-        url: 'https://discord.gg/fZMdQbA',
+        url: 'https://menherabot.xyz/bicho?utm_source=discord&utm_medium=button_component',
       });
 
       if (await didUserAlreadyBet(ctx.author.id)) {

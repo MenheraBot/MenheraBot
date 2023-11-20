@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.11.1] - 2023-11-20
+
+### Added
+
+- Agora é possível ver o histórico de jogos do bicho no [Site da Menhera](https://menherabot.xyz/bicho)!
+
+### Fixed
+
+- O jogo do bicho não identificava mais mãos de escolhas de animais.
+
 ## [5.11.0] - 2023-11-16
 
 ### Added
@@ -27,7 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Hotfix
 
 - O display da feira da vizinhança e da feira de um usuário estavam invertidos
-- O jogo do bicho não identificava mais mãos de escolhas de animais.
 
 ## [5.10.3] - 2023-11-06
 
