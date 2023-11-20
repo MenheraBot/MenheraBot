@@ -59,13 +59,13 @@ describe('Bicho didUserWin function', () => {
 
   test('check if the sequence selection is ok', () => {
     const totalResults = [
-      testWin('avestruz | águia', 'sequence'),
-      testWin('vaca | veado', 'sequence'),
-      testWin('águia | vaca', 'sequence'),
-      testWin('veado | leão', 'sequence'),
-      testWin('leão | veado', 'sequence'),
-      testWin('galo | vaca', 'sequence'),
-      testWin('leão | leão', 'sequence'),
+      testWin('avestruz|águia', 'sequence'),
+      testWin('vaca|veado', 'sequence'),
+      testWin('águia|vaca', 'sequence'),
+      testWin('veado|leão', 'sequence'),
+      testWin('leão|veado', 'sequence'),
+      testWin('galo|vaca', 'sequence'),
+      testWin('leão|leão', 'sequence'),
     ];
 
     expect(totalResults).toEqual([false, true, false, true, false, false, false]);
@@ -73,10 +73,10 @@ describe('Bicho didUserWin function', () => {
 
   test('check if the corner selection is ok', () => {
     const totalResults = [
-      testWin('vaca | águia | veado | leão | galo', 'corner'),
-      testWin('veado | águia | leão | galo | vaca', 'corner'),
-      testWin('borboleta | vaca | burro | veado | galo', 'corner'),
-      testWin('vaca | vaca | vaca | vaca | vaca', 'corner'),
+      testWin('vaca|águia|veado|leão|galo', 'corner'),
+      testWin('veado|águia|leão|galo|vaca', 'corner'),
+      testWin('borboleta|vaca|burro|veado|galo', 'corner'),
+      testWin('vaca|vaca|vaca|vaca|vaca', 'corner'),
     ];
 
     expect(totalResults).toEqual([true, true, false, false]);
