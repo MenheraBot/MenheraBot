@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Hotfix
 
 - O display da feira da vizinhança e da feira de um usuário estavam invertidos
+- O jogo do bicho não identificava mais mãos de escolhas de animais.
 
 ## [5.10.3] - 2023-11-06
 

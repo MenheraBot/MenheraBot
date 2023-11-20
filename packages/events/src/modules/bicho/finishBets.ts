@@ -1,3 +1,4 @@
+import { resolveSeparatedStrings } from '../../utils/discord/componentUtils';
 import { TaxedGameLimts, getTaxedProfit } from '../../utils/taxesUtils';
 import { BetPlayer, BichoBetType, BichoWinner } from './types';
 
@@ -55,7 +56,7 @@ const getBetType = (option: string): BichoBetType => {
     return 'unity';
   }
 
-  const selectedAnimals = option.split(' | ');
+  const selectedAnimals = resolveSeparatedStrings(option);
 
   if (selectedAnimals.length === 5) return 'corner';
   if (selectedAnimals.length === 2) return 'sequence';
@@ -76,7 +77,7 @@ const hasSequence = (animals: string[], user: string[]): boolean => {
 
 const didUserWin = (results: number[][], option: string, bet: BichoBetType): boolean => {
   const animals = results.map(mapResultToAnimal);
-  const userChoices = option.split(' | ');
+  const userChoices = resolveSeparatedStrings(option);
 
   switch (bet) {
     case 'unity':
@@ -93,7 +94,8 @@ const didUserWin = (results: number[][], option: string, bet: BichoBetType): boo
       return animals.every((a) => userChoices.includes(a));
     case 'sequence':
       return (
-        hasTwoAnimals(animals, option.split(' | ')) && hasSequence(animals, option.split(' | '))
+        hasTwoAnimals(animals, resolveSeparatedStrings(option)) &&
+        hasSequence(animals, resolveSeparatedStrings(option))
       );
   }
 };

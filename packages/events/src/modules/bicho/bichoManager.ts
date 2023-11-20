@@ -12,6 +12,7 @@ import { debugError } from '../../utils/debugError';
 import { capitalize } from '../../utils/miscUtils';
 import { ApiTransactionReason } from '../../types/api';
 import { getProfitTaxes, getTaxedProfit } from '../../utils/taxesUtils';
+import { resolveSeparatedStrings } from '../../utils/discord/componentUtils';
 
 const GAME_DURATION = 1000 * 60 * 60 * 6;
 
@@ -119,13 +120,12 @@ const optionBetToText = (option: string, type: BichoBetType): string => {
       return capitalize(option);
 
     case 'sequence':
-      return option
-        .split(' | ')
+      return resolveSeparatedStrings(option)
         .map((text, i) => `${i + 1}° ${capitalize(text)}`)
         .join('. ');
 
     case 'corner':
-      return option.split(' | ').map(capitalize).join(', ');
+      return resolveSeparatedStrings(option).map(capitalize).join(', ');
   }
 };
 
