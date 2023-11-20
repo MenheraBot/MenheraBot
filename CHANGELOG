@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Agora é possível ver o histórico de jogos do bicho no [Site da Menhera](https://menherabot.xyz/bicho)!
 
+### Changed
+
+- Reduzido a quantidade máxima de prêmios possíveis nas entregas diárias.
+
 ### Fixed
 
 - O jogo do bicho não identificava mais mãos de escolhas de animais.

@@ -35,8 +35,8 @@ const calculateUserDailyDeliveries = (farmer: DatabaseFarmerSchema): DeliveryMis
   for (let i = 0; i < maxUserDailies; i++) {
     const neededPlants = getRandomAmount(userLevel);
     const plantType = Math.floor(Math.random() * (farmer.biggestSeed + 1));
-    const maxAward = (plantType + 1) * neededPlants * 69 + 10 * Plants[plantType as 1].sellValue;
-    const minAward = maxAward * 0.8;
+    const maxAward = (plantType + 1) * neededPlants * 30 + 10 * Plants[plantType as 1].sellValue;
+    const minAward = maxAward * 0.7;
 
     const award = Math.floor(Math.random() * (maxAward - minAward) + minAward);
 
