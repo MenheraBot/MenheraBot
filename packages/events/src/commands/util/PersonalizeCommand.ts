@@ -451,6 +451,8 @@ export const executeTituleAutocompleteInteraction = async (
 
     logger.info(bot, 'UserTitles', userTitles, 'UserDataTitles', userData.titles);
 
+    logger.info('UserID: ', interaction.user.id);
+
     Sentry.captureMessage('UserTitles is not an array of strings', {
       contexts: {
         infos: {
