@@ -456,8 +456,8 @@ export const executeTituleAutocompleteInteraction = async (
     Sentry.captureMessage('UserTitles is not an array of strings', {
       contexts: {
         infos: {
-          userTitles,
-          userData: userData.titles,
+          userTitles: JSON.stringify(userTitles),
+          userData: JSON.stringify(userData.titles),
           types: userTitles.map((a) => typeof a),
         },
       },
