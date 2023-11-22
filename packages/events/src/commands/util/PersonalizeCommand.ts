@@ -449,7 +449,7 @@ export const executeTituleAutocompleteInteraction = async (
   ) {
     logger.error(`UserTitles is not an array of strings`, input, userTitles);
 
-    logger.info(bot, 'UserTitles', userTitles, 'UserDataTitles', userData.titles);
+    logger.info('UserTitles', userTitles, 'UserDataTitles', userData.titles);
 
     logger.info('UserID: ', interaction.user.id);
 
