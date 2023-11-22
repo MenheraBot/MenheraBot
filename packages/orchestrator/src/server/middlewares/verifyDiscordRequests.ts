@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { verifySignature } from 'discordeno';
+import { HTTPResponseCodes, verifySignature } from 'discordeno';
 import { Context, Next } from 'koa';
 import { getEnviroments } from '../../getEnviroments';
 
@@ -18,7 +18,8 @@ const verifyDiscordRequests = (ctx: Context, next: Next): void | Promise<unknown
   const timestamp = ctx.request.get('X-Signature-Timestamp');
   const rawBody = ctx.request.body[Symbol.for('unparsedBody')];
 
-  if (!signature || !timestamp || !rawBody) return ctx.throw(401, 'Invalid request signature');
+  if (!signature || !timestamp || !rawBody)
+    return ctx.throw(HTTPResponseCodes.Unauthorized, 'Invalid request signature');
 
   const { isValid } = verifySignature({
     body: rawBody,
@@ -29,7 +30,7 @@ const verifyDiscordRequests = (ctx: Context, next: Next): void | Promise<unknown
 
   if (!isValid) {
     console.log(new Date().toISOString(), 'Invalid request signature', rawBody);
-    return ctx.throw(401, 'Invalid request signature');
+    return ctx.throw(HTTPResponseCodes.Unauthorized, 'Invalid request signature');
   }
 
   return next();

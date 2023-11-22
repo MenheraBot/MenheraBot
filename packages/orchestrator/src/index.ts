@@ -33,6 +33,7 @@ export enum RequestType {
   Prometheus = 'PROMETHEUS',
   UpdateCommands = 'UPDATE_COMMANDS',
   YouAreTheMaster = 'YOU_ARE_THE_MASTER',
+  TellMeUsers = 'TELL_ME_USERS',
   YouMayRest = 'YOU_MAY_REST',
   SimonSays = 'SIMON_SAYS',
 }
@@ -54,14 +55,14 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
 
   const toUseClient = clientsToUse[eventsCounter % clientsToUse.length];
 
-  if (type === RequestType.InteractionCreate) {
+  if ([RequestType.InteractionCreate, RequestType.TellMeUsers].includes(type)) {
     const result = await toUseClient.conn.request({ type, data }).catch(() => null);
     return result;
   }
 
   if (type !== RequestType.Prometheus) {
     toUseClient.conn.send({ type, data });
-    return;
+    return [];
   }
 
   const results = await Promise.allSettled(

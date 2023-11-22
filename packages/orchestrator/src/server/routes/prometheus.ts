@@ -1,4 +1,5 @@
 import Router from 'koa-router';
+import { HTTPResponseCodes } from 'discordeno/types';
 import { RequestType, sendEvent } from '../..';
 
 export interface PrometheusResponse {
@@ -13,7 +14,7 @@ const createPrometheusRouter = (): Router => {
     const results = (await sendEvent(RequestType.Prometheus, null)) as PrometheusResponse | null;
 
     if (results === null) {
-      ctx.status = 404;
+      ctx.status = HTTPResponseCodes.NotFound;
       return;
     }
 

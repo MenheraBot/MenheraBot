@@ -1,11 +1,12 @@
 import { Context } from 'koa';
 import Router from 'koa-router';
+import { HTTPResponseCodes } from 'discordeno/types';
 import { RequestType, sendEvent } from '../..';
 import { verifyDiscordRequests } from '../middlewares/verifyDiscordRequests';
 
 const handleRequest = async (ctx: Context): Promise<void> => {
   if (ctx.request.body.type === 1) {
-    ctx.status = 200;
+    ctx.status = HTTPResponseCodes.Ok;
     ctx.body = { type: 1 };
     return;
   }
@@ -18,12 +19,12 @@ const handleRequest = async (ctx: Context): Promise<void> => {
   }
 
   ctx.body = response;
-  ctx.status = 200;
+  ctx.status = HTTPResponseCodes.Ok;
 };
 
 const createPostInteractionRouter = (): Router => {
   const router = new Router();
-  router.post('/interactions', verifyDiscordRequests, (ctx) => handleRequest(ctx));
+  router.post('/interactions', verifyDiscordRequests, handleRequest);
   return router;
 };
 
