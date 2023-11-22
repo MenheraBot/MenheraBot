@@ -51,6 +51,7 @@ import { sendInteractionResponse } from '../../utils/discord/interactionRequests
 import { debugError } from '../../utils/debugError';
 import { VangoghUserprofileData } from '../info/ProfileCommand';
 import { logger } from '../../utils/logger';
+import { bot } from '../..';
 
 const executeAboutMeCommand = async (
   ctx: ChatInputInteractionContext,
@@ -439,6 +440,31 @@ export const executeTituleAutocompleteInteraction = async (
     userData.titles.map((a) => a.id),
   );
 
+  logger.logSwitch(bot, 'UserTitles', userTitles, 'UserDataTitles', userData.titles);
+
+  if (
+    !userTitles.every((a) => a) ||
+    userTitles.length === 0 ||
+    userTitles.some((a) => typeof a !== 'string')
+  ) {
+    logger.error(`UserTitles is not an array of strings`, input, userTitles);
+
+    logger.info(bot, 'UserTitles', userTitles, 'UserDataTitles', userData.titles);
+
+    Sentry.captureMessage('UserTitles is not an array of strings', {
+      contexts: {
+        infos: {
+          userTitles,
+          userData: userData.titles,
+          types: userTitles.map((a) => typeof a),
+        },
+      },
+      level: 'warning',
+    });
+
+    return respondWithChoices([resetTitle]);
+  }
+
   try {
     const ratings = findBestMatch(
       `${input}`,
@@ -467,6 +493,7 @@ export const executeTituleAutocompleteInteraction = async (
     return respondWithChoices(ratings);
   } catch (e) {
     logger.error(`Error in title autocomplete`, input, userTitles);
+    logger.info(bot, 'UserTitles', userTitles, 'UserDataTitles', userData.titles);
 
     Sentry.captureException(e, {
       contexts: {
