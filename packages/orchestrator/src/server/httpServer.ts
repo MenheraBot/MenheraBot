@@ -7,6 +7,7 @@ import { createPrometheusRouter } from './routes/prometheus';
 import { createRequestCommandsRouter } from './routes/requestCommands';
 import { createVoteWebhookRouter } from './routes/voteWebhook';
 import { createRequestUserDataRouter } from './routes/requestUserData';
+import { createPingRouter } from './routes/ping';
 
 const server = new Koa();
 
@@ -31,6 +32,7 @@ const registerAllRouters = (): void => {
   registerRouter(createPrometheusRouter());
   registerRouter(createRequestCommandsRouter());
   registerRouter(createRequestUserDataRouter());
+  registerRouter(createPingRouter());
 };
 
 export { createHttpServer, registerAllRouters };

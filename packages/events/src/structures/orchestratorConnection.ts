@@ -81,6 +81,10 @@ const createIpcConnection = async (): Promise<void> => {
 
   orchestratorClient.on('request', async (msg, ack) => {
     switch (msg.type) {
+      case 'ARE_YOU_OK': {
+        ack(Math.floor(process.uptime() * 1000));
+        break;
+      }
       case 'PROMETHEUS': {
         bot.commandsInExecution += 1;
         const register = getRegister();

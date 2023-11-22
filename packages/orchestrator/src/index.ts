@@ -36,6 +36,7 @@ export enum RequestType {
   TellMeUsers = 'TELL_ME_USERS',
   YouMayRest = 'YOU_MAY_REST',
   SimonSays = 'SIMON_SAYS',
+  AreYouOk = 'ARE_YOU_OK',
 }
 
 const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => {
@@ -58,6 +59,21 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
   if ([RequestType.InteractionCreate, RequestType.TellMeUsers].includes(type)) {
     const result = await toUseClient.conn.request({ type, data }).catch(() => null);
     return result;
+  }
+
+  if (type === RequestType.AreYouOk) {
+    const pings = await orchestratorServer.survey({ type: RequestType.AreYouOk }, 1000);
+    return pings.map((p) =>
+      p.status === 'fulfilled'
+        ? {
+            uptime: p.value,
+            ping:
+              Math.floor(Date.now() - (data as number)) > 0
+                ? Math.floor(Date.now() - (data as number))
+                : 0,
+          }
+        : { uptime: -1, ping: -1 },
+    );
   }
 
   if (type !== RequestType.Prometheus) {
