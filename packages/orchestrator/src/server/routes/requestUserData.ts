@@ -21,11 +21,14 @@ const handleRequest = async (ctx: Context): Promise<void> => {
 
   const result = await sendEvent(RequestType.TellMeUsers, { users });
 
-  if (!result) return ctx.throw(HTTPResponseCodes.GatewayUnavailable);
+  if (!result) {
+    ctx.status = 503;
+    ctx.body = "Menhera can't respond right now. I think she's sleeping hehehe";
+    return;
+  }
 
   if ((result as unknown[]).length === 0) return ctx.throw(HTTPResponseCodes.NotFound);
 
-  ctx.set('Content-Type', 'application/json');
   ctx.body = result;
   ctx.status = HTTPResponseCodes.Ok;
 };

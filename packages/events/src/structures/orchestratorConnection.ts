@@ -10,6 +10,7 @@ import { updateCommandsOnApi } from '../utils/updateApiCommands';
 import { getInteractionsCounter, getRegister } from './initializePrometheus';
 import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
 import cacheRepository from '../database/repositories/cacheRepository';
+import { getUserAvatar } from '../utils/discord/userUtils';
 
 const numberTypeToName = {
   1: 'PING',
@@ -28,7 +29,7 @@ let orchestratorClient: Client;
 const getOrchestratorClient = (): Client => orchestratorClient;
 
 const createIpcConnection = async (): Promise<void> => {
-  if (process.env.NODE_ENV === 'development') return;
+  // if (process.env.NODE_ENV === 'development') return;
 
   const { ORCHESTRATOR_SOCKET_PATH } = getEnviroments(['ORCHESTRATOR_SOCKET_PATH']);
 
@@ -91,8 +92,22 @@ const createIpcConnection = async (): Promise<void> => {
       }
       case 'TELL_ME_USERS': {
         bot.commandsInExecution += 1;
-        const result = await Promise.all(msg.users.map(cacheRepository.getDiscordUser));
-        ack(result);
+        const result = await Promise.all(
+          msg.data.users.map((e: string) => cacheRepository.getDiscordUser(e, true)),
+        );
+
+        ack(
+          result.map((a, i) =>
+            a
+              ? {
+                  ...a,
+                  found: true,
+                  id: `${a.id}`,
+                  avatar: getUserAvatar(a, { enableGif: true, size: 512 }),
+                }
+              : { id: `${msg.data.users[i]}`, found: false },
+          ),
+        );
         bot.commandsInExecution -= 1;
         break;
       }
