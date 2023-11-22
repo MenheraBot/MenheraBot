@@ -9,6 +9,7 @@ import { logger } from '../utils/logger';
 import { updateCommandsOnApi } from '../utils/updateApiCommands';
 import { getInteractionsCounter, getRegister } from './initializePrometheus';
 import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
+import cacheRepository from '../database/repositories/cacheRepository';
 
 const numberTypeToName = {
   1: 'PING',
@@ -85,6 +86,13 @@ const createIpcConnection = async (): Promise<void> => {
 
         const metrics = await register.metrics();
         ack({ contentType: register.contentType, data: metrics });
+        bot.commandsInExecution -= 1;
+        break;
+      }
+      case 'TELL_ME_USERS': {
+        bot.commandsInExecution += 1;
+        const result = await Promise.all(msg.users.map(cacheRepository.getDiscordUser));
+        ack(result);
         bot.commandsInExecution -= 1;
         break;
       }
