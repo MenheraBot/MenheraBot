@@ -32,7 +32,7 @@ const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promi
 };
 
 const setDiscordUser = async (payload: DiscordUser): Promise<void> => {
-  await MainRedisClient.setex(`discord_user:${payload.id}`, 86400, JSON.stringify(payload)).catch(
+  await MainRedisClient.setex(`discord_user:${payload.id}`, 604800, JSON.stringify(payload)).catch(
     debugError,
   );
 };
