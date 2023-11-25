@@ -1,6 +1,7 @@
 import { Context } from 'koa';
 import Router from 'koa-router';
 import { HTTPResponseCodes } from 'discordeno/types';
+import qs from 'qs';
 import { RequestType, sendEvent } from '../..';
 import { getEnviroments } from '../../getEnviroments';
 
@@ -12,7 +13,12 @@ const handleRequest = async (ctx: Context): Promise<void> => {
   if (ctx.req.headers.authorization !== MENHERA_API_TOKEN)
     return ctx.throw(HTTPResponseCodes.Forbidden);
 
-  const { users } = ctx.request.query;
+  if (!ctx.request.querystring)
+    return ctx.throw(HTTPResponseCodes.BadRequest, {
+      message: 'You need to send the users array in the query string',
+    });
+
+  const { users } = qs.parse(ctx.request.querystring);
 
   if (!users || !Array.isArray(users))
     return ctx.throw(HTTPResponseCodes.BadRequest, {
