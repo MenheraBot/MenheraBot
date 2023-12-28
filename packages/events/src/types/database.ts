@@ -149,3 +149,7 @@ export interface DatabaseFarmerSchema {
   dailies: DeliveryMission[];
   dailyDayId: number;
 }
+
+export interface DatabaseCharacterSchema {
+  readonly id: string;
+}
