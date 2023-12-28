@@ -31,7 +31,7 @@ const CharacterCommand = createCommand({
 
     const user = ctx.getOption<User>('jogador', 'users', false) ?? ctx.user;
 
-    if (user.toggles.bot) return ctx.makeMessage({ content: `Nao eras, bot nao joga` });
+    if (user.toggles.bot) return ctx.makeMessage({ content: `Não eras, bot nao joga` });
 
     const character = await roleplayRepository.getCharacter(user.id);
 
