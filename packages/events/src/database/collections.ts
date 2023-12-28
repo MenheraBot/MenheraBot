@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 import {
+  DatabaseCharacterSchema,
   DatabaseCommandSchema,
   DatabaseCreditsSchema,
   DatabaseFarmerSchema,
@@ -134,6 +135,10 @@ const feirinhaSchema = new Schema({
   [`name_en-US`]: { type: String },
 });
 
+const characterSchema = new Schema({
+  id: { type: String, unique: true, index: true },
+});
+
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
 export const guildsModel = model<DatabaseGuildSchema>('guild', guildSchema);
 export const usersModel = model<DatabaseUserSchema>('usersdb', userSchema);
@@ -143,3 +148,4 @@ export const profileImagesModel = model<DatabaseProfileImagesSchema>('images', p
 export const farmerModel = model<DatabaseFarmerSchema>('farmer', farmerSchema);
 export const titlesModel = model<DatabaseTitlesSchema>('titles', titlesSchema);
 export const feirinhaModel = model<DatabaseFeirinhaSchema>('feirinha', feirinhaSchema);
+export const characterModel = model<DatabaseCharacterSchema>('character', characterSchema);
