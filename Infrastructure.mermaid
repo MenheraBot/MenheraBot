@@ -1,0 +1,30 @@
+flowchart LR
+    CF((Cloudflare)) ====> NGX{NGINX}
+    AM -----> SP((Status Page))
+    AM & ND & EV ----> DC((Discord))
+
+    subgraph Menhera VPS
+
+        NGX --> OT[Orchestrator]
+        OT<..-> |UDS| EV[Events]
+ 
+        R[(Redis)]
+        M[(Mongo)]
+        VG[Vangogh]
+        AB[Album]
+        PG[(Postgres)]
+        AM[Amandinha]
+        ND[Netdata]
+        PT[Prometheus]
+        GF[Grafana]
+        API
+        
+        EV & VG .-> |UDS| R
+        EV --> VG
+        EV ---> M
+        API --> PG
+        NGX ---> API & AB & VG
+
+        PT --> NGX
+        GF --> PT
+    end
