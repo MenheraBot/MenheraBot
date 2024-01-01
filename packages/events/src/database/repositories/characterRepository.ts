@@ -5,6 +5,7 @@ import { characterModel } from '../collections';
 
 const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseCharacterSchema => ({
   id: `${user.id}`,
+  life: user.life
 });
 
 const getCharacter = async (playerId: BigString): Promise<DatabaseCharacterSchema> => {
