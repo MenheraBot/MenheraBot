@@ -136,6 +136,7 @@ const feirinhaSchema = new Schema({
 
 const characterSchema = new Schema({
   id: { type: String, unique: true, index: true },
+  life: { type: Number, default: 100 },
 });
 
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);

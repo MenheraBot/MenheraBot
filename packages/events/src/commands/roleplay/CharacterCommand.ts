@@ -3,11 +3,13 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
 import { createCommand } from '../../structures/command/createCommand';
 import characterRepository from '../../database/repositories/characterRepository';
-import { mentionUser } from '../../utils/discord/userUtils';
+import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
+import { createEmbed } from '../../utils/discord/embedUtils';
 
 const CharacterCommand = createCommand({
   path: '',
   name: 'personagem',
+  nameLocalizations: { 'en-US': 'character' },
   description: '「RPG」・Veja o seu personagem do RPG',
   descriptionLocalizations: {
     'en-US': '「RPG」・Check your RPG character',
@@ -28,11 +30,21 @@ const CharacterCommand = createCommand({
     finishCommand();
 
     const user = ctx.getOption<User>('jogador', 'users', false) ?? ctx.user;
+
+    if (user.toggles.bot) return ctx.makeMessage({ content: `Nao eras, bot nao joga` });
+
     const character = await characterRepository.getCharacter(user.id);
+
+    const embed = createEmbed({
+      title: `Personagem de ${mentionUser(user.id)}`,
+      description: `:heart: Vida: **${character.life}**`,
+      thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
+    });
 
     await ctx.makeMessage({
       content: `Bem vindo, jogador ${mentionUser(character.id)}!`,
       allowedMentions: { users: [user.id] },
+      embeds: [embed],
     });
   },
 });
