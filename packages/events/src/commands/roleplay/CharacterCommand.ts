@@ -3,7 +3,7 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
 import { createCommand } from '../../structures/command/createCommand';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
-import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
+import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 
 const CharacterCommand = createCommand({
@@ -36,7 +36,7 @@ const CharacterCommand = createCommand({
     const character = await roleplayRepository.getCharacter(user.id);
 
     const embed = createEmbed({
-      title: `Personagem de ${getDisplayName(ctx.user, false)}`,
+      title: `Personagem de ${mentionUser(user.id)}`,
       description: `:heart: Vida: **${character.life}**`,
       thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
     });
