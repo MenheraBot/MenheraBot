@@ -224,6 +224,14 @@
     "40": {
       "name": "Galeria",
       "description": "Uma galeria de arte com a sua cara"
+    },
+    "41": {
+      "name": "Baralho Noturno",
+      "description": "Para os apreciadores de uma boa noite"
+    },
+    "42": {
+      "name": "Matutino",
+      "description": "Para os amantes do amanhecer"
     }
   },
   "plants": {

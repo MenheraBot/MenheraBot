@@ -224,6 +224,14 @@
     "40": {
       "name": "Gallery",
       "description": "An art gallery with your face"
+    },
+    "41": {
+      "name": "Night Deck",
+      "description": "For lovers of a good night"
+    },
+    "42": {
+      "name": "Morning",
+      "description": "For dawn lovers"
     }
   },
   "plants": {

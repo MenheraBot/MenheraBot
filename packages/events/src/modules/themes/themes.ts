@@ -245,6 +245,16 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     imageCompatible: false,
     needApiData: false,
   },
+  41: {
+    price: 345_000,
+    type: 'cards',
+    theme: 'night',
+  },
+  42: {
+    price: 45_000,
+    type: 'card_background',
+    theme: 'morning',
+  },
 };
 
 export default Themes;

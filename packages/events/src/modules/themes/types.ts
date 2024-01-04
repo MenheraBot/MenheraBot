@@ -1,4 +1,4 @@
-export type AvailableCardThemes = 'default' | 'death' | 'hello_kitty';
+export type AvailableCardThemes = 'default' | 'death' | 'hello_kitty' | 'night';
 
 export type AvailableCardBackgroundThemes =
   | 'red'
@@ -8,6 +8,7 @@ export type AvailableCardBackgroundThemes =
   | 'kawaii'
   | 'hello_kitty'
   | 'nocturnal'
+  | 'morning'
   | 'lamenta_caelorum';
 
 export type AvailableTableThemes =
