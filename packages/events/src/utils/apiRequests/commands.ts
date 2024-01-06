@@ -38,14 +38,14 @@ const postCommandExecution = async (info: UsedCommandData): Promise<void> => {
   batchCommandsExecution.push(info);
 
   if (batchCommandsExecution.length >= MAX_BATCH_QUEUE_LENGTH) {
+    const toPostCommands = batchCommandsExecution.splice(0, MAX_BATCH_QUEUE_LENGTH);
+
     await dataRequest.post(
-      `/usages/commands?command=${batchCommandsExecution
+      `/usages/commands?command=${toPostCommands
         .map((a) => a.commandName.split(' ').join('_'))
         .join('-')}`,
-      batchCommandsExecution,
+      toPostCommands,
     );
-
-    batchCommandsExecution = [];
   }
 };
 
