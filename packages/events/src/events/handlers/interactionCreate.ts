@@ -136,8 +136,9 @@ const setInteractionCreateEvent = (): void => {
         command_name: ctx.interaction.data?.name,
       });
 
-    await new Promise((res) => {
-      command.execute(ctx, res).catch((err) => {
+    await command
+      .execute(ctx, () => null)
+      .catch((err) => {
         errorReply(
           T('events:error_embed.title', {
             cmd: command.name,
@@ -172,10 +173,7 @@ const setInteractionCreateEvent = (): void => {
             embeds: [embed],
           });
         }
-
-        res(null);
       });
-    });
 
     bot.commandsInExecution -= 1;
 

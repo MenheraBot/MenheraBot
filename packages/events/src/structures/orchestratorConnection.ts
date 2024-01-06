@@ -11,6 +11,7 @@ import { getInteractionsCounter, getRegister } from './initializePrometheus';
 import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
 import cacheRepository from '../database/repositories/cacheRepository';
 import { getUserAvatar } from '../utils/discord/userUtils';
+import { forceBatchCommandsExecutionPost } from '../utils/apiRequests/commands';
 
 const numberTypeToName = {
   1: 'PING',
@@ -71,10 +72,15 @@ const createIpcConnection = async (): Promise<void> => {
         }, 3000).unref();
       });
 
+      logger.info('[SHUTDOWN] Posting the command execution queue to API');
+      await forceBatchCommandsExecutionPost();
+
       logger.info('[SHUTDOWN] Closing all Database connections');
       await closeConnections();
+
       logger.info('[SHUTDOWN] Closing orchestrator IPC');
       await orchestratorClient.close('REQUESTED_SHUTDOWN');
+
       logger.info("[SHUTDOWN] I'm tired... I will rest for now");
     }
   });
