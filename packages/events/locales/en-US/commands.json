@@ -964,6 +964,7 @@
     "someone-joined-other-match": "Someone ended up joining another match while this one wasn't starting.",
     "starting-match": "Get ready... The match is starting!",
     "unknown-match": "This match has already been finished!",
+    "unknown-players-in": "Oops! I forgot who could join this match! Please use the command again.",
     "not-in-match": "You are not participating in this Poker match!",
     "player": {
       "your-hand": "Your hand",

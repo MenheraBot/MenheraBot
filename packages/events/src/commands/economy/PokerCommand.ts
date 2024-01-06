@@ -5,6 +5,7 @@ import {
   ButtonStyles,
 } from 'discordeno/types';
 import { Embed } from 'discordeno/transformers';
+import * as Sentry from '@sentry/node';
 import { createCommand } from '../../structures/command/createCommand';
 import {
   createActionRow,
@@ -33,6 +34,7 @@ import userRepository from '../../database/repositories/userRepository';
 import starsRepository from '../../database/repositories/starsRepository';
 import { handleUserSelection, validateUserBet } from '../../modules/poker/playerBet';
 import { DEFAULT_CHIPS, MAX_POKER_PLAYERS } from '../../modules/poker/constants';
+import { logger } from '../../utils/logger';
 
 const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [matchId, action, lobbyAction] = ctx.sentData;
@@ -244,6 +246,28 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
     });
 
   const oldEmbed = ctx.interaction.message?.embeds[0] as Embed;
+
+  if (typeof oldEmbed === 'undefined') {
+    logger.error(`oldEmbed is undefined! Message:`, ctx.interaction.message);
+
+    Sentry.captureMessage('oldEmbed is undefined in Poker!', {
+      contexts: {
+        infos: {
+          allowedUsers: JSON.stringify(allowedUsers),
+          oldEmbed: JSON.stringify(oldEmbed),
+          interactionMessage: JSON.stringify(ctx.interaction.message),
+        },
+      },
+      level: 'warning',
+    });
+
+    return ctx.makeMessage({
+      components: [],
+      embeds: [],
+      attachments: [],
+      content: ctx.prettyResponse('sorry', 'commands:poker.unknown-players-in'),
+    });
+  }
 
   const alreadyInPlayers = oldEmbed.fields?.[0].value.split('\n').map(removeNonNumbers) ?? [];
 

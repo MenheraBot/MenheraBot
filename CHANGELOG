@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.11.3] - 2024-01-06
+
+### Fixed
+
+- Pequeno problema ao iniciar partida de Poker quando a Menhera tem problemas para ler a mensagem anterior.
+
 ## [5.11.2] - 2024-01-03
 
 ### Added
