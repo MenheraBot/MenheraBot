@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - Pequeno problema ao iniciar partida de Poker quando a Menhera tem problemas para ler a mensagem anterior.
+- O comando `/estatísticas designer` agora pagina a quantidade de designs por mensagem, dividindo todos em diversos embeds.  
 
 ## [5.11.2] - 2024-01-03
 

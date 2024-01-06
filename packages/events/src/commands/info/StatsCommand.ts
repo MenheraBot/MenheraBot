@@ -19,7 +19,7 @@ import { createActionRow, createButton, createCustomId } from '../../utils/disco
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import { millisToSeconds } from '../../utils/miscUtils';
+import { chunkArray, millisToSeconds } from '../../utils/miscUtils';
 
 import { createCommand } from '../../structures/command/createCommand';
 import { Plants } from '../../modules/fazendinha/constants';
@@ -145,37 +145,42 @@ const executeDesignerStats = async (
     return finishCommand();
   }
 
-  const embed = createEmbed({
-    title: ctx.locale('commands:status.designer.title', {
-      user: getDisplayName(user),
-    }),
-    color: hexStringToNumber(ctx.authorData.selectedColor),
-    thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
-    fields: userDesigns.reduce<DiscordEmbedField[]>((fields, design) => {
-      const theme = getThemeById(design.themeId);
-      const fieldName = ctx.locale(`data:themes.${design.themeId as 1}.name`);
-      const fieldDescription = ctx.locale('commands:status.designer.description', {
-        sold: design.timesSold,
-        profit: design.totalEarned,
-        registered: `<t:${millisToSeconds(design.registeredAt)}:d>`,
-        royalty: design.royalty,
-        type: theme.data.type,
-      });
+  const chunkedDesigns = chunkArray(userDesigns, 18);
 
-      fields.push({ name: fieldName, value: fieldDescription, inline: true });
-      return fields;
-    }, []),
-  });
+  const embeds = chunkedDesigns.map((designs) =>
+    createEmbed({
+      title: ctx.locale('commands:status.designer.title', {
+        user: getDisplayName(user),
+      }),
+      color: hexStringToNumber(ctx.authorData.selectedColor),
+      thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
+      fields: designs.reduce<DiscordEmbedField[]>((fields, design) => {
+        const theme = getThemeById(design.themeId);
+        const fieldName = ctx.locale(`data:themes.${design.themeId as 1}.name`);
+        const fieldDescription = ctx.locale('commands:status.designer.description', {
+          sold: design.timesSold,
+          profit: design.totalEarned,
+          registered: `<t:${millisToSeconds(design.registeredAt)}:d>`,
+          royalty: design.royalty,
+          type: theme.data.type,
+        });
+
+        fields.push({ name: fieldName, value: fieldDescription, inline: true });
+        return fields;
+      }, []),
+    }),
+  );
 
   if (ctx.author.id !== user.id) {
-    ctx.makeMessage({ embeds: [embed] });
+    ctx.makeMessage({ embeds });
 
     return finishCommand();
   }
 
   const { notifyPurchase } = await userThemesRepository.findEnsuredUserThemes(user.id);
 
-  embed.footer = { text: ctx.locale('commands:status.designer.notify-footer') };
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  embeds.at(-1)!.footer = { text: ctx.locale('commands:status.designer.notify-footer') };
 
   const notifyButton = createButton({
     customId: createCustomId(0, ctx.author.id, ctx.commandId, !notifyPurchase),
@@ -184,7 +189,7 @@ const executeDesignerStats = async (
     label: ctx.locale(`commands:status.designer.${notifyPurchase ? 'notify' : 'dont-notify'}`),
   });
 
-  ctx.makeMessage({ embeds: [embed], components: [createActionRow([notifyButton])] });
+  ctx.makeMessage({ embeds, components: [createActionRow([notifyButton])] });
 };
 
 const makeGamblingStatisticsEmbed = (
