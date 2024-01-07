@@ -166,7 +166,7 @@ const displayFair = async (
 
   const embed = createEmbed({
     author: {
-      name: ctx.locale(`commands:fazendinha.feira.comprar.${!user ? 'user-fair' : 'fair'}`, {
+      name: ctx.locale(`commands:fazendinha.feira.comprar.${user ? 'user-fair' : 'fair'}`, {
         user: user ? getDisplayName(user) : undefined,
       }),
       iconUrl: user ? getUserAvatar(user, { enableGif: true }) : undefined,
