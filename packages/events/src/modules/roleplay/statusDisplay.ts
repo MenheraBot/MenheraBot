@@ -2,7 +2,7 @@ import { DiscordEmbedField } from 'discordeno/types';
 import { InBattleEnemy, InBattleUser } from './types';
 
 const getUserStatusDisplay = (user: InBattleUser): string =>
-  `:heart: **Vida**: ${user.life}\n:dagger: **Dano**: ${user.damage}`;
+  `:heart: **Vida**: ${user.life}\n:zap: **Energia**: ${user.energy}\n:dagger: **Dano**: ${user.damage}`;
 
 const getEnemyStatusDisplay = (enemy: InBattleEnemy): string =>
   `:heart: **Vida**: ${enemy.life}\n:dagger: **Dano**: ${enemy.damage}`;
@@ -20,4 +20,4 @@ const getStatusDisplayFields = (user: InBattleUser, enemy: InBattleEnemy): Disco
   },
 ];
 
-export { getStatusDisplayFields };
+export { getStatusDisplayFields, getUserStatusDisplay };

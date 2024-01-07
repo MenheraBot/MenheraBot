@@ -3,6 +3,7 @@ import { DatabaseCharacterSchema } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { characterModel } from '../collections';
 import { PlayerVsEnviroment } from '../../modules/roleplay/types';
+import { debugError } from '../../utils/debugError';
 
 const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseCharacterSchema => ({
   id: `${user.id}`,
@@ -57,4 +58,12 @@ const getCharacter = async (playerId: BigString): Promise<DatabaseCharacterSchem
   return parseMongoUserToRedisUser(created);
 };
 
-export default { getCharacter, getAdventure, setAdventure };
+const isUserInBattle = (userId: BigString): Promise<boolean> =>
+  MainRedisClient.sismember('battle_users', `${userId}`)
+    .then((result) => result !== 0)
+    .catch((e) => {
+      debugError(e);
+      return false;
+    });
+
+export default { getCharacter, getAdventure, setAdventure, isUserInBattle };
