@@ -3,8 +3,11 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
 import { createCommand } from '../../structures/command/createCommand';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
-import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
+import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
+import { getUserStatusDisplay } from '../../modules/roleplay/statusDisplay';
+import { prepareUserToBattle } from '../../modules/roleplay/devUtils';
+import { MessageFlags } from '../../utils/discord/messageUtils';
 
 const CharacterCommand = createCommand({
   path: '',
@@ -33,11 +36,19 @@ const CharacterCommand = createCommand({
 
     if (user.toggles.bot) return ctx.makeMessage({ content: `Não eras, bot nao joga` });
 
+    const isUserInBattle = await roleplayRepository.isUserInBattle(user.id);
+
+    if (isUserInBattle)
+      return ctx.makeMessage({
+        content: `Não é possível ver os status de alguém que está em batalha`,
+        flags: MessageFlags.EPHEMERAL,
+      });
+
     const character = await roleplayRepository.getCharacter(user.id);
 
     const embed = createEmbed({
-      title: `Personagem de ${mentionUser(user.id)}`,
-      description: `:heart: Vida: **${character.life}**`,
+      title: `Personagem de ${getDisplayName(ctx.user, false)}`,
+      description: getUserStatusDisplay(prepareUserToBattle(character)),
       thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
     });
 
