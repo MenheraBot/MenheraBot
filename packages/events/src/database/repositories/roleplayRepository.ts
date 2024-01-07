@@ -2,11 +2,25 @@ import { BigString } from 'discordeno/types';
 import { DatabaseCharacterSchema } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { characterModel } from '../collections';
+import { PlayerVsEnviroment } from '../../modules/roleplay/types';
 
 const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseCharacterSchema => ({
   id: `${user.id}`,
-  life: user.life
+  life: user.life,
+  energy: user.energy,
 });
+
+const getAdventure = async (adventureId: string): Promise<PlayerVsEnviroment | null> => {
+  const fromRedis = await MainRedisClient.get(`adventure:${adventureId}`);
+
+  if (!fromRedis) return null;
+
+  return JSON.parse(fromRedis);
+};
+
+const setAdventure = async (adventureId: string, adventure: PlayerVsEnviroment): Promise<void> => {
+  await MainRedisClient.setex(`adventure:${adventureId}`, 900, JSON.stringify(adventure));
+};
 
 const getCharacter = async (playerId: BigString): Promise<DatabaseCharacterSchema> => {
   const fromRedis = await MainRedisClient.get(`character:${playerId}`);
@@ -43,4 +57,4 @@ const getCharacter = async (playerId: BigString): Promise<DatabaseCharacterSchem
   return parseMongoUserToRedisUser(created);
 };
 
-export default { getCharacter };
+export default { getCharacter, getAdventure, setAdventure };

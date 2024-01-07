@@ -2,8 +2,8 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import { User } from 'discordeno/transformers';
 import { createCommand } from '../../structures/command/createCommand';
-import characterRepository from '../../database/repositories/characterRepository';
-import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
+import roleplayRepository from '../../database/repositories/roleplayRepository';
+import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 
 const CharacterCommand = createCommand({
@@ -33,10 +33,10 @@ const CharacterCommand = createCommand({
 
     if (user.toggles.bot) return ctx.makeMessage({ content: `Nao eras, bot nao joga` });
 
-    const character = await characterRepository.getCharacter(user.id);
+    const character = await roleplayRepository.getCharacter(user.id);
 
     const embed = createEmbed({
-      title: `Personagem de ${mentionUser(user.id)}`,
+      title: `Personagem de ${getDisplayName(ctx.user, false)}`,
       description: `:heart: Vida: **${character.life}**`,
       thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
     });

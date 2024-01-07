@@ -148,4 +148,5 @@ export interface DatabaseFarmerSchema {
 export interface DatabaseCharacterSchema {
   readonly id: string;
   life: number;
+  energy: number;
 }
