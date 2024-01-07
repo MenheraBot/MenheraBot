@@ -1,14 +1,10 @@
 import { bot } from '../..';
-import {
-  ApiCommandInformation,
-  MaintenanceCommandData,
-  UsedCommandData,
-} from '../../types/commands';
+import { UsedCommandData } from '../../types/commands';
 import { debugError } from '../debugError';
 import { logger } from '../logger';
-import { dataRequest, statusRequest } from './apiRequests';
+import { dataRequest } from './apiRequests';
 
-const MAX_BATCH_QUEUE_LENGTH = 10;
+// const MAX_BATCH_QUEUE_LENGTH = 10;
 let batchCommandsExecution: UsedCommandData[] = [];
 
 const forceBatchCommandsExecutionPost = async (): Promise<void> => {
@@ -30,24 +26,8 @@ const forceBatchCommandsExecutionPost = async (): Promise<void> => {
 };
 
 const postCommandExecution = async (info: UsedCommandData): Promise<void> => {
-  if (bot.shuttingDown) {
-    await dataRequest.post(`/usages/commands?command=${info.commandName}`, info).catch(debugError);
-    return;
-  }
-
-  batchCommandsExecution.push(info);
-
-  if (batchCommandsExecution.length >= MAX_BATCH_QUEUE_LENGTH) {
-    const toPostCommands = batchCommandsExecution.splice(0, MAX_BATCH_QUEUE_LENGTH);
-
-    await dataRequest.post(
-      `/usages/commands?command=${toPostCommands
-        .map((a) => a.commandName.split(' ').join('_'))
-        .join('-')}`,
-      toPostCommands,
-    );
-  }
-};
+  await dataRequest.post(`/usages/commands?command=${info.commandName}`, info).catch(debugError);
+  /* batchCommandsExecution.push(info);
 
 const updateCommandMaintenanteStatus = async (
   commandName: string,
@@ -62,11 +42,7 @@ const updateCommandMaintenanteStatus = async (
 
 const postCommandsInformation = async (commands: ApiCommandInformation[]): Promise<void> => {
   await statusRequest.post('/commands', { data: { commands } }).catch(debugError);
+}; */
 };
 
-export {
-  postCommandExecution,
-  updateCommandMaintenanteStatus,
-  postCommandsInformation,
-  forceBatchCommandsExecutionPost,
-};
+export { postCommandExecution, forceBatchCommandsExecutionPost };
