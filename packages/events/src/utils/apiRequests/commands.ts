@@ -1,8 +1,12 @@
 import { bot } from '../..';
-import { UsedCommandData } from '../../types/commands';
+import {
+  ApiCommandInformation,
+  MaintenanceCommandData,
+  UsedCommandData,
+} from '../../types/commands';
 import { debugError } from '../debugError';
 import { logger } from '../logger';
-import { dataRequest } from './apiRequests';
+import { dataRequest, statusRequest } from './apiRequests';
 
 // const MAX_BATCH_QUEUE_LENGTH = 10;
 let batchCommandsExecution: UsedCommandData[] = [];
@@ -29,6 +33,9 @@ const postCommandExecution = async (info: UsedCommandData): Promise<void> => {
   await dataRequest.post(`/usages/commands?command=${info.commandName}`, info).catch(debugError);
   /* batchCommandsExecution.push(info);
 
+
+ */
+};
 const updateCommandMaintenanteStatus = async (
   commandName: string,
   maintenanceData: MaintenanceCommandData,
@@ -42,7 +49,11 @@ const updateCommandMaintenanteStatus = async (
 
 const postCommandsInformation = async (commands: ApiCommandInformation[]): Promise<void> => {
   await statusRequest.post('/commands', { data: { commands } }).catch(debugError);
-}; */
 };
 
-export { postCommandExecution, forceBatchCommandsExecutionPost };
+export {
+  postCommandExecution,
+  forceBatchCommandsExecutionPost,
+  postCommandsInformation,
+  updateCommandMaintenanteStatus,
+};
