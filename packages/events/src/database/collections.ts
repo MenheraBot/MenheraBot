@@ -139,6 +139,7 @@ const characterSchema = new Schema({
   id: { type: String, unique: true, index: true },
   life: { type: Number, default: 100 },
   energy: { type: Number, default: 100 },
+  deadUntil: { type: Number, default: 0 },
 });
 
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);

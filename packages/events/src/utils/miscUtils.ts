@@ -17,6 +17,8 @@ const minutesToMillis = (minutes: number): number => 1000 * 60 * minutes;
 
 const daysToMillis = (days: number): number => 1000 * 60 * 60 * 24 * days;
 
+const hoursToMillis = (hours: number): number => 1000 * 60 * 60 * hours;
+
 const negate = (value: number): number => value * -1;
 
 const localizedResources = (
@@ -61,6 +63,7 @@ export {
   daysToMillis,
   randomFromArray,
   toWritableUtf,
+  hoursToMillis,
   getCustomThemeField,
   millisToSeconds,
   localizedResources,
