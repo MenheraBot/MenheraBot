@@ -15,7 +15,7 @@ const applyDamage = (
 ): void => {
   switch (abilityId) {
     case 0: {
-      adventure.enemy.life -= adventure.user.damage * 40;
+      adventure.enemy.life -= adventure.user.damage;
       adventure.user.energy -= 1;
 
       break;
