@@ -3,9 +3,12 @@ import { InteractionContext } from '../../types/menhera';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { mentionUser } from '../../utils/discord/userUtils';
-import { InBattleEnemy, InBattleUser } from './types';
+import { InBattleEnemy, InBattleUser, PlayerVsEnviroment } from './types';
 import { getStatusDisplayFields } from './statusDisplay';
 import { createDummyEnemy } from './devUtils';
+import roleplayRepository from '../../database/repositories/roleplayRepository';
+import { extractBattleUserInfoToCharacter } from './battle/battleUtils';
+import { DatabaseCharacterSchema } from '../../types/database';
 
 const getCurrentAvailableAdventure = (): InBattleEnemy | null => {
   return createDummyEnemy();
@@ -35,4 +38,21 @@ const confirmAdventure = async (
   });
 };
 
-export { confirmAdventure, getCurrentAvailableAdventure };
+const finishAdventure = async (
+  ctx: InteractionContext,
+  adventure: PlayerVsEnviroment,
+  content: string,
+  aditionalQuery: Partial<DatabaseCharacterSchema> = {},
+): Promise<void> => {
+  roleplayRepository.deleteAdventure(adventure.id);
+  roleplayRepository.removeUserInBattle(adventure.user.id);
+
+  await roleplayRepository.updateCharacter(adventure.user.id, {
+    ...extractBattleUserInfoToCharacter(adventure.user),
+    ...aditionalQuery,
+  });
+
+  ctx.makeMessage({ content, embeds: [], components: [] });
+};
+
+export { confirmAdventure, getCurrentAvailableAdventure, finishAdventure };

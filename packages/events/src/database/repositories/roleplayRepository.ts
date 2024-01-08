@@ -9,7 +9,24 @@ const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseChara
   id: `${user.id}`,
   life: user.life,
   energy: user.energy,
+  deadUntil: user.deadUntil,
 });
+
+const isUserInBattle = (userId: BigString): Promise<boolean> =>
+  MainRedisClient.sismember('battle_users', `${userId}`)
+    .then((result) => result !== 0)
+    .catch((e) => {
+      debugError(e);
+      return false;
+    });
+
+const removeUserInBattle = async (userId: BigString): Promise<void> => {
+  await MainRedisClient.srem('battle_users', `${userId}`);
+};
+
+const setUserInBattle = async (userId: BigString): Promise<void> => {
+  await MainRedisClient.sadd('battle_users', `${userId}`);
+};
 
 const getAdventure = async (adventureId: string): Promise<PlayerVsEnviroment | null> => {
   const fromRedis = await MainRedisClient.get(`adventure:${adventureId}`);
@@ -23,16 +40,20 @@ const setAdventure = async (adventureId: string, adventure: PlayerVsEnviroment):
   await MainRedisClient.setex(`adventure:${adventureId}`, 900, JSON.stringify(adventure));
 };
 
-const getCharacter = async (playerId: BigString): Promise<DatabaseCharacterSchema> => {
-  const fromRedis = await MainRedisClient.get(`character:${playerId}`);
+const deleteAdventure = async (adventureId: string): Promise<void> => {
+  await MainRedisClient.del(`adventure:${adventureId}`);
+};
+
+const getCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema> => {
+  const fromRedis = await MainRedisClient.get(`character:${userId}`);
 
   if (fromRedis) return JSON.parse(fromRedis);
 
-  const fromMongo = await characterModel.findOne({ id: `${playerId}` });
+  const fromMongo = await characterModel.findOne({ id: `${userId}` });
 
   if (fromMongo) {
     await MainRedisClient.setex(
-      `character:${playerId}`,
+      `character:${userId}`,
       3600,
       JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
     );
@@ -41,16 +62,16 @@ const getCharacter = async (playerId: BigString): Promise<DatabaseCharacterSchem
   }
 
   const created = await characterModel.create({
-    id: `${playerId}`,
+    id: `${userId}`,
   });
 
   if (!created)
     throw new Error(
-      `${new Date().toISOString()} - There is no created player result for player id ${playerId}`,
+      `${new Date().toISOString()} - There is no created userId result for userId id ${userId}`,
     );
 
   await MainRedisClient.setex(
-    `character:${playerId}`,
+    `character:${userId}`,
     3600,
     JSON.stringify(parseMongoUserToRedisUser(created)),
   );
@@ -58,12 +79,22 @@ const getCharacter = async (playerId: BigString): Promise<DatabaseCharacterSchem
   return parseMongoUserToRedisUser(created);
 };
 
-const isUserInBattle = (userId: BigString): Promise<boolean> =>
-  MainRedisClient.sismember('battle_users', `${userId}`)
-    .then((result) => result !== 0)
-    .catch((e) => {
-      debugError(e);
-      return false;
-    });
+const updateCharacter = async (
+  userId: BigString,
+  query: Partial<DatabaseCharacterSchema>,
+): Promise<void> => {
+  MainRedisClient.del(`character:${userId}`);
 
-export default { getCharacter, getAdventure, setAdventure, isUserInBattle };
+  await characterModel.updateOne({ id: `${userId}` }, query).catch(debugError);
+};
+
+export default {
+  getCharacter,
+  updateCharacter,
+  getAdventure,
+  setAdventure,
+  isUserInBattle,
+  removeUserInBattle,
+  deleteAdventure,
+  setUserInBattle,
+};

@@ -23,6 +23,7 @@ const getElapsedTime = (since: number, unit: 'seconds' | 'minutes'): number => {
 
   return unit === 'minutes' ? Math.floor(time / (60 * 1000)) : Math.floor(time / 1000);
 };
+const hoursToMillis = (hours: number): number => 1000 * 60 * 60 * hours;
 
 const negate = (value: number): number => value * -1;
 
@@ -99,6 +100,7 @@ export {
   randomFromArray,
   toWritableUtf,
   numberizeAllValues,
+  hoursToMillis,
   getCustomThemeField,
   millisToSeconds,
   localizedResources,
