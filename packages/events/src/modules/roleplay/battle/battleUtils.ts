@@ -1,8 +1,9 @@
+import roleplayRepository from '../../../database/repositories/roleplayRepository';
 import { DatabaseCharacterSchema } from '../../../types/database';
 import { InteractionContext } from '../../../types/menhera';
 import { hoursToMillis } from '../../../utils/miscUtils';
 import { finishAdventure } from '../adventureManager';
-import { RESSURECT_TIME_IN_HOURS } from '../constants';
+import { RESURRECT_TIME_IN_HOURS } from '../constants';
 import { InBattleUser, PlayerVsEnviroment } from '../types';
 
 const checkDeath = (entity: { life: number }): boolean => entity.life <= 0;
@@ -24,8 +25,23 @@ const extractBattleUserInfoToCharacter = (user: InBattleUser): Partial<DatabaseC
 
 const userWasKilled = (ctx: InteractionContext, adventure: PlayerVsEnviroment): void => {
   finishAdventure(ctx, adventure, `Você foi morto!`, {
-    deadUntil: Date.now() + hoursToMillis(RESSURECT_TIME_IN_HOURS),
+    deadUntil: Date.now() + hoursToMillis(RESURRECT_TIME_IN_HOURS),
   });
 };
 
-export { checkDeath, keepNumbersPositive, extractBattleUserInfoToCharacter, userWasKilled };
+const didUserResurrect = async (user: DatabaseCharacterSchema): Promise<boolean> => {
+  if (user.deadUntil > Date.now()) return false;
+
+  await roleplayRepository.updateCharacter(user.id, { life: 100 });
+  user.life = 100;
+
+  return true;
+};
+
+export {
+  checkDeath,
+  keepNumbersPositive,
+  extractBattleUserInfoToCharacter,
+  userWasKilled,
+  didUserResurrect,
+};

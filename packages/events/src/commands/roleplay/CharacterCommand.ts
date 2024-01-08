@@ -8,6 +8,7 @@ import { createEmbed } from '../../utils/discord/embedUtils';
 import { getUserStatusDisplay } from '../../modules/roleplay/statusDisplay';
 import { prepareUserToBattle } from '../../modules/roleplay/devUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
+import { checkDeath, didUserResurrect } from '../../modules/roleplay/battle/battleUtils';
 
 const CharacterCommand = createCommand({
   path: '',
@@ -45,6 +46,8 @@ const CharacterCommand = createCommand({
       });
 
     const character = await roleplayRepository.getCharacter(user.id);
+
+    if (checkDeath(character)) await didUserResurrect(character);
 
     const embed = createEmbed({
       title: `Personagem de ${getDisplayName(ctx.user, false)}`,

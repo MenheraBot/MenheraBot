@@ -5,7 +5,7 @@ import { InBattleEnemy, InBattleUser, PlayerVsEnviroment } from './types';
 
 export const createDummyEnemy = (): InBattleEnemy => ({
   id: 1,
-  damage: 40,
+  damage: 59,
   life: 100,
   level: 1,
   $devName: 'Goblin',
@@ -15,7 +15,7 @@ export const prepareUserToBattle = (user: DatabaseCharacterSchema): InBattleUser
   id: user.id,
   life: user.life,
   energy: user.energy,
-  damage: 80,
+  damage: 30,
 });
 
 export const setupAdventurePvE = (

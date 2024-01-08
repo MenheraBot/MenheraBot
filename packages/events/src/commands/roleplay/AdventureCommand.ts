@@ -6,6 +6,8 @@ import {
   getCurrentAvailableAdventure,
 } from '../../modules/roleplay/adventureManager';
 import { orchestrateRoleplayRelatedComponentInteractions } from '../../modules/roleplay/componentInteractionReceptor';
+import { checkDeath, didUserResurrect } from '../../modules/roleplay/battle/battleUtils';
+import { millisToSeconds } from '../../utils/miscUtils';
 
 const AdventureCommand = createCommand({
   path: '',
@@ -22,6 +24,18 @@ const AdventureCommand = createCommand({
     finishCommand();
 
     const character = await roleplayRepository.getCharacter(ctx.user.id);
+
+    if (checkDeath(character)) {
+      const userAlive = await didUserResurrect(character);
+
+      if (!userAlive)
+        return ctx.makeMessage({
+          content: `Você está morto! Você poderá entrar em uma aventura <t:${millisToSeconds(
+            character.deadUntil,
+          )}:R>`,
+        });
+    }
+
     const enemy = getCurrentAvailableAdventure();
 
     if (!enemy) return ctx.makeMessage({ content: `Não há inimigos disponíveis por perto` });
