@@ -9,6 +9,7 @@ import { getUserStatusDisplay } from '../../modules/roleplay/statusDisplay';
 import { prepareUserToBattle } from '../../modules/roleplay/devUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { checkDeath, didUserResurrect } from '../../modules/roleplay/battle/battleUtils';
+import battleRepository from '../../database/repositories/battleRepository';
 
 const CharacterCommand = createCommand({
   path: '',
@@ -37,7 +38,7 @@ const CharacterCommand = createCommand({
 
     if (user.toggles.bot) return ctx.makeMessage({ content: `Não eras, bot nao joga` });
 
-    const isUserInBattle = await roleplayRepository.isUserInBattle(user.id);
+    const isUserInBattle = await battleRepository.isUserInBattle(user.id);
 
     if (isUserInBattle)
       return ctx.makeMessage({

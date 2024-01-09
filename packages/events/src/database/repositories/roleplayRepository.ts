@@ -12,22 +12,6 @@ const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseChara
   deadUntil: user.deadUntil,
 });
 
-const isUserInBattle = (userId: BigString): Promise<boolean> =>
-  MainRedisClient.sismember('battle_users', `${userId}`)
-    .then((result) => result !== 0)
-    .catch((e) => {
-      debugError(e);
-      return false;
-    });
-
-const removeUserInBattle = async (userId: BigString): Promise<void> => {
-  await MainRedisClient.srem('battle_users', `${userId}`);
-};
-
-const setUserInBattle = async (userId: BigString): Promise<void> => {
-  await MainRedisClient.sadd('battle_users', `${userId}`);
-};
-
 const getAdventure = async (adventureId: string): Promise<PlayerVsEnviroment | null> => {
   const fromRedis = await MainRedisClient.get(`adventure:${adventureId}`);
 
@@ -93,8 +77,5 @@ export default {
   updateCharacter,
   getAdventure,
   setAdventure,
-  isUserInBattle,
-  removeUserInBattle,
   deleteAdventure,
-  setUserInBattle,
 };

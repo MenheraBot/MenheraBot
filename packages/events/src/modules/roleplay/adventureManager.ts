@@ -9,6 +9,7 @@ import { createDummyEnemy } from './devUtils';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { extractBattleUserInfoToCharacter } from './battle/battleUtils';
 import { DatabaseCharacterSchema } from '../../types/database';
+import battleRepository from '../../database/repositories/battleRepository';
 
 const getCurrentAvailableAdventure = (): InBattleEnemy | null => {
   return createDummyEnemy();
@@ -45,7 +46,7 @@ const finishAdventure = async (
   aditionalQuery: Partial<DatabaseCharacterSchema> = {},
 ): Promise<void> => {
   roleplayRepository.deleteAdventure(adventure.id);
-  roleplayRepository.removeUserInBattle(adventure.user.id);
+  battleRepository.removeUserInBattle(adventure.user.id);
 
   await roleplayRepository.updateCharacter(adventure.user.id, {
     ...extractBattleUserInfoToCharacter(adventure.user),

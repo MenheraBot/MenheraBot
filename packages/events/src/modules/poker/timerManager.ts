@@ -78,7 +78,7 @@ const startPokerTimeout = (timerId: string, timerMetadata: PokerTimer): void => 
   if (!bot.isMaster) {
     getOrchestratorClient().send({
       type: 'BE_MERCURY',
-      action: 'SET_TIMER',
+      action: 'POKER:SET_TIMER',
       timerId,
       timerMetadata,
     });
@@ -96,7 +96,7 @@ const startPokerTimeout = (timerId: string, timerMetadata: PokerTimer): void => 
 
 const clearPokerTimer = (timerId: string): void => {
   if (!bot.isMaster) {
-    getOrchestratorClient().send({ type: 'BE_MERCURY', action: 'CLEAR_TIMER', timerId });
+    getOrchestratorClient().send({ type: 'BE_MERCURY', action: 'POKER:CLEAR_TIMER', timerId });
     return;
   }
 
