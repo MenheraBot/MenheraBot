@@ -1,6 +1,6 @@
 import roleplayRepository from '../../../database/repositories/roleplayRepository';
 import { DatabaseCharacterSchema } from '../../../types/database';
-import { InteractionContext } from '../../../types/menhera';
+import { GenericContext } from '../../../types/menhera';
 import { hoursToMillis } from '../../../utils/miscUtils';
 import { finishAdventure } from '../adventureManager';
 import { RESURRECT_TIME_IN_HOURS } from '../constants';
@@ -23,7 +23,7 @@ const extractBattleUserInfoToCharacter = (user: InBattleUser): Partial<DatabaseC
   };
 };
 
-const userWasKilled = (ctx: InteractionContext, adventure: PlayerVsEnviroment): void => {
+const userWasKilled = (ctx: GenericContext, adventure: PlayerVsEnviroment): void => {
   finishAdventure(ctx, adventure, `Você foi morto!`, {
     deadUntil: Date.now() + hoursToMillis(RESURRECT_TIME_IN_HOURS),
   });

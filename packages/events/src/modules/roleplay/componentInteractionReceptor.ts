@@ -1,3 +1,4 @@
+import battleRepository from '../../database/repositories/battleRepository';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../types/interaction';
@@ -28,7 +29,7 @@ const orchestrateRoleplayRelatedComponentInteractions = async (
 
     const adventure = setupAdventurePvE(ctx, prepareUserToBattle(character), enemy);
 
-    await roleplayRepository.setAdventure(`${ctx.user.id}`, adventure);
+    await battleRepository.setAdventure(`${ctx.user.id}`, adventure);
 
     startBattleTimer(`finish_battle:${adventure.id}`, {
       battleId: adventure.id,
@@ -42,7 +43,7 @@ const orchestrateRoleplayRelatedComponentInteractions = async (
 
   if (action === 'USE_SKILL') {
     const [, adventureId] = ctx.sentData;
-    const currentBattle = await roleplayRepository.getAdventure(adventureId);
+    const currentBattle = await battleRepository.getAdventure(adventureId);
 
     if (!currentBattle) return unknownAdventure(ctx);
 

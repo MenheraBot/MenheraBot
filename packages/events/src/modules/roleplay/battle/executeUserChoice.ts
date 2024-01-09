@@ -1,6 +1,7 @@
-import roleplayRepository from '../../../database/repositories/roleplayRepository';
+import battleRepository from '../../../database/repositories/battleRepository';
 import ComponentInteractionContext from '../../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../../types/interaction';
+import { GenericContext } from '../../../types/menhera';
 import { MessageFlags } from '../../../utils/discord/messageUtils';
 import { finishAdventure } from '../adventureManager';
 import { SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
@@ -28,6 +29,23 @@ const applyDamage = (
   keepNumbersPositive(adventure.user);
 };
 
+const updateBattleMessage = async (
+  ctx: GenericContext,
+  adventure: PlayerVsEnviroment,
+): Promise<void> => {
+  if (checkDeath(adventure.user)) return userWasKilled(ctx, adventure);
+
+  startBattleTimer(`battle_timeout:${adventure.id}`, {
+    battleId: adventure.id,
+    executeAt: Date.now() + SECONDS_TO_CHOICE_ACTION_IN_BATTLE * 1000,
+    type: BattleTimerActionType.TIMEOUT_CHOICE,
+  });
+
+  await battleRepository.setAdventure(adventure.id, adventure);
+
+  displayBattleControlMessage(ctx, adventure);
+};
+
 const executeUserChoice = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
   adventure: PlayerVsEnviroment,
@@ -49,19 +67,9 @@ const executeUserChoice = async (
   if (checkDeath(adventure.enemy))
     return finishAdventure(ctx, adventure, 'Você matou seu inimigo! Você ganhou X itens');
 
-  executeEnemyAttack(ctx, adventure);
+  executeEnemyAttack(adventure);
 
-  if (checkDeath(adventure.user)) return userWasKilled(ctx, adventure);
-
-  startBattleTimer(`battle_timeout:${adventure.id}`, {
-    battleId: adventure.id,
-    executeAt: Date.now() + SECONDS_TO_CHOICE_ACTION_IN_BATTLE * 1000,
-    type: BattleTimerActionType.TIMEOUT_CHOICE,
-  });
-
-  await roleplayRepository.setAdventure(adventure.id, adventure);
-
-  displayBattleControlMessage(ctx, adventure);
+  updateBattleMessage(ctx, adventure);
 };
 
-export { executeUserChoice };
+export { executeUserChoice, updateBattleMessage };

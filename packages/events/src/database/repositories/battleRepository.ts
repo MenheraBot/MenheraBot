@@ -1,7 +1,23 @@
 import { BigString } from 'discordeno/types';
 import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
-import { BattleTimer } from '../../modules/roleplay/types';
+import { BattleTimer, PlayerVsEnviroment } from '../../modules/roleplay/types';
+
+const getAdventure = async (adventureId: string): Promise<PlayerVsEnviroment | null> => {
+  const fromRedis = await MainRedisClient.get(`adventure:${adventureId}`);
+
+  if (!fromRedis) return null;
+
+  return JSON.parse(fromRedis);
+};
+
+const setAdventure = async (adventureId: string, adventure: PlayerVsEnviroment): Promise<void> => {
+  await MainRedisClient.setex(`adventure:${adventureId}`, 900, JSON.stringify(adventure));
+};
+
+const deleteAdventure = async (adventureId: string): Promise<void> => {
+  await MainRedisClient.del(`adventure:${adventureId}`);
+};
 
 const isUserInBattle = (userId: BigString): Promise<boolean> =>
   MainRedisClient.sismember('battle_users', `${userId}`)
@@ -43,6 +59,9 @@ export default {
   setUserInBattle,
   registerTimer,
   getTimer,
+  getAdventure,
+  setAdventure,
+  deleteAdventure,
   deleteTimer,
   getTimerKeys,
 };

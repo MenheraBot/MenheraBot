@@ -6,16 +6,15 @@ import {
   AvailableCardThemes,
   AvailableTableThemes,
 } from '../themes/types';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { postBlackjackGame, postTransaction } from '../../utils/apiRequests/statistics';
 import { negate } from '../../utils/miscUtils';
 import { generateBlackjackEmbed, getTableImage, safeImageReply } from './blackjackMatch';
 import { BlackjackCard, BlackjackFinishGameReason } from './types';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { ApiTransactionReason } from '../../types/api';
+import { InteractionContext } from '../../types/menhera';
 
 const finishMatch = async (
-  ctx: ChatInputInteractionContext | ComponentInteractionContext,
+  ctx: InteractionContext,
   bet: number,
   playerCards: BlackjackCard[],
   dealerCards: BlackjackCard[],

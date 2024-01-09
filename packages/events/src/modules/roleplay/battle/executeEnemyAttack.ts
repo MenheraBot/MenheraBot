@@ -1,8 +1,7 @@
-import { InteractionContext } from '../../../types/menhera';
 import { PlayerVsEnviroment } from '../types';
 import { keepNumbersPositive } from './battleUtils';
 
-const executeEnemyAttack = (_ctx: InteractionContext, adventure: PlayerVsEnviroment): void => {
+const executeEnemyAttack = async (adventure: PlayerVsEnviroment): Promise<void> => {
   adventure.user.life -= adventure.enemy.damage;
 
   keepNumbersPositive(adventure.enemy);
