@@ -6,11 +6,11 @@ import pokerRepository from '../../database/repositories/pokerRepository';
 import { getOrchestratorClient } from '../../structures/orchestratorConnection';
 import { DatabaseCommandSchema } from '../../types/database';
 import { updateGameState } from './turnManager';
-import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { DeleteMatchTimer, PokerTimer, TimeoutFoldTimer, TimerActionType } from './types';
 import { closeTable } from './matchManager';
 import { getPlayerBySeat } from './playerControl';
 import { executeAction } from './playerBet';
+import FollowUpInteractionContext from '../../structures/command/FollowUpInteractionContext';
 
 const timers = new Map<string, NodeJS.Timeout>();
 
@@ -22,7 +22,7 @@ const executeDeleteMatch = async (timer: DeleteMatchTimer) => {
 
   const pokerCommandId = (await commandRepository.getCommandInfo('poker')) as DatabaseCommandSchema;
 
-  const ctx = new PokerFollowupInteractionContext(
+  const ctx = new FollowUpInteractionContext(
     gameData.interactionToken,
     pokerCommandId.discordId,
     getFixedT(gameData.language),
@@ -43,7 +43,7 @@ const executeFoldTimeout = async (timer: TimeoutFoldTimer) => {
 
   const pokerCommandId = (await commandRepository.getCommandInfo('poker')) as DatabaseCommandSchema;
 
-  const ctx = new PokerFollowupInteractionContext(
+  const ctx = new FollowUpInteractionContext(
     gameData.interactionToken,
     pokerCommandId.discordId,
 

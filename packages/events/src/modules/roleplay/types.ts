@@ -17,6 +17,8 @@ export type PlayerVsEnviroment = {
   id: string;
   user: InBattleUser;
   enemy: InBattleEnemy;
+  interactionToken: string;
+  language: string;
 };
 
 export enum BattleTimerActionType {

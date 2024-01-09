@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import pokerRepository from '../../database/repositories/pokerRepository';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 
 import { clearFoldTimeout, createTableMessage, finishRound, makeShowdown } from './matchManager';
 import { PokerMatch } from './types';
 
-import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { MAX_POKER_PLAYERS } from './constants';
 import { getPlayerBySeat } from './playerControl';
 import { mentionUser } from '../../utils/discord/userUtils';
+import { GenericContext } from '../../types/menhera';
 
 const getNextPlayableSeat = (gameData: PokerMatch, lastSeat: number): number => {
   const biggestPlayableSeat = gameData.players.reduce((p, c) => {
@@ -77,10 +76,7 @@ const updatePlayerTurn = (gameData: PokerMatch): void => {
   gameData.seatToPlay = nextPlayer.seatId;
 };
 
-const updateGameState = async (
-  ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
-  gameData: PokerMatch,
-): Promise<void> => {
+const updateGameState = async (ctx: GenericContext, gameData: PokerMatch): Promise<void> => {
   const playedUserId = gameData.players.find((a) => a.seatId === gameData.seatToPlay)!.id;
   clearFoldTimeout(playedUserId);
 

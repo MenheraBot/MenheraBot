@@ -1,17 +1,53 @@
+import { getFixedT } from 'i18next';
 import battleRepository from '../../../database/repositories/battleRepository';
 import { bot } from '../../..';
 import { getOrchestratorClient } from '../../../structures/orchestratorConnection';
 import { BattleTimer, BattleTimerActionType } from '../types';
+import { executeEnemyAttack } from './executeEnemyAttack';
+import commandRepository from '../../../database/repositories/commandRepository';
+import { DatabaseCommandSchema } from '../../../types/database';
+import FollowUpInteractionContext from '../../../structures/command/FollowUpInteractionContext';
+import { updateBattleMessage } from './executeUserChoice';
+import { userWasKilled } from './battleUtils';
 import { logger } from '../../../utils/logger';
 
 const timers = new Map<string, NodeJS.Timeout>();
 
-const executeForceFinish = (timer: BattleTimer) => {
-  logger.debug('Killed user because he slept in battle', timer);
+const executeForceFinish = async (timer: BattleTimer) => {
+  const battleData = await battleRepository.getAdventure(timer.battleId);
+  if (!battleData) return;
+
+  const adventureCommandId = (await commandRepository.getCommandInfo(
+    'aventura',
+  )) as DatabaseCommandSchema;
+
+  const ctx = new FollowUpInteractionContext(
+    battleData.interactionToken,
+    adventureCommandId.discordId,
+    getFixedT(battleData.language),
+  );
+
+  battleData.user.life = 0;
+  userWasKilled(ctx, battleData);
 };
 
-const executeTimeoutChoice = (timer: BattleTimer) => {
-  logger.debug('User too slow', timer);
+const executeTimeoutChoice = async (timer: BattleTimer) => {
+  const battleData = await battleRepository.getAdventure(timer.battleId);
+  if (!battleData) return;
+
+  executeEnemyAttack(battleData);
+
+  const adventureCommandId = (await commandRepository.getCommandInfo(
+    'aventura',
+  )) as DatabaseCommandSchema;
+
+  const ctx = new FollowUpInteractionContext(
+    battleData.interactionToken,
+    adventureCommandId.discordId,
+    getFixedT(battleData.language),
+  );
+
+  updateBattleMessage(ctx, battleData);
 };
 
 const executeTimer = async (timerId: string, timer: BattleTimer): Promise<void> => {
@@ -30,7 +66,12 @@ const setupBattleTimers = async (): Promise<void> => {
     const timerId = key.replace('battle_timer:', '');
     const timerMetadata = await battleRepository.getTimer(timerId);
 
+    logger.debug(Date.now() - timerMetadata.executeAt);
+
+    if (!timerMetadata) return;
+
     if (Date.now() >= timerMetadata.executeAt) return executeTimer(timerId, timerMetadata);
+
     startBattleTimer(timerId, timerMetadata);
   });
 };
