@@ -3,7 +3,9 @@ import ComponentInteractionContext from '../../../structures/command/ComponentIn
 import { SelectMenuInteraction } from '../../../types/interaction';
 import { MessageFlags } from '../../../utils/discord/messageUtils';
 import { finishAdventure } from '../adventureManager';
-import { PlayerVsEnviroment } from '../types';
+import { SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
+import { BattleTimerActionType, PlayerVsEnviroment } from '../types';
+import { clearBattleTimer, startBattleTimer } from './battleTimers';
 import { checkDeath, keepNumbersPositive, userWasKilled } from './battleUtils';
 import { displayBattleControlMessage } from './displayBattleState';
 import { executeEnemyAttack } from './executeEnemyAttack';
@@ -32,6 +34,8 @@ const executeUserChoice = async (
 ): Promise<void> => {
   const [choiceStringedId] = ctx.interaction.data.values;
 
+  clearBattleTimer(`battle_timeout:${adventure.id}`);
+
   const cost = 1;
 
   if (cost > adventure.user.energy)
@@ -48,6 +52,12 @@ const executeUserChoice = async (
   executeEnemyAttack(ctx, adventure);
 
   if (checkDeath(adventure.user)) return userWasKilled(ctx, adventure);
+
+  startBattleTimer(`battle_timeout:${adventure.id}`, {
+    battleId: adventure.id,
+    executeAt: Date.now() + SECONDS_TO_CHOICE_ACTION_IN_BATTLE * 1000,
+    type: BattleTimerActionType.TIMEOUT_CHOICE,
+  });
 
   await roleplayRepository.setAdventure(adventure.id, adventure);
 

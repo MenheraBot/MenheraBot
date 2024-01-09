@@ -8,9 +8,10 @@ import { getEnviroments } from '../utils/getEnviroments';
 import { logger } from '../utils/logger';
 import { updateCommandsOnApi } from '../utils/updateApiCommands';
 import { getInteractionsCounter, getRegister } from './initializePrometheus';
-import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
 import cacheRepository from '../database/repositories/cacheRepository';
 import { getUserAvatar } from '../utils/discord/userUtils';
+import { clearBattleTimer, startBattleTimer } from '../modules/roleplay/battle/battleTimers';
+import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
 
 const numberTypeToName = {
   1: 'PING',
@@ -29,7 +30,7 @@ let orchestratorClient: Client;
 const getOrchestratorClient = (): Client => orchestratorClient;
 
 const createIpcConnection = async (): Promise<void> => {
-  if (process.env.NODE_ENV === 'development') return;
+  // if (process.env.NODE_ENV === 'development') return;
 
   const { ORCHESTRATOR_SOCKET_PATH } = getEnviroments(['ORCHESTRATOR_SOCKET_PATH']);
 
@@ -45,9 +46,18 @@ const createIpcConnection = async (): Promise<void> => {
     }
 
     if (msg.type === 'SIMON_SAYS') {
-      if (msg.action === 'SET_TIMER') return startPokerTimeout(msg.timerId, msg.timerMetadata);
+      const [type, name] = msg.action.split(':') as ['BATTLE' | 'POKER', string];
+      const toExecute =
+        name === 'CLEAR_TIMER' ? (`${type}_CLEAR` as const) : (`${type}_TIMEOUT` as const);
 
-      return clearPokerTimer(msg.timerId);
+      const availableFunctions = {
+        BATTLE_TIMEOUT: startBattleTimer,
+        POKER_TIMEOUT: startPokerTimeout,
+        BATTLE_CLEAR: clearBattleTimer,
+        POKER_CLEAR: clearPokerTimer,
+      };
+
+      return availableFunctions[toExecute](msg.timerId, msg.timerMetadata);
     }
 
     if (msg.type === 'UPDATE_COMMANDS') {

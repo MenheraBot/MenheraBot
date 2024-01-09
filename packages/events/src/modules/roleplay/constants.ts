@@ -1,1 +1,5 @@
 export const RESURRECT_TIME_IN_HOURS = 4;
+
+export const SECONDS_TO_CHOICE_ACTION_IN_BATTLE = 15;
+
+export const MINUTES_TO_FORCE_FINISH_BATTLE = 15;

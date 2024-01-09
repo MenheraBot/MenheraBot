@@ -1,10 +1,14 @@
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../types/interaction';
+import { minutesToMillis } from '../../utils/miscUtils';
 import { getCurrentAvailableAdventure } from './adventureManager';
+import { startBattleTimer } from './battle/battleTimers';
 import { displayBattleControlMessage } from './battle/displayBattleState';
 import { executeUserChoice } from './battle/executeUserChoice';
+import { MINUTES_TO_FORCE_FINISH_BATTLE } from './constants';
 import { prepareUserToBattle, setupAdventurePvE, unknownAdventure } from './devUtils';
+import { BattleTimerActionType } from './types';
 
 const orchestrateRoleplayRelatedComponentInteractions = async (
   ctx: ComponentInteractionContext,
@@ -25,6 +29,12 @@ const orchestrateRoleplayRelatedComponentInteractions = async (
     const adventure = setupAdventurePvE(ctx, prepareUserToBattle(character), enemy);
 
     await roleplayRepository.setAdventure(`${ctx.user.id}`, adventure);
+
+    startBattleTimer(`finish_battle:${adventure.id}`, {
+      battleId: adventure.id,
+      executeAt: Date.now() + minutesToMillis(MINUTES_TO_FORCE_FINISH_BATTLE),
+      type: BattleTimerActionType.FORCE_FINISH_BATTLE,
+    });
 
     displayBattleControlMessage(ctx, adventure);
     return;

@@ -18,3 +18,22 @@ export type PlayerVsEnviroment = {
   user: InBattleUser;
   enemy: InBattleEnemy;
 };
+
+export enum BattleTimerActionType {
+  FORCE_FINISH_BATTLE,
+  TIMEOUT_CHOICE,
+}
+
+export interface ForceFinishTimer {
+  type: BattleTimerActionType.FORCE_FINISH_BATTLE;
+  battleId: string;
+  executeAt: number;
+}
+
+export interface TimeoutChoiceTimer {
+  type: BattleTimerActionType.TIMEOUT_CHOICE;
+  battleId: string;
+  executeAt: number;
+}
+
+export type BattleTimer = ForceFinishTimer | TimeoutChoiceTimer;
