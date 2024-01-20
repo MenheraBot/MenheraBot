@@ -5,14 +5,29 @@ import { createEmbed } from '../../utils/discord/embedUtils';
 import { mentionUser } from '../../utils/discord/userUtils';
 import { InBattleEnemy, InBattleUser, PlayerVsEnviroment } from './types';
 import { getStatusDisplayFields } from './statusDisplay';
-import { createDummyEnemy } from './devUtils';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { extractBattleUserInfoToCharacter } from './battle/battleUtils';
 import { DatabaseCharacterSchema } from '../../types/database';
 import battleRepository from '../../database/repositories/battleRepository';
+import { randomFromArray } from '../../utils/miscUtils';
+import { Enemies } from './data/enemies';
+import { prepareEnemyToBattle } from './devUtils';
+
+const arrayEnemies = Object.entries(Enemies);
 
 const getCurrentAvailableAdventure = (): InBattleEnemy | null => {
-  return createDummyEnemy();
+  const [id, enemy] = randomFromArray(arrayEnemies);
+
+  return prepareEnemyToBattle(
+    {
+      id: Number(id),
+      $devName: enemy.$devName,
+      damage: enemy.damage,
+      drops: enemy.drops,
+      life: enemy.life,
+    },
+    1,
+  );
 };
 
 const confirmAdventure = async (

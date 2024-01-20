@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, BigString } from 'discordeno/types';
 import { inspect } from 'node:util';
 
 import { usersModel, farmerModel } from '../../database/collections';
@@ -9,6 +9,7 @@ import userThemesRepository from '../../database/repositories/userThemesReposito
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
 import { createEmbed } from '../../utils/discord/embedUtils';
+import roleplayRepository from '../../database/repositories/roleplayRepository';
 
 const noop = (..._args: unknown[]) => undefined;
 
@@ -28,7 +29,10 @@ const EvalCommand = createCommand({
   category: 'dev',
   authorDataFields: ['id'],
   execute: async (ctx, finishCommand) => {
-    noop(userRepository, usersModel, userThemesRepository, farmerModel, redis);
+    const revivePlayer = async (userId: BigString) =>
+      roleplayRepository.updateCharacter(userId, { deadUntil: 0 });
+
+    noop(userRepository, usersModel, userThemesRepository, farmerModel, redis, revivePlayer);
 
     try {
       // eslint-disable-next-line no-eval

@@ -8,14 +8,16 @@ import {
 import { orchestrateRoleplayRelatedComponentInteractions } from '../../modules/roleplay/componentInteractionReceptor';
 import { checkDeath, didUserResurrect } from '../../modules/roleplay/battle/battleUtils';
 import { millisToSeconds } from '../../utils/miscUtils';
+import battleRepository from '../../database/repositories/battleRepository';
+import { MessageFlags } from '../../utils/discord/messageUtils';
 
 const AdventureCommand = createCommand({
   path: '',
   name: 'aventura',
   nameLocalizations: { 'en-US': 'adventure' },
-  description: '「RPG」・Veja o seu personagem do RPG',
+  description: '「RPG」・Vá para uma aventura na dungeon',
   descriptionLocalizations: {
-    'en-US': '「RPG」・Check your RPG character',
+    'en-US': '「RPG」・Go to a dungeon adventure',
   },
   category: 'roleplay',
   commandRelatedExecutions: [orchestrateRoleplayRelatedComponentInteractions],
@@ -35,6 +37,12 @@ const AdventureCommand = createCommand({
           )}:R>`,
         });
     }
+
+    if (await battleRepository.isUserInBattle(character.id))
+      return ctx.makeMessage({
+        content: 'Você ja está em uma aventura!',
+        flags: MessageFlags.EPHEMERAL,
+      });
 
     const enemy = getCurrentAvailableAdventure();
 

@@ -9,6 +9,7 @@ const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseChara
   life: user.life,
   energy: user.energy,
   deadUntil: user.deadUntil,
+  inventory: user.inventory,
 });
 
 const getCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema> => {
