@@ -5,16 +5,15 @@ import userRepository from '../../database/repositories/userRepository';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import giveRepository from '../../database/repositories/giveRepository';
 import { mentionUser } from '../../utils/discord/userUtils';
-import { DatabaseHuntingTypes } from '../../modules/hunt/types';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { createCommand } from '../../structures/command/createCommand';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import { EMOJIS, transactionableCommandOption } from '../../structures/constants';
+import { EMOJIS } from '../../structures/constants';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { ApiTransactionReason } from '../../types/api';
 
 const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [selectedButton, amount, selectedOption] = ctx.sentData;
+  const [selectedButton, amount] = ctx.sentData;
 
   if (selectedButton === 'NEGATE') {
     ctx.makeMessage({
@@ -26,10 +25,10 @@ const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promis
 
   const authorData = await userRepository.ensureFindUser(ctx.commandAuthor.id);
 
-  if (Number(amount) > authorData[selectedOption as 'estrelinhas'])
+  if (Number(amount) > authorData.estrelinhas)
     return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:presentear.user-poor', {
-        field: ctx.locale(`common:${selectedOption as 'estrelinhas'}`),
+        field: ctx.locale(`common:estrelinhas`),
         user: mentionUser(ctx.commandAuthor.id),
       }),
       components: [],
@@ -38,7 +37,7 @@ const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promis
   ctx.makeMessage({
     content: ctx.prettyResponse('success', 'commands:presentear.transfered', {
       value: amount,
-      emoji: EMOJIS[selectedOption as 'estrelinhas'],
+      emoji: EMOJIS.estrelinhas,
       user: mentionUser(ctx.user.id),
       author: mentionUser(ctx.commandAuthor.id),
     }),
@@ -46,7 +45,7 @@ const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promis
   });
 
   await giveRepository.executeGive(
-    selectedOption as 'estrelinhas',
+    'estrelinhas',
     ctx.commandAuthor.id,
     ctx.user.id,
     Number(amount),
@@ -56,7 +55,7 @@ const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promis
     `${ctx.commandAuthor.id}`,
     `${ctx.user.id}`,
     Number(amount),
-    selectedOption as 'estrelinhas',
+    'estrelinhas',
     ApiTransactionReason.PIX_COMMAND,
   );
 };
@@ -76,37 +75,27 @@ const GiftCommand = createCommand({
       required: true,
     },
     {
-      name: 'tipo',
-      nameLocalizations: { 'en-US': 'type' },
-      description: 'O tipo de item que quer presentear',
-      descriptionLocalizations: { 'en-US': 'The type of item you want to gift' },
-      type: ApplicationCommandOptionTypes.String,
-      choices: transactionableCommandOption,
-      required: true,
-    },
-    {
       name: 'valor',
       nameLocalizations: { 'en-US': 'amount' },
-      description: 'A quantidade para presentear',
-      descriptionLocalizations: { 'en-US': 'The amount to gift' },
+      description: 'A quantidade de estrelinhas que você quer presentear',
+      descriptionLocalizations: { 'en-US': 'The number of stars you want to presentt' },
       type: ApplicationCommandOptionTypes.Integer,
       required: true,
       minValue: 1,
     },
   ],
   category: 'economy',
-  authorDataFields: ['estrelinhas', 'demons', 'giants', 'angels', 'archangels', 'gods', 'demigods'],
+  authorDataFields: ['estrelinhas'],
   commandRelatedExecutions: [executeGiftConfirmation],
   execute: async (ctx, finishCommand) => {
     const toSendUser = ctx.getOption<User>('user', 'users', true);
-    const selectedOption = ctx.getOption<DatabaseHuntingTypes | 'estrelinhas'>('tipo', false, true);
     const amount = ctx.getOption<number>('valor', false, true);
 
-    if (amount > ctx.authorData[selectedOption])
+    if (amount > ctx.authorData.estrelinhas)
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:presentear.poor', {
-            field: ctx.locale(`common:${selectedOption}`),
+            field: ctx.locale(`common:estrelinhas`),
           }),
         }),
       );
@@ -124,17 +113,17 @@ const GiftCommand = createCommand({
         content: ctx.prettyResponse('success', 'commands:presentear.transfered', {
           value: amount,
           author: mentionUser(ctx.author.id),
-          emoji: EMOJIS[selectedOption],
+          emoji: EMOJIS.estrelinhas,
           user: mentionUser(toSendUser.id),
         }),
       });
 
-      await giveRepository.executeGive(selectedOption, ctx.author.id, toSendUser.id, amount);
+      await giveRepository.executeGive('estrelinhas', ctx.author.id, toSendUser.id, amount);
       await postTransaction(
         `${ctx.author.id}`,
         `${toSendUser.id}`,
         Number(amount),
-        selectedOption as 'estrelinhas',
+        'estrelinhas',
         ApiTransactionReason.PIX_COMMAND,
       );
       return finishCommand();
@@ -149,7 +138,7 @@ const GiftCommand = createCommand({
       );
 
     const confirmButton = createButton({
-      customId: createCustomId(0, toSendUser.id, ctx.commandId, 'ACCEPT', amount, selectedOption),
+      customId: createCustomId(0, toSendUser.id, ctx.commandId, 'ACCEPT', amount),
       style: ButtonStyles.Success,
       label: ctx.locale('common:accept'),
     });
@@ -165,7 +154,7 @@ const GiftCommand = createCommand({
         user: mentionUser(toSendUser.id),
         author: mentionUser(ctx.author.id),
         count: amount,
-        emoji: EMOJIS[selectedOption],
+        emoji: EMOJIS.estrelinhas,
       }),
       allowedMentions: { users: [toSendUser.id] },
       components: [createActionRow([confirmButton, negateButton])],

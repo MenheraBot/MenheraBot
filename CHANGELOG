@@ -10,9 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - Novo tema, de um novo designer! Frostbite, por @jhonny_dy (843293990874513408)
-
-### Changed
-
 - Agora é possível ver o silo de outra pessoa em `/fazendinha silo`. Sugerido por @mareys
 
 ### Fixed
@@ -23,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - **O sistema de Impostos foi completamente removido da Menhera.**
 - O comando `/estatísticas impostos` foi deletado.
+- Removida opção de enviar caças via `/pix`
 
 ## [5.11.3] - 2024-01-07
 
