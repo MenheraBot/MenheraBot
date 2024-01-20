@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased] 
 
+### Added
+
+- Novo tema, de um novo designer! Frostbite, por @jhonny_dy (843293990874513408)
+
 ### Fixed
 
 - O título do embed da feirinha da vizinhança estava invertido com o título da feira de um usuário.

@@ -232,6 +232,10 @@
     "42": {
       "name": "Morning",
       "description": "For dawn lovers"
+    },
+    "43": {
+      "name": "Frostbite",
+      "description": " Wow, it's cold, right?"
     }
   },
   "plants": {
