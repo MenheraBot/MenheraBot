@@ -24,11 +24,18 @@ export type InBattleEnemy = {
   $devName: string;
 };
 
+export interface UserAbility {
+  id: number;
+  damage: number;
+  energyCost: number;
+}
+
 export type InBattleUser = {
   id: string;
   life: number;
   energy: number;
   damage: number;
+  abilitites: UserAbility[];
   inventory: InventoryItem[];
 };
 

@@ -7,11 +7,23 @@ import {
 import { createEmbed } from '../../../utils/discord/embedUtils';
 import { millisToSeconds } from '../../../utils/miscUtils';
 import { getStatusDisplayFields } from '../statusDisplay';
-import { PlayerVsEnviroment } from '../types';
+import { InBattleUser, PlayerVsEnviroment } from '../types';
 import { getUserAvatar } from '../../../utils/discord/userUtils';
 import cacheRepository from '../../../database/repositories/cacheRepository';
 import { GenericContext } from '../../../types/menhera';
 import { SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
+
+interface Choice {
+  id: number;
+  name: string;
+  damage: number;
+  energyCost: number;
+}
+
+const getAvailableChoices = (_ctx: GenericContext, user: InBattleUser): Choice[] => [
+  { damage: user.damage, energyCost: 1, id: 0, name: 'Ataque Básico' },
+  ...user.abilitites.map((ab) => ({ ...ab, name: `Ability ${ab.id}` })),
+];
 
 const displayBattleControlMessage = async (
   ctx: GenericContext,
@@ -28,14 +40,18 @@ const displayBattleControlMessage = async (
     fields: getStatusDisplayFields(adventure.user, adventure.enemy),
   });
 
+  const choices = getAvailableChoices(ctx, adventure.user);
+
   const choicesEmbed = createEmbed({
     title: 'Ações Disponíveis',
     description: `Se tu não tomar nenhuma ação <t:${millisToSeconds(
       Date.now() + SECONDS_TO_CHOICE_ACTION_IN_BATTLE * 1000,
     )}:R>, o inimigo te atacará!`,
-    fields: [
-      { name: 'Ataque Básico', value: `Dano: ${adventure.user.damage}\nCusto de Energia: 1` },
-    ],
+    fields: choices.map((a) => ({
+      name: a.name,
+      value: `Dano: ${a.damage}\nCusto de Energia: ${a.energyCost}`,
+      inline: true,
+    })),
   });
 
   ctx.makeMessage({
@@ -45,7 +61,7 @@ const displayBattleControlMessage = async (
       createActionRow([
         createSelectMenu({
           customId: createCustomId(0, adventure.user.id, ctx.commandId, 'USE_SKILL', adventure.id),
-          options: [{ label: 'Ataque Básico', value: '0' }],
+          options: choices.map((a) => ({ label: a.name, value: `${a.id}` })),
         }),
       ]),
     ],
