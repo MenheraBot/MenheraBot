@@ -10,6 +10,8 @@ import { prepareUserToBattle } from '../../modules/roleplay/devUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { checkDeath, didUserResurrect } from '../../modules/roleplay/battle/battleUtils';
 import battleRepository from '../../database/repositories/battleRepository';
+import { Items } from '../../modules/roleplay/data/items';
+import { EMOJIS } from '../../structures/constants';
 
 const CharacterCommand = createCommand({
   path: '',
@@ -54,6 +56,17 @@ const CharacterCommand = createCommand({
       title: `Personagem de ${getDisplayName(ctx.user, false)}`,
       description: getUserStatusDisplay(prepareUserToBattle(character)),
       thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
+      fields: [
+        {
+          name: `${EMOJIS.chest} | Inventário`,
+          value:
+            character.inventory.length > 0
+              ? character.inventory
+                  .map((a) => `**${a.amount}x** - ${Items[a.id as 1].$devName} - Lvl. ${a.level}`)
+                  .join('\n')
+              : 'Sem itens no inventário',
+        },
+      ],
     });
 
     await ctx.makeMessage({

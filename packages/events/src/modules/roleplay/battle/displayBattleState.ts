@@ -19,7 +19,7 @@ const displayBattleControlMessage = async (
 ): Promise<void> => {
   const statusEmbed = createEmbed({
     title: 'Estatísticas da Batalha',
-    description: `Mate e ganha X itens`,
+    description: `Mate o seu inimigo!`,
     thumbnail: {
       url: getUserAvatar((await cacheRepository.getDiscordUser(adventure.user.id, true))!, {
         enableGif: true,

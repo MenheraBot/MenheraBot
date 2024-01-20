@@ -3,8 +3,12 @@ import ComponentInteractionContext from '../../../structures/command/ComponentIn
 import { SelectMenuInteraction } from '../../../types/interaction';
 import { GenericContext } from '../../../types/menhera';
 import { MessageFlags } from '../../../utils/discord/messageUtils';
+import { randomFromArray } from '../../../utils/miscUtils';
 import { finishAdventure } from '../adventureManager';
 import { SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
+import { Enemies } from '../data/enemies';
+import { Items } from '../data/items';
+import inventoryManager from '../inventoryManager';
 import { BattleTimerActionType, PlayerVsEnviroment } from '../types';
 import { clearBattleTimer, startBattleTimer } from './battleTimers';
 import { checkDeath, keepNumbersPositive, userWasKilled } from './battleUtils';
@@ -52,8 +56,6 @@ const executeUserChoice = async (
 ): Promise<void> => {
   const [choiceStringedId] = ctx.interaction.data.values;
 
-  clearBattleTimer(`battle_timeout:${adventure.id}`);
-
   const cost = 1;
 
   if (cost > adventure.user.energy)
@@ -62,10 +64,27 @@ const executeUserChoice = async (
       flags: MessageFlags.EPHEMERAL,
     });
 
+  clearBattleTimer(`battle_timeout:${adventure.id}`);
+
   applyDamage(ctx, adventure, Number(choiceStringedId));
 
-  if (checkDeath(adventure.enemy))
-    return finishAdventure(ctx, adventure, 'Você matou seu inimigo! Você ganhou X itens');
+  if (checkDeath(adventure.enemy)) {
+    const dropedItem = randomFromArray(
+      Enemies[adventure.enemy.id as 1].drops[adventure.enemy.level - 1],
+    );
+
+    inventoryManager.addItems(adventure.user.inventory, [dropedItem]);
+
+    return finishAdventure(
+      ctx,
+      adventure,
+      `Tu matou o ${adventure.enemy.$devName} Lvl. ${
+        adventure.enemy.level
+      }\nEm seu corpo, tu encontrou ${dropedItem.amount} ${
+        Items[dropedItem.id as 1].$devName
+      } Lvl. ${dropedItem.level}`,
+    );
+  }
 
   executeEnemyAttack(adventure);
 

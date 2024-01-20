@@ -9,7 +9,6 @@ import { DatabaseCommandSchema } from '../../../types/database';
 import FollowUpInteractionContext from '../../../structures/command/FollowUpInteractionContext';
 import { updateBattleMessage } from './executeUserChoice';
 import { userWasKilled } from './battleUtils';
-import { logger } from '../../../utils/logger';
 
 const timers = new Map<string, NodeJS.Timeout>();
 
@@ -65,8 +64,6 @@ const setupBattleTimers = async (): Promise<void> => {
   (await battleRepository.getTimerKeys()).forEach(async (key) => {
     const timerId = key.replace('battle_timer:', '');
     const timerMetadata = await battleRepository.getTimer(timerId);
-
-    logger.debug(Date.now() - timerMetadata.executeAt);
 
     if (!timerMetadata) return;
 

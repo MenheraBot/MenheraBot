@@ -20,6 +20,7 @@ const extractBattleUserInfoToCharacter = (user: InBattleUser): Partial<DatabaseC
   return {
     energy: user.energy,
     life: user.life,
+    inventory: user.inventory,
   };
 };
 

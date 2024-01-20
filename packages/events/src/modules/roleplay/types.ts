@@ -1,3 +1,21 @@
+export type Enemy = {
+  $devName: string;
+  id: number;
+  life: number[];
+  damage: number[];
+  drops: {
+    id: number;
+    level: number;
+    amount: number;
+  }[][];
+};
+
+export interface InventoryItem {
+  id: number;
+  level: number;
+  amount: number;
+}
+
 export type InBattleEnemy = {
   id: number;
   life: number;
@@ -11,6 +29,7 @@ export type InBattleUser = {
   life: number;
   energy: number;
   damage: number;
+  inventory: InventoryItem[];
 };
 
 export type PlayerVsEnviroment = {
