@@ -40,6 +40,7 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
   trisal: user.trisal ? user.trisal.map((usr) => `${usr}`) : [],
   voteCooldown: user.voteCooldown,
   votes: user.votes,
+  inactivityWarned: user.inactivityWarned,
 });
 
 const findUser = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {
@@ -67,7 +68,7 @@ const updateUser = async (
   query: Partial<DatabaseUserSchema>,
 ): Promise<void> => {
   await usersModel
-    .updateOne({ id: userId }, { ...query, lastCommandAt: Date.now() })
+    .updateOne({ id: userId }, { ...query, lastCommandAt: Date.now(), inactivityWarned: false })
     .catch(debugError);
 
   const fromRedis = await MainRedisClient.get(`user:${userId}`).catch(debugError);

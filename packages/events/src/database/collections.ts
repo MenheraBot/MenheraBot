@@ -81,6 +81,7 @@ const userSchema = new Schema({
   inUseItems: { type: Array, default: [] },
   lastCommandAt: { type: Number, default: 0 },
   isBot: { type: Boolean, default: false },
+  inactivityWarned: { type: Boolean, default: false },
 });
 
 const themeCredits = new Schema({
