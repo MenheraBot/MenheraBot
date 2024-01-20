@@ -25,6 +25,7 @@ export const prepareUserToBattle = (user: DatabaseCharacterSchema): InBattleUser
   energy: user.energy,
   damage: 30,
   inventory: user.inventory,
+  abilitites: user.abilities,
 });
 
 export const setupAdventurePvE = (

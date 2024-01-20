@@ -141,6 +141,7 @@ const characterSchema = new Schema({
   energy: { type: Number, default: 100 },
   deadUntil: { type: Number, default: 0 },
   inventory: { type: Array, default: [] },
+  abilities: { type: Array, default: [] },
 });
 
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
