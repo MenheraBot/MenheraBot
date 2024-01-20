@@ -79,7 +79,10 @@ const displaySilo = async (
     customId: createCustomId(2, ctx.user.id, ctx.commandId, 'DISPLAY', embedColor),
   });
 
-  ctx.makeMessage({ embeds: [embed], components: [createActionRow([sellButton])] });
+  ctx.makeMessage({
+    embeds: [embed],
+    components: farmer.id === `${ctx.user.id}` ? [createActionRow([sellButton])] : [],
+  });
 };
 
 const handleButtonAction = async (ctx: ComponentInteractionContext): Promise<void> => {

@@ -1,4 +1,5 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { User } from 'discordeno/transformers';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { createCommand } from '../../structures/command/createCommand';
 import { displayPlantations } from '../../modules/fazendinha/displayPlantations';
@@ -45,10 +46,20 @@ const FazendinhaCommand = createCommand({
     },
     {
       name: 'silo',
-      description: '「🧺」・Dê uma olhada no silo de sua fazenda',
+      description: '「🧺」・Dê uma olhada no silo da fazenda de alguém',
       descriptionLocalizations: {
-        'en-US': "「🧺」・Take a look on your farm's silo",
+        'en-US': "「🧺」・Take a look inside someone's farm silo",
       },
+      options: [
+        {
+          name: 'fazendeiro',
+          nameLocalizations: { 'en-US': 'farmer' },
+          description: 'Fazendeiro que você quer ver o silo',
+          descriptionLocalizations: { 'en-US': 'Farmer do you want to see the silo' },
+          type: ApplicationCommandOptionTypes.User,
+          required: false,
+        },
+      ],
       type: ApplicationCommandOptionTypes.SubCommand,
     },
     {
@@ -220,7 +231,16 @@ const FazendinhaCommand = createCommand({
         -1,
       );
 
-    if (command === 'silo') return displaySilo(ctx, farmer, ctx.authorData.selectedColor);
+    if (command === 'silo') {
+      const userOption = ctx.getOption<User>('fazendeiro', 'users', false);
+
+      if (userOption && userOption.id !== ctx.user.id) {
+        const selectedFarmer = await farmerRepository.getFarmer(userOption.id);
+        return displaySilo(ctx, selectedFarmer, ctx.authorData.selectedColor);
+      }
+
+      return displaySilo(ctx, farmer, ctx.authorData.selectedColor);
+    }
   },
 });
 
