@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O comando `/estatísticas impostos` foi deletado.
 - Removida opção de enviar caças via `/pix`.
 
+### Hotfix
+
+- O comando `/fazendeiro silo` não mostrava o nome do fazendeiro corretamente.
+
 ## [5.11.3] - 2024-01-07
 
 ### Added
