@@ -14,7 +14,6 @@ import { executeUsedCommandsTop } from './usedCommands';
 import { executeUsedCommandsFromUserTop } from './usedCommandsFromUser';
 import { executeUserCommandsTop } from './userCommands';
 import { executeUsersByUsedCommandTop } from './usersByUsedCommand';
-import { executePaidTaxesTop } from './paidTaxesTop';
 
 const calculateSkipCount = (page: number): number => (page > 1 ? page - 1 : 0) * 10;
 
@@ -41,15 +40,7 @@ const usersToIgnoreInTop = async (): Promise<string[]> =>
     cacheRepository.getDeletedAccounts(),
   ]).then((a) => a[0].concat(a[1]));
 
-type TopType =
-  | 'gambling'
-  | 'hunt'
-  | 'economy'
-  | 'commands'
-  | 'command'
-  | 'user'
-  | 'users'
-  | 'imposto';
+type TopType = 'gambling' | 'hunt' | 'economy' | 'commands' | 'command' | 'user' | 'users';
 
 const createPaginationButtons = (
   ctx: InteractionContext,
@@ -122,8 +113,6 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
       COLORS.Purple,
     );
   }
-
-  if (command === 'imposto') return executePaidTaxesTop(ctx, Number(page), firstInfo);
 
   if (command === 'commands') return executeUsedCommandsTop(ctx, Number(page), firstInfo);
 

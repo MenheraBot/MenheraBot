@@ -14,7 +14,6 @@ import { executeUserCommandsTop } from '../../modules/top/userCommands';
 import { executeTopPagination, topEmojis } from '../../modules/top';
 import { executeUsersByUsedCommandTop } from '../../modules/top/usersByUsedCommand';
 import { bot } from '../..';
-import { executePaidTaxesTop } from '../../modules/top/paidTaxesTop';
 
 const TopCommand = createCommand({
   path: '',
@@ -332,27 +331,6 @@ const TopCommand = createCommand({
             },
           ],
         },
-        {
-          name: 'impostos',
-          nameLocalizations: { 'en-US': 'taxes' },
-          description: '「⭐」・Veja os usuários que mais pagaram impostos para a Menhera',
-          descriptionLocalizations: {
-            'en-US': '「⭐」・See the users who paid the most taxes to Menhera',
-          },
-          type: ApplicationCommandOptionTypes.SubCommand,
-          options: [
-            {
-              type: ApplicationCommandOptionTypes.Integer,
-              name: 'página',
-              nameLocalizations: { 'en-US': 'page' },
-              description: 'Página do top que tu quer ver',
-              descriptionLocalizations: { 'en-US': 'Top page you want to see' },
-              required: false,
-              minValue: 2,
-              maxValue: 99,
-            },
-          ],
-        },
       ],
     },
   ],
@@ -424,12 +402,6 @@ const TopCommand = createCommand({
           ctx.authorData.selectedColor,
         );
       }
-
-      case 'impostos': {
-        const page = ctx.getOption<number>('página', false) ?? 0;
-        return executePaidTaxesTop(ctx, page, ctx.authorData.selectedColor);
-      }
-
       case 'caçar': {
         const selectedOption = ctx.getOption<DatabaseHuntingTypes>('caça', false, true);
         const huntType = selectedOption.substring(0, selectedOption.length - 1) as ApiHuntingTypes;

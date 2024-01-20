@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased] 
+## [Unreleased]
 
 ### Added
 
@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - O título do embed da feirinha da vizinhança estava invertido com o título da feira de um usuário.
+
+### Removed
+
+- **O sistema de Impostos foi completamente removido da Menhera.**
+- O comando `/estatísticas impostos` foi deletado.
 
 ## [5.11.3] - 2024-01-07
 
@@ -24,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - Pequeno problema ao iniciar partida de Poker quando a Menhera tem problemas para ler a mensagem anterior.
-- O comando `/estatísticas designer` agora pagina a quantidade de designs por mensagem, dividindo todos em diversos embeds.  
+- O comando `/estatísticas designer` agora pagina a quantidade de designs por mensagem, dividindo todos em diversos embeds.
 
 ## [5.11.2] - 2024-01-03
 

@@ -1,5 +1,3 @@
-import { TaxedGameLimts } from '../../utils/taxesUtils';
-
 export const ROULETTE_NUMBERS: {
   value: number;
   color: 'red' | 'green' | 'black';
@@ -45,13 +43,6 @@ export const ROULETTE_NUMBERS: {
   { value: 35, color: 'black', parity: 'odd', size: 'high', dozen: 'third' },
   { value: 36, color: 'red', parity: 'even', size: 'high', dozen: 'third' },
 ];
-
-export const ROULETTE_LIMITS = {
-  MAX_LIMIT: 75_000,
-  MIN_LIMIT: 10,
-  MIN_TAX: 3.8 / 100,
-  MAX_TAX: 25 / 100,
-} satisfies TaxedGameLimts;
 
 export const WIN_MULTIPLIERS = {
   STRAIGHT: 9,

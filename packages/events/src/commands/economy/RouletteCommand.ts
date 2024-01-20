@@ -2,10 +2,6 @@ import { ActionRow, ApplicationCommandOptionTypes, ButtonStyles } from 'discorde
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import userRepository from '../../database/repositories/userRepository';
-import {
-  getRouletteProfitTaxes,
-  getRouletteTaxedProfit,
-} from '../../modules/roulette/getRouletteTaxes';
 import starsRepository from '../../database/repositories/starsRepository';
 import { postRoulleteGame, postTransaction } from '../../utils/apiRequests/statistics';
 import { SelectMenuInteraction } from '../../types/interaction';
@@ -49,8 +45,6 @@ const finishRouletteBet = async (
         embeds: [],
       });
 
-    const profitAfterTaxes = getRouletteTaxedProfit(profit);
-
     const winOrLose = didWin ? 'win' : 'lose';
 
     const finishEmbed = createEmbed({
@@ -58,8 +52,7 @@ const finishRouletteBet = async (
       title: ctx.locale(`commands:roleta.${winOrLose}-title`),
       description: ctx.locale(`commands:roleta.${winOrLose}`, {
         bet,
-        profit: profitAfterTaxes + bet,
-        taxes: (getRouletteProfitTaxes(profit) * 100).toFixed(2),
+        profit: profit + bet,
         number: randomValue,
         operation,
         selection:
@@ -70,14 +63,13 @@ const finishRouletteBet = async (
     });
 
     if (didWin) {
-      starsRepository.addStars(ctx.user.id, profitAfterTaxes);
+      starsRepository.addStars(ctx.user.id, profit);
       postTransaction(
         `${bot.id}`,
         `${ctx.user.id}`,
-        profitAfterTaxes,
+        profit,
         'estrelinhas',
         ApiTransactionReason.ROULETTE_COMMAND,
-        profit - profitAfterTaxes,
       );
     } else {
       starsRepository.removeStars(ctx.user.id, bet);
@@ -94,7 +86,7 @@ const finishRouletteBet = async (
       `${ctx.user.id}`,
       bet,
       operation,
-      didWin ? profitAfterTaxes + bet : profit,
+      didWin ? profit + bet : profit,
       didWin,
       selection,
     );

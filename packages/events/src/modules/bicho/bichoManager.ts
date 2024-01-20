@@ -3,7 +3,7 @@ import bichoRepository from '../../database/repositories/bichoRepository';
 import { postBichoResults, postTransaction } from '../../utils/apiRequests/statistics';
 import starsRepository from '../../database/repositories/starsRepository';
 import { BichoBetType, BichoGameInfo } from './types';
-import { BICHO_TAXES, getBetType, makePlayerResults, mapResultToAnimal } from './finishBets';
+import { getBetType, makePlayerResults, mapResultToAnimal } from './finishBets';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { COLORS } from '../../structures/constants';
 import { bot } from '../..';
@@ -11,7 +11,6 @@ import { getEnviroments } from '../../utils/getEnviroments';
 import { debugError } from '../../utils/debugError';
 import { capitalize } from '../../utils/miscUtils';
 import { ApiTransactionReason } from '../../types/api';
-import { getProfitTaxes, getTaxedProfit } from '../../utils/taxesUtils';
 import { resolveSeparatedStrings } from '../../utils/discord/componentUtils';
 
 const GAME_DURATION = 1000 * 60 * 60 * 6;
@@ -48,16 +47,15 @@ const finishGame = async (): Promise<void> => {
 
   players.forEach((a) => {
     if (a.didWin) {
-      starsRepository.addStars(a.id, a.taxed);
+      starsRepository.addStars(a.id, a.profit);
       postTransaction(
         `${bot.id}`,
         `${a.id}`,
-        a.taxed,
+        a.profit,
         'estrelinhas',
         ApiTransactionReason.WIN_BICHO,
-        a.profit - a.taxed,
       );
-      if (a.taxed > biggestProfit) biggestProfit = a.taxed;
+      if (a.profit > biggestProfit) biggestProfit = a.profit;
     }
   });
 
@@ -80,12 +78,9 @@ const finishGame = async (): Promise<void> => {
         ? 'Ninguém Ganhou'
         : wonPlayers.map(
             (player) =>
-              `[${player.id}]\n• Apostou ${player.bet}\n• Ganhou ${getTaxedProfit(
-                player.profit,
-                BICHO_TAXES,
-              )}\n• Imposto: ${(getProfitTaxes(player.profit, BICHO_TAXES) * 100).toFixed(
-                2,
-              )}%\n• Escolha: ${(() => {
+              `[${player.id}]\n• Apostou ${player.bet}\n• Ganhou ${
+                player.profit
+              }\n• Escolha: ${(() => {
                 const playerBet = playerBets.find((a) => a.id === player.id)?.option ?? '0';
 
                 return optionBetToText(playerBet, getBetType(playerBet));

@@ -1,5 +1,4 @@
 import { resolveSeparatedStrings } from '../../utils/discord/componentUtils';
-import { TaxedGameLimts, getTaxedProfit } from '../../utils/taxesUtils';
 import { BetPlayer, BichoBetType, BichoWinner } from './types';
 
 const BICHO_ANIMALS = [
@@ -39,13 +38,6 @@ const BICHO_BET_MULTIPLIER = {
   sequence: 15,
   corner: 100,
 };
-
-const BICHO_TAXES = {
-  MAX_LIMIT: 150_000,
-  MAX_TAX: 36.3 / 100,
-  MIN_LIMIT: 10,
-  MIN_TAX: 3.8 / 100,
-} satisfies TaxedGameLimts;
 
 const getBetType = (option: string): BichoBetType => {
   if (/^(?=.*\d)[\d ]+$/.test(option)) {
@@ -105,10 +97,6 @@ const makePlayerResults = (bets: BetPlayer[], gameResults: number[][]): BichoWin
     didWin: didUserWin(gameResults, player.option, getBetType(player.option)),
     id: `${player.id}`,
     option: player.option,
-    taxed: getTaxedProfit(
-      player.bet * BICHO_BET_MULTIPLIER[getBetType(player.option)],
-      BICHO_TAXES,
-    ),
     profit: player.bet * BICHO_BET_MULTIPLIER[getBetType(player.option)],
     bet: player.bet,
   }));
@@ -118,7 +106,6 @@ export {
   makePlayerResults,
   BICHO_BET_MULTIPLIER,
   BICHO_ANIMALS,
-  BICHO_TAXES,
   didUserWin,
   getBetType,
   mapResultToAnimal,

@@ -477,10 +477,6 @@
       "gods": "Deuses"
     },
     "estatisticas": {
-      "impostos": {
-        "taxes": "Financiadores da Menhera {{page}}º",
-        "paid": "Pagou **{{value}}** :star: em impostos"
-      },
       "cacar": {
         "title": "{{emoji}} | Melhores Caçadores de {{type}} {{page}}º",
         "demon": "Demônios",
@@ -638,12 +634,11 @@
     "dealer-hand": "Mão da Menhera",
     "timeout": "Tu demorou muito para jogar. A Menhera ficou sem paciência, você perdeu tudo!",
     "result": "Resultado",
-    "init_blackjack": "**{{winner}}** começou um jogo com um BlackJack! Que Sorte!\n**Seu {{text}}:** {{prize}} :star:\n{{taxed}}",
-    "blackjack": "**{{winner}}** fez um BlackJack! Na mosca!\n**Seu {{text}}:** {{prize}} :star:\n{{taxed}}",
-    "busted": "**{{loser}}** estourou! Mais sorte da próxima vez!\n**Seu {{text}}:** {{prize}} :star:\n{{taxed}}",
-    "taxed-win": "**Imposto:** {{tax}}%",
+    "init_blackjack": "**{{winner}}** começou um jogo com um BlackJack! Que Sorte!\n**Seu {{text}}:** {{prize}} :star:",
+    "blackjack": "**{{winner}}** fez um BlackJack! Na mosca!\n**Seu {{text}}:** {{prize}} :star:",
+    "busted": "**{{loser}}** estourou! Mais sorte da próxima vez!\n**Seu {{text}}:** {{prize}} :star:",
     "draw": "Eita! Tu empatou com a Menhera! Como empate não é nem uma vitória quanto uma derrota, suas **{{prize}}** :star: foram devolvidas para a carteira",
-    "biggest": "**{{winner}}** ganhou por possuir mais pontos!\n**Seu {{text}}:** {{prize}} :star:\n{{taxed}}",
+    "biggest": "**{{winner}}** ganhou por possuir mais pontos!\n**Seu {{text}}:** {{prize}} :star:",
     "profit": "Lucro",
     "loss": "Prejuízo",
     "buy": "Comprar",
@@ -718,7 +713,7 @@
   "roleta": {
     "poor": "Você não tem estrelinhas o suficiente para apostar!",
     "lose-title": "Perdeu Tudo!",
-    "win": "Você ganhou **{{profit}}** ({{taxes}}% de imposto) :star:! Parabéns\n\n**Valor Sorteado:** {{number.value}}\n**Cor:** $t(commands:roleta.{{number.color}})\n**Dúzia:** $t(commands:roleta.{{number.dozen}})\n\n**Sua escolha**: $t(commands:roleta.{{operation}})\n**Seleção:** {{selection}}",
+    "win": "Você ganhou **{{profit}}** :star:! Parabéns\n\n**Valor Sorteado:** {{number.value}}\n**Cor:** $t(commands:roleta.{{number.color}})\n**Dúzia:** $t(commands:roleta.{{number.dozen}})\n\n**Sua escolha**: $t(commands:roleta.{{operation}})\n**Seleção:** {{selection}}",
     "description": "Bem-Vindo ao jogo da roleta, aqui você pode ganhar TUDO ou perder TUDO, escolha abaixo o estilo de sua aposta, em seguida especifique o que quer apostar\n\n**TIPOS DE APOSTA:**",
     "win-title": "Wooo, você venceu!",
     "lose": "Infelizmente você perdeu a aposta! Foram-se **{{bet}}** :star: embora\n\n**Valor Sorteado:** {{number.value}}\n**Cor:** $t(commands:roleta.{{number.color}})\n**Dúzia:** $t(commands:roleta.{{number.dozen}}) \n\n**Sua escolha:** $t(commands:roleta.{{operation}})\n**Seleção:** {{selection}}",

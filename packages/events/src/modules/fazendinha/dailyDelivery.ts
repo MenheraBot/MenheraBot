@@ -53,7 +53,6 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
       dailyUser.award,
       'estrelinhas',
       ApiTransactionReason.DAILY_FARM,
-      0,
     ),
     farmerRepository.finishDaily(
       ctx.user.id,
@@ -82,7 +81,6 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
         bonus,
         'estrelinhas',
         ApiTransactionReason.DAILY_FARM,
-        0,
       ),
       starsRepository.addStars(ctx.user.id, bonus),
     ]);
