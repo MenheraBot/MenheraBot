@@ -9,6 +9,7 @@ export type AvailableCardBackgroundThemes =
   | 'hello_kitty'
   | 'nocturnal'
   | 'morning'
+  | 'frostbite'
   | 'lamenta_caelorum';
 
 export type AvailableTableThemes =

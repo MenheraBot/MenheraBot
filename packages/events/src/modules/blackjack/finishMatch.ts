@@ -13,8 +13,6 @@ import { generateBlackjackEmbed, getTableImage, safeImageReply } from './blackja
 import { BlackjackCard, BlackjackFinishGameReason } from './types';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { ApiTransactionReason } from '../../types/api';
-import { getProfitTaxes, getTaxedProfit } from '../../utils/taxesUtils';
-import { BLACKJACK_TAXES } from '.';
 
 const finishMatch = async (
   ctx: ChatInputInteractionContext | ComponentInteractionContext,
@@ -35,11 +33,9 @@ const finishMatch = async (
   const winner = didUserWin ? ctx.interaction.user.username : bot.username;
   const loser = !didUserWin ? ctx.interaction.user.username : bot.username;
 
-  const taxedPrize = didUserWin
-    ? getTaxedProfit(Math.floor(bet * prizeMultiplier), BLACKJACK_TAXES)
-    : bet;
+  const totalPrize = didUserWin ? Math.floor(bet * prizeMultiplier) : bet;
 
-  const prize = finishReason === 'draw' ? bet : taxedPrize;
+  const prize = finishReason === 'draw' ? bet : totalPrize;
 
   if (didUserWin) {
     await starsRepository.addStars(ctx.interaction.user.id, prize);
@@ -50,7 +46,6 @@ const finishMatch = async (
       prize,
       'estrelinhas',
       ApiTransactionReason.BLACKJACK_COMMAND,
-      Math.floor(bet * prizeMultiplier) - prize,
     );
   }
 
@@ -80,13 +75,6 @@ const finishMatch = async (
     value: ctx.locale(`commands:blackjack.${finishReason}`, {
       winner,
       loser,
-      taxed: didUserWin
-        ? ctx.locale('commands:blackjack.taxed-win', {
-            tax: (getProfitTaxes(Math.floor(bet * prizeMultiplier), BLACKJACK_TAXES) * 100).toFixed(
-              2,
-            ),
-          })
-        : '',
       prize: didUserWin ? prize : negate(prize),
       text: ctx.locale(`commands:blackjack.${didUserWin ? 'profit' : 'loss'}`),
     }),

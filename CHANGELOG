@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.12.0] - 2024-01-20
+
+### Added
+
+- Novo tema, de um novo designer! Frostbite, por @jhonny_dy (843293990874513408).
+- Agora é possível ver o silo de outra pessoa em `/fazendinha silo`. Sugerido por @mareys.
+- A Menhera enviará uma mensagem um dia antes de remover itens da carteira de um usuário por inatividade. Sugerido por esther.s.g (1000180602672259162)
+
+### Fixed
+
+- O título do embed da feirinha da vizinhança estava invertido com o título da feira de um usuário.
+
+### Removed
+
+- **O sistema de Impostos foi completamente removido da Menhera.**
+- O comando `/estatísticas impostos` foi deletado.
+- Removida opção de enviar caças via `/pix`.
+
 ## [5.11.3] - 2024-01-07
 
 ### Added
@@ -14,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - Pequeno problema ao iniciar partida de Poker quando a Menhera tem problemas para ler a mensagem anterior.
-- O comando `/estatísticas designer` agora pagina a quantidade de designs por mensagem, dividindo todos em diversos embeds.  
+- O comando `/estatísticas designer` agora pagina a quantidade de designs por mensagem, dividindo todos em diversos embeds.
 
 ## [5.11.2] - 2024-01-03
 

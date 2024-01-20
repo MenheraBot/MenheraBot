@@ -42,7 +42,6 @@ const handleUpgradeSilo = async (ctx: ComponentInteractionContext): Promise<void
       cost,
       'estrelinhas',
       ApiTransactionReason.UPGRADE_FARM,
-      0,
     ),
   ]);
 

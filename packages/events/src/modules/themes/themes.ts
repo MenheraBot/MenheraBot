@@ -255,6 +255,11 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     type: 'card_background',
     theme: 'morning',
   },
+  43: {
+    price: 45_000,
+    type: 'card_background',
+    theme: 'frostbite',
+  },
 };
 
 export default Themes;

@@ -53,6 +53,7 @@ export interface DatabaseUserSchema {
   inUseItems: HuntMagicItem[];
   lastCommandAt: number;
   isBot: boolean;
+  inactivityWarned: boolean;
 }
 
 export interface DatabaseCreditsSchema {

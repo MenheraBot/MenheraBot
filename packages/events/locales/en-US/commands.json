@@ -472,10 +472,6 @@
       "estrelinhas": "Estrelinhas"
     },
     "estatisticas": {
-      "impostos": {
-        "taxes": "Menhera's Financiers {{page}}º",
-        "paid": "Paid **{{value}}** :star: in taxes"
-      },
       "cacar": {
         "title": "{{emoji}} | Best Hunters of {{type}} {{page}}º",
         "demon": "Demons",
@@ -634,13 +630,12 @@
     "dealer-hand": "Menhera's Hand",
     "timeout": "you took too long to play. Menhera ran out of patience, you lost everything!",
     "result": "👑 | Results",
-    "init_blackjack": "**{{winner}}** started a game with a BlackJack! How lucky!\n**Your {{text}}:** {{prize}} :star:\n{{taxed}}",
-    "blackjack": "**{{winner}}** made a BlackJack! On the fly!\n**Your {{text}}:** {{prize}} :star:\n{{taxed}}",
-    "busted": "**{{loser}}** busted! Better luck next time!\n**Your {{text}}:** {{prize}} :star:\n{{taxed}}",
+    "init_blackjack": "**{{winner}}** started a game with a BlackJack! How lucky!\n**Your {{text}}:** {{prize}} :star:",
+    "blackjack": "**{{winner}}** made a BlackJack! On the fly!\n**Your {{text}}:** {{prize}} :star:",
+    "busted": "**{{loser}}** busted! Better luck next time!\n**Your {{text}}:** {{prize}} :star:",
     "draw": "Jeez! You tied with Menhera! As a draw is neither a win nor a loss, your **{{prize}}** :star: have been returned to your wallet",
-    "biggest": "**{{winner}}** won for having more points!\n**Your {{text}}:** {{prize}} :star:\n{{taxed}}",
+    "biggest": "**{{winner}}** won for having more points!\n**Your {{text}}:** {{prize}} :star:",
     "profit": "Profit",
-    "taxed-win": "**Taxes:** {{tax}}%",
     "loss": "Loss"
   },
   "itens": {
@@ -713,7 +708,7 @@
   "roleta": {
     "poor": "You don't have enough stars to bet!",
     "lose-title": "Lost everything!",
-    "win": "You won **{{profit}}** ({{taxes}}% of tax) :star:! Congratulations\n\n**Rated Value:** {{number.value}}\n**Color:** $t(commands:roulette.{{number.color}})\n**Dozen:** $t(commands:roulette.{{number.dozen}})\n\n**Your choice**: $t(commands:roulette.{{operation}})\n**Selection:** {{selection}}",
+    "win": "You won **{{profit}}** :star:! Congratulations\n\n**Rated Value:** {{number.value}}\n**Color:** $t(commands:roulette.{{number.color}})\n**Dozen:** $t(commands:roulette.{{number.dozen}})\n\n**Your choice**: $t(commands:roulette.{{operation}})\n**Selection:** {{selection}}",
     "description": "Welcome to the game of roulette, here you can win or lose EVERYTHING, choose your bet style below, then specify what you want to bet\n\n**BET TYPES:**",
     "win-title": "Wooo, you won!",
     "lose": "Unfortunately you lost the bet! Gone are **{{bet}}** :star: although\n\n**Amount Drawn:** {{number.value}}\n**Cor:** $t(commands:roulette.{{number.color}})\n**Dozen:** $t(commands:roulette.{{number.dozen}}) \n\n**Your choice:** $t(commands:roulette.{{operation}})\n**Selection:** {{selection}}",

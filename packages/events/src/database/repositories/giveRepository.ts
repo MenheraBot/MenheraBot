@@ -1,12 +1,11 @@
 import { BigString } from 'discordeno/types';
-import { DatabaseHuntingTypes } from '../../modules/hunt/types';
 import { negate } from '../../utils/miscUtils';
 import userRepository from './userRepository';
 import { profileBadges } from '../../modules/badges/profileBadges';
 import { MainRedisClient } from '../databases';
 
 const executeGive = async (
-  field: DatabaseHuntingTypes | 'estrelinhas',
+  field: 'estrelinhas',
   fromUser: BigString,
   toUser: BigString,
   amount: number,

@@ -232,6 +232,10 @@
     "42": {
       "name": "Matutino",
       "description": "Para os amantes do amanhecer"
+    },
+    "43": {
+      "name": "Frostbite",
+      "description": "Nossa, tá um friozinho né?"
     }
   },
   "plants": {
