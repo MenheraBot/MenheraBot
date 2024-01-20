@@ -25,6 +25,7 @@ import { executeSellPlant, receiveModal } from '../shop/sellPlants';
 import { InteractionContext } from '../../types/menhera';
 import commandRepository from '../../database/repositories/commandRepository';
 import { getSiloLimits } from './siloUtils';
+import cacheRepository from '../../database/repositories/cacheRepository';
 
 const displaySilo = async (
   ctx: ChatInputInteractionContext,
@@ -33,8 +34,13 @@ const displaySilo = async (
 ): Promise<void> => {
   let maySell = false;
 
+  const user =
+    `${ctx.user.id}` !== farmer.id ? await cacheRepository.getDiscordUser(farmer.id) : ctx.user;
+
   const embed = createEmbed({
-    title: ctx.locale('commands:fazendinha.silo.embed-title', { user: getDisplayName(ctx.user) }),
+    title: ctx.locale('commands:fazendinha.silo.embed-title', {
+      user: getDisplayName(user ?? ctx.user),
+    }),
     color: hexStringToNumber(embedColor),
     fields: ['seeds' as const, 'silo' as const].reduce<DiscordEmbedField[]>((p, c) => {
       const items = farmer[c].filter((a) => a.amount > 0);
