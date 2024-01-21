@@ -1,7 +1,7 @@
 export const Enemies = {
   1: {
     $devName: 'Goblin',
-    life: [10, 20, 50, 100, 300],
+    life: [90, 160, 250, 310, 400],
     damage: [13, 26, 66, 89, 103],
     drops: [
       [
