@@ -440,29 +440,11 @@ export const executeTituleAutocompleteInteraction = async (
     userData.titles.map((a) => a.id),
   );
 
-  logger.logSwitch(bot, 'UserTitles', userTitles, 'UserDataTitles', userData.titles);
-
-  if (
-    !userTitles.every((a) => a) ||
-    userTitles.length === 0 ||
-    userTitles.some((a) => typeof a !== 'string')
-  ) {
-    logger.error(`UserTitles is not an array of strings`, input, userTitles);
-
-    logger.info('UserTitles', userTitles, 'UserDataTitles', userData.titles);
-
-    logger.info('UserID: ', interaction.user.id);
-
-    Sentry.captureMessage('UserTitles is not an array of strings', {
-      contexts: {
-        infos: {
-          userTitles: JSON.stringify(userTitles),
-          userData: JSON.stringify(userData.titles),
-          types: userTitles.map((a) => typeof a),
-        },
-      },
-      level: 'warning',
-    });
+  if (!userTitles.every((a) => a) || userTitles.length === 0) {
+    logger.error(
+      `UserTitles is invalid, even when user has titles:`,
+      JSON.stringify({ userTitles, fromData: userData.titles }),
+    );
 
     return respondWithChoices([resetTitle]);
   }
