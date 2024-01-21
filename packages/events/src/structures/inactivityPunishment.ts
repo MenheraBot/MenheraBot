@@ -81,7 +81,7 @@ const inactivityPunishment = async (): Promise<void> => {
       const bulkUpdate = usersModel.collection.initializeUnorderedBulkOp();
 
       ids.forEach(async (id, index) => {
-        if (typeof updatedData[index].$inc !== 'undefined') {
+        if (typeof updatedData[index].$inc === 'undefined') {
           const embed = createEmbed({
             title: `⚠️ Alerta de inatividade`,
             description:
