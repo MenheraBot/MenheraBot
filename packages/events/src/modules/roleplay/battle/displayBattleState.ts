@@ -12,6 +12,7 @@ import { getUserAvatar } from '../../../utils/discord/userUtils';
 import cacheRepository from '../../../database/repositories/cacheRepository';
 import { GenericContext } from '../../../types/menhera';
 import { SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
+import { Abilities } from '../data/abilities';
 
 interface Choice {
   id: number;
@@ -22,7 +23,7 @@ interface Choice {
 
 const getAvailableChoices = (_ctx: GenericContext, user: InBattleUser): Choice[] => [
   { damage: user.damage, energyCost: 1, id: 0, name: 'Ataque Básico' },
-  ...user.abilitites.map((ab) => ({ ...ab, name: `Ability ${ab.id}` })),
+  ...user.abilitites.map((ab) => ({ ...ab, name: Abilities[ab.id].$devName })),
 ];
 
 const displayBattleControlMessage = async (

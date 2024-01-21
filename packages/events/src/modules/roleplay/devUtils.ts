@@ -1,6 +1,7 @@
 import { DatabaseCharacterSchema } from '../../types/database';
 import { InteractionContext } from '../../types/menhera';
 import { logger } from '../../utils/logger';
+import { Abilities } from './data/abilities';
 import { Enemy, InBattleEnemy, InBattleUser, PlayerVsEnviroment } from './types';
 
 export const createDummyEnemy = (): InBattleEnemy => ({
@@ -14,8 +15,8 @@ export const createDummyEnemy = (): InBattleEnemy => ({
 export const prepareEnemyToBattle = (enemy: Enemy, level: number): InBattleEnemy => ({
   id: enemy.id,
   $devName: enemy.$devName,
-  damage: enemy.damage[level],
-  life: enemy.life[level],
+  damage: enemy.damage[level - 1],
+  life: enemy.life[level - 1],
   level,
 });
 
@@ -23,9 +24,13 @@ export const prepareUserToBattle = (user: DatabaseCharacterSchema): InBattleUser
   id: user.id,
   life: user.life,
   energy: user.energy,
-  damage: 30,
+  damage: 23,
   inventory: user.inventory,
-  abilitites: user.abilities,
+  abilitites: user.abilities.map((a) => ({
+    damage: Abilities[a.id as 1].damage,
+    energyCost: Abilities[a.id as 1].energyCost,
+    id: a.id,
+  })),
 });
 
 export const setupAdventurePvE = (
