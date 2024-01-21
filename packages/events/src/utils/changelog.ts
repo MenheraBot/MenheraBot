@@ -9,7 +9,12 @@ const loadChangelog = async (): Promise<void> => {
   logger.info('[CHANGELOG] Getting the current update changelog');
 
   const response = await axios
-    .get(`https://menherabot.xyz/api/changelog?version=${process.env.VERSION}`)
+    .get(
+      `https://menherabot.xyz/api/changelog?version=${process.env.VERSION?.replace(
+        /[^0-9.]/g,
+        '',
+      )}`,
+    )
     .catch(() => null);
 
   if (!response) {
