@@ -1,3 +1,5 @@
+import { DatabaseCharacterSchema } from '../../types/database';
+
 export type Enemy = {
   $devName: string;
   id: number;
@@ -10,11 +12,28 @@ export type Enemy = {
   }[][];
 };
 
+type AbilityType = 'damage';
+
+export type AbilityEffect = {
+  applyTo: 'enemy' | 'player';
+  value: number;
+  type: AbilityType;
+  repeatRounds?: number;
+};
+
+export type Ability = {
+  $devName: string;
+  energyCost: number;
+  effects: AbilityEffect[];
+};
+
 export interface InventoryItem {
   id: number;
   level: number;
   amount: number;
 }
+
+type BattleEffect = Required<Omit<AbilityEffect, 'applyTo'>>;
 
 export type InBattleEnemy = {
   id: number;
@@ -22,12 +41,12 @@ export type InBattleEnemy = {
   damage: number;
   level: number;
   $devName: string;
+  effects: BattleEffect[];
 };
 
-export interface UserAbility {
+export interface AbilityEntity {
   id: number;
-  damage: number;
-  energyCost: number;
+  proficiente: number;
 }
 
 export type InBattleUser = {
@@ -35,8 +54,9 @@ export type InBattleUser = {
   life: number;
   energy: number;
   damage: number;
-  abilitites: UserAbility[];
+  abilitites: DatabaseCharacterSchema['abilities'];
   inventory: InventoryItem[];
+  effects: BattleEffect[];
 };
 
 export type PlayerVsEnviroment = {

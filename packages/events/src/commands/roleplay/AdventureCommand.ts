@@ -54,8 +54,7 @@ const AdventureCommand = createCommand({
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
     finishCommand();
-
-    const character = await roleplayRepository.getCharacter(ctx.user.id);
+const character = await roleplayRepository.getCharacter(ctx.user.id);
 
     if (checkDeath(character)) {
       const userAlive = await didUserResurrect(character);
@@ -78,9 +77,11 @@ const AdventureCommand = createCommand({
       const embed = createEmbed({
         title: 'Escolha sua primeira habilidade',
         color: hexStringToNumber(ctx.authorData.selectedColor),
-        fields: Object.entries(Abilities).map(([, ability]) => ({
+        fields: Object.entries([Abilities['1'], Abilities['2']]).map(([, ability]) => ({
           name: ability.$devName,
-          value: `Dano: ${ability.damage}\nCusto de Energia: ${ability.energyCost}`,
+          value: `Efeitos: ${JSON.stringify(ability.effects)}\nCusto de Energia: ${
+            ability.energyCost
+          }`,
           inline: true,
         })),
       });

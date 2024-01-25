@@ -6,28 +6,38 @@ import { MessageFlags } from '../../../utils/discord/messageUtils';
 import { randomFromArray } from '../../../utils/miscUtils';
 import { finishAdventure } from '../adventureManager';
 import { SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
+import { getAbility } from '../data/abilities';
 import { Enemies } from '../data/enemies';
 import { Items } from '../data/items';
 import inventoryManager from '../inventoryManager';
-import { BattleTimerActionType, PlayerVsEnviroment } from '../types';
+import { Ability, BattleTimerActionType, PlayerVsEnviroment } from '../types';
 import { clearBattleTimer, startBattleTimer } from './battleTimers';
 import { checkDeath, keepNumbersPositive, userWasKilled } from './battleUtils';
 import { displayBattleControlMessage } from './displayBattleState';
 import { executeEnemyAttack } from './executeEnemyAttack';
 
-const applyDamage = (
+const executeEffects = (
   _ctx: ComponentInteractionContext,
   adventure: PlayerVsEnviroment,
-  abilityId: number,
+  effects: Ability['effects'],
 ): void => {
-  switch (abilityId) {
-    case 0: {
-      adventure.enemy.life -= adventure.user.damage;
-      adventure.user.energy -= 1;
+  effects.forEach((effect) => {
+    const entity = effect.applyTo === 'enemy' ? adventure.enemy : adventure.user;
 
-      break;
+    switch (effect.type) {
+      case 'damage': {
+        entity.life -= effect.value;
+        break;
+      }
     }
-  }
+
+    if (effect.repeatRounds)
+      entity.effects.push({
+        repeatRounds: effect.repeatRounds - 1,
+        type: effect.type,
+        value: effect.value,
+      });
+  });
 
   keepNumbersPositive(adventure.enemy);
   keepNumbersPositive(adventure.user);
@@ -56,9 +66,9 @@ const executeUserChoice = async (
 ): Promise<void> => {
   const [choiceStringedId] = ctx.interaction.data.values;
 
-  const cost = 1;
+  const selectedAbility = getAbility(Number(choiceStringedId));
 
-  if (cost > adventure.user.energy)
+  if (selectedAbility.energyCost > adventure.user.energy)
     return ctx.respondInteraction({
       content: 'Não tem energia para usar',
       flags: MessageFlags.EPHEMERAL,
@@ -66,7 +76,7 @@ const executeUserChoice = async (
 
   clearBattleTimer(`battle_timeout:${adventure.id}`);
 
-  applyDamage(ctx, adventure, Number(choiceStringedId));
+  executeEffects(ctx, adventure, selectedAbility.effects);
 
   if (checkDeath(adventure.enemy)) {
     const dropedItem = randomFromArray(
