@@ -77,22 +77,26 @@ const AdventureCommand = createCommand({
       const embed = createEmbed({
         title: 'Escolha sua primeira habilidade',
         color: hexStringToNumber(ctx.authorData.selectedColor),
-        fields: Object.entries([Abilities['1'], Abilities['2']]).map(([, ability]) => ({
-          name: ability.$devName,
-          value: `Efeitos: ${JSON.stringify(ability.effects)}\nCusto de Energia: ${
-            ability.energyCost
-          }`,
-          inline: true,
-        })),
+        fields: Object.entries(Abilities)
+          .filter((a) => ['1', '2', '3', '4'].includes(a[0]))
+          .map(([, ability]) => ({
+            name: ability.$devName,
+            value: `Efeitos: ${JSON.stringify(ability.effects)}\nCusto de Energia: ${
+              ability.energyCost
+            }`,
+            inline: true,
+          })),
       });
 
-      const buttons = Object.entries(Abilities).map(([id, ability]) =>
-        createButton({
-          label: ability.$devName,
-          style: ButtonStyles.Primary,
-          customId: createCustomId(1, ctx.user.id, ctx.commandId, id),
-        }),
-      );
+      const buttons = Object.entries(Abilities)
+        .filter((a) => ['1', '2', '3', '4'].includes(a[0]))
+        .map(([id, ability]) =>
+          createButton({
+            label: ability.$devName,
+            style: ButtonStyles.Primary,
+            customId: createCustomId(1, ctx.user.id, ctx.commandId, id),
+          }),
+        );
 
       return ctx.makeMessage({
         content: `Bem vindo!\nPara começar o seu personagem, escolha uma habilidade para aprender`,

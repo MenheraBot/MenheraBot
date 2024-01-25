@@ -30,10 +30,17 @@ const EvalCommand = createCommand({
   authorDataFields: ['id'],
   execute: async (ctx, finishCommand) => {
     const revivePlayer = async (userId: BigString) =>
-      roleplayRepository.updateCharacter(userId, { deadUntil: 0 }).then(() => 'Revivido a flor');
+      roleplayRepository.updateCharacter(userId, { deadUntil: 0 }).then(() => 'USER_ALIVE');
+
+    const clear = async () => {
+      characterModel.deleteMany({});
+      redis.flushall();
+      return 'RPG_DATA_ERASED';
+    };
 
     noop(
       userRepository,
+      clear,
       usersModel,
       userThemesRepository,
       farmerModel,
