@@ -1,9 +1,12 @@
 import roleplayRepository from '../../../database/repositories/roleplayRepository';
 import { DatabaseCharacterSchema } from '../../../types/database';
 import { GenericContext } from '../../../types/menhera';
-import { hoursToMillis } from '../../../utils/miscUtils';
+import { hoursToMillis, randomFromArray } from '../../../utils/miscUtils';
 import { finishAdventure } from '../adventureManager';
 import { RESURRECT_TIME_IN_HOURS } from '../constants';
+import { Enemies } from '../data/enemies';
+import { Items } from '../data/items';
+import inventoryManager from '../inventoryManager';
 import { InBattleUser, PlayerVsEnviroment } from '../types';
 
 const checkDeath = (entity: { life: number }): boolean => entity.life <= 0;
@@ -30,6 +33,24 @@ const userWasKilled = (ctx: GenericContext, adventure: PlayerVsEnviroment): void
   });
 };
 
+const enemyWasKilled = (ctx: GenericContext, adventure: PlayerVsEnviroment): void => {
+  const dropedItem = randomFromArray(
+    Enemies[adventure.enemy.id as 1].drops[adventure.enemy.level - 1],
+  );
+
+  inventoryManager.addItems(adventure.user.inventory, [dropedItem]);
+
+  finishAdventure(
+    ctx,
+    adventure,
+    `Tu matou o ${adventure.enemy.$devName} Lvl. ${
+      adventure.enemy.level
+    }\nEm seu corpo, tu encontrou ${dropedItem.amount} ${Items[dropedItem.id as 1].$devName} Lvl. ${
+      dropedItem.level
+    }`,
+  );
+};
+
 const didUserResurrect = async (user: DatabaseCharacterSchema): Promise<boolean> => {
   if (user.deadUntil > Date.now()) return false;
 
@@ -44,5 +65,6 @@ export {
   keepNumbersPositive,
   extractBattleUserInfoToCharacter,
   userWasKilled,
+  enemyWasKilled,
   didUserResurrect,
 };

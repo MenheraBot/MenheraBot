@@ -9,6 +9,7 @@ import { DatabaseCommandSchema } from '../../../types/database';
 import FollowUpInteractionContext from '../../../structures/command/FollowUpInteractionContext';
 import { updateBattleMessage } from './executeUserChoice';
 import { userWasKilled } from './battleUtils';
+import { executeEntitiesEffects } from './executeEffects';
 
 const timers = new Map<string, NodeJS.Timeout>();
 
@@ -34,8 +35,6 @@ const executeTimeoutChoice = async (timer: BattleTimer) => {
   const battleData = await battleRepository.getAdventure(timer.battleId);
   if (!battleData) return;
 
-  executeEnemyAttack(battleData);
-
   const adventureCommandId = (await commandRepository.getCommandInfo(
     'aventura',
   )) as DatabaseCommandSchema;
@@ -45,6 +44,10 @@ const executeTimeoutChoice = async (timer: BattleTimer) => {
     adventureCommandId.discordId,
     getFixedT(battleData.language),
   );
+
+  executeEntitiesEffects(ctx, battleData);
+
+  executeEnemyAttack(battleData);
 
   updateBattleMessage(ctx, battleData);
 };

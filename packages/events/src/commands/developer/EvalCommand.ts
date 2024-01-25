@@ -33,8 +33,8 @@ const EvalCommand = createCommand({
       roleplayRepository.updateCharacter(userId, { deadUntil: 0 }).then(() => 'USER_ALIVE');
 
     const clear = async () => {
-      characterModel.deleteMany({});
-      redis.flushall();
+      await characterModel.deleteMany({});
+      await redis.flushall();
       return 'RPG_DATA_ERASED';
     };
 
