@@ -14,7 +14,7 @@ import { BattleTimerActionType, PlayerVsEnviroment } from '../types';
 import { clearBattleTimer, startBattleTimer } from './battleTimers';
 import { checkDeath, userWasKilled } from './battleUtils';
 import { displayBattleControlMessage } from './displayBattleState';
-import { executeEffects } from './executeEffects';
+import { applyAbilityEffects, executeEntitiesEffects } from './executeEffects';
 import { executeEnemyAttack } from './executeEnemyAttack';
 
 const updateBattleMessage = async (
@@ -48,11 +48,15 @@ const executeUserChoice = async (
       flags: MessageFlags.EPHEMERAL,
     });
 
-  clearBattleTimer(`battle_timeout:${adventure.id}`);
-
   adventure.user.energy -= selectedAbility.energyCost;
 
-  executeEffects(ctx, adventure, selectedAbility.effects);
+  clearBattleTimer(`battle_timeout:${adventure.id}`);
+
+  executeEntitiesEffects(ctx, adventure);
+
+  applyAbilityEffects(ctx, adventure, selectedAbility.effects);
+
+  executeEnemyAttack(adventure);
 
   if (checkDeath(adventure.enemy)) {
     const dropedItem = randomFromArray(
@@ -71,8 +75,6 @@ const executeUserChoice = async (
       } Lvl. ${dropedItem.level}`,
     );
   }
-
-  executeEnemyAttack(adventure);
 
   updateBattleMessage(ctx, adventure);
 };

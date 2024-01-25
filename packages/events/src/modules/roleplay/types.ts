@@ -33,7 +33,7 @@ export interface InventoryItem {
   amount: number;
 }
 
-type BattleEffect = Required<Omit<AbilityEffect, 'applyTo'>>;
+export type BattleEffect = Required<Omit<AbilityEffect, 'applyTo'>>;
 
 export type InBattleEnemy = {
   id: number;
@@ -58,6 +58,8 @@ export type InBattleUser = {
   inventory: InventoryItem[];
   effects: BattleEffect[];
 };
+
+export type BattleEntity = InBattleEnemy | InBattleUser;
 
 export type PlayerVsEnviroment = {
   id: string;
