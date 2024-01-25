@@ -10,24 +10,16 @@ import { extractBattleUserInfoToCharacter } from './battle/battleUtils';
 import { DatabaseCharacterSchema } from '../../types/database';
 import battleRepository from '../../database/repositories/battleRepository';
 import { randomFromArray } from '../../utils/miscUtils';
-import { Enemies } from './data/enemies';
 import { prepareEnemyToBattle } from './devUtils';
 
-const arrayEnemies = Object.entries(Enemies);
+const getCurrentAvailableAdventure = async (): Promise<InBattleEnemy | null> => {
+  const availableEnemies = await roleplayRepository.getEnemiesInArea([0, 0]);
 
-const getCurrentAvailableAdventure = (): InBattleEnemy | null => {
-  const [id, enemy] = randomFromArray(arrayEnemies);
+  if (availableEnemies.length === 0) return null;
 
-  return prepareEnemyToBattle(
-    {
-      id: Number(id),
-      $devName: enemy.$devName,
-      damage: enemy.damage,
-      drops: enemy.drops,
-      life: enemy.life,
-    },
-    1,
-  );
+  const enemy = randomFromArray(availableEnemies);
+
+  return prepareEnemyToBattle(enemy, 1);
 };
 
 const confirmAdventure = async (

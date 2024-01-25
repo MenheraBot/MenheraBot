@@ -32,18 +32,18 @@ const executeEntitiesEffects = (_ctx: GenericContext, adventure: PlayerVsEnvirom
     const effect = adventure.user.effects[i];
 
     executeEffectInEntity(adventure.user, effect);
-    effect.repeatRounds -= 1;
+    effect.timesToApply -= 1;
 
-    if (effect.repeatRounds <= 0) adventure.user.effects.splice(i, 1);
+    if (effect.timesToApply <= 0) adventure.user.effects.splice(i, 1);
   }
 
   for (let i = adventure.enemy.effects.length - 1; i >= 0; i--) {
     const effect = adventure.enemy.effects[i];
 
     executeEffectInEntity(adventure.enemy, effect);
-    effect.repeatRounds -= 1;
+    effect.timesToApply -= 1;
 
-    if (effect.repeatRounds <= 0) adventure.enemy.effects.splice(i, 1);
+    if (effect.timesToApply <= 0) adventure.enemy.effects.splice(i, 1);
   }
 };
 
@@ -57,9 +57,9 @@ const applyAbilityEffects = (
 
     executeEffectInEntity(entity, effect);
 
-    if (effect.repeatRounds)
+    if (effect.timesToApply && effect.timesToApply > 1)
       entity.effects.push({
-        repeatRounds: effect.repeatRounds - 1,
+        timesToApply: effect.timesToApply - 1,
         type: effect.type,
         value: effect.value,
       });

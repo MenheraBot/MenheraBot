@@ -18,7 +18,7 @@ export type AbilityEffect = {
   applyTo: 'enemy' | 'player';
   value: number;
   type: AbilityType;
-  repeatRounds?: number;
+  timesToApply?: number;
 };
 
 export type Ability = {

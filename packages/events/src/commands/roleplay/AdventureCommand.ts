@@ -105,7 +105,7 @@ const AdventureCommand = createCommand({
       });
     }
 
-    const enemy = getCurrentAvailableAdventure();
+    const enemy = await getCurrentAvailableAdventure();
 
     if (!enemy) return ctx.makeMessage({ content: `Não há inimigos disponíveis por perto` });
 
