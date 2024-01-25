@@ -19,7 +19,7 @@ export const Abilities: Record<number, Ability> = {
   3: {
     $devName: 'Ervas medicinais',
     energyCost: 10,
-    effects: [{ applyTo: 'player', type: 'heal', value: 45 }],
+    effects: [{ applyTo: 'player', type: 'heal', value: 23, repeatRounds: 2 }],
   },
   4: {
     $devName: 'Envenenamento',

@@ -1,6 +1,6 @@
 import ComponentInteractionContext from '../../../structures/command/ComponentInteractionContext';
+import { GenericContext } from '../../../types/menhera';
 import { Ability, AbilityEffect, BattleEffect, BattleEntity, PlayerVsEnviroment } from '../types';
-import { keepNumbersPositive } from './battleUtils';
 
 const executeEffectInEntity = (
   entity: BattleEntity,
@@ -27,11 +27,8 @@ const executeEffectInEntity = (
   }
 };
 
-const executeEntitiesEffects = (
-  _ctx: ComponentInteractionContext,
-  adventure: PlayerVsEnviroment,
-): void => {
-  for (let i = adventure.user.effects.length; i > 0; i--) {
+const executeEntitiesEffects = (_ctx: GenericContext, adventure: PlayerVsEnviroment): void => {
+  for (let i = adventure.user.effects.length - 1; i >= 0; i--) {
     const effect = adventure.user.effects[i];
 
     executeEffectInEntity(adventure.user, effect);
@@ -40,7 +37,7 @@ const executeEntitiesEffects = (
     if (effect.repeatRounds <= 0) adventure.user.effects.splice(i, 1);
   }
 
-  for (let i = adventure.enemy.effects.length; i > 0; i--) {
+  for (let i = adventure.enemy.effects.length - 1; i >= 0; i--) {
     const effect = adventure.enemy.effects[i];
 
     executeEffectInEntity(adventure.enemy, effect);
@@ -67,9 +64,6 @@ const applyAbilityEffects = (
         value: effect.value,
       });
   });
-
-  keepNumbersPositive(adventure.enemy);
-  keepNumbersPositive(adventure.user);
 };
 
 export { applyAbilityEffects, executeEntitiesEffects };
