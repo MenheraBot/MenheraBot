@@ -3,6 +3,8 @@ import { DatabaseCharacterSchema } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { characterModel } from '../collections';
 import { debugError } from '../../utils/debugError';
+import { Enemy } from '../../modules/roleplay/types';
+import { Enemies } from '../../modules/roleplay/data/enemies';
 
 const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseCharacterSchema => ({
   id: `${user.id}`,
@@ -57,7 +59,18 @@ const updateCharacter = async (
   await characterModel.updateOne({ id: `${userId}` }, query).catch(debugError);
 };
 
+const getEnemiesInArea = async (area: [number, number]): Promise<Enemy[]> => {
+  const enemiesInArea = await MainRedisClient.hget('world_enemies', `${area[0]}:${area[1]}`);
+
+  // TODO: Return different enemies based on geolocation, and percentage of population of each enemy class
+  if (enemiesInArea)
+    return Array.from({ length: Number(enemiesInArea) }, () => ({ ...Enemies[1], id: 1 }));
+
+  return [];
+};
+
 export default {
   getCharacter,
+  getEnemiesInArea,
   updateCharacter,
 };

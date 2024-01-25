@@ -18,7 +18,7 @@ const orchestrateRoleplayRelatedComponentInteractions = async (
 
   if (action === 'JOIN_DUNGEON') {
     const character = await roleplayRepository.getCharacter(ctx.user.id);
-    const enemy = getCurrentAvailableAdventure();
+    const enemy = await getCurrentAvailableAdventure();
 
     if (!enemy)
       return ctx.makeMessage({
