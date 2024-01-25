@@ -12,7 +12,7 @@ export type Enemy = {
   }[][];
 };
 
-type AbilityType = 'damage';
+type AbilityType = 'damage' | 'heal';
 
 export type AbilityEffect = {
   applyTo: 'enemy' | 'player';

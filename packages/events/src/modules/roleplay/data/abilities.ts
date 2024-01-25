@@ -16,6 +16,11 @@ export const Abilities: Record<number, Ability> = {
     energyCost: 4,
     effects: [{ applyTo: 'enemy', type: 'damage', value: 46 }],
   },
+  3: {
+    $devName: 'Ervas Medicinais',
+    energyCost: 5,
+    effects: [{ applyTo: 'player', type: 'heal', value: 45 }],
+  },
 };
 
 export const getAbility = (abilityId: number): Ability => Abilities[abilityId];

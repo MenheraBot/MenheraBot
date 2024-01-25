@@ -54,7 +54,7 @@ const AdventureCommand = createCommand({
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
     finishCommand();
-const character = await roleplayRepository.getCharacter(ctx.user.id);
+    const character = await roleplayRepository.getCharacter(ctx.user.id);
 
     if (checkDeath(character)) {
       const userAlive = await didUserResurrect(character);
