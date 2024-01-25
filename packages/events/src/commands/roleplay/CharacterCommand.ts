@@ -4,7 +4,7 @@ import { User } from 'discordeno/transformers';
 import { createCommand } from '../../structures/command/createCommand';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { createEmbed } from '../../utils/discord/embedUtils';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getUserStatusDisplay } from '../../modules/roleplay/statusDisplay';
 import { prepareUserToBattle } from '../../modules/roleplay/devUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
@@ -12,6 +12,7 @@ import { checkDeath, didUserResurrect } from '../../modules/roleplay/battle/batt
 import battleRepository from '../../database/repositories/battleRepository';
 import { Items } from '../../modules/roleplay/data/items';
 import { EMOJIS } from '../../structures/constants';
+import { getAbility } from '../../modules/roleplay/data/abilities';
 
 const CharacterCommand = createCommand({
   path: '',
@@ -32,7 +33,7 @@ const CharacterCommand = createCommand({
     },
   ],
   category: 'roleplay',
-  authorDataFields: [],
+  authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
     finishCommand();
 
@@ -54,9 +55,22 @@ const CharacterCommand = createCommand({
 
     const embed = createEmbed({
       title: `Personagem de ${getDisplayName(ctx.user, false)}`,
-      description: getUserStatusDisplay(prepareUserToBattle(character)),
       thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
+      color: hexStringToNumber(ctx.authorData.selectedColor),
       fields: [
+        {
+          name: '🎭 | Atributos',
+          value: getUserStatusDisplay(prepareUserToBattle(character)),
+        },
+        {
+          name: `${EMOJIS.magic_ball} | Habilidades`,
+          value:
+            character.abilities.length === 0
+              ? 'Sem Habilidades'
+              : character.abilities
+                  .map((hab) => `${getAbility(hab.id).$devName} - Proficiência: ${hab.proficience}`)
+                  .join('\n'),
+        },
         {
           name: `${EMOJIS.chest} | Inventário`,
           value:
@@ -71,7 +85,6 @@ const CharacterCommand = createCommand({
 
     await ctx.makeMessage({
       content: `Bem vindo, jogador ${mentionUser(character.id)}!`,
-      allowedMentions: { users: [user.id] },
       embeds: [embed],
     });
   },

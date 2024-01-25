@@ -7,23 +7,37 @@ import {
 import { createEmbed } from '../../../utils/discord/embedUtils';
 import { millisToSeconds } from '../../../utils/miscUtils';
 import { getStatusDisplayFields } from '../statusDisplay';
-import { InBattleUser, PlayerVsEnviroment } from '../types';
+import { Ability, InBattleUser, PlayerVsEnviroment } from '../types';
 import { getUserAvatar } from '../../../utils/discord/userUtils';
 import cacheRepository from '../../../database/repositories/cacheRepository';
 import { GenericContext } from '../../../types/menhera';
 import { SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
-import { Abilities } from '../data/abilities';
+import { getAbility } from '../data/abilities';
 
 interface Choice {
   id: number;
   name: string;
-  damage: number;
   energyCost: number;
+  effects: Ability['effects'];
 }
 
 const getAvailableChoices = (_ctx: GenericContext, user: InBattleUser): Choice[] => [
-  { damage: user.damage, energyCost: 1, id: 0, name: 'Ataque Básico' },
-  ...user.abilitites.map((ab) => ({ ...ab, name: Abilities[ab.id].$devName })),
+  {
+    id: 0,
+    name: getAbility(0).$devName,
+    energyCost: getAbility(0).energyCost,
+    effects: [{ applyTo: 'enemy', type: 'damage', value: user.damage }],
+  },
+  ...user.abilitites.map((ab) => {
+    const ability = getAbility(ab.id);
+
+    return {
+      id: ab.id,
+      name: ability.$devName,
+      energyCost: ability.energyCost,
+      effects: ability.effects,
+    };
+  }),
 ];
 
 const displayBattleControlMessage = async (
@@ -50,7 +64,7 @@ const displayBattleControlMessage = async (
     )}:R>, o inimigo te atacará!`,
     fields: choices.map((a) => ({
       name: a.name,
-      value: `Dano: ${a.damage}\nCusto de Energia: ${a.energyCost}`,
+      value: `Efeitos: ${JSON.stringify(a.effects)}\nCusto de Energia: ${a.energyCost}`,
       inline: true,
     })),
   });

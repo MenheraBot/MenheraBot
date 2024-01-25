@@ -2,7 +2,7 @@
 import { ApplicationCommandOptionTypes, BigString } from 'discordeno/types';
 import { inspect } from 'node:util';
 
-import { usersModel, farmerModel } from '../../database/collections';
+import { usersModel, farmerModel, characterModel } from '../../database/collections';
 import { MainRedisClient as redis } from '../../database/databases';
 import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
@@ -30,9 +30,17 @@ const EvalCommand = createCommand({
   authorDataFields: ['id'],
   execute: async (ctx, finishCommand) => {
     const revivePlayer = async (userId: BigString) =>
-      roleplayRepository.updateCharacter(userId, { deadUntil: 0 });
+      roleplayRepository.updateCharacter(userId, { deadUntil: 0 }).then(() => 'Revivido a flor');
 
-    noop(userRepository, usersModel, userThemesRepository, farmerModel, redis, revivePlayer);
+    noop(
+      userRepository,
+      usersModel,
+      userThemesRepository,
+      farmerModel,
+      redis,
+      revivePlayer,
+      characterModel,
+    );
 
     try {
       // eslint-disable-next-line no-eval

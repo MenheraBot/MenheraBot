@@ -1,14 +1,21 @@
-import { UserAbility } from '../types';
+import { Ability } from '../types';
 
-export const Abilities: Record<number, Omit<UserAbility, 'id'> & { $devName: string }> = {
+export const Abilities: Record<number, Ability> = {
+  0: {
+    $devName: 'Ataque Básico',
+    energyCost: 1,
+    effects: [{ applyTo: 'enemy', type: 'damage', value: 14 }],
+  },
   1: {
     $devName: 'Tiro de água',
-    damage: 30,
     energyCost: 3,
+    effects: [{ applyTo: 'enemy', type: 'damage', value: 38 }],
   },
   2: {
     $devName: 'Flecha de fogo',
-    damage: 38,
     energyCost: 4,
+    effects: [{ applyTo: 'enemy', type: 'damage', value: 46 }],
   },
 };
+
+export const getAbility = (abilityId: number): Ability => Abilities[abilityId];

@@ -80,6 +80,7 @@ export const EMOJIS = {
 
   // Roleplay
   chest: '<:Chest:760957557538947133>',
+  magic_ball: '🔮',
 };
 
 export const COLORS = {
