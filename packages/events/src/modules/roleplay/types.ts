@@ -88,3 +88,23 @@ export interface TimeoutChoiceTimer {
 }
 
 export type BattleTimer = ForceFinishTimer | TimeoutChoiceTimer;
+
+export type Location = [number, number];
+
+export enum Action {
+  NONE,
+  TRAVEL,
+}
+
+export type TravelAction = {
+  type: Action.TRAVEL;
+  from: Location;
+  to: Location;
+  finishAt: number;
+};
+
+type NoneAction = {
+  type: Action.NONE;
+};
+
+export type AvailableActions = TravelAction | NoneAction;

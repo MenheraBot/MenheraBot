@@ -4,7 +4,7 @@ import { AvailablePlants, DeliveryMission, Plantation } from '../modules/fazendi
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
 import { AvailableLanguages } from './i18next';
-import { InventoryItem } from '../modules/roleplay/types';
+import { AvailableActions, InventoryItem, Location } from '../modules/roleplay/types';
 
 export type ColorResolvable = `#${string}`;
 
@@ -163,5 +163,6 @@ export interface DatabaseCharacterSchema {
   deadUntil: number;
   inventory: InventoryItem[];
   abilities: DatabaseUserAbility[];
-  location: [number, number];
+  location: Location;
+  currentAction: AvailableActions;
 }

@@ -19,9 +19,7 @@ const executeEffectInEntity = (
       throw new Error(
         `The effect type '${
           effect.type
-        }' is not executed in Execute Effects function. Effect and adventure: ${JSON.stringify(
-          effect,
-        )}`,
+        }' is not executed in Execute Effects function. Effect: ${JSON.stringify(effect)}`,
       );
     }
   }

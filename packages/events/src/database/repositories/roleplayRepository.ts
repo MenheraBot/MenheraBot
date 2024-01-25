@@ -3,7 +3,7 @@ import { DatabaseCharacterSchema } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { characterModel } from '../collections';
 import { debugError } from '../../utils/debugError';
-import { Enemy } from '../../modules/roleplay/types';
+import { Enemy, Location } from '../../modules/roleplay/types';
 import { Enemies } from '../../modules/roleplay/data/enemies';
 import { checkDeath, didUserResurrect } from '../../modules/roleplay/battle/battleUtils';
 import { minutesToMillis } from '../../utils/miscUtils';
@@ -17,6 +17,7 @@ const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseChara
   inventory: user.inventory,
   abilities: user.abilities,
   location: user.location,
+  currentAction: user.currentAction,
 });
 
 const getCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema> => {
@@ -67,8 +68,7 @@ const updateCharacter = async (
   await characterModel.updateOne({ id: `${userId}` }, query).catch(debugError);
 };
 
-// TODO: Return different enemies based on geolocation, and percentage of population of each enemy class
-const getEnemiesInArea = async (area: [number, number]): Promise<Enemy[]> => {
+const getEnemiesInArea = async (area: Location): Promise<Enemy[]> => {
   const areaName = `${area[0]}:${area[1]}`;
   const [enemiesInArea, resurgeDate] = await MainRedisClient.hmget(
     'world_enemies',
@@ -93,7 +93,7 @@ const updateEnemyAreas = async (areas: Record<string, number>): Promise<void> =>
   await MainRedisClient.hset('world_enemies', areas);
 };
 
-const decreaseEnemyFromArea = async (area: [number, number]): Promise<void> => {
+const decreaseEnemyFromArea = async (area: Location): Promise<void> => {
   const areaName = `${area[0]}:${area[1]}`;
   const total = await MainRedisClient.hincrby('world_enemies', areaName, -1);
 

@@ -12,6 +12,7 @@ import {
   DatabaseUserSchema,
   DatabaseUserThemesSchema,
 } from '../types/database';
+import { Action } from '../modules/roleplay/types';
 
 const { Schema, model } = mongoose;
 
@@ -142,6 +143,7 @@ const characterSchema = new Schema({
   inventory: { type: Array, default: [] },
   abilities: { type: Array, default: [] },
   location: { type: Array, default: [0, 0] },
+  currentAction: { type: Object, default: { type: Action.NONE } },
 });
 
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
