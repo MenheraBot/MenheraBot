@@ -8,7 +8,6 @@ import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getUserStatusDisplay } from '../../modules/roleplay/statusDisplay';
 import { prepareUserToBattle } from '../../modules/roleplay/devUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import { checkDeath, didUserResurrect } from '../../modules/roleplay/battle/battleUtils';
 import battleRepository from '../../database/repositories/battleRepository';
 import { Items } from '../../modules/roleplay/data/items';
 import { EMOJIS } from '../../structures/constants';
@@ -51,11 +50,10 @@ const CharacterCommand = createCommand({
 
     const character = await roleplayRepository.getCharacter(user.id);
 
-    if (checkDeath(character)) await didUserResurrect(character);
-
     const embed = createEmbed({
       title: `Personagem de ${getDisplayName(ctx.user, false)}`,
       thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
+      description: `📍 | Sua localização: ${character.location}`,
       color: hexStringToNumber(ctx.authorData.selectedColor),
       fields: [
         {

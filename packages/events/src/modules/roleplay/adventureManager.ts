@@ -9,18 +9,6 @@ import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { extractBattleUserInfoToCharacter } from './battle/battleUtils';
 import { DatabaseCharacterSchema } from '../../types/database';
 import battleRepository from '../../database/repositories/battleRepository';
-import { randomFromArray } from '../../utils/miscUtils';
-import { prepareEnemyToBattle } from './devUtils';
-
-const getCurrentAvailableAdventure = async (): Promise<InBattleEnemy | null> => {
-  const availableEnemies = await roleplayRepository.getEnemiesInArea([0, 0]);
-
-  if (availableEnemies.length === 0) return null;
-
-  const enemy = randomFromArray(availableEnemies);
-
-  return prepareEnemyToBattle(enemy, 1);
-};
 
 const confirmAdventure = async (
   ctx: InteractionContext,
@@ -63,4 +51,4 @@ const finishAdventure = async (
   ctx.makeMessage({ content, embeds: [], components: [] });
 };
 
-export { confirmAdventure, getCurrentAvailableAdventure, finishAdventure };
+export { confirmAdventure, finishAdventure };

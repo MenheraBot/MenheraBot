@@ -3,13 +3,13 @@ import roleplayRepository from '../../database/repositories/roleplayRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../types/interaction';
 import { minutesToMillis } from '../../utils/miscUtils';
-import { getCurrentAvailableAdventure } from './adventureManager';
 import { startBattleTimer } from './battle/battleTimers';
 import { displayBattleControlMessage } from './battle/displayBattleState';
 import { executeUserChoice } from './battle/executeUserChoice';
 import { MINUTES_TO_FORCE_FINISH_BATTLE } from './constants';
 import { prepareUserToBattle, setupAdventurePvE, unknownAdventure } from './devUtils';
 import { BattleTimerActionType } from './types';
+import { getCurrentAvailableEnemy } from './worldEnemiesManager';
 
 const orchestrateRoleplayRelatedComponentInteractions = async (
   ctx: ComponentInteractionContext,
@@ -18,7 +18,7 @@ const orchestrateRoleplayRelatedComponentInteractions = async (
 
   if (action === 'JOIN_DUNGEON') {
     const character = await roleplayRepository.getCharacter(ctx.user.id);
-    const enemy = await getCurrentAvailableAdventure();
+    const enemy = await getCurrentAvailableEnemy(character.location);
 
     if (!enemy)
       return ctx.makeMessage({
@@ -29,6 +29,7 @@ const orchestrateRoleplayRelatedComponentInteractions = async (
 
     const adventure = setupAdventurePvE(ctx, prepareUserToBattle(character), enemy);
 
+    roleplayRepository.decreaseEnemyFromArea(character.location);
     await battleRepository.setAdventure(`${ctx.user.id}`, adventure);
 
     startBattleTimer(`finish_battle:${adventure.id}`, {
