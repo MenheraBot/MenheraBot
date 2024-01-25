@@ -3,15 +3,6 @@ import { InteractionContext } from '../../types/menhera';
 import { logger } from '../../utils/logger';
 import { Enemy, InBattleEnemy, InBattleUser, PlayerVsEnviroment } from './types';
 
-export const createDummyEnemy = (): InBattleEnemy => ({
-  id: 1,
-  damage: 59,
-  life: 100,
-  level: 1,
-  $devName: 'Goblin',
-  effects: [],
-});
-
 export const prepareEnemyToBattle = (enemy: Enemy, level: number): InBattleEnemy => ({
   id: enemy.id,
   $devName: enemy.$devName,
@@ -25,7 +16,7 @@ export const prepareUserToBattle = (user: DatabaseCharacterSchema): InBattleUser
   id: user.id,
   life: user.life,
   energy: user.energy,
-  damage: 23,
+  damage: 100,
   effects: [],
   inventory: user.inventory,
   abilitites: user.abilities,

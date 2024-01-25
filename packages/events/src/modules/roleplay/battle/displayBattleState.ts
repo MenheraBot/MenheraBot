@@ -1,18 +1,25 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { Embed } from 'discordeno/transformers';
 import {
   createActionRow,
   createCustomId,
   createSelectMenu,
 } from '../../../utils/discord/componentUtils';
 import { createEmbed } from '../../../utils/discord/embedUtils';
-import { millisToSeconds } from '../../../utils/miscUtils';
+import { hoursToMillis, millisToSeconds } from '../../../utils/miscUtils';
 import { getStatusDisplayFields } from '../statusDisplay';
-import { Ability, InBattleUser, PlayerVsEnviroment } from '../types';
+import { Ability, BattleTimerActionType, InBattleUser, PlayerVsEnviroment } from '../types';
 import { getUserAvatar } from '../../../utils/discord/userUtils';
 import cacheRepository from '../../../database/repositories/cacheRepository';
 import { GenericContext } from '../../../types/menhera';
-import { SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
+import { RESURRECT_TIME_IN_HOURS, SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
 import { getAbility } from '../data/abilities';
+import battleRepository from '../../../database/repositories/battleRepository';
+import { checkDeath, keepNumbersPositive, lootEnemy } from './battleUtils';
+import { Items } from '../data/items';
+import { DatabaseCharacterSchema } from '../../../types/database';
+import { finishAdventure } from '../adventureManager';
+import { startBattleTimer } from './battleTimers';
 
 interface Choice {
   id: number;
@@ -81,6 +88,55 @@ const displayBattleControlMessage = async (
       ]),
     ],
   });
+
+  startBattleTimer(`battle_timeout:${adventure.id}`, {
+    battleId: adventure.id,
+    executeAt: Date.now() + SECONDS_TO_CHOICE_ACTION_IN_BATTLE * 1000,
+    type: BattleTimerActionType.TIMEOUT_CHOICE,
+  });
 };
 
-export { displayBattleControlMessage };
+const updateBattleMessage = async (
+  ctx: GenericContext,
+  adventure: PlayerVsEnviroment,
+): Promise<void> => {
+  keepNumbersPositive(adventure.user);
+  keepNumbersPositive(adventure.enemy);
+
+  const endReasons: Embed[] = [];
+  const extraQuery: Partial<DatabaseCharacterSchema> = {};
+
+  if (checkDeath(adventure.enemy)) {
+    const droppedItem = lootEnemy(adventure);
+
+    const embed = createEmbed({
+      title: 'Inimigo morto!',
+      description: `Tu matou o ${adventure.enemy.$devName} Lvl. ${
+        adventure.enemy.level
+      }\nEm seu corpo, tu encontrou ${droppedItem.amount} ${
+        Items[droppedItem.id as 1].$devName
+      } Lvl. ${droppedItem.level}`,
+    });
+
+    endReasons.push(embed);
+  }
+
+  if (checkDeath(adventure.user)) {
+    extraQuery.deadUntil = Date.now() + hoursToMillis(RESURRECT_TIME_IN_HOURS);
+
+    const embed = createEmbed({
+      title: 'Você foi morto',
+      description: 'tu é paia',
+    });
+
+    endReasons.push(embed);
+  }
+
+  if (endReasons.length > 0) return finishAdventure(ctx, adventure, endReasons, extraQuery);
+
+  await battleRepository.setAdventure(adventure.id, adventure);
+
+  displayBattleControlMessage(ctx, adventure);
+};
+
+export { displayBattleControlMessage, updateBattleMessage };

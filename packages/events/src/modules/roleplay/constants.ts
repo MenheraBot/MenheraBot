@@ -8,4 +8,4 @@ export const TOTAL_MAP_SIZE = [3, 3];
 
 export const RESURGE_DEFAULT_AMOUNT = 5;
 
-export const MINUTES_TO_RESURGE = 1;
+export const MINUTES_TO_RESURGE = 30;
