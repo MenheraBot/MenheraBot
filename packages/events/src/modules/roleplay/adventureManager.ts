@@ -4,12 +4,23 @@ import { GenericContext, InteractionContext } from '../../types/menhera';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { mentionUser } from '../../utils/discord/userUtils';
-import { InBattleEnemy, InBattleUser, PlayerVsEnviroment } from './types';
+import {
+  BattleTimerActionType,
+  Enemy,
+  InBattleEnemy,
+  InBattleUser,
+  PlayerVsEnviroment,
+} from './types';
 import { getStatusDisplayFields } from './statusDisplay';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { extractBattleUserInfoToCharacter } from './battle/battleUtils';
 import { DatabaseCharacterSchema } from '../../types/database';
 import battleRepository from '../../database/repositories/battleRepository';
+import { prepareEnemyToBattle, prepareUserToBattle, setupAdventurePvE } from './devUtils';
+import { startBattleTimer } from './battle/battleTimers';
+import { displayBattleControlMessage } from './battle/displayBattleState';
+import { minutesToMillis } from '../../utils/miscUtils';
+import { MINUTES_TO_FORCE_FINISH_BATTLE } from './constants';
 
 const confirmAdventure = async (
   ctx: InteractionContext,
@@ -35,6 +46,32 @@ const confirmAdventure = async (
   });
 };
 
+const startAdventure = async (
+  ctx: GenericContext,
+  character: DatabaseCharacterSchema,
+  enemy: Enemy,
+): Promise<void> => {
+  const adventure = setupAdventurePvE(
+    ctx,
+    prepareUserToBattle(character),
+    prepareEnemyToBattle(enemy, 1),
+  );
+
+  await Promise.all([
+    roleplayRepository.decreaseEnemyFromArea(character.location),
+    battleRepository.setUserInBattle(character.id),
+    battleRepository.setAdventure(`${character.id}`, adventure),
+  ]);
+
+  startBattleTimer(`finish_battle:${adventure.id}`, {
+    battleId: adventure.id,
+    executeAt: Date.now() + minutesToMillis(MINUTES_TO_FORCE_FINISH_BATTLE),
+    type: BattleTimerActionType.FORCE_FINISH_BATTLE,
+  });
+
+  displayBattleControlMessage(ctx, adventure);
+};
+
 const finishAdventure = async (
   ctx: GenericContext,
   adventure: PlayerVsEnviroment,
@@ -52,4 +89,4 @@ const finishAdventure = async (
   ctx.makeMessage({ embeds, components: [] });
 };
 
-export { confirmAdventure, finishAdventure };
+export { confirmAdventure, finishAdventure, startAdventure };

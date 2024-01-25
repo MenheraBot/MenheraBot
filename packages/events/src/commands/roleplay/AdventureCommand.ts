@@ -1,7 +1,7 @@
 import { ButtonComponent, ButtonStyles } from 'discordeno/types';
 import { createCommand } from '../../structures/command/createCommand';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
-import { prepareUserToBattle } from '../../modules/roleplay/devUtils';
+import { prepareEnemyToBattle, prepareUserToBattle } from '../../modules/roleplay/devUtils';
 import { confirmAdventure } from '../../modules/roleplay/adventureManager';
 import { orchestrateRoleplayRelatedComponentInteractions } from '../../modules/roleplay/componentInteractionReceptor';
 import { checkDeath } from '../../modules/roleplay/battle/battleUtils';
@@ -103,7 +103,7 @@ const AdventureCommand = createCommand({
 
     if (!enemy) return ctx.makeMessage({ content: `Não há inimigos disponíveis por perto` });
 
-    confirmAdventure(ctx, prepareUserToBattle(character), enemy);
+    confirmAdventure(ctx, prepareUserToBattle(character), prepareEnemyToBattle(enemy, 1));
   },
 });
 

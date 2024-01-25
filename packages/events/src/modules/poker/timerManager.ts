@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { getFixedT } from 'i18next';
 import { bot } from '../..';
 import commandRepository from '../../database/repositories/commandRepository';
 import pokerRepository from '../../database/repositories/pokerRepository';
@@ -25,7 +24,7 @@ const executeDeleteMatch = async (timer: DeleteMatchTimer) => {
   const ctx = new FollowUpInteractionContext(
     gameData.interactionToken,
     pokerCommandId.discordId,
-    getFixedT(gameData.language),
+    gameData.language,
   );
 
   closeTable(ctx, gameData);
@@ -46,8 +45,7 @@ const executeFoldTimeout = async (timer: TimeoutFoldTimer) => {
   const ctx = new FollowUpInteractionContext(
     gameData.interactionToken,
     pokerCommandId.discordId,
-
-    getFixedT(gameData.language),
+    gameData.language,
   );
 
   return updateGameState(ctx, gameData);

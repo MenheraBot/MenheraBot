@@ -2,19 +2,16 @@ import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { DatabaseCharacterSchema } from '../../types/database';
 import { randomFromArray } from '../../utils/miscUtils';
 import { RESURGE_DEFAULT_AMOUNT, TOTAL_MAP_SIZE } from './constants';
-import { prepareEnemyToBattle } from './devUtils';
-import { InBattleEnemy } from './types';
+import { Enemy } from './types';
 
 const getCurrentAvailableEnemy = async (
   location: DatabaseCharacterSchema['location'],
-): Promise<InBattleEnemy | null> => {
+): Promise<Enemy | null> => {
   const availableEnemies = await roleplayRepository.getEnemiesInArea(location);
 
   if (availableEnemies.length === 0) return null;
 
-  const enemy = randomFromArray(availableEnemies);
-
-  return prepareEnemyToBattle(enemy, 1);
+  return randomFromArray(availableEnemies);
 };
 
 const getCompleteWorld = async (): Promise<number[][]> => {

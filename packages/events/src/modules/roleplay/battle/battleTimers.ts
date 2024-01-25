@@ -1,4 +1,3 @@
-import { getFixedT } from 'i18next';
 import battleRepository from '../../../database/repositories/battleRepository';
 import { bot } from '../../..';
 import { getOrchestratorClient } from '../../../structures/orchestratorConnection';
@@ -27,7 +26,7 @@ const executeForceFinish = async (timer: BattleTimer) => {
   const ctx = new FollowUpInteractionContext(
     battleData.interactionToken,
     adventureCommandId.discordId,
-    getFixedT(battleData.language),
+    battleData.language,
   );
 
   battleData.user.life = 0;
@@ -53,7 +52,7 @@ const executeTimeoutChoice = async (timer: BattleTimer) => {
   const ctx = new FollowUpInteractionContext(
     battleData.interactionToken,
     adventureCommandId.discordId,
-    getFixedT(battleData.language),
+    battleData.language,
   );
 
   executeEntitiesEffects(ctx, battleData);

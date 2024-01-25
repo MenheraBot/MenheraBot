@@ -1,5 +1,5 @@
 import { DatabaseCharacterSchema } from '../../types/database';
-import { InteractionContext } from '../../types/menhera';
+import { GenericContext, InteractionContext } from '../../types/menhera';
 import { logger } from '../../utils/logger';
 import { Enemy, InBattleEnemy, InBattleUser, PlayerVsEnviroment } from './types';
 
@@ -16,21 +16,21 @@ export const prepareUserToBattle = (user: DatabaseCharacterSchema): InBattleUser
   id: user.id,
   life: user.life,
   energy: user.energy,
-  damage: 100,
+  damage: 38,
   effects: [],
   inventory: user.inventory,
   abilitites: user.abilities,
 });
 
 export const setupAdventurePvE = (
-  ctx: InteractionContext,
+  ctx: GenericContext,
   user: InBattleUser,
   enemy: InBattleEnemy,
 ): PlayerVsEnviroment => ({
   enemy,
-  id: `${ctx.user.id}`,
+  id: `${user.id}`,
   user,
-  interactionToken: ctx.interaction.token,
+  interactionToken: ctx.interactionToken,
   language: ctx.guildLocale,
 });
 

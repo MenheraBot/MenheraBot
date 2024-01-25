@@ -1,4 +1,5 @@
 import { DatabaseCharacterSchema } from '../../types/database';
+import { AvailableLanguages } from '../../types/i18next';
 
 export type Enemy = {
   $devName: string;
@@ -66,7 +67,7 @@ export type PlayerVsEnviroment = {
   user: InBattleUser;
   enemy: InBattleEnemy;
   interactionToken: string;
-  language: string;
+  language: AvailableLanguages;
 };
 
 export enum BattleTimerActionType {

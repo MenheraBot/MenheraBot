@@ -39,6 +39,10 @@ export default class {
     this.subCommand = subCommand;
   }
 
+  get interactionToken(): string {
+    return this.interaction.token;
+  }
+
   get author(): User {
     return this.interaction.user;
   }

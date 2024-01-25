@@ -24,7 +24,7 @@ const getCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema>
 
   if (fromRedis) {
     const char = JSON.parse(fromRedis);
-    if (checkDeath(char)) await didUserResurrect(char);
+    if (checkDeath(char)) didUserResurrect(char);
     return char;
   }
 
@@ -33,7 +33,7 @@ const getCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema>
   if (fromMongo) {
     const char = parseMongoUserToRedisUser(fromMongo);
 
-    if (checkDeath(char)) await didUserResurrect(char);
+    if (checkDeath(char)) didUserResurrect(char);
 
     await MainRedisClient.setex(`character:${userId}`, 3600, JSON.stringify(char));
 

@@ -336,7 +336,7 @@ const setupGame = async (
   const match: PokerMatch = {
     matchId: `${ctx.interaction.id}`,
     masterId: players[0],
-    language: ctx.interaction.guildLocale ?? 'pt-BR',
+    language: (ctx.interaction.guildLocale as 'pt-BR') ?? 'pt-BR',
     embedColor,
     worthGame: chips > 0,
     players: playersData,

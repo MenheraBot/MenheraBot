@@ -33,10 +33,10 @@ const lootEnemy = (adventure: PlayerVsEnviroment): InventoryItem => {
   return droppedItem;
 };
 
-const didUserResurrect = async (user: DatabaseCharacterSchema): Promise<boolean> => {
+const didUserResurrect = (user: DatabaseCharacterSchema): boolean => {
   if (user.deadUntil > Date.now()) return false;
 
-  await roleplayRepository.updateCharacter(user.id, { life: 100 });
+  roleplayRepository.updateCharacter(user.id, { life: 100 });
   user.life = 100;
 
   return true;
