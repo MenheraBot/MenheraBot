@@ -163,4 +163,5 @@ export interface DatabaseCharacterSchema {
   deadUntil: number;
   inventory: InventoryItem[];
   abilities: DatabaseUserAbility[];
+  location: [number, number];
 }

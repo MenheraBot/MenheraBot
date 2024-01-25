@@ -2,12 +2,9 @@ import { ButtonComponent, ButtonStyles } from 'discordeno/types';
 import { createCommand } from '../../structures/command/createCommand';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { prepareUserToBattle } from '../../modules/roleplay/devUtils';
-import {
-  confirmAdventure,
-  getCurrentAvailableAdventure,
-} from '../../modules/roleplay/adventureManager';
+import { confirmAdventure } from '../../modules/roleplay/adventureManager';
 import { orchestrateRoleplayRelatedComponentInteractions } from '../../modules/roleplay/componentInteractionReceptor';
-import { checkDeath, didUserResurrect } from '../../modules/roleplay/battle/battleUtils';
+import { checkDeath } from '../../modules/roleplay/battle/battleUtils';
 import { millisToSeconds } from '../../utils/miscUtils';
 import battleRepository from '../../database/repositories/battleRepository';
 import { MessageFlags } from '../../utils/discord/messageUtils';
@@ -15,6 +12,7 @@ import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { Abilities } from '../../modules/roleplay/data/abilities';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { getCurrentAvailableEnemy } from '../../modules/roleplay/worldEnemiesManager';
 
 const executeSelectAbility = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedAbility] = ctx.sentData;
@@ -56,16 +54,12 @@ const AdventureCommand = createCommand({
     finishCommand();
     const character = await roleplayRepository.getCharacter(ctx.user.id);
 
-    if (checkDeath(character)) {
-      const userAlive = await didUserResurrect(character);
-
-      if (!userAlive)
-        return ctx.makeMessage({
-          content: `Você está morto! Você poderá entrar em uma aventura <t:${millisToSeconds(
-            character.deadUntil,
-          )}:R>`,
-        });
-    }
+    if (checkDeath(character))
+      return ctx.makeMessage({
+        content: `Você está morto! Você poderá entrar em uma aventura <t:${millisToSeconds(
+          character.deadUntil,
+        )}:R>`,
+      });
 
     if (await battleRepository.isUserInBattle(character.id))
       return ctx.makeMessage({
@@ -105,7 +99,7 @@ const AdventureCommand = createCommand({
       });
     }
 
-    const enemy = await getCurrentAvailableAdventure();
+    const enemy = await getCurrentAvailableEnemy(character.location);
 
     if (!enemy) return ctx.makeMessage({ content: `Não há inimigos disponíveis por perto` });
 
