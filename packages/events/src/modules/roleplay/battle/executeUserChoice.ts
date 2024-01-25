@@ -10,38 +10,12 @@ import { getAbility } from '../data/abilities';
 import { Enemies } from '../data/enemies';
 import { Items } from '../data/items';
 import inventoryManager from '../inventoryManager';
-import { Ability, BattleTimerActionType, PlayerVsEnviroment } from '../types';
+import { BattleTimerActionType, PlayerVsEnviroment } from '../types';
 import { clearBattleTimer, startBattleTimer } from './battleTimers';
-import { checkDeath, keepNumbersPositive, userWasKilled } from './battleUtils';
+import { checkDeath, userWasKilled } from './battleUtils';
 import { displayBattleControlMessage } from './displayBattleState';
+import { executeEffects } from './executeEffects';
 import { executeEnemyAttack } from './executeEnemyAttack';
-
-const executeEffects = (
-  _ctx: ComponentInteractionContext,
-  adventure: PlayerVsEnviroment,
-  effects: Ability['effects'],
-): void => {
-  effects.forEach((effect) => {
-    const entity = effect.applyTo === 'enemy' ? adventure.enemy : adventure.user;
-
-    switch (effect.type) {
-      case 'damage': {
-        entity.life -= effect.value;
-        break;
-      }
-    }
-
-    if (effect.repeatRounds)
-      entity.effects.push({
-        repeatRounds: effect.repeatRounds - 1,
-        type: effect.type,
-        value: effect.value,
-      });
-  });
-
-  keepNumbersPositive(adventure.enemy);
-  keepNumbersPositive(adventure.user);
-};
 
 const updateBattleMessage = async (
   ctx: GenericContext,
@@ -75,6 +49,8 @@ const executeUserChoice = async (
     });
 
   clearBattleTimer(`battle_timeout:${adventure.id}`);
+
+  adventure.user.energy -= selectedAbility.energyCost;
 
   executeEffects(ctx, adventure, selectedAbility.effects);
 
