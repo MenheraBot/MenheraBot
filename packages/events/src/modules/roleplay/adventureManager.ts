@@ -1,4 +1,5 @@
 import { ButtonStyles } from 'discordeno/types';
+import { Embed } from 'discordeno/transformers';
 import { GenericContext, InteractionContext } from '../../types/menhera';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
@@ -37,7 +38,7 @@ const confirmAdventure = async (
 const finishAdventure = async (
   ctx: GenericContext,
   adventure: PlayerVsEnviroment,
-  content: string,
+  embeds: Embed[],
   aditionalQuery: Partial<DatabaseCharacterSchema> = {},
 ): Promise<void> => {
   battleRepository.deleteAdventure(adventure.id);
@@ -48,7 +49,7 @@ const finishAdventure = async (
     ...aditionalQuery,
   });
 
-  ctx.makeMessage({ content, embeds: [], components: [] });
+  ctx.makeMessage({ embeds, components: [] });
 };
 
 export { confirmAdventure, finishAdventure };

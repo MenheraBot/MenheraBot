@@ -7,9 +7,12 @@ import { executeEnemyAttack } from './executeEnemyAttack';
 import commandRepository from '../../../database/repositories/commandRepository';
 import { DatabaseCommandSchema } from '../../../types/database';
 import FollowUpInteractionContext from '../../../structures/command/FollowUpInteractionContext';
-import { updateBattleMessage } from './executeUserChoice';
-import { userWasKilled } from './battleUtils';
 import { executeEntitiesEffects } from './executeEffects';
+import { updateBattleMessage } from './displayBattleState';
+import { MINUTES_TO_FORCE_FINISH_BATTLE, RESURRECT_TIME_IN_HOURS } from '../constants';
+import { finishAdventure } from '../adventureManager';
+import { createEmbed } from '../../../utils/discord/embedUtils';
+import { hoursToMillis } from '../../../utils/miscUtils';
 
 const timers = new Map<string, NodeJS.Timeout>();
 
@@ -28,7 +31,15 @@ const executeForceFinish = async (timer: BattleTimer) => {
   );
 
   battleData.user.life = 0;
-  userWasKilled(ctx, battleData);
+
+  const embed = createEmbed({
+    title: 'Você foi morto',
+    description: `O tempo máximo de ${MINUTES_TO_FORCE_FINISH_BATTLE} minutos de batalha foi atingido. Você foi morto`,
+  });
+
+  finishAdventure(ctx, battleData, [embed], {
+    deadUntil: Date.now() + hoursToMillis(RESURRECT_TIME_IN_HOURS),
+  });
 };
 
 const executeTimeoutChoice = async (timer: BattleTimer) => {

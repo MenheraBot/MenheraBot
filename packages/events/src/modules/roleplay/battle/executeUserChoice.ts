@@ -1,37 +1,13 @@
-import battleRepository from '../../../database/repositories/battleRepository';
 import ComponentInteractionContext from '../../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../../types/interaction';
-import { GenericContext } from '../../../types/menhera';
 import { MessageFlags } from '../../../utils/discord/messageUtils';
-import { SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
 import { getAbility } from '../data/abilities';
-import { BattleTimerActionType, PlayerVsEnviroment } from '../types';
-import { clearBattleTimer, startBattleTimer } from './battleTimers';
-import { checkDeath, enemyWasKilled, keepNumbersPositive, userWasKilled } from './battleUtils';
-import { displayBattleControlMessage } from './displayBattleState';
+import { PlayerVsEnviroment } from '../types';
+import { clearBattleTimer } from './battleTimers';
+import { checkDeath } from './battleUtils';
+import { updateBattleMessage } from './displayBattleState';
 import { applyAbilityEffects, executeEntitiesEffects } from './executeEffects';
 import { executeEnemyAttack } from './executeEnemyAttack';
-
-const updateBattleMessage = async (
-  ctx: GenericContext,
-  adventure: PlayerVsEnviroment,
-): Promise<void> => {
-  keepNumbersPositive(adventure.user);
-  keepNumbersPositive(adventure.enemy);
-
-  if (checkDeath(adventure.enemy)) return enemyWasKilled(ctx, adventure);
-  if (checkDeath(adventure.user)) return userWasKilled(ctx, adventure);
-
-  startBattleTimer(`battle_timeout:${adventure.id}`, {
-    battleId: adventure.id,
-    executeAt: Date.now() + SECONDS_TO_CHOICE_ACTION_IN_BATTLE * 1000,
-    type: BattleTimerActionType.TIMEOUT_CHOICE,
-  });
-
-  await battleRepository.setAdventure(adventure.id, adventure);
-
-  displayBattleControlMessage(ctx, adventure);
-};
 
 const executeUserChoice = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
@@ -55,9 +31,9 @@ const executeUserChoice = async (
 
   applyAbilityEffects(ctx, adventure, selectedAbility.effects);
 
-  executeEnemyAttack(adventure);
+  if (!checkDeath(adventure.enemy)) executeEnemyAttack(adventure);
 
   updateBattleMessage(ctx, adventure);
 };
 
-export { executeUserChoice, updateBattleMessage };
+export { executeUserChoice };

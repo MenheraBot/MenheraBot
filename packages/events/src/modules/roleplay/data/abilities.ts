@@ -4,7 +4,10 @@ export const Abilities: Record<number, Ability> = {
   0: {
     $devName: 'Ataque básico',
     energyCost: 1,
-    effects: [{ applyTo: 'enemy', type: 'damage', value: 14 }],
+    effects: [
+      { applyTo: 'enemy', type: 'damage', value: 80, timesToApply: 2 },
+      { applyTo: 'player', type: 'damage', value: 80, timesToApply: 2 },
+    ],
   },
   1: {
     $devName: 'Ataque rápido',
