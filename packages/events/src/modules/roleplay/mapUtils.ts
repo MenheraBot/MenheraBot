@@ -1,3 +1,4 @@
+import { MINUTES_TO_TRAVEL_ONE_BLOCK } from './constants';
 import { Location } from './types';
 
 const calculateTravelDistance = (from: Location, to: Location): number => {
@@ -7,4 +8,9 @@ const calculateTravelDistance = (from: Location, to: Location): number => {
   return toTravelX + toTravelY;
 };
 
-export { calculateTravelDistance };
+const calculateTravelTime = (from: Location, to: Location): number => {
+  const distanceToTravel = calculateTravelDistance(from, to);
+  return 1000 * 60 * MINUTES_TO_TRAVEL_ONE_BLOCK * distanceToTravel;
+};
+
+export { calculateTravelDistance, calculateTravelTime };

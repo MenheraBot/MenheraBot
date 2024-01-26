@@ -100,7 +100,7 @@ export type TravelAction = {
   type: Action.TRAVEL;
   from: Location;
   to: Location;
-  finishAt: number;
+  startAt: number;
 };
 
 type NoneAction = {

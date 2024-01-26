@@ -5,10 +5,10 @@ import battleRepository from '../../database/repositories/battleRepository';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getCompleteWorld } from '../../modules/roleplay/worldEnemiesManager';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { TOTAL_MAP_SIZE } from '../../modules/roleplay/constants';
+import { MINUTES_TO_TRAVEL_ONE_BLOCK, TOTAL_MAP_SIZE } from '../../modules/roleplay/constants';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { Action, Location } from '../../modules/roleplay/types';
-import { calculateTravelDistance } from '../../modules/roleplay/mapUtils';
+import { calculateTravelDistance, calculateTravelTime } from '../../modules/roleplay/mapUtils';
 import { millisToSeconds } from '../../utils/miscUtils';
 
 const confirmTravel = async (ctx: ComponentInteractionContext): Promise<void> => {
@@ -18,7 +18,7 @@ const confirmTravel = async (ctx: ComponentInteractionContext): Promise<void> =>
 
   const newLocation: Location = [Number(x), Number(y)];
   const distanceToTravel = calculateTravelDistance(character.location, newLocation);
-  const finishTravelAt = Date.now() + 1000 * 60 * 30 * distanceToTravel;
+  const finishTravelAt = Date.now() + 1000 * 60 * MINUTES_TO_TRAVEL_ONE_BLOCK * distanceToTravel;
 
   const confirmButton = createButton({
     label: 'Iniciar viagem',
@@ -76,13 +76,11 @@ const executeStartTravel = async (ctx: ComponentInteractionContext): Promise<voi
       embeds: [],
     });
 
-  const finishTravelAt = Date.now() + 1000 * 60 * 30 * distanceToTravel;
-
   await roleplayRepository.updateCharacter(ctx.user.id, {
     location: newLocation,
     energy: character.energy - energyCost,
     currentAction: {
-      finishAt: finishTravelAt,
+      startAt: Date.now(),
       from: character.location,
       to: newLocation,
       type: Action.TRAVEL,
@@ -128,18 +126,18 @@ const TravelCommand = createCommand({
       ],
     });
 
-    if (
-      character.currentAction.type === Action.TRAVEL &&
-      character.currentAction.finishAt > Date.now()
-    )
+    if (character.currentAction.type === Action.TRAVEL) {
+      const finishAt =
+        character.currentAction.startAt +
+        calculateTravelTime(character.currentAction.from, character.currentAction.to);
+
       embed.fields?.push({
         name: 'Viajando',
         value: `Tu ta em uma viajem para ${
           character.currentAction.to
-        }.\nTu vai chegar no teu destino <t:${millisToSeconds(
-          character.currentAction.finishAt,
-        )}:R>`,
+        }.\nTu vai chegar no teu destino <t:${millisToSeconds(finishAt)}:R>`,
       });
+    }
 
     const buttons = Array.from({ length: TOTAL_MAP_SIZE[0] }).map((_, i) =>
       createActionRow(

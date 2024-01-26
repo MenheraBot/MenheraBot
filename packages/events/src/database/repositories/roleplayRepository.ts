@@ -1,13 +1,19 @@
+/* eslint-disable no-continue */
 import { BigString } from 'discordeno/types';
 import { DatabaseCharacterSchema } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { characterModel } from '../collections';
 import { debugError } from '../../utils/debugError';
-import { Enemy, Location } from '../../modules/roleplay/types';
+import { Action, Enemy, Location, TravelAction } from '../../modules/roleplay/types';
 import { Enemies } from '../../modules/roleplay/data/enemies';
 import { checkDeath, didUserResurrect } from '../../modules/roleplay/battle/battleUtils';
 import { minutesToMillis } from '../../utils/miscUtils';
-import { MINUTES_TO_RESURGE, RESURGE_DEFAULT_AMOUNT } from '../../modules/roleplay/constants';
+import {
+  MINUTES_TO_RESURGE,
+  MINUTES_TO_TRAVEL_ONE_BLOCK,
+  RESURGE_DEFAULT_AMOUNT,
+} from '../../modules/roleplay/constants';
+import { calculateTravelTime } from '../../modules/roleplay/mapUtils';
 
 const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseCharacterSchema => ({
   id: `${user.id}`,
@@ -20,13 +26,56 @@ const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseChara
   currentAction: user.currentAction,
 });
 
+const manipulateLocation = (character: DatabaseCharacterSchema): DatabaseCharacterSchema => {
+  const isTravelling = character.currentAction.type === Action.TRAVEL;
+
+  if (!isTravelling) return character;
+
+  const action = character.currentAction as TravelAction;
+  const currentTime = Date.now();
+
+  const finishAt = action.startAt + calculateTravelTime(action.from, action.to);
+
+  if (currentTime >= finishAt) {
+    updateCharacter(character.id, { currentAction: { type: Action.NONE } });
+    character.currentAction = { type: Action.NONE };
+    return character;
+  }
+
+  const elapsedMinutes = Math.floor((currentTime - action.startAt) / (60 * 1000));
+
+  const blocksWalked = Math.round(elapsedMinutes / MINUTES_TO_TRAVEL_ONE_BLOCK);
+
+  if (blocksWalked === 0) return character;
+
+  let x = action.from[0];
+  let y = action.from[1];
+
+  const goToLeftX = action.from[0] > action.to[0];
+  const goToLeftY = action.from[1] > action.to[1];
+
+  let addToX = true;
+
+  for (let i = 0; i < blocksWalked; i++) {
+    if (x !== action.to[0] && addToX) {
+      x += goToLeftX ? -1 : 1;
+      if (y !== action.to[1]) addToX = !addToX;
+    } else {
+      y += goToLeftY ? -1 : 1;
+      if (x !== action.to[0]) addToX = !addToX;
+    }
+  }
+
+  return { ...character, location: [x, y] };
+};
+
 const getCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema> => {
   const fromRedis = await MainRedisClient.get(`character:${userId}`);
 
   if (fromRedis) {
     const char = JSON.parse(fromRedis);
     if (checkDeath(char)) didUserResurrect(char);
-    return char;
+    return manipulateLocation(char);
   }
 
   const fromMongo = await characterModel.findOne({ id: `${userId}` });
@@ -38,7 +87,7 @@ const getCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema>
 
     await MainRedisClient.setex(`character:${userId}`, 3600, JSON.stringify(char));
 
-    return char;
+    return manipulateLocation(char);
   }
 
   const created = await characterModel.create({
