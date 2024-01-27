@@ -1,9 +1,8 @@
-import roleplayRepository from '../../../database/repositories/roleplayRepository';
 import { DatabaseCharacterSchema } from '../../../types/database';
 import { randomFromArray } from '../../../utils/miscUtils';
 import { Enemies } from '../data/enemies';
 import inventoryManager from '../inventoryManager';
-import { Action, DeathAction, InBattleUser, InventoryItem, PlayerVsEnviroment } from '../types';
+import { InBattleUser, InventoryItem, PlayerVsEnviroment } from '../types';
 
 const checkDeath = (entity: { life: number; energy?: number }): boolean =>
   entity.life <= 0 || (typeof entity.energy !== 'undefined' && entity.energy <= 0);
@@ -34,25 +33,4 @@ const lootEnemy = (adventure: PlayerVsEnviroment): InventoryItem => {
   return droppedItem;
 };
 
-const didUserResurrect = (user: DatabaseCharacterSchema): boolean => {
-  if ((user.currentAction as DeathAction).reviveAt > Date.now()) return false;
-
-  roleplayRepository.updateCharacter(user.id, {
-    life: 100,
-    energy: 100,
-    currentAction: { type: Action.NONE },
-  });
-
-  user.life = 100;
-  user.energy = 100;
-
-  return true;
-};
-
-export {
-  checkDeath,
-  keepNumbersPositive,
-  extractBattleUserInfoToCharacter,
-  lootEnemy,
-  didUserResurrect,
-};
+export { checkDeath, keepNumbersPositive, extractBattleUserInfoToCharacter, lootEnemy };

@@ -3,6 +3,7 @@ import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { DatabaseCharacterSchema } from '../../types/database';
 import { MINUTES_TO_TRAVEL_ONE_BLOCK, TOTAL_MAP_SIZE } from './constants';
 import { Action, Location, TravelAction } from './types';
+import { getElapsedMinutes } from '../../utils/miscUtils';
 
 const calculateTravelDistance = (from: Location, to: Location): number => {
   const toTravelX = Math.abs(from[0] - to[0]);
@@ -16,10 +17,10 @@ const calculateTravelTime = (from: Location, to: Location): number => {
   return 1000 * 60 * MINUTES_TO_TRAVEL_ONE_BLOCK * distanceToTravel;
 };
 
-const manipulateLocation = (character: DatabaseCharacterSchema): DatabaseCharacterSchema => {
+const manipulateUserLocation = (character: DatabaseCharacterSchema): void => {
   const isTravelling = character.currentAction.type === Action.TRAVEL;
 
-  if (!isTravelling) return character;
+  if (!isTravelling) return;
 
   const action = character.currentAction as TravelAction;
   const currentTime = Date.now();
@@ -29,10 +30,10 @@ const manipulateLocation = (character: DatabaseCharacterSchema): DatabaseCharact
   if (currentTime >= finishAt) {
     roleplayRepository.updateCharacter(character.id, { currentAction: { type: Action.NONE } });
     character.currentAction = { type: Action.NONE };
-    return character;
+    return;
   }
 
-  const elapsedMinutes = Math.floor((currentTime - action.startAt) / (60 * 1000));
+  const elapsedMinutes = getElapsedMinutes(action.startAt);
 
   const blocksWalked = Math.round(elapsedMinutes / MINUTES_TO_TRAVEL_ONE_BLOCK);
 
@@ -54,7 +55,7 @@ const manipulateLocation = (character: DatabaseCharacterSchema): DatabaseCharact
     }
   }
 
-  return { ...character, location: [x, y] };
+  character.location = [x, y];
 };
 
 const getInTravelMapButtons = (
@@ -67,7 +68,7 @@ const getInTravelMapButtons = (
     Array.from({ length: TOTAL_MAP_SIZE[1] }).map(() => ButtonStyles.Primary),
   );
 
-  const elapsedMinutes = Math.floor((Date.now() - startAt) / (60 * 1000));
+  const elapsedMinutes = getElapsedMinutes(startAt);
 
   const blocksWalked = Math.round(elapsedMinutes / MINUTES_TO_TRAVEL_ONE_BLOCK);
 
@@ -100,4 +101,9 @@ const getInTravelMapButtons = (
   return map;
 };
 
-export { calculateTravelDistance, calculateTravelTime, manipulateLocation, getInTravelMapButtons };
+export {
+  calculateTravelDistance,
+  calculateTravelTime,
+  manipulateUserLocation,
+  getInTravelMapButtons,
+};

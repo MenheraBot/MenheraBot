@@ -27,6 +27,8 @@ const hoursToMillis = (hours: number): number => 1000 * 60 * 60 * hours;
 
 const negate = (value: number): number => value * -1;
 
+const getElapsedMinutes = (since: number): number => Math.floor((Date.now() - since) / (60 * 1000));
+
 const localizedResources = (
   key: Translation,
   options?: Record<string, unknown>,
@@ -108,6 +110,7 @@ export {
   chunkArray,
   minutesToMillis,
   getElapsedTime,
+  getElapsedMinutes,
   millisToHours,
   negate,
   getMillisecondsToTheEndOfDay,

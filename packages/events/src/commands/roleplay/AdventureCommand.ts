@@ -3,7 +3,7 @@ import { createCommand } from '../../structures/command/createCommand';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { prepareEnemyToBattle, prepareUserToBattle } from '../../modules/roleplay/devUtils';
 import { confirmAdventure } from '../../modules/roleplay/adventureManager';
-import { orchestrateRoleplayRelatedComponentInteractions } from '../../modules/roleplay/componentInteractionReceptor';
+import { battleInteractionReceptor } from '../../modules/roleplay/battleInteractionReceptor';
 import { checkDeath } from '../../modules/roleplay/battle/battleUtils';
 import { millisToSeconds } from '../../utils/miscUtils';
 import battleRepository from '../../database/repositories/battleRepository';
@@ -13,7 +13,7 @@ import { Abilities } from '../../modules/roleplay/data/abilities';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { getCurrentAvailableEnemy } from '../../modules/roleplay/worldEnemiesManager';
-import { DeathAction } from '../../modules/roleplay/types';
+import { Action, DeathAction } from '../../modules/roleplay/types';
 
 const executeSelectAbility = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedAbility] = ctx.sentData;
@@ -49,7 +49,7 @@ const AdventureCommand = createCommand({
     'en-US': '「RPG」・Go to a dungeon adventure',
   },
   category: 'roleplay',
-  commandRelatedExecutions: [orchestrateRoleplayRelatedComponentInteractions, executeSelectAbility],
+  commandRelatedExecutions: [battleInteractionReceptor, executeSelectAbility],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
     finishCommand();
@@ -67,6 +67,12 @@ const AdventureCommand = createCommand({
         content: `Você está morto! Você poderá entrar em uma aventura <t:${millisToSeconds(
           (character.currentAction as DeathAction).reviveAt,
         )}:R>`,
+      });
+
+    if (![Action.NONE, Action.TRAVEL].includes(character.currentAction.type))
+      return ctx.makeMessage({
+        content: `Não é possível batalhar enquanto se está fazendo outra coisa`,
+        flags: MessageFlags.EPHEMERAL,
       });
 
     const availableAbilities = Object.entries(Abilities).filter((a) =>

@@ -164,6 +164,8 @@ const TravelCommand = createCommand({
       map = getInTravelMapButtons(action.startAt, action.from, action.to, character.location);
     }
 
+    const blockTravel = character.currentAction.type !== Action.NONE;
+
     const buttons = Array.from({ length: TOTAL_MAP_SIZE[0] }).map((_, i) =>
       createActionRow(
         Array.from({ length: TOTAL_MAP_SIZE[1] }).map((__, j) =>
@@ -171,8 +173,8 @@ const TravelCommand = createCommand({
             label: `${i}:${j}`,
             style: colorfy ? map[i][j] : ButtonStyles.Primary,
             disabled:
+              blockTravel ||
               isUserInBattle ||
-              (embed.fields?.length ?? 0) > 1 ||
               `${i}${j}` === `${character.location[0]}${character.location[1]}`,
             customId: createCustomId(0, ctx.user.id, ctx.commandId, i, j),
           }),

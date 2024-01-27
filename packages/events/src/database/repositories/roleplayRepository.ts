@@ -6,10 +6,9 @@ import { characterModel } from '../collections';
 import { debugError } from '../../utils/debugError';
 import { Enemy, Location } from '../../modules/roleplay/types';
 import { Enemies } from '../../modules/roleplay/data/enemies';
-import { checkDeath, didUserResurrect } from '../../modules/roleplay/battle/battleUtils';
 import { minutesToMillis } from '../../utils/miscUtils';
 import { MINUTES_TO_RESURGE, RESURGE_DEFAULT_AMOUNT } from '../../modules/roleplay/constants';
-import { manipulateLocation } from '../../modules/roleplay/mapUtils';
+import { manipulateCharacterStatus } from '../../modules/roleplay/characterStatus';
 
 const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseCharacterSchema => ({
   id: `${user.id}`,
@@ -26,8 +25,8 @@ const getCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema>
 
   if (fromRedis) {
     const char = JSON.parse(fromRedis);
-    if (checkDeath(char)) didUserResurrect(char);
-    return manipulateLocation(char);
+
+    return manipulateCharacterStatus(char);
   }
 
   const fromMongo = await characterModel.findOne({ id: `${userId}` });
@@ -35,11 +34,9 @@ const getCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema>
   if (fromMongo) {
     const char = parseMongoUserToRedisUser(fromMongo);
 
-    if (checkDeath(char)) didUserResurrect(char);
-
     await MainRedisClient.setex(`character:${userId}`, 3600, JSON.stringify(char));
 
-    return manipulateLocation(char);
+    return manipulateCharacterStatus(char);
   }
 
   const created = await characterModel.create({

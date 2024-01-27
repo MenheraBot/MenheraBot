@@ -7,9 +7,7 @@ import { executeUserChoice } from './battle/executeUserChoice';
 import { unknownAdventure } from './devUtils';
 import { getCurrentAvailableEnemy } from './worldEnemiesManager';
 
-const orchestrateRoleplayRelatedComponentInteractions = async (
-  ctx: ComponentInteractionContext,
-): Promise<void> => {
+const battleInteractionReceptor = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [action] = ctx.sentData;
 
   if (action === 'JOIN_DUNGEON') {
@@ -39,4 +37,4 @@ const orchestrateRoleplayRelatedComponentInteractions = async (
   }
 };
 
-export { orchestrateRoleplayRelatedComponentInteractions };
+export { battleInteractionReceptor };
