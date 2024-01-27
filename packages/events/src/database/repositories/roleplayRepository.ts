@@ -8,7 +8,7 @@ import { Enemy, Location } from '../../modules/roleplay/types';
 import { Enemies } from '../../modules/roleplay/data/enemies';
 import { minutesToMillis } from '../../utils/miscUtils';
 import { MINUTES_TO_RESURGE, RESURGE_DEFAULT_AMOUNT } from '../../modules/roleplay/constants';
-import { manipulateCharacterStatus } from '../../modules/roleplay/characterStatus';
+import { manipulateCharacterStatus } from '../../modules/roleplay/statusManipulation';
 
 const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseCharacterSchema => ({
   id: `${user.id}`,

@@ -88,7 +88,7 @@ const ChurchCommand = createCommand({
 
     const inChurch = character.currentAction.type === Action.CHURCH;
 
-    const disableClick = !inChurch && (character.life >= 95 || character.energy >= 95);
+    const disableClick = !inChurch && character.life >= 95 && character.energy >= 95;
 
     const confirmButton = createButton({
       label: inChurch ? 'Sair da igreja' : 'Revigorar-se',
