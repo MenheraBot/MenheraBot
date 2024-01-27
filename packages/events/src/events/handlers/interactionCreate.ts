@@ -131,10 +131,18 @@ const setInteractionCreateEvent = (): void => {
 
     bot.commandsInExecution += 1;
 
+    const fullCommand = `${command.name}${ctx.subCommandGroup ? ` ${ctx.subCommandGroup}` : ''}${
+      ctx.subCommand ? ` ${ctx.subCommand}` : ''
+    }`;
+
     if (!process.env.NOMICROSERVICES)
-      getCommandsCounter().inc({
-        command_name: ctx.interaction.data?.name,
-      });
+      getCommandsCounter().inc(
+        {
+          command_name: ctx.interaction.data?.name,
+          complete_command: fullCommand,
+        },
+        0.5,
+      );
 
     await command
       .execute(ctx, () => null)
@@ -176,10 +184,6 @@ const setInteractionCreateEvent = (): void => {
       });
 
     bot.commandsInExecution -= 1;
-
-    const fullCommand = `${command.name}${ctx.subCommandGroup ? ` ${ctx.subCommandGroup}` : ''}${
-      ctx.subCommand ? ` ${ctx.subCommand}` : ''
-    }`;
 
     logger.info(`[COMMAND] ${fullCommand} - ${interaction.user.id}`);
 
