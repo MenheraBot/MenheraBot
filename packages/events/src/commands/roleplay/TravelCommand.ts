@@ -155,7 +155,9 @@ const TravelCommand = createCommand({
         name: 'Viajando',
         value: `Tu ta em uma viajem para ${
           action.to
-        }.\nTu vai chegar no teu destino <t:${millisToSeconds(finishAt)}:R>`,
+        }.\nTu vai chegar no teu destino <t:${millisToSeconds(finishAt)}:R> (<t:${millisToSeconds(
+          finishAt,
+        )}:t>)`,
       });
 
       colorfy = true;

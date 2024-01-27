@@ -53,6 +53,13 @@ const AdventureCommand = createCommand({
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
     finishCommand();
+
+    if (await battleRepository.isUserInBattle(ctx.user.id))
+      return ctx.makeMessage({
+        content: 'Você ja está em uma aventura!',
+        flags: MessageFlags.EPHEMERAL,
+      });
+
     const character = await roleplayRepository.getCharacter(ctx.user.id);
 
     if (checkDeath(character))
@@ -62,36 +69,30 @@ const AdventureCommand = createCommand({
         )}:R>`,
       });
 
-    if (await battleRepository.isUserInBattle(character.id))
-      return ctx.makeMessage({
-        content: 'Você ja está em uma aventura!',
-        flags: MessageFlags.EPHEMERAL,
-      });
+    const availableAbilities = Object.entries(Abilities).filter((a) =>
+      ['1', '2', '3', '4'].includes(a[0]),
+    );
 
     if (character.abilities.length === 0) {
       const embed = createEmbed({
         title: 'Escolha sua primeira habilidade',
         color: hexStringToNumber(ctx.authorData.selectedColor),
-        fields: Object.entries(Abilities)
-          .filter((a) => ['1', '2', '3', '4'].includes(a[0]))
-          .map(([, ability]) => ({
-            name: ability.$devName,
-            value: `Efeitos: ${JSON.stringify(ability.effects)}\nCusto de Energia: ${
-              ability.energyCost
-            }`,
-            inline: true,
-          })),
+        fields: availableAbilities.map(([, ability]) => ({
+          name: ability.$devName,
+          value: `Efeitos: ${JSON.stringify(ability.effects)}\nCusto de Energia: ${
+            ability.energyCost
+          }`,
+          inline: true,
+        })),
       });
 
-      const buttons = Object.entries(Abilities)
-        .filter((a) => ['1', '2', '3', '4'].includes(a[0]))
-        .map(([id, ability]) =>
-          createButton({
-            label: ability.$devName,
-            style: ButtonStyles.Primary,
-            customId: createCustomId(1, ctx.user.id, ctx.commandId, id),
-          }),
-        );
+      const buttons = availableAbilities.map(([id, ability]) =>
+        createButton({
+          label: ability.$devName,
+          style: ButtonStyles.Primary,
+          customId: createCustomId(1, ctx.user.id, ctx.commandId, id),
+        }),
+      );
 
       return ctx.makeMessage({
         content: `Bem vindo!\nPara começar o seu personagem, escolha uma habilidade para aprender`,

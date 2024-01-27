@@ -95,6 +95,7 @@ export enum Action {
   NONE,
   TRAVEL,
   DEATH,
+  CHURCH,
 }
 
 export type TravelAction = {
@@ -109,8 +110,13 @@ export type DeathAction = {
   reviveAt: number;
 };
 
+type ChurchAction = {
+  type: Action.CHURCH;
+  startAt: number;
+};
+
 type NoneAction = {
   type: Action.NONE;
 };
 
-export type AvailableActions = TravelAction | NoneAction | DeathAction;
+export type AvailableActions = TravelAction | NoneAction | DeathAction | ChurchAction;
