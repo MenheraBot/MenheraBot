@@ -2,7 +2,7 @@ import { InventoryItem } from './types';
 
 const addItems = (currentInventory: InventoryItem[], toAdd: InventoryItem[]): InventoryItem[] =>
   toAdd.reduce<InventoryItem[]>((p, c) => {
-    const fromUser = p.find((a) => a.id === c.id && a.level === c.level);
+    const fromUser = p.find((a) => a.id === c.id);
 
     if (!fromUser) {
       p.push(c);

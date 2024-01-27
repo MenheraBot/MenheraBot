@@ -8,7 +8,6 @@ export type Enemy = {
   damage: number[];
   drops: {
     id: number;
-    level: number;
     amount: number;
   }[][];
 };
@@ -30,7 +29,6 @@ export type Ability = {
 
 export interface InventoryItem {
   id: number;
-  level: number;
   amount: number;
 }
 

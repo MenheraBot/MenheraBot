@@ -27,12 +27,20 @@ const characterPages = ['VITALITY', 'ABILITY', 'INVENTORY', 'LOCATION'] as const
 
 type Pages = (typeof characterPages)[number];
 
+type ReturnButtons = [
+  ButtonComponent,
+  ButtonComponent,
+  ButtonComponent,
+  ButtonComponent,
+  ButtonComponent,
+];
+
 const createCharacterNaviagtionButtons = (
   ctx: InteractionContext,
   current: Pages,
   selectedColor: string,
   userId: BigString,
-): [ButtonComponent] =>
+): ReturnButtons =>
   characterPages.map((a) =>
     createButton({
       label: a,
@@ -40,7 +48,7 @@ const createCharacterNaviagtionButtons = (
       disabled: a === current,
       customId: createCustomId(0, ctx.user.id, ctx.commandId, userId, a, selectedColor),
     }),
-  ) as [ButtonComponent];
+  ) as ReturnButtons;
 
 const createCharacterEmbed = (
   user: User,
@@ -70,7 +78,7 @@ const createCharacterEmbed = (
           value:
             character.inventory.length > 0
               ? character.inventory
-                  .map((a) => `**${a.amount}x** - ${Items[a.id as 1].$devName} - Lvl. ${a.level}`)
+                  .map((a) => `**${a.amount}x** - ${Items[a.id as 1].$devName}`)
                   .join('\n')
               : 'Sem itens no inventário',
         },

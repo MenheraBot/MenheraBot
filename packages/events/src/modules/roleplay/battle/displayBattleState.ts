@@ -114,9 +114,7 @@ const updateBattleMessage = async (
       title: 'Inimigo morto!',
       description: `Tu matou o ${adventure.enemy.$devName} Lvl. ${
         adventure.enemy.level
-      }\nEm seu corpo, tu encontrou ${droppedItem.amount} ${
-        Items[droppedItem.id as 1].$devName
-      } Lvl. ${droppedItem.level}`,
+      }\nEm seu corpo, tu encontrou ${droppedItem.amount} ${Items[droppedItem.id as 1].$devName}`,
     });
 
     endReasons.push(embed);
