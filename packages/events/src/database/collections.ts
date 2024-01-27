@@ -139,7 +139,6 @@ const characterSchema = new Schema({
   id: { type: String, unique: true, index: true },
   life: { type: Number, default: 100 },
   energy: { type: Number, default: 100 },
-  deadUntil: { type: Number, default: 0 },
   inventory: { type: Array, default: [] },
   abilities: { type: Array, default: [] },
   location: { type: Array, default: [0, 0] },

@@ -6,13 +6,13 @@ import {
   createSelectMenu,
 } from '../../../utils/discord/componentUtils';
 import { createEmbed } from '../../../utils/discord/embedUtils';
-import { hoursToMillis, millisToSeconds } from '../../../utils/miscUtils';
+import { millisToSeconds } from '../../../utils/miscUtils';
 import { getStatusDisplayFields } from '../statusDisplay';
 import { Ability, BattleTimerActionType, InBattleUser, PlayerVsEnviroment } from '../types';
 import { getUserAvatar } from '../../../utils/discord/userUtils';
 import cacheRepository from '../../../database/repositories/cacheRepository';
 import { GenericContext } from '../../../types/menhera';
-import { RESURRECT_TIME_IN_HOURS, SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
+import { SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
 import { getAbility } from '../data/abilities';
 import battleRepository from '../../../database/repositories/battleRepository';
 import { checkDeath, keepNumbersPositive, lootEnemy } from './battleUtils';
@@ -20,6 +20,8 @@ import { Items } from '../data/items';
 import { DatabaseCharacterSchema } from '../../../types/database';
 import { finishAdventure } from '../adventureManager';
 import { startBattleTimer } from './battleTimers';
+import { getKillQuery } from './killUser';
+import roleplayRepository from '../../../database/repositories/roleplayRepository';
 
 interface Choice {
   id: number;
@@ -104,7 +106,6 @@ const updateBattleMessage = async (
   keepNumbersPositive(adventure.enemy);
 
   const endReasons: Embed[] = [];
-  const extraQuery: Partial<DatabaseCharacterSchema> = {};
 
   if (checkDeath(adventure.enemy)) {
     const droppedItem = lootEnemy(adventure);
@@ -121,8 +122,12 @@ const updateBattleMessage = async (
     endReasons.push(embed);
   }
 
+  let extraQuery: Partial<DatabaseCharacterSchema> = {};
+
   if (checkDeath(adventure.user)) {
-    extraQuery.deadUntil = Date.now() + hoursToMillis(RESURRECT_TIME_IN_HOURS);
+    const character = await roleplayRepository.getCharacter(adventure.user.id);
+
+    extraQuery = getKillQuery(character);
 
     const embed = createEmbed({
       title: 'Você foi morto',

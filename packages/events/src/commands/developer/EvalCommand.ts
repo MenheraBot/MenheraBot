@@ -10,6 +10,7 @@ import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
+import { Action } from '../../modules/roleplay/types';
 
 const noop = (..._args: unknown[]) => undefined;
 
@@ -30,7 +31,9 @@ const EvalCommand = createCommand({
   authorDataFields: ['id'],
   execute: async (ctx, finishCommand) => {
     const revivePlayer = async (userId: BigString) =>
-      roleplayRepository.updateCharacter(userId, { deadUntil: 0 }).then(() => 'USER_ALIVE');
+      roleplayRepository
+        .updateCharacter(userId, { currentAction: { type: Action.DEATH, reviveAt: 0 } })
+        .then(() => 'USER_ALIVE');
 
     const clear = async () => {
       await characterModel.deleteMany({});

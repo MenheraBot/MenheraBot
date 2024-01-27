@@ -13,6 +13,7 @@ import { Abilities } from '../../modules/roleplay/data/abilities';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { getCurrentAvailableEnemy } from '../../modules/roleplay/worldEnemiesManager';
+import { DeathAction } from '../../modules/roleplay/types';
 
 const executeSelectAbility = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedAbility] = ctx.sentData;
@@ -57,7 +58,7 @@ const AdventureCommand = createCommand({
     if (checkDeath(character))
       return ctx.makeMessage({
         content: `Você está morto! Você poderá entrar em uma aventura <t:${millisToSeconds(
-          character.deadUntil,
+          (character.currentAction as DeathAction).reviveAt,
         )}:R>`,
       });
 

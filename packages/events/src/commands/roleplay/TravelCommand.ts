@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 import { ButtonComponent, ButtonStyles } from 'discordeno/types';
 import { createCommand } from '../../structures/command/createCommand';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
@@ -8,8 +9,25 @@ import { createActionRow, createButton, createCustomId } from '../../utils/disco
 import { MINUTES_TO_TRAVEL_ONE_BLOCK, TOTAL_MAP_SIZE } from '../../modules/roleplay/constants';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { Action, Location } from '../../modules/roleplay/types';
-import { calculateTravelDistance, calculateTravelTime } from '../../modules/roleplay/mapUtils';
+import {
+  calculateTravelDistance,
+  calculateTravelTime,
+  getInTravelMapButtons,
+} from '../../modules/roleplay/mapUtils';
 import { millisToSeconds } from '../../utils/miscUtils';
+
+const numberToEmoji = {
+  0: ':zero:',
+  1: ':one:',
+  2: ':two:',
+  3: ':three:',
+  4: ':four:',
+  5: ':five:',
+  6: ':six:',
+  7: ':seven:',
+  8: ':eight:',
+  9: ':nine:',
+};
 
 const confirmTravel = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [x, y] = ctx.sentData;
@@ -121,22 +139,27 @@ const TravelCommand = createCommand({
       fields: [
         {
           name: 'Densidade de inimigos',
-          value: locations.map((a) => a.join(', ')).join('\n'),
+          value: locations.map((a) => a.map((b) => numberToEmoji[b as 1]).join('  ')).join('\n'),
         },
       ],
     });
 
-    if (character.currentAction.type === Action.TRAVEL) {
-      const finishAt =
-        character.currentAction.startAt +
-        calculateTravelTime(character.currentAction.from, character.currentAction.to);
+    const action = character.currentAction;
+    let colorfy = false;
+    let map: ButtonStyles[][] = [];
+
+    if (action.type === Action.TRAVEL) {
+      const finishAt = action.startAt + calculateTravelTime(action.from, action.to);
 
       embed.fields?.push({
         name: 'Viajando',
         value: `Tu ta em uma viajem para ${
-          character.currentAction.to
+          action.to
         }.\nTu vai chegar no teu destino <t:${millisToSeconds(finishAt)}:R>`,
       });
+
+      colorfy = true;
+      map = getInTravelMapButtons(action.startAt, action.from, action.to, character.location);
     }
 
     const buttons = Array.from({ length: TOTAL_MAP_SIZE[0] }).map((_, i) =>
@@ -144,7 +167,7 @@ const TravelCommand = createCommand({
         Array.from({ length: TOTAL_MAP_SIZE[1] }).map((__, j) =>
           createButton({
             label: `${i}:${j}`,
-            style: ButtonStyles.Primary,
+            style: colorfy ? map[i][j] : ButtonStyles.Primary,
             disabled:
               isUserInBattle ||
               (embed.fields?.length ?? 0) > 1 ||
@@ -154,6 +177,9 @@ const TravelCommand = createCommand({
         ) as [ButtonComponent],
       ),
     );
+
+    (buttons[character.location[0]].components[character.location[1]] as ButtonComponent).style =
+      ButtonStyles.Success;
 
     ctx.makeMessage({ embeds: [embed], components: buttons });
   },

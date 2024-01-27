@@ -160,7 +160,6 @@ export interface DatabaseCharacterSchema {
   readonly id: string;
   life: number;
   energy: number;
-  deadUntil: number;
   inventory: InventoryItem[];
   abilities: DatabaseUserAbility[];
   location: Location;

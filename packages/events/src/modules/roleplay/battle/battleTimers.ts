@@ -8,10 +8,11 @@ import { DatabaseCommandSchema } from '../../../types/database';
 import FollowUpInteractionContext from '../../../structures/command/FollowUpInteractionContext';
 import { executeEntitiesEffects } from './executeEffects';
 import { updateBattleMessage } from './displayBattleState';
-import { MINUTES_TO_FORCE_FINISH_BATTLE, RESURRECT_TIME_IN_HOURS } from '../constants';
+import { MINUTES_TO_FORCE_FINISH_BATTLE } from '../constants';
 import { finishAdventure } from '../adventureManager';
 import { createEmbed } from '../../../utils/discord/embedUtils';
-import { hoursToMillis } from '../../../utils/miscUtils';
+import { getKillQuery } from './killUser';
+import roleplayRepository from '../../../database/repositories/roleplayRepository';
 
 const timers = new Map<string, NodeJS.Timeout>();
 
@@ -36,9 +37,9 @@ const executeForceFinish = async (timer: BattleTimer) => {
     description: `O tempo máximo de ${MINUTES_TO_FORCE_FINISH_BATTLE} minutos de batalha foi atingido. Você foi morto`,
   });
 
-  finishAdventure(ctx, battleData, [embed], {
-    deadUntil: Date.now() + hoursToMillis(RESURRECT_TIME_IN_HOURS),
-  });
+  const character = await roleplayRepository.getCharacter(battleData.user.id);
+
+  finishAdventure(ctx, battleData, [embed], getKillQuery(character));
 };
 
 const executeTimeoutChoice = async (timer: BattleTimer) => {

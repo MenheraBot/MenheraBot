@@ -51,7 +51,7 @@ const CharacterCommand = createCommand({
     const character = await roleplayRepository.getCharacter(user.id);
 
     const embed = createEmbed({
-      title: `Personagem de ${getDisplayName(ctx.user, false)}`,
+      title: `Personagem de ${getDisplayName(user, false)}`,
       thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
       description: `📍 | Sua localização: ${character.location}`,
       color: hexStringToNumber(ctx.authorData.selectedColor),

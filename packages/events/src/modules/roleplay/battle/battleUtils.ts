@@ -3,7 +3,7 @@ import { DatabaseCharacterSchema } from '../../../types/database';
 import { randomFromArray } from '../../../utils/miscUtils';
 import { Enemies } from '../data/enemies';
 import inventoryManager from '../inventoryManager';
-import { InBattleUser, InventoryItem, PlayerVsEnviroment } from '../types';
+import { Action, DeathAction, InBattleUser, InventoryItem, PlayerVsEnviroment } from '../types';
 
 const checkDeath = (entity: { life: number }): boolean => entity.life <= 0;
 
@@ -34,9 +34,9 @@ const lootEnemy = (adventure: PlayerVsEnviroment): InventoryItem => {
 };
 
 const didUserResurrect = (user: DatabaseCharacterSchema): boolean => {
-  if (user.deadUntil > Date.now()) return false;
+  if ((user.currentAction as DeathAction).reviveAt > Date.now()) return false;
 
-  roleplayRepository.updateCharacter(user.id, { life: 100 });
+  roleplayRepository.updateCharacter(user.id, { life: 100, currentAction: { type: Action.NONE } });
   user.life = 100;
 
   return true;

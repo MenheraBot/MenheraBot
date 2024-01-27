@@ -94,6 +94,7 @@ export type Location = [number, number];
 export enum Action {
   NONE,
   TRAVEL,
+  DEATH,
 }
 
 export type TravelAction = {
@@ -103,8 +104,13 @@ export type TravelAction = {
   startAt: number;
 };
 
+export type DeathAction = {
+  type: Action.DEATH;
+  reviveAt: number;
+};
+
 type NoneAction = {
   type: Action.NONE;
 };
 
-export type AvailableActions = TravelAction | NoneAction;
+export type AvailableActions = TravelAction | NoneAction | DeathAction;
