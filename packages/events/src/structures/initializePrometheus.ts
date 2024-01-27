@@ -16,7 +16,7 @@ const initializePrometheus = (): void => {
   commandsCounter = new client.Counter({
     name: 'commands_count',
     help: 'Count of commands executed',
-    labelNames: ['command_name'],
+    labelNames: ['command_name', 'complete_command'],
   });
 
   interactionsCounter = new client.Counter({

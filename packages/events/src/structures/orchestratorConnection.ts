@@ -122,9 +122,12 @@ const createIpcConnection = async (): Promise<void> => {
       }
       case 'INTERACTION_CREATE': {
         if (!process.env.NOMICROSERVICES)
-          getInteractionsCounter().inc({
-            type: numberTypeToName[msg.data.body.type as 1],
-          });
+          getInteractionsCounter().inc(
+            {
+              type: numberTypeToName[msg.data.body.type as 1],
+            },
+            0.5,
+          );
 
         logger.logSwitch(bot, 'Interaction Create', ack, msg);
 
