@@ -13,7 +13,7 @@ export const MINUTES_TO_RESURGE = 30;
 export const MINUTES_TO_TRAVEL_ONE_BLOCK = 30;
 
 export const STATUS_RECOVERY_IN_CHURCH_PER_MINUTE = {
-  life: 1,
+  life: 1.4,
   energy: 1,
 };
 

@@ -4,7 +4,6 @@ import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { prepareEnemyToBattle, prepareUserToBattle } from '../../modules/roleplay/devUtils';
 import { confirmAdventure } from '../../modules/roleplay/adventureManager';
 import { battleInteractionReceptor } from '../../modules/roleplay/battleInteractionReceptor';
-import { checkDeath } from '../../modules/roleplay/battle/battleUtils';
 import { millisToSeconds } from '../../utils/miscUtils';
 import battleRepository from '../../database/repositories/battleRepository';
 import { MessageFlags } from '../../utils/discord/messageUtils';
@@ -62,7 +61,7 @@ const AdventureCommand = createCommand({
 
     const character = await roleplayRepository.getCharacter(ctx.user.id);
 
-    if (checkDeath(character))
+    if (character.currentAction.type === Action.DEATH)
       return ctx.makeMessage({
         content: `Você está morto! Você poderá entrar em uma aventura <t:${millisToSeconds(
           (character.currentAction as DeathAction).reviveAt,

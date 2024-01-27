@@ -15,14 +15,14 @@ const manipulateUserVitality = (character: DatabaseCharacterSchema): void => {
 
   const elapsedMinutes = getElapsedMinutes(action.startAt);
 
-  const toAddLife = elapsedMinutes * STATUS_RECOVERY_IN_CHURCH_PER_MINUTE.life;
-  const toAddEnergy = elapsedMinutes * STATUS_RECOVERY_IN_CHURCH_PER_MINUTE.energy;
+  const toAddLife = Math.round(elapsedMinutes * STATUS_RECOVERY_IN_CHURCH_PER_MINUTE.life);
+  const toAddEnergy = Math.round(elapsedMinutes * STATUS_RECOVERY_IN_CHURCH_PER_MINUTE.energy);
 
   character.life = Math.min(character.life + toAddLife, MAX_CHARACTER_LIFE);
   character.energy = Math.min(character.energy + toAddEnergy, MAX_CHARACTER_ENERGY);
 };
 
-const checkReviveUser = (character: DatabaseCharacterSchema): void => {
+const manipulateDeath = (character: DatabaseCharacterSchema): void => {
   const action = character.currentAction;
   if (action.type !== Action.DEATH) return;
 
@@ -46,7 +46,7 @@ const manipulateCharacterStatus = async (
       manipulateUserVitality(character);
       break;
     case Action.DEATH:
-      checkReviveUser(character);
+      manipulateDeath(character);
       break;
     case Action.TRAVEL:
       manipulateUserLocation(character);

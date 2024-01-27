@@ -5,6 +5,7 @@ import { SelectMenuInteraction } from '../../types/interaction';
 import { startAdventure } from './adventureManager';
 import { executeUserChoice } from './battle/executeUserChoice';
 import { unknownAdventure } from './devUtils';
+import { Action } from './types';
 import { getCurrentAvailableEnemy } from './worldEnemiesManager';
 
 const battleInteractionReceptor = async (ctx: ComponentInteractionContext): Promise<void> => {
@@ -12,6 +13,21 @@ const battleInteractionReceptor = async (ctx: ComponentInteractionContext): Prom
 
   if (action === 'JOIN_DUNGEON') {
     const character = await roleplayRepository.getCharacter(ctx.user.id);
+
+    if (await battleRepository.isUserInBattle(ctx.user.id))
+      return ctx.makeMessage({
+        content: 'Você ja está em uma aventura!',
+        components: [],
+        embeds: [],
+      });
+
+    if (![Action.NONE, Action.TRAVEL].includes(character.currentAction.type))
+      return ctx.makeMessage({
+        components: [],
+        embeds: [],
+        content: `Não é possível batalhar enquanto se está fazendo outra coisa`,
+      });
+
     const enemy = await getCurrentAvailableEnemy(character.location);
 
     if (!enemy)
