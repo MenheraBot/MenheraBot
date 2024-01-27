@@ -17,7 +17,7 @@ import { extractBattleUserInfoToCharacter } from './battle/battleUtils';
 import { DatabaseCharacterSchema } from '../../types/database';
 import battleRepository from '../../database/repositories/battleRepository';
 import { prepareEnemyToBattle, prepareUserToBattle, setupAdventurePvE } from './devUtils';
-import { startBattleTimer } from './battle/battleTimers';
+import { clearBattleTimer, startBattleTimer } from './battle/battleTimers';
 import { displayBattleControlMessage } from './battle/displayBattleState';
 import { minutesToMillis } from '../../utils/miscUtils';
 import { MINUTES_TO_FORCE_FINISH_BATTLE } from './constants';
@@ -80,6 +80,7 @@ const finishAdventure = async (
 ): Promise<void> => {
   battleRepository.deleteAdventure(adventure.id);
   battleRepository.removeUserInBattle(adventure.user.id);
+  clearBattleTimer(`finish_battle:${adventure.id}`);
 
   await roleplayRepository.updateCharacter(adventure.user.id, {
     ...extractBattleUserInfoToCharacter(adventure.user),

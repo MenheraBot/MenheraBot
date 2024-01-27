@@ -5,7 +5,8 @@ import { Enemies } from '../data/enemies';
 import inventoryManager from '../inventoryManager';
 import { Action, DeathAction, InBattleUser, InventoryItem, PlayerVsEnviroment } from '../types';
 
-const checkDeath = (entity: { life: number }): boolean => entity.life <= 0;
+const checkDeath = (entity: { life: number; energy?: number }): boolean =>
+  entity.life <= 0 || (typeof entity.energy !== 'undefined' && entity.energy <= 0);
 
 const keepNumbersPositive = (object: Record<string, unknown>): void => {
   Object.entries(object).forEach(([name, value]) => {
@@ -36,8 +37,14 @@ const lootEnemy = (adventure: PlayerVsEnviroment): InventoryItem => {
 const didUserResurrect = (user: DatabaseCharacterSchema): boolean => {
   if ((user.currentAction as DeathAction).reviveAt > Date.now()) return false;
 
-  roleplayRepository.updateCharacter(user.id, { life: 100, currentAction: { type: Action.NONE } });
+  roleplayRepository.updateCharacter(user.id, {
+    life: 100,
+    energy: 100,
+    currentAction: { type: Action.NONE },
+  });
+
   user.life = 100;
+  user.energy = 100;
 
   return true;
 };
