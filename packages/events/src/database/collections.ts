@@ -16,8 +16,7 @@ const { Schema, model } = mongoose;
 
 const cmdSchema = new Schema({
   _id: { type: String },
-  maintenance: { type: Boolean, default: false },
-  maintenanceReason: { type: String, default: '' },
+  maintenance: { type: Array, default: [] },
   discordId: { type: String, default: null },
 });
 

@@ -20,14 +20,17 @@ const MaintenanceCommand = createCommand({
       name: 'motivo',
       description: 'Motivo da manutencao',
       type: ApplicationCommandOptionTypes.String,
-      required: false,
+      required: true,
     },
   ],
   devsOnly: true,
   category: 'dev',
   authorDataFields: [],
   execute: async (ctx, finishCommand) => {
-    const cmd = bot.commands.get(ctx.getOption('comando', false, true));
+    const fullCommand = ctx.getOption<string>('comando', false, true);
+    const [command] = fullCommand.split(' ');
+
+    const cmd = bot.commands.get(command);
 
     if (!cmd) return finishCommand(ctx.makeMessage({ content: 'Esse comando não existe' }));
 
@@ -36,13 +39,20 @@ const MaintenanceCommand = createCommand({
     if (!commandMaintenance)
       return finishCommand(ctx.makeMessage({ content: 'Esse comando não está na db' }));
 
-    const reason = ctx.getOption<string>('motivo', false) ?? 'No Given Reason';
+    const reason = ctx.getOption<string>('motivo', false, true);
 
-    await commandRepository.setMaintenanceInfo(
-      cmd.name,
-      !commandMaintenance.maintenance,
-      commandMaintenance.maintenance ? '' : reason,
-    );
+    const currentMaintenances = Array.isArray(commandMaintenance.maintenance)
+      ? commandMaintenance.maintenance
+      : [];
+
+    if (!currentMaintenances.some((a) => a.commandStructure === fullCommand))
+      currentMaintenances.push({ commandStructure: fullCommand, reason });
+    else
+      currentMaintenances.splice(
+        currentMaintenances.findIndex((b) => b.commandStructure === fullCommand),
+      );
+
+    await commandRepository.setMaintenanceInfo(cmd.name, currentMaintenances);
 
     await updateCommandMaintenanteStatus(cmd.name, {
       isDisabled: !commandMaintenance.maintenance,

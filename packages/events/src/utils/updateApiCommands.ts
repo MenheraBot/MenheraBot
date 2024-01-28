@@ -1,15 +1,13 @@
 import { bot } from '..';
-import commandRepository from '../database/repositories/commandRepository';
 import { ApiCommandInformation } from '../types/commands';
 import { postCommandsInformation } from './apiRequests/commands';
 
 const updateCommandsOnApi = async (): Promise<void> => {
   const toAPIData = new Map<string, ApiCommandInformation>();
-  const disabledCommands = await commandRepository.getAllCommandsInMaintenance();
 
+  // FIXME: update API disabledCommands
   bot.commands.forEach((c) => {
     if (c.category === 'dev') return;
-    const isCommandInMaintenance = disabledCommands.find((a) => a._id?.toString() === c.name);
 
     toAPIData.set(c.name, {
       name: c.name,
@@ -19,8 +17,8 @@ const updateCommandsOnApi = async (): Promise<void> => {
       descriptionLocalizations: c.descriptionLocalizations,
       nameLocalizations: c.nameLocalizations,
       disabled: {
-        isDisabled: isCommandInMaintenance?.maintenance ?? false,
-        reason: isCommandInMaintenance?.maintenanceReason ?? null,
+        isDisabled: false,
+        reason: null,
       },
     });
   });

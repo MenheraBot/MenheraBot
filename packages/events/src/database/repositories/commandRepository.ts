@@ -36,7 +36,6 @@ const getCommandInfo = async (commandName: string): Promise<DatabaseCommandSchem
     JSON.stringify({
       discordId: fromMongo.discordId,
       maintenance: fromMongo.maintenance,
-      maintenanceReason: fromMongo.maintenanceReason,
       _id: fromMongo._id,
     }),
   ).catch(debugError);
@@ -79,20 +78,18 @@ const getAllCommandsInMaintenance = async (): Promise<DatabaseCommandSchema[]> =
 
 const setMaintenanceInfo = async (
   commandName: string,
-  maintenance: boolean,
-  reason?: string,
+  maintenance: DatabaseCommandSchema['maintenance'],
 ): Promise<void> => {
+  MainRedisClient.del(`command:${commandName}`).catch(debugError);
+
   await commandsModel
     .updateOne(
       { _id: commandName },
       {
-        maintenance,
-        maintenanceReason: reason ?? 'Sem Razão Informada',
+        $set: { maintenance },
       },
     )
     .catch(debugError);
-
-  await MainRedisClient.del(`command:${commandName}`).catch(debugError);
 };
 
 export default {

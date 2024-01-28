@@ -19,6 +19,7 @@ import {
   sendFollowupMessage,
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests';
+import { getFullCommandUsed } from './getCommandOption';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -74,6 +75,21 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
       'A Menhera está em processo de desligamento! Comandos estão desativados!\n\nMenhera is in the process of shutting down! Commands are disabled!',
     );
 
+  const commandUsed = getFullCommandUsed(interaction);
+
+  if (Array.isArray(commandInfo.maintenance)) {
+    const maintenance = commandInfo.maintenance.find((a) =>
+      commandUsed.fullCommand.includes(a.commandStructure),
+    );
+
+    if (maintenance && interaction.user.id !== bot.ownerId)
+      return errorReply(
+        T('events:maintenance', {
+          reason: maintenance.reason,
+        }),
+      );
+  }
+
   const isUserBanned = await blacklistRepository.isUserBanned(interaction.user.id);
 
   if (isUserBanned) {
@@ -85,13 +101,6 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
       }),
     );
   }
-
-  if (commandInfo.maintenance && interaction.user.id !== bot.ownerId)
-    return errorReply(
-      T('events:maintenance', {
-        reason: commandInfo.maintenanceReason,
-      }),
-    );
 
   if (interactionTarget.length > 1 && interactionTarget !== `${interaction.user.id}`)
     return errorReply(

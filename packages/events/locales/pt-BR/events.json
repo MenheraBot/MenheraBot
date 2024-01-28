@@ -1,5 +1,5 @@
 {
-"maintenance": "**MANUTENÇÃO**\n Este comando está em manutenção por tempo indeterminado!\n\n**Motivo:** {{reason}}",
+"maintenance": "**MANUTENÇÃO**\n Este comando está desabilitado temporariamente!\n\n**Motivo:** {{reason}}",
   "blocked-channel": "meus comandos estão bloqueados neste canal!",
   "error_embed": {
     "title": "<:menhera_cry:744041825140211732> | Ocorreu um erro ao executar o comando {{cmd}}",
