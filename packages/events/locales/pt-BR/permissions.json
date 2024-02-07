@@ -32,7 +32,7 @@
   "WIP": "Essa funcionalidade ainda não está pronta! Minha dona está trabalhando para conseguir finalizá-la o mais breve possível.",
   "USER_MISSING_PERMISSION": "Você não tem a permissão de `{{perm}}` para poder executar este comando.",
   "CLIENT_MISSING_PERMISSION": "Eu não tenho permissão de `{{perm}}` para poder executar este comando.",
-  "BANNED_INFO": "Você está banido de utilizar a Menhera desde {{bannedSince}}!\n\nMotivo: `{{banReason}}`\n\nBanido injustamente? Entre em meu servidor de suporte https://discord.com/invite/fZMdQbA",
+  "BANNED_INFO": "Você está banido de utilizar a Menhera desde {{bannedSince}}!\n\n📢 **| Motivo:** {{banReason}}\n\nBanido injustamente? Entre em meu servidor de suporte https://discord.com/invite/fZMdQbA",
   "NOT_INTERACTION_OWNER": "Ei! Não sabe esperar a tua vez?!! Essa interação é apenas para {{owner}} clicar. Se quiser clicar em botões também, usa tu um comando!",
   "COMPONENT_OUTDATED": "Este componente é de uma atualização antiga! Use o comando novamente para desfrutar das atualizações",
   "IN_COMMAND_EXECUTION": "Você não pode utilizar este comando pois está no meio de outro! Termine a execução daquele comando e tente novamente\n\n**ACHA QUE É UM BUG?** Venha ao servidor de suporte da Menhera {{command}} e peça ajuda"
