@@ -60,4 +60,31 @@ function getOptionFromInteraction<T>(
   return found?.value as T;
 }
 
-export { getOptionFromInteraction };
+type CommandUsed = {
+  command: string;
+  subCommand?: string;
+  subCommandGroup?: string;
+  fullCommand: string;
+};
+
+const getFullCommandUsed = (interaction: Interaction): CommandUsed => {
+  const commandName = interaction.data?.name as string;
+  const commandUsed: CommandUsed = { command: commandName, fullCommand: commandName };
+
+  let options = interaction.data?.options ?? [];
+
+  if (options[0]?.type === ApplicationCommandOptionTypes.SubCommandGroup) {
+    commandUsed.subCommandGroup = options[0].name;
+    commandUsed.fullCommand += ` ${options[0].name}`;
+    options = options[0]?.options ?? [];
+  }
+
+  if (options[0]?.type === ApplicationCommandOptionTypes.SubCommand) {
+    commandUsed.subCommand = options[0].name;
+    commandUsed.fullCommand += ` ${options[0].name}`;
+  }
+
+  return commandUsed;
+};
+
+export { getOptionFromInteraction, getFullCommandUsed };

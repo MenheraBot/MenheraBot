@@ -1,9 +1,5 @@
 import * as Sentry from '@sentry/node';
-import {
-  ApplicationCommandOptionTypes,
-  InteractionCallbackData,
-  InteractionResponseTypes,
-} from 'discordeno';
+import { InteractionCallbackData, InteractionResponseTypes } from 'discordeno';
 import { Interaction, User } from 'discordeno/transformers';
 import i18next, { TFunction } from 'i18next';
 
@@ -12,7 +8,7 @@ import { AvailableLanguages, Translation } from '../../types/i18next';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { logger } from '../../utils/logger';
 import { EMOJIS } from '../constants';
-import { getOptionFromInteraction } from './getCommandOption';
+import { getFullCommandUsed, getOptionFromInteraction } from './getCommandOption';
 import {
   editOriginalInteractionResponse,
   sendFollowupMessage,
@@ -37,16 +33,10 @@ export default class {
   ) {
     this.i18n = i18next.getFixedT(guildLocale);
 
-    let options = interaction.data?.options ?? [];
+    const { subCommand, subCommandGroup } = getFullCommandUsed(interaction);
 
-    if (options[0]?.type === ApplicationCommandOptionTypes.SubCommandGroup) {
-      this.subCommandGroup = options[0].name;
-      options = options[0].options ?? [];
-    }
-
-    if (options[0]?.type === ApplicationCommandOptionTypes.SubCommand) {
-      this.subCommand = options[0].name;
-    }
+    this.subCommandGroup = subCommandGroup;
+    this.subCommand = subCommand;
   }
 
   get author(): User {

@@ -102,10 +102,15 @@ export interface DatabaseGuildSchema {
   readonly id: string;
   lang: AvailableLanguages;
 }
+
+interface MaintenanceInfo {
+  commandStructure: string;
+  reason: string | null;
+}
+
 export interface DatabaseCommandSchema {
   readonly _id: string;
-  maintenance: boolean;
-  maintenanceReason: string | null;
+  maintenance: MaintenanceInfo[];
   discordId: string;
 }
 

@@ -33,7 +33,7 @@
   "USER_MISSING_PERMISSION": "you must have the `{{perm}}` permission in order to execute this command.",
   "CLIENT_MISSING_PERMISSION": "I must have the `{{perm}}` permission in order to execute this command.",
   "WIP": "This functionality is not ready yet! My owner is working to finish it as soon as possible.",
-  "BANNED_INFO": "You are banned from using Menhera since {{bannedSince}}!\n\nReason: `{{banReason}}`\n\nUnjustly banned? Join my support server https://discord.com/invite/fZMdQbA",
+  "BANNED_INFO": "You are banned from using Menhera since {{bannedSince}}!\n\n📢 **| Reason:** {{banReason}}\n\nUnjustly banned? Join my support server https://discord.com/invite/fZMdQbA",
   "NOT_INTERACTION_OWNER": "Hey! Don't you know how to wait your turn?!! This interaction is just for {{owner}} to click. If you want to click buttons too, use a command!",
   "COMPONENT_OUTDATED": "This component is from an old update! Use the command again to enjoy the updates",
   "IN_COMMAND_EXECUTION": "You cannot use this command as you are still using another command! Finish running that command and try again\n\n**THINKING IT'S A BUG?** Come to Menhera's support server {{command}} and ask for help"

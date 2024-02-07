@@ -22,6 +22,7 @@ import { millisToSeconds } from '../../utils/miscUtils';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
 import { debugError } from '../../utils/debugError';
+import { getFullCommandUsed } from '../../structures/command/getCommandOption';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -105,14 +106,24 @@ const setInteractionCreateEvent = (): void => {
     if (command.devsOnly && interaction.user.id !== bot.ownerId)
       return errorReply(T('permissions:ONLY_DEVS'));
 
+    const commandUsed = getFullCommandUsed(interaction);
+
     const commandInfo = await commandRepository.getCommandInfo(commandName);
 
-    if (commandInfo?.maintenance && interaction.user.id !== bot.ownerId)
-      return errorReply(
-        T('events:maintenance', {
-          reason: commandInfo.maintenanceReason,
-        }),
+    const maintenance = commandInfo?.maintenance;
+
+    if (Array.isArray(maintenance)) {
+      const maintenanceData = maintenance.find((a) =>
+        commandUsed.fullCommand.includes(a.commandStructure),
       );
+
+      if (maintenanceData /*  && interaction.user.id !== bot.ownerId */)
+        return errorReply(
+          T('events:maintenance', {
+            reason: maintenanceData.reason,
+          }),
+        );
+    }
 
     const authorData =
       command.authorDataFields.length > 0
@@ -131,15 +142,11 @@ const setInteractionCreateEvent = (): void => {
 
     bot.commandsInExecution += 1;
 
-    const fullCommand = `${command.name}${ctx.subCommandGroup ? ` ${ctx.subCommandGroup}` : ''}${
-      ctx.subCommand ? ` ${ctx.subCommand}` : ''
-    }`;
-
     if (!process.env.NOMICROSERVICES)
       getCommandsCounter().inc(
         {
-          command_name: ctx.interaction.data?.name,
-          complete_command: fullCommand,
+          command_name: commandUsed.command,
+          complete_command: commandUsed.fullCommand,
         },
         0.5,
       );
@@ -185,7 +192,7 @@ const setInteractionCreateEvent = (): void => {
 
     bot.commandsInExecution -= 1;
 
-    logger.info(`[COMMAND] ${fullCommand} - ${interaction.user.id}`);
+    logger.info(`[COMMAND] ${commandUsed.fullCommand} - ${interaction.user.id}`);
 
     if (!interaction.guildId) return;
 
