@@ -17,6 +17,8 @@ const createVoteWebhookRouter = (): Router => {
 
     ctx.status = HTTPResponseCodes.Ok;
 
+    console.log('VOTE MESSAGE', ctx.request.body);
+
     if (type === 'test') return;
 
     sendEvent(RequestType.VoteWebhook, { user, isWeekend });
