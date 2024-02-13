@@ -126,33 +126,35 @@ const setInteractionCreateEvent = (): void => {
         );
     }
 
-    const [isRateLimited, info] = await ratelimitRepository.executeRatelimit(
-      interaction.user.id,
-      commandName,
-    );
+    if (bot.enableRatelimit) {
+      const [isRateLimited, info] = await ratelimitRepository.executeRatelimit(
+        interaction.user.id,
+        commandName,
+      );
 
-    if (isRateLimited) {
-      if (!process.env.NOMICROSERVICES)
-        getRateLimitCounter().inc(
-          {
-            type: ratelimitRepository.limitLevels[info.ratelimit],
-            command_name: commandName,
-            user_id: `${interaction.user.id}`,
-          },
-          0.5,
+      if (isRateLimited) {
+        if (!process.env.NOMICROSERVICES)
+          getRateLimitCounter().inc(
+            {
+              type: ratelimitRepository.limitLevels[info.ratelimit],
+              command_name: commandName,
+              user_id: `${interaction.user.id}`,
+            },
+            0.5,
+          );
+
+        logger.info(
+          `[RATELIMIT] - Limited the ${info.count} time in severity ${info.ratelimit} command ${commandName} for user ${interaction.user.id}`,
         );
 
-      logger.info(
-        `[RATELIMIT] - Limited the ${info.count} time in severity ${info.ratelimit} command ${commandName} for user ${interaction.user.id}`,
-      );
-
-      return errorReply(
-        T('permissions:RATE_LIMITED', {
-          commandName,
-          unix:
-            millisToSeconds(info.timestamp) + ratelimitRepository.secondsToBlock[info.ratelimit],
-        }),
-      );
+        return errorReply(
+          T('permissions:RATE_LIMITED', {
+            commandName,
+            unix:
+              millisToSeconds(info.timestamp) + ratelimitRepository.secondsToBlock[info.ratelimit],
+          }),
+        );
+      }
     }
 
     const authorData =
