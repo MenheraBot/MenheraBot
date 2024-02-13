@@ -6,6 +6,7 @@ import { debugError } from './debugError';
 import { createEmbed } from './discord/embedUtils';
 import { postTransaction } from './apiRequests/statistics';
 import { ApiTransactionReason } from '../types/api';
+import { logger } from './logger';
 
 const voteConstants = {
   baseRollAmount: 1,
@@ -19,6 +20,8 @@ const voteConstants = {
 
 const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<void> => {
   const user = await userRepository.ensureFindUser(userId);
+
+  logger.logSwitch(bot, 'User found in vote webhook', user);
 
   // Simulates the new vote before adding it all prizes
   user.votes += 1;

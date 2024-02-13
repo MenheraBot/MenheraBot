@@ -39,6 +39,7 @@ const createIpcConnection = async (): Promise<void> => {
 
   orchestratorClient.on('message', async (msg) => {
     if (msg.type === 'VOTE_WEBHOOK') {
+      logger.logSwitch(bot, 'new vote webhook message', msg);
       executeVoteWebhook(msg.data.user, msg.data.isWeekend);
       return;
     }
@@ -128,8 +129,6 @@ const createIpcConnection = async (): Promise<void> => {
             },
             0.5,
           );
-
-        logger.logSwitch(bot, 'Interaction Create', ack, msg);
 
         bot.respondInteraction.set((msg.data.body as DiscordInteraction).id, ack);
 
