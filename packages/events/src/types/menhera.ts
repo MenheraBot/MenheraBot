@@ -15,6 +15,7 @@ export interface MenheraClient extends Bot {
   ownerId: bigint;
   shuttingDown: boolean;
   prodLogSwitch: boolean;
+  enableRatelimit: boolean;
   username: string;
   isMaster: boolean;
   commandsInExecution: number;

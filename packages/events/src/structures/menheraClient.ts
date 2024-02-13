@@ -26,6 +26,8 @@ const setupMenheraClient = (client: MenheraClient): void => {
 
   client.username = 'Menhera Bot';
 
+  client.enableRatelimit = true;
+
   client.shuttingDown = false;
 
   client.isMaster = false;

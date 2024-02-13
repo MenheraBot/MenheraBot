@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.13.0] - 2024-02-13
+
+### Added
+
+- **Sistema de Rate limit:** Agora, usar comandos repetidas vezes vai bloquear temporariamente o comando para ti. Cada comando tem um contador de limite por usuário. Se você receber diversos avisos de rate limit, por favor, reduza a taxa de uso do comando.
+
 ## [5.12.1] - 2024-01-23
 
 ### Fixed

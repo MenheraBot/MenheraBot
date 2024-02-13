@@ -9,7 +9,7 @@ import { bot } from '../../index';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { autocompleteInteraction } from '../../structures/command/autocompleteInteraction';
 import { componentExecutor } from '../../structures/command/componentExecutor';
-import { getCommandsCounter } from '../../structures/initializePrometheus';
+import { getCommandsCounter, getRateLimitCounter } from '../../structures/initializePrometheus';
 import { UsedCommandData } from '../../types/commands';
 import { DatabaseUserSchema } from '../../types/database';
 import { postCommandExecution } from '../../utils/apiRequests/commands';
@@ -23,6 +23,7 @@ import cacheRepository from '../../database/repositories/cacheRepository';
 import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
 import { debugError } from '../../utils/debugError';
 import { getFullCommandUsed } from '../../structures/command/getCommandOption';
+import ratelimitRepository from '../../database/repositories/ratelimitRepository';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -123,6 +124,37 @@ const setInteractionCreateEvent = (): void => {
             reason: maintenanceData.reason,
           }),
         );
+    }
+
+    if (bot.enableRatelimit) {
+      const [isRateLimited, info] = await ratelimitRepository.executeRatelimit(
+        interaction.user.id,
+        commandName,
+      );
+
+      if (isRateLimited) {
+        if (!process.env.NOMICROSERVICES)
+          getRateLimitCounter().inc(
+            {
+              type: ratelimitRepository.limitLevels[info.ratelimit],
+              command_name: commandName,
+              user_id: `${interaction.user.id}`,
+            },
+            0.5,
+          );
+
+        logger.info(
+          `[RATELIMIT] - Limited the ${info.count} time in severity ${info.ratelimit} command ${commandName} for user ${interaction.user.id}`,
+        );
+
+        return errorReply(
+          T('permissions:RATE_LIMITED', {
+            commandName,
+            unix:
+              millisToSeconds(info.timestamp) + ratelimitRepository.secondsToBlock[info.ratelimit],
+          }),
+        );
+      }
     }
 
     const authorData =

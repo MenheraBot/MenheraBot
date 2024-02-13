@@ -28,10 +28,7 @@ const verifyDiscordRequests = (ctx: Context, next: Next): void | Promise<unknown
     timestamp,
   });
 
-  if (!isValid) {
-    console.log(new Date().toISOString(), 'Invalid request signature', rawBody);
-    return ctx.throw(HTTPResponseCodes.Unauthorized, 'Invalid request signature');
-  }
+  if (!isValid) return ctx.throw(HTTPResponseCodes.Unauthorized, 'Invalid request signature');
 
   return next();
 };
