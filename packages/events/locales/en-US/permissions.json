@@ -30,6 +30,7 @@
   "ONLY_DEVS": "This command is exclusive of my owner",
   "SLASH_COMMAND": "This command is already available in slash!",
   "UNKNOWN_SLASH": "This command doesn't exist anymore!",
+  "RATE_LIMITED": "Hey!!!! Slow down please...\n\nYou're using commands too fast. Wait a bit before using the `/{{commandName}}` command again.\n\nYou can use this command again <t:{{unix}}:R>",
   "USER_MISSING_PERMISSION": "you must have the `{{perm}}` permission in order to execute this command.",
   "CLIENT_MISSING_PERMISSION": "I must have the `{{perm}}` permission in order to execute this command.",
   "WIP": "This functionality is not ready yet! My owner is working to finish it as soon as possible.",

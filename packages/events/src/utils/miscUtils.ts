@@ -17,6 +17,12 @@ const minutesToMillis = (minutes: number): number => 1000 * 60 * minutes;
 
 const daysToMillis = (days: number): number => 1000 * 60 * 60 * 24 * days;
 
+const getElapsedTime = (since: number, unit: 'seconds' | 'minutes'): number => {
+  const time = Date.now() - since;
+
+  return unit === 'minutes' ? Math.floor(time / (60 * 1000)) : Math.floor(time / 1000);
+};
+
 const negate = (value: number): number => value * -1;
 
 const localizedResources = (
@@ -56,16 +62,27 @@ const getCustomThemeField = (field: string, customFields: string[]): boolean => 
   return customFields[index + 1] === 'true';
 };
 
+const numberizeAllValues = <T extends Record<string, unknown>>(
+  obj: T,
+): { [K in keyof T]: number } =>
+  Object.entries(obj).reduce((acc, [key, value]) => {
+    acc[key] = Number(value);
+    return acc;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  }, {} as any) as { [K in keyof T]: number };
+
 export {
   capitalize,
   daysToMillis,
   randomFromArray,
   toWritableUtf,
+  numberizeAllValues,
   getCustomThemeField,
   millisToSeconds,
   localizedResources,
   chunkArray,
   minutesToMillis,
+  getElapsedTime,
   millisToHours,
   negate,
   getMillisecondsToTheEndOfDay,

@@ -3,6 +3,7 @@ import client, { Counter, Registry } from 'prom-client';
 let register: Registry;
 let commandsCounter: Counter;
 let interactionsCounter: Counter;
+let ratelimitCounter: Counter;
 
 const initializePrometheus = (): void => {
   if (process.env.NOMICROSERVICES) return;
@@ -25,6 +26,13 @@ const initializePrometheus = (): void => {
     labelNames: ['type'],
   });
 
+  ratelimitCounter = new client.Counter({
+    name: 'ratelimit',
+    help: 'Amount of rate limits errors',
+    labelNames: ['type', 'command_name', 'user_id'],
+  });
+
+  register.registerMetric(ratelimitCounter);
   register.registerMetric(commandsCounter);
   register.registerMetric(interactionsCounter);
 };
@@ -32,5 +40,12 @@ const initializePrometheus = (): void => {
 const getRegister = (): Registry => register;
 const getCommandsCounter = (): Counter => commandsCounter;
 const getInteractionsCounter = (): Counter => interactionsCounter;
+const getRateLimitCounter = (): Counter => ratelimitCounter;
 
-export { initializePrometheus, getRegister, getCommandsCounter, getInteractionsCounter };
+export {
+  initializePrometheus,
+  getRegister,
+  getCommandsCounter,
+  getInteractionsCounter,
+  getRateLimitCounter,
+};
