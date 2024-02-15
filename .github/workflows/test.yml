@@ -9,8 +9,6 @@ on:
   push:
     branches:
       - master
-      - development/**
-      - feat/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
