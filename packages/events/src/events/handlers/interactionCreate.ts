@@ -50,15 +50,14 @@ const setInteractionCreateEvent = (): void => {
         type: InteractionResponseTypes.ChannelMessageWithSource,
         data: {
           content: `<:negacao:759603958317711371> | ${content}`,
-          // eslint-disable-next-line no-bitwise
-          flags: MessageFlags.EPHEMERAL | MessageFlags.SUPPRESS_EMBEDS,
+          flags: MessageFlags.EPHEMERAL,
         },
       }).catch(debugError);
     };
 
     if (bot.shuttingDown)
       return errorReply(
-        '# <:MenheraBed:768621224993095680>A mimir \n\nOiii. Eu estou indo dormir um pouquinho >.<\n\nLogo mais estou de volta, é algo bem rápido mesmo. Se quiser saber mais, entre em meu servidor de suporte, ou acesse a página de status da Menhera. Tudo disponível [no meu Website](https://menherabot.xyz/?ref=downtime-message).\n\n||Comandos estão desabilitados enquanto efetuamos um restart nos serviços. Isso não é uma ação comum, acesse a status page para mais informações: https://menherabot.xyz/status||',
+        'A Menhera está em processo de desligamento! Comandos estão desativados!\n\nMenhera is in the process of shutting down! Commands are disabled!',
       );
 
     const isUserBanned = await blacklistRepository.isUserBanned(interaction.user.id);
