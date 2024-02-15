@@ -29,7 +29,7 @@ const initializePrometheus = (): void => {
   ratelimitCounter = new client.Counter({
     name: 'ratelimit',
     help: 'Amount of rate limits errors',
-    labelNames: ['type', 'command_name', 'user_id'],
+    labelNames: ['type'],
   });
 
   register.registerMetric(ratelimitCounter);

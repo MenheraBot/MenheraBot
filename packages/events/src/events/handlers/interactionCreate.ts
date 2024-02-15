@@ -137,14 +137,14 @@ const setInteractionCreateEvent = (): void => {
           getRateLimitCounter().inc(
             {
               type: ratelimitRepository.limitLevels[info.ratelimit],
-              command_name: commandName,
-              user_id: `${interaction.user.id}`,
             },
             0.5,
           );
 
         logger.info(
-          `[RATELIMIT] - Limited the ${info.count} time in severity ${info.ratelimit} command ${commandName} for user ${interaction.user.id}`,
+          `[RATELIMIT] - Limited the ${info.count} time in severity ${
+            ratelimitRepository.limitLevels[info.ratelimit]
+          } command ${commandName} for user ${interaction.user.id}`,
         );
 
         return errorReply(
