@@ -53,8 +53,8 @@ const executeRatelimit = async (
   let newCount = rateInfo.count + 1;
   let newType = rateInfo.ratelimit;
 
-  if (newCount > ratelimitThresholds[newType]) {
-    newType = newType === RateLimitType.FOURTH ? RateLimitType.FOURTH : newType + 1;
+  if (newCount > ratelimitThresholds[newType] && newType !== RateLimitType.FOURTH) {
+    newType += 1;
     newCount = 1;
   }
 
