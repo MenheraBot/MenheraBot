@@ -8,10 +8,9 @@ RUN apk --no-cache add curl && \
     rm -rf node_modules && \
     yarn install --production && \
     mv docker/.yarnclean .yarnclean && \
-    yarn autoclean --force
-
-WORKDIR /app/packages/events
-RUN sentry-cli sourcemaps inject ./dist
+    yarn autoclean --force && \
+    cd /app/packages/events && \
+    sentry-cli sourcemaps inject ./dist
 
 FROM gcr.io/distroless/nodejs18-debian12 as rest
 WORKDIR /app
