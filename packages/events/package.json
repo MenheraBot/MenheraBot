@@ -4,7 +4,7 @@
   "version": "5.13.1",
   "engines": {
     "node": ">=18"
-  },
+},
   "description": "The core package of Menhera. This package process all interactions that Menhera receives from users",
   "main": "dist/index.js",
   "repository": "https://github.com/MenheraBot/MenheraBot",
