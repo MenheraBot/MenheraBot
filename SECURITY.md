@@ -6,10 +6,7 @@ As Menhera grows, your help is more than necessary. Bellow there is accepted ver
 
 | Version | Supported          |
 | ------- | ------------------ |
-| > 3.0   | :white_check_mark: |
-| x.x-beta| :white_check_mark: |
-| x.x-dev | :x:                |
-| < 2.x   | :x:                |
+| > 5.0   | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
