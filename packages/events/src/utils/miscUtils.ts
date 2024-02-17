@@ -1,5 +1,6 @@
 import i18next from 'i18next';
 import { AvailableLanguages, Translation, availableLanguages } from '../types/i18next';
+import { DatabaseUserThemesSchema } from '../types/database';
 
 const capitalize = <S extends string>(str: S): Capitalize<S> =>
   (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<S>;
@@ -71,6 +72,27 @@ const numberizeAllValues = <T extends Record<string, unknown>>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }, {} as any) as { [K in keyof T]: number };
 
+const defaultUserThemes = {
+  cardsThemes: 4,
+  tableThemes: 5,
+  profileThemes: 3,
+  cardsBackgroundThemes: 6,
+  ebBackgroundThemes: 25,
+  ebTextBoxThemes: 26,
+  ebMenheraThemes: 27,
+  profileImages: 1,
+};
+
+const ensureUserHaveDefaultThemes = (userThemes: DatabaseUserThemesSchema): void => {
+  Object.entries(defaultUserThemes).forEach((entries) => {
+    const [key, value] = entries as [keyof typeof defaultUserThemes, number];
+
+    if (userThemes[key].some((a) => a.id === value)) return;
+
+    userThemes[key].push({ id: value, aquiredAt: Date.now() });
+  });
+};
+
 export {
   capitalize,
   daysToMillis,
@@ -80,6 +102,7 @@ export {
   getCustomThemeField,
   millisToSeconds,
   localizedResources,
+  ensureUserHaveDefaultThemes,
   chunkArray,
   minutesToMillis,
   getElapsedTime,

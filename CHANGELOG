@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.13.1] - 2024-02-17
+
+### Fixed
+
+- Corrigido o comando `/personalizar badges` falhar se o usuário tivesse a badge de **200 votos**.
+- Corrigido os problemas com interações em comandos que tinham algum subcomando em manutenção. 
+- Corrigido o problema em que alguns usuários não possuiam alguns dos temas padrões. - Reportado por @mareys.
+
 ## [5.13.0] - 2024-02-13
 
 ### Added

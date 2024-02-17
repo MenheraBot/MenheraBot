@@ -19,7 +19,6 @@ import {
   sendFollowupMessage,
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests';
-import { getFullCommandUsed } from './getCommandOption';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -30,12 +29,13 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
   cacheRepository.setDiscordUser(bot.transformers.reverse.user(bot, interaction.user));
   if (!interaction.data?.customId) return;
 
-  const [executorIndex, interactionTarget, commandId] = interaction.data.customId.split('|');
+  const [executorIndex, interactionTarget, originalInteractionId] =
+    interaction.data.customId.split('|');
 
-  const commandInfo = await commandRepository.getCommandInfoById(commandId);
+  const originalIntearction = await commandRepository.getOriginalInteraction(originalInteractionId);
   const T = i18next.getFixedT(interaction.user.locale ?? 'pt-BR');
 
-  if (!commandInfo) {
+  if (!originalIntearction) {
     await sendInteractionResponse(interaction.id, interaction.token, {
       type: InteractionResponseTypes.UpdateMessage,
       data: {
@@ -64,7 +64,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
     }).catch(() => null);
   };
 
-  const command = bot.commands.get(commandInfo._id);
+  const command = bot.commands.get(originalIntearction.commandId);
 
   if (!command) return errorReply(T('permissions:UNKNOWN_SLASH'));
 
@@ -75,11 +75,13 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
       'A Menhera está em processo de desligamento! Comandos estão desativados!\n\nMenhera is in the process of shutting down! Commands are disabled!',
     );
 
-  const commandUsed = getFullCommandUsed(interaction);
+  const commandInfo = await commandRepository.getCommandInfo(originalIntearction.commandName);
+
+  if (!commandInfo) return errorReply(T('permissions:UNKNOWN_SLASH'));
 
   if (Array.isArray(commandInfo.maintenance)) {
     const maintenance = commandInfo.maintenance.find((a) =>
-      commandUsed.fullCommand.includes(a.commandStructure),
+      originalIntearction.fullCommandUsed.includes(a.commandStructure),
     );
 
     if (maintenance && interaction.user.id !== bot.ownerId)
@@ -148,7 +150,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
 
         bot.helpers.sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
           embeds: [embed],
-          content: `COMPONENTE UTILIZADO! Index: ${executorIndex}\n${commandId}`,
+          content: `COMPONENTE UTILIZADO! Index: ${executorIndex}\n${originalIntearction.fullCommandUsed}`,
         });
       }
     });

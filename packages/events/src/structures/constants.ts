@@ -68,7 +68,7 @@ export const EMOJIS = {
 
   badge_100: '<:badge_9:960660998350602310>',
   badge_101: '<:MenheraThatsRight:767210250762977280>',
-  badge_102: '<:MenheraNyan:768619670009413652>>',
+  badge_102: '<:MenheraNyan:768619670009413652>',
   badge_103: '<:MenheraChibiLove:768621224959803413>',
   badge_104: '<:MenheraHeart:768619669627994182>',
   badge_105: '<:MenheraKiss:768619669816475678>',
