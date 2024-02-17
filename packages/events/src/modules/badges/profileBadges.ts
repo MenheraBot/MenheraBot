@@ -62,7 +62,7 @@ const profileBadges = {
     description: 'Badge a princípio exclusiva do Nav3ne por já ter sido banido mais de 5 vezes',
   },
   7: {
-    name: 'Desenvolvedor da Menhera',
+    name: 'Melhor Amigo',
     availableStartAt: '------',
     availableStopAt: '------',
     rarityLevel: BadgeRarity.HelpingDevelopment,

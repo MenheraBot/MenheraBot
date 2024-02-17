@@ -43,7 +43,7 @@ import {
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { getCustomThemeField, millisToSeconds, toWritableUtf } from '../../utils/miscUtils';
+import { ensureUserHaveDefaultThemes, getCustomThemeField, millisToSeconds, toWritableUtf } from '../../utils/miscUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import titlesRepository from '../../database/repositories/titlesRepository';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
@@ -755,6 +755,8 @@ const executeThemesCommand = async (
     maxValues: 1,
     options: [],
   });
+
+  ensureUserHaveDefaultThemes(userThemes);
 
   const availableThemes = getUserActiveThemes(userThemes).reduce<Array<IdentifiedData<ThemeFile>>>(
     (p, c) => {

@@ -111,7 +111,9 @@ const setInteractionCreateEvent = (): void => {
 
     const commandInfo = await commandRepository.getCommandInfo(commandName);
 
-    const maintenance = commandInfo?.maintenance;
+    if (!commandInfo) return errorReply(T('permissions:UNKNOWN_SLASH'));
+
+    const { maintenance } = commandInfo;
 
     if (Array.isArray(maintenance)) {
       const maintenanceData = maintenance.find((a) =>
@@ -174,6 +176,13 @@ const setInteractionCreateEvent = (): void => {
 
     bot.commandsInExecution += 1;
 
+    commandRepository.setOriginalInteraction(interaction.id, {
+      fullCommandUsed: commandUsed.fullCommand,
+      originalInteractionId: `${interaction.id}`,
+      commandId: commandInfo?._id,
+      commandName,
+    });
+
     if (!process.env.NOMICROSERVICES)
       getCommandsCounter().inc(
         {
@@ -191,6 +200,8 @@ const setInteractionCreateEvent = (): void => {
             cmd: command.name,
           }),
         );
+
+        commandRepository.deleteOriginalInteraction(interaction.id);
 
         // eslint-disable-next-line no-param-reassign
         if (typeof err === 'string') err = new Error(err);

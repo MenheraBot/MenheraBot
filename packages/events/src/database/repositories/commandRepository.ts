@@ -92,9 +92,44 @@ const setMaintenanceInfo = async (
     .catch(debugError);
 };
 
+interface OriginalInteraction {
+  originalInteractionId: string;
+  fullCommandUsed: string;
+  commandName: string;
+  commandId: string;
+}
+
+const setOriginalInteraction = (
+  interactionId: BigString,
+  originalInteraction: OriginalInteraction,
+): void => {
+  MainRedisClient.setex(
+    `original_interaction:${interactionId}`,
+    900,
+    JSON.stringify(originalInteraction),
+  );
+};
+
+const getOriginalInteraction = async (
+  interactionId: BigString,
+): Promise<null | OriginalInteraction> => {
+  const original = await MainRedisClient.get(`original_interaction:${interactionId}`);
+
+  if (!original) return null;
+
+  return JSON.parse(original);
+};
+
+const deleteOriginalInteraction = (interactionId: BigString): void => {
+  MainRedisClient.del(`original_interaction:${interactionId}`);
+};
+
 export default {
   getCommandInfoById,
   getCommandInfo,
+  getOriginalInteraction,
+  deleteOriginalInteraction,
+  setOriginalInteraction,
   setMaintenanceInfo,
   ensureCommandInfo,
   bulkUpdateCommandsIds,

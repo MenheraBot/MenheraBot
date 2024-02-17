@@ -48,7 +48,7 @@ export default class {
   }
 
   get commandId(): bigint {
-    return this.interaction.data?.id ?? 0n;
+    return this.interaction.id ?? 0n;
   }
 
   get channelId(): bigint {
