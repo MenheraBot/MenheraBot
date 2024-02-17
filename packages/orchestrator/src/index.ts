@@ -5,11 +5,12 @@ import { mergeMetrics } from './prometheusWorkarround';
 import { respondInteraction } from './respondInteraction';
 import { createHttpServer, registerAllRouters } from './server/httpServer';
 import { PrometheusResponse } from './server/routes/prometheus';
+import { getEnviroments } from './getEnviroments';
+import { startDevelopmentServices } from './development';
 
-if (!process.env.ORCHESTRATOR_SOCKET_PATH)
-  throw new Error('ORCHESTRATOR_SOCKET_PATH is not in the env variables');
+const { ORCHESTRATOR_SOCKET_PATH } = getEnviroments(['ORCHESTRATOR_SOCKET_PATH']);
 
-const orchestratorServer = new Server({ path: process.env.ORCHESTRATOR_SOCKET_PATH });
+const orchestratorServer = new Server({ path: ORCHESTRATOR_SOCKET_PATH });
 
 type EventClientConnection = {
   id: string;
@@ -222,11 +223,19 @@ orchestratorServer.on('ready', () => {
   console.log('[ORCHESTRATOR] The service has been started');
   createHttpServer();
   registerAllRouters();
+
+  if (process.env.NODE_ENV === 'development') startDevelopmentServices();
 });
 
 orchestratorServer.start().catch((r) => {
   console.error(r);
   process.exit(1);
+});
+
+process.on('SIGTERM', async () => {
+  console.log('[PROCESS] Received SITGERM. Closing all conections');
+  await orchestratorServer.close(true);
+  process.exit(0);
 });
 
 export { sendEvent };

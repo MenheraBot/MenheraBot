@@ -1,4 +1,4 @@
-import { createBot, startBot } from 'discordeno';
+import { createBot } from 'discordeno';
 
 import { setupEventHandlers } from './events/index';
 import { createIpcConnection } from './structures/orchestratorConnection';
@@ -25,13 +25,6 @@ setupEventHandlers();
 
 await createIpcConnection();
 setupInternals(bot);
-
-if (process.env.NODE_ENV === 'development') {
-  logger.debug('Starting local gateway to receive events');
-  await startBot(bot);
-  // @ts-expect-error Cant send string
-  bot.events.ready('MASTER');
-}
 
 logger.info('[READY] I am ready to process events!');
 
