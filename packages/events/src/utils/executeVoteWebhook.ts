@@ -55,18 +55,7 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
     }
   }
 
-  const embed = createEmbed({
-    title: embedTitle,
-    description: embedDescription,
-    color: 0x7e40e9,
-    image: { url: 'https://i.imgur.com/5XaGRDu.jpg' },
-    thumbnail: { url: 'https://i.imgur.com/qtM9T9C.jpg' },
-  });
-
-  const userDM = await bot.helpers.getDmChannel(userId).catch(debugError);
-
-  if (userDM)
-    bot.helpers.sendMessage(userDM.id, { embeds: [embed] }).catch((e) => debugError(e, false));
+  logger.logSwitch(bot, 'After calculations');
 
   const updateData: UpdateQuery<DatabaseUserSchema> = {
     $inc: {
@@ -81,6 +70,8 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
 
   await userRepository.updateUserWithSpecialData(userId, updateData);
 
+  logger.logSwitch(bot, 'After Special data');
+
   await postTransaction(
     `${bot.id}`,
     `${userId}`,
@@ -88,6 +79,31 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
     'estrelinhas',
     ApiTransactionReason.VOTE_THANK,
   );
+
+  logger.logSwitch(bot, 'After transaction');
+
+  const embed = createEmbed({
+    title: embedTitle,
+    description: embedDescription,
+    color: 0x7e40e9,
+    image: { url: 'https://i.imgur.com/5XaGRDu.jpg' },
+    thumbnail: { url: 'https://i.imgur.com/qtM9T9C.jpg' },
+  });
+
+  const userDM = await bot.helpers.getDmChannel(userId).catch(debugError);
+
+  logger.logSwitch(bot, 'After getting user dm ID: ', userDM?.id);
+
+  if (userDM)
+    bot.helpers.sendMessage(userDM.id, { embeds: [embed] }).catch((e) => debugError(e, false));
+
+  logger.logSwitch(bot, 'After sending user DM');
+
+  if (bot.prodLogSwitch) {
+    const afterAllUser = await userRepository.ensureFindUser(userId);
+
+    logger.logSwitch(bot, 'the user after all', afterAllUser);
+  }
 };
 
 export { executeVoteWebhook };
