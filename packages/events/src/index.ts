@@ -1,4 +1,4 @@
-import { createBot } from 'discordeno';
+import { createBot, startBot } from 'discordeno';
 
 import { setupEventHandlers } from './events/index';
 import { createIpcConnection } from './structures/orchestratorConnection';
@@ -27,6 +27,13 @@ await createIpcConnection();
 setupInternals(bot);
 
 logger.info('[READY] I am ready to process events!');
+
+if (process.env.NODE_ENV === 'development') {
+  await startBot(bot);
+
+  // @ts-expect-error Not expected string here
+  bot.events.ready(bot, 'MASTER');
+}
 
 if (process.env.NODE_ENV === 'production') updateCommandsOnApi();
 

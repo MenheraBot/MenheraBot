@@ -6,7 +6,6 @@ import { respondInteraction } from './respondInteraction';
 import { createHttpServer, registerAllRouters } from './server/httpServer';
 import { PrometheusResponse } from './server/routes/prometheus';
 import { getEnviroments } from './getEnviroments';
-import { startDevelopmentServices } from './development';
 
 const { ORCHESTRATOR_SOCKET_PATH } = getEnviroments(['ORCHESTRATOR_SOCKET_PATH']);
 
@@ -223,8 +222,6 @@ orchestratorServer.on('ready', () => {
   console.log('[ORCHESTRATOR] The service has been started');
   createHttpServer();
   registerAllRouters();
-
-  if (process.env.NODE_ENV === 'development') startDevelopmentServices();
 });
 
 orchestratorServer.start().catch((r) => {

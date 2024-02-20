@@ -18,10 +18,8 @@
     "typecheck": " tsc --project tsconfig.json --noEmit",
     "print-version": "echo version=$npm_package_version",
     "start": "VERSION=$npm_package_version NODE_ENV=production node --es-module-specifier-resolution=node --no-warnings .",
-    "dev": "VERSION=$npm_package_version NODE_ENV=development node --es-module-specifier-resolution=node --no-warnings -r dotenv/config .",
-    "beta": "VERSION=$npm_package_version NODE_ENV=development node --es-module-specifier-resolution=node --no-warnings .",
-    "dev:nomicroservices": "VERSION=$npm_package_version NODE_ENV=development NOMICROSERVICES=true node --es-module-specifier-resolution=node --no-warnings -r dotenv/config ."
-  },
+    "dev": "VERSION=$npm_package_version NODE_ENV=development node --es-module-specifier-resolution=node --no-warnings -r dotenv/config ."
+   },
   "dependencies": {
     "@sentry/node": "^7.77.0",
     "axios": "^1.6.0",
