@@ -27,20 +27,12 @@ const characterPages = ['VITALITY', 'ABILITY', 'INVENTORY', 'LOCATION'] as const
 
 type Pages = (typeof characterPages)[number];
 
-type ReturnButtons = [
-  ButtonComponent,
-  ButtonComponent,
-  ButtonComponent,
-  ButtonComponent,
-  ButtonComponent,
-];
-
 const createCharacterNaviagtionButtons = (
   ctx: InteractionContext,
   current: Pages,
   selectedColor: string,
   userId: BigString,
-): ReturnButtons =>
+): [ButtonComponent] =>
   characterPages.map((a) =>
     createButton({
       label: a,
@@ -48,7 +40,7 @@ const createCharacterNaviagtionButtons = (
       disabled: a === current,
       customId: createCustomId(0, ctx.user.id, ctx.commandId, userId, a, selectedColor),
     }),
-  ) as ReturnButtons;
+  ) as [ButtonComponent];
 
 const createCharacterEmbed = (
   user: User,

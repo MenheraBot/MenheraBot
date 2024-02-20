@@ -38,3 +38,5 @@ export const Items: Record<number, AvailableItems> = {
     buyValue: 5,
   },
 };
+
+export const getItem = (itemId: number): AvailableItems => Items[itemId];
