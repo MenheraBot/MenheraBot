@@ -96,7 +96,6 @@ interface OriginalInteraction {
   originalInteractionId: string;
   fullCommandUsed: string;
   commandName: string;
-  commandId: string;
 }
 
 const setOriginalInteraction = (

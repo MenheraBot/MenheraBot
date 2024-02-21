@@ -20,7 +20,7 @@ const MaintenanceCommand = createCommand({
       name: 'motivo',
       description: 'Motivo da manutencao',
       type: ApplicationCommandOptionTypes.String,
-      required: true,
+      required: false,
     },
   ],
   devsOnly: true,
@@ -28,9 +28,9 @@ const MaintenanceCommand = createCommand({
   authorDataFields: [],
   execute: async (ctx, finishCommand) => {
     const fullCommand = ctx.getOption<string>('comando', false, true);
-    const [command] = fullCommand.split(' ');
+    const [commandName] = fullCommand.split(' ');
 
-    const cmd = bot.commands.get(command);
+    const cmd = bot.commands.get(commandName);
 
     if (!cmd) return finishCommand(ctx.makeMessage({ content: 'Esse comando não existe' }));
 
@@ -39,7 +39,7 @@ const MaintenanceCommand = createCommand({
     if (!commandMaintenance)
       return finishCommand(ctx.makeMessage({ content: 'Esse comando não está na db' }));
 
-    const reason = ctx.getOption<string>('motivo', false, true);
+    const reason = ctx.getOption<string>('motivo', false) ?? '_Sem motivo informado_';
 
     const currentMaintenances = Array.isArray(commandMaintenance.maintenance)
       ? commandMaintenance.maintenance
@@ -60,9 +60,11 @@ const MaintenanceCommand = createCommand({
     });
 
     await ctx.makeMessage({
-      content: `Atualizando o status de manutenção do comando ${
+      content: `Atualizando o status de manutenção do comando **/${
         cmd.name
-      }\n\n**Novo Status:** ${!commandMaintenance.maintenance}\n**Motivo:** ${reason}`,
+      }**\n\n**Cadeia de manutenção:**\n ${currentMaintenances
+        .map((a) => `- \`${a.commandStructure}\` - ${a.reason}`)
+        .join('\n')}`,
     });
 
     finishCommand();
