@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { DiscordInteraction } from 'discordeno/*';
+import { DiscordInteraction } from 'discordeno';
 import { Connection, Server } from 'net-ipc';
 import { mergeMetrics } from './prometheusWorkarround';
 import { respondInteraction } from './respondInteraction';
