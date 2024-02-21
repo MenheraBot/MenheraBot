@@ -23,7 +23,6 @@ import farmerRepository from '../../database/repositories/farmerRepository';
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
 import { executeSellPlant, receiveModal } from '../shop/sellPlants';
 import { InteractionContext } from '../../types/menhera';
-import commandRepository from '../../database/repositories/commandRepository';
 import { getSiloLimits } from './siloUtils';
 import cacheRepository from '../../database/repositories/cacheRepository';
 
@@ -209,8 +208,6 @@ const buildSellPlantsMessage = async (
     color: hexStringToNumber(embedColor),
   });
 
-  const commandId = await commandRepository.getCommandInfo('fazendinha');
-
   ctx.makeMessage({
     embeds: [embed],
     components: [
@@ -219,13 +216,7 @@ const buildSellPlantsMessage = async (
           options,
           minValues: 1,
           maxValues: options.length >= 5 ? 5 : options.length,
-          customId: createCustomId(
-            2,
-            ctx.user.id,
-            commandId?.discordId ?? ctx.commandId,
-            'SHOW_MODAL',
-            embedColor,
-          ),
+          customId: createCustomId(2, ctx.user.id, ctx.commandId, 'SHOW_MODAL', embedColor),
         }),
       ]),
     ],
