@@ -64,7 +64,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
     }).catch(() => null);
   };
 
-  const command = bot.commands.get(originalIntearction.commandId);
+  const command = bot.commands.get(originalIntearction.commandName);
 
   if (!command) return errorReply(T('permissions:UNKNOWN_SLASH'));
 
@@ -84,7 +84,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
       originalIntearction.fullCommandUsed.includes(a.commandStructure),
     );
 
-    if (maintenance && interaction.user.id !== bot.ownerId)
+    if (maintenance)
       return errorReply(
         T('events:maintenance', {
           reason: maintenance.reason,

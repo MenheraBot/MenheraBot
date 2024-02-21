@@ -120,7 +120,7 @@ const setInteractionCreateEvent = (): void => {
         commandUsed.fullCommand.includes(a.commandStructure),
       );
 
-      if (maintenanceData /*  && interaction.user.id !== bot.ownerId */)
+      if (maintenanceData)
         return errorReply(
           T('events:maintenance', {
             reason: maintenanceData.reason,
@@ -179,7 +179,6 @@ const setInteractionCreateEvent = (): void => {
     commandRepository.setOriginalInteraction(interaction.id, {
       fullCommandUsed: commandUsed.fullCommand,
       originalInteractionId: `${interaction.id}`,
-      commandId: commandInfo?._id,
       commandName,
     });
 

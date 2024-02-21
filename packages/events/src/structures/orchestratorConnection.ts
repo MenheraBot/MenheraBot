@@ -103,7 +103,7 @@ const createIpcConnection = async (): Promise<void> => {
       case 'TELL_ME_USERS': {
         bot.commandsInExecution += 1;
         const result = await Promise.all(
-          msg.data.users.map((e: string) => cacheRepository.getDiscordUser(e, true)),
+          msg.data.users.map((e: string) => cacheRepository.getDiscordUser(e, false)),
         );
 
         ack(

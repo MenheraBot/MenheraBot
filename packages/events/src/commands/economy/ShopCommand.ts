@@ -12,7 +12,7 @@ import { sellHunts } from '../../modules/shop/sellHunts';
 import { sellInfo } from '../../modules/shop/sellInfo';
 import { transactionableCommandOption } from '../../structures/constants';
 import { buySeeds, handleBuySeedsInteractions } from '../../modules/shop/buySeeds';
-import { buildSellPlantsMessage } from '../../modules/fazendinha/displaySilo';
+import { buildSellPlantsMessage, handleButtonAction } from '../../modules/fazendinha/displaySilo';
 import farmerRepository from '../../database/repositories/farmerRepository';
 
 const ShopCommand = createCommand({
@@ -244,6 +244,10 @@ const ShopCommand = createCommand({
     executeBuyImagesSelectComponent,
     handleBuySeedsInteractions,
     executeActivateTheme,
+    // Due to new component cusotmId system, shopCommand need to handle the button action at index 8 to match Fazendinha's version
+    handleButtonAction,
+    handleButtonAction,
+    handleButtonAction,
   ],
   execute: async (ctx, finishCommand) => {
     const subCommandGroup = ctx.getSubCommandGroup();

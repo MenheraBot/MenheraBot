@@ -189,6 +189,7 @@ const FazendinhaCommand = createCommand({
     handleUpgradeSilo,
     handleDissmissShop,
     executeButtonAction,
+    handleButtonAction,
   ],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
