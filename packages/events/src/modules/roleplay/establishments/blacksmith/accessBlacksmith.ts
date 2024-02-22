@@ -1,7 +1,6 @@
 import { ActionRow, ButtonComponent, ButtonStyles } from 'discordeno/types';
 import { Embed } from 'discordeno';
 import { createEmbed, hexStringToNumber } from '../../../../utils/discord/embedUtils';
-import roleplayRepository from '../../../../database/repositories/roleplayRepository';
 import { DropItem, getItem } from '../../data/items';
 import { InteractionContext } from '../../../../types/menhera';
 import {
@@ -11,11 +10,12 @@ import {
   createSelectMenu,
 } from '../../../../utils/discord/componentUtils';
 import ComponentInteractionContext from '../../../../structures/command/ComponentInteractionContext';
-import battleRepository from '../../../../database/repositories/battleRepository';
-import { MessageFlags } from '../../../../utils/discord/messageUtils';
 import { DatabaseCharacterSchema } from '../../../../types/database';
 import { ModalInteraction, SelectMenuInteraction } from '../../../../types/interaction';
 import { displaySellItemsModal, executeSellItem } from './sellItems';
+import battleRepository from '../../../../database/repositories/battleRepository';
+import { MessageFlags } from '../../../../utils/discord/messageUtils';
+import roleplayRepository from '../../../../database/repositories/roleplayRepository';
 
 const availableLocales = ['SELL', 'BUY'] as const;
 
@@ -71,16 +71,14 @@ const getPaginationInfo = (
 
       if (isValidSelectMenu) components.push(createActionRow([selectMenu]));
 
-      embed.footer = {
-        text: ctx.locale(
-          `commands:acessar.blacksmith.sell.${isValidSelectMenu ? 'select' : 'no-items'}`,
-        ),
-      };
+      embed.description += `\n\n${ctx.locale(
+        `commands:acessar.blacksmith.sell.${isValidSelectMenu ? 'select' : 'no-items'}`,
+      )}`;
 
       break;
     }
     case 'BUY':
-      embed.footer = { text: 'HAHAHA' };
+      embed.description = 'HAHAHA';
       break;
   }
 

@@ -28,6 +28,7 @@ const getStatusDisplayFields = (
   {
     name: ctx.locale('commands:aventura.enemy-stats', {
       level: enemy.level,
+      name: 'CREATE ENEMIES.JSON',
     }),
     value: getEnemyStatusDisplay(ctx, enemy),
     inline: true,

@@ -8,6 +8,7 @@ import {
   editOriginalInteractionResponse,
   sendFollowupMessage,
 } from '../../utils/discord/interactionRequests';
+import { injectRoleplayWarnIfNeeded } from './ChatInputInteractionContext';
 
 export default class {
   public i18n: TFunction;
@@ -21,6 +22,8 @@ export default class {
   }
 
   async followUp(options: InteractionCallbackData): Promise<void> {
+    await injectRoleplayWarnIfNeeded(this, options);
+
     await sendFollowupMessage(this.interactionToken, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: options,
@@ -36,6 +39,8 @@ export default class {
   }
 
   async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
+    await injectRoleplayWarnIfNeeded(this, options);
+
     await editOriginalInteractionResponse(this.interactionToken, options).catch(debugError);
   }
 }
