@@ -5,7 +5,12 @@
     "money": "Dragonnys",
     "location": "Current location",
     "vitality": "Vitality",
+    "effects": "Effect",
     "beta-warn": "The RPG is in its beta version. Data can be deleted at any time.",
     "unlock-ability": "With the powers of the Elemental Elder Dragons you learn a new skill: **{{name}}**. Go to battle!"
+  },
+  "effects": {
+    "heal": "Heal",
+    "damage": "Poison"
   }
 }

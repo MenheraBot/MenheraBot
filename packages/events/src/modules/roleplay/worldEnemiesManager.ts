@@ -9,7 +9,7 @@ const getCurrentAvailableEnemy = async (
 ): Promise<Enemy | null> => {
   const availableEnemies = await roleplayRepository.getEnemiesInArea(location);
 
-  if (availableEnemies.length === 0) return null;
+  if (availableEnemies.length <= 0) return null;
 
   return randomFromArray(availableEnemies);
 };
@@ -26,7 +26,7 @@ const getCompleteWorld = async (): Promise<number[][]> => {
 
     for (let j = 0; j < TOTAL_MAP_SIZE[1]; j++) {
       const areaName = `${i}:${j}`;
-      let enemies = currentEnemies[areaName];
+      let enemies = currentEnemies[areaName] as number | undefined;
       const resurgeCooldown = currentEnemies[`r:${areaName}`];
 
       if (!enemies && (!resurgeCooldown || Date.now() >= resurgeCooldown)) {

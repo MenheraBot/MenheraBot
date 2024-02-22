@@ -1188,9 +1188,9 @@
   "aventura": {
     "confirm-join": "Entrar na batalha?",
     "your-stats": "Seus status",
-    "user-stats-display": ":heart: **Vida**: {{life}}\n:zap: **Energia**: {{energy}}\n:dagger: **Dano**: {{damage}}",
+    "user-stats-display": ":heart: **Vida**: {{life}}\n:zap: **Energia**: {{energy}}\n:dagger: **Dano**: {{damage}}{{effects}}",
     "enemy-stats": "Status de {{name}} Lvl. {{level}}",
-    "enemy-stats-display": ":heart: **Vida**: {{life}}\n:dagger: **Dano**: {{damage}}",
+    "enemy-stats-display": ":heart: **Vida**: {{life}}\n:dagger: **Dano**: {{damage}}{{effects}}",
     "fight": "Lutar",
     "adventure-not-found": "Que aventura é essa?... Não lembro",
     "in-battle": "Tu já está em uma aventura, porque gostaria de ir em outra? Mate seu inimigo!",
@@ -1204,6 +1204,7 @@
     },
     "battle": {
       "title": "Estatísticas da Batalha",
+      "effect": "{{type}} - {{amount}} {{dagger}} {{turns}}x",
       "kill": "Mate o teu inimigo!",
       "actions": "Ações Disponíveis",
       "energy-cost": "Custo de energia: {{cost}} :zap:",

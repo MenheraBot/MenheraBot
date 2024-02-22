@@ -1199,6 +1199,7 @@
     },
     "battle": {
       "title": "Battle Statistics",
+      "effect": "{{type}} - {{amount}} {{dagger}} {{turns}}x",
       "kill": "Kill your enemy!",
       "actions": "Available Actions",
       "energy-cost": "Energy cost: {{cost}} :zap:",
