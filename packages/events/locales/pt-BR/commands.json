@@ -1195,5 +1195,18 @@
       "description": "Os Dragões Anciões Elementais sentiram o seu teletransporte para o novo mundo. Sabendo de toda a sua trajetória, eles gostariam de agraciar a sua chegada. Você possui a opção de escolher qualquer uma das habilidades abaixo, para ser a sua primeira habilidade.",
       "already-learned": "Tu já aprendeu uma habilidade essencial. Não seja desonesto."
     }
+  },
+  "acessar": {
+    "igreja": {
+      "title": "Pontifícia Igreja de Boleham",
+      "praying": "Que a bênçãos dos Dragões esteja contigo.",
+      "no-needed": "Os Dragões Anciões Elementais são criaturas esnobes. Eles não te darão forças estando tão saudável assim",
+      "recovered": "Suas energias foram revigoradas pelo poder dos Dragões Anciões Elementais.",
+      "start-praying": "Revigorar-se",
+      "stop-praying": "Sair da Igreja",
+      "description": "Entre na Igreja para recuperar as suas forças",
+      "other-action": "Para entrar na Igreja é necessário estar totalmente focado. Não é possível rezar fazendo outra coisa.",
+      "in-battle": "Tu tá no meio de uma batalha, não é possível fugir daí para entrar na Igreja. Batalhe!"
+    }
   }
 }

@@ -1190,5 +1190,18 @@
       "description": "The Elemental Elder Dragons sensed your teleport to the new world. Knowing your entire journey, they would like to grace your arrival. You have the option to choose any of the skills below to be your first skill.",
       "already-learned": "You have already learned an essential skill. Don't be dishonest."
     }
+  },
+  "acessar": {
+    "igreja": {
+      "title": "Pontifical Church of Boleham",
+      "praying": "May the blessings of the Dragons be with you.",
+      "no-needed": "Elemental Elder Dragons are snobbish creatures. They won't give you strength when you're this healthy",
+      "recovered": "Their energies have been reinvigorated by the power of the Elemental Elder Dragons.",
+      "start-praying": "Start praying",
+      "stop-praying": "Leave the Church",
+      "description": "Enter the Church to regain your strength",
+      "other-action": "To enter the Church you need to be totally focused. It is not possible to pray while doing anything else.",
+      "in-battle": "You're in the middle of a battle, it's not possible to escape to enter the Church. Battle!"
+    }
   }
 }

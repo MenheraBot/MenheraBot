@@ -15,7 +15,7 @@ import ComponentInteractionContext from '../../../../structures/command/Componen
 const executeDisplayChurch = async (ctx: ChatInputInteractionContext): Promise<void> => {
   if (await battleRepository.isUserInBattle(ctx.user.id))
     return ctx.makeMessage({
-      content: `Não é possível entrar na igreja enquanto está em uma batalha`,
+      content: ctx.prettyResponse('chick', 'commands:acessar.igreja.in-battle'),
       flags: MessageFlags.EPHEMERAL,
     });
 
@@ -23,13 +23,13 @@ const executeDisplayChurch = async (ctx: ChatInputInteractionContext): Promise<v
 
   if (![Action.NONE, Action.CHURCH].includes(character.currentAction.type))
     return ctx.makeMessage({
-      content: `Não é possível entrar na igreja enquanto você está fazendo outra coisa`,
+      content: ctx.prettyResponse('error', 'commands:acessar.igreja.other-action'),
       flags: MessageFlags.EPHEMERAL,
     });
 
   const embed = createEmbed({
-    title: 'Pontifícia Igreja de Boleham',
-    description: `Entre na igreja para revigorar suas forças`,
+    title: ctx.prettyResponse('church', 'commands:acessar.igreja.title'),
+    description: ctx.locale('commands:acessar.igreja.description'),
     color: hexStringToNumber(ctx.authorData.selectedColor),
   });
 
@@ -38,7 +38,7 @@ const executeDisplayChurch = async (ctx: ChatInputInteractionContext): Promise<v
   const disableClick = !inChurch && character.life >= 95 && character.energy >= 95;
 
   const confirmButton = createButton({
-    label: inChurch ? 'Sair da igreja' : 'Revigorar-se',
+    label: ctx.locale(`commands:acessar.igreja.${inChurch ? 'stop' : 'start'}-praying`),
     style: inChurch ? ButtonStyles.Secondary : ButtonStyles.Success,
     disabled: disableClick,
     customId: createCustomId(1, ctx.user.id, ctx.commandId),
@@ -50,16 +50,18 @@ const executeDisplayChurch = async (ctx: ChatInputInteractionContext): Promise<v
 const enterChurch = async (ctx: ComponentInteractionContext): Promise<void> => {
   if (await battleRepository.isUserInBattle(ctx.user.id))
     return ctx.makeMessage({
-      content: `Não é possível entrar na igreja enquanto está em uma batalha`,
-      flags: MessageFlags.EPHEMERAL,
+      content: ctx.prettyResponse('chick', 'commands:viajar.in-battle'),
+      components: [],
+      embeds: [],
     });
 
   const character = await roleplayRepository.getCharacter(ctx.user.id);
 
   if (![Action.NONE, Action.CHURCH].includes(character.currentAction.type))
     return ctx.makeMessage({
-      content: `Não é possível entrar na igreja enquanto você está fazendo outra coisa`,
-      flags: MessageFlags.EPHEMERAL,
+      content: ctx.prettyResponse('error', 'commands:acessar.igreja.other-action'),
+      components: [],
+      embeds: [],
     });
 
   if (character.currentAction.type === Action.CHURCH) {
@@ -70,7 +72,7 @@ const enterChurch = async (ctx: ComponentInteractionContext): Promise<void> => {
     });
 
     return ctx.makeMessage({
-      content: 'Tu revigorou tuas forças!',
+      content: ctx.prettyResponse('success', 'commands:acessar.igreja.recovered'),
       embeds: [],
       components: [],
     });
@@ -79,16 +81,21 @@ const enterChurch = async (ctx: ComponentInteractionContext): Promise<void> => {
   const enableHeal = character.life < 95 || character.energy < 95;
 
   if (!enableHeal)
-    return ctx.respondInteraction({
-      content: 'Tua vitalidade ta tri, não precisa descança',
-      flags: MessageFlags.EPHEMERAL,
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:acessar.igreja.no-needed'),
+      embeds: [],
+      components: [],
     });
 
   await roleplayRepository.updateCharacter(ctx.user.id, {
     currentAction: { type: Action.CHURCH, startAt: Date.now() },
   });
 
-  ctx.makeMessage({ content: 'Tu começou a descançar na igreja', embeds: [], components: [] });
+  ctx.makeMessage({
+    content: ctx.prettyResponse('success', 'commands:acessar.igreja.praying'),
+    embeds: [],
+    components: [],
+  });
 };
 
 export { executeDisplayChurch, enterChurch };

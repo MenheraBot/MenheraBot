@@ -85,6 +85,7 @@ export const EMOJIS = {
   sword: '⚔️',
   attributes: '🎭',
   chick: '🐥',
+  church: '⛪',
 };
 
 export const COLORS = {
