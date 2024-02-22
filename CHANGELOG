@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Fixed
+
+- As interações do comando `/poker` foram corrigidas.
+
 ### Removed
 
 - O texto que aparecia em um usuário sem títulos no top foi removido.

@@ -334,7 +334,7 @@ const setupGame = async (
   );
 
   const match: PokerMatch = {
-    matchId: `${ctx.interaction.id}`,
+    matchId: `${ctx.commandId}`,
     masterId: players[0],
     language: (ctx.interaction.guildLocale as 'pt-BR') ?? 'pt-BR',
     embedColor,

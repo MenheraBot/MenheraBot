@@ -11,8 +11,8 @@ const getAdventure = async (adventureId: string): Promise<PlayerVsEnviroment | n
   return JSON.parse(fromRedis);
 };
 
-const setAdventure = async (adventureId: string, adventure: PlayerVsEnviroment): Promise<void> => {
-  await MainRedisClient.setex(`adventure:${adventureId}`, 900, JSON.stringify(adventure));
+const setAdventure = async (adventure: PlayerVsEnviroment): Promise<void> => {
+  await MainRedisClient.setex(`adventure:${adventure.id}`, 900, JSON.stringify(adventure));
 };
 
 const deleteAdventure = async (adventureId: string): Promise<void> => {

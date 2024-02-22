@@ -3,8 +3,6 @@ import { bot } from '../../..';
 import { getOrchestratorClient } from '../../../structures/orchestratorConnection';
 import { BattleTimer, BattleTimerActionType } from '../types';
 import { executeEnemyAttack } from './executeEnemyAttack';
-import commandRepository from '../../../database/repositories/commandRepository';
-import { DatabaseCommandSchema } from '../../../types/database';
 import FollowUpInteractionContext from '../../../structures/command/FollowUpInteractionContext';
 import { executeEntitiesEffects } from './executeEffects';
 import { updateBattleMessage } from './displayBattleState';
@@ -20,21 +18,19 @@ const executeForceFinish = async (timer: BattleTimer) => {
   const battleData = await battleRepository.getAdventure(timer.battleId);
   if (!battleData) return;
 
-  const adventureCommandId = (await commandRepository.getCommandInfo(
-    'aventura',
-  )) as DatabaseCommandSchema;
-
   const ctx = new FollowUpInteractionContext(
     battleData.interactionToken,
-    adventureCommandId.discordId,
+    battleData.id,
     battleData.language,
   );
 
   battleData.user.life = 0;
 
   const embed = createEmbed({
-    title: 'Você foi morto',
-    description: `O tempo máximo de ${MINUTES_TO_FORCE_FINISH_BATTLE} minutos de batalha foi atingido. Você foi morto`,
+    title: ctx.locale('commands:aventura.battle.kill'),
+    description: ctx.locale('commands:aventura.battle.timeout-killed', {
+      minutes: MINUTES_TO_FORCE_FINISH_BATTLE,
+    }),
   });
 
   const character = await roleplayRepository.getCharacter(battleData.user.id);
@@ -46,13 +42,9 @@ const executeTimeoutChoice = async (timer: BattleTimer) => {
   const battleData = await battleRepository.getAdventure(timer.battleId);
   if (!battleData) return;
 
-  const adventureCommandId = (await commandRepository.getCommandInfo(
-    'aventura',
-  )) as DatabaseCommandSchema;
-
   const ctx = new FollowUpInteractionContext(
     battleData.interactionToken,
-    adventureCommandId.discordId,
+    battleData.id,
     battleData.language,
   );
 

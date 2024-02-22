@@ -32,7 +32,7 @@ const createCharacterNaviagtionButtons = (
 ): [ButtonComponent] =>
   characterPages.map((a) =>
     createButton({
-      label: ctx.locale(`roleplay:common.${current}`),
+      label: ctx.locale(`roleplay:common.${a}`),
       style: ButtonStyles.Primary,
       disabled: a === current,
       customId: createCustomId(0, ctx.user.id, ctx.commandId, userId, a, selectedColor),

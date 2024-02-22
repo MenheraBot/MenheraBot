@@ -86,10 +86,9 @@ const AdventureCommand = createCommand({
         color: hexStringToNumber(ctx.authorData.selectedColor),
         fields: availableAbilities.map(([id, ability]) => ({
           name: ctx.locale(`abilities:${id as '1'}.name`),
-          // FIXME: Change effect display
-          value: `Efeitos: ${JSON.stringify(ability.effects)}\nCusto de Energia: ${
-            ability.energyCost
-          }`,
+          value: ctx.locale('commands:aventura.battle.energy-cost', {
+            cost: ability.energyCost,
+          }),
           inline: true,
         })),
       });

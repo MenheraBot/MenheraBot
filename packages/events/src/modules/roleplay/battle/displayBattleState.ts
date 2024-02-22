@@ -76,8 +76,9 @@ const displayBattleControlMessage = async (
     }),
     fields: choices.map((a) => ({
       name: a.name,
-      // FIXME: Change effect display
-      value: `Efeitos: ${JSON.stringify(a.effects)}\nCusto de Energia: ${a.energyCost}`,
+      value: ctx.locale('commands:aventura.battle.energy-cost', {
+        cost: a.energyCost,
+      }),
       inline: true,
     })),
   });
@@ -144,7 +145,7 @@ const updateBattleMessage = async (
 
   if (endReasons.length > 0) return finishAdventure(ctx, adventure, endReasons, extraQuery);
 
-  await battleRepository.setAdventure(adventure.id, adventure);
+  await battleRepository.setAdventure(adventure);
 
   displayBattleControlMessage(ctx, adventure);
 };

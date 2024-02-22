@@ -60,7 +60,7 @@ const startAdventure = async (
   await Promise.all([
     roleplayRepository.decreaseEnemyFromArea(character.location),
     battleRepository.setUserInBattle(character.id),
-    battleRepository.setAdventure(`${character.id}`, adventure),
+    battleRepository.setAdventure(adventure),
   ]);
 
   startBattleTimer(`finish_battle:${adventure.id}`, {

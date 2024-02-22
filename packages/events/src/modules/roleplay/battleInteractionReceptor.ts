@@ -41,8 +41,7 @@ const battleInteractionReceptor = async (ctx: ComponentInteractionContext): Prom
   }
 
   if (action === 'USE_SKILL') {
-    const [, adventureId] = ctx.sentData;
-    const currentBattle = await battleRepository.getAdventure(adventureId);
+    const currentBattle = await battleRepository.getAdventure(`${ctx.commandId}`);
 
     if (!currentBattle) return unknownAdventure(ctx);
 

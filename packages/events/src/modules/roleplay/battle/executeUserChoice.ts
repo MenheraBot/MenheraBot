@@ -19,7 +19,7 @@ const executeUserChoice = async (
 
   if (selectedAbility.energyCost > adventure.user.energy)
     return ctx.respondInteraction({
-      content: 'Não tem energia para usar',
+      content: ctx.prettyResponse('error', 'commands:aventura.battle.no-energy'),
       flags: MessageFlags.EPHEMERAL,
     });
 
