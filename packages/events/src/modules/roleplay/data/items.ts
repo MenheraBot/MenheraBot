@@ -7,7 +7,6 @@ enum ItemType {
 
 interface BaseItem {
   type: ItemType;
-  $devName: string;
 }
 
 export interface DropItem extends BaseItem {
@@ -24,20 +23,20 @@ interface ArmorItem extends BaseItem {
 
 type AvailableItems = DropItem | ArmorItem;
 
-export const Items: Record<number, AvailableItems> = {
+export const Items = {
   1: {
     type: ItemType.Drop,
-    $devName: 'Pele de goblin',
     sellValue: 1,
     sellMinAmount: 3,
   },
   2: {
     type: ItemType.Armor,
-    $devName: 'Cota de malha',
     armor: 4,
     buyValue: 5,
   },
 };
+
+export type InventoryItemID = keyof typeof Items;
 
 export const getItem = <T extends AvailableItems>(itemId: number | string): T =>
   Items[itemId as '1'] as T;

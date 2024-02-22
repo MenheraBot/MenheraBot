@@ -1121,7 +1121,7 @@
       "deliver-embed-name": "Delivery {{index}}",
       "deliver-embed-name-finished": "~~Delivery {{index}}~~ ✅",
       "deliver-embed-field": "Stars: **{{award}}** :star:\nExperience: **{{xp}}**",
-      "deliver-embed-field-need":"Needs: **{{amount}}x** {{emoji}}",
+      "deliver-embed-field-need": "Needs: **{{amount}}x** {{emoji}}",
       "description": "### Once a day the delivery truck will appear at your farm to pick up deliveries.\n### Completing all deliveries before the truck leaves will give you an additional **{{bonus}}** :star: stars\n\n### The truck will leave <t:{{unix}}:R>"
     },
     "field-action": {
@@ -1157,5 +1157,27 @@
     "not-your-title": "You need to have the title you want to equip",
     "unknown-title": "This title does not exist!",
     "success": "O teu título foi alterado com sucesso!"
+  },
+  "personagem": {
+    "embed-title": "{{user}}'s Character",
+    "no-items": "No items in inventory",
+    "display-item": "**{{amount}}x** - {{name}}",
+    "no-abilities": "No abilities",
+    "display-ability": "{{name}} - Proficience: {{proficience}}",
+    "in-battle-user": "Unable to obtain **{{name}}**'s status, he is in a battle",
+    "bot-mentioned": "Current technologies do not allow robots to teleport to Boleham's world"
+  },
+  "viajar": {
+    "start-travel": "Start trip",
+    "in-battle": "You can't go on a trip. You're in a battle! Do you wanna run away? lol",
+    "confirm-message": "Are you sure you want to travel to **{{x}}:{{y}}**?\nThis trip will cost {{cost}} {{emoji}} energy.\nYou will arrive at your final destination <t:{{unix}}:R> (<t:{{unix}}>)",
+    "already-there": "You can't travel to that location because you're already there!",
+    "other-action": "It is not possible to start a trip while you are in another activity",
+    "too-tired": "You're too tired to travel to **{{x}}:{{y}}**. To complete the trip, you would need **{{cost}}** {{emoji}} energy, but you only have **{{amount}}** {{emoji}}",
+    "start-travelling": "You started a great journey to **{{x}}:{{y}}**. ETA: <t:{{unix}}>",
+    "embed-title": "Boleham's Map",
+    "enemy-density": "Enemy density",
+    "travelling": "Travelling",
+    "in-travel": "You're on a trip to **{{x}}:{{y}}**. You will arrive at your destination <t:{{unix}}:R> (<t:{{unix}}>)"
   }
 }

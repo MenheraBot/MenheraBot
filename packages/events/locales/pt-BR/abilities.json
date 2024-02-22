@@ -1,0 +1,17 @@
+{
+  "0": {
+    "name": "Ataque básico"
+  },
+  "1": {
+    "name": "Ataque rápido"
+  },
+  "2": {
+    "name": "Sopro flamenjante"
+  },
+  "3": {
+    "name": "Ervas medicinais"
+  },
+  "4": {
+    "name": "Envenenamento"
+  }
+}

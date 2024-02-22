@@ -8,7 +8,7 @@ import {
 import { Embed, User } from 'discordeno/transformers';
 import { createCommand } from '../../structures/command/createCommand';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
-import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getUserStatusDisplay } from '../../modules/roleplay/statusDisplay';
 import { prepareUserToBattle } from '../../modules/roleplay/devUtils';
@@ -16,14 +16,11 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import battleRepository from '../../database/repositories/battleRepository';
 import { InteractionContext } from '../../types/menhera';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { DatabaseCharacterSchema } from '../../types/database';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import cacheRepository from '../../database/repositories/cacheRepository';
-import { EMOJIS } from '../../structures/constants';
-import { Items } from '../../modules/roleplay/data/items';
-import { getAbility } from '../../modules/roleplay/data/abilities';
 
-const characterPages = ['VITALITY', 'ABILITY', 'INVENTORY', 'LOCATION'] as const;
+const characterPages = ['vitality', 'abilities', 'inventory', 'location'] as const;
 
 type Pages = (typeof characterPages)[number];
 
@@ -35,7 +32,7 @@ const createCharacterNaviagtionButtons = (
 ): [ButtonComponent] =>
   characterPages.map((a) =>
     createButton({
-      label: a,
+      label: ctx.locale(`roleplay:common.${current}`),
       style: ButtonStyles.Primary,
       disabled: a === current,
       customId: createCustomId(0, ctx.user.id, ctx.commandId, userId, a, selectedColor),
@@ -43,55 +40,74 @@ const createCharacterNaviagtionButtons = (
   ) as [ButtonComponent];
 
 const createCharacterEmbed = (
+  ctx: InteractionContext,
   user: User,
   character: DatabaseCharacterSchema,
   selectedColor: string,
   currentField: Pages,
 ): Embed => {
   const embed = createEmbed({
-    title: `Personagem de ${getDisplayName(user, false)}`,
+    title: ctx.locale('commands:personagem.embed-title', { user: getDisplayName(user, false) }),
     thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
     color: hexStringToNumber(selectedColor),
-    footer: { text: `Seu dinheiro: ${character.money}` },
   });
 
   switch (currentField) {
-    case 'VITALITY':
+    case 'vitality':
       embed.fields = [
         {
-          name: '🎭 | Atributos',
+          name: ctx.prettyResponse('attributes', 'roleplay:common.vitality'),
           value: getUserStatusDisplay(prepareUserToBattle(character)),
         },
       ];
       break;
-    case 'INVENTORY':
+    case 'inventory':
       embed.fields = [
         {
-          name: `${EMOJIS.chest} | Inventário`,
+          name: ctx.prettyResponse('chest', 'roleplay:common.inventory'),
+          inline: true,
           value:
-            character.inventory.length > 0
-              ? character.inventory
-                  .map((a) => `**${a.amount}x** - ${Items[a.id as 1].$devName}`)
-                  .join('\n')
-              : 'Sem itens no inventário',
+            character.inventory.length === 0
+              ? ctx.prettyResponse('no', 'commands:personagem.no-items')
+              : character.inventory
+                  .map((a) =>
+                    ctx.locale('commands:personagem.display-item', {
+                      amount: a.amount,
+                      name: ctx.locale(`items:${a.id}.name`),
+                    }),
+                  )
+                  .join('\n'),
+        },
+        {
+          name: ctx.prettyResponse('gold', 'roleplay:common.money'),
+          value: `${character.money}`,
+          inline: true,
         },
       ];
+
       break;
-    case 'ABILITY':
+    case 'abilities':
       embed.fields = [
         {
-          name: `${EMOJIS.magic_ball} | Habilidades`,
+          name: ctx.prettyResponse('magic_ball', 'roleplay:common.abilities'),
           value:
             character.abilities.length === 0
-              ? 'Sem Habilidades'
+              ? ctx.locale('commands:personagem.no-abilities')
               : character.abilities
-                  .map((hab) => `${getAbility(hab.id).$devName} - Proficiência: ${hab.proficience}`)
+                  .map((hab) =>
+                    ctx.locale('commands:personagem.display-ability', {
+                      name: ctx.locale(`abilities:${hab.id}.name`),
+                      proficience: hab.proficience,
+                    }),
+                  )
                   .join('\n'),
         },
       ];
       break;
-    case 'LOCATION': {
-      embed.description = `📍 | Sua localização: ${character.location}`;
+    case 'location': {
+      embed.description = `${ctx.prettyResponse('pin', 'roleplay:common.location')}: ${
+        character.location
+      }`;
     }
   }
 
@@ -99,31 +115,29 @@ const createCharacterEmbed = (
 };
 
 const navigateThrough = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [userId, page, selectedColor] = ctx.sentData;
+  const [userId, page, selectedColor] = ctx.sentData as [string, Pages, string];
 
   const isUserInBattle = await battleRepository.isUserInBattle(userId);
 
+  const user = await cacheRepository.getDiscordUser(userId);
+
+  if (!user) throw new Error(`Unable to retrive discord user for ID ${userId}`);
+
   if (isUserInBattle)
     return ctx.makeMessage({
-      content: `Não é possível ver os status de alguém que está em batalha`,
+      content: ctx.prettyResponse('error', 'commands:personagem.in-battle-user', {
+        name: getDisplayName(user),
+      }),
       flags: MessageFlags.EPHEMERAL,
     });
 
   const character = await roleplayRepository.getCharacter(userId);
 
-  const user = await cacheRepository.getDiscordUser(userId);
+  const embed = createCharacterEmbed(ctx, user, character, selectedColor, page);
 
-  const embed = createCharacterEmbed(
-    user ?? ctx.user,
-    character,
-    selectedColor,
-    page as 'VITALITY',
-  );
-
-  const buttons = createCharacterNaviagtionButtons(ctx, page as 'VITALITY', selectedColor, userId);
+  const buttons = createCharacterNaviagtionButtons(ctx, page, selectedColor, userId);
 
   await ctx.makeMessage({
-    content: `Bem vindo, jogador ${mentionUser(character.id)}!`,
     embeds: [embed],
     components: [createActionRow(buttons)],
   });
@@ -155,29 +169,40 @@ const CharacterCommand = createCommand({
 
     const user = ctx.getOption<User>('jogador', 'users', false) ?? ctx.user;
 
-    if (user.toggles.bot) return ctx.makeMessage({ content: `Não eras, bot nao joga` });
+    if (user.toggles.bot)
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:personagem.bot-mentioned'),
+        flags: MessageFlags.EPHEMERAL,
+      });
 
     const isUserInBattle = await battleRepository.isUserInBattle(user.id);
 
     if (isUserInBattle)
       return ctx.makeMessage({
-        content: `Não é possível ver os status de alguém que está em batalha`,
+        content: ctx.prettyResponse('error', 'commands:personagem.in-battle-user', {
+          name: getDisplayName(user),
+        }),
         flags: MessageFlags.EPHEMERAL,
       });
 
     const character = await roleplayRepository.getCharacter(user.id);
 
-    const embed = createCharacterEmbed(user, character, ctx.authorData.selectedColor, 'VITALITY');
+    const embed = createCharacterEmbed(
+      ctx,
+      user,
+      character,
+      ctx.authorData.selectedColor,
+      'vitality',
+    );
 
     const buttons = createCharacterNaviagtionButtons(
       ctx,
-      'VITALITY',
+      'vitality',
       ctx.authorData.selectedColor,
       user.id,
     );
 
     await ctx.makeMessage({
-      content: `Bem vindo, jogador ${mentionUser(character.id)}!`,
       embeds: [embed],
       components: [createActionRow(buttons)],
     });

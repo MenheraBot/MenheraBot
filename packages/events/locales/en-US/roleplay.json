@@ -1,0 +1,9 @@
+{
+  "common": {
+    "inventory": "Inventory",
+    "abilities": "Abilities",
+    "money": "Money",
+    "location": "Current location",
+    "vitality": "Vitality"
+  }
+}

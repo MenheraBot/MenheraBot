@@ -27,7 +27,7 @@ const executeSelectAbility = async (ctx: ComponentInteractionContext): Promise<v
     });
 
   await roleplayRepository.updateCharacter(ctx.user.id, {
-    abilities: [{ id: Number(selectedAbility), proficience: 0 }],
+    abilities: [{ id: Number(selectedAbility) as 1, proficience: 0 }],
   });
 
   ctx.makeMessage({

@@ -14,7 +14,8 @@ import {
   calculateTravelTime,
   getInTravelMapButtons,
 } from '../../modules/roleplay/mapUtils';
-import { millisToSeconds } from '../../utils/miscUtils';
+import { millisToSeconds, minutesToMillis } from '../../utils/miscUtils';
+import { EMOJIS } from '../../structures/constants';
 
 const numberToEmoji = {
   0: ':zero:',
@@ -36,10 +37,11 @@ const confirmTravel = async (ctx: ComponentInteractionContext): Promise<void> =>
 
   const newLocation: Location = [Number(x), Number(y)];
   const distanceToTravel = calculateTravelDistance(character.location, newLocation);
-  const finishTravelAt = Date.now() + 1000 * 60 * MINUTES_TO_TRAVEL_ONE_BLOCK * distanceToTravel;
+  const finishTravelAt =
+    Date.now() + minutesToMillis(MINUTES_TO_TRAVEL_ONE_BLOCK) * distanceToTravel;
 
   const confirmButton = createButton({
-    label: 'Iniciar viagem',
+    label: ctx.locale('commands:viajar.start-travel'),
     style: ButtonStyles.Success,
     customId: createCustomId(1, ctx.user.id, ctx.commandId, x, y),
   });
@@ -47,11 +49,13 @@ const confirmTravel = async (ctx: ComponentInteractionContext): Promise<void> =>
   ctx.makeMessage({
     components: [createActionRow([confirmButton])],
     embeds: [],
-    content: `Tu tem certeza de que quer iniciar uma viagem para **${x}:${y}**?\nEssa viagem custará ${
-      distanceToTravel * 10
-    } de energia.\nTu vai chegar no teu destino final <t:${millisToSeconds(
-      finishTravelAt,
-    )}:R> (<t:${millisToSeconds(finishTravelAt)}>)`,
+    content: ctx.locale('commands:viajar.confirm-message', {
+      x,
+      y,
+      unix: millisToSeconds(finishTravelAt),
+      cost: distanceToTravel * 10,
+      emoji: EMOJIS.zap,
+    }),
   });
 };
 
@@ -60,7 +64,7 @@ const executeStartTravel = async (ctx: ComponentInteractionContext): Promise<voi
 
   if (isUserInBattle)
     return ctx.makeMessage({
-      content: `Não é possível viajar enquanto você está em batalha.`,
+      content: ctx.prettyResponse('chick', 'commands:viajar.in-battle'),
       components: [],
       embeds: [],
     });
@@ -73,14 +77,14 @@ const executeStartTravel = async (ctx: ComponentInteractionContext): Promise<voi
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: `Não é possível viajar para ${x}:${y}. Tu já está aí.`,
+      content: ctx.prettyResponse('error', 'commands:viajar.already-there'),
     });
 
   if (character.currentAction.type !== Action.NONE)
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: `Você não pode viajar no momento, pois está fazendo outra coisa`,
+      content: ctx.prettyResponse('error', 'commands:viajar.other-action'),
     });
 
   const newLocation: Location = [Number(x), Number(y)];
@@ -89,7 +93,13 @@ const executeStartTravel = async (ctx: ComponentInteractionContext): Promise<voi
 
   if (energyCost > character.energy)
     return ctx.makeMessage({
-      content: `Para viajar até ${newLocation} você precisa de **${energyCost}** :zap: energia! Você apenas possui **${character.energy} :zap:**`,
+      content: ctx.prettyResponse('error', 'commands:viajar.too-tired', {
+        x: newLocation[0],
+        y: newLocation[1],
+        cost: energyCost,
+        amount: character.energy,
+        emoji: EMOJIS.zap,
+      }),
       components: [],
       embeds: [],
     });
@@ -106,7 +116,11 @@ const executeStartTravel = async (ctx: ComponentInteractionContext): Promise<voi
   });
 
   ctx.makeMessage({
-    content: `Tu tá partindo em uma viagem para ${x}:${y}`,
+    content: ctx.prettyResponse('success', 'commands:viajar.start-travelling', {
+      x,
+      y,
+      unix: Date.now() + minutesToMillis(MINUTES_TO_TRAVEL_ONE_BLOCK) * distanceToTravel,
+    }),
     components: [],
     embeds: [],
   });
@@ -133,12 +147,14 @@ const TravelCommand = createCommand({
     const locations = await getCompleteWorld();
 
     const embed = createEmbed({
-      title: '🗺️ | Mapa de Boleham',
+      title: ctx.prettyResponse('map', 'commands:viajar.embed-title'),
       color: hexStringToNumber(ctx.authorData.selectedColor),
-      description: `📍 | Sua localização: ${character.location}`,
+      description: `${ctx.prettyResponse('pin', 'roleplay:common.location')}: ${
+        character.location
+      }`,
       fields: [
         {
-          name: 'Densidade de inimigos',
+          name: ctx.locale('commands:viajar.enemy-density'),
           value: locations.map((a) => a.map((b) => numberToEmoji[b as 1]).join('  ')).join('\n'),
         },
       ],
@@ -152,12 +168,12 @@ const TravelCommand = createCommand({
       const finishAt = action.startAt + calculateTravelTime(action.from, action.to);
 
       embed.fields?.push({
-        name: 'Viajando',
-        value: `Tu ta em uma viajem para ${
-          action.to
-        }.\nTu vai chegar no teu destino <t:${millisToSeconds(finishAt)}:R> (<t:${millisToSeconds(
-          finishAt,
-        )}:t>)`,
+        name: ctx.locale('commands:viajar.travelling'),
+        value: ctx.locale('commands:viajar.in-travel', {
+          x: action.to[0],
+          y: action.to[1],
+          unix: millisToSeconds(finishAt),
+        }),
       });
 
       colorfy = true;

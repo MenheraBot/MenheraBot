@@ -5,6 +5,7 @@ import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
 import { AvailableLanguages } from './i18next';
 import { AvailableActions, InventoryItem, Location } from '../modules/roleplay/types';
+import { AbilityID } from '../modules/roleplay/data/abilities';
 
 export type ColorResolvable = `#${string}`;
 
@@ -152,7 +153,7 @@ export interface DatabaseFarmerSchema {
 }
 
 type DatabaseUserAbility = {
-  id: number;
+  id: AbilityID;
   proficience: number;
 };
 

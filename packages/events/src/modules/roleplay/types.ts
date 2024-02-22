@@ -1,5 +1,6 @@
 import { DatabaseCharacterSchema } from '../../types/database';
 import { AvailableLanguages } from '../../types/i18next';
+import { InventoryItemID } from './data/items';
 
 export type Enemy = {
   $devName: string;
@@ -22,13 +23,12 @@ export type AbilityEffect = {
 };
 
 export type Ability = {
-  $devName: string;
   energyCost: number;
   effects: AbilityEffect[];
 };
 
 export interface InventoryItem {
-  id: number;
+  id: InventoryItemID;
   amount: number;
 }
 

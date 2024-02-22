@@ -28,12 +28,10 @@ export const EMOJIS = {
   heart: '❤️',
   lick: '👅',
   time: '⏲️',
-  sword: '⚔️',
   gay_flag: '🏳️‍🌈',
   hourglass: '⌛',
   rainbow: '🌈',
   crown: '👑',
-  scape: '🐥',
   lock: '🔒',
   list: '📜',
   estrelinhas: '⭐',
@@ -81,6 +79,12 @@ export const EMOJIS = {
   // Roleplay
   chest: '<:Chest:760957557538947133>',
   magic_ball: '🔮',
+  gold: '<:gold:960654694244573204>',
+  pin: '📍',
+  zap: ':zap:',
+  sword: '⚔️',
+  attributes: '🎭',
+  chick: '🐥',
 };
 
 export const COLORS = {

@@ -1,0 +1,9 @@
+{
+  "common": {
+    "inventory": "Inventário",
+    "abilities": "Habilidades",
+    "money": "Dinheiro",
+    "location": "Localização atual",
+    "vitality": "Vitalidade"
+  }
+}
