@@ -1182,7 +1182,7 @@
   },
   "aventura": {
     "confirm-join": "Join the battle?",
-    "battle": "Battle",
+    "fight": "Battle",
     "your-stats": "Your status",
     "user-stats-display": ":heart: **Life**: {{life}}\n:zap: **Energy**: {{energy}}\n:dagger: **Damage**: {{damage}}",
     "enemy-stats": "{{name}}'s status Lvl. {{level}}",
@@ -1196,6 +1196,16 @@
       "title": "Choose your first ability",
       "description": "The Elemental Elder Dragons sensed your teleport to the new world. Knowing your entire journey, they would like to grace your arrival. You have the option to choose any of the skills below to be your first skill.",
       "already-learned": "You have already learned an essential skill. Don't be dishonest."
+    },
+    "battle": {
+      "title": "Battle Statistics",
+      "kill": "Kill your enemy!",
+      "actions": "Available Actions",
+      "you-dead": "You were killed",
+      "dead-description": "Due to a flaw in your battle posture, you ended up dying. The Dragons agreed to allow you to ressurge in the world. In a few hours, you will reappear in this world, as if nothing had happened.",
+      "enemy-dead": "Enemy dead!",
+      "kill-message": "You killed {{name}} Lvl. {{level}}\nSearching his body for loot, you found **{{amount}} {{itemName}}**",
+      "timeout": "The enemy is not stupid. If you don't attack him <t:{{unix}}:R>, he will attack you!"
     }
   },
   "acessar": {

@@ -1191,7 +1191,7 @@
     "user-stats-display": ":heart: **Vida**: {{life}}\n:zap: **Energia**: {{energy}}\n:dagger: **Dano**: {{damage}}",
     "enemy-stats": "Status de {{name}} Lvl. {{level}}",
     "enemy-stats-display": ":heart: **Vida**: {{life}}\n:dagger: **Dano**: {{damage}}",
-    "battle": "Lutar",
+    "fight": "Lutar",
     "adventure-not-found": "Que aventura é essa?... Não lembro",
     "in-battle": "Tu já está em uma aventura, porque gostaria de ir em outra? Mate seu inimigo!",
     "dead": "**Você morreu!**\n\nTu ratiou em uma batalha e acabou morrendo. As veias dos dragões estão restabelecendo a tua alma. Tu ressurgirá <t:{{unix}}:R>",
@@ -1201,6 +1201,16 @@
       "title": "Escolha sua primeira habilidade",
       "description": "Os Dragões Anciões Elementais sentiram o seu teletransporte para o novo mundo. Sabendo de toda a sua trajetória, eles gostariam de agraciar a sua chegada. Você possui a opção de escolher qualquer uma das habilidades abaixo, para ser a sua primeira habilidade.",
       "already-learned": "Tu já aprendeu uma habilidade essencial. Não seja desonesto."
+    },
+    "battle": {
+      "title": "Estatísticas da Batalha",
+      "kill": "Mate o teu inimigo!",
+      "actions": "Ações Disponíveis",
+      "you-dead": "Tu foi morto",
+      "dead-description": "Por uma falha na tua postura de batalha, tu acabou morrendo. Os Dragões concordaram em permitir você ressurgir no mundo. Em algumas horas, você ressurgirá neste mundo, como se nada tivesse acontecido.",
+      "enemy-dead": "Inimigo morto!",
+      "kill-message": "Tu mataste {{name}} Lvl. {{level}}\nFazendo a busca em seu corpo por espólios, tu encontrou **{{amount}} {{itemName}}**",
+      "timeout": "O inimigo não é bobo. Se tu não atacá-lo <t:{{unix}}:R>, ele te atacará!"
     }
   },
   "acessar": {

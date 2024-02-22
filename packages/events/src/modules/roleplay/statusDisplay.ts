@@ -1,22 +1,22 @@
 import { DiscordEmbedField } from 'discordeno/types';
 import { InBattleEnemy, InBattleUser } from './types';
-import { InteractionContext } from '../../types/menhera';
+import { GenericContext } from '../../types/menhera';
 
-const getUserStatusDisplay = (ctx: InteractionContext, user: InBattleUser): string =>
+const getUserStatusDisplay = (ctx: GenericContext, user: InBattleUser): string =>
   ctx.locale('commands:aventura.user-stats-display', {
     life: user.life,
     energy: user.energy,
     damage: user.damage,
   });
 
-const getEnemyStatusDisplay = (ctx: InteractionContext, enemy: InBattleEnemy): string =>
+const getEnemyStatusDisplay = (ctx: GenericContext, enemy: InBattleEnemy): string =>
   ctx.locale('commands:aventura.enemy-stats-display', {
     life: enemy.life,
     damage: enemy.damage,
   });
 
 const getStatusDisplayFields = (
-  ctx: InteractionContext,
+  ctx: GenericContext,
   user: InBattleUser,
   enemy: InBattleEnemy,
 ): DiscordEmbedField[] => [

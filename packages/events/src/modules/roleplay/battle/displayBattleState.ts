@@ -16,7 +16,6 @@ import { SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
 import { getAbility } from '../data/abilities';
 import battleRepository from '../../../database/repositories/battleRepository';
 import { checkDeath, keepNumbersPositive, lootEnemy } from './battleUtils';
-import { Items } from '../data/items';
 import { DatabaseCharacterSchema } from '../../../types/database';
 import { finishAdventure } from '../adventureManager';
 import { startBattleTimer } from './battleTimers';
@@ -30,10 +29,10 @@ interface Choice {
   effects: Ability['effects'];
 }
 
-const getAvailableChoices = (_ctx: GenericContext, user: InBattleUser): Choice[] => [
+const getAvailableChoices = (ctx: GenericContext, user: InBattleUser): Choice[] => [
   {
     id: 0,
-    name: getAbility(0).$devName,
+    name: ctx.locale(`abilities:0.name`),
     energyCost: getAbility(0).energyCost,
     effects: [{ applyTo: 'enemy', type: 'damage', value: user.damage }],
   },
@@ -42,7 +41,7 @@ const getAvailableChoices = (_ctx: GenericContext, user: InBattleUser): Choice[]
 
     return {
       id: ab.id,
-      name: ability.$devName,
+      name: ctx.locale(`abilities:${ab.id}.name`),
       energyCost: ability.energyCost,
       effects: ability.effects,
     };
@@ -53,26 +52,31 @@ const displayBattleControlMessage = async (
   ctx: GenericContext,
   adventure: PlayerVsEnviroment,
 ): Promise<void> => {
+  const user = await cacheRepository.getDiscordUser(adventure.user.id, true);
+
+  if (!user) throw new Error(`Unable to fetch discord user for ID ${adventure.user.id}`);
+
   const statusEmbed = createEmbed({
-    title: 'Estatísticas da Batalha',
-    description: `Mate o seu inimigo!`,
+    title: ctx.locale('commands:aventura.battle.title'),
+    description: ctx.locale('commands:aventura.battle.kill'),
     thumbnail: {
-      url: getUserAvatar((await cacheRepository.getDiscordUser(adventure.user.id, true))!, {
+      url: getUserAvatar(user, {
         enableGif: true,
       }),
     },
-    fields: getStatusDisplayFields(adventure.user, adventure.enemy),
+    fields: getStatusDisplayFields(ctx, adventure.user, adventure.enemy),
   });
 
   const choices = getAvailableChoices(ctx, adventure.user);
 
   const choicesEmbed = createEmbed({
-    title: 'Ações Disponíveis',
-    description: `Se tu não tomar nenhuma ação <t:${millisToSeconds(
-      Date.now() + SECONDS_TO_CHOICE_ACTION_IN_BATTLE * 1000,
-    )}:R>, o inimigo te atacará!`,
+    title: ctx.locale('commands:aventura.battle.actions'),
+    description: ctx.locale('commands:aventura.battle.timeout', {
+      unix: millisToSeconds(Date.now()) + SECONDS_TO_CHOICE_ACTION_IN_BATTLE,
+    }),
     fields: choices.map((a) => ({
       name: a.name,
+      // FIXME: Change effect display
       value: `Efeitos: ${JSON.stringify(a.effects)}\nCusto de Energia: ${a.energyCost}`,
       inline: true,
     })),
@@ -111,10 +115,13 @@ const updateBattleMessage = async (
     const droppedItem = lootEnemy(adventure);
 
     const embed = createEmbed({
-      title: 'Inimigo morto!',
-      description: `Tu matou o ${adventure.enemy.$devName} Lvl. ${
-        adventure.enemy.level
-      }\nEm seu corpo, tu encontrou ${droppedItem.amount} ${Items[droppedItem.id as 1].$devName}`,
+      title: ctx.prettyResponse('wink', 'commands:aventura.battle.enemy-dead'),
+      description: ctx.locale('commands:aventura.battle.kill-message', {
+        name: 'CREATE ENEMIES.JSON',
+        level: adventure.enemy.level,
+        amount: droppedItem.amount,
+        itemName: ctx.locale(`items:${droppedItem.id}.name`),
+      }),
     });
 
     endReasons.push(embed);
@@ -128,8 +135,8 @@ const updateBattleMessage = async (
     extraQuery = getKillQuery(character);
 
     const embed = createEmbed({
-      title: 'Você foi morto',
-      description: 'tu é paia',
+      title: ctx.locale('commands:aventura.battle.you-dead'),
+      description: ctx.locale('commands:aventura.battle.dead-description'),
     });
 
     endReasons.push(embed);
