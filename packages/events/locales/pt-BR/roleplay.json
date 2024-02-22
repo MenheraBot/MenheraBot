@@ -2,7 +2,7 @@
   "common": {
     "inventory": "Inventário",
     "abilities": "Habilidades",
-    "money": "Dinheiro",
+    "money": "Dragonnys",
     "location": "Localização atual",
     "vitality": "Vitalidade",
     "unlock-ability": "Com os poderes dos Dragões Anciões Elementais tu aprende uma nova habilidade: **{{name}}**. Vá para a batalha!"

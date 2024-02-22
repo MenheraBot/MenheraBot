@@ -57,7 +57,7 @@ const createCharacterEmbed = (
       embed.fields = [
         {
           name: ctx.prettyResponse('attributes', 'roleplay:common.vitality'),
-          value: getUserStatusDisplay(prepareUserToBattle(character)),
+          value: getUserStatusDisplay(ctx, prepareUserToBattle(character)),
         },
       ];
       break;
@@ -79,7 +79,7 @@ const createCharacterEmbed = (
                   .join('\n'),
         },
         {
-          name: ctx.prettyResponse('gold', 'roleplay:common.money'),
+          name: ctx.prettyResponse('dragonnys', 'roleplay:common.money'),
           value: `${character.money}`,
           inline: true,
         },

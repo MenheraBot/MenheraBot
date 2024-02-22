@@ -1209,6 +1209,21 @@
       "description": "Enter the Church to regain your strength",
       "other-action": "To enter the Church you need to be totally focused. It is not possible to pray while doing anything else.",
       "in-battle": "You're in the middle of a battle, it's not possible to escape to enter the Church. Battle!"
+    },
+    "blacksmith": {
+      "title": "Boleham's Blacksmith",
+      "in-battle": "You are in a battle at the moment. There are no blacksmiths arround",
+      "sell": {
+        "sell": "Sell {{name}}",
+        "title": "Sell items",
+        "sold": "You sold your items for **{{amount}}** {{emoji}} Dragonnys.",
+        "select": "Select the items you wanna sell",
+        "not-enough-items": "You want to sell more items than you have.",
+        "invalid-amount": "Tui tried to sell an invalid quantity of items. Check the multiples of each item correctly.",
+        "no-items": "You don't have enough items to sell",
+        "need-math": "Sale of this item must be a multiple of {{amount}}",
+        "item-description": "{{name}} ({{amount}}x by {{value}} :star:)"
+      }
     }
   }
 }

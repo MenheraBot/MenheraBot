@@ -28,7 +28,7 @@ const getPaginationInfo = (
   selectedColor: string,
 ): [Embed, ActionRow[]] => {
   const embed = createEmbed({
-    title: 'Ferreiro de Boleham',
+    title: ctx.prettyResponse('hammer', 'commands:acessar.blacksmith.title'),
     color: hexStringToNumber(selectedColor),
     description: '',
   });
@@ -49,12 +49,18 @@ const getPaginationInfo = (
 
         embed.description += `- **${i.amount}x${
           item.sellMinAmount ? ` / ${item.sellMinAmount}x` : ''
-        }** - ${item.$devName} (${item.sellMinAmount ?? 1}x por ${item.sellValue} :star:)\n`;
+        }** - ${ctx.locale('commands:acessar.blacksmith.sell.item-description', {
+          name: ctx.locale(`items:${i.id}.name`),
+          amount: i.amount,
+          value: item.sellValue,
+        })}\n`;
 
         if (item.sellMinAmount && item.sellMinAmount > i.amount) return;
 
         selectMenu.options.push({
-          label: `Vender ${item.$devName}`,
+          label: ctx.locale('commands:acessar.blacksmith.sell.sell', {
+            name: ctx.locale(`items:${i.id}.name`),
+          }),
           value: `${i.id}`,
         });
       });
@@ -66,9 +72,9 @@ const getPaginationInfo = (
       if (isValidSelectMenu) components.push(createActionRow([selectMenu]));
 
       embed.footer = {
-        text: isValidSelectMenu
-          ? 'Selecione os itens que desejas vender'
-          : 'Você não possui itens suficientes para vender',
+        text: ctx.locale(
+          `commands:acessar.blacksmith.sell.${isValidSelectMenu ? 'select' : 'no-items'}`,
+        ),
       };
 
       break;
@@ -103,7 +109,9 @@ const executeNavigation = async (
 
   if (isUserInBattle)
     return ctx.makeMessage({
-      content: `Você está em uma Dungeon no momento. Não há ferreiros por perto.`,
+      content: ctx.prettyResponse('error', 'commands:acessar.blacksmith.in-battle'),
+      components: [],
+      embeds: [],
       flags: MessageFlags.EPHEMERAL,
     });
 

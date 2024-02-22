@@ -13,6 +13,7 @@ import { extractFields } from '../../../../utils/discord/modalUtils';
 import { InventoryItem } from '../../types';
 import { MessageFlags } from '../../../../utils/discord/messageUtils';
 import battleRepository from '../../../../database/repositories/battleRepository';
+import { EMOJIS } from '../../../../structures/constants';
 
 const executeSellItem = async (
   ctx: ComponentInteractionContext<ModalInteraction>,
@@ -23,26 +24,26 @@ const executeSellItem = async (
 
   const userSelected: Array<InventoryItem & { item: DropItem }> = sentItems.map((item) => ({
     amount: parseInt(item.value, 10),
-    id: Number(item.customId),
+    id: Number(item.customId) as 1,
     item: getItem<DropItem>(item.customId),
   }));
 
   if (!inventoryUtils.userHasAllItems(character.inventory, userSelected))
     return ctx.respondInteraction({
       flags: MessageFlags.EPHEMERAL,
-      content: 'Você não possui os itens necessários para vender',
+      content: ctx.prettyResponse('error', 'commands:acessar.blacksmith.sell.not-enough-items'),
     });
 
   if (userSelected.some((a) => a.item.sellMinAmount && a.amount % a.item.sellMinAmount !== 0))
     return ctx.respondInteraction({
       flags: MessageFlags.EPHEMERAL,
-      content: 'Você tentou vender uma quantidade de itens inválida',
+      content: ctx.prettyResponse('error', 'commands:acessar.blacksmith.sell.invalid-amount'),
     });
 
   if (await battleRepository.isUserInBattle(ctx.user.id))
     return ctx.respondInteraction({
       flags: MessageFlags.EPHEMERAL,
-      content: 'Você não pode acessar o ferreiro enquanto está em uma batalha',
+      content: ctx.prettyResponse('error', 'commands:acessar.blacksmith.in-battle'),
     });
 
   const totalMoney = userSelected.reduce(
@@ -61,7 +62,10 @@ const executeSellItem = async (
   ctx.makeMessage({
     components: [],
     embeds: [],
-    content: `Você vendeu seus itens por ${totalMoney} dinheiros`,
+    content: ctx.prettyResponse('success', 'commands:acessar.blacksmith.sell.sold', {
+      amount: totalMoney,
+      emoji: EMOJIS.dragonnys,
+    }),
   });
 };
 
@@ -75,7 +79,7 @@ const displaySellItemsModal = async (
   const userHaveItems = inventoryUtils.userHasAllItems(
     character.inventory,
     selectedItems.map((item, i) => ({
-      id: Number(ctx.interaction.data.values[i]),
+      id: Number(ctx.interaction.data.values[i]) as 1,
       amount: item.sellMinAmount ?? 1,
     })),
   );
@@ -84,24 +88,26 @@ const displaySellItemsModal = async (
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: 'Tu não tem os itens o suficiente para vender',
+      content: ctx.prettyResponse('error', 'commands:acessar.blacksmith.sell.no-items'),
     });
 
   const modalInputs = selectedItems.map((item, i) =>
     createActionRow([
       createTextInput({
         customId: ctx.interaction.data.values[i],
-        label: `${item.$devName}`,
+        label: ctx.locale(`items:${ctx.interaction.data.values[i] as '1'}.name`),
         style: TextStyles.Short,
         minLength: 1,
         maxLength: 2,
-        placeholder: `A venda deste item deve ser múltipla de ${item.sellMinAmount ?? 1}`,
+        placeholder: ctx.locale('commands:acessar.blacksmith.sell.need-math', {
+          amount: item.sellMinAmount ?? 1,
+        }),
       }),
     ]),
   );
 
   ctx.respondWithModal({
-    title: 'Vender itens',
+    title: ctx.locale('commands:acessar.blacksmith.sell.title'),
     customId: createCustomId(0, ctx.user.id, ctx.commandId, 'SELL_MODAL'),
     components: modalInputs,
   });

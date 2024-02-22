@@ -1214,6 +1214,21 @@
       "description": "Entre na Igreja para recuperar as suas forças",
       "other-action": "Para entrar na Igreja é necessário estar totalmente focado. Não é possível rezar fazendo outra coisa.",
       "in-battle": "Tu tá no meio de uma batalha, não é possível fugir daí para entrar na Igreja. Batalhe!"
+    },
+    "blacksmith": {
+      "title": "Ferreiro de Boleham",
+      "in-battle": "Tu ta em uma batalha no momento. Não há ferreiros por perto.",
+      "sell": {
+        "sell": "Vender {{name}}",
+        "title": "Vender itens",
+        "sold": "Tu vendeu os teus itens por **{{amount}}** {{emoji}} Dragonnys.",
+        "not-enough-items": "Tu ta querendo vender mais itens do que tu tem.",
+        "invalid-amount": "Tu tentou vender uma quantidade de itens inválida. Cheque os múltiplos de cada item corretamente.",
+        "select": "Selecione os itens que desejas vender",
+        "need-math": "A venda deste item deve ser múltipla de {{amount}}",
+        "no-items": "Tu não tem itens suficientes para vender",
+        "item-description": "{{name}} ({{amount}}x por {{value}} :star:)"
+      }
     }
   }
 }
