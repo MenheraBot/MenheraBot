@@ -1186,6 +1186,13 @@
     "in-travel": "Tu ta em uma viagem para **{{x}}:{{y}}**. Tu vai chegar no teu destino <t:{{unix}}:R> (<t:{{unix}}>)"
   },
   "aventura": {
+    "confirm-join": "Entrar na batalha?",
+    "your-stats": "Seus status",
+    "user-stats-display": ":heart: **Vida**: {{life}}\n:zap: **Energia**: {{energy}}\n:dagger: **Dano**: {{damage}}",
+    "enemy-stats": "Status de {{name}} Lvl. {{level}}",
+    "enemy-stats-display": ":heart: **Vida**: {{life}}\n:dagger: **Dano**: {{damage}}",
+    "battle": "Lutar",
+    "adventure-not-found": "Que aventura é essa?... Não lembro",
     "in-battle": "Tu já está em uma aventura, porque gostaria de ir em outra? Mate seu inimigo!",
     "dead": "**Você morreu!**\n\nTu ratiou em uma batalha e acabou morrendo. As veias dos dragões estão restabelecendo a tua alma. Tu ressurgirá <t:{{unix}}:R>",
     "other-action": "Não é possível ir para uma batalha enquanto tu tá fazendo outra coisa.",

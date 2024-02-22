@@ -1181,6 +1181,13 @@
     "in-travel": "You're on a trip to **{{x}}:{{y}}**. You will arrive at your destination <t:{{unix}}:R> (<t:{{unix}}>)"
   },
   "aventura": {
+    "confirm-join": "Join the battle?",
+    "battle": "Battle",
+    "your-stats": "Your status",
+    "user-stats-display": ":heart: **Life**: {{life}}\n:zap: **Energy**: {{energy}}\n:dagger: **Damage**: {{damage}}",
+    "enemy-stats": "{{name}}'s status Lvl. {{level}}",
+    "enemy-stats-display": ":heart: **Life**: {{life}}\n:dagger: **Damage**: {{damage}}",
+    "adventure-not-found": "What adventure is this?... I don't remember",
     "in-battle": "You're already on an adventure, why would you want to go on another one? Kill your enemy!",
     "dead": "**You died!**\na You fought in battle and ended up dying. The veins of the dragons are restoring your soul. You will rise again <t:{{unix}}:R>",
     "other-action": "It is not possible to go into battle while doing something else.",

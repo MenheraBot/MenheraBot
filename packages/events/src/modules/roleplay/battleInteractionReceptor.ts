@@ -16,7 +16,7 @@ const battleInteractionReceptor = async (ctx: ComponentInteractionContext): Prom
 
     if (await battleRepository.isUserInBattle(ctx.user.id))
       return ctx.makeMessage({
-        content: 'Você ja está em uma aventura!',
+        content: ctx.prettyResponse('error', 'commands:aventura.in-battle'),
         components: [],
         embeds: [],
       });
@@ -25,14 +25,14 @@ const battleInteractionReceptor = async (ctx: ComponentInteractionContext): Prom
       return ctx.makeMessage({
         components: [],
         embeds: [],
-        content: `Não é possível batalhar enquanto se está fazendo outra coisa`,
+        content: ctx.prettyResponse('error', 'commands:aventura.other-action'),
       });
 
     const enemy = await getCurrentAvailableEnemy(character.location);
 
     if (!enemy)
       return ctx.makeMessage({
-        content: `Não há inimigos disponíveis por perto`,
+        content: ctx.prettyResponse('error', 'commands:aventura.no-enemies'),
         components: [],
         embeds: [],
       });

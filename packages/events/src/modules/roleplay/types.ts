@@ -39,7 +39,6 @@ export type InBattleEnemy = {
   life: number;
   damage: number;
   level: number;
-  $devName: string;
   effects: BattleEffect[];
 };
 

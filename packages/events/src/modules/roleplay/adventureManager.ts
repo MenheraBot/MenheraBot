@@ -28,12 +28,12 @@ const confirmAdventure = async (
   enemy: InBattleEnemy,
 ): Promise<void> => {
   const embed = createEmbed({
-    title: 'Entrar na batalha?',
-    fields: getStatusDisplayFields(user, enemy),
+    title: ctx.prettyResponse('question', 'commands:aventura.confirm-join'),
+    fields: getStatusDisplayFields(ctx, user, enemy),
   });
 
   const confirmButton = createButton({
-    label: 'Lutar',
+    label: ctx.locale('commands:aventura.battle'),
     style: ButtonStyles.Success,
     customId: createCustomId(0, ctx.user.id, ctx.commandId, 'JOIN_DUNGEON'),
   });

@@ -5,7 +5,6 @@ import { Enemy, InBattleEnemy, InBattleUser, PlayerVsEnviroment } from './types'
 
 export const prepareEnemyToBattle = (enemy: Enemy, level: number): InBattleEnemy => ({
   id: enemy.id,
-  $devName: enemy.$devName,
   damage: enemy.damage[level - 1],
   life: enemy.life[level - 1],
   effects: [],
@@ -41,6 +40,6 @@ export const unknownAdventure = (ctx: InteractionContext): void => {
     components: [],
     embeds: [],
     attachments: [],
-    content: 'Essa aventura não foi encontrada',
+    content: ctx.prettyResponse('error', 'commands:aventura.adventure-not-found'),
   });
 };
