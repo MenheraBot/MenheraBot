@@ -52,6 +52,7 @@ const createCharacterEmbed = (
     title: `Personagem de ${getDisplayName(user, false)}`,
     thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
     color: hexStringToNumber(selectedColor),
+    footer: { text: `Seu dinheiro: ${character.money}` },
   });
 
   switch (currentField) {

@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'development') {
   await startBot(bot);
 
   // @ts-expect-error Not expected string here
-  bot.events.ready(bot, 'MASTER');
+  bot.events.ready('MASTER');
 }
 
 if (process.env.NODE_ENV === 'production') updateCommandsOnApi();

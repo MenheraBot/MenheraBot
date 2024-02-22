@@ -1,16 +1,16 @@
 import { ButtonStyles } from 'discordeno/types';
-import battleRepository from '../../../database/repositories/battleRepository';
-import roleplayRepository from '../../../database/repositories/roleplayRepository';
-import ChatInputInteractionContext from '../../../structures/command/ChatInputInteractionContext';
+import battleRepository from '../../../../database/repositories/battleRepository';
+import roleplayRepository from '../../../../database/repositories/roleplayRepository';
+import ChatInputInteractionContext from '../../../../structures/command/ChatInputInteractionContext';
 import {
   createActionRow,
   createButton,
   createCustomId,
-} from '../../../utils/discord/componentUtils';
-import { createEmbed, hexStringToNumber } from '../../../utils/discord/embedUtils';
-import { MessageFlags } from '../../../utils/discord/messageUtils';
-import { Action } from '../types';
-import ComponentInteractionContext from '../../../structures/command/ComponentInteractionContext';
+} from '../../../../utils/discord/componentUtils';
+import { createEmbed, hexStringToNumber } from '../../../../utils/discord/embedUtils';
+import { MessageFlags } from '../../../../utils/discord/messageUtils';
+import { Action } from '../../types';
+import ComponentInteractionContext from '../../../../structures/command/ComponentInteractionContext';
 
 const executeDisplayChurch = async (ctx: ChatInputInteractionContext): Promise<void> => {
   if (await battleRepository.isUserInBattle(ctx.user.id))

@@ -1,7 +1,7 @@
 import { DatabaseCharacterSchema } from '../../../types/database';
 import { randomFromArray } from '../../../utils/miscUtils';
 import { Enemies } from '../data/enemies';
-import inventoryManager from '../inventoryManager';
+import inventoryUtils from '../inventoryUtils';
 import { InBattleUser, InventoryItem, PlayerVsEnviroment } from '../types';
 
 const checkDeath = (entity: { life: number; energy?: number }): boolean =>
@@ -28,7 +28,7 @@ const lootEnemy = (adventure: PlayerVsEnviroment): InventoryItem => {
     Enemies[adventure.enemy.id as 1].drops[adventure.enemy.level - 1],
   );
 
-  inventoryManager.addItems(adventure.user.inventory, [droppedItem]);
+  inventoryUtils.addItems(adventure.user.inventory, [droppedItem]);
 
   return droppedItem;
 };

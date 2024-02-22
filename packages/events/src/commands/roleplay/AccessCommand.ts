@@ -3,11 +3,11 @@ import { createCommand } from '../../structures/command/createCommand';
 import {
   enterChurch,
   executeDisplayChurch,
-} from '../../modules/roleplay/establishments/accessChurch';
+} from '../../modules/roleplay/establishments/church/accessChurch';
 import {
   executeNavigation,
   handleInteraction,
-} from '../../modules/roleplay/establishments/accessBlacksmith';
+} from '../../modules/roleplay/establishments/blacksmith/accessBlacksmith';
 
 const ChurchCommand = createCommand({
   path: '',

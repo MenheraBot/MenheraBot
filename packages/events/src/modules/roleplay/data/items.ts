@@ -10,10 +10,10 @@ interface BaseItem {
   $devName: string;
 }
 
-interface DropItem extends BaseItem {
+export interface DropItem extends BaseItem {
   type: ItemType.Drop;
   sellValue: number;
-  sellMinGroup?: number;
+  sellMinAmount?: number;
 }
 
 interface ArmorItem extends BaseItem {
@@ -29,7 +29,7 @@ export const Items: Record<number, AvailableItems> = {
     type: ItemType.Drop,
     $devName: 'Pele de goblin',
     sellValue: 1,
-    sellMinGroup: 3,
+    sellMinAmount: 3,
   },
   2: {
     type: ItemType.Armor,
@@ -39,4 +39,5 @@ export const Items: Record<number, AvailableItems> = {
   },
 };
 
-export const getItem = (itemId: number): AvailableItems => Items[itemId];
+export const getItem = <T extends AvailableItems>(itemId: number | string): T =>
+  Items[itemId as '1'] as T;

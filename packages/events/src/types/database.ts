@@ -164,4 +164,5 @@ export interface DatabaseCharacterSchema {
   abilities: DatabaseUserAbility[];
   location: Location;
   currentAction: AvailableActions;
+  money: number;
 }
