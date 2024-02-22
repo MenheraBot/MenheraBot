@@ -1184,5 +1184,16 @@
     "enemy-density": "Densidade de inimigos",
     "travelling": "Viajando",
     "in-travel": "Tu ta em uma viagem para **{{x}}:{{y}}**. Tu vai chegar no teu destino <t:{{unix}}:R> (<t:{{unix}}>)"
+  },
+  "aventura": {
+    "in-battle": "Tu já está em uma aventura, porque gostaria de ir em outra? Mate seu inimigo!",
+    "dead": "**Você morreu!**\n\nTu ratiou em uma batalha e acabou morrendo. As veias dos dragões estão restabelecendo a tua alma. Tu ressurgirá <t:{{unix}}:R>",
+    "other-action": "Não é possível ir para uma batalha enquanto tu tá fazendo outra coisa.",
+    "no-enemies": "Não há inimigos por perto no momento",
+    "first-ability": {
+      "title": "Escolha sua primeira habilidade",
+      "description": "Os Dragões Anciões Elementais sentiram o seu teletransporte para o novo mundo. Sabendo de toda a sua trajetória, eles gostariam de agraciar a sua chegada. Você possui a opção de escolher qualquer uma das habilidades abaixo, para ser a sua primeira habilidade.",
+      "already-learned": "Tu já aprendeu uma habilidade essencial. Não seja desonesto."
+    }
   }
 }

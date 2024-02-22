@@ -11,8 +11,8 @@ import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { Abilities } from '../../modules/roleplay/data/abilities';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { getCurrentAvailableEnemy } from '../../modules/roleplay/worldEnemiesManager';
 import { Action, DeathAction } from '../../modules/roleplay/types';
+import { getCurrentAvailableEnemy } from '../../modules/roleplay/worldEnemiesManager';
 
 const executeSelectAbility = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedAbility] = ctx.sentData;
@@ -23,7 +23,7 @@ const executeSelectAbility = async (ctx: ComponentInteractionContext): Promise<v
     return ctx.makeMessage({
       components: [],
       embeds: [],
-      content: 'Tu ja aprendeu uma habilidade',
+      content: ctx.prettyResponse('error', 'commands:aventura.first-ability.already-learned'),
     });
 
   await roleplayRepository.updateCharacter(ctx.user.id, {
@@ -33,9 +33,9 @@ const executeSelectAbility = async (ctx: ComponentInteractionContext): Promise<v
   ctx.makeMessage({
     components: [],
     embeds: [],
-    content: `Você aprendeu a habilidade ${
-      Abilities[selectedAbility as '1'].$devName
-    }! Vá para a batalha!`,
+    content: ctx.prettyResponse('magic_ball', 'roleplay:common.unlock-ability', {
+      name: ctx.locale(`abilities:${selectedAbility as '1'}.name`),
+    }),
   });
 };
 
@@ -55,7 +55,7 @@ const AdventureCommand = createCommand({
 
     if (await battleRepository.isUserInBattle(ctx.user.id))
       return ctx.makeMessage({
-        content: 'Você ja está em uma aventura!',
+        content: ctx.prettyResponse('error', 'commands:aventura.in-battle'),
         flags: MessageFlags.EPHEMERAL,
       });
 
@@ -63,14 +63,15 @@ const AdventureCommand = createCommand({
 
     if (character.currentAction.type === Action.DEATH)
       return ctx.makeMessage({
-        content: `Você está morto! Você poderá entrar em uma aventura <t:${millisToSeconds(
-          (character.currentAction as DeathAction).reviveAt,
-        )}:R>`,
+        flags: MessageFlags.EPHEMERAL,
+        content: ctx.prettyResponse('error', 'commands:aventura.dead', {
+          unix: millisToSeconds((character.currentAction as DeathAction).reviveAt),
+        }),
       });
 
     if (![Action.NONE, Action.TRAVEL].includes(character.currentAction.type))
       return ctx.makeMessage({
-        content: `Não é possível batalhar enquanto se está fazendo outra coisa`,
+        content: ctx.prettyResponse('error', 'commands:aventura.other-action'),
         flags: MessageFlags.EPHEMERAL,
       });
 
@@ -80,10 +81,12 @@ const AdventureCommand = createCommand({
 
     if (character.abilities.length === 0) {
       const embed = createEmbed({
-        title: 'Escolha sua primeira habilidade',
+        title: ctx.locale('commands:aventura.first-ability.title'),
+        description: ctx.locale('commands:aventura.first-ability.description'),
         color: hexStringToNumber(ctx.authorData.selectedColor),
-        fields: availableAbilities.map(([, ability]) => ({
-          name: ability.$devName,
+        fields: availableAbilities.map(([id, ability]) => ({
+          name: ctx.locale(`abilities:${id as '1'}.name`),
+          // FIXME: Change effect display
           value: `Efeitos: ${JSON.stringify(ability.effects)}\nCusto de Energia: ${
             ability.energyCost
           }`,
@@ -91,16 +94,15 @@ const AdventureCommand = createCommand({
         })),
       });
 
-      const buttons = availableAbilities.map(([id, ability]) =>
+      const buttons = availableAbilities.map(([id]) =>
         createButton({
-          label: ability.$devName,
+          label: ctx.locale(`abilities:${id as '1'}.name`),
           style: ButtonStyles.Primary,
           customId: createCustomId(1, ctx.user.id, ctx.commandId, id),
         }),
       );
 
       return ctx.makeMessage({
-        content: `Bem vindo!\nPara começar o seu personagem, escolha uma habilidade para aprender`,
         embeds: [embed],
         components: [createActionRow(buttons as [ButtonComponent])],
       });
@@ -108,7 +110,11 @@ const AdventureCommand = createCommand({
 
     const enemy = await getCurrentAvailableEnemy(character.location);
 
-    if (!enemy) return ctx.makeMessage({ content: `Não há inimigos disponíveis por perto` });
+    if (!enemy)
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:aventura.no-enemies'),
+        flags: MessageFlags.EPHEMERAL,
+      });
 
     confirmAdventure(ctx, prepareUserToBattle(character), prepareEnemyToBattle(enemy, 1));
   },

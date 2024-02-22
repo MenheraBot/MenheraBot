@@ -4,6 +4,7 @@
     "abilities": "Abilities",
     "money": "Money",
     "location": "Current location",
-    "vitality": "Vitality"
+    "vitality": "Vitality",
+    "unlock-ability": "With the powers of the Elemental Elder Dragons you learn a new skill: **{{name}}**. Go to battle!"
   }
 }

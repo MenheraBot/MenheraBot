@@ -4,6 +4,7 @@
     "abilities": "Habilidades",
     "money": "Dinheiro",
     "location": "Localização atual",
-    "vitality": "Vitalidade"
+    "vitality": "Vitalidade",
+    "unlock-ability": "Com os poderes dos Dragões Anciões Elementais tu aprende uma nova habilidade: **{{name}}**. Vá para a batalha!"
   }
 }
