@@ -5,7 +5,7 @@ import {
   createCustomId,
   createSelectMenu,
 } from '../../../utils/discord/componentUtils';
-import { createEmbed } from '../../../utils/discord/embedUtils';
+import { createEmbed, hexStringToNumber } from '../../../utils/discord/embedUtils';
 import { millisToSeconds } from '../../../utils/miscUtils';
 import { getStatusDisplayFields } from '../statusDisplay';
 import { Ability, BattleTimerActionType, InBattleUser, PlayerVsEnviroment } from '../types';
@@ -59,6 +59,7 @@ const displayBattleControlMessage = async (
   const statusEmbed = createEmbed({
     title: ctx.locale('commands:aventura.battle.title'),
     description: ctx.locale('commands:aventura.battle.kill'),
+    color: hexStringToNumber(adventure.embedColor),
     thumbnail: {
       url: getUserAvatar(user, {
         enableGif: true,
@@ -71,6 +72,7 @@ const displayBattleControlMessage = async (
 
   const choicesEmbed = createEmbed({
     title: ctx.locale('commands:aventura.battle.actions'),
+    color: hexStringToNumber(adventure.embedColor),
     description: ctx.locale('commands:aventura.battle.timeout', {
       unix: millisToSeconds(Date.now()) + SECONDS_TO_CHOICE_ACTION_IN_BATTLE,
     }),
@@ -117,6 +119,7 @@ const updateBattleMessage = async (
 
     const embed = createEmbed({
       title: ctx.prettyResponse('wink', 'commands:aventura.battle.enemy-dead'),
+      color: hexStringToNumber(adventure.embedColor),
       description: ctx.locale('commands:aventura.battle.kill-message', {
         name: ctx.locale(`enemies:${adventure.enemy.id}.name`),
         amount: droppedItem.amount,
@@ -136,6 +139,7 @@ const updateBattleMessage = async (
 
     const embed = createEmbed({
       title: ctx.locale('commands:aventura.battle.you-dead'),
+      color: hexStringToNumber(adventure.embedColor),
       description: ctx.locale('commands:aventura.battle.dead-description'),
     });
 

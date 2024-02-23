@@ -9,7 +9,7 @@ import { Action } from './types';
 import { getCurrentAvailableEnemy } from './worldEnemiesManager';
 
 const battleInteractionReceptor = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [action] = ctx.sentData;
+  const [action, embedColor] = ctx.sentData;
 
   if (action === 'JOIN_DUNGEON') {
     const character = await roleplayRepository.getCharacter(ctx.user.id);
@@ -37,7 +37,7 @@ const battleInteractionReceptor = async (ctx: ComponentInteractionContext): Prom
         embeds: [],
       });
 
-    return startAdventure(ctx, character, enemy);
+    return startAdventure(ctx, character, enemy, embedColor);
   }
 
   if (action === 'USE_SKILL') {

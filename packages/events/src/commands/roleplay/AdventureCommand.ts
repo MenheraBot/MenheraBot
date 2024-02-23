@@ -1,7 +1,7 @@
 import { ButtonComponent, ButtonStyles } from 'discordeno/types';
 import { createCommand } from '../../structures/command/createCommand';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
-import { prepareEnemyToBattle, prepareUserToBattle } from '../../modules/roleplay/devUtils';
+import { prepareUserToBattle } from '../../modules/roleplay/devUtils';
 import { confirmAdventure } from '../../modules/roleplay/adventureManager';
 import { battleInteractionReceptor } from '../../modules/roleplay/battleInteractionReceptor';
 import { millisToSeconds } from '../../utils/miscUtils';
@@ -115,7 +115,7 @@ const AdventureCommand = createCommand({
         flags: MessageFlags.EPHEMERAL,
       });
 
-    confirmAdventure(ctx, prepareUserToBattle(character), prepareEnemyToBattle(enemy));
+    confirmAdventure(ctx, prepareUserToBattle(character), ctx.authorData.selectedColor);
   },
 });
 

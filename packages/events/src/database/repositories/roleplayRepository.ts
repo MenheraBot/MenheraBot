@@ -81,16 +81,16 @@ const getEnemiesInArea = async (area: Location): Promise<Enemy[]> => {
   const totalEnemies = enemiesInArea === null ? RESURGE_DEFAULT_AMOUNT : Number(enemiesInArea);
 
   if (totalEnemies)
-    return Array.from({ length: Number(totalEnemies) }, () => ({
+    return Array.from({ length: Number(totalEnemies) }, (_, i) => ({
       ...Enemies[1],
-      id: 1,
+      id: i + 1,
     })) as Enemy[];
 
   if (resurgeDate === null || Date.now() >= Number(resurgeDate)) {
     await updateEnemyAreas({ [areaName]: RESURGE_DEFAULT_AMOUNT, [`r:${areaName}`]: 0 });
-    return Array.from({ length: Number(RESURGE_DEFAULT_AMOUNT) }, () => ({
+    return Array.from({ length: Number(RESURGE_DEFAULT_AMOUNT) }, (_, i) => ({
       ...Enemies[1],
-      id: 1,
+      id: i + 1,
     })) as Enemy[];
   }
 

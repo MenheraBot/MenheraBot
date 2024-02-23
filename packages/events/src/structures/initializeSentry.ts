@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/node';
 import { getEnviroments } from '../utils/getEnviroments';
+import { hostname } from 'node:os';
 
 const initializeSentry = (): void => {
   const { SENTRY_DSN } = getEnviroments(['SENTRY_DSN']);
@@ -8,7 +9,7 @@ const initializeSentry = (): void => {
     dsn: SENTRY_DSN,
     environment: process.env.NODE_ENV ?? 'Unknown',
     release: process.env.VERSION,
-    serverName: 'ctb1-menhera1',
+    serverName: hostname(),
     tracesSampleRate: 1.0,
     enableTracing: true,
     integrations: [
@@ -18,10 +19,6 @@ const initializeSentry = (): void => {
       new Sentry.Integrations.RequestData({ include: { data: true } }),
       new Sentry.Integrations.OnUncaughtException(),
       new Sentry.Integrations.OnUnhandledRejection(),
-      new Sentry.Integrations.Mongo({
-        useMongoose: true,
-        operations: ['aggregate', 'countDocuments', 'find', 'initializeOrderedBulkOp'],
-      }),
     ],
   });
 };

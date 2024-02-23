@@ -54,6 +54,7 @@ export type PlayerVsEnviroment = {
   enemy: InBattleEnemy;
   interactionToken: string;
   language: AvailableLanguages;
+  embedColor: string;
 };
 
 export enum BattleTimerActionType {

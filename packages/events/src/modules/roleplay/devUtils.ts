@@ -24,12 +24,14 @@ export const setupAdventurePvE = (
   ctx: GenericContext,
   user: InBattleUser,
   enemy: InBattleEnemy,
+  embedColor: string,
 ): PlayerVsEnviroment => ({
   enemy,
   id: `${ctx.commandId}`,
   user,
   interactionToken: ctx.interactionToken,
   language: ctx.guildLocale,
+  embedColor,
 });
 
 export const unknownAdventure = (ctx: InteractionContext): void => {

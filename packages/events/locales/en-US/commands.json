@@ -1221,7 +1221,7 @@
       "you-dead": "You were killed",
       "dead-description": "Due to a flaw in your battle posture, you ended up dying. The Dragons agreed to allow you to ressurge in the world. In a few hours, you will reappear in this world, as if nothing had happened.",
       "enemy-dead": "Enemy dead!",
-      "kill-message": "You killed {{name}}\nSearching his body for loot, you found **{{amount}} {{itemName}}**",
+      "kill-message": "You killed {{name}}.\nSearching his body for loot, you found **{{amount}} {{itemName}}**",
       "timeout": "The enemy is not stupid. If you don't attack him <t:{{unix}}:R>, he will attack you!"
     }
   },

@@ -8,7 +8,7 @@ import { executeEntitiesEffects } from './executeEffects';
 import { updateBattleMessage } from './displayBattleState';
 import { MINUTES_TO_FORCE_FINISH_BATTLE } from '../constants';
 import { finishAdventure } from '../adventureManager';
-import { createEmbed } from '../../../utils/discord/embedUtils';
+import { createEmbed, hexStringToNumber } from '../../../utils/discord/embedUtils';
 import { getKillQuery } from './killUser';
 import roleplayRepository from '../../../database/repositories/roleplayRepository';
 
@@ -28,6 +28,7 @@ const executeForceFinish = async (timer: BattleTimer) => {
 
   const embed = createEmbed({
     title: ctx.locale('commands:aventura.battle.kill'),
+    color: hexStringToNumber(battleData.embedColor),
     description: ctx.locale('commands:aventura.battle.timeout-killed', {
       minutes: MINUTES_TO_FORCE_FINISH_BATTLE,
     }),

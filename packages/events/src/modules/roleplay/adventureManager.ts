@@ -2,10 +2,10 @@ import { ButtonStyles } from 'discordeno/types';
 import { Embed } from 'discordeno/transformers';
 import { GenericContext, InteractionContext } from '../../types/menhera';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { createEmbed } from '../../utils/discord/embedUtils';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { mentionUser } from '../../utils/discord/userUtils';
-import { BattleTimerActionType, InBattleEnemy, InBattleUser, PlayerVsEnviroment } from './types';
-import { getStatusDisplayFields } from './statusDisplay';
+import { BattleTimerActionType, InBattleUser, PlayerVsEnviroment } from './types';
+import { getUserStatusDisplay } from './statusDisplay';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { extractBattleUserInfoToCharacter } from './battle/battleUtils';
 import { DatabaseCharacterSchema } from '../../types/database';
@@ -20,17 +20,24 @@ import { Enemy } from './data/enemies';
 const confirmAdventure = async (
   ctx: InteractionContext,
   user: InBattleUser,
-  enemy: InBattleEnemy,
+  embedColor: string,
 ): Promise<void> => {
   const embed = createEmbed({
     title: ctx.prettyResponse('question', 'commands:aventura.confirm-join'),
-    fields: getStatusDisplayFields(ctx, user, enemy),
+    color: hexStringToNumber(embedColor),
+    fields: [
+      {
+        name: ctx.locale('commands:aventura.your-stats'),
+        value: getUserStatusDisplay(ctx, user),
+        inline: true,
+      },
+    ],
   });
 
   const confirmButton = createButton({
     label: ctx.locale('commands:aventura.fight'),
     style: ButtonStyles.Success,
-    customId: createCustomId(0, ctx.user.id, ctx.commandId, 'JOIN_DUNGEON'),
+    customId: createCustomId(0, ctx.user.id, ctx.commandId, 'JOIN_DUNGEON', embedColor),
   });
 
   ctx.makeMessage({
@@ -45,11 +52,13 @@ const startAdventure = async (
   ctx: GenericContext,
   character: DatabaseCharacterSchema,
   enemy: Enemy,
+  embedColor: string,
 ): Promise<void> => {
   const adventure = setupAdventurePvE(
     ctx,
     prepareUserToBattle(character),
     prepareEnemyToBattle(enemy),
+    embedColor,
   );
 
   await Promise.all([
