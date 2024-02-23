@@ -49,7 +49,7 @@ const executeTimeoutChoice = async (timer: BattleTimer) => {
     battleData.language,
   );
 
-  executeEntitiesEffects(ctx, battleData);
+  executeEntitiesEffects(battleData);
 
   executeEnemyAttack(battleData);
 

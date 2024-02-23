@@ -4,7 +4,7 @@ import { MessageFlags } from '../../../utils/discord/messageUtils';
 import { getAbility } from '../data/abilities';
 import { PlayerVsEnviroment } from '../types';
 import { clearBattleTimer } from './battleTimers';
-import { checkDeath } from './battleUtils';
+import { checkDeath, keepLimitsOk } from './battleUtils';
 import { updateBattleMessage } from './displayBattleState';
 import { applyAbilityEffects, executeEntitiesEffects } from './executeEffects';
 import { executeEnemyAttack } from './executeEnemyAttack';
@@ -36,9 +36,13 @@ const executeUserChoice = async (
 
   clearBattleTimer(`battle_timeout:${adventure.id}`);
 
-  executeEntitiesEffects(ctx, adventure);
+  executeEntitiesEffects(adventure);
 
-  applyAbilityEffects(ctx, adventure, selectedAbility.effects);
+  keepLimitsOk(adventure.user);
+
+  applyAbilityEffects(adventure, selectedAbility.effects);
+
+  keepLimitsOk(adventure.user);
 
   if (!checkDeath(adventure.enemy)) executeEnemyAttack(adventure);
 

@@ -1,11 +1,16 @@
 import { DatabaseCharacterSchema } from '../../../types/database';
 import { randomFromArray } from '../../../utils/miscUtils';
+import { MAX_CHARACTER_LIFE } from '../constants';
 import { Enemies } from '../data/enemies';
 import inventoryUtils from '../inventoryUtils';
 import { InBattleUser, InventoryItem, PlayerVsEnviroment } from '../types';
 
 const checkDeath = (entity: { life: number; energy?: number }): boolean =>
   entity.life <= 0 || (typeof entity.energy !== 'undefined' && entity.energy <= 0);
+
+const keepLimitsOk = (user: InBattleUser) => {
+  user.life = Math.min(user.life, MAX_CHARACTER_LIFE);
+};
 
 const keepNumbersPositive = (object: Record<string, unknown>): void => {
   Object.entries(object).forEach(([name, value]) => {
@@ -35,4 +40,10 @@ const lootEnemy = (adventure: PlayerVsEnviroment): InventoryItem => {
   return droppedItem;
 };
 
-export { checkDeath, keepNumbersPositive, extractBattleUserInfoToCharacter, lootEnemy };
+export {
+  checkDeath,
+  keepNumbersPositive,
+  extractBattleUserInfoToCharacter,
+  lootEnemy,
+  keepLimitsOk,
+};

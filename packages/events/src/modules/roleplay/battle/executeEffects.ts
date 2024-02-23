@@ -1,5 +1,3 @@
-import ComponentInteractionContext from '../../../structures/command/ComponentInteractionContext';
-import { GenericContext } from '../../../types/menhera';
 import { Ability, AbilityEffect, BattleEffect, BattleEntity, PlayerVsEnviroment } from '../types';
 
 const executeEffectInEntity = (
@@ -26,7 +24,7 @@ const executeEffectInEntity = (
   }
 };
 
-const executeEntitiesEffects = (_ctx: GenericContext, adventure: PlayerVsEnviroment): void => {
+const executeEntitiesEffects = (adventure: PlayerVsEnviroment): void => {
   for (let i = adventure.user.effects.length - 1; i >= 0; i--) {
     const effect = adventure.user.effects[i];
 
@@ -46,11 +44,7 @@ const executeEntitiesEffects = (_ctx: GenericContext, adventure: PlayerVsEnvirom
   }
 };
 
-const applyAbilityEffects = (
-  _ctx: ComponentInteractionContext,
-  adventure: PlayerVsEnviroment,
-  effects: Ability['effects'],
-): void => {
+const applyAbilityEffects = (adventure: PlayerVsEnviroment, effects: Ability['effects']): void => {
   effects.forEach((effect) => {
     const entity = effect.applyTo === 'enemy' ? adventure.enemy : adventure.user;
 

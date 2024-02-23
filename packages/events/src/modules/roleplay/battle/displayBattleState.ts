@@ -15,7 +15,7 @@ import { GenericContext } from '../../../types/menhera';
 import { SECONDS_TO_CHOICE_ACTION_IN_BATTLE } from '../constants';
 import { getAbility } from '../data/abilities';
 import battleRepository from '../../../database/repositories/battleRepository';
-import { checkDeath, keepNumbersPositive, lootEnemy } from './battleUtils';
+import { checkDeath, keepLimitsOk, keepNumbersPositive, lootEnemy } from './battleUtils';
 import { DatabaseCharacterSchema } from '../../../types/database';
 import { finishAdventure } from '../adventureManager';
 import { startBattleTimer } from './battleTimers';
@@ -111,6 +111,7 @@ const updateBattleMessage = async (
 ): Promise<void> => {
   keepNumbersPositive(adventure.user);
   keepNumbersPositive(adventure.enemy);
+  keepLimitsOk(adventure.user);
 
   const endReasons: Embed[] = [];
 
