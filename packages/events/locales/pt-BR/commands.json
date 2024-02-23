@@ -1201,8 +1201,8 @@
   "aventura": {
     "confirm-join": "Entrar na batalha?",
     "your-stats": "Seus status",
-    "user-stats-display": ":heart: **Vida**: {{life}}\n:zap: **Energia**: {{energy}}\n:dagger: **Dano**: {{damage}}{{effects}}",
-    "enemy-stats": "Status de {{name}} Lvl. {{level}}",
+    "user-stats-display": ":heart: **Vida**: {{life}}\n:zap: **Energia**: {{energy}}{{effects}}",
+    "enemy-stats": "Status de {{name}}",
     "enemy-stats-display": ":heart: **Vida**: {{life}}\n:dagger: **Dano**: {{damage}}{{effects}}",
     "fight": "Lutar",
     "adventure-not-found": "Que aventura é essa?... Não lembro",
@@ -1226,7 +1226,7 @@
       "you-dead": "Tu foi morto",
       "dead-description": "Por uma falha na tua postura de batalha, tu acabou morrendo. Os Dragões concordaram em permitir você ressurgir no mundo. Em algumas horas, você ressurgirá neste mundo, como se nada tivesse acontecido.",
       "enemy-dead": "Inimigo morto!",
-      "kill-message": "Tu mataste {{name}} Lvl. {{level}}\nFazendo a busca em seu corpo por espólios, tu encontrou **{{amount}} {{itemName}}**",
+      "kill-message": "Tu mataste {{name}}\nFazendo a busca em seu corpo por espólios, tu encontrou **{{amount}} {{itemName}}**",
       "timeout": "O inimigo não é bobo. Se tu não atacá-lo <t:{{unix}}:R>, ele te atacará!"
     }
   },

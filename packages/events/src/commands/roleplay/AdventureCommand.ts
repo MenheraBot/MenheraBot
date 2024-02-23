@@ -115,7 +115,7 @@ const AdventureCommand = createCommand({
         flags: MessageFlags.EPHEMERAL,
       });
 
-    confirmAdventure(ctx, prepareUserToBattle(character), prepareEnemyToBattle(enemy, 1));
+    confirmAdventure(ctx, prepareUserToBattle(character), prepareEnemyToBattle(enemy));
   },
 });
 

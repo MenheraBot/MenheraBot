@@ -36,6 +36,7 @@ const manipulateDeath = (character: DatabaseCharacterSchema): void => {
 
   character.life = MAX_CHARACTER_LIFE;
   character.energy = MAX_CHARACTER_ENERGY;
+  character.currentAction = { type: Action.NONE };
 };
 
 const manipulateCharacterStatus = async (

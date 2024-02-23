@@ -10,16 +10,19 @@ export const Abilities = {
     effects: [{ applyTo: 'enemy', type: 'damage', value: 38 }],
   },
   2: {
-    energyCost: 4,
+    energyCost: 5,
     effects: [{ applyTo: 'enemy', type: 'damage', value: 46 }],
   },
   3: {
-    energyCost: 7,
-    effects: [{ applyTo: 'player', type: 'heal', value: 23, timesToApply: 2 }],
+    energyCost: 5,
+    effects: [
+      { applyTo: 'player', type: 'heal', value: 23, timesToApply: 2 },
+      { applyTo: 'enemy', type: 'heal', value: 23, timesToApply: 2 },
+    ],
   },
   4: {
-    energyCost: 5,
-    effects: [{ applyTo: 'enemy', type: 'poison', value: 20, timesToApply: 4 }],
+    energyCost: 3,
+    effects: [{ applyTo: 'enemy', type: 'poison', value: 13, timesToApply: 4 }],
   },
 };
 

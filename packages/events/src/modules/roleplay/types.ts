@@ -28,7 +28,6 @@ export type InBattleEnemy = {
   id: EnemyID;
   life: number;
   damage: number;
-  level: number;
   effects: BattleEffect[];
 };
 
@@ -41,7 +40,7 @@ export type InBattleUser = {
   id: string;
   life: number;
   energy: number;
-  damage: number;
+  // damage: number;
   abilitites: DatabaseCharacterSchema['abilities'];
   inventory: InventoryItem[];
   effects: BattleEffect[];

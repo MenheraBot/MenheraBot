@@ -4,19 +4,17 @@ import { logger } from '../../utils/logger';
 import { Enemy } from './data/enemies';
 import { InBattleEnemy, InBattleUser, PlayerVsEnviroment } from './types';
 
-export const prepareEnemyToBattle = (enemy: Enemy, level: number): InBattleEnemy => ({
+export const prepareEnemyToBattle = (enemy: Enemy): InBattleEnemy => ({
   id: enemy.id,
-  damage: enemy.damage[level - 1],
-  life: enemy.life[level - 1],
+  damage: enemy.damage,
+  life: enemy.life,
   effects: [],
-  level,
 });
 
 export const prepareUserToBattle = (user: DatabaseCharacterSchema): InBattleUser => ({
   id: user.id,
   life: user.life,
   energy: user.energy,
-  damage: 38,
   effects: [],
   inventory: user.inventory,
   abilitites: user.abilities,

@@ -1,5 +1,20 @@
 {
   "1": {
     "name": "Goblin"
+  },
+  "2": {
+    "name": "Fear: Wolf"
+  },
+  "3": {
+    "name": "Orc"
+  },
+  "4": {
+    "name": "Haunt"
+  },
+  "5": {
+    "name": "Fear: Fox"
+  },
+  "6": {
+    "name": "Fear: Magic Hedgehog"
   }
 }

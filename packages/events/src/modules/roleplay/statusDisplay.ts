@@ -27,7 +27,6 @@ const getUserStatusDisplay = (ctx: GenericContext, user: InBattleUser): string =
   ctx.locale('commands:aventura.user-stats-display', {
     life: user.life,
     energy: user.energy,
-    damage: user.damage,
     effects: getEffectsText(ctx, user.effects),
   });
 
@@ -50,7 +49,6 @@ const getStatusDisplayFields = (
   },
   {
     name: ctx.locale('commands:aventura.enemy-stats', {
-      level: enemy.level,
       name: ctx.locale(`enemies:${enemy.id}.name`),
     }),
     value: getEnemyStatusDisplay(ctx, enemy),

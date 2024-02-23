@@ -27,12 +27,22 @@ export const Items = {
   1: {
     type: ItemType.Drop,
     sellValue: 1,
-    sellMinAmount: 3,
+    sellMinAmount: 2,
   },
   2: {
-    type: ItemType.Armor,
-    armor: 4,
-    buyValue: 5,
+    type: ItemType.Drop,
+    sellValue: 6,
+    sellMinAmount: 3,
+  },
+  3: {
+    type: ItemType.Drop,
+    sellValue: 2,
+    sellMinAmount: 1,
+  },
+  4: {
+    type: ItemType.Drop,
+    sellValue: 3,
+    sellMinAmount: 2,
   },
 };
 

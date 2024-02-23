@@ -1,8 +1,14 @@
 {
-    "1": {
-        "name": "Pele de goblin"
-    },
-    "2": {
-        "name": "Cota de malha"
-    }
+  "1": {
+    "name": "Couro rígido"
+  },
+  "2": {
+    "name": "Dente de fera"
+  },
+  "3": {
+    "name": "Fragmento de alma"
+  },
+  "4": {
+    "name": "Couro de porco espínho"
+  }
 }

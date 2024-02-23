@@ -1,8 +1,14 @@
 {
   "1": {
-    "name": "Goblin skin"
+    "name": "Hard leather"
   },
-  "2": {
-    "name": "Chainmail"
+  "two": {
+    "name": "Beast's Tooth"
+  },
+  "3": {
+    "name": "Soul Fragment"
+  },
+  "4": {
+    "name": "Hedgehog Hide"
   }
 }

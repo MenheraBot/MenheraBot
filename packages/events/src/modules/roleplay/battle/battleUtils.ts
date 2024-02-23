@@ -25,9 +25,10 @@ const extractBattleUserInfoToCharacter = (user: InBattleUser): Partial<DatabaseC
 };
 
 const lootEnemy = (adventure: PlayerVsEnviroment): InventoryItem => {
-  const droppedItem = randomFromArray(
-    Enemies[adventure.enemy.id as 1].drops[adventure.enemy.level - 1],
-  ) as { id: 1; amount: number };
+  const droppedItem = randomFromArray(Enemies[adventure.enemy.id as 1].drops) as {
+    id: 1;
+    amount: number;
+  };
 
   inventoryUtils.addItems(adventure.user.inventory, [droppedItem]);
 

@@ -1197,9 +1197,9 @@
     "confirm-join": "Join the battle?",
     "fight": "Battle",
     "your-stats": "Your status",
-    "user-stats-display": ":heart: **Life**: {{life}}\n:zap: **Energy**: {{energy}}\n:dagger: **Damage**: {{damage}}",
-    "enemy-stats": "{{name}}'s status Lvl. {{level}}",
-    "enemy-stats-display": ":heart: **Life**: {{life}}\n:dagger: **Damage**: {{damage}}",
+    "user-stats-display": ":heart: **Life**: {{life}}\n:zap: **Energy**: {{energy}}{{effects}}",
+    "enemy-stats": "{{name}}'s status",
+    "enemy-stats-display": ":heart: **Life**: {{life}}\n:dagger: **Damage**: {{damage}}{{effects}}",
     "adventure-not-found": "What adventure is this?... I don't remember",
     "in-battle": "You're already on an adventure, why would you want to go on another one? Kill your enemy!",
     "dead": "**You died!**\na You fought in battle and ended up dying. The veins of the dragons are restoring your soul. You will rise again <t:{{unix}}:R>",
@@ -1221,7 +1221,7 @@
       "you-dead": "You were killed",
       "dead-description": "Due to a flaw in your battle posture, you ended up dying. The Dragons agreed to allow you to ressurge in the world. In a few hours, you will reappear in this world, as if nothing had happened.",
       "enemy-dead": "Enemy dead!",
-      "kill-message": "You killed {{name}} Lvl. {{level}}\nSearching his body for loot, you found **{{amount}} {{itemName}}**",
+      "kill-message": "You killed {{name}}\nSearching his body for loot, you found **{{amount}} {{itemName}}**",
       "timeout": "The enemy is not stupid. If you don't attack him <t:{{unix}}:R>, he will attack you!"
     }
   },

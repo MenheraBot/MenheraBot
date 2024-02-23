@@ -34,7 +34,7 @@ const getAvailableChoices = (ctx: GenericContext, user: InBattleUser): Choice[] 
     id: 0,
     name: ctx.locale(`abilities:0.name`),
     energyCost: getAbility(0).energyCost,
-    effects: [{ applyTo: 'enemy', type: 'damage', value: user.damage }],
+    effects: [{ applyTo: 'enemy', type: 'damage', value: getAbility(0).effects[0].value }],
   },
   ...user.abilitites.map((ab) => {
     const ability = getAbility(ab.id);
@@ -119,7 +119,6 @@ const updateBattleMessage = async (
       title: ctx.prettyResponse('wink', 'commands:aventura.battle.enemy-dead'),
       description: ctx.locale('commands:aventura.battle.kill-message', {
         name: ctx.locale(`enemies:${adventure.enemy.id}.name`),
-        level: adventure.enemy.level,
         amount: droppedItem.amount,
         itemName: ctx.locale(`items:${droppedItem.id}.name`),
       }),

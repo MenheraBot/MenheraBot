@@ -49,7 +49,7 @@ const startAdventure = async (
   const adventure = setupAdventurePvE(
     ctx,
     prepareUserToBattle(character),
-    prepareEnemyToBattle(enemy, 1),
+    prepareEnemyToBattle(enemy),
   );
 
   await Promise.all([
