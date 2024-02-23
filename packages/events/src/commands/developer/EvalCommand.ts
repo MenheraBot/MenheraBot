@@ -30,25 +30,21 @@ const EvalCommand = createCommand({
   category: 'dev',
   authorDataFields: ['id'],
   execute: async (ctx, finishCommand) => {
-    const revivePlayer = async (userId: BigString) =>
-      roleplayRepository
-        .updateCharacter(userId, { currentAction: { type: Action.DEATH, reviveAt: 0 } })
-        .then(() => 'USER_ALIVE');
-
-    const clear = async () => {
-      await characterModel.deleteMany({});
-      await redis.flushall();
-      return 'RPG_DATA_ERASED';
+    const boleham = {
+      reviveEnemies: async () => redis.del('world_enemies').then(() => 'ENEMIES_RESPAWN'),
+      revivePlayer: async (userId: BigString) =>
+        roleplayRepository
+          .updateCharacter(userId, { currentAction: { type: Action.DEATH, reviveAt: 0 } })
+          .then(() => 'USER_ALIVE'),
     };
 
     noop(
+      boleham,
       userRepository,
-      clear,
       usersModel,
       userThemesRepository,
       farmerModel,
       redis,
-      revivePlayer,
       characterModel,
     );
 

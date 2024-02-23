@@ -1227,6 +1227,10 @@
     "blacksmith": {
       "title": "Boleham's Blacksmith",
       "in-battle": "You are in a battle at the moment. There are no blacksmiths arround",
+      "pagination": {
+        "sell": "Sell",
+        "buy": "Buy"
+      },
       "sell": {
         "sell": "Sell {{name}}",
         "title": "Sell items",

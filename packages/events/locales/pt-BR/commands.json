@@ -1220,7 +1220,7 @@
   "acessar": {
     "igreja": {
       "title": "Pontifícia Igreja de Boleham",
-      "praying": "Que a bênçãos dos Dragões esteja contigo.",
+      "praying": "Que as bênçãos dos Dragões estejam contigo.",
       "no-needed": "Os Dragões Anciões Elementais são criaturas esnobes. Eles não te darão forças estando tão saudável assim",
       "recovered": "Suas energias foram revigoradas pelo poder dos Dragões Anciões Elementais.",
       "start-praying": "Revigorar-se",
@@ -1232,6 +1232,10 @@
     "blacksmith": {
       "title": "Ferreiro de Boleham",
       "in-battle": "Tu ta em uma batalha no momento. Não há ferreiros por perto.",
+      "pagination": {
+        "sell": "Vender",
+        "buy": "Comprar"
+      },
       "sell": {
         "sell": "Vender {{name}}",
         "title": "Vender itens",

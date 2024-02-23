@@ -23,6 +23,15 @@ const executeUserChoice = async (
       flags: MessageFlags.EPHEMERAL,
     });
 
+  if (choiceStringedId !== '0') {
+    const userAbility = adventure.user.abilitites.find((a) => `${a.id}` === choiceStringedId);
+
+    if (!userAbility)
+      throw new Error(`User dont have selected ability. Selected: ${choiceStringedId}`);
+
+    userAbility.proficience += 1;
+  }
+
   adventure.user.energy -= selectedAbility.energyCost;
 
   clearBattleTimer(`battle_timeout:${adventure.id}`);

@@ -47,7 +47,7 @@ const ChurchCommand = createCommand({
     const subCommand = ctx.getSubCommand();
 
     if (subCommand === 'ferreiro')
-      return executeNavigation(ctx, 'SELL', ctx.authorData.selectedColor);
+      return executeNavigation(ctx, 'sell', ctx.authorData.selectedColor);
 
     if (subCommand === 'igreja') return executeDisplayChurch(ctx);
   },

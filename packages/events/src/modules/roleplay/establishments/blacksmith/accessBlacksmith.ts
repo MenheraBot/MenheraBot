@@ -17,7 +17,7 @@ import battleRepository from '../../../../database/repositories/battleRepository
 import { MessageFlags } from '../../../../utils/discord/messageUtils';
 import roleplayRepository from '../../../../database/repositories/roleplayRepository';
 
-const availableLocales = ['SELL', 'BUY'] as const;
+const availableLocales = ['sell', 'buy'] as const;
 
 type Pages = (typeof availableLocales)[number];
 
@@ -36,7 +36,7 @@ const getPaginationInfo = (
   const components: ActionRow[] = [];
 
   switch (currentPage) {
-    case 'SELL': {
+    case 'sell': {
       const selectMenu = createSelectMenu({
         customId: createCustomId(0, ctx.user.id, ctx.commandId, 'SELL_ITEM', selectedColor),
         options: [],
@@ -77,7 +77,7 @@ const getPaginationInfo = (
 
       break;
     }
-    case 'BUY':
+    case 'buy':
       embed.description = 'HAHAHA';
       break;
   }
@@ -86,7 +86,7 @@ const getPaginationInfo = (
     createActionRow(
       availableLocales.map((a) =>
         createButton({
-          label: a,
+          label: ctx.locale(`commands:acessar.blacksmith.pagination.${a}`),
           style: ButtonStyles.Primary,
           disabled: a === currentPage,
           customId: createCustomId(0, ctx.user.id, ctx.commandId, 'PAGE', a, selectedColor),
@@ -126,7 +126,7 @@ const executeNavigation = async (
 const handleInteraction = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [action, page, selectedColor] = ctx.sentData;
 
-  if (action === 'PAGE') return executeNavigation(ctx, page as 'SELL', selectedColor);
+  if (action === 'PAGE') return executeNavigation(ctx, page as 'sell', selectedColor);
 
   if (action === 'SELL_ITEM')
     return displaySellItemsModal(ctx as ComponentInteractionContext<SelectMenuInteraction>);
