@@ -1,7 +1,8 @@
 import { DatabaseCharacterSchema } from '../../types/database';
 import { GenericContext, InteractionContext } from '../../types/menhera';
 import { logger } from '../../utils/logger';
-import { Enemy, InBattleEnemy, InBattleUser, PlayerVsEnviroment } from './types';
+import { Enemy } from './data/enemies';
+import { InBattleEnemy, InBattleUser, PlayerVsEnviroment } from './types';
 
 export const prepareEnemyToBattle = (enemy: Enemy, level: number): InBattleEnemy => ({
   id: enemy.id,

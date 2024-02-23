@@ -1,17 +1,7 @@
 import { DatabaseCharacterSchema } from '../../types/database';
 import { AvailableLanguages } from '../../types/i18next';
+import { EnemyID } from './data/enemies';
 import { InventoryItemID } from './data/items';
-
-export type Enemy = {
-  $devName: string;
-  id: number;
-  life: number[];
-  damage: number[];
-  drops: {
-    id: number;
-    amount: number;
-  }[][];
-};
 
 type AbilityType = 'damage' | 'heal';
 
@@ -35,7 +25,7 @@ export interface InventoryItem {
 export type BattleEffect = Required<Omit<AbilityEffect, 'applyTo'>>;
 
 export type InBattleEnemy = {
-  id: number;
+  id: EnemyID;
   life: number;
   damage: number;
   level: number;

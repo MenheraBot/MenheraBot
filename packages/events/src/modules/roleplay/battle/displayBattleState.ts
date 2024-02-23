@@ -118,7 +118,7 @@ const updateBattleMessage = async (
     const embed = createEmbed({
       title: ctx.prettyResponse('wink', 'commands:aventura.battle.enemy-dead'),
       description: ctx.locale('commands:aventura.battle.kill-message', {
-        name: 'CREATE ENEMIES.JSON',
+        name: ctx.locale(`enemies:${adventure.enemy.id}.name`),
         level: adventure.enemy.level,
         amount: droppedItem.amount,
         itemName: ctx.locale(`items:${droppedItem.id}.name`),

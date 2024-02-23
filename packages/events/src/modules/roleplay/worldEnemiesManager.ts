@@ -2,7 +2,7 @@ import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { DatabaseCharacterSchema } from '../../types/database';
 import { randomFromArray } from '../../utils/miscUtils';
 import { RESURGE_DEFAULT_AMOUNT, TOTAL_MAP_SIZE } from './constants';
-import { Enemy } from './types';
+import { Enemy } from './data/enemies';
 
 const getCurrentAvailableEnemy = async (
   location: DatabaseCharacterSchema['location'],

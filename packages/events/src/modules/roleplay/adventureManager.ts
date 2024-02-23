@@ -4,13 +4,7 @@ import { GenericContext, InteractionContext } from '../../types/menhera';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { mentionUser } from '../../utils/discord/userUtils';
-import {
-  BattleTimerActionType,
-  Enemy,
-  InBattleEnemy,
-  InBattleUser,
-  PlayerVsEnviroment,
-} from './types';
+import { BattleTimerActionType, InBattleEnemy, InBattleUser, PlayerVsEnviroment } from './types';
 import { getStatusDisplayFields } from './statusDisplay';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { extractBattleUserInfoToCharacter } from './battle/battleUtils';
@@ -21,6 +15,7 @@ import { clearBattleTimer, startBattleTimer } from './battle/battleTimers';
 import { displayBattleControlMessage } from './battle/displayBattleState';
 import { minutesToMillis } from '../../utils/miscUtils';
 import { MINUTES_TO_FORCE_FINISH_BATTLE } from './constants';
+import { Enemy } from './data/enemies';
 
 const confirmAdventure = async (
   ctx: InteractionContext,

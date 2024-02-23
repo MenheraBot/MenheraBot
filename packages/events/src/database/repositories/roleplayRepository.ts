@@ -4,8 +4,8 @@ import { DatabaseCharacterSchema } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { characterModel } from '../collections';
 import { debugError } from '../../utils/debugError';
-import { Enemy, Location } from '../../modules/roleplay/types';
-import { Enemies } from '../../modules/roleplay/data/enemies';
+import { Location } from '../../modules/roleplay/types';
+import { Enemies, Enemy } from '../../modules/roleplay/data/enemies';
 import { minutesToMillis } from '../../utils/miscUtils';
 import { MINUTES_TO_RESURGE, RESURGE_DEFAULT_AMOUNT } from '../../modules/roleplay/constants';
 import { manipulateCharacterStatus } from '../../modules/roleplay/statusManipulation';
@@ -81,11 +81,17 @@ const getEnemiesInArea = async (area: Location): Promise<Enemy[]> => {
   const totalEnemies = enemiesInArea === null ? RESURGE_DEFAULT_AMOUNT : Number(enemiesInArea);
 
   if (totalEnemies)
-    return Array.from({ length: Number(totalEnemies) }, () => ({ ...Enemies[1], id: 1 }));
+    return Array.from({ length: Number(totalEnemies) }, () => ({
+      ...Enemies[1],
+      id: 1,
+    })) as Enemy[];
 
   if (resurgeDate === null || Date.now() >= Number(resurgeDate)) {
     await updateEnemyAreas({ [areaName]: RESURGE_DEFAULT_AMOUNT, [`r:${areaName}`]: 0 });
-    return Array.from({ length: Number(RESURGE_DEFAULT_AMOUNT) }, () => ({ ...Enemies[1], id: 1 }));
+    return Array.from({ length: Number(RESURGE_DEFAULT_AMOUNT) }, () => ({
+      ...Enemies[1],
+      id: 1,
+    })) as Enemy[];
   }
 
   return [];
