@@ -33,9 +33,10 @@ export const injectRoleplayWarnIfNeeded = async (
 
   if (!ROLEPLAY_COMMANDS.includes(commandUsed.commandName)) return;
 
-  options.embeds.forEach((a) => {
-    a.footer = { text: `⚠️ ${ctx.locale('roleplay:common.beta-warn')}` };
-  });
+  const lastEmbed = options.embeds.at(-1);
+
+  if (typeof lastEmbed !== 'undefined')
+    lastEmbed.footer = { text: `⚠️ ${ctx.locale('roleplay:common.beta-warn')}` };
 };
 
 export default class {

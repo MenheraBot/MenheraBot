@@ -87,6 +87,7 @@ export const EMOJIS = {
   chick: '🐥',
   church: '⛪',
   hammer: '🔨',
+  poison: '🧪',
 };
 
 export const COLORS = {

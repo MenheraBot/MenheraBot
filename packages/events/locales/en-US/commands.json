@@ -1163,7 +1163,20 @@
     "no-items": "No items in inventory",
     "display-item": "**{{amount}}x** - {{name}}",
     "no-abilities": "No abilities",
-    "display-ability": "{{name}} - Proficience: {{proficience}}",
+    "effects": {
+      "type": {
+        "heal": "Heal",
+        "damage": "Attack",
+        "poison": "Poison"
+      },
+      "target": {
+        "player": "you",
+        "enemy": "your enemy"
+      }
+    },
+    "turns-effect-display": "$t(commands:personagem.effects.type.{{type}}) $t(commands:personagem.effects.target.{{applyTo}}) in {{value}} {{emoji}} for **{{timesToApply}}** turns.",
+    "effect-display": "$t(commands:personagem.effects.type.{{type}}) $t(commands:personagem.effects.target.{{applyTo}}) in {{value}} {{emoji}}",
+    "display-ability": "**{{name}}** ({{proficience}} pfc.)",
     "in-battle-user": "Unable to obtain **{{name}}**'s status, he is in a battle",
     "bot-mentioned": "Current technologies do not allow robots to teleport to Boleham's world"
   },
@@ -1199,7 +1212,7 @@
     },
     "battle": {
       "title": "Battle Statistics",
-      "effect": "{{type}} - {{amount}} {{dagger}} {{turns}}x",
+      "effect": "{{type}} - {{amount}} {{emoji}} {{turns}}x",
       "kill": "Kill your enemy!",
       "actions": "Available Actions",
       "energy-cost": "Energy cost: {{cost}} :zap:",

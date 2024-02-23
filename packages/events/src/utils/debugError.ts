@@ -4,6 +4,8 @@ import { logger } from './logger';
 
 export const debugError = (err: Error, toSentry = true): null => {
   logger.error('Debug Error', err.message);
+  logger.error(err);
+
   if (toSentry)
     try {
       Sentry.captureException(err);

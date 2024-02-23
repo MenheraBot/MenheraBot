@@ -11,6 +11,7 @@
   },
   "effects": {
     "heal": "Cura",
-    "damage": "Envenenamento"
+    "poison": "Envenenado",
+    "damage": "Sangrando"
   }
 }

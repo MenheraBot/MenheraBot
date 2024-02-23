@@ -1167,8 +1167,21 @@
     "embed-title": "Personagem de {{user}}",
     "no-items": "Sem itens no inventário",
     "display-item": "**{{amount}}x** - {{name}}",
+    "effects": {
+      "type": {
+        "heal": "Cura",
+        "damage": "Ataca",
+        "poison": "Envenena"
+      },
+      "target": {
+        "player": "você",
+        "enemy": "o inimigo"
+      }
+    },
+    "turns-effect-display": "$t(commands:personagem.effects.type.{{type}}) $t(commands:personagem.effects.target.{{applyTo}}) em {{value}} {{emoji}} por **{{timesToApply}}** turnos.",
+    "effect-display": "$t(commands:personagem.effects.type.{{type}}) $t(commands:personagem.effects.target.{{applyTo}}) em {{value}} {{emoji}}",
     "no-abilities": "Sem habilidades",
-    "display-ability": "{{name}} - Proficiência: {{proficience}}",
+    "display-ability": "**{{name}}** ({{proficience}} pfc.)",
     "in-battle-user": "Não foi possível obter o status de **{{name}}**, ele está em uma batalha",
     "bot-mentioned": "As tecnologias atuais não permitem o teletransporte de robôs para o mundo de Boleham"
   },
@@ -1204,7 +1217,7 @@
     },
     "battle": {
       "title": "Estatísticas da Batalha",
-      "effect": "{{type}} - {{amount}} {{dagger}} {{turns}}x",
+      "effect": "{{type}} - {{amount}} {{emoji}} {{turns}}x",
       "kill": "Mate o teu inimigo!",
       "actions": "Ações Disponíveis",
       "energy-cost": "Custo de energia: {{cost}} :zap:",

@@ -94,8 +94,7 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
 
   logger.logSwitch(bot, 'After getting user dm ID: ', userDM?.id);
 
-  if (userDM)
-    bot.helpers.sendMessage(userDM.id, { embeds: [embed] }).catch((e) => debugError(e, false));
+  if (userDM) bot.helpers.sendMessage(userDM.id, { embeds: [embed] }).catch((e) => debugError(e));
 
   logger.logSwitch(bot, 'After sending user DM');
 

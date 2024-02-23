@@ -11,6 +11,7 @@
   },
   "effects": {
     "heal": "Heal",
-    "damage": "Poison"
+    "poison": "Poisoned",
+    "damage": "Bleeding"
   }
 }

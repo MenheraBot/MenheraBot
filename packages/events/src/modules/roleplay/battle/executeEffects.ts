@@ -7,6 +7,7 @@ const executeEffectInEntity = (
   effect: AbilityEffect | BattleEffect,
 ): void => {
   switch (effect.type) {
+    case 'poison':
     case 'damage': {
       entity.life -= effect.value;
       break;

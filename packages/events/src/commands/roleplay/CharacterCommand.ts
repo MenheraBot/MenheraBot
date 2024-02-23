@@ -10,7 +10,7 @@ import { createCommand } from '../../structures/command/createCommand';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { getUserStatusDisplay } from '../../modules/roleplay/statusDisplay';
+import { effectToEmoji, getUserStatusDisplay } from '../../modules/roleplay/statusDisplay';
 import { prepareUserToBattle } from '../../modules/roleplay/devUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import battleRepository from '../../database/repositories/battleRepository';
@@ -19,6 +19,7 @@ import { createActionRow, createButton, createCustomId } from '../../utils/disco
 import { DatabaseCharacterSchema } from '../../types/database';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import cacheRepository from '../../database/repositories/cacheRepository';
+import { getAbility } from '../../modules/roleplay/data/abilities';
 
 const characterPages = ['vitality', 'abilities', 'inventory', 'location'] as const;
 
@@ -94,13 +95,21 @@ const createCharacterEmbed = (
             character.abilities.length === 0
               ? ctx.locale('commands:personagem.no-abilities')
               : character.abilities
-                  .map((hab) =>
-                    ctx.locale('commands:personagem.display-ability', {
-                      name: ctx.locale(`abilities:${hab.id}.name`),
-                      proficience: hab.proficience,
-                    }),
+                  .map(
+                    (hab) =>
+                      `- ${ctx.locale('commands:personagem.display-ability', {
+                        name: ctx.locale(`abilities:${hab.id}.name`),
+                        proficience: hab.proficience,
+                      })}\n${getAbility(hab.id)
+                        .effects.map((e) =>
+                          ctx.locale(
+                            `commands:personagem.${e.timesToApply ? 'turns-' : ''}effect-display`,
+                            { ...e, emoji: effectToEmoji[e.type] },
+                          ),
+                        )
+                        .join('\n')}`,
                   )
-                  .join('\n'),
+                  .join('\n\n'),
         },
       ];
       break;

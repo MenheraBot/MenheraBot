@@ -3,7 +3,7 @@ import { AvailableLanguages } from '../../types/i18next';
 import { EnemyID } from './data/enemies';
 import { InventoryItemID } from './data/items';
 
-type AbilityType = 'damage' | 'heal';
+type AbilityType = 'damage' | 'heal' | 'poison';
 
 export type AbilityEffect = {
   applyTo: 'enemy' | 'player';

@@ -3,6 +3,12 @@ import { BattleEffect, InBattleEnemy, InBattleUser } from './types';
 import { GenericContext } from '../../types/menhera';
 import { EMOJIS } from '../../structures/constants';
 
+export const effectToEmoji = {
+  damage: EMOJIS.sword,
+  heal: EMOJIS.heart,
+  poison: EMOJIS.poison,
+};
+
 const getEffectsText = (ctx: GenericContext, effects: BattleEffect[]): string =>
   effects.length > 0
     ? `\n**${ctx.locale('roleplay:common.effects')}:**\n- ${effects
@@ -11,7 +17,7 @@ const getEffectsText = (ctx: GenericContext, effects: BattleEffect[]): string =>
             type: ctx.locale(`roleplay:effects.${a.type}`),
             amount: a.value,
             turns: a.timesToApply,
-            dagger: EMOJIS.sword,
+            emoji: effectToEmoji[a.type],
           }),
         )
         .join('\n- ')}`

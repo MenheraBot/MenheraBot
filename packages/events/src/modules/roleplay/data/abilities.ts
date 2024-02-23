@@ -19,7 +19,7 @@ export const Abilities = {
   },
   4: {
     energyCost: 5,
-    effects: [{ applyTo: 'enemy', type: 'damage', value: 20, timesToApply: 4 }],
+    effects: [{ applyTo: 'enemy', type: 'poison', value: 20, timesToApply: 4 }],
   },
 };
 
