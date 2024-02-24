@@ -84,6 +84,11 @@ const createCharacterEmbed = (
           value: `${character.money}`,
           inline: true,
         },
+        {
+          name: `Equipamento`,
+          value: `**Armadura: cota de malha**`,
+          inline: false,
+        },
       ];
 
       break;

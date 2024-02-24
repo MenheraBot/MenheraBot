@@ -144,6 +144,7 @@ const characterSchema = new Schema({
   location: { type: Array, default: [0, 0] },
   currentAction: { type: Object, default: { type: Action.NONE } },
   money: { type: Number, default: 0 },
+  equipment: { type: Array, default: [] },
 });
 
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
