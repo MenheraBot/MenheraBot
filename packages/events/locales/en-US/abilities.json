@@ -1,0 +1,17 @@
+{
+  "0": {
+    "name": "Basic attack"
+  },
+  "1": {
+    "name": "Quick attack"
+  },
+  "two": {
+    "name": "Flaming breath"
+  },
+  "3": {
+    "name": "Medicinal herbs"
+  },
+  "4": {
+    "name": "Poisoning"
+  }
+}

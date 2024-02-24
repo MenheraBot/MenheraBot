@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, BigString } from 'discordeno/types';
 import { inspect } from 'node:util';
 
-import { usersModel, farmerModel } from '../../database/collections';
+import { usersModel, farmerModel, characterModel } from '../../database/collections';
 import { MainRedisClient as redis } from '../../database/databases';
 import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
 import { createEmbed } from '../../utils/discord/embedUtils';
+import roleplayRepository from '../../database/repositories/roleplayRepository';
+import { Action } from '../../modules/roleplay/types';
 
 const noop = (..._args: unknown[]) => undefined;
 
@@ -28,7 +30,23 @@ const EvalCommand = createCommand({
   category: 'dev',
   authorDataFields: ['id'],
   execute: async (ctx, finishCommand) => {
-    noop(userRepository, usersModel, userThemesRepository, farmerModel, redis);
+    const boleham = {
+      reviveEnemies: async () => redis.del('world_enemies').then(() => 'ENEMIES_RESPAWN'),
+      revivePlayer: async (userId: BigString) =>
+        roleplayRepository
+          .updateCharacter(userId, { currentAction: { type: Action.DEATH, reviveAt: 0 } })
+          .then(() => 'USER_ALIVE'),
+    };
+
+    noop(
+      boleham,
+      userRepository,
+      usersModel,
+      userThemesRepository,
+      farmerModel,
+      redis,
+      characterModel,
+    );
 
     try {
       // eslint-disable-next-line no-eval

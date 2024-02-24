@@ -57,7 +57,7 @@ export const getProfileImageUrl = (imageId: number): string =>
   `${CDN_URL}/images/profiles/${imageId}.png`;
 
 export const updateAssets = async (): Promise<void> => {
-  if (process.env.NOMICROSERVICES || process.env.NODE_ENV === 'test') return;
+  if (process.env.NODE_ENV === 'test') return;
 
   const result = await axios.get(CDN_URL).catch(debugError);
   if (!result) return logger.error('[CDN] Error when updating assets');

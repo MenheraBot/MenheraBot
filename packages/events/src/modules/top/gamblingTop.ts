@@ -92,7 +92,7 @@ const executeGamblingTop = async (
           (((userData.lost_games ?? 0) / (userData.won_games + userData.lost_games)) * 100).toFixed(
             2,
           ) || 0,
-      })}\n> ${translatedTitle ?? '🤓☝️'}`,
+      })}${translatedTitle ? `\n> ${translatedTitle}` : ''}`,
       inline: false,
     });
   }

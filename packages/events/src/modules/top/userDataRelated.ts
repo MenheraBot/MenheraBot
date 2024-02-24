@@ -64,7 +64,7 @@ const executeUserDataRelatedTop = async (
 
     embed.fields?.push({
       name: `**${skip + 1 + i} -** ${memberName}`,
-      value: `${actor}: **${res[i].value}**\n> ${translatedTitle ?? '🤓☝️'}`,
+      value: `${actor}: **${res[i].value}**${translatedTitle ? `\n> ${translatedTitle}` : ''}`,
       inline: false,
     });
   }

@@ -1121,7 +1121,7 @@
       "deliver-embed-name": "Delivery {{index}}",
       "deliver-embed-name-finished": "~~Delivery {{index}}~~ ✅",
       "deliver-embed-field": "Stars: **{{award}}** :star:\nExperience: **{{xp}}**",
-      "deliver-embed-field-need":"Needs: **{{amount}}x** {{emoji}}",
+      "deliver-embed-field-need": "Needs: **{{amount}}x** {{emoji}}",
       "description": "### Once a day the delivery truck will appear at your farm to pick up deliveries.\n### Completing all deliveries before the truck leaves will give you an additional **{{bonus}}** :star: stars\n\n### The truck will leave <t:{{unix}}:R>"
     },
     "field-action": {
@@ -1157,5 +1157,104 @@
     "not-your-title": "You need to have the title you want to equip",
     "unknown-title": "This title does not exist!",
     "success": "O teu título foi alterado com sucesso!"
+  },
+  "personagem": {
+    "embed-title": "{{user}}'s Character",
+    "no-items": "No items in inventory",
+    "display-item": "**{{amount}}x** - {{name}}",
+    "no-abilities": "No abilities",
+    "effects": {
+      "type": {
+        "heal": "Heal",
+        "damage": "Attack",
+        "poison": "Poison"
+      },
+      "target": {
+        "player": "you",
+        "enemy": "your enemy"
+      }
+    },
+    "turns-effect-display": "$t(commands:personagem.effects.type.{{type}}) $t(commands:personagem.effects.target.{{applyTo}}) in {{value}} {{emoji}} for **{{timesToApply}}** turns.",
+    "effect-display": "$t(commands:personagem.effects.type.{{type}}) $t(commands:personagem.effects.target.{{applyTo}}) in {{value}} {{emoji}}",
+    "display-ability": "**{{name}}** ({{proficience}} pfc.)",
+    "in-battle-user": "Unable to obtain **{{name}}**'s status, he is in a battle",
+    "bot-mentioned": "Current technologies do not allow robots to teleport to Boleham's world"
+  },
+  "viajar": {
+    "start-travel": "Start trip",
+    "in-battle": "You can't go on a trip. You're in a battle! Do you wanna run away? lol",
+    "confirm-message": "Are you sure you want to travel to **{{x}}:{{y}}**?\nThis trip will cost {{cost}} {{emoji}} energy.\nYou will arrive at your final destination <t:{{unix}}:R> (<t:{{unix}}>)",
+    "already-there": "You can't travel to that location because you're already there!",
+    "other-action": "It is not possible to start a trip while you are in another activity",
+    "too-tired": "You're too tired to travel to **{{x}}:{{y}}**. To complete the trip, you would need **{{cost}}** {{emoji}} energy, but you only have **{{amount}}** {{emoji}}",
+    "start-travelling": "You started a great journey to **{{x}}:{{y}}**. ETA: <t:{{unix}}>",
+    "embed-title": "Boleham's Map",
+    "enemy-density": "Enemy density",
+    "travelling": "Travelling",
+    "in-travel": "You're on a trip to **{{x}}:{{y}}**. You will arrive at your destination <t:{{unix}}:R> (<t:{{unix}}>)"
+  },
+  "aventura": {
+    "confirm-join": "Join the battle?",
+    "fight": "Battle",
+    "your-stats": "Your status",
+    "user-stats-display": ":heart: **Life**: {{life}}\n:zap: **Energy**: {{energy}}{{effects}}",
+    "enemy-stats": "{{name}}'s status",
+    "enemy-stats-display": ":heart: **Life**: {{life}}\n:dagger: **Damage**: {{damage}}{{effects}}",
+    "adventure-not-found": "What adventure is this?... I don't remember",
+    "in-battle": "You're already on an adventure, why would you want to go on another one? Kill your enemy!",
+    "dead": "**You died!**\na You fought in battle and ended up dying. The veins of the dragons are restoring your soul. You will rise again <t:{{unix}}:R>",
+    "other-action": "It is not possible to go into battle while doing something else.",
+    "no-enemies": "There are no enemies nearby at the moment",
+    "first-ability": {
+      "title": "Choose your first ability",
+      "description": "The Elemental Elder Dragons sensed your teleport to the new world. Knowing your entire journey, they would like to grace your arrival. You have the option to choose any of the skills below to be your first skill.",
+      "already-learned": "You have already learned an essential skill. Don't be dishonest."
+    },
+    "battle": {
+      "title": "Battle Statistics",
+      "effect": "{{type}} - {{amount}} {{emoji}} {{turns}}x",
+      "kill": "Kill your enemy!",
+      "actions": "Available Actions",
+      "energy-cost": "Energy cost: {{cost}} :zap:",
+      "no-energy": "You don't have enough energy to use that.",
+      "timeout-killed": "The Boleham monsters' innate ability has been activated. The battle has reached its maximum duration of {{minutes}} minutes. At this stage, the monsters' innate ability 'Death by Knowledge' is activated. This ability passively analyzes you, and once the analysis is completed, it exposes all your weak points, giving the monster the chance to kill you in one blow.",
+      "you-dead": "You were killed",
+      "dead-description": "Due to a flaw in your battle posture, you ended up dying. The Dragons agreed to allow you to ressurge in the world. In a few hours, you will reappear in this world, as if nothing had happened.",
+      "enemy-dead": "Enemy dead!",
+      "kill-message": "You killed {{name}}.\nSearching his body for loot, you found **{{amount}} {{itemName}}**",
+      "timeout": "The enemy is not stupid. If you don't attack him <t:{{unix}}:R>, he will attack you!"
+    }
+  },
+  "acessar": {
+    "igreja": {
+      "title": "Pontifical Church of Boleham",
+      "praying": "May the blessings of the Dragons be with you.",
+      "no-needed": "Elemental Elder Dragons are snobbish creatures. They won't give you strength when you're this healthy",
+      "recovered": "Their energies have been reinvigorated by the power of the Elemental Elder Dragons.",
+      "start-praying": "Start praying",
+      "stop-praying": "Leave the Church",
+      "description": "Enter the Church to regain your strength",
+      "other-action": "To enter the Church you need to be totally focused. It is not possible to pray while doing anything else.",
+      "in-battle": "You're in the middle of a battle, it's not possible to escape to enter the Church. Battle!"
+    },
+    "blacksmith": {
+      "title": "Boleham's Blacksmith",
+      "in-battle": "You are in a battle at the moment. There are no blacksmiths arround",
+      "pagination": {
+        "sell": "Sell",
+        "buy": "Buy"
+      },
+      "sell": {
+        "sell": "Sell {{name}}",
+        "title": "Sell items",
+        "sold": "You sold your items for **{{amount}}** {{emoji}} Dragonnys.",
+        "select": "Select the items you wanna sell",
+        "not-enough-items": "You want to sell more items than you have.",
+        "invalid-amount": "Tui tried to sell an invalid quantity of items. Check the multiples of each item correctly.",
+        "no-items": "You don't have enough items to sell",
+        "need-math": "Sale of this item must be a multiple of {{amount}}",
+        "item-description": "{{name}} ({{amount}}x by {{value}} :star:)"
+      }
+    }
   }
 }

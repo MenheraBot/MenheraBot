@@ -1,0 +1,17 @@
+{
+  "common": {
+    "inventory": "Inventário",
+    "abilities": "Habilidades",
+    "money": "Dragonnys",
+    "location": "Localização atual",
+    "effects": "Efeitos",
+    "vitality": "Vitalidade",
+    "beta-warn": "O RPG está em sua versão beta. Dados podem ser apagados a qualquer momento.",
+    "unlock-ability": "Com os poderes dos Dragões Anciões Elementais tu aprende uma nova habilidade: **{{name}}**. Vá para a batalha!"
+  },
+  "effects": {
+    "heal": "Cura",
+    "poison": "Envenenado",
+    "damage": "Sangrando"
+  }
+}

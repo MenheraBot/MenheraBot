@@ -2,6 +2,7 @@ import { BigString, Bot, Collection } from 'discordeno';
 import { ChatInputInteractionCommand } from './commands';
 import ComponentInteractionContext from '../structures/command/ComponentInteractionContext';
 import ChatInputInteractionContext from '../structures/command/ChatInputInteractionContext';
+import FollowUpInteractionContext from '../structures/command/FollowUpInteractionContext';
 
 export interface IdentifiedData<T> {
   id: number;
@@ -9,6 +10,7 @@ export interface IdentifiedData<T> {
 }
 
 export type InteractionContext = ChatInputInteractionContext | ComponentInteractionContext;
+export type GenericContext = InteractionContext | FollowUpInteractionContext;
 
 export interface MenheraClient extends Bot {
   commands: Collection<string, ChatInputInteractionCommand>;

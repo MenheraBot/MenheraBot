@@ -57,8 +57,8 @@ const executeUserCommandsTop = async (
 
     embed.fields?.push({
       name: `**${skip + i + 1} -** ${member ? getDisplayName(member) : `ID ${res[i].id}`}`,
-      value: `${ctx.locale('commands:top.used-commands', { times: res[i].uses })}\n> ${
-        translatedTitle ?? '🤓☝️'
+      value: `${ctx.locale('commands:top.used-commands', { times: res[i].uses })}${
+        translatedTitle ? `\n> ${translatedTitle}` : ''
       }`,
       inline: false,
     });

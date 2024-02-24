@@ -14,8 +14,30 @@ import {
   sendFollowupMessage,
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests';
+import { GenericContext } from '../../types/menhera';
+import commandRepository from '../../database/repositories/commandRepository';
 
 export type CanResolve = 'users' | 'members' | 'attachments' | false;
+
+export const ROLEPLAY_COMMANDS = ['acessar', 'aventura', 'personagem', 'viajar'];
+
+export const injectRoleplayWarnIfNeeded = async (
+  ctx: GenericContext,
+  options: InteractionCallbackData,
+): Promise<void> => {
+  if (!Array.isArray(options.embeds) || options.embeds.length === 0) return;
+
+  const commandUsed = await commandRepository.getOriginalInteraction(ctx.commandId);
+
+  if (!commandUsed) return;
+
+  if (!ROLEPLAY_COMMANDS.includes(commandUsed.commandName)) return;
+
+  const lastEmbed = options.embeds.at(-1);
+
+  if (typeof lastEmbed !== 'undefined')
+    lastEmbed.footer = { text: `⚠️ ${ctx.locale('roleplay:common.beta-warn')}` };
+};
 
 export default class {
   public replied = false;
@@ -39,6 +61,10 @@ export default class {
     this.subCommand = subCommand;
   }
 
+  get interactionToken(): string {
+    return this.interaction.token;
+  }
+
   get author(): User {
     return this.interaction.user;
   }
@@ -60,6 +86,8 @@ export default class {
   }
 
   async followUp(options: InteractionCallbackData): Promise<void> {
+    await injectRoleplayWarnIfNeeded(this, options);
+
     await sendFollowupMessage(this.interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: options,
@@ -67,6 +95,8 @@ export default class {
   }
 
   async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
+    await injectRoleplayWarnIfNeeded(this, options);
+
     if (this.replied) {
       await editOriginalInteractionResponse(this.interaction.token, options).catch((e) =>
         this.captureException(e),

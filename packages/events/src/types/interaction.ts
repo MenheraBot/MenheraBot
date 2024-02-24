@@ -1,4 +1,4 @@
-import { Collection } from 'discordeno/*';
+import { Collection } from 'discordeno';
 import { Interaction, Member, User } from 'discordeno/transformers';
 import { InputTextComponent, MessageComponentTypes } from 'discordeno/types';
 

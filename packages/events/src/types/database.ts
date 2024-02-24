@@ -4,6 +4,9 @@ import { AvailablePlants, DeliveryMission, Plantation } from '../modules/fazendi
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
 import { AvailableLanguages } from './i18next';
+import { AvailableActions, InventoryItem, Location } from '../modules/roleplay/types';
+import { AbilityID } from '../modules/roleplay/data/abilities';
+import { InventoryItemID } from '../modules/roleplay/data/items';
 
 export type ColorResolvable = `#${string}`;
 
@@ -148,4 +151,26 @@ export interface DatabaseFarmerSchema {
   lastPlantedSeed: AvailablePlants;
   dailies: DeliveryMission[];
   dailyDayId: number;
+}
+
+type DatabaseUserAbility = {
+  id: AbilityID;
+  proficience: number;
+};
+
+interface Equipment {
+  id: InventoryItemID;
+  duration: number;
+}
+
+export interface DatabaseCharacterSchema {
+  readonly id: string;
+  life: number;
+  energy: number;
+  inventory: InventoryItem[];
+  abilities: DatabaseUserAbility[];
+  location: Location;
+  currentAction: AvailableActions;
+  money: number;
+  equipment: Equipment[];
 }

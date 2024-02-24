@@ -28,12 +28,10 @@ export const EMOJIS = {
   heart: '❤️',
   lick: '👅',
   time: '⏲️',
-  sword: '⚔️',
   gay_flag: '🏳️‍🌈',
   hourglass: '⌛',
   rainbow: '🌈',
   crown: '👑',
-  scape: '🐥',
   lock: '🔒',
   list: '📜',
   estrelinhas: '⭐',
@@ -77,6 +75,19 @@ export const EMOJIS = {
   badge_200: '<:badge_19:1049144870469648485>',
   badge_201: '<:badge_21:1103511851788144771>',
   badge_202: '<:badge_22:1103513736288931892>',
+
+  // Roleplay
+  chest: '<:Chest:760957557538947133>',
+  magic_ball: '🔮',
+  dragonnys: '<:gold:960654694244573204>',
+  pin: '📍',
+  zap: ':zap:',
+  sword: '⚔️',
+  attributes: '🎭',
+  chick: '🐥',
+  church: '⛪',
+  hammer: '🔨',
+  poison: '🧪',
 };
 
 export const COLORS = {

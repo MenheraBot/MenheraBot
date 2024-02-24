@@ -1754,6 +1754,13 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.7.1.tgz#06d732ead0bd5ad978ef0ea9cbdeb24dc8717514"
   integrity sha512-LT+OIXpp2kj4E2S/p91BMe+VgGX2+lfO+XTpfXhh+bCk2LkQtHZSub8ewFBMGP5ClysPjTDFa4sMI8Q3n4T0wg==
 
+"@types/node@^20.11.5":
+  version "20.11.19"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.19.tgz#b466de054e9cb5b3831bee38938de64ac7f81195"
+  integrity sha512-7xMnVEcZFu0DikYjWOlRq7NTPETrm7teqUT2WkQjrTIkEgUyyGdWsj/Zg8bEJt5TNklzbPD1X3fqfsHw3SpapQ==
+  dependencies:
+    undici-types "~5.26.4"
+
 "@types/qs@*":
   version "6.9.8"
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.8.tgz#f2a7de3c107b89b441e071d5472e6b726b4adf45"
@@ -4384,7 +4391,7 @@ msgpackr-extract@^3.0.2:
     "@msgpackr-extract/msgpackr-extract-linux-x64" "3.0.2"
     "@msgpackr-extract/msgpackr-extract-win32-x64" "3.0.2"
 
-msgpackr@^1.3.2:
+msgpackr@^1.10.1, msgpackr@^1.3.2:
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/msgpackr/-/msgpackr-1.10.1.tgz#51953bb4ce4f3494f0c4af3f484f01cfbb306555"
   integrity sha512-r5VRLv9qouXuLiIBrLpl2d5ZvPt8svdQTl5/vMvE4nzDMyEX4sgW5yWhuBBj5UmgwOTWj8CIdSXn5sAfsHAWIQ==
@@ -4408,6 +4415,16 @@ net-ipc@^2.0.1:
   optionalDependencies:
     fast-zlib "^2.0.1"
     msgpackr "^1.3.2"
+
+net-ipc@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/net-ipc/-/net-ipc-2.2.0.tgz#d842af597d4d2c59a2ecb7e62aa241da406442d8"
+  integrity sha512-50B9REw43HZ34A0ZrZ2Sdk0yfo+/AicRaWSXsswpczpjLz5WOYAVo7BM/+J95QOY4n/j1wMsQIY2UWMJh8ijFg==
+  dependencies:
+    "@types/node" "^20.11.5"
+  optionalDependencies:
+    fast-zlib "^2.0.1"
+    msgpackr "^1.10.1"
 
 node-gyp-build-optional-packages@5.0.7:
   version "5.0.7"
@@ -5309,6 +5326,11 @@ unbox-primitive@^1.0.2:
     has-bigints "^1.0.2"
     has-symbols "^1.0.3"
     which-boxed-primitive "^1.0.2"
+
+undici-types@~5.26.4:
+  version "5.26.5"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-5.26.5.tgz#bcd539893d00b56e964fd2657a4866b221a65617"
+  integrity sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
 
 undici@^5.8.0:
   version "5.28.3"

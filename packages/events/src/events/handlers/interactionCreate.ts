@@ -135,13 +135,12 @@ const setInteractionCreateEvent = (): void => {
       );
 
       if (isRateLimited) {
-        if (!process.env.NOMICROSERVICES)
-          getRateLimitCounter().inc(
-            {
-              type: ratelimitRepository.limitLevels[info.ratelimit],
-            },
-            0.5,
-          );
+        getRateLimitCounter().inc(
+          {
+            type: ratelimitRepository.limitLevels[info.ratelimit],
+          },
+          0.5,
+        );
 
         logger.info(
           `[RATELIMIT] - Limited the ${info.count} time in severity ${
@@ -182,14 +181,13 @@ const setInteractionCreateEvent = (): void => {
       commandName,
     });
 
-    if (!process.env.NOMICROSERVICES)
-      getCommandsCounter().inc(
-        {
-          command_name: commandUsed.command,
-          complete_command: commandUsed.fullCommand,
-        },
-        0.5,
-      );
+    getCommandsCounter().inc(
+      {
+        command_name: commandUsed.command,
+        complete_command: commandUsed.fullCommand,
+      },
+      0.5,
+    );
 
     await command
       .execute(ctx, () => null)
@@ -229,6 +227,8 @@ const setInteractionCreateEvent = (): void => {
           bot.helpers.sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
             embeds: [embed],
           });
+
+          logger.error(err);
         }
       });
 

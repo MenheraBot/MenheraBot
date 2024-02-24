@@ -1,22 +1,29 @@
 import { InteractionCallbackData, InteractionResponseTypes } from 'discordeno';
 
-import { TFunction } from 'i18next';
+import i18next, { TFunction } from 'i18next';
 import { debugError } from '../../utils/debugError';
-import { Translation } from '../../types/i18next';
-import { EMOJIS } from '../../structures/constants';
+import { AvailableLanguages, Translation } from '../../types/i18next';
+import { EMOJIS } from '../constants';
 import {
   editOriginalInteractionResponse,
   sendFollowupMessage,
 } from '../../utils/discord/interactionRequests';
+import { injectRoleplayWarnIfNeeded } from './ChatInputInteractionContext';
 
 export default class {
+  public i18n: TFunction;
+
   constructor(
-    private interactionToken: string,
+    public interactionToken: string,
     public commandId: string,
-    private i18n: TFunction,
-  ) {}
+    public guildLocale: AvailableLanguages,
+  ) {
+    this.i18n = i18next.getFixedT(guildLocale);
+  }
 
   async followUp(options: InteractionCallbackData): Promise<void> {
+    await injectRoleplayWarnIfNeeded(this, options);
+
     await sendFollowupMessage(this.interactionToken, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: options,
@@ -32,6 +39,8 @@ export default class {
   }
 
   async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
+    await injectRoleplayWarnIfNeeded(this, options);
+
     await editOriginalInteractionResponse(this.interactionToken, options).catch(debugError);
   }
 }

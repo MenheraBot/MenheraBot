@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 import {
+  DatabaseCharacterSchema,
   DatabaseCommandSchema,
   DatabaseCreditsSchema,
   DatabaseFarmerSchema,
@@ -11,6 +12,7 @@ import {
   DatabaseUserSchema,
   DatabaseUserThemesSchema,
 } from '../types/database';
+import { Action } from '../modules/roleplay/types';
 
 const { Schema, model } = mongoose;
 
@@ -133,6 +135,18 @@ const feirinhaSchema = new Schema({
   [`name_en-US`]: { type: String },
 });
 
+const characterSchema = new Schema({
+  id: { type: String, unique: true, index: true },
+  life: { type: Number, default: 100 },
+  energy: { type: Number, default: 100 },
+  inventory: { type: Array, default: [] },
+  abilities: { type: Array, default: [] },
+  location: { type: Array, default: [0, 0] },
+  currentAction: { type: Object, default: { type: Action.NONE } },
+  money: { type: Number, default: 0 },
+  equipment: { type: Array, default: [] },
+});
+
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
 export const guildsModel = model<DatabaseGuildSchema>('guild', guildSchema);
 export const usersModel = model<DatabaseUserSchema>('usersdb', userSchema);
@@ -142,3 +156,4 @@ export const profileImagesModel = model<DatabaseProfileImagesSchema>('images', p
 export const farmerModel = model<DatabaseFarmerSchema>('farmer', farmerSchema);
 export const titlesModel = model<DatabaseTitlesSchema>('titles', titlesSchema);
 export const feirinhaModel = model<DatabaseFeirinhaSchema>('feirinha', feirinhaSchema);
+export const characterModel = model<DatabaseCharacterSchema>('character', characterSchema);
