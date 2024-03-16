@@ -3,6 +3,7 @@ import { MenheraClient } from '../types/menhera';
 import { createEmbed } from './discord/embedUtils';
 import { getEnviroments } from './getEnviroments';
 import { getStuckQueuesCounter } from '../structures/initializePrometheus';
+import { debugError } from './debugError';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -32,11 +33,13 @@ const freeStuckQueues = (bot: MenheraClient): void => {
           timestamp: Date.now(),
         });
 
-        bot.helpers.sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
-          embeds: [embed],
-          content: `<@${bot.ownerId}>`,
-          allowedMentions: { users: [bot.ownerId] },
-        });
+        bot.helpers
+          .sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
+            embeds: [embed],
+            content: `<@${bot.ownerId}>`,
+            allowedMentions: { users: [bot.ownerId] },
+          })
+          .catch(debugError);
       }
     });
   }, 1000);
