@@ -167,6 +167,11 @@ const BlackjackCommand = createCommand({
       const playerCards = numbersToBlackjackCards(existingMatch.playerCards);
       const dealerCards = numbersToBlackjackCards(existingMatch.dealerCards);
 
+      await blackjackRepository.updateBlackjackState(ctx.interaction.user.id, {
+        ...existingMatch,
+        secondCopy: true,
+      });
+
       return sendBlackjackMessage(
         ctx,
         existingMatch.bet,
