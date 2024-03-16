@@ -101,7 +101,11 @@ const createIpcConnection = async (): Promise<void> => {
         bot.commandsInExecution -= 1;
         totalScrapes += 1;
 
-        if (totalScrapes >= 100) register.resetMetrics();
+        if (totalScrapes >= 1000) {
+          totalScrapes = 0;
+          register.resetMetrics();
+        }
+
         break;
       }
       case 'TELL_ME_USERS': {
