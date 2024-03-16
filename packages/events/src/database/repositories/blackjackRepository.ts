@@ -8,21 +8,16 @@ const updateBlackjackState = async (
   userId: BigString,
   blackjackState: StoredBlackjackState,
 ): Promise<void> => {
-  await MainRedisClient.set(
-    `blackjack:${userId}`,
-    JSON.stringify(blackjackState),
-  ).catch(debugError);
+  await MainRedisClient.set(`blackjack:${userId}`, JSON.stringify(blackjackState)).catch(
+    debugError,
+  );
 };
 
-const invalidateBlackjackState = async (
-  userId: BigString,
-): Promise<void> => {
+const invalidateBlackjackState = async (userId: BigString): Promise<void> => {
   await MainRedisClient.del(`blackjack:${userId}`);
 };
 
-const getBlackjackState = async (
-  userId: BigString,
-): Promise<StoredBlackjackState | null> => {
+const getBlackjackState = async (userId: BigString): Promise<StoredBlackjackState | null> => {
   const fromRedis = await MainRedisClient.get(`blackjack:${userId}`);
 
   if (!fromRedis) return null;
