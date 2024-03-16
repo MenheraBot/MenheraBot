@@ -1,14 +1,5 @@
-import { ButtonStyles } from 'discordeno/types';
 import blackjackRepository from '../../database/repositories/blackjackRepository';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import {
-  generateBlackjackEmbed,
-  getHandValue,
-  getTableImage,
-  hideMenheraCard,
-  numbersToBlackjackCards,
-  safeImageReply,
-} from './blackjackMatch';
+import { getHandValue, hideMenheraCard, numbersToBlackjackCards } from './blackjackMatch';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import {
   AvailableCardBackgroundThemes,
@@ -16,6 +7,7 @@ import {
   AvailableTableThemes,
 } from '../themes/types';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { sendBlackjackMessage } from './sendBlackjackMessage';
 
 const continueFromBuy = async (
   ctx: ChatInputInteractionContext | ComponentInteractionContext,
@@ -27,7 +19,7 @@ const continueFromBuy = async (
   tableTheme: AvailableTableThemes,
   cardBackgroundTheme: AvailableCardBackgroundThemes,
   embedColor: string,
-  blackjackId: string,
+  secondCopy: boolean,
 ): Promise<void> => {
   const newCard = matchCards.shift() as number;
   const playerCards = [...oldPLayerCards, newCard];
@@ -37,58 +29,7 @@ const continueFromBuy = async (
   const playerHandValue = getHandValue(bjPlayerCards);
   const dealerHandValue = getHandValue([bjDealerCards[0]]);
 
-  const image = await getTableImage(
-    ctx,
-    bet,
-    bjPlayerCards,
-    hideMenheraCard(bjDealerCards),
-    playerHandValue,
-    dealerHandValue,
-    cardTheme,
-    tableTheme,
-    cardBackgroundTheme,
-  );
-
-  const embed = generateBlackjackEmbed(
-    ctx,
-    bjPlayerCards,
-    hideMenheraCard(bjDealerCards),
-    playerHandValue,
-    dealerHandValue,
-    embedColor,
-  );
-
-  const buyButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'BUY',
-      bet,
-      embedColor,
-      blackjackId,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('commands:blackjack.buy'),
-  });
-
-  const stopButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.commandId,
-      'STOP',
-      bet,
-      embedColor,
-      blackjackId,
-    ),
-    style: ButtonStyles.Danger,
-    label: ctx.locale('commands:blackjack.stop'),
-  });
-
-  await safeImageReply(ctx, embed, image, [createActionRow([buyButton, stopButton])]);
-
-  await blackjackRepository.updateBlackjackState(ctx.interaction.user.id, blackjackId, {
+  await blackjackRepository.updateBlackjackState(ctx.interaction.user.id, {
     bet,
     cardBackgroundTheme,
     cardTheme,
@@ -96,7 +37,22 @@ const continueFromBuy = async (
     dealerCards,
     matchCards,
     playerCards,
+    secondCopy,
   });
+
+  await sendBlackjackMessage(
+    ctx,
+    bet,
+    bjPlayerCards,
+    hideMenheraCard(bjDealerCards),
+    playerHandValue,
+    dealerHandValue,
+    cardTheme,
+    tableTheme,
+    cardBackgroundTheme,
+    embedColor,
+    secondCopy,
+  );
 };
 
 export { continueFromBuy };

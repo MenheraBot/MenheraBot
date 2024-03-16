@@ -624,11 +624,12 @@
     "available-options": "Opções Disponíveis",
     "title": "BlackJack",
     "shuffling": "Entregando as Cartas",
-    "lost-game-data": "Vish {{author}}, eu acabei perdendo as cartas no meio da bagunça do meu quarto... Eu te devolvi as {{value}} :star: que tu tinha apostado nesse jogo... Prometo que vou tentar não perder mais nada <3",
+    "no-game": "Você não está jogando nenhuma partida de Blackjack no momento. Use o comando novamente inserindo uma aposta para iniciar uma nova partida.",
     "description": "Sua Mão: **{{userHand}}** -> `{{userTotal}}`\nMão da Menhera: **{{dealerCards}}** -> `{{dealerTotal}}`",
     "initial-options": "**[1] Começar** - Começe o jogo\n **[2] Desistir** - Desista deste jogo (e perca sua aposta)",
     "options": "**[1] Comprar** - Compre mais uma carta\n**[2] Parar** - Pare por aqui sua aposta",
     "footer": "Suas estrelinhas já foram reduzidas! Para receber algo de volta, venca a partida",
+    "footer-second-copy": "Esta é uma partida já em andamento, recomeçada por outro comando",
     "poor": "Tu não possui todas essas estrelinhas para apostar!",
     "your-hand": "Sua Mão",
     "dealer-hand": "Mão da Menhera",
@@ -1109,7 +1110,7 @@
       "deliver-embed-name": "Entrega {{index}}",
       "deliver-embed-name-finished": "~~Entrega {{index}}~~ ✅",
       "deliver-embed-field": "Estrelinhas: **{{award}}** :star:\nExperiência: **{{xp}}**",
-      "deliver-embed-field-need":"Necessário: **{{amount}}x** {{emoji}}",
+      "deliver-embed-field-need": "Necessário: **{{amount}}x** {{emoji}}",
       "description": "### Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas.\n### Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas\n\n### O caminhão partirá <t:{{unix}}:R>"
     },
     "silo": {

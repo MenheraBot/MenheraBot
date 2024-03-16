@@ -18,7 +18,7 @@ const makeDealerPlay = async (
   tableTheme: AvailableTableThemes,
   cardBackgroundTheme: AvailableCardBackgroundThemes,
   embedColor: string,
-  blackjackId: string,
+  secondCopy: boolean,
 ): Promise<void> => {
   const bjPlayerCards = numbersToBlackjackCards(playerCards);
   const playerHandValue = getHandValue(bjPlayerCards);
@@ -47,7 +47,7 @@ const makeDealerPlay = async (
       false,
       BLACKJACK_PRIZE_MULTIPLIERS.blackjack,
       embedColor,
-      blackjackId,
+      secondCopy,
     );
 
   if (dealerHandValue > 21)
@@ -65,7 +65,7 @@ const makeDealerPlay = async (
       true,
       BLACKJACK_PRIZE_MULTIPLIERS.base,
       embedColor,
-      blackjackId,
+      secondCopy,
     );
 
   if (dealerHandValue === playerHandValue)
@@ -83,7 +83,7 @@ const makeDealerPlay = async (
       true,
       BLACKJACK_PRIZE_MULTIPLIERS.draw,
       embedColor,
-      blackjackId,
+      secondCopy,
     );
 
   if (dealerHandValue > playerHandValue)
@@ -101,7 +101,7 @@ const makeDealerPlay = async (
       false,
       BLACKJACK_PRIZE_MULTIPLIERS.base,
       embedColor,
-      blackjackId,
+      secondCopy,
     );
 
   return finishMatch(
@@ -118,7 +118,7 @@ const makeDealerPlay = async (
     true,
     BLACKJACK_PRIZE_MULTIPLIERS.base,
     embedColor,
-    blackjackId,
+    secondCopy,
   );
 };
 
