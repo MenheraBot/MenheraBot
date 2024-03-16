@@ -1,4 +1,4 @@
-import { Bot, Collection, createRestManager, handleInteractionCreate } from 'discordeno';
+import { Collection, createRestManager, handleInteractionCreate } from 'discordeno';
 
 import { transformInteractionResponseToDiscordInteractionResponse } from '../internals/transformers/reverse/interactionResponse';
 import { initializeRedis, initializeMongo } from '../database/databases';
@@ -14,6 +14,7 @@ import { transformDiscordUserToUser } from '../internals/transformers/reverse/tr
 import { transfromUserToDiscordUser } from '../internals/transformers/transformUserToDiscordUser';
 import { transformComponentToDiscordComponent } from '../internals/transformers/reverse/component';
 import { loadChangelog } from '../utils/changelog';
+import { freeStuckQueues } from '../utils/freeStuckQueues';
 
 const setupMenheraClient = (client: MenheraClient): void => {
   const { OWNER_ID } = getEnviroments(['OWNER_ID']);
@@ -56,7 +57,7 @@ const initializeServices = async (): Promise<void> => {
   initializePrometheus();
 };
 
-const setupInternals = (bot: Bot): void => {
+const setupInternals = (bot: MenheraClient): void => {
   const { DISCORD_TOKEN } = getEnviroments(['DISCORD_TOKEN']);
 
   logger.debug('Setting up the custom rest manager');
@@ -74,6 +75,8 @@ const setupInternals = (bot: Bot): void => {
   bot.transformers.reverse.user = transfromUserToDiscordUser;
 
   bot.handlers.INTERACTION_CREATE = handleInteractionCreate;
+
+  freeStuckQueues(bot);
 };
 
 export { setupMenheraClient, initializeServices, setupInternals };

@@ -20,6 +20,7 @@ export type BlackjackFinishGameReason =
 
 export type StoredBlackjackState = {
   bet: number;
+  secondCopy: boolean;
   playerCards: number[];
   dealerCards: number[];
   matchCards: number[];

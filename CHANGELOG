@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.13.3] - 20240-03-16
+
+### Changed
+
+- Ajustado alguns tempos limite para execução de comandos de imagens e de estatísticas.
+- Agora, ao usar o comando `/blackjack` enquanto estiver em uma partida, a imagem da sua partida atual será reenviada (ao invés de iniciar uma nova partida). Com isso, caso a Menhera não consiga mostrar a mensagem de sua partida, você pode tentar enviar a mensagem novamente para continuar seu jogo.
+
+### Fixed
+
+- Corrigido um problema onde a Menhera não conseguia mais enviar mensagens para usuários, ou buscar perfil de usuários. (Foi mais uma gambiarra do que um fix hehe).
+
 ## [5.13.2] - 2024-02-21
 
 ### Fixed

@@ -616,7 +616,7 @@
   },
   "blackjack": {
     "title": "BlackJack",
-    "lost-game-data": "Oh no {{author}}, I ended up losing the cards in the middle of the mess in my room... I gave you back the {{value}} :star: that you had bet in this game... I promise I'll try not to miss anything <3",
+    "no-game": "You are not playing any Blackjack games now. Use the command again betting any value to start a new match.",
     "description": "Your Hand: **{{userHand}}** -> `{{userTotal}}`\nMenhera's Hand: **{{dealerCards}}** -> `{{dealerTotal}}`",
     "buy": "Draw",
     "stop": "Stop",
@@ -625,6 +625,7 @@
     "initial-options": "**[1] Start** - Start the game\n**[2] Surrender** - Surrender from the game (and losses the bet)",
     "options": "**[1] Buy** - Draw one more card\n**[2] Stop** - Stop your bet here",
     "footer": "Your little stars have already been reduced! To get something back, win the match",
+    "footer-second-copy": "This is a match that is already running, restarted from another command",
     "poor": "you don't have all these stars to bet on!",
     "your-hand": "Your Hand",
     "dealer-hand": "Menhera's Hand",
@@ -1121,7 +1122,7 @@
       "deliver-embed-name": "Delivery {{index}}",
       "deliver-embed-name-finished": "~~Delivery {{index}}~~ ✅",
       "deliver-embed-field": "Stars: **{{award}}** :star:\nExperience: **{{xp}}**",
-      "deliver-embed-field-need":"Needs: **{{amount}}x** {{emoji}}",
+      "deliver-embed-field-need": "Needs: **{{amount}}x** {{emoji}}",
       "description": "### Once a day the delivery truck will appear at your farm to pick up deliveries.\n### Completing all deliveries before the truck leaves will give you an additional **{{bonus}}** :star: stars\n\n### The truck will leave <t:{{unix}}:R>"
     },
     "field-action": {

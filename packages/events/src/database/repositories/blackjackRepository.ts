@@ -6,27 +6,19 @@ import { debugError } from '../../utils/debugError';
 
 const updateBlackjackState = async (
   userId: BigString,
-  blackjackId: BigString,
   blackjackState: StoredBlackjackState,
 ): Promise<void> => {
-  await MainRedisClient.set(
-    `blackjack:${userId}-${blackjackId}`,
-    JSON.stringify(blackjackState),
-  ).catch(debugError);
+  await MainRedisClient.set(`blackjack:${userId}`, JSON.stringify(blackjackState)).catch(
+    debugError,
+  );
 };
 
-const invalidateBlackjackState = async (
-  userId: BigString,
-  blackjackId: BigString,
-): Promise<void> => {
-  await MainRedisClient.del(`blackjack:${userId}-${blackjackId}`);
+const invalidateBlackjackState = async (userId: BigString): Promise<void> => {
+  await MainRedisClient.del(`blackjack:${userId}`);
 };
 
-const getBlackjackState = async (
-  userId: BigString,
-  blackjackId: BigString,
-): Promise<StoredBlackjackState | null> => {
-  const fromRedis = await MainRedisClient.get(`blackjack:${userId}-${blackjackId}`);
+const getBlackjackState = async (userId: BigString): Promise<StoredBlackjackState | null> => {
+  const fromRedis = await MainRedisClient.get(`blackjack:${userId}`);
 
   if (!fromRedis) return null;
 

@@ -4,6 +4,7 @@ let register: Registry;
 let commandsCounter: Counter;
 let interactionsCounter: Counter;
 let ratelimitCounter: Counter;
+let stuckQueuesCounter: Counter;
 
 const initializePrometheus = (): void => {
   if (process.env.NOMICROSERVICES) return;
@@ -28,20 +29,28 @@ const initializePrometheus = (): void => {
     labelNames: ['type'],
   });
 
+  stuckQueuesCounter = new client.Counter({
+    name: 'stuckqueues',
+    help: 'Times that a stuck rate limit bucket queue were found and cleared',
+  });
+
   register.registerMetric(ratelimitCounter);
   register.registerMetric(commandsCounter);
   register.registerMetric(interactionsCounter);
+  register.registerMetric(stuckQueuesCounter);
 };
 
 const getRegister = (): Registry => register;
 const getCommandsCounter = (): Counter => commandsCounter;
 const getInteractionsCounter = (): Counter => interactionsCounter;
 const getRateLimitCounter = (): Counter => ratelimitCounter;
+const getStuckQueuesCounter = (): Counter => stuckQueuesCounter;
 
 export {
   initializePrometheus,
   getRegister,
   getCommandsCounter,
+  getStuckQueuesCounter,
   getInteractionsCounter,
   getRateLimitCounter,
 };

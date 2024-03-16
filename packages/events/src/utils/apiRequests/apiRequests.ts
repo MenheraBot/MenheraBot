@@ -9,7 +9,7 @@ const { MENHERA_API_URL, MENHERA_AGENT, MENHERA_API_TOKEN } = getEnviroments([
 
 const dataRequest = axios.create({
   baseURL: `${MENHERA_API_URL}/data`,
-  timeout: 5000,
+  timeout: 7000,
   headers: {
     'Content-Type': 'application/json',
     'User-Agent': MENHERA_AGENT,

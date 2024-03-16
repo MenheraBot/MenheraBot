@@ -12,7 +12,7 @@ const { VANGOGH_URL, MENHERA_AGENT, VANGOGH_TOKEN } = getEnviroments([
 
 const VanGoghApi = axios.create({
   baseURL: VANGOGH_URL,
-  timeout: 5_000,
+  timeout: 10_000,
   headers: {
     'Content-Type': 'application/json',
     'User-Agent': MENHERA_AGENT,

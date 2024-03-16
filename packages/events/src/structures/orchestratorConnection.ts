@@ -23,6 +23,7 @@ const numberTypeToName = {
 const { MENHERA_API_TOKEN } = getEnviroments(['MENHERA_API_TOKEN']);
 
 let retries = 0;
+let totalScrapes = 0;
 
 let orchestratorClient: Client;
 
@@ -98,6 +99,9 @@ const createIpcConnection = async (): Promise<void> => {
         const metrics = await register.metrics();
         ack({ contentType: register.contentType, data: metrics });
         bot.commandsInExecution -= 1;
+        totalScrapes += 1;
+
+        if (totalScrapes >= 100) register.resetMetrics();
         break;
       }
       case 'TELL_ME_USERS': {
