@@ -9,7 +9,7 @@ const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_TOKEN',
 ]);
 
-const freeStuckQueues = (bot: MenheraClient) => {
+const freeStuckQueues = (bot: MenheraClient): void => {
   setInterval(() => {
     bot.rest.pathQueues.forEach((queue, path) => {
       if (
