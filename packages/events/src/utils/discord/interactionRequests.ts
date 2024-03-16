@@ -11,15 +11,24 @@ import { bot } from '../../index';
 import { debugError } from '../debugError';
 import { logger } from '../logger';
 
-const sendRequest = async (options: RestSendRequestOptions, currentTry = 1): Promise<void> => {
-  try {
-    await bot.rest.sendRequest(bot.rest, options);
-  } catch (e) {
-    logger.error(`[SEND REQUEST] Failed to send request. Current try ${currentTry}`);
-    if (currentTry >= 3) throw new Error('Too many failed requests when sending interaction');
-    return sendRequest(options, currentTry + 1);
-  }
-};
+const sendRequest = async (options: RestSendRequestOptions, currentTry = 1): Promise<void> =>
+  new Promise(async (res, rej): Promise<void> => {
+    try {
+      await bot.rest.sendRequest(bot.rest, options);
+      res();
+    } catch (e) {
+      logger.error(
+        `[SEND REQUEST] Failed to send request to ${options.url}. Current try ${currentTry}`,
+      );
+      if (currentTry >= 3) 
+        return rej(new Error('Too many failed requests when sending interaction'));
+      
+
+      setTimeout(() => {
+        sendRequest(options, currentTry + 1).then(res).catch(rej)
+      }, currentTry * 1000).unref();
+    }
+  });
 
 const sendInteractionResponse = async (
   interactionId: BigString,
