@@ -16,7 +16,7 @@ const freeStuckQueues = (bot: MenheraClient): void => {
       if (
         queue.remaining === 0 &&
         queue.waiting.length > 0 &&
-        !queue.processPending &&
+        !queue.processingPending &&
         queue.processing
       ) {
         logger.info(
