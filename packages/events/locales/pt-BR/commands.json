@@ -277,6 +277,7 @@
       "buy-text": "Escolha abaixo qual é a imagem que deseja comprar!\n*Clique no botão de preview para ver a imagem antes de comprá-la*"
     },
     "buy_colors": {
+      "min-color-name": "O nome de sua cor deve ter no mínimo dois caracteres",
       "has-color": "Eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!",
       "poor": "Você não tem estrelinhas o suficiente para comprar esta cor!",
       "buy-success": "Certo! Você comprou a cor **{{name}}** por **{{price}}** ⭐! Você ficou com **{{stars}}** ⭐ estrelinhas",

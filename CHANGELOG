@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.13.4] - 2024-03-20
+
+### Fixed
+
+- Corrigido o problema de criar cores com nomes de menos de 2 caracteres.
+
 ## [5.13.3] - 2024-03-16
 
 ### Changed

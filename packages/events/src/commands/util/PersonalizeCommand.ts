@@ -218,6 +218,12 @@ const executeColorComponents = async (
 
       const userColor = authorData.colors.find((c) => c.cor === oldColor);
 
+      if (newName.length < 2)
+        return ctx.respondInteraction({
+          content: ctx.prettyResponse('error', 'commands:loja.buy_colors.min-color-name'),
+          flags: MessageFlags.EPHEMERAL,
+        });
+
       if (!userColor) {
         return ctx.respondInteraction({
           content: ctx.prettyResponse('error', 'commands:cor.nonexistent'),

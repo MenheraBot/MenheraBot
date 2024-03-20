@@ -272,6 +272,7 @@
       "buy-text": "Choose below which image you want to buy!\n*Click on the preview button to see the image before buying it*"
     },
     "buy_colors": {
+      "min-color-name": "The color name need to have at least 2 characters",
       "has-color": "I appreciate your excitement to buy at my thrift store, but you already have this color!",
       "poor": "you don't have enough stars to buy this color!",
       "buy-success": "all done! You bought the color **{{name}}** for **{{price}}** ⭐! You got **{{stars}} **⭐ stars",
