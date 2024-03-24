@@ -12,6 +12,7 @@ const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
 
 const freeStuckQueues = (bot: MenheraClient): void => {
   setInterval(() => {
+    logger.logSwitch(bot, '[STUCK QUEUE] - Searching for the bad boys');
     bot.rest.pathQueues.forEach((queue, path) => {
       if (
         queue.remaining === 0 &&
