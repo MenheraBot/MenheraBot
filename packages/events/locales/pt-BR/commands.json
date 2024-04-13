@@ -277,6 +277,7 @@
       "buy-text": "Escolha abaixo qual é a imagem que deseja comprar!\n*Clique no botão de preview para ver a imagem antes de comprá-la*"
     },
     "buy_colors": {
+      "min-color-name": "O nome de sua cor deve ter no mínimo dois caracteres",
       "has-color": "Eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!",
       "poor": "Você não tem estrelinhas o suficiente para comprar esta cor!",
       "buy-success": "Certo! Você comprou a cor **{{name}}** por **{{price}}** ⭐! Você ficou com **{{stars}}** ⭐ estrelinhas",
@@ -624,11 +625,12 @@
     "available-options": "Opções Disponíveis",
     "title": "BlackJack",
     "shuffling": "Entregando as Cartas",
-    "lost-game-data": "Vish {{author}}, eu acabei perdendo as cartas no meio da bagunça do meu quarto... Eu te devolvi as {{value}} :star: que tu tinha apostado nesse jogo... Prometo que vou tentar não perder mais nada <3",
+    "no-game": "Você não está jogando nenhuma partida de Blackjack no momento. Use o comando novamente inserindo uma aposta para iniciar uma nova partida.",
     "description": "Sua Mão: **{{userHand}}** -> `{{userTotal}}`\nMão da Menhera: **{{dealerCards}}** -> `{{dealerTotal}}`",
     "initial-options": "**[1] Começar** - Começe o jogo\n **[2] Desistir** - Desista deste jogo (e perca sua aposta)",
     "options": "**[1] Comprar** - Compre mais uma carta\n**[2] Parar** - Pare por aqui sua aposta",
     "footer": "Suas estrelinhas já foram reduzidas! Para receber algo de volta, venca a partida",
+    "footer-second-copy": "Esta é uma partida já em andamento, recomeçada por outro comando",
     "poor": "Tu não possui todas essas estrelinhas para apostar!",
     "your-hand": "Sua Mão",
     "dealer-hand": "Mão da Menhera",

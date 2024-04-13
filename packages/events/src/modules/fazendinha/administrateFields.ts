@@ -51,7 +51,6 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
 
   await Promise.all([
     starsRepository.removeStars(ctx.user.id, neededItems.cost),
-    farmerRepository.updateSilo(ctx.user.id, removeItems(farmer.silo, neededItems.neededPlants)),
     farmerRepository.unlockField(ctx.user.id),
     postTransaction(
       `${ctx.user.id}`,
@@ -61,6 +60,11 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
       ApiTransactionReason.UPGRADE_FARM,
     ),
   ]);
+
+  await farmerRepository.updateSilo(
+    ctx.user.id,
+    removeItems(farmer.silo, neededItems.neededPlants),
+  );
 
   ctx.makeMessage({
     content: ctx.prettyResponse('success', 'commands:fazendinha.admin.unlocked-field'),

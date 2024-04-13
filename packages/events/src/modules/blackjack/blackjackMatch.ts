@@ -68,6 +68,7 @@ const generateBlackjackEmbed = (
   playerHandValue: number,
   dealerHandValue: number,
   embedColor: string,
+  secondCopy: boolean,
 ): Embed => {
   return createEmbed({
     title: ctx.prettyResponse('estrelinhas', 'commands:blackjack.title'),
@@ -80,7 +81,7 @@ const generateBlackjackEmbed = (
         .join(', '),
       dealerTotal: dealerHandValue,
     }),
-    footer: { text: ctx.locale('commands:blackjack.footer') },
+    footer: { text: ctx.locale(`commands:blackjack.footer${secondCopy ? '-second-copy' : ''}`) },
     color: hexStringToNumber(embedColor),
     thumbnail: { url: getUserAvatar(ctx.interaction.user, { enableGif: true }) },
     fields: [],

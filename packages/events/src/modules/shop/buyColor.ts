@@ -147,6 +147,12 @@ const executeBuyColorSelectComponent = async (ctx: ComponentInteractionContext):
       number: authorData.colors.length,
     });
 
+  if (colorName.length < 2)
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:loja.buy_colors.min-color-name'),
+      components: [],
+    });
+
   if (
     authorData.colors.some(
       (a) => `${a.cor}`.replace('#', '') === hexColor.replace('#', '') || a.nome === colorName,

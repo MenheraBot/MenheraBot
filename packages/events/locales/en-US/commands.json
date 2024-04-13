@@ -272,6 +272,7 @@
       "buy-text": "Choose below which image you want to buy!\n*Click on the preview button to see the image before buying it*"
     },
     "buy_colors": {
+      "min-color-name": "The color name need to have at least 2 characters",
       "has-color": "I appreciate your excitement to buy at my thrift store, but you already have this color!",
       "poor": "you don't have enough stars to buy this color!",
       "buy-success": "all done! You bought the color **{{name}}** for **{{price}}** ⭐! You got **{{stars}} **⭐ stars",
@@ -616,7 +617,7 @@
   },
   "blackjack": {
     "title": "BlackJack",
-    "lost-game-data": "Oh no {{author}}, I ended up losing the cards in the middle of the mess in my room... I gave you back the {{value}} :star: that you had bet in this game... I promise I'll try not to miss anything <3",
+    "no-game": "You are not playing any Blackjack games now. Use the command again betting any value to start a new match.",
     "description": "Your Hand: **{{userHand}}** -> `{{userTotal}}`\nMenhera's Hand: **{{dealerCards}}** -> `{{dealerTotal}}`",
     "buy": "Draw",
     "stop": "Stop",
@@ -625,6 +626,7 @@
     "initial-options": "**[1] Start** - Start the game\n**[2] Surrender** - Surrender from the game (and losses the bet)",
     "options": "**[1] Buy** - Draw one more card\n**[2] Stop** - Stop your bet here",
     "footer": "Your little stars have already been reduced! To get something back, win the match",
+    "footer-second-copy": "This is a match that is already running, restarted from another command",
     "poor": "you don't have all these stars to bet on!",
     "your-hand": "Your Hand",
     "dealer-hand": "Menhera's Hand",

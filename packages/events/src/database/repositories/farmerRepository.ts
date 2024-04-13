@@ -158,7 +158,7 @@ const unlockField = async (farmerId: BigString): Promise<void> => {
     },
   );
 
-  MainRedisClient.del(`farmer:${farmerId}`);
+  await MainRedisClient.del(`farmer:${farmerId}`);
 };
 
 const updateSilo = async (

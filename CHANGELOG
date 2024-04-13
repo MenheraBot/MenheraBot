@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+<<<<<<< HEAD
 ## [Unreleased]
 
 ### Fixed
@@ -14,6 +15,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Removed
 
 - O texto que aparecia em um usuário sem títulos no top foi removido.
+=======
+## [5.13.6] - 2024-04-11
+
+### Fixed
+
+- Corrigido o problema da compra de um campo da fazendinha não o liberar.
+
+## [5.13.5] - 2024-03-24
+
+### Fixed
+
+- Corrigido um problema onde o `/itens` não funcionava usando a Menhera em Português quando um usuário possuia todos itens em seu inventário, sem ativar nenhum.
+
+## [5.13.4] - 2024-03-20
+
+### Fixed
+
+- Corrigido o problema de criar cores com nomes de menos de 2 caracteres.
+
+## [5.13.3] - 2024-03-16
+
+### Changed
+
+- Ajustado alguns tempos limite para execução de comandos de imagens e de estatísticas.
+- Agora, ao usar o comando `/blackjack` enquanto estiver em uma partida, a imagem da sua partida atual será reenviada (ao invés de iniciar uma nova partida). Com isso, caso a Menhera não consiga mostrar a mensagem de sua partida, você pode tentar enviar a mensagem novamente para continuar seu jogo.
+
+### Fixed
+
+- Corrigido um problema onde a Menhera não conseguia mais enviar mensagens para usuários, ou buscar perfil de usuários. (Foi mais uma gambiarra do que um fix hehe).
+>>>>>>> master
 
 ## [5.13.2] - 2024-02-21
 
