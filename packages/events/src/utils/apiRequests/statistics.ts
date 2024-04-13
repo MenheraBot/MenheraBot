@@ -80,7 +80,7 @@ const getUserProfileInfo = async (userId: string): Promise<null | ApiUserProfile
   const res = await dataRequest
     .get('/usages/user', { params: { userId } })
     .catch((e: AxiosError) => {
-      if (e instanceof AxiosError && e.status === 404) return;
+      if (e?.response?.status === 404) return;
       debugError(e);
     });
 
