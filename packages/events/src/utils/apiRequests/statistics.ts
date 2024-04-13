@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { BigString } from 'discordeno/types';
+import { AxiosError } from 'axios';
 import {
   ApiGamblingGameCompatible,
   ApiGamblingGameStats,
@@ -76,7 +77,12 @@ const postPokerRound = async (players: PokerApiUser[]): Promise<void> => {
 };
 
 const getUserProfileInfo = async (userId: string): Promise<null | ApiUserProfileStats> => {
-  const res = await dataRequest.get('/usages/user', { params: { userId } }).catch(debugError);
+  const res = await dataRequest
+    .get('/usages/user', { params: { userId } })
+    .catch((e: AxiosError) => {
+      if (e instanceof AxiosError && e.status === 404) return;
+      debugError(e);
+    });
 
   if (!res) return null;
 
