@@ -35,7 +35,10 @@ export type AvailableProfilesThemes =
   | 'id03'
   | 'gatito'
   | 'hello_kitty'
-  | 'mural';
+  | 'mural'
+  | 'website'
+  | 'memories'
+  | 'frozen';
 
 export type AvailableThemeTypes =
   | 'profile'

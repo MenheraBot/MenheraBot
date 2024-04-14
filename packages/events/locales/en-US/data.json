@@ -236,6 +236,23 @@
     "43": {
       "name": "Frostbite",
       "description": " Wow, it's cold, right?"
+    },
+    "44": {
+      "name": "Website",
+      "description": "Search for your profile"
+    },
+    "45": {
+      "name": "Memories...",
+      "description": "The RPG is coming back, so why not?",
+      "customFields": {
+        "useImage": "Use image instead of color",
+        "whiteUpperText": "Upper text white",
+        "whiteBottomText": "Bottom text white"
+      }
+    },
+    "46": {
+      "name": "Frozen",
+      "description": "A cold touch to your profile"
     }
   },
   "plants": {

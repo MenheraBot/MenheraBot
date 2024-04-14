@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - O texto que aparecia em um usuário sem títulos no top foi removido.
 
+## [5.14.0] - 2024-04-14
+
+### Added
+
+- Novo tema de perfil `Website` - Criado por @maycon.orp.
+- Novo tema de perfil `Memórias...` - Criado por @rukasu_888.
+- Novo tema de perfil `Congelado` - Criado por @jhonny_dy.
+
 ## [5.13.6] - 2024-04-11
 
 ### Fixed
