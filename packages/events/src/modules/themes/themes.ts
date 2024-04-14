@@ -260,6 +260,31 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     type: 'card_background',
     theme: 'frostbite',
   },
+  44: {
+    price: 55_000,
+    type: 'profile',
+    theme: 'website',
+    colorCompatible: false,
+    imageCompatible: false,
+    needApiData: false,
+  },
+  45: {
+    price: 100_000,
+    type: 'profile',
+    theme: 'memories',
+    colorCompatible: true,
+    imageCompatible: true,
+    needApiData: true,
+    customEdits: ['useImage', 'whiteUpperText', 'whiteBottomText'],
+  },
+  46: {
+    price: 55_000,
+    type: 'profile',
+    theme: 'frozen',
+    colorCompatible: false,
+    imageCompatible: false,
+    needApiData: false,
+  },
 };
 
 export default Themes;
