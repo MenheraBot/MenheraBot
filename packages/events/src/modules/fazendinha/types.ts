@@ -28,22 +28,41 @@ export enum AvailablePlants {
   Mushroom,
 }
 
-export type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
-
-export interface PlantedField {
-  harvestAt: number;
-  plantedSeason: Seasons;
-  isPlanted: true;
-  plantType: AvailablePlants;
+export enum PlantQuality {
+  Low,
+  Medium,
+  Normal,
+  Good,
+  Better,
+  Perfect,
 }
+
+export type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
 
 export type SeasonData = {
   currentSeason: Seasons;
   endsAt: number;
 };
 
+type DirtQualityUpgrade = {
+  type: 'dirt_quality';
+  usages: number;
+};
+
+export type FieldUpgrade = DirtQualityUpgrade;
+
+export interface PlantedField {
+  harvestAt: number;
+  plantedSeason: Seasons;
+  isPlanted: true;
+  plantType: AvailablePlants;
+  plantQuality: number;
+  upgrades: FieldUpgrade[];
+}
+
 export interface EmptyField {
   isPlanted: false;
+  upgrades: FieldUpgrade[];
 }
 
 export type PlantationState = 'EMPTY' | 'GROWING' | 'MATURE' | 'ROTTEN';

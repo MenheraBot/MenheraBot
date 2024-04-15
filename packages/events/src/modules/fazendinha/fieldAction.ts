@@ -37,6 +37,8 @@ const plantField = async (
     harvestAt,
     plantedSeason: currentSeason,
     plantType: Number(seed),
+    plantQuality: 100,
+    upgrades: farmer.plantations[selectedField].upgrades,
   } satisfies PlantedField;
 
   farmer.plantations[selectedField] = newField;
@@ -97,7 +99,10 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
       }),
     });
 
-  farmer.plantations[selectedField] = { isPlanted: false };
+  farmer.plantations[selectedField] = {
+    isPlanted: false,
+    upgrades: farmer.plantations[selectedField].upgrades,
+  };
 
   const updateStats =
     state === 'MATURE' &&
@@ -107,7 +112,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
   await farmerRepository.executeHarvest(
     ctx.user.id,
     selectedField,
-    { isPlanted: false },
+    { isPlanted: false, upgrades: farmer.plantations[selectedField].upgrades },
     field.plantType,
     farmer.silo.some((a) => a.plant === field.plantType),
     state === 'MATURE',
