@@ -1,7 +1,7 @@
 {
   "name": "@menhera-bot/events",
   "type": "module",
-  "version": "5.14.0a",
+  "version": "5.14.0b",
   "engines": {
     "node": ">=18"
 },
