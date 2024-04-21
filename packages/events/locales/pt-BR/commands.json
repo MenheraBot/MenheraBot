@@ -813,6 +813,7 @@
       "fixed": "Resolvido",
       "security": "Segurança",
       "hotfix": "Hotfix",
+      "older-releases": "Versões anteriores",
       "no-changelog": "O anúncio da atualização atual ainda não foi feito. Aguarde mais uns 10 minutos e tente novamente >.<"
     },
     "suporte": {

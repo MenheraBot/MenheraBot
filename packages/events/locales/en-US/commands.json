@@ -808,6 +808,7 @@
       "fixed": "Fixed",
       "security": "Security",
       "hotfix": "Hotfix",
+      "older-releases": "Older versions",
       "no-changelog": "The announcement of the current update has not yet been made. Wait another 10 minutes and try again >.<"
     },
     "suporte": {
