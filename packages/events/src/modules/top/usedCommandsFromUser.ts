@@ -33,7 +33,7 @@ const executeUsedCommandsFromUserTop = async (
       page: page > 1 ? page : 1,
     }),
     color: hexStringToNumber(embedColor),
-    footer: { text: translatedTitle ?? '🤓☝️' },
+    footer: { text: translatedTitle ?? '' },
     fields: [],
   });
 

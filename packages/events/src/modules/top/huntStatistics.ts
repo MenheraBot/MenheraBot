@@ -84,7 +84,7 @@ const executeTopHuntStatistics = async (
         hunted: userData[`${type}_hunted`],
         success: userData[`${type}_success`],
         tries: userData[`${type}_tries`],
-      })}\n> ${translatedTitle ?? '🤓☝️'}`,
+      })}${translatedTitle ? `\n> ${translatedTitle}` : ''}`,
       inline: true,
     });
   }

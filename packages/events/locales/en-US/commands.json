@@ -582,13 +582,13 @@
     }
   },
   "cooldowns": {
-    "title": "⌛ | Your cooldown times",
-    "no-cooldown": "You can already do that!",
+    "title": "⌛ | {{user}}'s Resources",
+    "no-cooldown": "{{user}} can already do that!",
     "hunt": "Hunt",
     "vote": "Vote for Me",
     "click-to-vote": "Click to Vote",
     "no-user": "This user does not use my commands :(",
-    "field": "Campo {{field}}",
+    "field": "Field {{field}}",
     "field-states": {
       "EMPTY": "Free to plant!",
       "GROWING": "It will mature in **<t:{{unix}}:T>** | **<t:{{unix}}:R>**",
