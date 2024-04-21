@@ -587,12 +587,20 @@
     }
   },
   "cooldowns": {
-    "title": "⌛ | Seus tempos de Recarga",
-    "no-cooldown": "Você já pode fazer isso!",
+    "title": "⌛ | Cooldowns de {{user}}",
+    "no-cooldown": "{{user}} já pode fazer isso!",
     "hunt": "Caçar",
     "vote": "Votar em Mim",
     "candy": "Pedir doces",
     "time": "**<t:{{unix}}:T>** | **<t:{{unix}}:R>**",
+    "field": "Campo {{field}}",
+    "field-states": {
+      "EMPTY": "Livre para plantar!",
+      "GROWING": "Ficará madura em **<t:{{unix}}:T>** | **<t:{{unix}}:R>**",
+      "MATURE": "Pode ser colhida até **<t:{{unix}}:T>** | **<t:{{unix}}:R>**",
+      "ROTTEN": "Apodreceu em **<t:{{unix}}:T>** | **<t:{{unix}}:R>**"
+    },
+    "no-user": "Este usuário não utiliza meus comandos :(",
     "click-to-vote": "Clique Para Votar"
   },
   "trisal": {

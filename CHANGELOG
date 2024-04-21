@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Adicionado o link para as versões anteriores. Sugerido por @mareys.
+- Agora é possível ver os `cooldowns` de outros usuários.
+- O `/cooldowns` mostra os estados de suas plantações. Sugerido por @rukasu_888.
+
+### Removed
+
+- Os emojis de usuários sem título foi removido dos tops.
+
 ## [5.14.0] - 2024-04-14
 
 ### Added
