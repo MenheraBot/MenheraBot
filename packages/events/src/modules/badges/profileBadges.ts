@@ -178,6 +178,13 @@ const profileBadges = {
     description:
       'Badge dada a todos usuários que sofreram com todas travessuras do evento de halloween de 2023',
   },
+  27: {
+    name: 'Presente de 4 anos',
+    availableStartAt: '7/05/2024',
+    availableStopAt: '08/05/2024',
+    rarityLevel: BadgeRarity.SpecialEvents,
+    description: 'Badge dada a todos usuários que votaram em mim durante meu aniversário de 4 anos',
+  },
   // -- Badges de Aniversário --
   200: {
     name: 'Um ano com a Menhera',

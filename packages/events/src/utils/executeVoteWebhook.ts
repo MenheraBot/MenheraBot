@@ -1,4 +1,5 @@
 import { UpdateQuery } from 'mongoose';
+import { DiscordEmbedField } from 'discordeno/types';
 import { bot } from '..';
 import userRepository from '../database/repositories/userRepository';
 import { DatabaseUserSchema } from '../types/database';
@@ -7,6 +8,7 @@ import { createEmbed } from './discord/embedUtils';
 import { postTransaction } from './apiRequests/statistics';
 import { ApiTransactionReason } from '../types/api';
 import { logger } from './logger';
+import giveRepository from '../database/repositories/giveRepository';
 
 const voteConstants = {
   baseRollAmount: 1,
@@ -57,6 +59,22 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
 
   logger.logSwitch(bot, 'After calculations');
 
+  const today = new Date();
+
+  const [day, month, year] = [today.getDate(), today.getUTCMonth(), today.getFullYear()];
+
+  const fields: DiscordEmbedField[] = [];
+
+  if (`${day}/${month}/${year}` === `7/4/2024` && !user.badges.some((a) => a.id === 27)) {
+    await giveRepository.giveBadgeToUser(userId, 27);
+
+    fields.push({
+      name: '🎉 | Presente de aniversário',
+      value:
+        'Obrigada por votar em mim no dia de meu aniversário! Esse presente é muito especial para mim...\nQuero te agradecer por estar comigo durante todo esse tempo. Adicionei uma badge em seu perfil. Da uma olhadinha ;)',
+    });
+  }
+
   const updateData: UpdateQuery<DatabaseUserSchema> = {
     $inc: {
       votes: 1,
@@ -87,6 +105,7 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
     description: embedDescription,
     color: 0x7e40e9,
     image: { url: 'https://i.imgur.com/5XaGRDu.jpg' },
+    fields,
     thumbnail: { url: 'https://i.imgur.com/qtM9T9C.jpg' },
   });
 
