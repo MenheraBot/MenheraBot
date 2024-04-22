@@ -1,6 +1,7 @@
 import { BigString } from 'discordeno/types';
 import { MainRedisClient } from '../databases';
 import { PokerMatch, PokerTimer } from '../../modules/poker/types';
+import { debugError } from '../../utils/debugError';
 
 const isUserInMatch = async (userId: BigString): Promise<boolean> =>
   MainRedisClient.sismember('poker_match', `${userId}`).then((r) => r === 1);
@@ -47,10 +48,39 @@ const getMatchState = async (matchId: BigString): Promise<null | PokerMatch> => 
   return JSON.parse(redisData);
 };
 
+const getTotalRunningGlobalMatches = async (): Promise<number> => {
+  const redisData = await MainRedisClient.scard('global_matches');
+
+  return redisData;
+};
+
+const isUserInQueue = async (userId: BigString): Promise<boolean> =>
+  MainRedisClient.sismember('poker_queue', `${userId}`)
+    .then((result) => result !== 0)
+    .catch((e) => {
+      debugError(e);
+      return false;
+    });
+
+const getTotalUsersInQueue = (): Promise<number> => MainRedisClient.scard('poker_queue');
+
+const removeUserFromQueue = async (userId: BigString): Promise<void> => {
+  await MainRedisClient.srem('poker_queue', `${userId}`);
+};
+
+const addUserToQueue = async (userId: BigString): Promise<void> => {
+  await MainRedisClient.sadd('poker_queue', `${userId}`);
+};
+
 export default {
   isUserInMatch,
+  isUserInQueue,
+  removeUserFromQueue,
+  addUserToQueue,
+  getTotalRunningGlobalMatches,
   addUsersInMatch,
   setMatchState,
+  getTotalUsersInQueue,
   getTimer,
   deleteTimer,
   deleteMatchState,
