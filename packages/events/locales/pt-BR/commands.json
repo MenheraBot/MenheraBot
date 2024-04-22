@@ -1054,6 +1054,14 @@
       "RAISE": "{{user}} dobrou a aposta atual para **{{chips}}** fichas.",
       "RAISE-CUSTOM": "{{user}} aumentou a aposta para **{{chips}}** fichas.",
       "ALLIN": "{{user}} apostou todas suas fichas, colocando sua aposta em **{{chips}}** fichas."
+    },
+    "queue": {
+      "removed": "Tu foi removido da fila do Poker global.",
+      "join": "Entrar na fila",
+      "join-message": "Uma partida de poker está acontecendo agora mesmo! Clique para entrar imediatamente na mesa!",
+      "wait-message-one": "Não há nenhuma partida de poker acontecendo nesse momento. Se você desejar, você pode entrar na fila para iniciar uma partida.\nAtualmente **{{count}}** pessoa está aguardando na fila. Entre agora para abrir uma mesa.",
+      "wait-message-other": "Não há nenhuma partida de poker acontecendo nesse momento. Se você desejar, você pode entrar na fila para iniciar uma partida.\nAtualmente **{{count}}** pessoas estão aguardando na fila. Entre agora para abrir uma mesa.",
+      "wait-message-zero": "Não há nenhuma partida de poker acontecendo nesse momento. Se você desejar, você pode entrar na fila para iniciar uma partida.\nAtualmente ninguém está na fila, mas isso pode mudar se tu quiser <:MenheraChibiSalute:768621225496150076>"
     }
   },
   "fazendinha": {

@@ -2,6 +2,7 @@ import blacklistRepository from '../../database/repositories/blacklistRepository
 import fairRepository from '../../database/repositories/fairRepository';
 import { bot } from '../../index';
 import { startGameLoop } from '../../modules/bicho/bichoManager';
+import { initGlobalPokerQueueLoop } from '../../modules/poker/global/matchQueue';
 import { setupTimers } from '../../modules/poker/timerManager';
 import { inactivityPunishment } from '../../structures/inactivityPunishment';
 import { logger } from '../../utils/logger';
@@ -19,6 +20,7 @@ const setReadyEvent = (): void => {
     await setupTimers();
     await blacklistRepository.constructBannedUsers();
     await fairRepository.constructAnnouncements();
+    await initGlobalPokerQueueLoop();
 
     if (process.env.NOMICRERVICES) return;
 

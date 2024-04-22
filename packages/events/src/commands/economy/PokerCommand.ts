@@ -35,6 +35,8 @@ import starsRepository from '../../database/repositories/starsRepository';
 import { handleUserSelection, validateUserBet } from '../../modules/poker/playerBet';
 import { DEFAULT_CHIPS, MAX_POKER_PLAYERS } from '../../modules/poker/constants';
 import { logger } from '../../utils/logger';
+import { executeGlobalPokerRelatedInteractions } from '../../modules/poker/global/globalPokerListener';
+import { Translation } from '../../types/i18next';
 
 const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [matchId, action, lobbyAction] = ctx.sentData;
@@ -331,11 +333,40 @@ const PokerCommand = createCommand({
       },
       required: false,
     },
+    {
+      name: 'partida',
+      description: 'Tipo de partida para jogar.',
+      nameLocalizations: {
+        'en-US': 'match',
+      },
+      descriptionLocalizations: {
+        'en-US': 'Type of match to play.',
+      },
+      type: ApplicationCommandOptionTypes.String,
+      choices: [
+        {
+          name: 'Local',
+          value: 'local',
+        },
+        {
+          name: 'Global',
+          value: 'global',
+        },
+      ],
+      required: false,
+    },
   ],
   authorDataFields: ['estrelinhas'],
-  commandRelatedExecutions: [selectPlayers, checkStartMatchInteraction, gameInteractions],
+  commandRelatedExecutions: [
+    selectPlayers,
+    checkStartMatchInteraction,
+    gameInteractions,
+    executeGlobalPokerRelatedInteractions,
+  ],
   execute: async (ctx, finishCommand) => {
     finishCommand();
+
+    const matchMode = ctx.getOption('partida', false, false) ?? 'local';
 
     const fichas = ctx.getOption<number>('fichas', false) ?? 0;
 
@@ -353,25 +384,58 @@ const PokerCommand = createCommand({
         flags: MessageFlags.EPHEMERAL,
       });
 
-    ctx.makeMessage({
-      content: ctx.prettyResponse('wink', 'commands:poker.select-players'),
-      components: [
-        createActionRow([
-          createUsersSelectMenu({
-            customId: createCustomId(
-              0,
-              ctx.author.id,
-              ctx.commandId,
-              ctx.authorData.selectedColor,
-              fichas,
-            ),
-            maxValues: MAX_POKER_PLAYERS - 1,
-            placeholder: ctx.locale('commands:poker.select-max-players', {
-              players: MAX_POKER_PLAYERS - 1,
+    if (matchMode === 'local')
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('wink', 'commands:poker.select-players'),
+        components: [
+          createActionRow([
+            createUsersSelectMenu({
+              customId: createCustomId(
+                0,
+                ctx.author.id,
+                ctx.commandId,
+                ctx.authorData.selectedColor,
+                fichas,
+              ),
+              maxValues: MAX_POKER_PLAYERS - 1,
+              placeholder: ctx.locale('commands:poker.select-max-players', {
+                players: MAX_POKER_PLAYERS - 1,
+              }),
             }),
-          }),
-        ]),
-      ],
+          ]),
+        ],
+      });
+
+    const userInQueue = await pokerRepository.isUserInQueue(ctx.user.id);
+
+    if (userInQueue) {
+      await pokerRepository.removeUserFromQueue(ctx.user.id);
+
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'commands:poker.queue.removed'),
+        flags: MessageFlags.EPHEMERAL,
+      });
+    }
+
+    const globalMatches = await pokerRepository.getTotalRunningGlobalMatches();
+
+    const inQueueNow = globalMatches !== 0 ? 0 : await pokerRepository.getTotalUsersInQueue();
+
+    const confirmButton = createButton({
+      customId: createCustomId(3, ctx.user.id, ctx.commandId, 'JOIN_QUEUE'),
+      label: ctx.locale('commands:poker.queue.join'),
+      style: ButtonStyles.Success,
+    });
+
+    return ctx.makeMessage({
+      components: [createActionRow([confirmButton])],
+      flags: MessageFlags.EPHEMERAL,
+      content:
+        globalMatches === 0
+          ? ctx.prettyResponse('time', 'commands:poker.queue.wait-message' as Translation, {
+              count: inQueueNow,
+            })
+          : ctx.prettyResponse('success', 'commands:poker.queue.join-message'),
     });
   },
 });
