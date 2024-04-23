@@ -192,7 +192,7 @@ const profileBadges = {
     availableStopAt: '--------',
     rarityLevel: BadgeRarity.CommandBased,
     description:
-      'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de um ano!',
+      'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de **um** ano!',
   },
   201: {
     name: 'Dois anos com a Menhera',
@@ -200,7 +200,7 @@ const profileBadges = {
     availableStopAt: '--------',
     rarityLevel: BadgeRarity.CommandBased,
     description:
-      'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de um ano!',
+      'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de **dois** anos!',
   },
   202: {
     name: 'Três anos com a Menhera',
@@ -208,7 +208,15 @@ const profileBadges = {
     availableStopAt: '--------',
     rarityLevel: BadgeRarity.CommandBased,
     description:
-      'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de um ano!',
+      'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de **três** anos!',
+  },
+  203: {
+    name: 'Quatro anos com a Menhera',
+    availableStartAt: '07/05/2024',
+    availableStopAt: '--------',
+    rarityLevel: BadgeRarity.CommandBased,
+    description:
+      'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de **quatro** anos!',
   },
   // -- Badges de Votos --
   100: {
