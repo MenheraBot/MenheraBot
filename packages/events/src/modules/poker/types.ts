@@ -75,6 +75,7 @@ export interface PokerMatch {
 export enum TimerActionType {
   DELETE_GAME,
   TIMOEUT_FOLD,
+  EXIT_GLOBAL_QUEUE,
 }
 
 export interface DeleteMatchTimer {
@@ -89,4 +90,12 @@ export interface TimeoutFoldTimer {
   matchId: string;
 }
 
-export type PokerTimer = DeleteMatchTimer | TimeoutFoldTimer;
+export interface ExitGlobalMatchQueueTimer {
+  type: TimerActionType.EXIT_GLOBAL_QUEUE;
+  userId: string;
+  userLanguage: string;
+  interactionToken: string;
+  executeAt: number;
+}
+
+export type PokerTimer = DeleteMatchTimer | TimeoutFoldTimer | ExitGlobalMatchQueueTimer;

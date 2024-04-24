@@ -35,7 +35,7 @@ import starsRepository from '../../database/repositories/starsRepository';
 import { handleUserSelection, validateUserBet } from '../../modules/poker/playerBet';
 import { DEFAULT_CHIPS, MAX_POKER_PLAYERS } from '../../modules/poker/constants';
 import { logger } from '../../utils/logger';
-import { executeGlobalPokerRelatedInteractions } from '../../modules/poker/global/globalPokerListener';
+import { executeGlobalPokerRelatedInteractions } from '../../modules/poker/globalPokerListener';
 import { Translation } from '../../types/i18next';
 
 const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {

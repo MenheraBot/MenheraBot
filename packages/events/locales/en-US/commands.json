@@ -1053,6 +1053,8 @@
     "queue": {
       "removed": "You have been removed from the global Poker queue.",
       "join": "Join queue",
+      "in-queue": "You are in a queue for a game of Poker. Now just wait for someone else...",
+      "exit_timeout": "Hey... did you know that you are more than 10 minutes away in the Poker queue? Since no one has wanted to play so far, I removed you from the queue so you don't have to wait there forever. Try playing again later, maybe someone will want to play",
       "join-message": "A poker game is going on right now! Click to join the table immediately!",
       "wait-message_one": "There are no poker matches taking place at this time. If you wish, you can queue up to start a match.\nCurrently **{{count}}** person is waiting in line. Enter now to open a table.",
       "wait-message_other": "There are no poker matches taking place at this time. If you wish, you can queue up to start a match.\nCurrently **{{count}}** people are waiting in line. Enter now to open a table.",

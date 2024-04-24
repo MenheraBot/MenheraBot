@@ -11,7 +11,7 @@ import { getInteractionsCounter, getRegister } from './initializePrometheus';
 import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
 import cacheRepository from '../database/repositories/cacheRepository';
 import { getUserAvatar } from '../utils/discord/userUtils';
-import { stopGlobalPokerLoop } from '../modules/poker/global/matchQueue';
+import { stopGlobalPokerLoop } from '../modules/poker/globalMatchQueue';
 
 const numberTypeToName = {
   1: 'PING',
