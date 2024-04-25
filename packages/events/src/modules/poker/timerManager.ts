@@ -62,7 +62,7 @@ const executeFoldTimeout = async (timer: TimeoutFoldTimer) => {
 const executeExitGlobalMatchQueue = async (timer: ExitGlobalMatchQueueTimer) => {
   const ctx = await createContext(timer.interactionToken, timer.userLanguage);
 
-  await pokerRepository.removeUserFromQueue(timer.userId);
+  await pokerRepository.removeUsersFromQueue(timer.userId);
 
   ctx.followUp({
     content: ctx.prettyResponse('error', 'commands:poker.queue.exit_timeout'),

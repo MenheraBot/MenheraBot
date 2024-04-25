@@ -148,6 +148,14 @@ const selectPlayers = async (
       content: ctx.prettyResponse('error', 'commands:poker.someone-already-in-match'),
     });
 
+  const isSomeoneInQueue = await Promise.all(selectedUsersIds.map(pokerRepository.isUserInQueue));
+
+  if (isSomeoneInQueue.includes(true))
+    return ctx.makeMessage({
+      components: [],
+      content: ctx.prettyResponse('error', 'commands:poker.someone-already-in-queue'),
+    });
+
   const allUserData = await Promise.all(selectedUsersIds.map(userRepository.ensureFindUser));
 
   if (allUserData.some((a) => a.ban))
@@ -209,6 +217,14 @@ const checkStartMatchInteraction = async (ctx: ComponentInteractionContext): Pro
       embeds: [],
       components: [],
       content: ctx.prettyResponse('error', 'commands:poker.someone-joined-other-match'),
+    });
+
+  const isSomeoneInQueue = await Promise.all(joinedUsers.map(pokerRepository.isUserInQueue));
+
+  if (isSomeoneInQueue.includes(true))
+    return ctx.makeMessage({
+      components: [],
+      content: ctx.prettyResponse('error', 'commands:poker.someone-already-in-queue'),
     });
 
   const allUserData = await Promise.all(joinedUsers.map(userRepository.ensureFindUser));
@@ -384,7 +400,18 @@ const PokerCommand = createCommand({
         flags: MessageFlags.EPHEMERAL,
       });
 
-    if (matchMode === 'local')
+    const userInQueue = await pokerRepository.isUserInQueue(ctx.user.id);
+
+    if (userInQueue) {
+      await pokerRepository.removeUsersFromQueue(ctx.user.id);
+
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'commands:poker.queue.removed'),
+        flags: MessageFlags.EPHEMERAL,
+      });
+    }
+
+    if (matchMode === 'local') {
       return ctx.makeMessage({
         content: ctx.prettyResponse('wink', 'commands:poker.select-players'),
         components: [
@@ -405,17 +432,15 @@ const PokerCommand = createCommand({
           ]),
         ],
       });
+    }
 
-    const userInQueue = await pokerRepository.isUserInQueue(ctx.user.id);
-
-    if (userInQueue) {
-      await pokerRepository.removeUserFromQueue(ctx.user.id);
-
+    if (DEFAULT_CHIPS > ctx.authorData.estrelinhas)
       return ctx.makeMessage({
-        content: ctx.prettyResponse('success', 'commands:poker.queue.removed'),
+        content: ctx.prettyResponse('error', 'commands:poker.min-global-bet', {
+          stars: DEFAULT_CHIPS,
+        }),
         flags: MessageFlags.EPHEMERAL,
       });
-    }
 
     const globalMatches = await pokerRepository.getTotalRunningGlobalMatches();
 

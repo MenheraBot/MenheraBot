@@ -10,8 +10,12 @@ const removeStars = async (userId: BigString, value: number): Promise<void> => {
   await userRepository.updateUserWithSpecialData(userId, { $inc: { estrelinhas: negate(value) } });
 };
 
+const batchRemoveStars = async (userIds: string[], value: number): Promise<void> => {
+  await userRepository.batchUpdateUsers(userIds, { $inc: { estrelinhas: negate(value) } });
+};
+
 const setStars = async (userId: BigString, value: number): Promise<void> => {
   await userRepository.updateUser(userId, { estrelinhas: value });
 };
 
-export default { addStars, removeStars, setStars };
+export default { addStars, removeStars, setStars, batchRemoveStars };

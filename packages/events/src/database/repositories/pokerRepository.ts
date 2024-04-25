@@ -62,10 +62,15 @@ const isUserInQueue = async (userId: BigString): Promise<boolean> =>
       return false;
     });
 
+const getUsersInQueue = (): Promise<string[]> => MainRedisClient.smembers('poker_queue');
+
 const getTotalUsersInQueue = (): Promise<number> => MainRedisClient.scard('poker_queue');
 
-const removeUserFromQueue = async (userId: BigString): Promise<void> => {
-  await MainRedisClient.srem('poker_queue', `${userId}`);
+const removeUsersFromQueue = async (...userId: BigString[]): Promise<void> => {
+  await MainRedisClient.srem(
+    'poker_queue',
+    userId.map((a) => `${a}`),
+  );
 };
 
 const addUserToQueue = async (userId: BigString): Promise<void> => {
@@ -75,8 +80,9 @@ const addUserToQueue = async (userId: BigString): Promise<void> => {
 export default {
   isUserInMatch,
   isUserInQueue,
-  removeUserFromQueue,
+  removeUsersFromQueue,
   addUserToQueue,
+  getUsersInQueue,
   getTotalRunningGlobalMatches,
   addUsersInMatch,
   setMatchState,
