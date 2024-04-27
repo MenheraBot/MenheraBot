@@ -1,4 +1,6 @@
 import { AvailableCardBackgroundThemes, AvailableCardThemes } from '../themes/types';
+import GlobalMatchFollowupInteraction from './GlobalMatchFollowupInteraction';
+import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 
 export interface PokerPlayer {
   id: string;
@@ -46,14 +48,13 @@ export interface PokerCard {
   solverValue: string;
 }
 
-export interface PokerMatch {
+export interface BasePokerMatch {
   matchId: string;
   language: string;
   masterId: string;
   inMatch: boolean;
   worthGame: boolean;
   initialChips: number;
-  interactionToken: string;
   embedColor: number;
   players: PokerPlayer[];
   communityCards: [number, number, number, number, number];
@@ -72,9 +73,21 @@ export interface PokerMatch {
   };
 }
 
+export interface LocalMatch extends BasePokerMatch {
+  type: 'LOCAL';
+  interactionToken: string;
+}
+export interface GlobalMatch extends BasePokerMatch {
+  type: 'GLOBAL';
+  interactionToken: string[];
+}
+
+export type PokerMatch = LocalMatch | GlobalMatch;
+
 export enum TimerActionType {
   DELETE_GAME,
   TIMOEUT_FOLD,
+  EXIT_GLOBAL_QUEUE,
 }
 
 export interface DeleteMatchTimer {
@@ -89,4 +102,16 @@ export interface TimeoutFoldTimer {
   matchId: string;
 }
 
-export type PokerTimer = DeleteMatchTimer | TimeoutFoldTimer;
+export interface ExitGlobalMatchQueueTimer {
+  type: TimerActionType.EXIT_GLOBAL_QUEUE;
+  userId: string;
+  userLanguage: string;
+  interactionToken: string;
+  executeAt: number;
+}
+
+export type PokerInteractionContext =
+  | GlobalMatchFollowupInteraction
+  | PokerFollowupInteractionContext;
+
+export type PokerTimer = DeleteMatchTimer | TimeoutFoldTimer | ExitGlobalMatchQueueTimer;

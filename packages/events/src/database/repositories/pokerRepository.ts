@@ -1,6 +1,7 @@
 import { BigString } from 'discordeno/types';
 import { MainRedisClient } from '../databases';
 import { PokerMatch, PokerTimer } from '../../modules/poker/types';
+import { debugError } from '../../utils/debugError';
 
 const isUserInMatch = async (userId: BigString): Promise<boolean> =>
   MainRedisClient.sismember('poker_match', `${userId}`).then((r) => r === 1);
@@ -47,10 +48,55 @@ const getMatchState = async (matchId: BigString): Promise<null | PokerMatch> => 
   return JSON.parse(redisData);
 };
 
+const getTotalRunningGlobalMatches = async (): Promise<number> => {
+  const redisData = await MainRedisClient.scard('global_matches');
+
+  return redisData;
+};
+
+const isUserInQueue = async (userId: BigString): Promise<boolean> =>
+  MainRedisClient.sismember('poker_queue', `${userId}`)
+    .then((result) => result !== 0)
+    .catch((e) => {
+      debugError(e);
+      return false;
+    });
+
+const getUsersInQueue = (): Promise<string[]> => MainRedisClient.smembers('poker_queue');
+
+const getTotalUsersInQueue = (): Promise<number> => MainRedisClient.scard('poker_queue');
+
+const removeUsersFromQueue = async (...userId: BigString[]): Promise<void> => {
+  await Promise.all([
+    MainRedisClient.srem(
+      'poker_queue',
+      userId.map((a) => `${a}`),
+    ),
+    MainRedisClient.hdel('poker_tokens', ...userId.map((a) => `${a}`)),
+  ]);
+};
+
+const addUserToQueue = async (userId: BigString, token: string): Promise<void> => {
+  await Promise.all([
+    MainRedisClient.sadd('poker_queue', `${userId}`),
+    MainRedisClient.hset('poker_tokens', `${userId}`, token),
+  ]);
+};
+
+const getInteractionTokens = async (userIds: string[]): Promise<string[]> =>
+  MainRedisClient.hmget('poker_tokens', ...userIds) as Promise<string[]>;
+
 export default {
   isUserInMatch,
+  getInteractionTokens,
+  isUserInQueue,
+  removeUsersFromQueue,
+  addUserToQueue,
+  getUsersInQueue,
+  getTotalRunningGlobalMatches,
   addUsersInMatch,
   setMatchState,
+  getTotalUsersInQueue,
   getTimer,
   deleteTimer,
   deleteMatchState,

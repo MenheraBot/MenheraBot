@@ -103,6 +103,17 @@ const updateUserWithSpecialData = async (
   }
 };
 
+const batchUpdateUsers = async (
+  userIds: string[],
+  query: UpdateQuery<DatabaseUserSchema>,
+): Promise<void> => {
+  MainRedisClient.del(userIds);
+
+  await usersModel
+    .updateMany({ id: { $in: userIds } }, { ...query, lastCommandAt: Date.now() })
+    .catch(debugError);
+};
+
 const multiUpdateUsers = async (
   userIds: string[],
   query: UpdateQuery<DatabaseUserSchema>,
@@ -185,6 +196,7 @@ const getTopRanking = async (
 export default {
   updateUser,
   getBannedUserInfo,
+  batchUpdateUsers,
   getTopRanking,
   invalidateUserCache,
   ensureFindUser,

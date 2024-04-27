@@ -11,12 +11,11 @@ import {
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { Action, PokerMatch, PokerPlayer } from './types';
+import { Action, PokerInteractionContext, PokerMatch, PokerPlayer } from './types';
 import { InteractionContext } from '../../types/menhera';
 import { SelectMenuUsersInteraction } from '../../types/interaction';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import { mentionUser } from '../../utils/discord/userUtils';
-import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { getPokerCard } from './cardUtils';
 
 const showPlayerCards = async (
@@ -116,7 +115,7 @@ const executeMasterAction = async (
 };
 
 const localizedAction = (
-  ctx: InteractionContext | PokerFollowupInteractionContext,
+  ctx: InteractionContext | PokerInteractionContext,
   action: Action,
   chips?: number,
 ): SelectOption => ({
@@ -129,7 +128,7 @@ const getPlayerBySeat = (gameData: PokerMatch, seatId: number): PokerPlayer =>
   gameData.players.find((a) => a.seatId === seatId)!;
 
 const getAvailableActions = (
-  ctx: InteractionContext | PokerFollowupInteractionContext,
+  ctx: InteractionContext | PokerInteractionContext,
   gameData: PokerMatch,
 ): SelectMenuComponent => {
   const player = gameData.players.find((p) => p.seatId === gameData.seatToPlay)!;

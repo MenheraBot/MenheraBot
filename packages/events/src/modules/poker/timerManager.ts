@@ -7,12 +7,41 @@ import { getOrchestratorClient } from '../../structures/orchestratorConnection';
 import { DatabaseCommandSchema } from '../../types/database';
 import { updateGameState } from './turnManager';
 import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
-import { DeleteMatchTimer, PokerTimer, TimeoutFoldTimer, TimerActionType } from './types';
+import {
+  DeleteMatchTimer,
+  ExitGlobalMatchQueueTimer,
+  PokerInteractionContext,
+  PokerTimer,
+  TimeoutFoldTimer,
+  TimerActionType,
+} from './types';
 import { closeTable } from './matchManager';
 import { getPlayerBySeat } from './playerControl';
 import { executeAction } from './playerBet';
+import { MessageFlags } from '../../utils/discord/messageUtils';
+import GlobalMatchFollowupInteraction from './GlobalMatchFollowupInteraction';
 
 const timers = new Map<string, NodeJS.Timeout>();
+
+const createContext = async (
+  interactionToken: string | string[],
+  userLanguage: string,
+): Promise<PokerInteractionContext> => {
+  const pokerCommandId = (await commandRepository.getCommandInfo('poker')) as DatabaseCommandSchema;
+
+  if (Array.isArray(interactionToken))
+    return new GlobalMatchFollowupInteraction(
+      interactionToken,
+      pokerCommandId.discordId,
+      getFixedT(userLanguage),
+    );
+
+  return new PokerFollowupInteractionContext(
+    interactionToken,
+    pokerCommandId.discordId,
+    getFixedT(userLanguage),
+  );
+};
 
 const executeDeleteMatch = async (timer: DeleteMatchTimer) => {
   const gameData = await pokerRepository.getMatchState(timer.matchId);
@@ -20,13 +49,7 @@ const executeDeleteMatch = async (timer: DeleteMatchTimer) => {
 
   if (gameData.inMatch) return;
 
-  const pokerCommandId = (await commandRepository.getCommandInfo('poker')) as DatabaseCommandSchema;
-
-  const ctx = new PokerFollowupInteractionContext(
-    gameData.interactionToken,
-    pokerCommandId.discordId,
-    getFixedT(gameData.language),
-  );
+  const ctx = await createContext(gameData.interactionToken, gameData.language);
 
   closeTable(ctx, gameData);
 };
@@ -41,16 +64,20 @@ const executeFoldTimeout = async (timer: TimeoutFoldTimer) => {
 
   executeAction(gameData, player, 'FOLD');
 
-  const pokerCommandId = (await commandRepository.getCommandInfo('poker')) as DatabaseCommandSchema;
-
-  const ctx = new PokerFollowupInteractionContext(
-    gameData.interactionToken,
-    pokerCommandId.discordId,
-
-    getFixedT(gameData.language),
-  );
+  const ctx = await createContext(gameData.interactionToken, gameData.language);
 
   return updateGameState(ctx, gameData);
+};
+
+const executeExitGlobalMatchQueue = async (timer: ExitGlobalMatchQueueTimer) => {
+  const ctx = await createContext(timer.interactionToken, timer.userLanguage);
+
+  await pokerRepository.removeUsersFromQueue(timer.userId);
+
+  ctx.followUp({
+    content: ctx.prettyResponse('error', 'commands:poker.queue.exit_timeout'),
+    flags: MessageFlags.EPHEMERAL,
+  });
 };
 
 const executeTimer = async (timerId: string, timer: PokerTimer): Promise<void> => {
@@ -61,6 +88,10 @@ const executeTimer = async (timerId: string, timer: PokerTimer): Promise<void> =
       return executeDeleteMatch(timer);
     case TimerActionType.TIMOEUT_FOLD:
       return executeFoldTimeout(timer);
+    case TimerActionType.EXIT_GLOBAL_QUEUE:
+      return executeExitGlobalMatchQueue(timer);
+    default: // @ts-expect-error yes i know, it just for ensure that future versions dont mistake this
+      throw new Error(`There is no handler configured to execute timer type ${timer?.type}`);
   }
 };
 

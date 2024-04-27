@@ -953,9 +953,11 @@
     "you-already-in-match": "You are already in a Poker match now!",
     "select-players": "Select the players invited to participate in this Poker match. You shouldn't choose yourself",
     "select-max-players": "Select a maximum of {{players}} people",
+    "min-global-bet": "To join a Global Poker table, you must bring **{{stars}}** :star: with you to bet.",
     "bots-cant-play": "Bots can't play poker!",
     "dont-select-yourself": "You must not include yourself in the selection of guests!!",
     "someone-already-in-match": "One of the users you invited is already in a Poker match right now!",
+    "someone-already-in-queue": "One of the users you invited is in a Global Poker queue!",
     "someone-is-banned": "One of the users you selected is banned from Menhera and therefore cannot play Poker!",
     "someone-is-poor": "One of the users you selected does not have **{{stars}}** :star: to bet on a Poker match!",
     "accept-invite": "Accept invite",
@@ -1049,6 +1051,17 @@
       "RAISE": "{{user}} doubled the current bet to **{{chips}}** chips.",
       "RAISE-CUSTOM": "{{user}} raised the bet to **{{chips}}** chips.",
       "ALLIN": "{{user}} bet all his chips, placing his bet in **{{chips}}** chips."
+    },
+    "queue": {
+      "removed": "You have been removed from the global Poker queue.",
+      "join": "Join queue",
+      "in-queue": "You are in a queue for a game of Poker. Now just wait for someone else...",
+      "exit_timeout": "Hey... did you know that you are more than 10 minutes away in the Poker queue? Since no one has wanted to play so far, I removed you from the queue so you don't have to wait there forever. Try playing again later, maybe someone will want to play",
+      "join-message": "A poker game is going on right now! Click to join the table immediately!",
+      "someone-is-poor": "One of the users who was in the queue does not have **{{stars}}** :star: to bet on a Global Poker match! You got back in line.",
+      "wait-message_one": "There are no poker matches taking place at this time. If you wish, you can queue up to start a match.\nCurrently **{{count}}** person is waiting in line. Enter now to open a table.",
+      "wait-message_other": "There are no poker matches taking place at this time. If you wish, you can queue up to start a match.\nCurrently **{{count}}** people are waiting in line. Enter now to open a table.",
+      "wait-message_zero": "There are no poker matches taking place at this time. If you wish, you can queue up to start a match.\nCurrently no one is in the queue, but that can change if you want <:MenheraChibiSalute:768621225496150076>"
     }
   },
   "fazendinha": {

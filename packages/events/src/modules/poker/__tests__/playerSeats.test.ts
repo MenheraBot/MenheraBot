@@ -3,6 +3,7 @@ import { PokerMatch, PokerPlayer } from '../types';
 
 export const mockGame = (): PokerMatch => ({
   communityCards: [0, 0, 0, 0, 0],
+  type: 'LOCAL',
   dealerSeat: 0,
   embedColor: 0,
   lastAction: {

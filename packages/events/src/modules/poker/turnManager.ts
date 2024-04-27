@@ -3,9 +3,8 @@ import pokerRepository from '../../database/repositories/pokerRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 
 import { clearFoldTimeout, createTableMessage, finishRound, makeShowdown } from './matchManager';
-import { PokerMatch } from './types';
+import { PokerInteractionContext, PokerMatch } from './types';
 
-import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { MAX_POKER_PLAYERS } from './constants';
 import { getPlayerBySeat } from './playerControl';
 import { mentionUser } from '../../utils/discord/userUtils';
@@ -78,7 +77,7 @@ const updatePlayerTurn = (gameData: PokerMatch): void => {
 };
 
 const updateGameState = async (
-  ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
+  ctx: ComponentInteractionContext | PokerInteractionContext,
   gameData: PokerMatch,
 ): Promise<void> => {
   const playedUserId = gameData.players.find((a) => a.seatId === gameData.seatToPlay)!.id;

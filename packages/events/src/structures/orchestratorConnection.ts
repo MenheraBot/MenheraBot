@@ -11,6 +11,7 @@ import { getInteractionsCounter, getRegister } from './initializePrometheus';
 import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
 import cacheRepository from '../database/repositories/cacheRepository';
 import { getUserAvatar } from '../utils/discord/userUtils';
+import { stopGlobalPokerLoop } from '../modules/poker/globalMatchQueue';
 
 const numberTypeToName = {
   1: 'PING',
@@ -81,6 +82,9 @@ const createIpcConnection = async (): Promise<void> => {
 
       logger.info('[SHUTDOWN] Closing orchestrator IPC');
       await orchestratorClient.close('REQUESTED_SHUTDOWN');
+
+      logger.info('[SHUTDOWN] Stopping the poker loop queue');
+      stopGlobalPokerLoop();
 
       logger.info("[SHUTDOWN] I'm tired... I will rest for now");
     }
