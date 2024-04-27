@@ -251,7 +251,15 @@ const checkStartMatchInteraction = async (ctx: ComponentInteractionContext): Pro
     content: ctx.prettyResponse('hourglass', 'commands:poker.starting-match'),
   });
 
-  setupGame(ctx, joinedUsers, ctx.interaction.message?.embeds?.[0]?.color ?? 0, chips);
+  setupGame(
+    ctx,
+    joinedUsers,
+    ctx.interaction.message?.embeds?.[0]?.color ?? 0,
+    chips,
+    `${ctx.interaction.id}`,
+    'LOCAL',
+    ctx.guildLocale,
+  );
 };
 
 const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {

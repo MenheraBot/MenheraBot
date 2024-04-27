@@ -9,21 +9,29 @@ import { createActionRow, createButton, createCustomId } from '../../utils/disco
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { PokerApiUser, PokerMatch, PokerPlayer, PokerWinReasons, TimerActionType } from './types';
+import {
+  GlobalMatch,
+  PokerApiUser,
+  PokerInteractionContext,
+  PokerMatch,
+  PokerPlayer,
+  PokerWinReasons,
+  TimerActionType,
+} from './types';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { distributeCards, getOpenedCards, getPokerCard } from './cardUtils';
 import { getAvailableActions, getPlayerBySeat } from './playerControl';
 import { getNextPlayableSeat } from './turnManager';
 import { clearPokerTimer, startPokerTimeout } from './timerManager';
 import { capitalize, millisToSeconds } from '../../utils/miscUtils';
-import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { executeBlinds } from './executeBlinds';
 import { AUTO_FOLD_TIMEOUT_IN_SECONDS, DEFAULT_CHIPS } from './constants';
 import { convertChipsToStars } from './afterMatchLobby';
 import { postPokerRound } from '../../utils/apiRequests/statistics';
+import GlobalMatchFollowupInteraction from './GlobalMatchFollowupInteraction';
 
 const makeShowdown = async (
-  ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
+  ctx: ComponentInteractionContext | PokerInteractionContext,
   gameData: PokerMatch,
 ): Promise<void> => {
   gameData.stage = 'showdown';
@@ -81,7 +89,7 @@ const getTableImage = async (gameData: PokerMatch) => {
 };
 
 const finishRound = async (
-  ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
+  ctx: ComponentInteractionContext | PokerInteractionContext,
   gameData: PokerMatch,
   winners: PokerPlayer[],
   reason: string,
@@ -204,7 +212,7 @@ const startFoldTimeout = (gameData: PokerMatch, executeAt: number): void => {
 const clearFoldTimeout = (playerId: string): void => clearPokerTimer(`fold_timeout:${playerId}`);
 
 const createTableMessage = async (
-  ctx: InteractionContext | PokerFollowupInteractionContext,
+  ctx: InteractionContext | PokerInteractionContext,
   gameData: PokerMatch,
   lastActionMessage = '',
 ): Promise<void> => {
@@ -305,10 +313,13 @@ const startNextMatch = async (
 };
 
 const setupGame = async (
-  ctx: InteractionContext,
+  ctx: InteractionContext | GlobalMatchFollowupInteraction,
   players: string[],
   embedColor: number,
   chips: number,
+  matchId: string,
+  type: 'GLOBAL' | 'LOCAL',
+  language: string,
 ): Promise<void> => {
   const blind = Math.floor((chips || DEFAULT_CHIPS) * 0.1);
 
@@ -336,15 +347,17 @@ const setupGame = async (
   );
 
   const match: PokerMatch = {
-    matchId: `${ctx.interaction.id}`,
+    type,
+    matchId,
     masterId: players[0],
-    language: ctx.interaction.guildLocale ?? 'pt-BR',
+    language,
     embedColor,
     worthGame: chips > 0,
     players: playersData,
     communityCards: [0, 0, 0, 0, 0],
     stage: 'preflop',
-    interactionToken: ctx.interaction.token,
+    interactionToken:
+      ctx instanceof GlobalMatchFollowupInteraction ? ctx.tokens : `${ctx.interaction.id}`,
     dealerSeat: 0,
     initialChips: chips || DEFAULT_CHIPS,
     blind,
@@ -359,12 +372,12 @@ const setupGame = async (
       playerSeat: 0,
       pot: 0,
     },
-  };
+  } as GlobalMatch;
 
   distributeCards(match);
   executeBlinds(match);
 
-  await pokerRepository.setMatchState(ctx.interaction.id, match);
+  await pokerRepository.setMatchState(matchId, match);
   await createTableMessage(ctx, match);
 };
 
@@ -380,7 +393,7 @@ const cleanupGame = (gameData: PokerMatch): void => {
 };
 
 const closeTable = async (
-  ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
+  ctx: ComponentInteractionContext | PokerInteractionContext,
   gameData: PokerMatch,
   followUp = false,
 ): Promise<void> => {

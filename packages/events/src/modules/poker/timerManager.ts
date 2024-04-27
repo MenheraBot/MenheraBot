@@ -10,6 +10,7 @@ import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import {
   DeleteMatchTimer,
   ExitGlobalMatchQueueTimer,
+  PokerInteractionContext,
   PokerTimer,
   TimeoutFoldTimer,
   TimerActionType,
@@ -18,14 +19,23 @@ import { closeTable } from './matchManager';
 import { getPlayerBySeat } from './playerControl';
 import { executeAction } from './playerBet';
 import { MessageFlags } from '../../utils/discord/messageUtils';
+import GlobalMatchFollowupInteraction from './GlobalMatchFollowupInteraction';
 
 const timers = new Map<string, NodeJS.Timeout>();
 
 const createContext = async (
-  interactionToken: string,
+  interactionToken: string | string[],
   userLanguage: string,
-): Promise<PokerFollowupInteractionContext> => {
+): Promise<PokerInteractionContext> => {
   const pokerCommandId = (await commandRepository.getCommandInfo('poker')) as DatabaseCommandSchema;
+
+  if (Array.isArray(interactionToken))
+    return new GlobalMatchFollowupInteraction(
+      interactionToken,
+      pokerCommandId.discordId,
+      getFixedT(userLanguage),
+    );
+
   return new PokerFollowupInteractionContext(
     interactionToken,
     pokerCommandId.discordId,

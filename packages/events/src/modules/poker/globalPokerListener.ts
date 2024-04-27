@@ -2,7 +2,9 @@ import pokerRepository from '../../database/repositories/pokerRepository';
 import starsRepository from '../../database/repositories/starsRepository';
 import userRepository from '../../database/repositories/userRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { MessageFlags } from '../../utils/discord/messageUtils';
 import { minutesToMillis } from '../../utils/miscUtils';
+import GlobalMatchFollowupInteraction from './GlobalMatchFollowupInteraction';
 import { DEFAULT_CHIPS } from './constants';
 import { setupGame } from './matchManager';
 import { startPokerTimeout } from './timerManager';
@@ -21,7 +23,7 @@ const executeJoinQueue = async (ctx: ComponentInteractionContext): Promise<void>
       userLanguage: ctx.guildLocale,
     });
 
-    await pokerRepository.addUserToQueue(ctx.user.id);
+    await pokerRepository.addUserToQueue(ctx.user.id, ctx.interaction.token);
 
     return ctx.makeMessage({
       content: ctx.prettyResponse('success', 'commands:poker.queue.in-queue'),
@@ -37,14 +39,6 @@ const executeJoinQueue = async (ctx: ComponentInteractionContext): Promise<void>
     return ctx.makeMessage({
       components: [],
       content: ctx.prettyResponse('error', 'commands:poker.someone-already-in-match'),
-    });
-
-  const isSomeoneInQueue = await Promise.all(joinedUsers.map(pokerRepository.isUserInQueue));
-
-  if (isSomeoneInQueue.includes(true))
-    return ctx.makeMessage({
-      components: [],
-      content: ctx.prettyResponse('error', 'commands:poker.someone-already-in-queue'),
     });
 
   const allUserData = await Promise.all(joinedUsers.map(userRepository.ensureFindUser));
@@ -67,18 +61,39 @@ const executeJoinQueue = async (ctx: ComponentInteractionContext): Promise<void>
       }),
     });
   }
+
   await pokerRepository.addUsersInMatch(joinedUsers);
 
   await starsRepository.batchRemoveStars(joinedUsers, chips);
 
-  // TODO: send a confirm start match to all players, an then start the match
-  await ctx.makeMessage({
+  const userTokens = await pokerRepository.getInteractionTokens(joinedUsers);
+
+  const globalContext = new GlobalMatchFollowupInteraction(
+    userTokens,
+    `${ctx.commandId}`,
+    ctx.i18n,
+  );
+
+  ctx.makeMessage({
     embeds: [],
     components: [],
+    flags: MessageFlags.EPHEMERAL,
     content: ctx.prettyResponse('hourglass', 'commands:poker.starting-match'),
   });
 
-  setupGame(ctx, joinedUsers, ctx.interaction.message?.embeds?.[0]?.color ?? 0, chips);
+  globalContext.followUp({
+    content: ctx.prettyResponse('hourglass', 'commands:poker.starting-match'),
+  });
+
+  setupGame(
+    ctx,
+    joinedUsers,
+    ctx.interaction.message?.embeds?.[0]?.color ?? 0,
+    chips,
+    `${ctx.interaction.id}`,
+    'GLOBAL',
+    ctx.guildLocale,
+  );
 };
 
 const executeGlobalPokerRelatedInteractions = async (
