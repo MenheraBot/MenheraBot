@@ -52,7 +52,9 @@ const calculateUserDailyDeliveries = (farmer: DatabaseFarmerSchema): DeliveryMis
 };
 
 const getUserDailies = (farmer: DatabaseFarmerSchema): DeliveryMission[] => {
-  const isUpToDate = farmer.dailyDayId === new Date().getDate();
+  const isUpToDate =
+    farmer.dailyDayId === new Date().getDate() &&
+    farmer.dailies.every((a) => a.needs.every((b) => 'weight' in b));
 
   if (isUpToDate) return farmer.dailies;
 

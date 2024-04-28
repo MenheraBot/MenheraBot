@@ -24,7 +24,7 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
   experience: user.experience,
   seeds: user.seeds,
   siloUpgrades: user.siloUpgrades,
-  silo: user.silo.map((a) => ({ ...a, weight: parseFloat(a.weight.toFixed(1)) })),
+  silo: user.silo.map((a) => ({ ...a, weight: parseFloat((a.weight ?? a.amount).toFixed(1)) })),
   lastPlantedSeed: user.lastPlantedSeed,
 });
 
@@ -47,11 +47,12 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
     return newUser;
   }
 
-  await MainRedisClient.setex(
-    `farmer:${userId}`,
-    3600,
-    JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
-  ).catch(debugError);
+  if (fromMongo.silo.some((a) => 'amount' in a)) {
+    const newSilo = fromMongo.silo.map((a) => ({ plant: a.plant, weight: a.weight ?? a.amount }));
+
+    await updateSilo(userId, newSilo);
+    return getFarmer(userId);
+  }
 
   return fromMongo;
 };

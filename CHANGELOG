@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Peso paras plantações! Agora as plantações da `/fazendinha` usam peso por kilos, ao invés de apenas quantidade de plantas. 
+- Atualizado sistema da feira para permitir venda e compra de itens por kilo.
+
 ## [5.14.2] - 2024-04-22
 
 ### Added

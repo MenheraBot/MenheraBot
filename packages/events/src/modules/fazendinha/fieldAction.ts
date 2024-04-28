@@ -91,7 +91,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   const currentLimits = getSiloLimits(farmer);
 
-  if (currentLimits.used + field.weight >= currentLimits.limit)
+  if (currentLimits.used + (field.weight ?? 1) >= currentLimits.limit)
     return ctx.respondInteraction({
       flags: MessageFlags.EPHEMERAL,
       content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
@@ -123,7 +123,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
         : farmer.plantedFields + 1
       : farmer.plantedFields,
     updateStats && farmer.plantedFields === 9 ? farmer.biggestSeed + 1 : farmer.biggestSeed,
-    field.weight,
+    field.weight ?? 1,
   );
 
   if (state !== 'GROWING')
