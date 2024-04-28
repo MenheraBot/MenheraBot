@@ -114,7 +114,7 @@ const executeAnnounceProduct = async (
   farmer: DatabaseFarmerSchema,
 ): Promise<void> => {
   const plant = ctx.getOption<AvailablePlants>('produto', false, true);
-  const amount = ctx.getOption<number>('quantidade', false, true);
+  const amount = parseFloat(ctx.getOption<number>('quantidade', false, true).toFixed(1));
   const price = ctx.getOption<number>('preço', false, true);
 
   const plantInfo = Plants[plant];

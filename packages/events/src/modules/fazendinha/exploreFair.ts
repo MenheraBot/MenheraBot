@@ -91,7 +91,7 @@ const executeBuyItem = async (
 
   const userLimits = getSiloLimits(farmer);
 
-  if (userLimits.used + announcement.amount > userLimits.limit)
+  if (userLimits.used + announcement.weight > userLimits.limit)
     return ctx.makeMessage({
       components: [],
       embeds: [],
@@ -120,7 +120,7 @@ const executeBuyItem = async (
     fairRepository.deleteAnnouncement(announcement._id),
     farmerRepository.updateSilo(
       ctx.user.id,
-      addItems(farmer.silo, [{ weight: announcement.amount, plant: announcement.plantType }]),
+      addItems(farmer.silo, [{ weight: announcement.weight, plant: announcement.plantType }]),
     ),
     postTransaction(
       `${ctx.user.id}`,
@@ -189,7 +189,7 @@ const displayFair = async (
     if (!item) return;
 
     embed.description += `${ctx.locale('commands:fazendinha.feira.comprar.description', {
-      amount: item.amount,
+      amount: item.weight,
       emoji: Plants[item.plantType].emoji,
       plant: ctx.locale(`data:plants.${item.plantType}`),
       price: item.price,
@@ -203,7 +203,7 @@ const displayFair = async (
     }`;
 
     selectMenu.options.push({
-      label: `${item.amount}x ${ctx.locale(`data:plants.${item.plantType}`)}${
+      label: `${item.weight} kg ${ctx.locale(`data:plants.${item.plantType}`)}${
         user ? '' : ` (${i + 1})`
       }`,
       value: item._id,

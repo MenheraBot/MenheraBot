@@ -37,7 +37,7 @@ const plantField = async (
     harvestAt,
     plantedSeason: currentSeason,
     plantType: Number(seed),
-    weight: 1.3, // TODO: get a custom weight based on upgrades
+    weight: 4.3, // TODO: get a custom weight based on upgrades
     upgrades: farmer.plantations[selectedField].upgrades ?? [],
   } satisfies PlantedField;
 
@@ -91,7 +91,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   const currentLimits = getSiloLimits(farmer);
 
-  if (currentLimits.used >= currentLimits.limit)
+  if (currentLimits.used + field.weight >= currentLimits.limit)
     return ctx.respondInteraction({
       flags: MessageFlags.EPHEMERAL,
       content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {

@@ -136,7 +136,7 @@ export interface DatabaseFeirinhaSchema {
   _id: string;
   userId: string;
   plantType: AvailablePlants;
-  amount: number;
+  weight: number;
   price: number;
   [`name_pt-BR`]: string;
   [`name_en-US`]: string;
