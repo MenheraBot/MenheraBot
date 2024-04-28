@@ -119,7 +119,13 @@ const handleUserSelection = async (
 
     await ctx.respondWithModal({
       title: 'Raise!',
-      customId: createCustomId(2, ctx.user.id, ctx.commandId, gameData.matchId, 'RAISE_BET'),
+      customId: createCustomId(
+        2,
+        ctx.user.id,
+        ctx.originalInteractionId,
+        gameData.matchId,
+        'RAISE_BET',
+      ),
       components: [createActionRow([choseValue])],
     });
     return;

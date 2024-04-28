@@ -65,7 +65,7 @@ const getTransactionComponents = (
     customId: createCustomId(
       0,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'SEARCH',
       page === 0 ? 1 : page - 1,
       firstUserId,
@@ -81,7 +81,7 @@ const getTransactionComponents = (
     customId: createCustomId(
       0,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'SEARCH',
       1,
       firstUserId,
@@ -98,7 +98,7 @@ const getTransactionComponents = (
     customId: createCustomId(
       0,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'SEARCH',
       page === 0 ? 2 : page + 1,
       firstUserId,
@@ -114,7 +114,7 @@ const getTransactionComponents = (
     customId: createCustomId(
       0,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'U',
       page,
       firstUserId,
@@ -136,7 +136,7 @@ const getTransactionComponents = (
     customId: createCustomId(
       0,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'U',
       page,
       firstUserId,
@@ -158,7 +158,7 @@ const getTransactionComponents = (
     customId: createCustomId(
       0,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'US',
       page,
       firstUserId,

@@ -94,7 +94,7 @@ const parseUserPlantations = (
         customId: createCustomId(
           0,
           ctx.user.id,
-          ctx.commandId,
+          ctx.originalInteractionId,
           `${i}`,
           embedColor,
           `${selectedSeed}`,
@@ -197,7 +197,7 @@ const displayPlantations = async (
     components: [
       createActionRow([
         createSelectMenu({
-          customId: createCustomId(1, ctx.user.id, ctx.commandId, embedColor),
+          customId: createCustomId(1, ctx.user.id, ctx.originalInteractionId, embedColor),
           options: seeds,
           maxValues: 1,
           minValues: 1,

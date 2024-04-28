@@ -46,7 +46,7 @@ const DivorceCommand = createCommand({
       );
 
     const confirmButton = createButton({
-      customId: createCustomId(0, ctx.author.id, ctx.commandId),
+      customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId),
       label: ctx.locale('commands:divorciar.divorce'),
       style: ButtonStyles.Success,
     });

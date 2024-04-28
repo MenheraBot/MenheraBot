@@ -129,7 +129,7 @@ const executeBuyColorSelectComponent = async (ctx: ComponentInteractionContext):
     });
 
     await ctx.respondWithModal({
-      customId: createCustomId(0, ctx.user.id, ctx.commandId, 'MODAL', chosenColor.cor),
+      customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, 'MODAL', chosenColor.cor),
       title: ctx.locale('commands:loja.buy_colors.title'),
       components: [createActionRow([hexInput]), createActionRow([nameInput])],
     });
@@ -239,7 +239,7 @@ const buyColor = async (
   ];
 
   const selector = createSelectMenu({
-    customId: createCustomId(0, ctx.author.id, ctx.commandId, 'SELECT'),
+    customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, 'SELECT'),
     minValues: 1,
     maxValues: 1,
     options: availableColors.reduce<Array<{ label: string; description: string; value: string }>>(

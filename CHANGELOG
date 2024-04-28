@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Peso paras plantações! Agora as plantações da `/fazendinha` usam peso por kilos, ao invés de apenas quantidade de plantas.
 - Atualizado sistema da feira para permitir venda e compra de itens por kilo.
 
+### Fixed
+
+- Corrigido erro do `/poker` dos botões não funcionarem após um usuário não fazer sua jogada.
+
 ## [5.14.2] - 2024-04-22
 
 ### Added

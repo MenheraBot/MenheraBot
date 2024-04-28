@@ -117,7 +117,7 @@ const executeAdministrateFields = async (
         customId: createCustomId(
           3,
           ctx.user.id,
-          ctx.commandId,
+          ctx.originalInteractionId,
           i < plantationsLength ? 'ADMIN' : 'UNLOCK',
           i,
         ),

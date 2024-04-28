@@ -98,7 +98,7 @@ const finishRouletteBet = async (
     const numberSelected = Number(ctx.interaction.data.values[0]);
 
     const menu = createSelectMenu({
-      customId: createCustomId(1, ctx.user.id, ctx.commandId, 'BET', bet, operation),
+      customId: createCustomId(1, ctx.user.id, ctx.originalInteractionId, 'BET', bet, operation),
       placeholder: ctx.locale('commands:roleta.select-bord'),
       options: [],
     });
@@ -203,7 +203,7 @@ const executeAskForBetsButton = async (ctx: ComponentInteractionContext): Promis
       const firstCustomId = createCustomId(
         1,
         ctx.user.id,
-        ctx.commandId,
+        ctx.originalInteractionId,
         operation === 'STRAIGHT' ? 'BET 1' : 'FIRST',
         bet,
         operation,
@@ -212,7 +212,7 @@ const executeAskForBetsButton = async (ctx: ComponentInteractionContext): Promis
       const secondCustomId = createCustomId(
         1,
         ctx.user.id,
-        ctx.commandId,
+        ctx.originalInteractionId,
         operation === 'STRAIGHT' ? 'BET 2' : 'SECOND',
         bet,
         operation,
@@ -258,7 +258,7 @@ const executeAskForBetsButton = async (ctx: ComponentInteractionContext): Promis
         operation === 'COLOR' ? 'black' : operation === 'ODDEVEN' ? 'even' : 'high';
 
       const selectMenu = createSelectMenu({
-        customId: createCustomId(1, ctx.user.id, ctx.commandId, 'BET', bet, operation),
+        customId: createCustomId(1, ctx.user.id, ctx.originalInteractionId, 'BET', bet, operation),
         placeholder: ctx.locale('commands:roleta.make-bet'),
         options: [
           { label: ctx.locale(`commands:roleta.${firstLabel}`), value: firstLabel },
@@ -271,7 +271,7 @@ const executeAskForBetsButton = async (ctx: ComponentInteractionContext): Promis
     }
     case 'DOZENS': {
       const selectMenu = createSelectMenu({
-        customId: createCustomId(1, ctx.user.id, ctx.commandId, 'BET', bet, operation),
+        customId: createCustomId(1, ctx.user.id, ctx.originalInteractionId, 'BET', bet, operation),
         placeholder: ctx.locale('commands:roleta.make-bet'),
         options: [
           { label: ctx.locale('commands:roleta.first'), value: 'first' },
@@ -376,37 +376,37 @@ const RouletteCommand = createCommand({
     });
 
     const straightButton = createButton({
-      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'STRAIGHT', bet),
+      customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, 'STRAIGHT', bet),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:roleta.straight-up-title'),
     });
 
     const splitButton = createButton({
-      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'SPLIT', bet),
+      customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, 'SPLIT', bet),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:roleta.split-title'),
     });
 
     const dozensButton = createButton({
-      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'DOZENS', bet),
+      customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, 'DOZENS', bet),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:roleta.dozens-title'),
     });
 
     const colorButton = createButton({
-      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'COLOR', bet),
+      customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, 'COLOR', bet),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:roleta.color-title'),
     });
 
     const oddevenButton = createButton({
-      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'ODDEVEN', bet),
+      customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, 'ODDEVEN', bet),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:roleta.oddeven-title'),
     });
 
     const lowhighButton = createButton({
-      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'LOWHIGH', bet),
+      customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, 'LOWHIGH', bet),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:roleta.lowhigh-title'),
     });

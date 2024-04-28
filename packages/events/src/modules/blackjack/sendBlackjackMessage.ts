@@ -51,13 +51,25 @@ const sendBlackjackMessage = async (
   }
 
   const buyButton = createButton({
-    customId: createCustomId(0, ctx.interaction.user.id, ctx.commandId, 'BUY', embedColor),
+    customId: createCustomId(
+      0,
+      ctx.interaction.user.id,
+      ctx.originalInteractionId,
+      'BUY',
+      embedColor,
+    ),
     style: ButtonStyles.Primary,
     label: ctx.locale('commands:blackjack.buy'),
   });
 
   const stopButton = createButton({
-    customId: createCustomId(0, ctx.interaction.user.id, ctx.commandId, 'STOP', embedColor),
+    customId: createCustomId(
+      0,
+      ctx.interaction.user.id,
+      ctx.originalInteractionId,
+      'STOP',
+      embedColor,
+    ),
     style: ButtonStyles.Danger,
     label: ctx.locale('commands:blackjack.stop'),
   });

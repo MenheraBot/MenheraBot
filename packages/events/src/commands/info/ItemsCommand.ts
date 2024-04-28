@@ -53,7 +53,7 @@ const buttonClickExecutor = async (ctx: ComponentInteractionContext): Promise<vo
   }
 
   const availableItems = createSelectMenu({
-    customId: createCustomId(1, ctx.user.id, ctx.commandId, 'SELECT'),
+    customId: createCustomId(1, ctx.user.id, ctx.originalInteractionId, 'SELECT'),
     placeholder: ctx.locale('commands:itens.select'),
     options: authorData.inventory.map((item) => ({
       label: ctx.locale(`data:magic-items.${item.id as 1}.name`),
@@ -210,13 +210,13 @@ const ItemsCommand = createCommand({
     if (inputUser.id !== ctx.author.id) return finishCommand(ctx.makeMessage({ embeds: [embed] }));
 
     const useItemButton = createButton({
-      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'USE'),
+      customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, 'USE'),
       label: ctx.locale('commands:itens.use'),
       style: ButtonStyles.Primary,
     });
 
     const resetItemsButton = createButton({
-      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'RESET'),
+      customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, 'RESET'),
       label: ctx.locale('commands:itens.reset'),
       style: ButtonStyles.Danger,
     });

@@ -48,6 +48,7 @@ export interface PokerCard {
 
 export interface PokerMatch {
   matchId: string;
+  originalInteractionId: string;
   language: string;
   masterId: string;
   inMatch: boolean;

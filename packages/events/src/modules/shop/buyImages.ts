@@ -64,7 +64,7 @@ const executeBuyImagesSelectComponent = async (ctx: ComponentInteractionContext)
     (messageComponents[1].components[0] as ButtonComponent).customId = createCustomId(
       3,
       ctx.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'PREVIEW',
       !toPreview,
       hasImage,
@@ -77,7 +77,7 @@ const executeBuyImagesSelectComponent = async (ctx: ComponentInteractionContext)
     (messageComponents[0].components[0] as SelectMenuComponent).customId = createCustomId(
       3,
       ctx.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'SELECT',
       toPreview,
       hasImage,
@@ -216,7 +216,7 @@ const executeBuyImagesSelectComponent = async (ctx: ComponentInteractionContext)
 
   await ctx.respondWithModal({
     title: ctx.locale('commands:loja.buy_images.modal-title'),
-    customId: createCustomId(3, ctx.user.id, ctx.commandId, 'MODAL'),
+    customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'MODAL'),
     components: [createActionRow([nameInput])],
   });
 
@@ -272,7 +272,7 @@ const buyImages = async (
     customId: createCustomId(
       3,
       ctx.author.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'PREVIEW',
       true,
       typeof sentImage !== 'undefined',
@@ -283,7 +283,7 @@ const buyImages = async (
     customId: createCustomId(
       3,
       ctx.author.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'SELECT',
       false,
       typeof sentImage !== 'undefined',

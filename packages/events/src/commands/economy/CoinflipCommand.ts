@@ -177,7 +177,7 @@ const CoinflipCommand = createCommand({
       );
 
     const confirmButton = createButton({
-      customId: createCustomId(0, user.id, ctx.commandId, input, currency),
+      customId: createCustomId(0, user.id, ctx.originalInteractionId, input, currency),
       label: ctx.locale('commands:coinflip.bet'),
       style: ButtonStyles.Success,
     });

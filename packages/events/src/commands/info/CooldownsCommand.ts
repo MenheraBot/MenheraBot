@@ -112,7 +112,7 @@ const CooldownsCommand = createCommand({
         label: ctx.locale('commands:cooldowns.read-notifications'),
         style: ButtonStyles.Primary,
         emoji: extractNameAndIdFromEmoji(EMOJIS.notify),
-        customId: createCustomId(0, ctx.user.id, ctx.commandId),
+        customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId),
       });
 
       if (unreadNotifications > 0) {

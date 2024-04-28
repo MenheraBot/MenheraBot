@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { getFixedT } from 'i18next';
 import { bot } from '../..';
-import commandRepository from '../../database/repositories/commandRepository';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import { getOrchestratorClient } from '../../structures/orchestratorConnection';
-import { DatabaseCommandSchema } from '../../types/database';
 import { updateGameState } from './turnManager';
 import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { DeleteMatchTimer, PokerTimer, TimeoutFoldTimer, TimerActionType } from './types';
@@ -20,11 +18,9 @@ const executeDeleteMatch = async (timer: DeleteMatchTimer) => {
 
   if (gameData.inMatch) return;
 
-  const pokerCommandId = (await commandRepository.getCommandInfo('poker')) as DatabaseCommandSchema;
-
   const ctx = new PokerFollowupInteractionContext(
     gameData.interactionToken,
-    pokerCommandId.discordId,
+    gameData.originalInteractionId,
     getFixedT(gameData.language),
   );
 
@@ -41,12 +37,9 @@ const executeFoldTimeout = async (timer: TimeoutFoldTimer) => {
 
   executeAction(gameData, player, 'FOLD');
 
-  const pokerCommandId = (await commandRepository.getCommandInfo('poker')) as DatabaseCommandSchema;
-
   const ctx = new PokerFollowupInteractionContext(
     gameData.interactionToken,
-    pokerCommandId.discordId,
-
+    gameData.originalInteractionId,
     getFixedT(gameData.language),
   );
 

@@ -66,7 +66,7 @@ const executeAdministrateFair = async (
         index: i + 1,
       }),
       style: ButtonStyles.Danger,
-      customId: createCustomId(6, ctx.user.id, ctx.commandId, i),
+      customId: createCustomId(6, ctx.user.id, ctx.originalInteractionId, i),
     });
 
     if (typeof toSendComponents[index] === 'undefined')

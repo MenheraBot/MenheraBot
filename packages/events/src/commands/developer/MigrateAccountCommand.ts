@@ -71,7 +71,13 @@ const DeployCommand = createCommand({
     const newAccount = ctx.getOption<User>('conta_nova', 'users', true);
 
     const confirmButton = createButton({
-      customId: createCustomId(0, ctx.user.id, ctx.commandId, oldAccount.id, newAccount.id),
+      customId: createCustomId(
+        0,
+        ctx.user.id,
+        ctx.originalInteractionId,
+        oldAccount.id,
+        newAccount.id,
+      ),
       label: 'DALE PAPAI',
       style: ButtonStyles.Danger,
     });

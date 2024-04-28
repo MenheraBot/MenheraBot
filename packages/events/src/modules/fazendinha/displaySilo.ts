@@ -84,7 +84,7 @@ const displaySilo = async (
     label: ctx.locale('commands:fazendinha.silo.sell-plants'),
     style: maySell ? ButtonStyles.Success : ButtonStyles.Secondary,
     disabled: !maySell,
-    customId: createCustomId(8, ctx.user.id, ctx.commandId, 'DISPLAY', embedColor),
+    customId: createCustomId(8, ctx.user.id, ctx.originalInteractionId, 'DISPLAY', embedColor),
   });
 
   ctx.makeMessage({
@@ -157,7 +157,7 @@ const showModal = async (
     });
 
   ctx.respondWithModal({
-    customId: createCustomId(8, ctx.user.id, ctx.commandId, 'SELL', embedColor),
+    customId: createCustomId(8, ctx.user.id, ctx.originalInteractionId, 'SELL', embedColor),
     title: ctx.locale('commands:fazendinha.silo.sell-plants'),
     components: modalFields,
   });
@@ -220,7 +220,13 @@ const buildSellPlantsMessage = async (
           options,
           minValues: 1,
           maxValues: options.length >= 5 ? 5 : options.length,
-          customId: createCustomId(8, ctx.user.id, ctx.commandId, 'SHOW_MODAL', embedColor),
+          customId: createCustomId(
+            8,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            'SHOW_MODAL',
+            embedColor,
+          ),
         }),
       ]),
     ],

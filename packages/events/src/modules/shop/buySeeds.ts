@@ -135,7 +135,7 @@ const showModal = async (
   }, []);
 
   await ctx.respondWithModal({
-    customId: createCustomId(4, ctx.user.id, ctx.commandId, 'BUY', embedColor),
+    customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, 'BUY', embedColor),
     title: ctx.locale('commands:loja.buy_seeds.embed-title'),
     components: modalFields,
   });
@@ -161,7 +161,7 @@ const buySeeds = async (
     customId: createCustomId(
       4,
       ctx.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'SHOW_MODAL',
       ctx.authorData.selectedColor,
     ),

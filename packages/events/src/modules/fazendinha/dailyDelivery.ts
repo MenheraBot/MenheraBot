@@ -137,7 +137,7 @@ const executeDailyDelivery = async (
     const button = createButton({
       label: ctx.locale('commands:fazendinha.entregas.deliver-button', { index: i + 1 }),
       style: ButtonStyles.Primary,
-      customId: createCustomId(4, ctx.user.id, ctx.commandId, i),
+      customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, i),
       disabled: a.finished,
     });
 

@@ -178,7 +178,7 @@ const displayFair = async (
   });
 
   const selectMenu = createSelectMenu({
-    customId: createCustomId(7, ctx.user.id, ctx.commandId, 'BUY', embedColor),
+    customId: createCustomId(7, ctx.user.id, ctx.originalInteractionId, 'BUY', embedColor),
     options: [],
     minValues: 1,
     maxValues: 1,
@@ -216,14 +216,28 @@ const displayFair = async (
 
   if (!user) {
     const backButton = createButton({
-      customId: createCustomId(7, ctx.user.id, ctx.commandId, 'PAGINATION', embedColor, page - 1),
+      customId: createCustomId(
+        7,
+        ctx.user.id,
+        ctx.originalInteractionId,
+        'PAGINATION',
+        embedColor,
+        page - 1,
+      ),
       label: ctx.locale('common:back'),
       style: ButtonStyles.Primary,
       disabled: page < 1,
     });
 
     const nextButton = createButton({
-      customId: createCustomId(7, ctx.user.id, ctx.commandId, 'PAGINATION', embedColor, page + 1),
+      customId: createCustomId(
+        7,
+        ctx.user.id,
+        ctx.originalInteractionId,
+        'PAGINATION',
+        embedColor,
+        page + 1,
+      ),
       label: ctx.locale('common:next'),
       style: ButtonStyles.Primary,
       disabled: selectMenu.options.length < MAX_ITEMS_PER_FAIR_PAGE,

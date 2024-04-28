@@ -13,9 +13,9 @@ type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 const createCustomId = (
   executorIndex: number,
   target: BigString,
-  commandId: BigString,
+  originalInteractionId: BigString,
   ...data: unknown[]
-): string => `${executorIndex}|${target}|${commandId}|${data.join('|')}`;
+): string => `${executorIndex}|${target}|${originalInteractionId}|${data.join('|')}`;
 
 const resolveSeparatedStrings = (string: string): string[] => string.split('|');
 
