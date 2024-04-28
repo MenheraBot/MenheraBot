@@ -13,6 +13,15 @@ export const MAX_DAILY_AT_FULL_LEVEL = 9;
 export const MIN_DAILY_AT_LEVEL_ZERO = 3;
 export const MAX_DAILY_PLANTATION_REQUIREMENT_AT_FULL_LEVEL = 14;
 
+export const PLANTATION_WEIGHT_MODIFIERS = {
+  BASE_MIN_VALUE: 0.7,
+  BASE_MAX_VALUE: 1.3,
+  BEST_SEASON_BUFF: 0.2,
+  WORST_SEASON_DEBUFF: 0.2,
+  DIRT_QUALITY_MAX_BUFF: 0.3,
+  DIRT_QUALITY_MIN_BUFF: 0.1,
+};
+
 export const UnloadFields: { [field: number]: UnlockFieldFile } = {
   1: {
     cost: 50_000,
