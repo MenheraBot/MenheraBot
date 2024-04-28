@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- **Notificações!** Adicionado o sistema de notificações. As notificações são usadas para avisar atualizações de sua conta. As notificações podem ser lidas com o comando `/notificações`. O comando `/cooldowns` também avisa sobre notificações não lidas. As notificacões não lidas podem ser apagadas após 30 dias.
+
 ### Changed
 
-- Peso paras plantações! Agora as plantações da `/fazendinha` usam peso por kilos, ao invés de apenas quantidade de plantas. 
+- Peso paras plantações! Agora as plantações da `/fazendinha` usam peso por kilos, ao invés de apenas quantidade de plantas.
 - Atualizado sistema da feira para permitir venda e compra de itens por kilo.
 
 ## [5.14.2] - 2024-04-22

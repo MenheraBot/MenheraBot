@@ -2,7 +2,12 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { inspect } from 'node:util';
 
-import { usersModel, farmerModel, titlesModel } from '../../database/collections';
+import {
+  usersModel,
+  farmerModel,
+  titlesModel,
+  themeCreditsModel,
+} from '../../database/collections';
 import { MainRedisClient as redis } from '../../database/databases';
 import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
@@ -37,6 +42,7 @@ const EvalCommand = createCommand({
       redis,
       titlesRepository,
       titlesModel,
+      themeCreditsModel,
     );
 
     try {

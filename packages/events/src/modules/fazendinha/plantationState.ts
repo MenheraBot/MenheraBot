@@ -64,7 +64,7 @@ const getFieldWeight = (
   if (currentSeason === plantData.worstSeason)
     minValue -= PLANTATION_WEIGHT_MODIFIERS.WORST_SEASON_DEBUFF;
 
-  if (fieldUpgrades.some((a) => a.type === 'dirt_quality' && a.usages <= 10)) {
+  if (fieldUpgrades.some((a) => a.type === 'dirt_quality' && a.usages <= 3)) {
     maxValue += PLANTATION_WEIGHT_MODIFIERS.DIRT_QUALITY_MAX_BUFF;
     minValue += PLANTATION_WEIGHT_MODIFIERS.DIRT_QUALITY_MIN_BUFF;
   }

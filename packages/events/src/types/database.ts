@@ -155,3 +155,12 @@ export interface DatabaseFarmerSchema {
   dailies: DeliveryMission[];
   dailyDayId: number;
 }
+
+export interface DatabaseNotificationSchema {
+  readonly _id: string;
+  userId: string;
+  translationKey: string;
+  translationValues: unknown;
+  createdAt: number;
+  unread: boolean;
+}
