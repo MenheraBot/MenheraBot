@@ -587,6 +587,7 @@
     "hunt": "Hunt",
     "vote": "Vote for Me",
     "click-to-vote": "Click to Vote",
+    "read-notifications": "Read notifications",
     "no-user": "This user does not use my commands :(",
     "field": "Field {{field}}",
     "field-states": {

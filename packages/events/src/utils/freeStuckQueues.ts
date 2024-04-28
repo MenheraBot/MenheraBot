@@ -25,7 +25,7 @@ const freeStuckQueues = (bot: MenheraClient): void => {
         );
         queue.remaining = 1;
 
-        if (!process.env.NOMICROSERVICES) getStuckQueuesCounter().inc(0.5);
+        if (!process.env.NOMICROSERVICES) getStuckQueuesCounter().inc(1);
 
         const embed = createEmbed({
           color: 0xf08c18,
@@ -43,7 +43,7 @@ const freeStuckQueues = (bot: MenheraClient): void => {
           .catch(debugError);
       }
     });
-  }, 1000);
+  }, 2_500);
 };
 
 export { freeStuckQueues };

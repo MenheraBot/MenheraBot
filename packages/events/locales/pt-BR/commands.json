@@ -591,6 +591,7 @@
     "no-cooldown": "{{user}} já pode fazer isso!",
     "hunt": "Caçar",
     "vote": "Votar em Mim",
+    "read-notifications": "Ver notificações",
     "candy": "Pedir doces",
     "time": "**<t:{{unix}}:T>** | **<t:{{unix}}:R>**",
     "field": "Campo {{field}}",
