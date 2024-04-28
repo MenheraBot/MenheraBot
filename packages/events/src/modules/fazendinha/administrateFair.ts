@@ -56,7 +56,7 @@ const executeAdministrateFair = async (
     embed.fields?.push({
       name: `${item[`name_${ctx.guildLocale as 'pt-BR'}`]} (${i + 1})`,
       inline: true,
-      value: `${item.price} :star:\n${Plants[item.plantType].emoji} ${item.amount}x`,
+      value: `${item.price} :star:\n${Plants[item.plantType].emoji} ${item.amount} kg`,
     });
 
     const index = Math.floor(i / 3);

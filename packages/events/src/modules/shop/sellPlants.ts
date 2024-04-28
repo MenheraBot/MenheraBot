@@ -16,21 +16,21 @@ const receiveModal = async (
   farmer: DatabaseFarmerSchema,
 ): Promise<void> => {
   const selectedPlants: QuantitativePlant[] = extractFields(ctx.interaction).map((a) => ({
-    amount: parseInt(a.value, 10),
+    weight: parseFloat(Number(a.value).toFixed(1)),
     plant: Number(a.customId),
   }));
 
   for (let i = 0; i < selectedPlants.length; i++) {
     const plant = selectedPlants[i];
 
-    if (Number.isNaN(plant.amount))
+    if (Number.isNaN(plant.weight))
       return ctx.makeMessage({
         components: [],
         embeds: [],
         content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
       });
 
-    if (plant.amount <= 0)
+    if (plant.weight <= 0)
       return ctx.makeMessage({
         components: [],
         embeds: [],
@@ -51,27 +51,27 @@ const executeSellPlant = async (
     const currentPlant = selectedPlants[i];
     const fromSilo = farmer.silo.find((a) => a.plant === currentPlant.plant);
 
-    if (!fromSilo || fromSilo.amount < currentPlant.amount)
+    if (!fromSilo || fromSilo.weight < currentPlant.weight)
       return ctx.makeMessage({
         components: [],
         embeds: [],
         content: ctx.prettyResponse('error', 'commands:loja.sell_plants.not-enough', {
-          amount: currentPlant.amount,
+          amount: currentPlant.weight,
           plant: ctx.locale(`data:plants.${currentPlant.plant}`),
         }),
       });
 
-    if (currentPlant.amount < 0)
+    if (currentPlant.weight < 0)
       return ctx.makeMessage({
         components: [],
         embeds: [],
         content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
       });
 
-    totalStars += currentPlant.amount * Plants[currentPlant.plant].sellValue;
-    fromSilo.amount -= currentPlant.amount;
+    totalStars += Math.floor(currentPlant.weight * Plants[currentPlant.plant].sellValue);
+    fromSilo.weight = parseFloat((fromSilo.weight - currentPlant.weight).toFixed(1));
 
-    if (fromSilo.amount <= 0)
+    if (fromSilo.weight <= 0)
       farmer.silo.splice(
         farmer.silo.findIndex((a) => a.plant === fromSilo.plant),
         1,

@@ -1081,7 +1081,7 @@
         "success": "All done, {{author}}. This item was purchased by you",
         "no-announcements": "There are currently no announcements in the neighborhood fair",
         "fair": "Neighborhood Fair",
-        "description": "\n- {{amount}}x {{emoji}} **{{plant}}** for {{price}} :star:",
+        "description": "\n- {{amount}} kg {{emoji}} **{{plant}}** for {{price}} :star:",
         "user-info": "{{user}} ({{index}})",
         "user-fair": "{{user}}'s Fair",
         "select-item": "Select what you want to buy"
@@ -1113,26 +1113,26 @@
       "sell-all": "Sell Everything",
       "sell-title": "Sell your plants",
       "no-plants": "You don't have plants to sell",
-      "description": "{{text}}\n- {{emoji}} **{{amount}}x** - {{plant}} (**{{value}}** :star:)",
+      "description": "{{text}}\n- {{emoji}} **{{amount}}{{metric}}** - {{plant}} (**{{value}}** :star:)",
       "silo-is-full": "Your silo is full! Your silo has a maximum space of **{{limit}}** items. Free space selling plants >_<",
       "footer": "Silo's limit: {{used}}/{{limit}}",
       "select": "Select the quantity of {{plant}} you want to sell",
       "display-mate": "- {{emoji}} **∞** - {{plant}}",
-      "display-other": "- {{emoji}} **{{amount}}x** - {{plant}}"
+      "display-other": "- {{emoji}} **{{amount}}{{metric}}** - {{plant}}"
     },
     "entregas": {
       "no-longer-available": "This delivery is no longer available",
       "already-finished": "You have already completed this delivery!",
       "no-plants": "You do not have the necessary plans to complete the delivery",
-      "deliver": "Yayy! Delivery completed! You received **{{award}}** :star: and **{{xp}}** experience points",
+      "deliver": "Yayy! Delivery completed! You received **{{award}}** :star:",
       "finished-bonus": "Complete truck! You've received a **{{award}}** :star: bonus for delivering all your daily deliveries!",
 
       "daily-deliveries": "Daily Deliveries",
       "deliver-button": "Deliver {{index}}",
       "deliver-embed-name": "Delivery {{index}}",
       "deliver-embed-name-finished": "~~Delivery {{index}}~~ ✅",
-      "deliver-embed-field": "Stars: **{{award}}** :star:\nExperience: **{{xp}}**",
-      "deliver-embed-field-need": "Needs: **{{amount}}x** {{emoji}}",
+      "deliver-embed-field": "Stars: **{{award}}** :star:",
+      "deliver-embed-field-need": "Needs: **{{amount}} kg** {{emoji}}",
       "description": "### Once a day the delivery truck will appear at your farm to pick up deliveries.\n### Completing all deliveries before the truck leaves will give you an additional **{{bonus}}** :star: stars\n\n### The truck will leave <t:{{unix}}:R>"
     },
     "field-action": {

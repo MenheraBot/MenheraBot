@@ -28,15 +28,6 @@ export enum AvailablePlants {
   Mushroom,
 }
 
-export enum PlantQuality {
-  Low,
-  Medium,
-  Normal,
-  Good,
-  Better,
-  Perfect,
-}
-
 export type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
 
 export type SeasonData = {
@@ -56,7 +47,7 @@ export interface PlantedField {
   plantedSeason: Seasons;
   isPlanted: true;
   plantType: AvailablePlants;
-  plantQuality: number;
+  weight: number;
   upgrades: FieldUpgrade[];
 }
 

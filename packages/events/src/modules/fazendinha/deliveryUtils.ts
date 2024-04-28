@@ -23,7 +23,7 @@ const getRandomAmount = (level: number): number => {
       ? MAX_DAILY_PLANTATION_REQUIREMENT_AT_FULL_LEVEL
       : maximumCount;
 
-  return Math.floor(Math.random() * (maximum - minimal + 1)) + minimal;
+  return parseFloat((Math.random() * (maximum - minimal + 1) + minimal).toFixed(1));
 };
 
 const calculateUserDailyDeliveries = (farmer: DatabaseFarmerSchema): DeliveryMission[] => {
@@ -43,7 +43,7 @@ const calculateUserDailyDeliveries = (farmer: DatabaseFarmerSchema): DeliveryMis
     toReturnDailies.push({
       award,
       experience: (plantType + 1) * 10,
-      needs: [{ amount: neededPlants, plant: plantType }],
+      needs: [{ weight: neededPlants, plant: plantType }],
       finished: false,
     });
   }

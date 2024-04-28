@@ -120,7 +120,7 @@ const executeBuyItem = async (
     fairRepository.deleteAnnouncement(announcement._id),
     farmerRepository.updateSilo(
       ctx.user.id,
-      addItems(farmer.silo, [{ amount: announcement.amount, plant: announcement.plantType }]),
+      addItems(farmer.silo, [{ weight: announcement.amount, plant: announcement.plantType }]),
     ),
     postTransaction(
       `${ctx.user.id}`,

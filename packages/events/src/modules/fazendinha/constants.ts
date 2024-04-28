@@ -17,27 +17,27 @@ export const UnloadFields: { [field: number]: UnlockFieldFile } = {
   1: {
     cost: 50_000,
     neededPlants: [
-      { amount: 5, plant: AvailablePlants.Mate },
-      { amount: 3, plant: AvailablePlants.Sunflower },
-      { amount: 2, plant: AvailablePlants.Tomato },
-      { amount: 10, plant: AvailablePlants.Garlic },
+      { weight: 5, plant: AvailablePlants.Mate },
+      { weight: 3, plant: AvailablePlants.Sunflower },
+      { weight: 2, plant: AvailablePlants.Tomato },
+      { weight: 10, plant: AvailablePlants.Garlic },
     ],
   },
   2: {
     cost: 100_000,
     neededPlants: [
-      { amount: 10, plant: AvailablePlants.Mate },
-      { amount: 5, plant: AvailablePlants.Potato },
-      { amount: 3, plant: AvailablePlants.Apple },
-      { amount: 4, plant: AvailablePlants.Mango },
-      { amount: 6, plant: AvailablePlants.Pineapple },
+      { weight: 10, plant: AvailablePlants.Mate },
+      { weight: 5, plant: AvailablePlants.Potato },
+      { weight: 3, plant: AvailablePlants.Apple },
+      { weight: 4, plant: AvailablePlants.Mango },
+      { weight: 6, plant: AvailablePlants.Pineapple },
     ],
   },
 };
 
 export const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
   [AvailablePlants.Mate]: {
-    minutesToHarvest: 15,
+    minutesToHarvest: 0.01, // FIXME: REMOVE THIS FROM DEBUG DEV MODE
     minutesToRot: 60,
     emoji: '🌿',
     sellValue: 110,

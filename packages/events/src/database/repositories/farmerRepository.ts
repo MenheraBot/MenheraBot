@@ -1,7 +1,7 @@
 import { BigString } from 'discordeno/types';
 
 import { farmerModel } from '../collections';
-import { DatabaseFarmerSchema, QuantitativePlant } from '../../types/database';
+import { DatabaseFarmerSchema, QuantitativePlant, QuantitativeSeed } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
 import {
@@ -24,7 +24,7 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
   experience: user.experience,
   seeds: user.seeds,
   siloUpgrades: user.siloUpgrades,
-  silo: user.silo,
+  silo: user.silo.map((a) => ({ ...a, weight: parseFloat(a.weight.toFixed(1)) })),
   lastPlantedSeed: user.lastPlantedSeed,
 });
 
@@ -65,16 +65,17 @@ const executeHarvest = async (
   success: boolean,
   plantedFields: number,
   biggestSeed: number,
+  weight: number,
 ): Promise<void> => {
   const pushOrIncrement = {
     [alreadyInSilo ? '$inc' : '$push']: alreadyInSilo
       ? {
-          [`silo.$[elem].amount`]: 1,
+          [`silo.$[elem].weight`]: weight,
         }
       : {
           silo: {
             plant,
-            amount: 1,
+            weight,
           },
         },
   };
@@ -99,7 +100,7 @@ const executeHarvest = async (
     ).catch(debugError);
 };
 
-const updateSeeds = async (farmerId: BigString, seeds: QuantitativePlant[]): Promise<void> => {
+const updateSeeds = async (farmerId: BigString, seeds: QuantitativeSeed[]): Promise<void> => {
   await farmerModel.updateOne(
     { id: `${farmerId}` },
     {

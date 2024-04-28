@@ -10,7 +10,7 @@ import {
   createSelectMenu,
   createTextInput,
 } from '../../utils/discord/componentUtils';
-import { QuantitativePlant } from '../../types/database';
+import { QuantitativeSeed } from '../../types/database';
 import { extractFields } from '../../utils/discord/modalUtils';
 import userRepository from '../../database/repositories/userRepository';
 import starsRepository from '../../database/repositories/starsRepository';
@@ -36,7 +36,7 @@ const handleBuySeedsInteractions = async (ctx: ComponentInteractionContext): Pro
 const parseModalSumbit = async (
   ctx: ComponentInteractionContext<ModalInteraction>,
 ): Promise<void> => {
-  const selectedPlants: QuantitativePlant[] = extractFields(ctx.interaction).map((a) => ({
+  const selectedPlants: QuantitativeSeed[] = extractFields(ctx.interaction).map((a) => ({
     amount: parseInt(a.value, 10),
     plant: Number(a.customId),
   }));

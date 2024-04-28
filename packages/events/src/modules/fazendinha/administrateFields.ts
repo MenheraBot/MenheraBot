@@ -44,7 +44,10 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
       content: ctx.prettyResponse('error', 'commands:fazendinha.admin.needed-items', {
         star: neededItems.cost,
         plants: neededItems.neededPlants.map(
-          (a) => `${a.amount}x ${ctx.locale(`data:plants.${a.plant}`)} ${Plants[a.plant].emoji}`,
+          (a) =>
+            `${a.weight ?? a.amount} kg ${ctx.locale(`data:plants.${a.plant}`)} ${
+              Plants[a.plant].emoji
+            }`,
         ),
       }),
     });

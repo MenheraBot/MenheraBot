@@ -37,8 +37,8 @@ const plantField = async (
     harvestAt,
     plantedSeason: currentSeason,
     plantType: Number(seed),
-    plantQuality: 100,
-    upgrades: farmer.plantations[selectedField].upgrades,
+    weight: 1.3, // TODO: get a custom weight based on upgrades
+    upgrades: farmer.plantations[selectedField].upgrades ?? [],
   } satisfies PlantedField;
 
   farmer.plantations[selectedField] = newField;
@@ -101,7 +101,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   farmer.plantations[selectedField] = {
     isPlanted: false,
-    upgrades: farmer.plantations[selectedField].upgrades,
+    upgrades: farmer.plantations[selectedField].upgrades ?? [],
   };
 
   const updateStats =
@@ -112,7 +112,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
   await farmerRepository.executeHarvest(
     ctx.user.id,
     selectedField,
-    { isPlanted: false, upgrades: farmer.plantations[selectedField].upgrades },
+    { isPlanted: false, upgrades: farmer.plantations[selectedField].upgrades ?? [] },
     field.plantType,
     farmer.silo.some((a) => a.plant === field.plantType),
     state === 'MATURE',
@@ -123,6 +123,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
         : farmer.plantedFields + 1
       : farmer.plantedFields,
     updateStats && farmer.plantedFields === 9 ? farmer.biggestSeed + 1 : farmer.biggestSeed,
+    field.weight,
   );
 
   if (state !== 'GROWING')

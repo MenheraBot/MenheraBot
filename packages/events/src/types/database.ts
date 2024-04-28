@@ -114,9 +114,15 @@ export interface DatabaseCommandSchema {
   discordId: string;
 }
 
-export type QuantitativePlant = {
+export type QuantitativeSeed = {
   amount: number;
   plant: AvailablePlants;
+};
+
+export type QuantitativePlant = {
+  amount?: number; // TODO: Remove this after migration
+  plant: AvailablePlants;
+  weight: number;
 };
 
 export interface DatabaseTitlesSchema {
@@ -139,7 +145,7 @@ export interface DatabaseFeirinhaSchema {
 export interface DatabaseFarmerSchema {
   readonly id: string;
   plantations: Plantation[];
-  seeds: QuantitativePlant[];
+  seeds: QuantitativeSeed[];
   silo: QuantitativePlant[];
   siloUpgrades: number;
   biggestSeed: number;
