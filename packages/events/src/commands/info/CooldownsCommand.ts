@@ -7,18 +7,18 @@ import {
 
 import { User } from 'discordeno/transformers';
 import { bot } from '../../index';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
+import { createActionRow, createButton } from '../../utils/discord/componentUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import userRepository from '../../database/repositories/userRepository';
-import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
+import { MessageFlags } from '../../utils/discord/messageUtils';
 import { getDisplayName } from '../../utils/discord/userUtils';
 import { InteractionContext } from '../../types/menhera';
 import { getPlantationState } from '../../modules/fazendinha/plantationState';
 import { millisToSeconds } from '../../utils/miscUtils';
 import notificationRepository from '../../database/repositories/notificationRepository';
-import { EMOJIS } from '../../structures/constants';
+import commandRepository from '../../database/repositories/commandRepository';
 
 const canDo = (value: number): boolean => value <= 0;
 
@@ -108,16 +108,17 @@ const CooldownsCommand = createCommand({
         ctx.user.id,
       );
 
-      const notificationButton = createButton({
-        label: ctx.locale('commands:cooldowns.read-notifications'),
-        style: ButtonStyles.Primary,
-        emoji: extractNameAndIdFromEmoji(EMOJIS.notify),
-        customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId),
-      });
-
       if (unreadNotifications > 0) {
-        if (components.length === 0) components.push(createActionRow([notificationButton]));
-        else components[0].components.push(notificationButton);
+        const notificationCommand = await commandRepository.getCommandInfo('notificações');
+
+        embed.fields?.push({
+          name: ctx.locale('commands:cooldowns.unread-notifications'),
+          value: ctx.locale('commands:cooldowns.check-your-notifications', {
+            command: `</notificações:${notificationCommand?.discordId}>`,
+            count: unreadNotifications,
+          }),
+          inline: false,
+        });
       }
     }
 

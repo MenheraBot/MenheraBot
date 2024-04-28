@@ -3,7 +3,7 @@ import { profileBadges } from '../modules/badges/profileBadges';
 import { AvailablePlants, DeliveryMission, Plantation } from '../modules/fazendinha/types';
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
-import { AvailableLanguages } from './i18next';
+import { AvailableLanguages, Translation } from './i18next';
 
 export type ColorResolvable = `#${string}`;
 
@@ -159,8 +159,8 @@ export interface DatabaseFarmerSchema {
 export interface DatabaseNotificationSchema {
   readonly _id: string;
   userId: string;
-  translationKey: string;
-  translationValues: unknown;
+  translationKey: Translation;
+  translationValues?: Record<string, unknown>;
   createdAt: number;
   unread: boolean;
 }

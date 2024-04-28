@@ -15,6 +15,7 @@ import titlesRepository from '../../database/repositories/titlesRepository';
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
 import { createEmbed } from '../../utils/discord/embedUtils';
+import notificationRepository from '../../database/repositories/notificationRepository';
 
 const noop = (..._args: unknown[]) => undefined;
 
@@ -43,6 +44,7 @@ const EvalCommand = createCommand({
       titlesRepository,
       titlesModel,
       themeCreditsModel,
+      notificationRepository,
     );
 
     try {

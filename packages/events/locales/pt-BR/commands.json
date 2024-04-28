@@ -590,7 +590,7 @@
     "title": "⌛ | Cooldowns de {{user}}",
     "no-cooldown": "{{user}} já pode fazer isso!",
     "hunt": "Caçar",
-    "vote": "Votar em Mim",
+    "vote": "Votar em mim",
     "read-notifications": "Ver notificações",
     "candy": "Pedir doces",
     "time": "**<t:{{unix}}:T>** | **<t:{{unix}}:R>**",
@@ -602,7 +602,11 @@
       "ROTTEN": "Apodreceu em **<t:{{unix}}:T>** | **<t:{{unix}}:R>**"
     },
     "no-user": "Este usuário não utiliza meus comandos :(",
-    "click-to-vote": "Clique Para Votar"
+    "click-to-vote": "Votar agora",
+    "unread-notifications": "Nova notificação",
+    "check-your-notifications": "",
+    "check-your-notifications-one": "Você possui **{{count}}** notificação não lida! Use o comando {{command}} para a ler",
+    "check-your-notifications-other": "Você possui **{{count}}** notificações não lidas! Use o comando {{command}} para as ler"
   },
   "trisal": {
     "title": "❤️ Trisal ❤️",
@@ -1174,5 +1178,14 @@
     "not-your-title": "Tu precisa ter o título que quer equipar",
     "unknown-title": "Esse título não existe!",
     "success": "O teu título foi alterado com sucesso!"
+  },
+  "notificações": {
+    "no-unread-notificaions": "Você não possui nenhuma nova notificação. Cheque novamente em outro momento ;)",
+    "your-notifications": "Suas notificações",
+    "mark-as-read": "",
+    "mark-as-read-one": "Marcar como lido",
+    "mark-as-read-other": "Marcar tudo como lido",
+    "cant-clear": "Você possui novas notificações. Use o comando novamente para marcar todas como lidas.",
+    "all-done": "Feitoria! Suas notificações foram marcadas como lidas!"
   }
 }

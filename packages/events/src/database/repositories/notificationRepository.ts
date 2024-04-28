@@ -3,6 +3,7 @@ import { notificationModel } from '../collections';
 import { DatabaseNotificationSchema } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { daysToMillis } from '../../utils/miscUtils';
+import { Translation } from '../../types/i18next';
 
 const parseNotification = (
   notification: DatabaseNotificationSchema,
@@ -22,7 +23,7 @@ const purgeNotificationCache = (userId: BigString): void => {
 
 const registerNotification = async (
   userId: BigString,
-  translationKey: string,
+  translationKey: Translation,
   translationValues: unknown,
 ): Promise<void> => {
   purgeNotificationCache(userId);
@@ -70,7 +71,7 @@ const getUserTotalUnreadNotifications = async (userId: BigString): Promise<numbe
 
 const markNotificationsAsRead = async (
   userId: BigString,
-  notificationIds: string,
+  notificationIds: string[],
 ): Promise<void> => {
   purgeNotificationCache(userId);
 
