@@ -21,7 +21,7 @@ const purgeNotificationCache = (userId: BigString): void => {
   MainRedisClient.del(`notifications_count:${userId}`);
 };
 
-const registerNotification = async (
+const createNotification = async (
   userId: BigString,
   translationKey: Translation,
   translationValues: unknown,
@@ -97,7 +97,7 @@ const deleteOldNotifications = async (): Promise<void> => {
 };
 
 export default {
-  registerNotification,
+  createNotification,
   getUserUnreadNotifications,
   markNotificationsAsRead,
   getUserTotalUnreadNotifications,

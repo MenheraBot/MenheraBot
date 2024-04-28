@@ -34,6 +34,9 @@ export const displayNotifications = async (
     title: ctx.locale('commands:notificações.your-notifications'),
   });
 
+  if (embed.description?.length ?? 0 > 4050)
+    embed.description = `${embed.description?.slice(0, 4050)}...`;
+
   const markAsRead = createButton({
     label: ctx.locale('commands:notificações.mark-as-read', { count: notifications.length }),
     style: ButtonStyles.Primary,

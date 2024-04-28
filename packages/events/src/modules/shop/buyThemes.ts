@@ -397,11 +397,13 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
       }
 
       await shopRepository.executeBuyTheme(
-        ctx.user.id,
+        ctx.user,
         selectedItem.id,
         selectedItem.data.price,
         selectedItem.data.type,
         credits.royalty,
+        credits.ownerId,
+        ctx.locale(`data:themes.${selectedItem.id as 1}.name`),
       );
 
       const commandInfo = await commandRepository.getCommandInfo('personalizar');

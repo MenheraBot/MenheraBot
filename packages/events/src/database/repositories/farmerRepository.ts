@@ -54,7 +54,13 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
     return getFarmer(userId);
   }
 
-  return fromMongo;
+  await MainRedisClient.setex(
+    `farmer:${userId}`,
+    3600,
+    JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
+  ).catch(debugError);
+
+  return parseMongoUserToRedisUser(fromMongo);
 };
 
 const executeHarvest = async (

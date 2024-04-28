@@ -45,7 +45,7 @@ const sellInfo = async (
       fields: Object.entries(Plants).map((c) => {
         return {
           name: `${Plants[c[0] as '1'].emoji} ${ctx.locale(`data:plants.${c[0] as '1'}`)}`,
-          value: `${c[1].sellValue} :star:`,
+          value: `${c[1].sellValue} :star: Kg`,
           inline: true,
         };
       }),

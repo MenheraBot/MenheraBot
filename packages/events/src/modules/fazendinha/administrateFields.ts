@@ -45,7 +45,7 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
         star: neededItems.cost,
         plants: neededItems.neededPlants.map(
           (a) =>
-            `${a.weight ?? a.amount} kg ${ctx.locale(`data:plants.${a.plant}`)} ${
+            `${a.weight ?? a.amount} Kg ${ctx.locale(`data:plants.${a.plant}`)} ${
               Plants[a.plant].emoji
             }`,
         ),

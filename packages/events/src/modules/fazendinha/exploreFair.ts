@@ -26,6 +26,7 @@ import ChatInputInteractionContext from '../../structures/command/ChatInputInter
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../types/interaction';
 import { localizedResources } from '../../utils/miscUtils';
+import notificationRepository from '../../database/repositories/notificationRepository';
 
 const listItemAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'item', false) ?? '';
@@ -129,6 +130,16 @@ const executeBuyItem = async (
       'estrelinhas',
       ApiTransactionReason.BUY_FAIR,
     ),
+    notificationRepository.createNotification(
+      announcement.userId,
+      'commands:notificações.notifications.user-bought-announcement',
+      {
+        emoji: Plants[announcement.plantType].emoji,
+        weight: announcement.weight,
+        username: ctx.user.username,
+        stars: announcement.price,
+      },
+    ),
   ]);
 
   ctx.makeMessage({
@@ -203,7 +214,7 @@ const displayFair = async (
     }`;
 
     selectMenu.options.push({
-      label: `${item.weight} kg ${ctx.locale(`data:plants.${item.plantType}`)}${
+      label: `${item.weight} Kg ${ctx.locale(`data:plants.${item.plantType}`)}${
         user ? '' : ` (${i + 1})`
       }`,
       value: item._id,

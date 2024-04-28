@@ -163,10 +163,10 @@ const executeAnnounceProduct = async (
     plant,
     amount,
     price,
-    `[${ctx.user.username}] ${amount} kg ${i18next.getFixedT('pt-BR')(
+    `[${ctx.user.username}] ${amount} Kg ${i18next.getFixedT('pt-BR')(
       `data:plants.${plant}`,
     )} ${price}⭐`,
-    `[${ctx.user.username}] ${amount} kg ${i18next.getFixedT('en-US')(
+    `[${ctx.user.username}] ${amount} Kg ${i18next.getFixedT('en-US')(
       `data:plants.${plant}`,
     )} ${price}⭐`,
   );

@@ -1086,7 +1086,7 @@
         "success": "All done, {{author}}. This item was purchased by you",
         "no-announcements": "There are currently no announcements in the neighborhood fair",
         "fair": "Neighborhood Fair",
-        "description": "\n- {{amount}} kg {{emoji}} **{{plant}}** for {{price}} :star:",
+        "description": "\n- {{amount}} Kg {{emoji}} **{{plant}}** for {{price}} :star:",
         "user-info": "{{user}} ({{index}})",
         "user-fair": "{{user}}'s Fair",
         "select-item": "Select what you want to buy"
@@ -1181,6 +1181,11 @@
     "mark-as-read-one": "Mark as read",
     "mark-as-read-other": "Mark all as read",
     "cant-clear": "You have new notifications. Use the command again to mark all as read.",
-    "all-done": "Feitoria! Your notifications have been marked as read!"
+    "all-done": "There you go! Your notifications have been marked as read!",
+    "notifications": {
+      "user-bought-theme": "**@{{username}}** purchased your theme **{{theme}}** on <t:{{unix}}:d> at <t:{{unix}}:T>",
+      "user-bought-announcement": "Your **{{weight}} kg** {{emoji}} ad was bought for **{{stars}}** :star: at the fair by @{{username}} on <t:{{unix}}:d> at <t:{{unix}}:T>",
+      "user-won-bicho": "You won **{{stars}}** :star: with your bet in /bicho on <t:{{unix}}:d> at <t:{{unix}}:T>"
+    }
   }
 }

@@ -1091,7 +1091,7 @@
         "success": "Tudo feito, {{author}}. Esse item foi comprado por ti",
         "no-announcements": "Não há anúncios na feira da vizinhança atualmente",
         "fair": "Feirinha da Vizinhança",
-        "description": "\n- {{amount}} kg {{emoji}} **{{plant}}** por {{price}} :star:",
+        "description": "\n- {{amount}} Kg {{emoji}} **{{plant}}** por {{price}} :star:",
         "user-info": "{{user}} ({{index}})",
         "user-fair": "Feirinha de {{user}}",
         "select-item": "Selecione o que tu quer comprar"
@@ -1125,7 +1125,7 @@
       "deliver-embed-name": "Entrega {{index}}",
       "deliver-embed-name-finished": "~~Entrega {{index}}~~ ✅",
       "deliver-embed-field": "Estrelinhas: **{{award}}** :star:",
-      "deliver-embed-field-need": "Necessário: **{{amount}} kg** {{emoji}}",
+      "deliver-embed-field-need": "Necessário: **{{amount}} Kg** {{emoji}}",
       "description": "### Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas.\n### Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas\n\n### O caminhão partirá <t:{{unix}}:R>"
     },
     "silo": {
@@ -1186,6 +1186,11 @@
     "mark-as-read-one": "Marcar como lido",
     "mark-as-read-other": "Marcar tudo como lido",
     "cant-clear": "Você possui novas notificações. Use o comando novamente para marcar todas como lidas.",
-    "all-done": "Feitoria! Suas notificações foram marcadas como lidas!"
+    "all-done": "Feitoria! Suas notificações foram marcadas como lidas!",
+    "notifications": {
+      "user-bought-theme": "@{{username}} comprou o seu tema **{{theme}}** em <t:{{unix}}:d> às <t:{{unix}}:T>",
+      "user-bought-announcement": "Seu anúncio de **{{weight}} Kg** {{emoji}} foi comprado por **{{stars}}** :star: na feira por @{{username}} em <t:{{unix}}:d> às <t:{{unix}}:T>",
+      "user-won-bicho": "Você ganhou **{{stars}}** :star: com sua aposta no Jogo do Bicho em <t:{{unix}}:d> às <t:{{unix}}:T>"
+    }
   }
 }
