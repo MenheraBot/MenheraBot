@@ -22,7 +22,7 @@ const sendBlackjackMessage = async (
   embedColor: string,
   secondCopy: boolean,
   resultField?: DiscordEmbedField,
-) => {
+): Promise<void> => {
   const image = await getTableImage(
     ctx,
     bet,

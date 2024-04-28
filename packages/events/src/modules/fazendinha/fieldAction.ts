@@ -5,7 +5,7 @@ import { SelectMenuInteraction } from '../../types/interaction';
 import { postFazendinhaAction } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { displayPlantations } from './displayPlantations';
-import { getHarvestTime, getPlantationState } from './plantationState';
+import { getFieldWeight, getHarvestTime, getPlantationState } from './plantationState';
 import { Plants } from './constants';
 import { getCurrentSeason } from './seasonsManager';
 import { AvailablePlants, PlantedField } from './types';
@@ -32,13 +32,17 @@ const plantField = async (
 
   const harvestAt = getHarvestTime(currentSeason, seed);
 
+  const fieldUpgrades = farmer.plantations[selectedField].upgrades ?? [];
+
+  const weight = getFieldWeight(seed, currentSeason, fieldUpgrades);
+
   const newField = {
     isPlanted: true as const,
     harvestAt,
     plantedSeason: currentSeason,
     plantType: Number(seed),
-    weight: 4.3, // TODO: get a custom weight based on upgrades
-    upgrades: farmer.plantations[selectedField].upgrades ?? [],
+    weight,
+    upgrades: fieldUpgrades,
   } satisfies PlantedField;
 
   farmer.plantations[selectedField] = newField;
@@ -101,7 +105,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   farmer.plantations[selectedField] = {
     isPlanted: false,
-    upgrades: farmer.plantations[selectedField].upgrades ?? [],
+    upgrades: field.upgrades ?? [],
   };
 
   const updateStats =
@@ -112,7 +116,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
   await farmerRepository.executeHarvest(
     ctx.user.id,
     selectedField,
-    { isPlanted: false, upgrades: farmer.plantations[selectedField].upgrades ?? [] },
+    { isPlanted: false, upgrades: field.upgrades ?? [] },
     field.plantType,
     farmer.silo.some((a) => a.plant === field.plantType),
     state === 'MATURE',

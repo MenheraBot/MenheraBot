@@ -120,7 +120,7 @@ export type QuantitativeSeed = {
 };
 
 export type QuantitativePlant = {
-  amount?: number; // TODO: Remove this after migration
+  amount?: number;
   plant: AvailablePlants;
   weight: number;
 };

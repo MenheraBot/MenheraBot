@@ -1,3 +1,4 @@
+import { logger } from '../../utils/logger';
 import { minutesToMillis } from '../../utils/miscUtils';
 import { Plants } from './constants';
 import {
@@ -5,7 +6,7 @@ import {
   SEASONAL_HARVEST_DEBUFF,
   SEASONAL_ROT_DEBUFF,
 } from './seasonsManager';
-import { AvailablePlants, Plantation, PlantationState, Seasons } from './types';
+import { AvailablePlants, FieldUpgrade, Plantation, PlantationState, Seasons } from './types';
 
 const getPlantationState = (field: Plantation): [PlantationState, number] => {
   if (!field.isPlanted) return ['EMPTY', -1];
@@ -48,4 +49,14 @@ const getHarvestTime = (currentSeason: Seasons, plant: AvailablePlants): number 
   return Date.now() + minutesToMillis(plantFile.minutesToHarvest);
 };
 
-export { getPlantationState, getHarvestTime };
+const getFieldWeight = (
+  plant: AvailablePlants,
+  currentSeason: Seasons,
+  fieldUpgrades: FieldUpgrade[],
+): number => {
+  logger.debug(plant, currentSeason, fieldUpgrades);
+
+  return 1;
+};
+
+export { getPlantationState, getHarvestTime, getFieldWeight };

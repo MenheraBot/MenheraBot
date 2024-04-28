@@ -37,7 +37,7 @@ export const UnloadFields: { [field: number]: UnlockFieldFile } = {
 
 export const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
   [AvailablePlants.Mate]: {
-    minutesToHarvest: 0.01, // FIXME: REMOVE THIS FROM DEBUG DEV MODE
+    minutesToHarvest: 15,
     minutesToRot: 60,
     emoji: '🌿',
     sellValue: 110,
