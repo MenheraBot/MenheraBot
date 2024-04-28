@@ -47,7 +47,7 @@ export default class {
     return this.author;
   }
 
-  get commandId(): bigint {
+  get originalInteractionId(): bigint {
     return this.interaction.id ?? 0n;
   }
 

@@ -56,7 +56,7 @@ const executeAdministrateFair = async (
     embed.fields?.push({
       name: `${item[`name_${ctx.guildLocale as 'pt-BR'}`]} (${i + 1})`,
       inline: true,
-      value: `${item.price} :star:\n${Plants[item.plantType].emoji} ${item.amount}x`,
+      value: `${item.price} :star:\n${Plants[item.plantType].emoji} ${item.weight} kg`,
     });
 
     const index = Math.floor(i / 3);
@@ -66,7 +66,7 @@ const executeAdministrateFair = async (
         index: i + 1,
       }),
       style: ButtonStyles.Danger,
-      customId: createCustomId(6, ctx.user.id, ctx.commandId, i),
+      customId: createCustomId(6, ctx.user.id, ctx.originalInteractionId, i),
     });
 
     if (typeof toSendComponents[index] === 'undefined')

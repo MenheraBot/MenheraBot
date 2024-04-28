@@ -585,8 +585,9 @@
     "title": "⌛ | {{user}}'s Resources",
     "no-cooldown": "{{user}} can already do that!",
     "hunt": "Hunt",
-    "vote": "Vote for Me",
-    "click-to-vote": "Click to Vote",
+    "vote": "Vote for me",
+    "click-to-vote": "Vote now",
+    "read-notifications": "Read notifications",
     "no-user": "This user does not use my commands :(",
     "field": "Field {{field}}",
     "field-states": {
@@ -595,7 +596,11 @@
       "MATURE": "Can be harvested up to**<t:{{unix}}:T>** | **<t:{{unix}}:R>**",
       "ROTTEN": "Rotted in **<t:{{unix}}:T>** | **<t:{{unix}}:R>**"
     },
-    "time": "**<t:{{unix}}:T>** | **<t:{{unix}}:R>**"
+    "time": "**<t:{{unix}}:T>** | **<t:{{unix}}:R>**",
+    "unread-notifications": "New notification",
+    "check-your-notifications": "",
+    "check-your-notifications-one": "You have **{{count}}** unread notification! Use {{command}} to read it",
+    "check-your-notifications-other": "You have **{{count}}** unread notifications! Use {{command}} to read them"
   },
   "trisal": {
     "title": "❤️ Polyamory ❤️",
@@ -1081,7 +1086,7 @@
         "success": "All done, {{author}}. This item was purchased by you",
         "no-announcements": "There are currently no announcements in the neighborhood fair",
         "fair": "Neighborhood Fair",
-        "description": "\n- {{amount}}x {{emoji}} **{{plant}}** for {{price}} :star:",
+        "description": "\n- {{amount}} Kg {{emoji}} **{{plant}}** for {{price}} :star:",
         "user-info": "{{user}} ({{index}})",
         "user-fair": "{{user}}'s Fair",
         "select-item": "Select what you want to buy"
@@ -1113,26 +1118,26 @@
       "sell-all": "Sell Everything",
       "sell-title": "Sell your plants",
       "no-plants": "You don't have plants to sell",
-      "description": "{{text}}\n- {{emoji}} **{{amount}}x** - {{plant}} (**{{value}}** :star:)",
+      "description": "{{text}}\n- {{emoji}} **{{amount}}{{metric}}** - {{plant}} (**{{value}}** :star:)",
       "silo-is-full": "Your silo is full! Your silo has a maximum space of **{{limit}}** items. Free space selling plants >_<",
       "footer": "Silo's limit: {{used}}/{{limit}}",
       "select": "Select the quantity of {{plant}} you want to sell",
       "display-mate": "- {{emoji}} **∞** - {{plant}}",
-      "display-other": "- {{emoji}} **{{amount}}x** - {{plant}}"
+      "display-other": "- {{emoji}} **{{amount}}{{metric}}** - {{plant}}"
     },
     "entregas": {
       "no-longer-available": "This delivery is no longer available",
       "already-finished": "You have already completed this delivery!",
       "no-plants": "You do not have the necessary plans to complete the delivery",
-      "deliver": "Yayy! Delivery completed! You received **{{award}}** :star: and **{{xp}}** experience points",
+      "deliver": "Yayy! Delivery completed! You received **{{award}}** :star:",
       "finished-bonus": "Complete truck! You've received a **{{award}}** :star: bonus for delivering all your daily deliveries!",
 
       "daily-deliveries": "Daily Deliveries",
       "deliver-button": "Deliver {{index}}",
       "deliver-embed-name": "Delivery {{index}}",
       "deliver-embed-name-finished": "~~Delivery {{index}}~~ ✅",
-      "deliver-embed-field": "Stars: **{{award}}** :star:\nExperience: **{{xp}}**",
-      "deliver-embed-field-need": "Needs: **{{amount}}x** {{emoji}}",
+      "deliver-embed-field": "Stars: **{{award}}** :star:",
+      "deliver-embed-field-need": "Needs: **{{amount}} kg** {{emoji}}",
       "description": "### Once a day the delivery truck will appear at your farm to pick up deliveries.\n### Completing all deliveries before the truck leaves will give you an additional **{{bonus}}** :star: stars\n\n### The truck will leave <t:{{unix}}:R>"
     },
     "field-action": {
@@ -1167,6 +1172,20 @@
     "title": "{{user}}'s Titles",
     "not-your-title": "You need to have the title you want to equip",
     "unknown-title": "This title does not exist!",
-    "success": "O teu título foi alterado com sucesso!"
+    "success": "Your title has been changed successfully!"
+  },
+  "notificações": {
+    "no-unread-notificaions": "You don't have any new notifications. Check back later ;)",
+    "your-notifications": "Your notifications",
+    "mark-as-read": "",
+    "mark-as-read-one": "Mark as read",
+    "mark-as-read-other": "Mark all as read",
+    "cant-clear": "You have new notifications. Use the command again to mark all as read.",
+    "all-done": "There you go! Your notifications have been marked as read!",
+    "notifications": {
+      "user-bought-theme": "**@{{username}}** purchased your theme **{{theme}}** on <t:{{unix}}:d> at <t:{{unix}}:T>",
+      "user-bought-announcement": "Your **{{weight}} kg** {{emoji}} ad was bought for **{{stars}}** :star: at the fair by @{{username}} on <t:{{unix}}:d> at <t:{{unix}}:T>",
+      "user-won-bicho": "You won **{{stars}}** :star: with your bet in /bicho on <t:{{unix}}:d> at <t:{{unix}}:T>"
+    }
   }
 }

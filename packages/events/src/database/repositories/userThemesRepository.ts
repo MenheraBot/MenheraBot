@@ -22,6 +22,7 @@ import { DatabaseUserThemesSchema } from '../../types/database';
 import { debugError } from '../../utils/debugError';
 import { userThemesModel } from '../collections';
 import { MainRedisClient } from '../databases';
+import { registerCacheStatus } from '../../structures/initializePrometheus';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserThemesSchema): DatabaseUserThemesSchema => ({
   id: `${user.id}`,
@@ -71,6 +72,8 @@ export type UserSelectedThemeTypes = keyof Pick<
 
 const findEnsuredUserThemes = async (userId: BigString): Promise<DatabaseUserThemesSchema> => {
   const fromRedis = await MainRedisClient.get(`user_themes:${userId}`).catch(debugError);
+
+  registerCacheStatus(fromRedis, 'user_themes');
 
   if (fromRedis) return JSON.parse(fromRedis);
 

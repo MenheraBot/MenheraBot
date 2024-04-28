@@ -1,7 +1,7 @@
 import { BigString } from 'discordeno/types';
 
 import { farmerModel } from '../collections';
-import { DatabaseFarmerSchema, QuantitativePlant } from '../../types/database';
+import { DatabaseFarmerSchema, QuantitativePlant, QuantitativeSeed } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
 import {
@@ -13,6 +13,7 @@ import {
   Seasons,
 } from '../../modules/fazendinha/types';
 import { millisToSeconds } from '../../utils/miscUtils';
+import { registerCacheStatus } from '../../structures/initializePrometheus';
 
 const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSchema => ({
   id: `${user.id}`,
@@ -24,12 +25,14 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
   experience: user.experience,
   seeds: user.seeds,
   siloUpgrades: user.siloUpgrades,
-  silo: user.silo,
+  silo: user.silo.map((a) => ({ ...a, weight: parseFloat((a.weight ?? a.amount).toFixed(1)) })),
   lastPlantedSeed: user.lastPlantedSeed,
 });
 
 const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
   const fromRedis = await MainRedisClient.get(`farmer:${userId}`).catch(debugError);
+
+  registerCacheStatus(fromRedis, 'farmer');
 
   if (fromRedis) return JSON.parse(fromRedis);
 
@@ -47,13 +50,20 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
     return newUser;
   }
 
+  if (fromMongo.silo.some((a) => 'amount' in a)) {
+    const newSilo = fromMongo.silo.map((a) => ({ plant: a.plant, weight: a.weight ?? a.amount }));
+
+    await updateSilo(userId, newSilo);
+    return getFarmer(userId);
+  }
+
   await MainRedisClient.setex(
     `farmer:${userId}`,
     3600,
     JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
   ).catch(debugError);
 
-  return fromMongo;
+  return parseMongoUserToRedisUser(fromMongo);
 };
 
 const executeHarvest = async (
@@ -65,16 +75,17 @@ const executeHarvest = async (
   success: boolean,
   plantedFields: number,
   biggestSeed: number,
+  weight: number,
 ): Promise<void> => {
   const pushOrIncrement = {
     [alreadyInSilo ? '$inc' : '$push']: alreadyInSilo
       ? {
-          [`silo.$[elem].amount`]: 1,
+          [`silo.$[elem].weight`]: weight,
         }
       : {
           silo: {
             plant,
-            amount: 1,
+            weight,
           },
         },
   };
@@ -99,7 +110,7 @@ const executeHarvest = async (
     ).catch(debugError);
 };
 
-const updateSeeds = async (farmerId: BigString, seeds: QuantitativePlant[]): Promise<void> => {
+const updateSeeds = async (farmerId: BigString, seeds: QuantitativeSeed[]): Promise<void> => {
   await farmerModel.updateOne(
     { id: `${farmerId}` },
     {

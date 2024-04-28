@@ -54,7 +54,7 @@ const createPaginationButtons = (
       customId: createCustomId(
         0,
         ctx.interaction.user.id,
-        ctx.commandId,
+        ctx.originalInteractionId,
         topType,
         firstInfo,
         secondInfo,
@@ -68,7 +68,7 @@ const createPaginationButtons = (
       customId: createCustomId(
         0,
         ctx.interaction.user.id,
-        ctx.commandId,
+        ctx.originalInteractionId,
         topType,
         firstInfo,
         secondInfo,

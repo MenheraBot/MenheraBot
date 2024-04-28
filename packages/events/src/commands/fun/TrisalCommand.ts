@@ -49,7 +49,7 @@ const executeFinishTrisal = async (
 
   const sureButton = createButton({
     style: ButtonStyles.Danger,
-    customId: createCustomId(0, ctx.author.id, ctx.commandId),
+    customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId),
     label: ctx.locale('commands:trisal.untrisal.breakup'),
   });
 
@@ -102,7 +102,7 @@ const acceptingTrisal = async (ctx: ComponentInteractionContext): Promise<void> 
   }
 
   const confirmButton = createButton({
-    customId: createCustomId(1, secondUserId, ctx.commandId, firstUserId, secondUserId),
+    customId: createCustomId(1, secondUserId, ctx.originalInteractionId, firstUserId, secondUserId),
     label: ctx.locale('commands:trisal.accept-button', { name: secondUserName }),
     style: ButtonStyles.Success,
   });
@@ -191,7 +191,7 @@ const executeMakeTrisal = async (
     customId: createCustomId(
       1,
       firstUser.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       firstUser.id,
       secondUser.id,
       secondUser.username,

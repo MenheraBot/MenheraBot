@@ -3,9 +3,12 @@ import { MainRedisClient } from '../databases';
 import { DatabaseCommandSchema } from '../../types/database';
 import { commandsModel } from '../collections';
 import { debugError } from '../../utils/debugError';
+import { registerCacheStatus } from '../../structures/initializePrometheus';
 
 const getCommandInfoById = async (commandId: BigString): Promise<DatabaseCommandSchema | null> => {
   const fromRedis = await MainRedisClient.get(`command:${commandId}`);
+
+  registerCacheStatus(fromRedis, 'command');
 
   if (fromRedis) return getCommandInfo(fromRedis);
 
@@ -22,6 +25,8 @@ const getCommandInfoById = async (commandId: BigString): Promise<DatabaseCommand
 
 const getCommandInfo = async (commandName: string): Promise<DatabaseCommandSchema | null> => {
   const fromRedis = await MainRedisClient.get(`command:${commandName}`).catch(debugError);
+
+  registerCacheStatus(fromRedis, 'command');
 
   if (fromRedis) return JSON.parse(fromRedis);
 

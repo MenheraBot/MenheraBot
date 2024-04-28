@@ -12,7 +12,7 @@ import {
 export default class {
   constructor(
     private interactionToken: string,
-    public commandId: string,
+    public originalInteractionId: string,
     private i18n: TFunction,
   ) {}
 

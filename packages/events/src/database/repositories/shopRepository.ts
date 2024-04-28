@@ -1,4 +1,5 @@
 import { BigString } from 'discordeno/types';
+import { User } from 'discordeno/transformers';
 import { DatabaseHuntingTypes } from '../../modules/hunt/types';
 import { AvailableThemeTypes } from '../../modules/themes/types';
 import { UserColor } from '../../types/database';
@@ -11,6 +12,7 @@ import userThemesRepository from './userThemesRepository';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
+import notificationRepository from './notificationRepository';
 
 const executeSellHunt = async (
   userId: BigString,
@@ -100,22 +102,24 @@ const executeBuyItem = async (userId: BigString, itemId: number, price: number):
 };
 
 const executeBuyTheme = async (
-  userId: BigString,
+  user: User,
   themeId: number,
   price: number,
   themeType: AvailableThemeTypes,
   royalty: number,
+  themeOwner: string,
+  themeName: string,
 ): Promise<void> => {
-  await userRepository.updateUserWithSpecialData(userId, {
+  await userRepository.updateUserWithSpecialData(user.id, {
     $inc: { estrelinhas: negate(price) },
   });
 
-  await postTransaction(
-    `${userId}`,
-    `${bot.id}`,
-    price,
-    'estrelinhas',
-    ApiTransactionReason.BUY_THEME,
+  postTransaction(`${user.id}`, `${bot.id}`, price, 'estrelinhas', ApiTransactionReason.BUY_THEME);
+
+  notificationRepository.createNotification(
+    themeOwner,
+    'commands:notificações.notifications.user-bought-theme',
+    { username: user.username, theme: themeName },
   );
 
   await themeCreditsRepository.giveOwnerThemeRoyalties(
@@ -125,31 +129,31 @@ const executeBuyTheme = async (
 
   switch (themeType) {
     case 'profile':
-      await userThemesRepository.addProfileTheme(userId, themeId);
+      await userThemesRepository.addProfileTheme(user.id, themeId);
       break;
 
     case 'cards':
-      await userThemesRepository.addCardsTheme(userId, themeId);
+      await userThemesRepository.addCardsTheme(user.id, themeId);
       break;
 
     case 'card_background':
-      await userThemesRepository.addCardBackgroundTheme(userId, themeId);
+      await userThemesRepository.addCardBackgroundTheme(user.id, themeId);
       break;
 
     case 'table':
-      await userThemesRepository.addTableTheme(userId, themeId);
+      await userThemesRepository.addTableTheme(user.id, themeId);
       break;
 
     case 'eb_background':
-      await userThemesRepository.addEbBackgroundTheme(userId, themeId);
+      await userThemesRepository.addEbBackgroundTheme(user.id, themeId);
       break;
 
     case 'eb_text_box':
-      await userThemesRepository.addEbTextBoxTheme(userId, themeId);
+      await userThemesRepository.addEbTextBoxTheme(user.id, themeId);
       break;
 
     case 'eb_menhera':
-      await userThemesRepository.addEbMenheraTheme(userId, themeId);
+      await userThemesRepository.addEbMenheraTheme(user.id, themeId);
       break;
   }
 };

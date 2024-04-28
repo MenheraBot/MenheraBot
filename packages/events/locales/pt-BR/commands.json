@@ -590,7 +590,8 @@
     "title": "⌛ | Cooldowns de {{user}}",
     "no-cooldown": "{{user}} já pode fazer isso!",
     "hunt": "Caçar",
-    "vote": "Votar em Mim",
+    "vote": "Votar em mim",
+    "read-notifications": "Ver notificações",
     "candy": "Pedir doces",
     "time": "**<t:{{unix}}:T>** | **<t:{{unix}}:R>**",
     "field": "Campo {{field}}",
@@ -601,7 +602,11 @@
       "ROTTEN": "Apodreceu em **<t:{{unix}}:T>** | **<t:{{unix}}:R>**"
     },
     "no-user": "Este usuário não utiliza meus comandos :(",
-    "click-to-vote": "Clique Para Votar"
+    "click-to-vote": "Votar agora",
+    "unread-notifications": "Nova notificação",
+    "check-your-notifications": "",
+    "check-your-notifications-one": "Você possui **{{count}}** notificação não lida! Use o comando {{command}} para a ler",
+    "check-your-notifications-other": "Você possui **{{count}}** notificações não lidas! Use o comando {{command}} para as ler"
   },
   "trisal": {
     "title": "❤️ Trisal ❤️",
@@ -1086,7 +1091,7 @@
         "success": "Tudo feito, {{author}}. Esse item foi comprado por ti",
         "no-announcements": "Não há anúncios na feira da vizinhança atualmente",
         "fair": "Feirinha da Vizinhança",
-        "description": "\n- {{amount}}x {{emoji}} **{{plant}}** por {{price}} :star:",
+        "description": "\n- {{amount}} Kg {{emoji}} **{{plant}}** por {{price}} :star:",
         "user-info": "{{user}} ({{index}})",
         "user-fair": "Feirinha de {{user}}",
         "select-item": "Selecione o que tu quer comprar"
@@ -1112,15 +1117,15 @@
       "no-longer-available": "Essa entrega não está mais disponível",
       "already-finished": "Tu já finalizou essa entrega!",
       "no-plants": "Tu não tem as plantas necessárias para finalizar a entrega",
-      "deliver": "Yayy! Entrega finalizada! Tu recebeu **{{award}}** :star: e **{{xp}}** pontos de experiência",
+      "deliver": "Yayy! Entrega finalizada! Tu recebeu **{{award}}** :star:",
       "finished-bonus": "Caminhão completo! Você recebeu um bônus de **{{award}}** :star: por conseguir entregar todas as suas entregas diárias!",
 
       "daily-deliveries": "Entregas Diárias",
       "deliver-button": "Entregar {{index}}",
       "deliver-embed-name": "Entrega {{index}}",
       "deliver-embed-name-finished": "~~Entrega {{index}}~~ ✅",
-      "deliver-embed-field": "Estrelinhas: **{{award}}** :star:\nExperiência: **{{xp}}**",
-      "deliver-embed-field-need": "Necessário: **{{amount}}x** {{emoji}}",
+      "deliver-embed-field": "Estrelinhas: **{{award}}** :star:",
+      "deliver-embed-field-need": "Necessário: **{{amount}} Kg** {{emoji}}",
       "description": "### Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas.\n### Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas\n\n### O caminhão partirá <t:{{unix}}:R>"
     },
     "silo": {
@@ -1133,12 +1138,12 @@
       "sell-all": "Vender tudo",
       "sell-title": "Venda suas plantas",
       "no-plants": "Tu não possui plantas para vender",
-      "description": "{{text}}\n- {{emoji}} **{{amount}}x** - {{plant}} (**{{value}}** :star:)",
+      "description": "{{text}}\n- {{emoji}} **{{amount}}{{metric}}** - {{plant}} (**{{value}}** :star:)",
       "footer": "Limite do silo: {{used}}/{{limit}}",
       "silo-is-full": "O seu silo está cheio! Seu silo tem espaço máximo de **{{limit}}** itens. Libere espaço vendendo plantas >_<",
       "select": "Selecione a quantidade de {{plant}} que você quer vender",
       "display-mate": "- {{emoji}} **∞** - {{plant}}",
-      "display-other": "- {{emoji}} **{{amount}}x** - {{plant}}"
+      "display-other": "- {{emoji}} **{{amount}}{{metric}}** - {{plant}}"
     },
     "field-action": {
       "not-enough-seeds": "Você não possui sementes de **{{plant}}** para plantar!",
@@ -1173,5 +1178,19 @@
     "not-your-title": "Tu precisa ter o título que quer equipar",
     "unknown-title": "Esse título não existe!",
     "success": "O teu título foi alterado com sucesso!"
+  },
+  "notificações": {
+    "no-unread-notificaions": "Você não possui nenhuma nova notificação. Cheque novamente em outro momento ;)",
+    "your-notifications": "Suas notificações",
+    "mark-as-read": "",
+    "mark-as-read-one": "Marcar como lido",
+    "mark-as-read-other": "Marcar tudo como lido",
+    "cant-clear": "Você possui novas notificações. Use o comando novamente para marcar todas como lidas.",
+    "all-done": "Feitoria! Suas notificações foram marcadas como lidas!",
+    "notifications": {
+      "user-bought-theme": "@{{username}} comprou o seu tema **{{theme}}** em <t:{{unix}}:d> às <t:{{unix}}:T>",
+      "user-bought-announcement": "Seu anúncio de **{{weight}} Kg** {{emoji}} foi comprado por **{{stars}}** :star: na feira por @{{username}} em <t:{{unix}}:d> às <t:{{unix}}:T>",
+      "user-won-bicho": "Você ganhou **{{stars}}** :star: com sua aposta no Jogo do Bicho em <t:{{unix}}:d> às <t:{{unix}}:T>"
+    }
   }
 }

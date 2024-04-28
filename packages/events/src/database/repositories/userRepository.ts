@@ -5,6 +5,7 @@ import { usersModel } from '../collections';
 import { DatabaseUserSchema, UserIdType } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
+import { registerCacheStatus } from '../../structures/initializePrometheus';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema => ({
   _id: `${user._id}`,
@@ -45,6 +46,8 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
 
 const findUser = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {
   const fromRedis = await MainRedisClient.get(`user:${userId}`).catch(debugError);
+
+  registerCacheStatus(fromRedis, 'user');
 
   if (fromRedis) return JSON.parse(fromRedis);
 
@@ -130,6 +133,8 @@ const multiUpdateUsers = async (
 
 const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> => {
   const fromRedis = await MainRedisClient.get(`user:${userId}`).catch(debugError);
+
+  registerCacheStatus(fromRedis, 'user');
 
   if (fromRedis) return JSON.parse(fromRedis);
 

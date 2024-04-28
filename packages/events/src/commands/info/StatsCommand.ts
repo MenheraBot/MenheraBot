@@ -183,7 +183,7 @@ const executeDesignerStats = async (
   embeds.at(-1)!.footer = { text: ctx.locale('commands:status.designer.notify-footer') };
 
   const notifyButton = createButton({
-    customId: createCustomId(0, ctx.author.id, ctx.commandId, !notifyPurchase),
+    customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, !notifyPurchase),
     emoji: { name: 'notify', id: 759607330597502976n },
     style: notifyPurchase ? ButtonStyles.Primary : ButtonStyles.Secondary,
     label: ctx.locale(`commands:status.designer.${notifyPurchase ? 'notify' : 'dont-notify'}`),

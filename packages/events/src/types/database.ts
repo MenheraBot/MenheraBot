@@ -3,7 +3,7 @@ import { profileBadges } from '../modules/badges/profileBadges';
 import { AvailablePlants, DeliveryMission, Plantation } from '../modules/fazendinha/types';
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
-import { AvailableLanguages } from './i18next';
+import { AvailableLanguages, Translation } from './i18next';
 
 export type ColorResolvable = `#${string}`;
 
@@ -114,9 +114,15 @@ export interface DatabaseCommandSchema {
   discordId: string;
 }
 
-export type QuantitativePlant = {
+export type QuantitativeSeed = {
   amount: number;
   plant: AvailablePlants;
+};
+
+export type QuantitativePlant = {
+  amount?: number;
+  plant: AvailablePlants;
+  weight: number;
 };
 
 export interface DatabaseTitlesSchema {
@@ -130,7 +136,7 @@ export interface DatabaseFeirinhaSchema {
   _id: string;
   userId: string;
   plantType: AvailablePlants;
-  amount: number;
+  weight: number;
   price: number;
   [`name_pt-BR`]: string;
   [`name_en-US`]: string;
@@ -139,7 +145,7 @@ export interface DatabaseFeirinhaSchema {
 export interface DatabaseFarmerSchema {
   readonly id: string;
   plantations: Plantation[];
-  seeds: QuantitativePlant[];
+  seeds: QuantitativeSeed[];
   silo: QuantitativePlant[];
   siloUpgrades: number;
   biggestSeed: number;
@@ -148,4 +154,13 @@ export interface DatabaseFarmerSchema {
   lastPlantedSeed: AvailablePlants;
   dailies: DeliveryMission[];
   dailyDayId: number;
+}
+
+export interface DatabaseNotificationSchema {
+  readonly _id: string;
+  userId: string;
+  translationKey: Translation;
+  translationValues?: Record<string, unknown>;
+  createdAt: number;
+  unread: boolean;
 }

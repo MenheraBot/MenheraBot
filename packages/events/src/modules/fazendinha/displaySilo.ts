@@ -42,7 +42,9 @@ const displaySilo = async (
     }),
     color: hexStringToNumber(embedColor),
     fields: ['seeds' as const, 'silo' as const].reduce<DiscordEmbedField[]>((p, c) => {
-      const items = farmer[c].filter((a) => a.amount > 0);
+      const items = farmer[c as 'seeds'].filter(
+        (a) => a[('weight' in a ? 'weight' : 'amount') as 'amount'] > 0,
+      );
 
       if (c === 'seeds') {
         const hasMate = items.some((a) => a.plant === AvailablePlants.Mate);
@@ -63,7 +65,8 @@ const displaySilo = async (
                     }`,
                     {
                       emoji: Plants[a.plant].emoji,
-                      amount: a.amount,
+                      amount: 'weight' in a ? a.weight : a.amount,
+                      metric: 'weight' in a ? ' kg' : 'x',
                       plant: ctx.locale(`data:plants.${a.plant}`),
                     },
                   ),
@@ -81,7 +84,7 @@ const displaySilo = async (
     label: ctx.locale('commands:fazendinha.silo.sell-plants'),
     style: maySell ? ButtonStyles.Success : ButtonStyles.Secondary,
     disabled: !maySell,
-    customId: createCustomId(8, ctx.user.id, ctx.commandId, 'DISPLAY', embedColor),
+    customId: createCustomId(8, ctx.user.id, ctx.originalInteractionId, 'DISPLAY', embedColor),
   });
 
   ctx.makeMessage({
@@ -121,7 +124,7 @@ const showModal = async (
   const selectedOptions = ctx.interaction.data.values;
 
   const modalFields = selectedOptions.reduce<ActionRow[]>((fields, plant) => {
-    const fromSilo = farmer.silo.find((a) => a.plant === Number(plant) && a.amount > 0);
+    const fromSilo = farmer.silo.find((a) => a.plant === Number(plant) && a.weight > 0);
 
     if (!fromSilo) return fields;
 
@@ -130,12 +133,12 @@ const showModal = async (
         createTextInput({
           label: ctx.locale('commands:fazendinha.silo.max', {
             plant: ctx.locale(`data:plants.${plant as '0'}`),
-            amount: fromSilo.amount,
+            amount: fromSilo.weight,
           }),
           customId: plant,
           style: TextStyles.Short,
           minLength: 1,
-          maxLength: `${fromSilo.amount}`.length,
+          maxLength: `${fromSilo.weight}`.length,
           required: true,
           placeholder: ctx.locale('commands:fazendinha.silo.select', {
             plant: ctx.locale(`data:plants.${plant as '0'}`),
@@ -154,7 +157,7 @@ const showModal = async (
     });
 
   ctx.respondWithModal({
-    customId: createCustomId(8, ctx.user.id, ctx.commandId, 'SELL', embedColor),
+    customId: createCustomId(8, ctx.user.id, ctx.originalInteractionId, 'SELL', embedColor),
     title: ctx.locale('commands:fazendinha.silo.sell-plants'),
     components: modalFields,
   });
@@ -168,7 +171,7 @@ const buildSellPlantsMessage = async (
   const options: SelectOption[] = [];
 
   const description = farmer.silo.reduce((text, plant) => {
-    if (plant.amount === 0) return text;
+    if (plant.weight === 0) return text;
 
     options.push({
       label: ctx.locale('commands:fazendinha.silo.sell-plant', {
@@ -181,7 +184,8 @@ const buildSellPlantsMessage = async (
     return ctx.locale('commands:fazendinha.silo.description', {
       text,
       emoji: Plants[plant.plant].emoji,
-      amount: plant.amount,
+      amount: plant.weight,
+      metric: ' kg',
       plant: ctx.locale(`data:plants.${plant.plant}`),
       value: Plants[plant.plant].sellValue,
     });
@@ -216,7 +220,13 @@ const buildSellPlantsMessage = async (
           options,
           minValues: 1,
           maxValues: options.length >= 5 ? 5 : options.length,
-          customId: createCustomId(8, ctx.user.id, ctx.commandId, 'SHOW_MODAL', embedColor),
+          customId: createCustomId(
+            8,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            'SHOW_MODAL',
+            embedColor,
+          ),
         }),
       ]),
     ],

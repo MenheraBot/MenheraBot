@@ -18,7 +18,6 @@ import { BichoWinner } from '../../modules/bicho/types';
 import { ApiHuntingTypes } from '../../modules/hunt/types';
 import { debugError } from '../debugError';
 import { dataRequest } from './apiRequests';
-import { logger } from '../logger';
 import { PokerApiUser } from '../../modules/poker/types';
 import { AvailablePlants } from '../../modules/fazendinha/types';
 
@@ -211,10 +210,6 @@ const postTransaction = async (
   await dataRequest
     .post('/statistics/transaction', { authorId, targetId, amount, currencyType, reason })
     .catch(debugError);
-
-  logger.debug(
-    `TRANSACTION!! ${authorId} deu ${amount} ${currencyType} para ${targetId} por conta de ${reason}`,
-  );
 };
 
 const getUserTransactions = async (

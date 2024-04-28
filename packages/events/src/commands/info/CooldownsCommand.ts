@@ -17,6 +17,8 @@ import { getDisplayName } from '../../utils/discord/userUtils';
 import { InteractionContext } from '../../types/menhera';
 import { getPlantationState } from '../../modules/fazendinha/plantationState';
 import { millisToSeconds } from '../../utils/miscUtils';
+import notificationRepository from '../../database/repositories/notificationRepository';
+import commandRepository from '../../database/repositories/commandRepository';
 
 const canDo = (value: number): boolean => value <= 0;
 
@@ -90,16 +92,35 @@ const CooldownsCommand = createCommand({
 
     const components: ActionRow[] = [];
 
-    if (voteCooldown < 0 && ctx.user.id === userToUse.id)
-      components.push(
-        createActionRow([
-          createButton({
-            style: ButtonStyles.Link,
-            url: `https://top.gg/bot/${bot.applicationId}/vote`,
-            label: ctx.locale('commands:cooldowns.click-to-vote'),
-          }),
-        ]),
+    if (userToUse.id === ctx.user.id) {
+      if (voteCooldown < 0)
+        components.push(
+          createActionRow([
+            createButton({
+              style: ButtonStyles.Link,
+              url: `https://top.gg/bot/${bot.applicationId}/vote`,
+              label: ctx.locale('commands:cooldowns.click-to-vote'),
+            }),
+          ]),
+        );
+
+      const unreadNotifications = await notificationRepository.getUserTotalUnreadNotifications(
+        ctx.user.id,
       );
+
+      if (unreadNotifications > 0) {
+        const notificationCommand = await commandRepository.getCommandInfo('notificações');
+
+        embed.fields?.push({
+          name: ctx.locale('commands:cooldowns.unread-notifications'),
+          value: ctx.locale('commands:cooldowns.check-your-notifications', {
+            command: `</notificações:${notificationCommand?.discordId}>`,
+            count: unreadNotifications,
+          }),
+          inline: false,
+        });
+      }
+    }
 
     ctx.makeMessage({ embeds: [embed], components });
     finishCommand();

@@ -6,6 +6,7 @@ import {
   DatabaseFarmerSchema,
   DatabaseFeirinhaSchema,
   DatabaseGuildSchema,
+  DatabaseNotificationSchema,
   DatabaseProfileImagesSchema,
   DatabaseTitlesSchema,
   DatabaseUserSchema,
@@ -127,10 +128,18 @@ const titlesSchema = new Schema({
 const feirinhaSchema = new Schema({
   userId: { type: String },
   plantType: { type: Number },
-  amount: { type: Number },
+  weight: { type: Number },
   price: { type: Number },
   [`name_pt-BR`]: { type: String },
   [`name_en-US`]: { type: String },
+});
+
+const notificationSchema = new Schema({
+  userId: { type: String },
+  translationKey: { type: String },
+  translationValues: { type: Object },
+  createdAt: { type: Number },
+  unread: { type: Boolean },
 });
 
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
@@ -142,3 +151,7 @@ export const profileImagesModel = model<DatabaseProfileImagesSchema>('images', p
 export const farmerModel = model<DatabaseFarmerSchema>('farmer', farmerSchema);
 export const titlesModel = model<DatabaseTitlesSchema>('titles', titlesSchema);
 export const feirinhaModel = model<DatabaseFeirinhaSchema>('feirinha', feirinhaSchema);
+export const notificationModel = model<DatabaseNotificationSchema>(
+  'notification',
+  notificationSchema,
+);

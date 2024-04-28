@@ -99,7 +99,7 @@ const FazendinhaCommand = createCommand({
               nameLocalizations: { 'en-US': 'amount' },
               description: 'Informe a quantidade de produtos a vender',
               descriptionLocalizations: { 'en-US': 'Enter the quantity of products to sell' },
-              type: ApplicationCommandOptionTypes.Integer,
+              type: ApplicationCommandOptionTypes.Number,
               minValue: 1,
               maxValue: 10,
               required: true,

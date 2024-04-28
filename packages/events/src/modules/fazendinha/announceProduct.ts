@@ -114,7 +114,7 @@ const executeAnnounceProduct = async (
   farmer: DatabaseFarmerSchema,
 ): Promise<void> => {
   const plant = ctx.getOption<AvailablePlants>('produto', false, true);
-  const amount = ctx.getOption<number>('quantidade', false, true);
+  const amount = parseFloat(ctx.getOption<number>('quantidade', false, true).toFixed(1));
   const price = ctx.getOption<number>('preço', false, true);
 
   const plantInfo = Plants[plant];
@@ -163,15 +163,18 @@ const executeAnnounceProduct = async (
     plant,
     amount,
     price,
-    `[${ctx.user.username}] ${amount}x ${i18next.getFixedT('pt-BR')(
+    `[${ctx.user.username}] ${amount} Kg ${i18next.getFixedT('pt-BR')(
       `data:plants.${plant}`,
     )} ${price}⭐`,
-    `[${ctx.user.username}] ${amount}x ${i18next.getFixedT('en-US')(
+    `[${ctx.user.username}] ${amount} Kg ${i18next.getFixedT('en-US')(
       `data:plants.${plant}`,
     )} ${price}⭐`,
   );
 
-  await farmerRepository.updateSilo(ctx.user.id, removeItems(farmer.silo, [{ amount, plant }]));
+  await farmerRepository.updateSilo(
+    ctx.user.id,
+    removeItems(farmer.silo, [{ weight: amount, plant }]),
+  );
 
   ctx.makeMessage({
     content: ctx.prettyResponse('success', 'commands:fazendinha.feira.announce.success'),

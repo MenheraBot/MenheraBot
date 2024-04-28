@@ -126,7 +126,7 @@ const executeDailyDelivery = async (
         xp: a.experience,
       })}\n${a.needs.map((b) =>
         ctx.locale('commands:fazendinha.entregas.deliver-embed-field-need', {
-          amount: b.amount,
+          amount: b.weight ?? b.amount,
           emoji: Plants[b.plant].emoji,
         }),
       )}`,
@@ -137,7 +137,7 @@ const executeDailyDelivery = async (
     const button = createButton({
       label: ctx.locale('commands:fazendinha.entregas.deliver-button', { index: i + 1 }),
       style: ButtonStyles.Primary,
-      customId: createCustomId(4, ctx.user.id, ctx.commandId, i),
+      customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, i),
       disabled: a.finished,
     });
 

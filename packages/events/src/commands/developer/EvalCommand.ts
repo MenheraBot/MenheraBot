@@ -2,7 +2,12 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { inspect } from 'node:util';
 
-import { usersModel, farmerModel, titlesModel } from '../../database/collections';
+import {
+  usersModel,
+  farmerModel,
+  titlesModel,
+  themeCreditsModel,
+} from '../../database/collections';
 import { MainRedisClient as redis } from '../../database/databases';
 import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
@@ -10,6 +15,7 @@ import titlesRepository from '../../database/repositories/titlesRepository';
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
 import { createEmbed } from '../../utils/discord/embedUtils';
+import notificationRepository from '../../database/repositories/notificationRepository';
 
 const noop = (..._args: unknown[]) => undefined;
 
@@ -37,6 +43,8 @@ const EvalCommand = createCommand({
       redis,
       titlesRepository,
       titlesModel,
+      themeCreditsModel,
+      notificationRepository,
     );
 
     try {

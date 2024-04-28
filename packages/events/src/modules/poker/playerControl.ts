@@ -94,7 +94,7 @@ const executeMasterAction = async (
     customId: createCustomId(
       2,
       gameData.masterId,
-      ctx.commandId,
+      ctx.originalInteractionId,
       gameData.matchId,
       'REMOVE_PLAYERS',
     ),
@@ -160,7 +160,13 @@ const getAvailableActions = (
   availableActions.push(localizedAction(ctx, 'ALLIN', player.chips));
 
   return createSelectMenu({
-    customId: createCustomId(2, player.id, ctx.commandId, gameData.matchId, 'GAME_ACTION'),
+    customId: createCustomId(
+      2,
+      player.id,
+      ctx.originalInteractionId,
+      gameData.matchId,
+      'GAME_ACTION',
+    ),
     options: availableActions,
     maxValues: 1,
     minValues: 1,

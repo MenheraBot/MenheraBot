@@ -146,19 +146,39 @@ const finishRound = async (
   const nextMatch = createButton({
     label: ctx.locale('commands:poker.after-lobby.keep-playing'),
     style: ButtonStyles.Success,
-    customId: createCustomId(2, 'N', ctx.commandId, gameData.matchId, 'AFTER_LOBBY', 'ENTER'),
+    customId: createCustomId(
+      2,
+      'N',
+      ctx.originalInteractionId,
+      gameData.matchId,
+      'AFTER_LOBBY',
+      'ENTER',
+    ),
   });
 
   const exitTable = createButton({
     label: ctx.locale('commands:poker.after-lobby.leave-table'),
     style: ButtonStyles.Secondary,
-    customId: createCustomId(2, 'N', ctx.commandId, gameData.matchId, 'AFTER_LOBBY', 'LEAVE'),
+    customId: createCustomId(
+      2,
+      'N',
+      ctx.originalInteractionId,
+      gameData.matchId,
+      'AFTER_LOBBY',
+      'LEAVE',
+    ),
   });
 
   const finishTable = createButton({
     label: ctx.locale('commands:poker.after-lobby.close-match'),
     style: ButtonStyles.Danger,
-    customId: createCustomId(2, gameData.masterId, ctx.commandId, gameData.matchId, 'CLOSE_TABLE'),
+    customId: createCustomId(
+      2,
+      gameData.masterId,
+      ctx.originalInteractionId,
+      gameData.matchId,
+      'CLOSE_TABLE',
+    ),
   });
 
   const shutdownGame = Date.now() + 1000 * 60 * 2;
@@ -246,7 +266,7 @@ const createTableMessage = async (
   const seeCardsButton = createButton({
     label: ctx.locale('commands:poker.match.see-cards'),
     style: ButtonStyles.Primary,
-    customId: createCustomId(2, 'N', ctx.commandId, gameData.matchId, 'SEE_CARDS'),
+    customId: createCustomId(2, 'N', ctx.originalInteractionId, gameData.matchId, 'SEE_CARDS'),
   });
 
   const masterButton = createButton({
@@ -255,7 +275,7 @@ const createTableMessage = async (
     customId: createCustomId(
       2,
       gameData.masterId,
-      ctx.commandId,
+      ctx.originalInteractionId,
       gameData.matchId,
       'ADMIN_CONTROL',
     ),
@@ -309,6 +329,7 @@ const setupGame = async (
   players: string[],
   embedColor: number,
   chips: number,
+  originalInteractionId: string,
 ): Promise<void> => {
   const blind = Math.floor((chips || DEFAULT_CHIPS) * 0.1);
 
@@ -337,6 +358,7 @@ const setupGame = async (
 
   const match: PokerMatch = {
     matchId: `${ctx.interaction.id}`,
+    originalInteractionId,
     masterId: players[0],
     language: ctx.interaction.guildLocale ?? 'pt-BR',
     embedColor,
