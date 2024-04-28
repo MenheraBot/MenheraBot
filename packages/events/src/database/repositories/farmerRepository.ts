@@ -13,6 +13,7 @@ import {
   Seasons,
 } from '../../modules/fazendinha/types';
 import { millisToSeconds } from '../../utils/miscUtils';
+import { registerCacheStatus } from '../../structures/initializePrometheus';
 
 const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSchema => ({
   id: `${user.id}`,
@@ -30,6 +31,8 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
 
 const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
   const fromRedis = await MainRedisClient.get(`farmer:${userId}`).catch(debugError);
+
+  registerCacheStatus(fromRedis, 'farmer');
 
   if (fromRedis) return JSON.parse(fromRedis);
 

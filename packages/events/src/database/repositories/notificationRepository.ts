@@ -4,6 +4,7 @@ import { DatabaseNotificationSchema } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { daysToMillis } from '../../utils/miscUtils';
 import { Translation } from '../../types/i18next';
+import { registerCacheStatus } from '../../structures/initializePrometheus';
 
 const parseNotification = (
   notification: DatabaseNotificationSchema,
@@ -42,6 +43,8 @@ const getUserUnreadNotifications = async (
 ): Promise<DatabaseNotificationSchema[]> => {
   const fromRedis = await MainRedisClient.get(`notifications:${userId}`);
 
+  registerCacheStatus(fromRedis, 'notifications');
+
   if (fromRedis) return JSON.parse(fromRedis);
 
   const fromMongo = await notificationModel.find({ userId: `${userId}`, unread: true });
@@ -59,6 +62,8 @@ const getUserUnreadNotifications = async (
 
 const getUserTotalUnreadNotifications = async (userId: BigString): Promise<number> => {
   const fromRedis = await MainRedisClient.get(`notifications_count:${userId}`);
+
+  registerCacheStatus(fromRedis, 'notifications_count');
 
   if (fromRedis) return Number(fromRedis);
 

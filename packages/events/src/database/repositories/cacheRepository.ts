@@ -6,6 +6,7 @@ import { UserIdType } from '../../types/database';
 import { debugError } from '../../utils/debugError';
 
 import { MainRedisClient } from '../databases';
+import { registerCacheStatus } from '../../structures/initializePrometheus';
 
 const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promise<User | null> => {
   if (userId === null || userId === 'null') return null;
@@ -13,6 +14,8 @@ const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promi
   const fromRedis = await MainRedisClient.getex(`discord_user:${userId}`, 'EX', 86400).catch(
     debugError,
   );
+
+  registerCacheStatus(fromRedis, 'discord_user');
 
   if (!fromRedis) {
     if (!lookIntoDiscord) return null;

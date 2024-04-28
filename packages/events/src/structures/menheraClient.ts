@@ -7,7 +7,6 @@ import { initializeSentry } from './initializeSentry';
 import { getEnviroments } from '../utils/getEnviroments';
 import { MenheraClient } from '../types/menhera';
 import { logger } from '../utils/logger';
-import { loadCommands } from './command/loadCommands';
 import { updateAssets } from './cdnManager';
 import { initializePrometheus } from './initializePrometheus';
 import { transformDiscordUserToUser } from '../internals/transformers/reverse/transformDiscordUserToUser';
@@ -15,6 +14,7 @@ import { transfromUserToDiscordUser } from '../internals/transformers/transformU
 import { transformComponentToDiscordComponent } from '../internals/transformers/reverse/component';
 import { loadChangelog } from '../utils/changelog';
 import { freeStuckQueues } from '../utils/freeStuckQueues';
+import { loadCommands } from './command/loadCommands';
 
 const setupMenheraClient = (client: MenheraClient): void => {
   const { OWNER_ID } = getEnviroments(['OWNER_ID']);
@@ -40,8 +40,6 @@ const setupMenheraClient = (client: MenheraClient): void => {
   client.commandsInExecution = 0;
 
   client.respondInteraction = new Map();
-
-  loadCommands();
 };
 
 const initializeServices = async (): Promise<void> => {
@@ -55,6 +53,7 @@ const initializeServices = async (): Promise<void> => {
   initializeSentry();
   await updateAssets();
   initializePrometheus();
+  loadCommands();
 };
 
 const setupInternals = (bot: MenheraClient): void => {
