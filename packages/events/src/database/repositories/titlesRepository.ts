@@ -61,7 +61,7 @@ const getTitles = async (userId: BigString, titles: number[]): Promise<DatabaseT
 
   MainRedisClient.setex(
     `titles:${userId}`,
-    3600,
+    86400,
     JSON.stringify(allTitles.map(parseMongoDataToRedis)),
   );
 
