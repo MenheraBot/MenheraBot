@@ -106,15 +106,6 @@ const CoinflipCommand = createCommand({
       required: true,
       minValue: 1,
     },
-    {
-      name: 'moeda',
-      nameLocalizations: { 'en-US': 'currency' },
-      description: 'Moeda que será apostada. O padrão é estrelinhas',
-      descriptionLocalizations: { 'en-US': 'Currency to be wagered. The default is stars' },
-      type: ApplicationCommandOptionTypes.String,
-      required: false,
-      choices: transactionableCommandOption,
-    },
   ],
   category: 'economy',
   authorDataFields: ['estrelinhas', 'demons', 'giants', 'angels', 'archangels', 'demigods', 'gods'],
@@ -122,9 +113,7 @@ const CoinflipCommand = createCommand({
   execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', true);
     const input = ctx.getOption<number>('aposta', false, true);
-    const currency =
-      ctx.getOption<(typeof transactionableCommandOption)[number]['value']>('moeda', false) ??
-      'estrelinhas';
+    const currency = 'estrelinhas';
 
     if (user.toggles.bot)
       return finishCommand(
