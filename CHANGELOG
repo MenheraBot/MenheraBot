@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [5.15.1] - 2024-05-01
 
+### Added
+
+- Adicionado a informação de sua mão atual nas suas cartas do poker. - Sugerido por @bielviana
+
 ### Fixed
 
 - Removida a opção de apostar caças no /coinflip.

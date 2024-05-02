@@ -65,7 +65,7 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
 
   switch (action) {
     case 'SEE_CARDS':
-      return showPlayerCards(ctx, player);
+      return showPlayerCards(ctx, player, gameData);
     case 'CLOSE_TABLE':
       return closeTable(ctx, gameData);
     case 'ADMIN_CONTROL':

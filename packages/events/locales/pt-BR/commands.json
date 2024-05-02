@@ -985,6 +985,7 @@
     "player": {
       "your-hand": "Sua mão",
       "chips": "Tu tens **{{chips}}** :coin: fichas",
+      "hand-value": "A sua mão atual é: **{{hand}}**",
       "not-in-round": "Você não está mais participando dessa rodada!",
       "cant-control-off-game": "Você não pode remover jogadores fora de um round!",
       "remove-players-zero": "Nenhum jogador foi marcado para ser removido na da partida ao fim da rodada. Todos continuam jogando!",

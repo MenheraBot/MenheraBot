@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { SelectMenuComponent, SelectOption } from 'discordeno/types';
+import PokerSolver from 'pokersolver';
 import userRepository from '../../database/repositories/userRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import {
@@ -17,11 +18,13 @@ import { SelectMenuUsersInteraction } from '../../types/interaction';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import { mentionUser } from '../../utils/discord/userUtils';
 import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
-import { getPokerCard } from './cardUtils';
+import { getOpenedCards, getPokerCard } from './cardUtils';
+import { Translation } from '../../types/i18next';
 
 const showPlayerCards = async (
   ctx: ComponentInteractionContext,
   player: PokerPlayer,
+  gameData: PokerMatch,
 ): Promise<void> => {
   await ctx.visibleAck(true);
 
@@ -32,11 +35,24 @@ const showPlayerCards = async (
 
   const authorData = await userRepository.ensureFindUser(ctx.user.id);
 
+  const cardsToUse = [
+    ...player.cards.map((card) => getPokerCard(card).solverValue),
+    ...getOpenedCards(gameData).map((card) => getPokerCard(card).solverValue),
+  ];
+
+  const hand = PokerSolver.Hand.solve(cardsToUse);
+
+  const userHand = hand.descr.includes('Royal Flush')
+    ? 'ROYAL-FLUSH'
+    : hand.name.replaceAll(' ', '-').toUpperCase();
+
   const embed = createEmbed({
     title: ctx.locale('commands:poker.player.your-hand'),
     description: `**${player.cards
       .map((a) => getPokerCard(a).displayValue)
-      .join(' ')}**\n\n${ctx.locale('commands:poker.player.chips', { chips: player.chips })}`,
+      .join(' ')}**\n\n${ctx.locale('commands:poker.player.hand-value', {
+      hand: ctx.locale(`commands:poker.hands.${userHand}` as Translation),
+    })}\n${ctx.locale('commands:poker.player.chips', { chips: player.chips })}`,
     footer: player.folded ? { text: ctx.locale('commands:poker.player.not-in-round') } : undefined,
     color: hexStringToNumber(authorData.selectedColor),
     image: image.err ? undefined : { url: 'attachment://poker.png' },
@@ -144,7 +160,9 @@ const getAvailableActions = (
   }
 
   if (player.chips + player.pot > gameData.lastAction.pot) {
-    const toRaise = (gameData.lastAction.pot - player.pot || gameData.blind) * 2;
+    const toRaise = ['CHECK', 'FOLD'].includes(gameData.lastAction.action)
+      ? gameData.blind
+      : (gameData.lastAction.pot - player.pot || gameData.blind) * 2;
 
     if (gameData.lastAction.pot !== player.pot) {
       availableActions.push(localizedAction(ctx, 'CALL', gameData.lastAction.pot - player.pot));
