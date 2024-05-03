@@ -1191,7 +1191,9 @@
     "notifications": {
       "user-bought-theme": "@{{username}} comprou o seu tema **{{theme}}** em <t:{{unix}}:d> às <t:{{unix}}:T>",
       "user-bought-announcement": "Seu anúncio de **{{weight}} Kg** {{emoji}} foi comprado por **{{stars}}** :star: na feira por @{{username}} em <t:{{unix}}:d> às <t:{{unix}}:T>",
-      "user-won-bicho": "Você ganhou **{{stars}}** :star: com sua aposta no Jogo do Bicho em <t:{{unix}}:d> às <t:{{unix}}:T>"
+      "user-won-bicho": "Você ganhou **{{stars}}** :star: com sua aposta no Jogo do Bicho em <t:{{unix}}:d> às <t:{{unix}}:T>",
+      "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Acabei de te dar uma **Badge** nova! Cheque seu perfil >.<",
+      "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Adicionei um título em sua conta! Da uma olhadinha em `/personalizar títulos` >.<"
     }
   }
 }
