@@ -91,7 +91,13 @@ const displayBattleControlMessage = async (
     components: [
       createActionRow([
         createSelectMenu({
-          customId: createCustomId(0, adventure.user.id, ctx.commandId, 'USE_SKILL', adventure.id),
+          customId: createCustomId(
+            0,
+            adventure.user.id,
+            ctx.originalInteractionId,
+            'USE_SKILL',
+            adventure.id,
+          ),
           options: choices.map((a) => ({ label: a.name, value: `${a.id}` })),
         }),
       ]),

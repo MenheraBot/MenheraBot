@@ -37,7 +37,7 @@ const confirmAdventure = async (
   const confirmButton = createButton({
     label: ctx.locale('commands:aventura.fight'),
     style: ButtonStyles.Success,
-    customId: createCustomId(0, ctx.user.id, ctx.commandId, 'JOIN_DUNGEON', embedColor),
+    customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, 'JOIN_DUNGEON', embedColor),
   });
 
   ctx.makeMessage({

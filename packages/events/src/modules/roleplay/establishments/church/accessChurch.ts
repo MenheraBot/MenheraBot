@@ -41,7 +41,7 @@ const executeDisplayChurch = async (ctx: ChatInputInteractionContext): Promise<v
     label: ctx.locale(`commands:acessar.igreja.${inChurch ? 'stop' : 'start'}-praying`),
     style: inChurch ? ButtonStyles.Secondary : ButtonStyles.Success,
     disabled: disableClick,
-    customId: createCustomId(1, ctx.user.id, ctx.commandId),
+    customId: createCustomId(1, ctx.user.id, ctx.originalInteractionId),
   });
 
   ctx.makeMessage({ embeds: [embed], components: [createActionRow([confirmButton])] });

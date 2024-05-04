@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { getFixedT } from 'i18next';
 import { bot } from '../..';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import { getOrchestratorClient } from '../../structures/orchestratorConnection';
@@ -21,7 +20,7 @@ const executeDeleteMatch = async (timer: DeleteMatchTimer) => {
   const ctx = new FollowUpInteractionContext(
     gameData.interactionToken,
     gameData.originalInteractionId,
-    getFixedT(gameData.language),
+    gameData.language,
   );
 
   closeTable(ctx, gameData);
@@ -40,7 +39,7 @@ const executeFoldTimeout = async (timer: TimeoutFoldTimer) => {
   const ctx = new FollowUpInteractionContext(
     gameData.interactionToken,
     gameData.originalInteractionId,
-    getFixedT(gameData.language),
+    gameData.language,
   );
 
   return updateGameState(ctx, gameData);

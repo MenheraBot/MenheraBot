@@ -97,7 +97,7 @@ const AdventureCommand = createCommand({
         createButton({
           label: ctx.locale(`abilities:${id as '1'}.name`),
           style: ButtonStyles.Primary,
-          customId: createCustomId(1, ctx.user.id, ctx.commandId, id),
+          customId: createCustomId(1, ctx.user.id, ctx.originalInteractionId, id),
         }),
       );
 

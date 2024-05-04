@@ -38,7 +38,13 @@ const getPaginationInfo = (
   switch (currentPage) {
     case 'sell': {
       const selectMenu = createSelectMenu({
-        customId: createCustomId(0, ctx.user.id, ctx.commandId, 'SELL_ITEM', selectedColor),
+        customId: createCustomId(
+          0,
+          ctx.user.id,
+          ctx.originalInteractionId,
+          'SELL_ITEM',
+          selectedColor,
+        ),
         options: [],
         minValues: 1,
         maxValues: 5,
@@ -89,7 +95,14 @@ const getPaginationInfo = (
           label: ctx.locale(`commands:acessar.blacksmith.pagination.${a}`),
           style: ButtonStyles.Primary,
           disabled: a === currentPage,
-          customId: createCustomId(0, ctx.user.id, ctx.commandId, 'PAGE', a, selectedColor),
+          customId: createCustomId(
+            0,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            'PAGE',
+            a,
+            selectedColor,
+          ),
         }),
       ) as [ButtonComponent],
     ),

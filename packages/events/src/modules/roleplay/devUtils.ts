@@ -27,7 +27,7 @@ export const setupAdventurePvE = (
   embedColor: string,
 ): PlayerVsEnviroment => ({
   enemy,
-  id: `${ctx.commandId}`,
+  id: `${ctx.originalInteractionId}`,
   user,
   interactionToken: ctx.interactionToken,
   language: ctx.guildLocale,
@@ -35,7 +35,7 @@ export const setupAdventurePvE = (
 });
 
 export const unknownAdventure = (ctx: InteractionContext): void => {
-  logger.debug('Didnt found an adventure for commandID', ctx.commandId);
+  logger.debug('Didnt found an adventure for commandID', ctx.originalInteractionId);
 
   ctx.makeMessage({
     components: [],

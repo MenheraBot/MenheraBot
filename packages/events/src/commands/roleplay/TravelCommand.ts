@@ -43,7 +43,7 @@ const confirmTravel = async (ctx: ComponentInteractionContext): Promise<void> =>
   const confirmButton = createButton({
     label: ctx.locale('commands:viajar.start-travel'),
     style: ButtonStyles.Success,
-    customId: createCustomId(1, ctx.user.id, ctx.commandId, x, y),
+    customId: createCustomId(1, ctx.user.id, ctx.originalInteractionId, x, y),
   });
 
   ctx.makeMessage({
@@ -192,7 +192,7 @@ const TravelCommand = createCommand({
               blockTravel ||
               isUserInBattle ||
               `${i}${j}` === `${character.location[0]}${character.location[1]}`,
-            customId: createCustomId(0, ctx.user.id, ctx.commandId, i, j),
+            customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, i, j),
           }),
         ) as [ButtonComponent],
       ),

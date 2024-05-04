@@ -36,7 +36,7 @@ const createCharacterNaviagtionButtons = (
       label: ctx.locale(`roleplay:common.${a}`),
       style: ButtonStyles.Primary,
       disabled: a === current,
-      customId: createCustomId(0, ctx.user.id, ctx.commandId, userId, a, selectedColor),
+      customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, userId, a, selectedColor),
     }),
   ) as [ButtonComponent];
 

@@ -108,7 +108,7 @@ const displaySellItemsModal = async (
 
   ctx.respondWithModal({
     title: ctx.locale('commands:acessar.blacksmith.sell.title'),
-    customId: createCustomId(0, ctx.user.id, ctx.commandId, 'SELL_MODAL'),
+    customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, 'SELL_MODAL'),
     components: modalInputs,
   });
 };
