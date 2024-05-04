@@ -5,7 +5,7 @@ import { SelectMenuInteraction } from '../../types/interaction';
 import { postFazendinhaAction } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { displayPlantations } from './displayPlantations';
-import { getHarvestTime, getPlantationState } from './plantationState';
+import { getFieldWeight, getHarvestTime, getPlantationState } from './plantationState';
 import { Plants } from './constants';
 import { getCurrentSeason } from './seasonsManager';
 import { AvailablePlants, PlantedField } from './types';
@@ -32,11 +32,17 @@ const plantField = async (
 
   const harvestAt = getHarvestTime(currentSeason, seed);
 
+  const fieldUpgrades = farmer.plantations[selectedField].upgrades ?? [];
+
+  const weight = getFieldWeight(seed, currentSeason, fieldUpgrades);
+
   const newField = {
     isPlanted: true as const,
     harvestAt,
     plantedSeason: currentSeason,
     plantType: Number(seed),
+    weight,
+    upgrades: fieldUpgrades,
   } satisfies PlantedField;
 
   farmer.plantations[selectedField] = newField;
@@ -89,7 +95,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   const currentLimits = getSiloLimits(farmer);
 
-  if (currentLimits.used >= currentLimits.limit)
+  if (currentLimits.used + (field.weight ?? 1) >= currentLimits.limit)
     return ctx.respondInteraction({
       flags: MessageFlags.EPHEMERAL,
       content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
@@ -97,7 +103,10 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
       }),
     });
 
-  farmer.plantations[selectedField] = { isPlanted: false };
+  farmer.plantations[selectedField] = {
+    isPlanted: false,
+    upgrades: field.upgrades ?? [],
+  };
 
   const updateStats =
     state === 'MATURE' &&
@@ -107,7 +116,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
   await farmerRepository.executeHarvest(
     ctx.user.id,
     selectedField,
-    { isPlanted: false },
+    { isPlanted: false, upgrades: field.upgrades ?? [] },
     field.plantType,
     farmer.silo.some((a) => a.plant === field.plantType),
     state === 'MATURE',
@@ -118,6 +127,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
         : farmer.plantedFields + 1
       : farmer.plantedFields,
     updateStats && farmer.plantedFields === 9 ? farmer.biggestSeed + 1 : farmer.biggestSeed,
+    field.weight ?? 1,
   );
 
   if (state !== 'GROWING')

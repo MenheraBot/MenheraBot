@@ -9,7 +9,7 @@ const mongoToRedis = (announcement: DatabaseFeirinhaSchema): DatabaseFeirinhaSch
   _id: announcement._id,
   'name_en-US': announcement['name_en-US'],
   'name_pt-BR': announcement['name_pt-BR'],
-  amount: announcement.amount,
+  weight: announcement.weight,
   plantType: announcement.plantType,
   price: announcement.price,
   userId: announcement.userId,
@@ -20,7 +20,7 @@ const doesAnnouncementExists = async (id: string): Promise<boolean> =>
 
 const getUserProducts = async (farmerId: BigString): Promise<DatabaseFeirinhaSchema[]> =>
   feirinhaModel.find({ userId: `${farmerId}` }, null, {
-    sort: { amount: -1, price: 1 },
+    sort: { weight: -1, price: 1 },
   });
 
 const deleteAnnouncement = async (id: string): Promise<void> => {
@@ -64,7 +64,7 @@ const getAnnouncement = async (announcementId: string): Promise<null | DatabaseF
 const announceProduct = async (
   userId: BigString,
   plant: AvailablePlants,
-  amount: number,
+  weight: number,
   price: number,
   nameBr: string,
   nameUs: string,
@@ -73,7 +73,7 @@ const announceProduct = async (
     userId: `${userId}`,
     price,
     plantType: plant,
-    amount,
+    weight,
     'name_pt-BR': nameBr,
     'name_en-US': nameUs,
   });

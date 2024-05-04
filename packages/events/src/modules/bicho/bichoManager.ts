@@ -12,6 +12,7 @@ import { debugError } from '../../utils/debugError';
 import { capitalize } from '../../utils/miscUtils';
 import { ApiTransactionReason } from '../../types/api';
 import { resolveSeparatedStrings } from '../../utils/discord/componentUtils';
+import notificationRepository from '../../database/repositories/notificationRepository';
 
 const GAME_DURATION = 1000 * 60 * 60 * 6;
 
@@ -54,6 +55,13 @@ const finishGame = async (): Promise<void> => {
         a.profit,
         'estrelinhas',
         ApiTransactionReason.WIN_BICHO,
+      );
+      notificationRepository.createNotification(
+        a.id,
+        'commands:notificações.notifications.user-won-bicho',
+        {
+          stars: a.profit,
+        },
       );
       if (a.profit > biggestProfit) biggestProfit = a.profit;
     }

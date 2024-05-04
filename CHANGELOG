@@ -5,15 +5,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [5.15.1] - 2024-05-01
+
+### Added
+
+- Adicionado a informação de sua mão atual nas suas cartas do poker. - Sugerido por @bielviana
 
 ### Fixed
 
-- As interações do comando `/poker` foram corrigidas.
+- Removida a opção de apostar caças no /coinflip.
+
+## [5.15.0] - 2024-04-28
+
+### Added
+
+- **Notificações!** Adicionado o sistema de notificações. As notificações são usadas para avisar atualizações de sua conta. As notificações podem ser lidas com o comando `/notificações`. As notificacões não lidas devem sumir após 30 dias.
+- Adicionado notificações para quando um usuário compra um tema seu.
+- Adicionado notificações para quando um usuário compra algum anúncio seu na feira.
+- Adicionado notificações para quando um usuário vence uma aposta no Jogo do Bicho.
+- Peso paras plantações! Agora as plantações da `/fazendinha` usam peso por kilos, ao invés de apenas quantidade de plantas. O peso de uma plantação é semi aleatório, e varia de acordo com a estação em que a semente foi plantada.
+- O comando `/cooldowns` informa sobre notificações não lidas.
+
+### Changed
+
+- Atualizado sistema da feira para permitir venda e compra de itens por kilo.
+
+### Fixed
+
+- Corrigido erro do `/poker` dos botões não funcionarem após um usuário não fazer sua jogada.
+- Corrigida a mensagem de sucesso para alteração de títulos em inglês.
+
+## [5.14.2] - 2024-04-22
+
+### Added
+
+- Adicionada a badge _Quatro anos com a Menhera_!
+
+## [5.14.1] - 2024-04-21
+
+### Added
+
+- Adicionado o link para as versões anteriores. Sugerido por @mareys.
+- Agora é possível ver os `cooldowns` de outros usuários.
+- O `/cooldowns` mostra os estados de suas plantações. Sugerido por @rukasu_888.
 
 ### Removed
 
-- O texto que aparecia em um usuário sem títulos no top foi removido.
+- Os emojis de usuários sem título foi removido dos tops.
 
 ## [5.14.0] - 2024-04-14
 

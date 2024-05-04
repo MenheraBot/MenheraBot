@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { SelectMenuComponent, SelectOption } from 'discordeno/types';
+import PokerSolver from 'pokersolver';
 import userRepository from '../../database/repositories/userRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import {
@@ -16,11 +17,13 @@ import { GenericContext } from '../../types/menhera';
 import { SelectMenuUsersInteraction } from '../../types/interaction';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import { mentionUser } from '../../utils/discord/userUtils';
-import { getPokerCard } from './cardUtils';
+import { getOpenedCards, getPokerCard } from './cardUtils';
+import { Translation } from '../../types/i18next';
 
 const showPlayerCards = async (
   ctx: ComponentInteractionContext,
   player: PokerPlayer,
+  gameData: PokerMatch,
 ): Promise<void> => {
   await ctx.visibleAck(true);
 
@@ -31,11 +34,24 @@ const showPlayerCards = async (
 
   const authorData = await userRepository.ensureFindUser(ctx.user.id);
 
+  const cardsToUse = [
+    ...player.cards.map((card) => getPokerCard(card).solverValue),
+    ...getOpenedCards(gameData).map((card) => getPokerCard(card).solverValue),
+  ];
+
+  const hand = PokerSolver.Hand.solve(cardsToUse);
+
+  const userHand = hand.descr.includes('Royal Flush')
+    ? 'ROYAL-FLUSH'
+    : hand.name.replaceAll(' ', '-').toUpperCase();
+
   const embed = createEmbed({
     title: ctx.locale('commands:poker.player.your-hand'),
     description: `**${player.cards
       .map((a) => getPokerCard(a).displayValue)
-      .join(' ')}**\n\n${ctx.locale('commands:poker.player.chips', { chips: player.chips })}`,
+      .join(' ')}**\n\n${ctx.locale('commands:poker.player.hand-value', {
+      hand: ctx.locale(`commands:poker.hands.${userHand}` as Translation),
+    })}\n${ctx.locale('commands:poker.player.chips', { chips: player.chips })}`,
     footer: player.folded ? { text: ctx.locale('commands:poker.player.not-in-round') } : undefined,
     color: hexStringToNumber(authorData.selectedColor),
     image: image.err ? undefined : { url: 'attachment://poker.png' },
@@ -93,7 +109,7 @@ const executeMasterAction = async (
     customId: createCustomId(
       2,
       gameData.masterId,
-      ctx.commandId,
+      ctx.originalInteractionId,
       gameData.matchId,
       'REMOVE_PLAYERS',
     ),
@@ -136,7 +152,9 @@ const getAvailableActions = (ctx: GenericContext, gameData: PokerMatch): SelectM
   }
 
   if (player.chips + player.pot > gameData.lastAction.pot) {
-    const toRaise = (gameData.lastAction.pot - player.pot || gameData.blind) * 2;
+    const toRaise = ['CHECK', 'FOLD'].includes(gameData.lastAction.action)
+      ? gameData.blind
+      : (gameData.lastAction.pot - player.pot || gameData.blind) * 2;
 
     if (gameData.lastAction.pot !== player.pot) {
       availableActions.push(localizedAction(ctx, 'CALL', gameData.lastAction.pot - player.pot));
@@ -152,7 +170,13 @@ const getAvailableActions = (ctx: GenericContext, gameData: PokerMatch): SelectM
   availableActions.push(localizedAction(ctx, 'ALLIN', player.chips));
 
   return createSelectMenu({
-    customId: createCustomId(2, player.id, ctx.commandId, gameData.matchId, 'GAME_ACTION'),
+    customId: createCustomId(
+      2,
+      player.id,
+      ctx.originalInteractionId,
+      gameData.matchId,
+      'GAME_ACTION',
+    ),
     options: availableActions,
     maxValues: 1,
     minValues: 1,

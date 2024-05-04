@@ -110,7 +110,7 @@ const BlacklistCommand = createCommand({
         }] - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${usr.banReason}`;
 
         const button = createButton({
-          customId: createCustomId(0, ctx.user.id, ctx.commandId, user.id),
+          customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, user.id),
           label: 'Ver todos Bans',
           style: ButtonStyles.Danger,
           emoji: { id: 759603958418767922n, name: 'atencao' },

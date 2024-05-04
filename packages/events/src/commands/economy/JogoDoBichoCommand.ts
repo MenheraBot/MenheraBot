@@ -161,7 +161,7 @@ const finishUserBet = async (
         customId: createCustomId(
           1,
           ctx.user.id,
-          ctx.commandId,
+          ctx.originalInteractionId,
           whereToGoAnimals[selectedBet as 'THIRD'],
           bet,
         ),
@@ -205,7 +205,7 @@ const executeBetType = async (
 
       await ctx.respondWithModal({
         title: ctx.locale('commands:bicho.bet-title'),
-        customId: createCustomId(1, ctx.user.id, ctx.commandId, 'MODAL', bet),
+        customId: createCustomId(1, ctx.user.id, ctx.originalInteractionId, 'MODAL', bet),
         components: [createActionRow([betInput])],
       });
 
@@ -218,7 +218,7 @@ const executeBetType = async (
         customId: createCustomId(
           1,
           ctx.user.id,
-          ctx.commandId,
+          ctx.originalInteractionId,
           ctx.interaction.data.values[0] !== 'animal'
             ? ctx.interaction.data.values[0].toUpperCase()
             : 'UNITY',
@@ -308,7 +308,7 @@ const BichoCommand = createCommand({
       });
 
       const animalNumbersButtons = createButton({
-        customId: createCustomId(2, ctx.author.id, ctx.commandId),
+        customId: createCustomId(2, ctx.author.id, ctx.originalInteractionId),
         label: ctx.locale('commands:bicho.how-to'),
         style: ButtonStyles.Primary,
       });
@@ -368,7 +368,7 @@ const BichoCommand = createCommand({
     });
 
     const firstMenu = createSelectMenu({
-      customId: createCustomId(0, ctx.author.id, ctx.commandId, bet),
+      customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, bet),
       options: [
         { label: ctx.locale('commands:bicho.number'), value: 'number' },
         { label: ctx.locale('commands:bicho.one-animal'), value: 'animal' },

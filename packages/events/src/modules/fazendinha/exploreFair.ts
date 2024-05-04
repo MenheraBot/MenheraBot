@@ -26,6 +26,7 @@ import ChatInputInteractionContext from '../../structures/command/ChatInputInter
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../types/interaction';
 import { localizedResources } from '../../utils/miscUtils';
+import notificationRepository from '../../database/repositories/notificationRepository';
 
 const listItemAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'item', false) ?? '';
@@ -91,7 +92,7 @@ const executeBuyItem = async (
 
   const userLimits = getSiloLimits(farmer);
 
-  if (userLimits.used + announcement.amount > userLimits.limit)
+  if (userLimits.used + announcement.weight > userLimits.limit)
     return ctx.makeMessage({
       components: [],
       embeds: [],
@@ -120,7 +121,7 @@ const executeBuyItem = async (
     fairRepository.deleteAnnouncement(announcement._id),
     farmerRepository.updateSilo(
       ctx.user.id,
-      addItems(farmer.silo, [{ amount: announcement.amount, plant: announcement.plantType }]),
+      addItems(farmer.silo, [{ weight: announcement.weight, plant: announcement.plantType }]),
     ),
     postTransaction(
       `${ctx.user.id}`,
@@ -128,6 +129,16 @@ const executeBuyItem = async (
       announcement.price,
       'estrelinhas',
       ApiTransactionReason.BUY_FAIR,
+    ),
+    notificationRepository.createNotification(
+      announcement.userId,
+      'commands:notificações.notifications.user-bought-announcement',
+      {
+        emoji: Plants[announcement.plantType].emoji,
+        weight: announcement.weight,
+        username: ctx.user.username,
+        stars: announcement.price,
+      },
     ),
   ]);
 
@@ -178,7 +189,7 @@ const displayFair = async (
   });
 
   const selectMenu = createSelectMenu({
-    customId: createCustomId(7, ctx.user.id, ctx.commandId, 'BUY', embedColor),
+    customId: createCustomId(7, ctx.user.id, ctx.originalInteractionId, 'BUY', embedColor),
     options: [],
     minValues: 1,
     maxValues: 1,
@@ -189,7 +200,7 @@ const displayFair = async (
     if (!item) return;
 
     embed.description += `${ctx.locale('commands:fazendinha.feira.comprar.description', {
-      amount: item.amount,
+      amount: item.weight,
       emoji: Plants[item.plantType].emoji,
       plant: ctx.locale(`data:plants.${item.plantType}`),
       price: item.price,
@@ -203,7 +214,7 @@ const displayFair = async (
     }`;
 
     selectMenu.options.push({
-      label: `${item.amount}x ${ctx.locale(`data:plants.${item.plantType}`)}${
+      label: `${item.weight} Kg ${ctx.locale(`data:plants.${item.plantType}`)}${
         user ? '' : ` (${i + 1})`
       }`,
       value: item._id,
@@ -216,14 +227,28 @@ const displayFair = async (
 
   if (!user) {
     const backButton = createButton({
-      customId: createCustomId(7, ctx.user.id, ctx.commandId, 'PAGINATION', embedColor, page - 1),
+      customId: createCustomId(
+        7,
+        ctx.user.id,
+        ctx.originalInteractionId,
+        'PAGINATION',
+        embedColor,
+        page - 1,
+      ),
       label: ctx.locale('common:back'),
       style: ButtonStyles.Primary,
       disabled: page < 1,
     });
 
     const nextButton = createButton({
-      customId: createCustomId(7, ctx.user.id, ctx.commandId, 'PAGINATION', embedColor, page + 1),
+      customId: createCustomId(
+        7,
+        ctx.user.id,
+        ctx.originalInteractionId,
+        'PAGINATION',
+        embedColor,
+        page + 1,
+      ),
       label: ctx.locale('common:next'),
       style: ButtonStyles.Primary,
       disabled: selectMenu.options.length < MAX_ITEMS_PER_FAIR_PAGE,

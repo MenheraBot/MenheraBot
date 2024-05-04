@@ -138,13 +138,13 @@ const GiftCommand = createCommand({
       );
 
     const confirmButton = createButton({
-      customId: createCustomId(0, toSendUser.id, ctx.commandId, 'ACCEPT', amount),
+      customId: createCustomId(0, toSendUser.id, ctx.originalInteractionId, 'ACCEPT', amount),
       style: ButtonStyles.Success,
       label: ctx.locale('common:accept'),
     });
 
     const negateButton = createButton({
-      customId: createCustomId(0, toSendUser.id, ctx.commandId, 'NEGATE'),
+      customId: createCustomId(0, toSendUser.id, ctx.originalInteractionId, 'NEGATE'),
       style: ButtonStyles.Danger,
       label: ctx.locale('common:negate'),
     });

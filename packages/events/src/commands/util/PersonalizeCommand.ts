@@ -95,7 +95,7 @@ const createColorComponents = (
     customId: createCustomId(
       2,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'SELECT',
       currentPage,
       toRename,
@@ -131,7 +131,7 @@ const createColorComponents = (
       customId: createCustomId(
         2,
         ctx.interaction.user.id,
-        ctx.commandId,
+        ctx.originalInteractionId,
         'NEXT',
         currentPage,
         toRename,
@@ -145,7 +145,7 @@ const createColorComponents = (
       customId: createCustomId(
         2,
         ctx.interaction.user.id,
-        ctx.commandId,
+        ctx.originalInteractionId,
         'BACK',
         currentPage,
         toRename,
@@ -166,7 +166,7 @@ const createColorComponents = (
     customId: createCustomId(
       2,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'RENAME',
       currentPage,
       toRename,
@@ -287,7 +287,14 @@ const executeColorComponents = async (
 
         ctx.respondWithModal({
           title: ctx.locale('commands:cor.modal-title'),
-          customId: createCustomId(2, ctx.user.id, ctx.commandId, 'MODAL', currentPage, toRename),
+          customId: createCustomId(
+            2,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            'MODAL',
+            currentPage,
+            toRename,
+          ),
           components: [createActionRow([nameInput])],
         });
 
@@ -390,7 +397,7 @@ const executeImageCommand = async (ctx: ChatInputInteractionContext, finishComma
   }
 
   const selectMenu = createSelectMenu({
-    customId: createCustomId(3, ctx.author.id, ctx.commandId),
+    customId: createCustomId(3, ctx.author.id, ctx.originalInteractionId),
     options: await Promise.all(
       authorData.profileImages.map(async (img) => ({
         label: await profileImagesRepository.getImageName(img.id),
@@ -630,7 +637,7 @@ const executeBadgesCommand = async (
   ];
 
   const selectMenu = createSelectMenu({
-    customId: createCustomId(0, ctx.author.id, ctx.commandId, 'SELECT'),
+    customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, 'SELECT'),
     minValues: 1,
     disabled: user.id !== ctx.user.id,
     options: [
@@ -712,7 +719,7 @@ const selectedThemeToUse = async (ctx: ComponentInteractionContext<SelectMenuInt
             createButton({
               label: ctx.locale('commands:temas.edit-profile.customize'),
               style: ButtonStyles.Primary,
-              customId: createCustomId(4, ctx.user.id, ctx.commandId, 'CUSTOM'),
+              customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, 'CUSTOM'),
             }),
           ]),
         );
@@ -761,7 +768,7 @@ const executeThemesCommand = async (
   });
 
   const selectMenu = createSelectMenu({
-    customId: createCustomId(1, ctx.author.id, ctx.commandId, themeType),
+    customId: createCustomId(1, ctx.author.id, ctx.originalInteractionId, themeType),
     minValues: 1,
     maxValues: 1,
     options: [],
@@ -817,7 +824,7 @@ const executeThemesCommand = async (
           createButton({
             label: ctx.locale('commands:temas.edit-profile.customize'),
             style: ButtonStyles.Primary,
-            customId: createCustomId(4, ctx.author.id, ctx.commandId, 'CUSTOM'),
+            customId: createCustomId(4, ctx.author.id, ctx.originalInteractionId, 'CUSTOM'),
           }),
         ]),
       );
@@ -872,7 +879,7 @@ const createCustomizeMessage = async (
   });
 
   const selectMenu = createSelectMenu({
-    customId: createCustomId(4, ctx.user.id, ctx.commandId, 'SELECT'),
+    customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, 'SELECT'),
     minValues: 0,
     maxValues: currentTheme.data.customEdits.length,
     options: currentTheme.data.customEdits.map((field) => ({
@@ -888,7 +895,7 @@ const createCustomizeMessage = async (
   });
 
   const saveButton = createButton({
-    customId: createCustomId(4, ctx.user.id, ctx.commandId, 'SAVE'),
+    customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, 'SAVE'),
     label: ctx.locale('commands:temas.edit-profile.save'),
     style: ButtonStyles.Primary,
   });

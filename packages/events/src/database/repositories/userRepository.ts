@@ -5,6 +5,7 @@ import { usersModel } from '../collections';
 import { DatabaseUserSchema, UserIdType } from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
+import { registerCacheStatus } from '../../structures/initializePrometheus';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema => ({
   _id: `${user._id}`,
@@ -46,6 +47,8 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
 const findUser = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {
   const fromRedis = await MainRedisClient.get(`user:${userId}`).catch(debugError);
 
+  registerCacheStatus(fromRedis, 'user');
+
   if (fromRedis) return JSON.parse(fromRedis);
 
   const fromMongo = await usersModel.findOne({ id: userId }).catch(debugError);
@@ -53,7 +56,7 @@ const findUser = async (userId: UserIdType): Promise<DatabaseUserSchema | null> 
   if (fromMongo) {
     await MainRedisClient.setex(
       `user:${userId}`,
-      3600,
+      86400,
       JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
     ).catch(debugError);
 
@@ -78,7 +81,7 @@ const updateUser = async (
 
     await MainRedisClient.setex(
       `user:${userId}`,
-      3600,
+      86400,
       JSON.stringify(
         parseMongoUserToRedisUser({ ...data, ...query, lastCommandAt: Date.now(), id: userId }),
       ),
@@ -97,7 +100,7 @@ const updateUserWithSpecialData = async (
   if (updatedUser) {
     await MainRedisClient.setex(
       `user:${userId}`,
-      3600,
+      86400,
       JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
     ).catch(debugError);
   }
@@ -119,7 +122,7 @@ const multiUpdateUsers = async (
 
       await MainRedisClient.setex(
         `user:${id}`,
-        3600,
+        86400,
         JSON.stringify(
           parseMongoUserToRedisUser({ ...data, ...query, lastCommandAt: Date.now(), id }),
         ),
@@ -131,6 +134,8 @@ const multiUpdateUsers = async (
 const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> => {
   const fromRedis = await MainRedisClient.get(`user:${userId}`).catch(debugError);
 
+  registerCacheStatus(fromRedis, 'user');
+
   if (fromRedis) return JSON.parse(fromRedis);
 
   const fromMongo = await usersModel.findOne({ id: userId }).catch(debugError);
@@ -140,7 +145,7 @@ const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> =
 
     await MainRedisClient.setex(
       `user:${userId}`,
-      3600,
+      86400,
       JSON.stringify(parseMongoUserToRedisUser(newUser)),
     ).catch(debugError);
 
@@ -149,7 +154,7 @@ const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> =
 
   await MainRedisClient.setex(
     `user:${userId}`,
-    3600,
+    86400,
     JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
   ).catch(debugError);
 

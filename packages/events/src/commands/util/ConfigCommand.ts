@@ -55,7 +55,7 @@ const LanguageCommand = createCommand({
     }
 
     const selector = createSelectMenu({
-      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'LANGUAGE'),
+      customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, 'LANGUAGE'),
       minValues: 1,
       maxValues: 1,
       placeholder: ctx.locale('commands:idioma.select'),

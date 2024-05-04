@@ -63,7 +63,9 @@ const validateUserBet = async (
   const userInput = extractFields(ctx.interaction)[0].value;
   const bet = parseInt(userInput, 10);
 
-  const minValue = (gameData.lastAction.pot - player.pot || gameData.blind) * 2;
+  const minValue = ['CHECK', 'FOLD'].includes(gameData.lastAction.action)
+    ? gameData.blind
+    : (gameData.lastAction.pot - player.pot || gameData.blind) * 2;
 
   if (Number.isNaN(bet))
     return ctx.respondInteraction({
@@ -103,7 +105,9 @@ const handleUserSelection = async (
   ];
 
   if (action === 'RAISE-CUSTOM') {
-    const minValue = (gameData.lastAction.pot - player.pot || gameData.blind) * 2;
+    const minValue = ['CHECK', 'FOLD'].includes(gameData.lastAction.action)
+      ? gameData.blind
+      : (gameData.lastAction.pot - player.pot || gameData.blind) * 2;
 
     const choseValue = createTextInput({
       customId: 'BET',
@@ -119,7 +123,13 @@ const handleUserSelection = async (
 
     await ctx.respondWithModal({
       title: 'Raise!',
-      customId: createCustomId(2, ctx.user.id, ctx.commandId, gameData.matchId, 'RAISE_BET'),
+      customId: createCustomId(
+        2,
+        ctx.user.id,
+        ctx.originalInteractionId,
+        gameData.matchId,
+        'RAISE_BET',
+      ),
       components: [createActionRow([choseValue])],
     });
     return;

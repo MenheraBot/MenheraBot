@@ -1,11 +1,11 @@
 import { minutesToMillis } from '../../utils/miscUtils';
-import { Plants } from './constants';
+import { PLANTATION_WEIGHT_MODIFIERS, Plants } from './constants';
 import {
   SEASONAL_HARVEST_BUFF,
   SEASONAL_HARVEST_DEBUFF,
   SEASONAL_ROT_DEBUFF,
 } from './seasonsManager';
-import { AvailablePlants, Plantation, PlantationState, Seasons } from './types';
+import { AvailablePlants, FieldUpgrade, Plantation, PlantationState, Seasons } from './types';
 
 const getPlantationState = (field: Plantation): [PlantationState, number] => {
   if (!field.isPlanted) return ['EMPTY', -1];
@@ -48,4 +48,30 @@ const getHarvestTime = (currentSeason: Seasons, plant: AvailablePlants): number 
   return Date.now() + minutesToMillis(plantFile.minutesToHarvest);
 };
 
-export { getPlantationState, getHarvestTime };
+const getFieldWeight = (
+  plant: AvailablePlants,
+  currentSeason: Seasons,
+  fieldUpgrades: FieldUpgrade[],
+): number => {
+  const plantData = Plants[plant];
+
+  let minValue = PLANTATION_WEIGHT_MODIFIERS.BASE_MIN_VALUE;
+  let maxValue = PLANTATION_WEIGHT_MODIFIERS.BASE_MAX_VALUE;
+
+  if (currentSeason === plantData.bestSeason)
+    maxValue += PLANTATION_WEIGHT_MODIFIERS.BEST_SEASON_BUFF;
+
+  if (currentSeason === plantData.worstSeason)
+    minValue -= PLANTATION_WEIGHT_MODIFIERS.WORST_SEASON_DEBUFF;
+
+  if (fieldUpgrades.some((a) => a.type === 'dirt_quality' && a.usages <= 3)) {
+    maxValue += PLANTATION_WEIGHT_MODIFIERS.DIRT_QUALITY_MAX_BUFF;
+    minValue += PLANTATION_WEIGHT_MODIFIERS.DIRT_QUALITY_MIN_BUFF;
+  }
+
+  const weight = parseFloat((Math.random() * (maxValue - minValue) + minValue).toFixed(1));
+
+  return weight;
+};
+
+export { getPlantationState, getHarvestTime, getFieldWeight };

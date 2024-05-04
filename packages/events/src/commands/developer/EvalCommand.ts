@@ -2,15 +2,23 @@
 import { ApplicationCommandOptionTypes, BigString } from 'discordeno/types';
 import { inspect } from 'node:util';
 
-import { usersModel, farmerModel, characterModel } from '../../database/collections';
+import {
+  usersModel,
+  farmerModel,
+  characterModel,
+  titlesModel,
+  themeCreditsModel,
+} from '../../database/collections';
 import { MainRedisClient as redis } from '../../database/databases';
 import userRepository from '../../database/repositories/userRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
+import titlesRepository from '../../database/repositories/titlesRepository';
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { Action } from '../../modules/roleplay/types';
+import notificationRepository from '../../database/repositories/notificationRepository';
 
 const noop = (..._args: unknown[]) => undefined;
 
@@ -46,6 +54,10 @@ const EvalCommand = createCommand({
       farmerModel,
       redis,
       characterModel,
+      titlesRepository,
+      titlesModel,
+      themeCreditsModel,
+      notificationRepository,
     );
 
     try {

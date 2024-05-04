@@ -7,7 +7,7 @@ describe('Checking the user options', () => {
   game.seatToPlay = 0;
   game.players = [mockPlayer(0)];
   const ctxMock = {
-    commandId: '',
+    originalInteractionId: '',
     locale: () => undefined,
   } as unknown as ComponentInteractionContext;
 

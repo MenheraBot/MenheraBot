@@ -72,7 +72,7 @@ const executeAdministrateSilo = async (
   const buyButton = createButton({
     label: ctx.locale('commands:fazendinha.admin.silo.button'),
     style: ButtonStyles.Primary,
-    customId: createCustomId(5, ctx.user.id, ctx.commandId, 'UPGRADE'),
+    customId: createCustomId(5, ctx.user.id, ctx.originalInteractionId, 'UPGRADE'),
   });
 
   ctx.makeMessage({

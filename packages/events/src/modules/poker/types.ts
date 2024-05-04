@@ -1,4 +1,3 @@
-import { AvailableLanguages } from '../../types/i18next';
 import { AvailableCardBackgroundThemes, AvailableCardThemes } from '../themes/types';
 
 export interface PokerPlayer {
@@ -49,7 +48,8 @@ export interface PokerCard {
 
 export interface PokerMatch {
   matchId: string;
-  language: AvailableLanguages;
+  originalInteractionId: string;
+  language: string;
   masterId: string;
   inMatch: boolean;
   worthGame: boolean;

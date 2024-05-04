@@ -107,13 +107,13 @@ const MarryCommand = createCommand({
       );
 
     const confirmButton = createButton({
-      customId: createCustomId(0, mention.id, ctx.commandId, 'CONFIRM'),
+      customId: createCustomId(0, mention.id, ctx.originalInteractionId, 'CONFIRM'),
       label: ctx.locale('commands:casar.accept'),
       style: ButtonStyles.Success,
     });
 
     const cancelButton = createButton({
-      customId: createCustomId(0, mention.id, ctx.commandId, 'CANCEL'),
+      customId: createCustomId(0, mention.id, ctx.originalInteractionId, 'CANCEL'),
       label: ctx.locale('commands:casar.deny'),
       style: ButtonStyles.Danger,
     });

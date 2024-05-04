@@ -1,8 +1,8 @@
 import { InteractionCallbackData, InteractionResponseTypes } from 'discordeno';
 
-import i18next, { TFunction } from 'i18next';
+import { TFunction } from 'i18next';
 import { debugError } from '../../utils/debugError';
-import { AvailableLanguages, Translation } from '../../types/i18next';
+import { Translation } from '../../types/i18next';
 import { EMOJIS } from '../constants';
 import {
   editOriginalInteractionResponse,
@@ -11,15 +11,11 @@ import {
 import { injectRoleplayWarnIfNeeded } from './ChatInputInteractionContext';
 
 export default class {
-  public i18n: TFunction;
-
   constructor(
-    public interactionToken: string,
-    public commandId: string,
-    public guildLocale: AvailableLanguages,
-  ) {
-    this.i18n = i18next.getFixedT(guildLocale);
-  }
+    private interactionToken: string,
+    public originalInteractionId: string,
+    private i18n: TFunction,
+  ) {}
 
   async followUp(options: InteractionCallbackData): Promise<void> {
     await injectRoleplayWarnIfNeeded(this, options);

@@ -27,7 +27,7 @@ export const injectRoleplayWarnIfNeeded = async (
 ): Promise<void> => {
   if (!Array.isArray(options.embeds) || options.embeds.length === 0) return;
 
-  const commandUsed = await commandRepository.getOriginalInteraction(ctx.commandId);
+  const commandUsed = await commandRepository.getOriginalInteraction(ctx.originalInteractionId);
 
   if (!commandUsed) return;
 
@@ -73,7 +73,7 @@ export default class {
     return this.author;
   }
 
-  get commandId(): bigint {
+  get originalInteractionId(): bigint {
     return this.interaction.id ?? 0n;
   }
 

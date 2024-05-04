@@ -32,10 +32,10 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
   const [executorIndex, interactionTarget, originalInteractionId] =
     interaction.data.customId.split('|');
 
-  const originalIntearction = await commandRepository.getOriginalInteraction(originalInteractionId);
+  const originalInteraction = await commandRepository.getOriginalInteraction(originalInteractionId);
   const T = i18next.getFixedT(interaction.user.locale ?? 'pt-BR');
 
-  if (!originalIntearction) {
+  if (!originalInteraction) {
     await sendInteractionResponse(interaction.id, interaction.token, {
       type: InteractionResponseTypes.UpdateMessage,
       data: {
@@ -64,7 +64,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
     }).catch(() => null);
   };
 
-  const command = bot.commands.get(originalIntearction.commandName);
+  const command = bot.commands.get(originalInteraction.commandName);
 
   if (!command) return errorReply(T('permissions:UNKNOWN_SLASH'));
 
@@ -76,13 +76,13 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
       'A Menhera está em processo de desligamento! Comandos estão desativados!\n\nMenhera is in the process of shutting down! Commands are disabled!',
     );
 
-  const commandInfo = await commandRepository.getCommandInfo(originalIntearction.commandName);
+  const commandInfo = await commandRepository.getCommandInfo(originalInteraction.commandName);
 
   if (!commandInfo) return errorReply(T('permissions:UNKNOWN_SLASH'));
 
   if (Array.isArray(commandInfo.maintenance)) {
     const maintenance = commandInfo.maintenance.find((a) =>
-      originalIntearction.fullCommandUsed.includes(a.commandStructure),
+      originalInteraction.fullCommandUsed.includes(a.commandStructure),
     );
 
     if (maintenance)
@@ -151,7 +151,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
 
         bot.helpers.sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
           embeds: [embed],
-          content: `COMPONENTE UTILIZADO! Index: ${executorIndex}\n${originalIntearction.fullCommandUsed}`,
+          content: `COMPONENTE UTILIZADO! Index: ${executorIndex}\n${originalInteraction.fullCommandUsed}`,
         });
       }
     });

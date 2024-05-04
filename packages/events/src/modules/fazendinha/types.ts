@@ -30,20 +30,30 @@ export enum AvailablePlants {
 
 export type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
 
-export interface PlantedField {
-  harvestAt: number;
-  plantedSeason: Seasons;
-  isPlanted: true;
-  plantType: AvailablePlants;
-}
-
 export type SeasonData = {
   currentSeason: Seasons;
   endsAt: number;
 };
 
+type DirtQualityUpgrade = {
+  type: 'dirt_quality';
+  usages: number;
+};
+
+export type FieldUpgrade = DirtQualityUpgrade;
+
+export interface PlantedField {
+  harvestAt: number;
+  plantedSeason: Seasons;
+  isPlanted: true;
+  plantType: AvailablePlants;
+  weight: number;
+  upgrades: FieldUpgrade[];
+}
+
 export interface EmptyField {
   isPlanted: false;
+  upgrades: FieldUpgrade[];
 }
 
 export type PlantationState = 'EMPTY' | 'GROWING' | 'MATURE' | 'ROTTEN';

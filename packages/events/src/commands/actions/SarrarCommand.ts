@@ -94,7 +94,7 @@ const SarrarCommand = createCommand({
     });
 
     const button = createButton({
-      customId: createCustomId(0, 'N', ctx.commandId),
+      customId: createCustomId(0, 'N', ctx.originalInteractionId),
       label: ctx.locale('commands:sarrar.sarrar'),
       style: ButtonStyles.Primary,
     });

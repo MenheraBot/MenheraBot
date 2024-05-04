@@ -42,7 +42,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
     return this.interaction.channelId ?? 0n;
   }
 
-  get commandId(): bigint {
+  get originalInteractionId(): bigint {
     return BigInt(this.interaction.data.customId.split('|')[2]);
   }
 

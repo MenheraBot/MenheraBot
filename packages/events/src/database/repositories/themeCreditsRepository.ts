@@ -7,6 +7,7 @@ import starsRepository from './starsRepository';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
+import { registerCacheStatus } from '../../structures/initializePrometheus';
 
 const registerTheme = async (
   themeId: number,
@@ -36,6 +37,8 @@ const getDesignerThemes = async (designerId: BigString): Promise<DatabaseCredits
 
 const getThemeInfo = async (themeId: number): Promise<DatabaseCreditsSchema | null> => {
   const fromRedis = await MainRedisClient.get(`credits:${themeId}`);
+
+  registerCacheStatus(fromRedis, 'credits');
 
   if (fromRedis) return JSON.parse(fromRedis);
 

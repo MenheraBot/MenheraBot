@@ -5,6 +5,7 @@ import userRepository from '../../database/repositories/userRepository';
 import { createCommand } from '../../structures/command/createCommand';
 import titlesRepository from '../../database/repositories/titlesRepository';
 import giveRepository from '../../database/repositories/giveRepository';
+import notificationRepository from '../../database/repositories/notificationRepository';
 
 const GiveBadgeCommand = createCommand({
   path: '',
@@ -69,6 +70,12 @@ const GiveBadgeCommand = createCommand({
 
       await giveRepository.giveBadgeToUser(userId, badgeId as 1);
 
+      notificationRepository.createNotification(
+        userId,
+        'commands:notificações.notifications.lux-gave-badge',
+        {},
+      );
+
       return ctx.makeMessage({ content: 'Badge adicionada a conta do user UwU' });
     }
 
@@ -85,6 +92,12 @@ const GiveBadgeCommand = createCommand({
       return ctx.makeMessage({ content: 'Esse usuário ja tem esse titulo' });
 
     await giveRepository.giveTitleToUser(userId, titleId);
+
+    notificationRepository.createNotification(
+      userId,
+      'commands:notificações.notifications.lux-gave-title',
+      {},
+    );
 
     return ctx.makeMessage({ content: 'Titulo adicionado na conta do user UwU' });
   },

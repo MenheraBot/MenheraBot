@@ -13,24 +13,33 @@ export const MAX_DAILY_AT_FULL_LEVEL = 9;
 export const MIN_DAILY_AT_LEVEL_ZERO = 3;
 export const MAX_DAILY_PLANTATION_REQUIREMENT_AT_FULL_LEVEL = 14;
 
+export const PLANTATION_WEIGHT_MODIFIERS = {
+  BASE_MIN_VALUE: 0.7,
+  BASE_MAX_VALUE: 1.3,
+  BEST_SEASON_BUFF: 0.2,
+  WORST_SEASON_DEBUFF: 0.2,
+  DIRT_QUALITY_MAX_BUFF: 0.3,
+  DIRT_QUALITY_MIN_BUFF: 0.1,
+};
+
 export const UnloadFields: { [field: number]: UnlockFieldFile } = {
   1: {
     cost: 50_000,
     neededPlants: [
-      { amount: 5, plant: AvailablePlants.Mate },
-      { amount: 3, plant: AvailablePlants.Sunflower },
-      { amount: 2, plant: AvailablePlants.Tomato },
-      { amount: 10, plant: AvailablePlants.Garlic },
+      { weight: 5, plant: AvailablePlants.Mate },
+      { weight: 3, plant: AvailablePlants.Sunflower },
+      { weight: 2, plant: AvailablePlants.Tomato },
+      { weight: 10, plant: AvailablePlants.Garlic },
     ],
   },
   2: {
     cost: 100_000,
     neededPlants: [
-      { amount: 10, plant: AvailablePlants.Mate },
-      { amount: 5, plant: AvailablePlants.Potato },
-      { amount: 3, plant: AvailablePlants.Apple },
-      { amount: 4, plant: AvailablePlants.Mango },
-      { amount: 6, plant: AvailablePlants.Pineapple },
+      { weight: 10, plant: AvailablePlants.Mate },
+      { weight: 5, plant: AvailablePlants.Potato },
+      { weight: 3, plant: AvailablePlants.Apple },
+      { weight: 4, plant: AvailablePlants.Mango },
+      { weight: 6, plant: AvailablePlants.Pineapple },
     ],
   },
 };

@@ -1,5 +1,6 @@
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import fairRepository from '../../database/repositories/fairRepository';
+import notificationRepository from '../../database/repositories/notificationRepository';
 import { bot } from '../../index';
 import { startGameLoop } from '../../modules/bicho/bichoManager';
 import { setupTimers } from '../../modules/poker/timerManager';
@@ -20,6 +21,7 @@ const setReadyEvent = (): void => {
     await setupTimers();
     await setupBattleTimers();
     await blacklistRepository.constructBannedUsers();
+    await notificationRepository.deleteOldNotifications();
     await fairRepository.constructAnnouncements();
 
     if (process.env.NOMICRERVICES) return;

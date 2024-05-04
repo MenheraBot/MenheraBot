@@ -65,7 +65,7 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
 
   switch (action) {
     case 'SEE_CARDS':
-      return showPlayerCards(ctx, player);
+      return showPlayerCards(ctx, player, gameData);
     case 'CLOSE_TABLE':
       return closeTable(ctx, gameData);
     case 'ADMIN_CONTROL':
@@ -178,13 +178,13 @@ const selectPlayers = async (
         createButton({
           label: ctx.locale('commands:poker.accept-invite'),
           style: ButtonStyles.Primary,
-          customId: createCustomId(1, 'N', ctx.commandId, 'JOIN', chips),
+          customId: createCustomId(1, 'N', ctx.originalInteractionId, 'JOIN', chips),
         }),
         createButton({
           label: ctx.locale('commands:poker.start-match'),
           style: ButtonStyles.Secondary,
           disabled: true,
-          customId: createCustomId(1, ctx.user.id, ctx.commandId, 'START', chips),
+          customId: createCustomId(1, ctx.user.id, ctx.originalInteractionId, 'START', chips),
         }),
       ]),
     ],
@@ -233,7 +233,13 @@ const checkStartMatchInteraction = async (ctx: ComponentInteractionContext): Pro
     content: ctx.prettyResponse('hourglass', 'commands:poker.starting-match'),
   });
 
-  setupGame(ctx, joinedUsers, ctx.interaction.message?.embeds?.[0]?.color ?? 0, chips);
+  setupGame(
+    ctx,
+    joinedUsers,
+    ctx.interaction.message?.embeds?.[0]?.color ?? 0,
+    chips,
+    `${ctx.originalInteractionId}`,
+  );
 };
 
 const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
@@ -361,7 +367,7 @@ const PokerCommand = createCommand({
             customId: createCustomId(
               0,
               ctx.author.id,
-              ctx.commandId,
+              ctx.originalInteractionId,
               ctx.authorData.selectedColor,
               fichas,
             ),

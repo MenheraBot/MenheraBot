@@ -1,10 +1,11 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import { bot } from '../..';
 import { createEmbed } from '../../utils/discord/embedUtils';
+import { createActionRow, createButton } from '../../utils/discord/componentUtils';
 
 const executeSupportCommand = async (ctx: ChatInputInteractionContext) => {
   ctx.makeMessage({
@@ -19,6 +20,12 @@ const executeChangelogCommand = async (ctx: ChatInputInteractionContext) => {
       flags: MessageFlags.EPHEMERAL,
       content: ctx.prettyResponse('error', 'commands:menhera.changelog.no-changelog'),
     });
+
+  const button = createButton({
+    label: ctx.locale('commands:menhera.changelog.older-releases'),
+    url: 'https://menherabot.xyz/changelog?utm_source=discord&utm_medium=button_component',
+    style: ButtonStyles.Link,
+  });
 
   const embed = createEmbed({
     title: ctx.locale('commands:menhera.changelog.title', { version: bot.changelog.versionName }),
@@ -35,7 +42,7 @@ const executeChangelogCommand = async (ctx: ChatInputInteractionContext) => {
       .substring(0, 4096),
   });
 
-  ctx.makeMessage({ embeds: [embed] });
+  ctx.makeMessage({ embeds: [embed], components: [createActionRow([button])] });
 };
 
 const MenheraCommand = createCommand({

@@ -62,7 +62,7 @@ const buyItems = async (
   });
 
   const selectMenu = createSelectMenu({
-    customId: createCustomId(1, ctx.author.id, ctx.commandId, 'BUY'),
+    customId: createCustomId(1, ctx.author.id, ctx.originalInteractionId, 'BUY'),
     minValues: 1,
     maxValues: 1,
     options: [],

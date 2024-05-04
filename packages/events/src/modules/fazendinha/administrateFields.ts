@@ -44,7 +44,10 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
       content: ctx.prettyResponse('error', 'commands:fazendinha.admin.needed-items', {
         star: neededItems.cost,
         plants: neededItems.neededPlants.map(
-          (a) => `${a.amount}x ${ctx.locale(`data:plants.${a.plant}`)} ${Plants[a.plant].emoji}`,
+          (a) =>
+            `${a.weight ?? a.amount} Kg ${ctx.locale(`data:plants.${a.plant}`)} ${
+              Plants[a.plant].emoji
+            }`,
         ),
       }),
     });
@@ -114,7 +117,7 @@ const executeAdministrateFields = async (
         customId: createCustomId(
           3,
           ctx.user.id,
-          ctx.commandId,
+          ctx.originalInteractionId,
           i < plantationsLength ? 'ADMIN' : 'UNLOCK',
           i,
         ),

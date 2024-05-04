@@ -75,7 +75,7 @@ const createThemeComponents = (
     customId: createCustomId(
       2,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'PROFILE',
       preview,
       currentThemeType,
@@ -89,7 +89,7 @@ const createThemeComponents = (
     customId: createCustomId(
       2,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'CARDS',
       preview,
       currentThemeType,
@@ -103,7 +103,7 @@ const createThemeComponents = (
     customId: createCustomId(
       2,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'BACKGROUND',
       preview,
       currentThemeType,
@@ -117,7 +117,7 @@ const createThemeComponents = (
     customId: createCustomId(
       2,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'TABLE',
       preview,
       currentThemeType,
@@ -131,7 +131,7 @@ const createThemeComponents = (
     customId: createCustomId(
       2,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'EB_BACKGROUND',
       preview,
       currentThemeType,
@@ -144,7 +144,7 @@ const createThemeComponents = (
     customId: createCustomId(
       2,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'EB_TEXT_BOX',
       preview,
       currentThemeType,
@@ -158,7 +158,7 @@ const createThemeComponents = (
     customId: createCustomId(
       2,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'EB_MENHERA',
       preview,
       currentThemeType,
@@ -172,7 +172,7 @@ const createThemeComponents = (
     customId: createCustomId(
       2,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'PREVIEW',
       preview,
       currentThemeType,
@@ -211,7 +211,7 @@ const changeThemeType = async (
     customId: createCustomId(
       2,
       ctx.interaction.user.id,
-      ctx.commandId,
+      ctx.originalInteractionId,
       'SELECT',
       preview,
       themeByIndex[themeIndex],
@@ -398,11 +398,13 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
       }
 
       await shopRepository.executeBuyTheme(
-        ctx.user.id,
+        ctx.user,
         selectedItem.id,
         selectedItem.data.price,
         selectedItem.data.type,
         credits.royalty,
+        credits.ownerId,
+        ctx.locale(`data:themes.${selectedItem.id as 1}.name`),
       );
 
       const commandInfo = await commandRepository.getCommandInfo('personalizar');
@@ -411,7 +413,7 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
         customId: createCustomId(
           5,
           ctx.user.id,
-          ctx.commandId,
+          ctx.originalInteractionId,
           themeTypeToDatabaseField[selectedItem.data.type],
           selectedItem.id,
         ),
