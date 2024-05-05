@@ -19,6 +19,7 @@ import { createEmbed } from '../../utils/discord/embedUtils';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { Action } from '../../modules/roleplay/types';
 import notificationRepository from '../../database/repositories/notificationRepository';
+import { enableTcp, enableUnixSocket } from '../../utils/vanGoghRequest';
 
 const noop = (..._args: unknown[]) => undefined;
 
@@ -49,6 +50,8 @@ const EvalCommand = createCommand({
     noop(
       boleham,
       userRepository,
+      enableTcp,
+      enableUnixSocket,
       usersModel,
       userThemesRepository,
       farmerModel,
