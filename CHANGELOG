@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.15.2] - 2024-05-05
+
+### Fixed
+
+- Corrigido a lógica de ignorar contas deletadas nos tops.
+
 ## [5.15.1] - 2024-05-01
 
 ### Added
