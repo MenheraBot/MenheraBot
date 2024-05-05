@@ -3,8 +3,11 @@ import { Blob } from 'node:buffer';
 
 import { getEnviroments } from './getEnviroments';
 import { debugError } from './debugError';
+import { logger } from './logger';
+import { bot } from '..';
 
-const { VANGOGH_URL, MENHERA_AGENT, VANGOGH_TOKEN } = getEnviroments([
+const { VANGOGH_URL, MENHERA_AGENT, VANGOGH_TOKEN, VANGOGH_SOCKET_PATH } = getEnviroments([
+  'VANGOGH_SOCKET_PATH',
   'VANGOGH_URL',
   'MENHERA_AGENT',
   'VANGOGH_TOKEN',
@@ -49,9 +52,26 @@ interface SuccessReturn {
 
 export type VanGoghReturnData = ErrorReturn | SuccessReturn;
 
+const enableUnixSocket = (): void => {
+  VanGoghApi.defaults.socketPath = VANGOGH_SOCKET_PATH;
+  VanGoghApi.defaults.baseURL = 'http://localhost/';
+  logger.info('[VANGOGH] - Switched to Unix Socket calls');
+};
+
+const enableTcp = (): void => {
+  VanGoghApi.defaults.socketPath = undefined;
+  VanGoghApi.defaults.baseURL = VANGOGH_URL;
+  logger.info('[VANGOGH] - Switched to TCP calls');
+};
+
 const vanGoghRequest = async <T>(route: VanGoghEndpoints, data: T): Promise<VanGoghReturnData> => {
+  const startTime = Date.now();
   const result = await VanGoghApi.post(`/${route}`, data).catch(debugError);
   if (!result) return { err: true };
+
+  const totalTime = Date.now() - startTime;
+
+  logger.logSwitch(bot, `[VAGOGH] - ${totalTime}ms in ${route}`);
 
   return {
     err: false,
@@ -62,4 +82,4 @@ const vanGoghRequest = async <T>(route: VanGoghEndpoints, data: T): Promise<VanG
   };
 };
 
-export { vanGoghRequest };
+export { vanGoghRequest, enableTcp, enableUnixSocket };

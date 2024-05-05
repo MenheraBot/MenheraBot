@@ -16,6 +16,7 @@ import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import notificationRepository from '../../database/repositories/notificationRepository';
+import { enableTcp, enableUnixSocket } from '../../utils/vanGoghRequest';
 
 const noop = (..._args: unknown[]) => undefined;
 
@@ -37,6 +38,8 @@ const EvalCommand = createCommand({
   execute: async (ctx, finishCommand) => {
     noop(
       userRepository,
+      enableTcp,
+      enableUnixSocket,
       usersModel,
       userThemesRepository,
       farmerModel,
