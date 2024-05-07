@@ -65,6 +65,7 @@ export const EMOJIS = {
   badge_24: '<:badge_24:1110404657827811339>',
   badge_25: '<:badge_25:1163303420921401354>',
   badge_26: '<:badge_26:1163306957160062976>',
+  badge_27: '<:badge_27:1237388306187157647>',
 
   badge_100: '<:badge_9:960660998350602310>',
   badge_101: '<:MenheraThatsRight:767210250762977280>',
@@ -77,6 +78,7 @@ export const EMOJIS = {
   badge_200: '<:badge_19:1049144870469648485>',
   badge_201: '<:badge_21:1103511851788144771>',
   badge_202: '<:badge_22:1103513736288931892>',
+  badge_203: '<:badge_203:1237388179145883731>',
 };
 
 export const COLORS = {
