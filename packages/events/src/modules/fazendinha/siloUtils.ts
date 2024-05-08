@@ -70,8 +70,13 @@ const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
       0,
     );
 
-  const used = countQuantitative(user.silo) + countQuantitative(user.seeds);
-  const limit = INITIAL_LIMIT_FOR_SILO + SILO_LIMIT_INCREASE_BY_LEVEL * user.siloUpgrades;
+  const used = parseFloat(
+    (countQuantitative(user.silo) + countQuantitative(user.seeds)).toFixed(1),
+  );
+
+  const limit = parseFloat(
+    (INITIAL_LIMIT_FOR_SILO + SILO_LIMIT_INCREASE_BY_LEVEL * user.siloUpgrades).toFixed(1),
+  );
 
   return { used, limit };
 };
