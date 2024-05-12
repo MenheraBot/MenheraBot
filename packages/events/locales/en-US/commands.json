@@ -1185,6 +1185,7 @@
     "all-done": "There you go! Your notifications have been marked as read!",
     "notifications": {
       "user-bought-theme": "**@{{username}}** purchased your theme **{{theme}}** on <t:{{unix}}:d> at <t:{{unix}}:T>",
+      "user-bought-image": "**@{{username}}** purchased your image **{{image}}** on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "user-bought-announcement": "Your **{{weight}} kg** {{emoji}} ad was bought for **{{stars}}** :star: at the fair by @{{username}} on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "user-won-bicho": "You won **{{stars}}** :star: with your bet in /bicho on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Heyy, Lux here! I just gave you a brand new Badge! Check your profile >.<",
