@@ -164,3 +164,10 @@ export interface DatabaseNotificationSchema {
   createdAt: number;
   unread: boolean;
 }
+
+export interface DatabaseSuggestionLimitSchema {
+  id: string;
+  limited: boolean;
+  limitedAt: number;
+  suggestion: string;
+}

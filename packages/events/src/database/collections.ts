@@ -8,6 +8,7 @@ import {
   DatabaseGuildSchema,
   DatabaseNotificationSchema,
   DatabaseProfileImagesSchema,
+  DatabaseSuggestionLimitSchema,
   DatabaseTitlesSchema,
   DatabaseUserSchema,
   DatabaseUserThemesSchema,
@@ -142,6 +143,13 @@ const notificationSchema = new Schema({
   unread: { type: Boolean },
 });
 
+const suggestionLimitSchema = new Schema({
+  id: { type: String, unique: true, index: true },
+  limited: { type: Boolean, default: false },
+  limitedAt: { type: Number, default: Date.now },
+  suggestion: { type: String, default: '' },
+});
+
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
 export const guildsModel = model<DatabaseGuildSchema>('guild', guildSchema);
 export const usersModel = model<DatabaseUserSchema>('usersdb', userSchema);
@@ -154,4 +162,8 @@ export const feirinhaModel = model<DatabaseFeirinhaSchema>('feirinha', feirinhaS
 export const notificationModel = model<DatabaseNotificationSchema>(
   'notification',
   notificationSchema,
+);
+export const suggestionLimitModel = model<DatabaseSuggestionLimitSchema>(
+  'suggestlimit',
+  suggestionLimitSchema,
 );

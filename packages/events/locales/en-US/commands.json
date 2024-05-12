@@ -830,7 +830,8 @@
       "confirm": "Send",
       "edit": "Edit",
       "edit-title": "Edit suggestion",
-      "thanks": "Your suggestion has been sent! Thank you very much >.<"
+      "thanks": "Your suggestion has been sent! Thank you very much >.<",
+      "limited": "You are limited from sending suggestion since <t:{{unix}}>"
     },
     "suporte": {
       "message": "Having a problem, or just want to chat with more people who use my commands? Join my support server: \n\nhttps://discord.gg/fZMdQbA\n ||SHHHHHhh, don't tell the moderation that I sent this invite, they might ban me for sending invites...||"

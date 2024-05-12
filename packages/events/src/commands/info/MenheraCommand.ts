@@ -23,6 +23,8 @@ import { ModalInteraction } from '../../types/interaction';
 import { InteractionContext } from '../../types/menhera';
 import { getUserAvatar } from '../../utils/discord/userUtils';
 import { getEnviroments } from '../../utils/getEnviroments';
+import suggestionLimitRepository from '../../database/repositories/suggestionLimitRepository';
+import { millisToSeconds } from '../../utils/miscUtils';
 
 const { SUGGESTION_CHANNEL_ID } = getEnviroments(['SUGGESTION_CHANNEL_ID']);
 
@@ -151,6 +153,16 @@ const handleSuggestionInteraction = async (
 
 const executeSuggestCommand = async (ctx: ChatInputInteractionContext): Promise<void> => {
   const suggestion = ctx.getOption<string>('sugestão', false, true);
+
+  const isUserLimited = await suggestionLimitRepository.getLimitData(ctx.user.id);
+
+  if (isUserLimited && isUserLimited.limited)
+    return ctx.makeMessage({
+      flags: MessageFlags.EPHEMERAL,
+      content: ctx.prettyResponse('error', 'commands:menhera.suggest.limited', {
+        unix: millisToSeconds(isUserLimited.limitedAt),
+      }),
+    });
 
   const [embed, buttons] = suggestionEmbedAndButton(ctx, suggestion, ctx.authorData.selectedColor);
 
