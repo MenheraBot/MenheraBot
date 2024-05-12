@@ -28,6 +28,8 @@ const registerTitle = async (
 const getTitlesCount = async (): Promise<number> => titlesModel.countDocuments();
 
 const getTitleInfo = async (titleId: number): Promise<DatabaseTitlesSchema | null> => {
+  if (titleId === 0) return null;
+
   const fromRedis = await MainRedisClient.get(`title:${titleId}`);
 
   registerCacheStatus(fromRedis, 'title');

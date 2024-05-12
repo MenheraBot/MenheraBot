@@ -824,6 +824,15 @@
       "older-releases": "Older versions",
       "no-changelog": "The announcement of the current update has not yet been made. Wait another 10 minutes and try again >.<"
     },
+    "suggest": {
+      "confirm-title": "Send suggestion?",
+      "footer": "Misuse of this command may restrict your access to Menhera",
+      "confirm": "Send",
+      "edit": "Edit",
+      "edit-title": "Edit suggestion",
+      "thanks": "Your suggestion has been sent! Thank you very much >.<",
+      "limited": "You are limited from sending suggestion since <t:{{unix}}>"
+    },
     "suporte": {
       "message": "Having a problem, or just want to chat with more people who use my commands? Join my support server: \n\nhttps://discord.gg/fZMdQbA\n ||SHHHHHhh, don't tell the moderation that I sent this invite, they might ban me for sending invites...||"
     },
@@ -1097,6 +1106,7 @@
     },
     "plantations": {
       "field": "Field ({{index}})",
+      "harvest-weight": "Amount harvested: {{weight}} Kg",
       "seeds": "Seeds",
       "description": "**Current season:** {{emoji}} _{{season}}_\n**Ends** <t:{{unix}}:R>",
       "silo": "Plants",
@@ -1185,6 +1195,7 @@
     "all-done": "There you go! Your notifications have been marked as read!",
     "notifications": {
       "user-bought-theme": "**@{{username}}** purchased your theme **{{theme}}** on <t:{{unix}}:d> at <t:{{unix}}:T>",
+      "user-bought-image": "**@{{username}}** purchased your image **{{image}}** on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "user-bought-announcement": "Your **{{weight}} kg** {{emoji}} ad was bought for **{{stars}}** :star: at the fair by @{{username}} on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "user-won-bicho": "You won **{{stars}}** :star: with your bet in /bicho on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Heyy, Lux here! I just gave you a brand new Badge! Check your profile >.<",

@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.16.0] - 2024-05-12
+
+### Added
+
+- Adicionado notificações para quando alguém compra alguma imagem que você criou.
+- Adicionado a informação de quantos Kg você colheu no `/fazendinha plantações`.
+- Novo comando `/menhera sugerir`. Envie suas melhores ideias para a Menhera.
+
+### Fixed
+
+- Se a Menhera não tiver permissão para usar emojis externos, ela usará emojis padrões.
+
 ## [5.15.3] - 2024-05-08
 
 ### Fixed

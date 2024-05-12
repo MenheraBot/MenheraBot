@@ -829,6 +829,15 @@
       "older-releases": "Versões anteriores",
       "no-changelog": "O anúncio da atualização atual ainda não foi feito. Aguarde mais uns 10 minutos e tente novamente >.<"
     },
+    "suggest": {
+      "confirm-title": "Encaminhar sugestão?",
+      "footer": "O uso indevido deste comando pode restringir seu acesso à Menhera",
+      "confirm": "Enviar",
+      "edit": "Editar",
+      "edit-title": "Editar sugestão",
+      "thanks": "Sua sugestão foi enviada! Muito obrigada >.<",
+      "limited": "Tu tá limitado de enviar sugestões desde <t:{{unix}}>"
+    },
     "suporte": {
       "message": "Está com algum problema, ou quer só conversar com mais gente que usa meus comandos? Entre em meu servidor de suporte: \n\nhttps://discord.gg/fZMdQbA\n|| SHHHHHhh, não fala pra moderação desse servidor que eu mandei esse convite, vai que eles me banam por divulgação... ||"
     },
@@ -1102,6 +1111,7 @@
     },
     "plantations": {
       "field": "Campo ({{index}})",
+      "harvest-weight": "Quantidade colhida: {{weight}} Kg",
       "description": "**Estação atual**: {{emoji}} _{{season}}_\n**Termina** <t:{{unix}}:R>",
       "seeds": "Sementes",
       "silo": "Plantas",
@@ -1190,6 +1200,7 @@
     "all-done": "Feitoria! Suas notificações foram marcadas como lidas!",
     "notifications": {
       "user-bought-theme": "@{{username}} comprou o seu tema **{{theme}}** em <t:{{unix}}:d> às <t:{{unix}}:T>",
+      "user-bought-image": "@{{username}} comprou sua imagem **{{image}}** em <t:{{unix}}:d> às <t:{{unix}}:T>",
       "user-bought-announcement": "Seu anúncio de **{{weight}} Kg** {{emoji}} foi comprado por **{{stars}}** :star: na feira por @{{username}} em <t:{{unix}}:d> às <t:{{unix}}:T>",
       "user-won-bicho": "Você ganhou **{{stars}}** :star: com sua aposta no Jogo do Bicho em <t:{{unix}}:d> às <t:{{unix}}:T>",
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Acabei de te dar uma **Badge** nova! Cheque seu perfil >.<",
