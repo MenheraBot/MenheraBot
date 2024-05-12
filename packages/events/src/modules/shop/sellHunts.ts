@@ -1,5 +1,4 @@
 import shopRepository from '../../database/repositories/shopRepository';
-import { EMOJIS } from '../../structures/constants';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { DatabaseHuntingTypes } from '../hunt/types';
@@ -30,7 +29,7 @@ const sellHunts = async (
       cost: amount * huntValues[huntType],
       quantity: ctx.authorData[huntType] - amount,
       hunt: ctx.locale(`common:${huntType}`),
-      emoji: EMOJIS[huntType],
+      emoji: ctx.safeEmoji(huntType),
       star: ctx.authorData.estrelinhas + amount * huntValues[huntType],
     }),
   });

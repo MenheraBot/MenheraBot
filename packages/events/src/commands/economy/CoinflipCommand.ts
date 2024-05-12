@@ -13,7 +13,7 @@ import { createActionRow, createButton, createCustomId } from '../../utils/disco
 import { mentionUser } from '../../utils/discord/userUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createCommand } from '../../structures/command/createCommand';
-import { EMOJIS, transactionableCommandOption } from '../../structures/constants';
+import { transactionableCommandOption } from '../../structures/constants';
 import { huntValues } from '../../modules/shop/constants';
 import { ApiTransactionReason } from '../../types/api';
 
@@ -62,7 +62,7 @@ const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> 
       value: input,
       winner: mentionUser(winner),
       loser: mentionUser(loser),
-      emoji: EMOJIS[currency],
+      emoji: ctx.safeEmoji(currency),
     }),
     components: [],
   });
@@ -176,7 +176,7 @@ const CoinflipCommand = createCommand({
         value: input,
         author: mentionUser(ctx.author.id),
         mention: mentionUser(user.id),
-        emoji: EMOJIS[currency],
+        emoji: ctx.safeEmoji(currency),
       }),
       allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
       components: [createActionRow([confirmButton])],

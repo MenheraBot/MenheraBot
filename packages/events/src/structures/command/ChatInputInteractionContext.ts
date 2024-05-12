@@ -7,13 +7,14 @@ import { DatabaseUserSchema } from '../../types/database';
 import { AvailableLanguages, Translation } from '../../types/i18next';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { logger } from '../../utils/logger';
-import { EMOJIS } from '../constants';
+import { EMOJIS, SAFE_EMOJIS, SAFE_TOP_EMOJIS, TOP_EMOJIS } from '../constants';
 import { getFullCommandUsed, getOptionFromInteraction } from './getCommandOption';
 import {
   editOriginalInteractionResponse,
   sendFollowupMessage,
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests';
+import { bot } from '../..';
 
 export type CanResolve = 'users' | 'members' | 'attachments' | false;
 
@@ -55,8 +56,21 @@ export default class {
     return this.interaction.channelId ?? 0n;
   }
 
+  safeEmoji(emoji: keyof typeof EMOJIS, topEmojis?: boolean): string {
+    const canUseCustomEmojis = bot.utils
+      .calculatePermissions(this.interaction.appPermissions ?? 0n)
+      .includes('USE_EXTERNAL_EMOJIS');
+
+    const emojisToUse = topEmojis ? TOP_EMOJIS : EMOJIS;
+    const safeEmojisToUse = topEmojis ? SAFE_TOP_EMOJIS : SAFE_EMOJIS;
+
+    return canUseCustomEmojis
+      ? emojisToUse[emoji]
+      : safeEmojisToUse[emoji as 'gods'] || emojisToUse[emoji] || '🐛';
+  }
+
   prettyResponse(emoji: keyof typeof EMOJIS, text: Translation, translateOptions = {}): string {
-    return `${EMOJIS[emoji] || '🐛'} **|** ${this.locale(text, translateOptions)}`;
+    return `${this.safeEmoji(emoji)} **|** ${this.locale(text, translateOptions)}`;
   }
 
   async followUp(options: InteractionCallbackData): Promise<void> {

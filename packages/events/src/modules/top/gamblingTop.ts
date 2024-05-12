@@ -7,12 +7,7 @@ import { InteractionContext } from '../../types/menhera';
 import { getTopGamblingUsers } from '../../utils/apiRequests/statistics';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import {
-  calculateSkipCount,
-  createPaginationButtons,
-  topEmojis,
-  usersToIgnoreInTop,
-} from './index';
+import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from './index';
 
 const executeGamblingTop = async (
   ctx: InteractionContext,
@@ -36,7 +31,7 @@ const executeGamblingTop = async (
     title: ctx.locale('commands:top.estatisticas.apostas.title', {
       type: ctx.locale(`commands:top.estatisticas.apostas.${gameMode}`),
       page: page > 1 ? page : 1,
-      emoji: topEmojis[gameMode],
+      emoji: ctx.safeEmoji(gameMode as 'ok', true),
     }),
     description: ctx.locale(`commands:top.estatisticas.apostas.description.${topMode}`),
     color: COLORS.Pinkie,

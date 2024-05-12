@@ -11,7 +11,7 @@ import { executeUserDataRelatedTop } from '../../modules/top/userDataRelated';
 import { executeUsedCommandsFromUserTop } from '../../modules/top/usedCommandsFromUser';
 import { executeUsedCommandsTop } from '../../modules/top/usedCommands';
 import { executeUserCommandsTop } from '../../modules/top/userCommands';
-import { executeTopPagination, topEmojis } from '../../modules/top';
+import { executeTopPagination } from '../../modules/top';
 import { executeUsersByUsedCommandTop } from '../../modules/top/usersByUsedCommand';
 import { bot } from '../..';
 
@@ -356,7 +356,7 @@ const TopCommand = createCommand({
         return executeUserDataRelatedTop(
           ctx,
           type,
-          topEmojis[type],
+          ctx.safeEmoji(type as 'demons', true),
           ctx.locale(`commands:top.economia.${type as 'mamou'}-title`),
           ctx.locale(`commands:top.economia.${type as 'mamou'}`),
           page,

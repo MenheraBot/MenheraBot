@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Adicionado notificações para quando alguém compra alguma imagem que você criou.
 - Adicionado a informação de quantos Kg você colheu no `/fazendinha plantações`.
 
+### Fixed
+
+- Se a Menhera não tiver permissão para usar emojis externos, ela usará emojis padrões.
+
 ## [5.15.3] - 2024-05-08
 
 ### Fixed
