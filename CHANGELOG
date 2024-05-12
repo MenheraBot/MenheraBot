@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Adicionado notificações para quando alguém compra alguma imagem que você criou.
 - Adicionado a informação de quantos Kg você colheu no `/fazendinha plantações`.
+- Novo comando `/menhera sugerir`. Envie suas melhores ideias para a Menhera.
 
 ### Fixed
 

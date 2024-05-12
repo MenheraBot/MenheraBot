@@ -829,6 +829,14 @@
       "older-releases": "Versões anteriores",
       "no-changelog": "O anúncio da atualização atual ainda não foi feito. Aguarde mais uns 10 minutos e tente novamente >.<"
     },
+    "suggest": {
+      "confirm-title": "Encaminhar sugestão?",
+      "footer": "O uso indevido deste comando pode restringir seu acesso à Menhera",
+      "confirm": "Enviar",
+      "edit": "Editar",
+      "edit-title": "Editar sugestão",
+      "thanks": "Sua sugestão foi enviada! Muito Obrigada >.<"
+    },
     "suporte": {
       "message": "Está com algum problema, ou quer só conversar com mais gente que usa meus comandos? Entre em meu servidor de suporte: \n\nhttps://discord.gg/fZMdQbA\n|| SHHHHHhh, não fala pra moderação desse servidor que eu mandei esse convite, vai que eles me banam por divulgação... ||"
     },

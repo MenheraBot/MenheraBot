@@ -824,6 +824,14 @@
       "older-releases": "Older versions",
       "no-changelog": "The announcement of the current update has not yet been made. Wait another 10 minutes and try again >.<"
     },
+    "suggest": {
+      "confirm-title": "Send suggestion?",
+      "footer": "Misuse of this command may restrict your access to Menhera",
+      "confirm": "Send",
+      "edit": "Edit",
+      "edit-title": "Edit suggestion",
+      "thanks": "Your suggestion has been sent! Thank you very much >.<"
+    },
     "suporte": {
       "message": "Having a problem, or just want to chat with more people who use my commands? Join my support server: \n\nhttps://discord.gg/fZMdQbA\n ||SHHHHHhh, don't tell the moderation that I sent this invite, they might ban me for sending invites...||"
     },
