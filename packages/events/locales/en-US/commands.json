@@ -1097,6 +1097,7 @@
     },
     "plantations": {
       "field": "Field ({{index}})",
+      "harvest-weight": "Amount harvested: {{weight}} Kg",
       "seeds": "Seeds",
       "description": "**Current season:** {{emoji}} _{{season}}_\n**Ends** <t:{{unix}}:R>",
       "silo": "Plants",

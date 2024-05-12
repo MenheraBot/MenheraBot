@@ -137,12 +137,15 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
       state === 'MATURE' ? 'HARVEST' : 'ROTTED',
     );
 
+  const harvestedWeight = state === 'MATURE' ? field.weight : undefined;
+
   displayPlantations(
     ctx,
     farmer,
     embedColor,
     !userSeeds || userSeeds.amount <= 0 ? AvailablePlants.Mate : seed,
     -1,
+    harvestedWeight,
   );
 };
 
