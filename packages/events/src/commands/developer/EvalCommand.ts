@@ -46,6 +46,8 @@ const handleConfirm = async (ctx: ComponentInteractionContext) => {
 
   if (!toEval) return ctx.makeMessage({ content: 'perdi o eval', components: [] });
 
+  await redis.del(`eval:${ctx.originalInteractionId}`);
+
   return executeEval(ctx, toEval);
 };
 
