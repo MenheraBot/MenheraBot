@@ -77,10 +77,11 @@ const executeHarvest = async (
   biggestSeed: number,
   weight: number,
 ): Promise<void> => {
-  const pushOrIncrement = {
+  const pushOrIncrement: Record<string, unknown> = {
     [alreadyInSilo ? '$inc' : '$push']: alreadyInSilo
       ? {
           [`silo.$[elem].weight`]: weight,
+          experience: Math.floor(weight * ((plant + 1) * 5)),
         }
       : {
           silo: {
@@ -89,6 +90,8 @@ const executeHarvest = async (
           },
         },
   };
+
+  if (!alreadyInSilo) pushOrIncrement.$inc = { experience: Math.floor(weight * ((plant + 1) * 5)) };
 
   const updatedUser = await farmerModel.findOneAndUpdate(
     { id: `${farmerId}` },
