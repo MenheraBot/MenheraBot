@@ -46,7 +46,7 @@ export const UnloadFields: { [field: number]: UnlockFieldFile } = {
 
 export const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
   [AvailablePlants.Mate]: {
-    minutesToHarvest: 15,
+    minutesToHarvest: process.env.NODE_ENV === 'production' ? 15 : 0.1,
     minutesToRot: 60,
     emoji: '🌿',
     sellValue: 110,

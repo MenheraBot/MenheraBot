@@ -42,7 +42,7 @@ const calculateUserDailyDeliveries = (farmer: DatabaseFarmerSchema): DeliveryMis
 
     toReturnDailies.push({
       award,
-      experience: (plantType + 1) * 10,
+      experience: Math.floor((plantType + 1) * 10 + neededPlants * 50),
       needs: [{ weight: neededPlants, plant: plantType }],
       finished: false,
     });
