@@ -4,7 +4,7 @@ import { InteractionContext } from '../../types/menhera';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils';
 import { Plants } from './constants';
-import { getFinishAllBonus, getUserDailies } from './deliveryUtils';
+import { getFinishAllBonus, getUserDeliveries } from './deliveryUtils';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import farmerRepository from '../../database/repositories/farmerRepository';
@@ -54,7 +54,7 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
       'estrelinhas',
       ApiTransactionReason.DAILY_FARM,
     ),
-    farmerRepository.finishDaily(
+    farmerRepository.finishDelivery(
       ctx.user.id,
       farmer.dailies,
       removeItems(farmer.silo, dailyUser.needs),
@@ -100,21 +100,21 @@ const executeDailyDelivery = async (
 ): Promise<void> => {
   const endsIn = getMillisecondsToTheEndOfDay() + Date.now();
 
-  const userDailies = getUserDailies(farmer);
+  const userDevlieries = getUserDeliveries(farmer);
 
   const embed = createEmbed({
     title: ctx.locale('commands:fazendinha.entregas.daily-deliveries'),
     color: hexStringToNumber(embedColor),
     fields: [],
     description: ctx.locale('commands:fazendinha.entregas.description', {
-      bonus: getFinishAllBonus(userDailies),
+      bonus: getFinishAllBonus(userDevlieries),
       unix: millisToSeconds(endsIn),
     }),
   });
 
   const toSendComponents: ActionRow[] = [];
 
-  userDailies.forEach((a, i) => {
+  userDevlieries.forEach((a, i) => {
     embed.fields?.push({
       name: ctx.locale(
         `commands:fazendinha.entregas.deliver-embed-name${a.finished ? '-finished' : ''}`,

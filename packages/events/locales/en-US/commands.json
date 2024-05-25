@@ -1199,7 +1199,23 @@
       "user-bought-announcement": "Your **{{weight}} kg** {{emoji}} ad was bought for **{{stars}}** :star: at the fair by @{{username}} on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "user-won-bicho": "You won **{{stars}}** :star: with your bet in /bicho on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Heyy, Lux here! I just gave you a brand new Badge! Check your profile >.<",
-      "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Hi, Lux here. I added a title to your account! Take a look at `/personalize title` >.<"
+      "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Hi, Lux here. I added a title to your account! Take a look at `/personalize title` >.<",
+      "finished-daily": "",
+      "finished-daily-one": "You have completed **{{count}}** mission! Your rewards are **{{price}}** :star: on <t:{{unix}}:d> at <t:{{unix}}:T>",
+      "finished-daily-other": "You have completed **{{count}}** missions! Your rewards are **{{price}}** :star: on <t:{{unix}}:d> at <t:{{unix}}:T>"
+    }
+  },
+  "daily": {
+    "title": "Your daily missions",
+    "reedem": "({{index}}) Reedem",
+    "reedemed": "({{index}}) Reedemed",
+    "unfinished": "({{index}}) {{has}}/{{need}}",
+    "cannot-reedem": "You can't reedem this mission at the moment!",
+    "already-reedemed":"You have already reedemed the prizes for this mission!",
+    "descriptions": {
+      "use_command": "{{emoji}} Use the command _{{command}}_ **{{amount}}** times. ({{has}}/{{need}})",
+      "win_bet": "{{emoji}} Win _{{bet}}_ matches **{{amount}}** times. ({{has}}/{{need}})",
+      "win_stars_in_bets": "{{emoji}} Conquer **{{amount}}** :star: playing _bicho_, _blackjack_ or _roulette_ ({{has}}/{{need}})"
     }
   }
 }

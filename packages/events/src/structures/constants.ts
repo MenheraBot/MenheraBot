@@ -21,6 +21,8 @@ export const EMOJIS = {
   bug: '🐛',
   ring: '💍',
   yes: '✅',
+  gift: '🎁',
+  calendar: '📅',
   no: '❌',
   map: '🗺️',
   question: '❓',

@@ -83,6 +83,8 @@ const userSchema = new Schema({
   lastCommandAt: { type: Number, default: 0 },
   isBot: { type: Boolean, default: false },
   inactivityWarned: { type: Boolean, default: false },
+  dailies: { type: Array, default: [] },
+  dailyDayId: { type: Number, default: 0 },
 });
 
 const themeCredits = new Schema({

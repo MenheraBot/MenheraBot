@@ -71,7 +71,7 @@ const vanGoghRequest = async <T>(route: VanGoghEndpoints, data: T): Promise<VanG
 
   const totalTime = Date.now() - startTime;
 
-  logger.logSwitch(bot, `[VAGOGH] - ${totalTime}ms in ${route}`);
+  logger.logSwitch(bot, `[VANGOGH] - ${totalTime}ms in ${route}`);
 
   return {
     err: false,

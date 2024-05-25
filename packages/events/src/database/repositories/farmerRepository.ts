@@ -215,7 +215,7 @@ const upgradeSilo = async (farmerId: BigString): Promise<void> => {
   }
 };
 
-const updateDailies = async (farmerId: BigString, dailies: DeliveryMission[]): Promise<void> => {
+const updateDeliveries = async (farmerId: BigString, dailies: DeliveryMission[]): Promise<void> => {
   await farmerModel.updateOne(
     { id: `${farmerId}` },
     { $set: { dailies, dailyDayId: new Date().getDate() } },
@@ -236,7 +236,7 @@ const updateDailies = async (farmerId: BigString, dailies: DeliveryMission[]): P
   }
 };
 
-const finishDaily = async (
+const finishDelivery = async (
   farmerId: BigString,
   dailies: DeliveryMission[],
   silo: QuantitativePlant[],
@@ -285,8 +285,8 @@ export default {
   unlockField,
   updateSeason,
   updateSilo,
-  finishDaily,
+  finishDelivery,
   updateSeeds,
-  updateDailies,
+  updateDeliveries,
   executeHarvest,
 };
