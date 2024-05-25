@@ -4,7 +4,8 @@ import { logger } from './logger';
 
 export const debugError = (err: Error, toSentry = true): null => {
   logger.error('Debug Error', err.message);
-  if (toSentry)
+  // @ts-expect-error Not every errors are http errors
+  if (toSentry && err?.response?.status !== 404)
     try {
       Sentry.captureException(err);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

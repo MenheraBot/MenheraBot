@@ -16,4 +16,6 @@ const getUserDailies = (user: DatabaseUserSchema): DatabaseDaily[] => {
   return newDailies;
 };
 
+// const getDailyAwardOptions = () => {};
+
 export { getUserDailies };
