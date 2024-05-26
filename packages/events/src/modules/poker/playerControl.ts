@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { SelectMenuComponent, SelectOption } from 'discordeno/types';
+import { ButtonStyles, SelectMenuComponent, SelectOption } from 'discordeno/types';
 import PokerSolver from 'pokersolver';
 import userRepository from '../../database/repositories/userRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import {
   createActionRow,
+  createButton,
   createCustomId,
   createSelectMenu,
   createUsersSelectMenu,
 } from '../../utils/discord/componentUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
+import { VanGoghEndpoints, VanGoghReturnData, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { Action, PokerMatch, PokerPlayer } from './types';
 import { InteractionContext } from '../../types/menhera';
 import { SelectMenuUsersInteraction } from '../../types/interaction';
@@ -21,18 +22,12 @@ import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { getOpenedCards, getPokerCard } from './cardUtils';
 import { Translation } from '../../types/i18next';
 
-const showPlayerCards = async (
+const updatePlayerHandValue = async (
   ctx: ComponentInteractionContext,
   player: PokerPlayer,
   gameData: PokerMatch,
+  image?: VanGoghReturnData,
 ): Promise<void> => {
-  await ctx.visibleAck(true);
-
-  const image = await vanGoghRequest(VanGoghEndpoints.PokerHand, {
-    cards: player.cards,
-    theme: player.cardTheme,
-  });
-
   const authorData = await userRepository.ensureFindUser(ctx.user.id);
 
   const cardsToUse = [
@@ -55,14 +50,51 @@ const showPlayerCards = async (
     })}\n${ctx.locale('commands:poker.player.chips', { chips: player.chips })}`,
     footer: player.folded ? { text: ctx.locale('commands:poker.player.not-in-round') } : undefined,
     color: hexStringToNumber(authorData.selectedColor),
-    image: image.err ? undefined : { url: 'attachment://poker.png' },
+    image:
+      image && image.err
+        ? undefined
+        : {
+            url: image
+              ? 'attachment://poker.png'
+              : ctx.interaction.message?.embeds?.[0].image?.url ?? '',
+          },
   });
 
   await ctx.makeMessage({
     embeds: [embed],
-    file: image.err ? undefined : { name: 'poker.png', blob: image.data },
+    file: !image || image.err ? undefined : { name: 'poker.png', blob: image.data },
     flags: MessageFlags.EPHEMERAL,
+    components: [
+      createActionRow([
+        createButton({
+          label: 'Atualizar imagem',
+          style: ButtonStyles.Primary,
+          customId: createCustomId(
+            2,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            gameData.matchId,
+            'UPDATE_HAND_VALUE',
+          ),
+        }),
+      ]),
+    ],
   });
+};
+
+const showPlayerCards = async (
+  ctx: ComponentInteractionContext,
+  player: PokerPlayer,
+  gameData: PokerMatch,
+): Promise<void> => {
+  await ctx.visibleAck(true);
+
+  const image = await vanGoghRequest(VanGoghEndpoints.PokerHand, {
+    cards: player.cards,
+    theme: player.cardTheme,
+  });
+
+  await updatePlayerHandValue(ctx, player, gameData, image);
 };
 
 const forceRemovePlayers = async (
@@ -196,6 +228,7 @@ export {
   showPlayerCards,
   getAvailableActions,
   executeMasterAction,
+  updatePlayerHandValue,
   forceRemovePlayers,
   getPlayerBySeat,
 };

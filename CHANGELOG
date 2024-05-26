@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Reduzido a chance de um bônus de daily ser uma semente.
 - Adicionado emoji na mensagem de recusar Pix.
 - O tempo para o sorteio do bicho foi reduzido para **5** horas.
+- A mensagem de sua mão no Poker agora possui um botão para atualizar o valor da mão.
 
 ### Fixed
 
