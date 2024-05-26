@@ -18,8 +18,6 @@ import { registerCacheStatus } from '../../structures/initializePrometheus';
 const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSchema => ({
   id: `${user.id}`,
   plantations: user.plantations,
-  biggestSeed: user.biggestSeed,
-  plantedFields: user.plantedFields,
   dailies: user.dailies,
   dailyDayId: user.dailyDayId,
   experience: user.experience,
@@ -73,8 +71,6 @@ const executeHarvest = async (
   plant: AvailablePlants,
   alreadyInSilo: boolean,
   success: boolean,
-  plantedFields: number,
-  biggestSeed: number,
   weight: number,
 ): Promise<void> => {
   const pushOrIncrement: Record<string, unknown> = {
@@ -96,7 +92,7 @@ const executeHarvest = async (
   const updatedUser = await farmerModel.findOneAndUpdate(
     { id: `${farmerId}` },
     {
-      $set: { [`plantations.${fieldIndex}`]: field, plantedFields, biggestSeed },
+      $set: { [`plantations.${fieldIndex}`]: field },
       ...(success ? pushOrIncrement : {}),
     },
     {
@@ -215,7 +211,7 @@ const upgradeSilo = async (farmerId: BigString): Promise<void> => {
   }
 };
 
-const updateDailies = async (farmerId: BigString, dailies: DeliveryMission[]): Promise<void> => {
+const updateDeliveries = async (farmerId: BigString, dailies: DeliveryMission[]): Promise<void> => {
   await farmerModel.updateOne(
     { id: `${farmerId}` },
     { $set: { dailies, dailyDayId: new Date().getDate() } },
@@ -236,7 +232,7 @@ const updateDailies = async (farmerId: BigString, dailies: DeliveryMission[]): P
   }
 };
 
-const finishDaily = async (
+const finishDelivery = async (
   farmerId: BigString,
   dailies: DeliveryMission[],
   silo: QuantitativePlant[],
@@ -285,8 +281,8 @@ export default {
   unlockField,
   updateSeason,
   updateSilo,
-  finishDaily,
+  finishDelivery,
   updateSeeds,
-  updateDailies,
+  updateDeliveries,
   executeHarvest,
 };

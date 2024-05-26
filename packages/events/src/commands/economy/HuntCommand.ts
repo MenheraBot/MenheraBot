@@ -3,20 +3,15 @@ import { ApplicationCommandOptionTypes, DiscordEmbedField } from 'discordeno/typ
 import userRepository from '../../database/repositories/userRepository';
 import huntRepository from '../../database/repositories/huntRepository';
 import commandRepository from '../../database/repositories/commandRepository';
-import { capitalize, millisToSeconds } from '../../utils/miscUtils';
+import { calculateProbability, capitalize, millisToSeconds } from '../../utils/miscUtils';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { COLORS, transactionableCommandOption } from '../../structures/constants';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import {
-  DatabaseHuntingTypes,
-  HuntCooldownBoostItem,
-  HuntProbabiltyProps,
-} from '../../modules/hunt/types';
+import { DatabaseHuntingTypes, HuntCooldownBoostItem } from '../../modules/hunt/types';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import {
-  calculateProbability,
   dropHuntItem,
   getMagicItemById,
   getUserHuntCooldown,
@@ -25,6 +20,8 @@ import {
 import { postHuntExecution, postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
+import { ProbabilityAmount } from '../../types/menhera';
+import executeDailies from '../../modules/dailies/executeDailies';
 
 const choices = [
   ...transactionableCommandOption.filter((a) => a.value !== 'estrelinhas'),
@@ -44,7 +41,7 @@ const executeDisplayProbabilities = async (
     value: getUserHuntProbability(ctx.authorData.inUseItems, huntType)
       .map((a) =>
         ctx.locale('commands:cacar.chances', {
-          count: a.amount,
+          count: a.value,
           percentage: a.probability,
         }),
       )
@@ -134,7 +131,7 @@ const HuntCommand = createCommand({
 
     const timesToHunt = canHunt && rollsToUse ? rollsToUse + 1 : rollsToUse ?? 1;
 
-    const executeHunt = async (probability: HuntProbabiltyProps[]) => {
+    const executeHunt = async (probability: ProbabilityAmount[]) => {
       let value = 0;
       let tries = 0;
       let success = 0;
@@ -192,7 +189,8 @@ const HuntCommand = createCommand({
 
     await ctx.makeMessage({ embeds: [embed] });
 
-    if (result.value > 0)
+    if (result.value > 0) {
+      await executeDailies.successOnHunt(ctx.authorData, result.success);
       await postTransaction(
         `${bot.id}`,
         `${ctx.author.id}`,
@@ -200,6 +198,7 @@ const HuntCommand = createCommand({
         selection,
         ApiTransactionReason.HUNT_COMMAND,
       );
+    }
 
     await postHuntExecution(
       `${ctx.author.id}`,

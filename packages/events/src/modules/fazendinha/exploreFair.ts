@@ -108,13 +108,6 @@ const executeBuyItem = async (
       content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.not-enough-stars'),
     });
 
-  if (announcement.plantType > farmer.biggestSeed)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('lock', 'commands:fazendinha.feira.comprar.item-locked'),
-    });
-
   await Promise.all([
     starsRepository.addStars(announcement.userId, announcement.price),
     starsRepository.removeStars(ctx.user.id, announcement.price),

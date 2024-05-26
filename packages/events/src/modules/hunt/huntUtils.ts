@@ -3,12 +3,12 @@ import {
   DatabaseHuntingTypes,
   HuntCooldownBoostItem,
   HuntMagicItem,
-  HuntProbabiltyProps,
   HuntProbablyBoostItem,
   MagicItemsFile,
   StaticItemData,
 } from './types';
 import { HuntMagicItems } from './magicItems';
+import { ProbabilityAmount } from '../../types/menhera';
 
 const getMagicItemById = (itemId: number): StaticItemData<MagicItemsFile> => {
   const item = HuntMagicItems[itemId];
@@ -24,7 +24,7 @@ const getMagicItemById = (itemId: number): StaticItemData<MagicItemsFile> => {
 const getUserHuntProbability = (
   userInventory: HuntMagicItem[],
   huntType: DatabaseHuntingTypes,
-): HuntProbabiltyProps[] => {
+): ProbabilityAmount[] => {
   const foundedItem = userInventory
     .map((a) => getMagicItemById(a.id))
     .find((a) => a.data.type === 'HUNT_PROBABILITY_BOOST' && a.data.huntType === huntType);
@@ -45,21 +45,6 @@ const getUserHuntCooldown = (
   if (foundedItem) return (foundedItem.data as HuntCooldownBoostItem).huntCooldown;
 
   return defaultHuntCooldown;
-};
-
-const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {
-  let accumulator = probabilities.reduce((p, c) => p + c.probability, 0);
-  const chance = Math.floor(Math.random() * accumulator);
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const data of probabilities) {
-    accumulator -= data.probability;
-    if (chance >= accumulator) {
-      return data.amount;
-    }
-  }
-
-  return 0;
 };
 
 const getHuntCooldownReductionItem = (
@@ -90,10 +75,4 @@ const dropHuntItem = (
   return null;
 };
 
-export {
-  getUserHuntProbability,
-  getUserHuntCooldown,
-  calculateProbability,
-  dropHuntItem,
-  getMagicItemById,
-};
+export { getUserHuntProbability, getUserHuntCooldown, dropHuntItem, getMagicItemById };

@@ -21,7 +21,6 @@ import { ApiTransactionReason } from '../../types/api';
 import commandRepository from '../../database/repositories/commandRepository';
 import { getSiloLimits } from '../fazendinha/siloUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import { AvailablePlants } from '../fazendinha/types';
 
 const handleBuySeedsInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [option] = ctx.sentData;
@@ -146,17 +145,6 @@ const buySeeds = async (
   finishCommand: () => void,
 ): Promise<void> => {
   finishCommand();
-
-  const farmer = await farmerRepository.getFarmer(ctx.user.id);
-
-  if (farmer.biggestSeed === 0)
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('lock', 'commands:loja.buy_seeds.seed-limit', {
-        amount: 10 - farmer.plantedFields,
-        emoji: Plants[farmer.biggestSeed].emoji,
-      }),
-    });
-
   const selectMenu = createSelectMenu({
     customId: createCustomId(
       4,
@@ -176,14 +164,13 @@ const buySeeds = async (
     fields: Object.entries(Plants)
       .filter((a) => a[0] !== '0')
       .map(([plant, data]) => {
-        if (farmer.biggestSeed >= Number(plant))
-          selectMenu.options.push({
-            label: ctx.locale(`commands:loja.buy_seeds.seed`, {
-              plant: ctx.locale(`data:plants.${plant as '1'}`),
-            }),
-            emoji: { name: Plants[plant as '1'].emoji },
-            value: `${plant}`,
-          });
+        selectMenu.options.push({
+          label: ctx.locale(`commands:loja.buy_seeds.seed`, {
+            plant: ctx.locale(`data:plants.${plant as '1'}`),
+          }),
+          emoji: { name: Plants[plant as '1'].emoji },
+          value: `${plant}`,
+        });
 
         return {
           name: `${Plants[plant as '1'].emoji} ${ctx.locale(`data:plants.${plant as '1'}`)}`,
@@ -196,15 +183,6 @@ const buySeeds = async (
           }),
         };
       }),
-    footer:
-      farmer.biggestSeed < AvailablePlants.Mushroom
-        ? {
-            text: ctx.locale('commands:loja.buy_seeds.harvest-more', {
-              amount: 10 - farmer.plantedFields,
-              emoji: Plants[farmer.biggestSeed as 1].emoji,
-            }),
-          }
-        : undefined,
   });
 
   selectMenu.maxValues = selectMenu.options.length > 5 ? 5 : selectMenu.options.length;

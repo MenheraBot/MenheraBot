@@ -508,6 +508,7 @@
     "users": "Loyal Users {{page}}º",
     "used": "Used **{{times}}** times",
     "use": "Used **{{times}}** times",
+    "total-used-commands": "{{user}} used **{{commands}}** commands.",
     "used-commands": "Used **{{times}}** commands",
     "command-required": "You need to inform which command you want to search for in this top!"
   },
@@ -657,6 +658,7 @@
     "no-user": "This user does't have an inventory",
     "title": "{{user}}'s Inventory",
     "no-item": "This user's inventory is empty!",
+    "no-item-active": "This user does not have any active items.",
     "active": "Active Items",
     "items": "Inventory Item",
     "use": "Use Items",
@@ -1199,7 +1201,34 @@
       "user-bought-announcement": "Your **{{weight}} kg** {{emoji}} ad was bought for **{{stars}}** :star: at the fair by @{{username}} on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "user-won-bicho": "You won **{{stars}}** :star: with your bet in /bicho on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Heyy, Lux here! I just gave you a brand new Badge! Check your profile >.<",
-      "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Hi, Lux here. I added a title to your account! Take a look at `/personalize title` >.<"
+      "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Hi, Lux here. I added a title to your account! Take a look at `/personalize title` >.<",
+      "finished-daily": "",
+      "finished-daily-one": "You have completed **{{count}}** mission! Your rewards are **{{price}}** :star: on <t:{{unix}}:d> at <t:{{unix}}:T>",
+      "finished-daily-other": "You have completed **{{count}}** missions! Your rewards are **{{price}}** :star: on <t:{{unix}}:d> at <t:{{unix}}:T>"
+    }
+  },
+  "daily": {
+    "title": "Your daily missions",
+    "reedem": "({{index}}) Reedem",
+    "reedemed": "({{index}}) Reedemed",
+    "unfinished": "({{index}}) {{has}}/{{need}}",
+    "cannot-reedem": "You can't reedem this mission at the moment!",
+    "already-reedemed": "You have already reedemed the prizes for this mission!",
+    "reedem-title": "Choose a bonus",
+    "reedemed-success": "Wise choice! You received **{{value}}x** {{emoji}} bonus for completing this daily quest!",
+    "reedem-options": {
+      "estrelinhas": "({{index}}) Stars",
+      "roll": "({{index}}) Roll",
+      "seed": "({{index}}) Seed",
+      "plant": "({{index}}) Plant",
+      "hunt": "({{index}}) Hunt"
+    },
+    "descriptions": {
+      "use_command": "{{emoji}} Use the command _{{command}}_ **{{amount}}** times. ({{has}}/{{need}})",
+      "win_bet": "{{emoji}} Win _{{bet}}_ matches **{{amount}}** times. ({{has}}/{{need}})",
+      "announce_product": "{{emoji}} Announce **{{need}}** products at the neighborhood fair. ({{has}}/{{need}})",
+      "success_on_hunt": "{{emoji}} Obtain success on **{{need}}** hunts. ({{has}}/{{need}})",
+      "win_stars_in_bets": "{{emoji}} Conquer **{{amount}}** :star: playing _bicho_, _blackjack_ or _roulette_. ({{has}}/{{need}})"
     }
   }
 }

@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.17.0] - 2024-05-26
+
+### Added
+
+- **Missões diárias!** Todo dia 3 missões estarão disponíveis. Use `/daily` para ver e reinvidicar seus bônus!
+- O comando `/top usos comandos tipo:Comandos mais usados de um usuário` agora mostra o total de comandos usados pelo usuário. - Sugerido por @mareys.
+
+### Changed
+
+- Atualizado texto de nenhum item ativado no comando `/itens`. - Sugerido por @null00111111
+
+### Removed
+
+- Removido limite de plantas na fazendinha. Todos usuários podem plantar todos tipos de sementes agora!
+
 ## [5.16.0] - 2024-05-12
 
 ### Added

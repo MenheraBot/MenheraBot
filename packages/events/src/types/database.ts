@@ -4,6 +4,7 @@ import { AvailablePlants, DeliveryMission, Plantation } from '../modules/fazendi
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
 import { AvailableLanguages, Translation } from './i18next';
+import { DatabaseDaily } from '../modules/dailies/types';
 
 export type ColorResolvable = `#${string}`;
 
@@ -54,6 +55,8 @@ export interface DatabaseUserSchema {
   lastCommandAt: number;
   isBot: boolean;
   inactivityWarned: boolean;
+  dailies: DatabaseDaily[];
+  dailyDayId: number;
 }
 
 export interface DatabaseCreditsSchema {
@@ -148,8 +151,6 @@ export interface DatabaseFarmerSchema {
   seeds: QuantitativeSeed[];
   silo: QuantitativePlant[];
   siloUpgrades: number;
-  biggestSeed: number;
-  plantedFields: number;
   experience: number;
   lastPlantedSeed: AvailablePlants;
   dailies: DeliveryMission[];

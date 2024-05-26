@@ -1,3 +1,5 @@
+import { ProbabilityAmount } from '../../types/menhera';
+
 export type DatabaseHuntingTypes =
   | 'demons'
   | 'giants'
@@ -8,21 +10,16 @@ export type DatabaseHuntingTypes =
 
 export type ApiHuntingTypes = 'demon' | 'giant' | 'angel' | 'archangel' | 'demigod' | 'god';
 
-export interface HuntProbabiltyProps {
-  amount: number;
-  probability: number;
-}
-
 export interface HuntProbability {
-  demons: HuntProbabiltyProps[];
-  giants: HuntProbabiltyProps[];
-  angels: HuntProbabiltyProps[];
-  archangels: HuntProbabiltyProps[];
-  demigods: HuntProbabiltyProps[];
-  gods: HuntProbabiltyProps[];
+  demons: ProbabilityAmount[];
+  giants: ProbabilityAmount[];
+  angels: ProbabilityAmount[];
+  archangels: ProbabilityAmount[];
+  demigods: ProbabilityAmount[];
+  gods: ProbabilityAmount[];
 }
 
-export type HuntProbabilities = { [K in DatabaseHuntingTypes]: HuntProbabiltyProps[] };
+export type HuntProbabilities = { [K in DatabaseHuntingTypes]: ProbabilityAmount[] };
 
 export interface HuntMagicItem {
   id: number;
@@ -41,7 +38,7 @@ export interface HuntCooldownBoostItem {
 export interface HuntProbablyBoostItem {
   type: 'HUNT_PROBABILITY_BOOST';
   huntType: DatabaseHuntingTypes;
-  probabilities: HuntProbabiltyProps[];
+  probabilities: ProbabilityAmount[];
   cost: number;
 }
 
