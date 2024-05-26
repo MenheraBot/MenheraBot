@@ -6,13 +6,18 @@ import { DatabaseDaily } from './types';
 
 const getUserDailies = async (user: DatabaseUserSchema): Promise<DatabaseDaily[]> => {
   const todayDayId = new Date().getDate();
-  const isUpToDate = user.dailyDayId === todayDayId;
+  const isUpToDate = user.dailyDayId === todayDayId && user.dailies.every((a) => a.id >= 20);
 
   if (isUpToDate) return user.dailies;
 
   const newDailies = calculateUserDailies();
 
-  await userRepository.updateUser(user.id, { dailies: newDailies, dailyDayId: todayDayId });
+  const updateData = { dailies: newDailies, dailyDayId: todayDayId };
+
+  user.dailies = updateData.dailies;
+  user.dailyDayId = updateData.dailyDayId;
+
+  await userRepository.updateUser(user.id, updateData);
 
   return newDailies;
 };

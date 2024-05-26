@@ -12,14 +12,12 @@ import { Plants } from '../../modules/fazendinha/constants';
 import { AvailablePlants } from '../../modules/fazendinha/types';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { addItems } from '../../modules/fazendinha/siloUtils';
-import { logger } from '../../utils/logger';
 
 const getDailyStatus = (daily: DatabaseDaily): 'reedem' | 'unfinished' | 'reedemed' =>
   // eslint-disable-next-line no-nested-ternary
   daily.redeemed ? 'reedemed' : daily.has >= daily.need ? 'reedem' : 'unfinished';
 
 const getAwardEmoji = (ctx: InteractionContext, award: Award<string | number>): string => {
-  logger.debug(award);
   switch (award.type) {
     case 'hunt':
       return ctx.safeEmoji(award.helper as 'demons');
@@ -165,7 +163,7 @@ const DailyCommand = createCommand({
           const daily = getDailyById(d.id);
           return ctx.locale(`commands:daily.descriptions.${daily.type}`, {
             ...d,
-            ...daily,
+            count: d.need,
             emoji:
               // eslint-disable-next-line no-nested-ternary
               d.has < d.need

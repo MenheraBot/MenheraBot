@@ -1224,11 +1224,14 @@
       "hunt": "({{index}}) Hunt"
     },
     "descriptions": {
-      "use_command": "{{emoji}} Use the command _{{command}}_ **{{amount}}** times. ({{has}}/{{need}})",
-      "win_bet": "{{emoji}} Win _{{bet}}_ matches **{{amount}}** times. ({{has}}/{{need}})",
+      "win_bet": "{{emoji}} Win _{{specification}}_ matches **{{count}}** times. ({{has}}/{{need}})",
+      "win_bet-one": "{{emoji}} Win _{{specification}}_ matches **{{count}}** time. ({{has}}/{{need}})",
+      "win_bet-other": "{{emoji}} Win _{{specification}}_ matches **{{count}}** times. ({{has}}/{{need}})",
+      "use_command": "{{emoji}} Use the command _{{specification}}_ **{{need}}** times. ({{has}}/{{need}})",
       "announce_product": "{{emoji}} Announce **{{need}}** products at the neighborhood fair. ({{has}}/{{need}})",
       "success_on_hunt": "{{emoji}} Obtain success on **{{need}}** hunts. ({{has}}/{{need}})",
-      "win_stars_in_bets": "{{emoji}} Conquer **{{amount}}** :star: playing _bicho_, _blackjack_ or _roulette_. ({{has}}/{{need}})"
+      "use_action_commands": "{{emoji}} Use **{{need}}** action commands. ({{has}}/{{need}})",
+      "win_stars_in_bets": "{{emoji}} Conquer **{{need}}** :star: playing _bicho_, _blackjack_ or _roulette_. ({{has}}/{{need}})"
     }
   }
 }

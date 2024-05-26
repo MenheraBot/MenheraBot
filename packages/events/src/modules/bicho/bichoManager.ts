@@ -16,7 +16,7 @@ import notificationRepository from '../../database/repositories/notificationRepo
 import executeDailies from '../dailies/executeDailies';
 import userRepository from '../../database/repositories/userRepository';
 
-const GAME_DURATION = 1000 * 60 * 60 * 6;
+const GAME_DURATION = 1000 * 60 * 60 * 5;
 
 const generateResults = (): number[] => {
   const results = [];

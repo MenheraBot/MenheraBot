@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [5.17.1] - 2024-05-26
 
+### Added
+
+- Novos tipos de missões diárias adicionados!
+
+### Changed
+
+- Reduzido a chance de um bônus de daily ser uma semente.
+- Adicionado emoji na mensagem de recusar Pix.
+- O tempo para o sorteio do bicho foi reduzido para **5** horas.
+
 ### Fixed
 
 - Corrigido problema das missões diárias mudarem nos primeiros usos do comando `/daily`. 
