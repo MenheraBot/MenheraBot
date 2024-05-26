@@ -1,7 +1,12 @@
 import { AwardValues } from './dailies';
 
 /* eslint-disable camelcase */
-type DailyTypes = 'use_command' | 'win_bet' | 'win_stars_in_bets';
+type DailyTypes =
+  | 'use_command'
+  | 'win_bet'
+  | 'win_stars_in_bets'
+  | 'announce_product'
+  | 'success_on_hunt';
 
 interface BaseDaily {
   type: DailyTypes;
@@ -22,6 +27,14 @@ interface WinStarsInBet extends BaseDaily {
   type: 'win_stars_in_bets';
 }
 
+interface AnnounceProduct extends BaseDaily {
+  type: 'announce_product';
+}
+
+interface SuccessOnHunt extends BaseDaily {
+  type: 'success_on_hunt';
+}
+
 export type Award<Helper extends number | string> = {
   type: AwardValues;
   value: number;
@@ -36,4 +49,4 @@ export type DatabaseDaily = {
   awards: [Award<number | string>, Award<number | string>, Award<number | string>];
 };
 
-export type Daily = UseCommandDaily | WinBetDaily | WinStarsInBet;
+export type Daily = UseCommandDaily | WinBetDaily | WinStarsInBet | AnnounceProduct | SuccessOnHunt;

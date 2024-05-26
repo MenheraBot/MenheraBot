@@ -21,6 +21,7 @@ import { postHuntExecution, postTransaction } from '../../utils/apiRequests/stat
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
 import { ProbabilityAmount } from '../../types/menhera';
+import executeDailies from '../../modules/dailies/executeDailies';
 
 const choices = [
   ...transactionableCommandOption.filter((a) => a.value !== 'estrelinhas'),
@@ -188,7 +189,8 @@ const HuntCommand = createCommand({
 
     await ctx.makeMessage({ embeds: [embed] });
 
-    if (result.value > 0)
+    if (result.value > 0) {
+      await executeDailies.successOnHunt(ctx.authorData, result.success);
       await postTransaction(
         `${bot.id}`,
         `${ctx.author.id}`,
@@ -196,6 +198,7 @@ const HuntCommand = createCommand({
         selection,
         ApiTransactionReason.HUNT_COMMAND,
       );
+    }
 
     await postHuntExecution(
       `${ctx.author.id}`,

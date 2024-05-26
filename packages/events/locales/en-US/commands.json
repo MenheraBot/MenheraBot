@@ -1224,7 +1224,9 @@
     "descriptions": {
       "use_command": "{{emoji}} Use the command _{{command}}_ **{{amount}}** times. ({{has}}/{{need}})",
       "win_bet": "{{emoji}} Win _{{bet}}_ matches **{{amount}}** times. ({{has}}/{{need}})",
-      "win_stars_in_bets": "{{emoji}} Conquer **{{amount}}** :star: playing _bicho_, _blackjack_ or _roulette_ ({{has}}/{{need}})"
+      "announce_product": "{{emoji}} Announce **{{need}}** products at the neighborhood fair. ({{has}}/{{need}})",
+      "success_on_hunt": "{{emoji}} Obtain success on **{{need}}** hunts. ({{has}}/{{need}})",
+      "win_stars_in_bets": "{{emoji}} Conquer **{{amount}}** :star: playing _bicho_, _blackjack_ or _roulette_. ({{has}}/{{need}})"
     }
   }
 }

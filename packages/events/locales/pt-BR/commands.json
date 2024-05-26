@@ -1228,8 +1228,10 @@
     },
     "descriptions": {
       "use_command": "{{emoji}} Use o comando _{{name}}_ **{{need}}** vezes. ({{has}}/{{need}})",
-      "win_bet": "{{emoji}} Vença apostas no _{{bet}}_ **{{need}}** times. ({{has}}/{{need}})",
-      "win_stars_in_bets": "{{emoji}} Conquiste **{{need}}** :star: jogando _blackjack_, _bicho_, ou _roleta_ ({{has}}/{{need}})"
+      "win_bet": "{{emoji}} Vença apostas no _{{bet}}_ **{{need}}** vezes. ({{has}}/{{need}})",
+      "announce_product": "{{emoji}} Anuncie **{{need}}** produtos na feira da vizinhança. ({{has}}/{{need}})",
+      "success_on_hunt": "{{emoji}} Obtenha sucesso em **{{need}}** caças. ({{has}}/{{need}})",
+      "win_stars_in_bets": "{{emoji}} Conquiste **{{need}}** :star: jogando _blackjack_, _bicho_, ou _roleta_. ({{has}}/{{need}})"
     }
   }
 }

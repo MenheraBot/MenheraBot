@@ -59,7 +59,7 @@ const Dailies: Record<number, Daily> = {
   },
   5: {
     type: 'win_bet',
-    amountLimits: [5, 15],
+    amountLimits: [5, 11],
     bet: 'roleta',
   },
   6: {
@@ -69,7 +69,30 @@ const Dailies: Record<number, Daily> = {
   },
   7: {
     type: 'win_stars_in_bets',
-    amountLimits: [10000, 50000],
+    amountLimits: [10000, 40000],
+  },
+  8: {
+    type: 'use_command',
+    name: 'sarrar',
+    amountLimits: [3, 5],
+  },
+  9: {
+    type: 'use_command',
+    name: 'vasco',
+    amountLimits: [3, 5],
+  },
+  10: {
+    type: 'use_command',
+    name: 'macetava',
+    amountLimits: [3, 5],
+  },
+  11: {
+    type: 'announce_product',
+    amountLimits: [2, 3],
+  },
+  12: {
+    type: 'success_on_hunt',
+    amountLimits: [3, 6],
   },
 };
 

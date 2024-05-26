@@ -73,4 +73,20 @@ const winBet = async (user: DatabaseUserSchema, bet: WinBetDaily['bet']): Promis
   await executeDailies(user, 1, shouldExecute);
 };
 
-export default { useCommand, winBet, winStarsInBet };
+const announceProduct = async (user: DatabaseUserSchema): Promise<void> => {
+  const shouldExecute = (dailyData: Daily) => {
+    return dailyData.type === 'announce_product';
+  };
+
+  await executeDailies(user, 1, shouldExecute);
+};
+
+const successOnHunt = async (user: DatabaseUserSchema, times: number): Promise<void> => {
+  const shouldExecute = (dailyData: Daily) => {
+    return dailyData.type === 'success_on_hunt';
+  };
+
+  await executeDailies(user, times, shouldExecute);
+};
+
+export default { useCommand, winBet, winStarsInBet, announceProduct, successOnHunt };
