@@ -36,7 +36,7 @@ const redeemInteractions = async (ctx: ComponentInteractionContext): Promise<voi
   const [action, dailyIndex, itemIndex] = ctx.sentData;
 
   const user = await userRepository.ensureFindUser(ctx.user.id);
-  const missionToReedem = getUserDailies(user)[Number(dailyIndex)];
+  const missionToReedem = (await getUserDailies(user))[Number(dailyIndex)];
 
   if (missionToReedem.need > missionToReedem.has)
     return ctx.makeMessage({
@@ -155,7 +155,7 @@ const DailyCommand = createCommand({
   execute: async (ctx, finishCommand) => {
     finishCommand();
 
-    const userDailies = getUserDailies(ctx.authorData);
+    const userDailies = await getUserDailies(ctx.authorData);
 
     const embed = createEmbed({
       title: ctx.prettyResponse('calendar', 'commands:daily.title'),

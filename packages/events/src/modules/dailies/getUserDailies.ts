@@ -4,7 +4,7 @@ import { calculateUserDailies } from './calculateUserDailies';
 
 import { DatabaseDaily } from './types';
 
-const getUserDailies = (user: DatabaseUserSchema): DatabaseDaily[] => {
+const getUserDailies = async (user: DatabaseUserSchema): Promise<DatabaseDaily[]> => {
   const todayDayId = new Date().getDate();
   const isUpToDate = user.dailyDayId === todayDayId;
 
@@ -12,7 +12,7 @@ const getUserDailies = (user: DatabaseUserSchema): DatabaseDaily[] => {
 
   const newDailies = calculateUserDailies();
 
-  userRepository.updateUser(user.id, { dailies: newDailies, dailyDayId: todayDayId });
+  await userRepository.updateUser(user.id, { dailies: newDailies, dailyDayId: todayDayId });
 
   return newDailies;
 };

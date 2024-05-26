@@ -10,7 +10,7 @@ const executeDailies = async (
   toIncrease: number,
   shouldExecute: (dailyData: Daily) => boolean,
 ): Promise<void> => {
-  const userDailies = getUserDailies(user);
+  const userDailies = await getUserDailies(user);
 
   const setter: Record<string, DatabaseDaily> = {};
   const incrementer: Partial<DatabaseUserSchema> = {};
