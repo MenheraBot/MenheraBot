@@ -976,6 +976,7 @@
     "someone-is-banned": "One of the users you selected is banned from Menhera and therefore cannot play Poker!",
     "someone-is-poor": "One of the users you selected does not have **{{stars}}** :star: to bet on a Poker match!",
     "accept-invite": "Accept invite",
+    "update-info": "Update info",
     "start-match": "Start match",
     "match-title-friendly": "Friendly Poker Match",
     "match-title-worth": "Official Poker Match",

@@ -981,6 +981,7 @@
     "someone-is-banned": "Um dos usuários que você selecionou está banido da Menhera, portanto, não pode jogar Poker!",
     "someone-is-poor": "Um dos usuários que você selecionou não possui **{{stars}}** :star: para apostar em uma partida de Poker!",
     "accept-invite": "Aceitar convite",
+    "update-info": "Atualizar informações",
     "start-match": "Iniciar partida",
     "match-title-friendly": "Partida de Poker Amistosa",
     "match-title-worth": "Partida de Poker Oficial",

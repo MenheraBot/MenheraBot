@@ -60,7 +60,7 @@ const updatePlayerHandValue = async (
     components: [
       createActionRow([
         createButton({
-          label: 'Atualizar imagem',
+          label: ctx.locale('commands:poker.update-info'),
           style: ButtonStyles.Primary,
           customId: createCustomId(
             2,
