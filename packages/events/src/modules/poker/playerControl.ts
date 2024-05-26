@@ -50,14 +50,7 @@ const updatePlayerHandValue = async (
     })}\n${ctx.locale('commands:poker.player.chips', { chips: player.chips })}`,
     footer: player.folded ? { text: ctx.locale('commands:poker.player.not-in-round') } : undefined,
     color: hexStringToNumber(authorData.selectedColor),
-    image:
-      image && image.err
-        ? undefined
-        : {
-            url: image
-              ? 'attachment://poker.png'
-              : ctx.interaction.message?.embeds?.[0].image?.url ?? '',
-          },
+    image: image && image.err ? undefined : { url: 'attachment://poker.png' },
   });
 
   await ctx.makeMessage({
