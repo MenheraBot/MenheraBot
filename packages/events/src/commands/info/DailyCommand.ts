@@ -12,14 +12,12 @@ import { Plants } from '../../modules/fazendinha/constants';
 import { AvailablePlants } from '../../modules/fazendinha/types';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { addItems } from '../../modules/fazendinha/siloUtils';
-import { logger } from '../../utils/logger';
 
 const getDailyStatus = (daily: DatabaseDaily): 'reedem' | 'unfinished' | 'reedemed' =>
   // eslint-disable-next-line no-nested-ternary
   daily.redeemed ? 'reedemed' : daily.has >= daily.need ? 'reedem' : 'unfinished';
 
 const getAwardEmoji = (ctx: InteractionContext, award: Award<string | number>): string => {
-  logger.debug(award);
   switch (award.type) {
     case 'hunt':
       return ctx.safeEmoji(award.helper as 'demons');
@@ -36,7 +34,7 @@ const redeemInteractions = async (ctx: ComponentInteractionContext): Promise<voi
   const [action, dailyIndex, itemIndex] = ctx.sentData;
 
   const user = await userRepository.ensureFindUser(ctx.user.id);
-  const missionToReedem = getUserDailies(user)[Number(dailyIndex)];
+  const missionToReedem = (await getUserDailies(user))[Number(dailyIndex)];
 
   if (missionToReedem.need > missionToReedem.has)
     return ctx.makeMessage({
@@ -155,7 +153,7 @@ const DailyCommand = createCommand({
   execute: async (ctx, finishCommand) => {
     finishCommand();
 
-    const userDailies = getUserDailies(ctx.authorData);
+    const userDailies = await getUserDailies(ctx.authorData);
 
     const embed = createEmbed({
       title: ctx.prettyResponse('calendar', 'commands:daily.title'),
@@ -165,7 +163,7 @@ const DailyCommand = createCommand({
           const daily = getDailyById(d.id);
           return ctx.locale(`commands:daily.descriptions.${daily.type}`, {
             ...d,
-            ...daily,
+            count: d.need,
             emoji:
               // eslint-disable-next-line no-nested-ternary
               d.has < d.need

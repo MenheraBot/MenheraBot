@@ -17,7 +17,9 @@ const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promis
 
   if (selectedButton === 'NEGATE') {
     ctx.makeMessage({
-      content: ctx.locale('commands:presentear.negated', { user: mentionUser(ctx.user.id) }),
+      content: ctx.prettyResponse('error', 'commands:presentear.negated', {
+        user: mentionUser(ctx.user.id),
+      }),
       components: [],
     });
     return;

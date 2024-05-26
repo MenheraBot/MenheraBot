@@ -54,23 +54,41 @@ const getDailyAwardOptions = (): [
 
 const calculateUserDailies = (): DatabaseDaily[] => {
   const newDailies: DatabaseDaily[] = [];
+  const allDailies = getAllDailies();
 
   while (newDailies.length < DAILIES_AMOUNT) {
-    const randomDaily = randomFromArray(getAllDailies());
+    const randomDaily = randomFromArray(allDailies);
 
-    if (!newDailies.some((d) => d.id === randomDaily.id)) {
+    if (
+      !newDailies.some(
+        (d) =>
+          d.id === randomDaily.id &&
+          (!randomDaily.data.specifications || randomDaily.data.specifications.length === 1),
+      )
+    ) {
       const randomAmount = Math.floor(
         Math.random() * (randomDaily.data.amountLimits[1] - randomDaily.data.amountLimits[0]) +
           randomDaily.data.amountLimits[0],
       );
 
-      newDailies.push({
-        id: randomDaily.id,
-        has: 0,
-        need: randomAmount,
-        redeemed: false,
-        awards: getDailyAwardOptions(),
-      });
+      const specification = randomDaily.data.specifications
+        ? randomFromArray(randomDaily.data.specifications)
+        : undefined;
+
+      if (
+        !(
+          specification &&
+          newDailies.some((a) => a.id === randomDaily.id && a.specification === specification)
+        )
+      )
+        newDailies.push({
+          id: randomDaily.id,
+          has: 0,
+          need: randomAmount,
+          redeemed: false,
+          awards: getDailyAwardOptions(),
+          specification,
+        });
     }
   }
 

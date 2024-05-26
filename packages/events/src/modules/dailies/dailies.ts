@@ -14,7 +14,7 @@ export const DAILIES_AMOUNT = 3;
 const AvailableAwards = [
   {
     value: 'seed' as const,
-    probability: 75,
+    probability: 50,
   },
   {
     value: 'roll' as const,
@@ -37,63 +37,41 @@ const AvailableAwards = [
 export type AwardValues = (typeof AvailableAwards)[number]['value'];
 
 const Dailies: Record<number, Daily> = {
-  1: {
+  20: {
     type: 'use_command',
-    name: 'mamar',
+    specifications: [], // This is populated at loadCommands
     amountLimits: [6, 18],
   },
-  2: {
-    type: 'use_command',
-    name: '8ball',
-    amountLimits: [5, 10],
-  },
-  3: {
-    type: 'use_command',
-    name: 'vergonha',
-    amountLimits: [7, 12],
-  },
-  4: {
-    type: 'win_bet',
-    amountLimits: [3, 10],
-    bet: 'blackjack',
-  },
-  5: {
-    type: 'win_bet',
-    amountLimits: [5, 11],
-    bet: 'roleta',
-  },
-  6: {
-    type: 'win_bet',
-    amountLimits: [1, 2],
-    bet: 'bicho',
-  },
-  7: {
-    type: 'win_stars_in_bets',
-    amountLimits: [10000, 40000],
-  },
-  8: {
-    type: 'use_command',
-    name: 'sarrar',
-    amountLimits: [3, 5],
-  },
-  9: {
-    type: 'use_command',
-    name: 'vasco',
-    amountLimits: [3, 5],
-  },
-  10: {
-    type: 'use_command',
-    name: 'macetava',
-    amountLimits: [3, 5],
-  },
-  11: {
+  21: {
     type: 'announce_product',
     amountLimits: [2, 3],
   },
-  12: {
+  22: {
     type: 'success_on_hunt',
     amountLimits: [3, 6],
   },
+  23: {
+    type: 'use_action_commands',
+    amountLimits: [5, 14],
+  },
+  24: {
+    type: 'win_stars_in_bets',
+    amountLimits: [10000, 40000],
+  },
+  25: {
+    type: 'win_bet',
+    amountLimits: [1, 2],
+    specifications: ['bicho'],
+  },
+  26: {
+    type: 'win_bet',
+    amountLimits: [3, 10],
+    specifications: ['blackjack', 'roleta'],
+  },
+};
+
+const populateCommand = (command: string): void => {
+  Dailies[20].specifications?.push(command);
 };
 
 const getDailyById = <D extends Daily>(id: number): D => {
@@ -108,4 +86,4 @@ const getAllDailies = (): StaticItemData<Daily>[] =>
 const getRandomAward = (): AwardValues =>
   calculateProbability<(typeof AvailableAwards)[number]>(AvailableAwards);
 
-export { getDailyById, getAllDailies, getRandomAward };
+export { getDailyById, getAllDailies, getRandomAward, populateCommand };
