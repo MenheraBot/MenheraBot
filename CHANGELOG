@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Missões diárias!** Todo dia 3 missões estarão disponíveis. Use `/daily` para ver e reinvidicar seus bônus!
+
+### Removed
+
+- Removido limite de plantas na fazendinha. Todos usuários podem plantar todos tipos de sementes agora!
+
 ## [5.16.0] - 2024-05-12
 
 ### Added

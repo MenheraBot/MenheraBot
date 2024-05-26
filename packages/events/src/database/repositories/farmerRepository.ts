@@ -18,8 +18,6 @@ import { registerCacheStatus } from '../../structures/initializePrometheus';
 const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSchema => ({
   id: `${user.id}`,
   plantations: user.plantations,
-  biggestSeed: user.biggestSeed,
-  plantedFields: user.plantedFields,
   dailies: user.dailies,
   dailyDayId: user.dailyDayId,
   experience: user.experience,
@@ -73,8 +71,6 @@ const executeHarvest = async (
   plant: AvailablePlants,
   alreadyInSilo: boolean,
   success: boolean,
-  plantedFields: number,
-  biggestSeed: number,
   weight: number,
 ): Promise<void> => {
   const pushOrIncrement: Record<string, unknown> = {
@@ -96,7 +92,7 @@ const executeHarvest = async (
   const updatedUser = await farmerModel.findOneAndUpdate(
     { id: `${farmerId}` },
     {
-      $set: { [`plantations.${fieldIndex}`]: field, plantedFields, biggestSeed },
+      $set: { [`plantations.${fieldIndex}`]: field },
       ...(success ? pushOrIncrement : {}),
     },
     {

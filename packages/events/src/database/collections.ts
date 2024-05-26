@@ -114,8 +114,6 @@ const farmerSchema = new Schema({
   silo: { type: Array, default: [] },
   experience: { type: Number, deafult: 0 },
   siloUpgrades: { type: Number, default: 0 },
-  biggestSeed: { type: Number, default: 0 },
-  plantedFields: { type: Number, default: 0 },
   lastPlantedSeed: { type: Number, default: 0 },
   dailies: { type: Array, default: [] },
   dailyDayId: { type: Number, default: 0 },
