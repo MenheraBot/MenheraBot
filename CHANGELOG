@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - Novos tipos de missões diárias adicionados!
+- Adicionado botão para usar um roll ao tentar caçar cansado. 
 
 ### Changed
 
@@ -20,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - Corrigido problema das missões diárias mudarem nos primeiros usos do comando `/daily`. 
+- Corrigido erro de português no aviso de Rate Limit.
 
 ## [5.17.0] - 2024-05-26
 

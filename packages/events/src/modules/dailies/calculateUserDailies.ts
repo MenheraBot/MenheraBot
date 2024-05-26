@@ -1,4 +1,3 @@
-/* eslint-disable no-continue */
 import { randomFromArray } from '../../utils/miscUtils';
 import {
   DAILIES_AMOUNT,

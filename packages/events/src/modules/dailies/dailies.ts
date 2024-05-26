@@ -52,7 +52,7 @@ const Dailies: Record<number, Daily> = {
   },
   23: {
     type: 'use_action_commands',
-    amountLimits: [6, 18],
+    amountLimits: [5, 14],
   },
   24: {
     type: 'win_stars_in_bets',
