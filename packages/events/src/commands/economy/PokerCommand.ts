@@ -28,6 +28,7 @@ import {
   executeMasterAction,
   forceRemovePlayers,
   showPlayerCards,
+  updatePlayerHandValue,
 } from '../../modules/poker/playerControl';
 import { afterLobbyAction } from '../../modules/poker/afterMatchLobby';
 import userRepository from '../../database/repositories/userRepository';
@@ -64,6 +65,8 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
     });
 
   switch (action) {
+    case 'UPDATE_HAND_VALUE':
+      return updatePlayerHandValue(ctx, player, gameData);
     case 'SEE_CARDS':
       return showPlayerCards(ctx, player, gameData);
     case 'CLOSE_TABLE':
