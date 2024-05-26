@@ -13,6 +13,8 @@ import { BlackjackCard, BlackjackFinishGameReason } from './types';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { ApiTransactionReason } from '../../types/api';
 import { sendBlackjackMessage } from './sendBlackjackMessage';
+import userRepository from '../../database/repositories/userRepository';
+import executeDailies from '../dailies/executeDailies';
 
 const finishMatch = async (
   ctx: ChatInputInteractionContext | ComponentInteractionContext,
@@ -39,7 +41,6 @@ const finishMatch = async (
 
   if (didUserWin) {
     await starsRepository.addStars(ctx.interaction.user.id, prize);
-
     await postTransaction(
       `${bot.id}`,
       `${ctx.interaction.user.id}`,
@@ -47,6 +48,9 @@ const finishMatch = async (
       'estrelinhas',
       ApiTransactionReason.BLACKJACK_COMMAND,
     );
+    const user = await userRepository.ensureFindUser(ctx.user.id);
+    await executeDailies.winBet(user, 'blackjack');
+    await executeDailies.winStarsInBet(user, prize);
   }
 
   sendBlackjackMessage(

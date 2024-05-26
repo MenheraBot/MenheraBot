@@ -7,7 +7,6 @@ import {
   SEED_AMOUNT,
   STARS_PRIZE,
   getAllDailies,
-  getDailyById,
   getRandomAward,
 } from './dailies';
 import { Award, DatabaseDaily } from './types';
@@ -59,7 +58,7 @@ const calculateUserDailies = (): DatabaseDaily[] => {
   while (newDailies.length < DAILIES_AMOUNT) {
     const randomDaily = randomFromArray(getAllDailies());
 
-    if (!newDailies.some((d) => getDailyById(d.id).type === randomDaily.data.type)) {
+    if (!newDailies.some((d) => d.id === randomDaily.id)) {
       const randomAmount = Math.floor(
         Math.random() * (randomDaily.data.amountLimits[1] - randomDaily.data.amountLimits[0]) +
           randomDaily.data.amountLimits[0],

@@ -230,7 +230,7 @@ const setInteractionCreateEvent = (): void => {
         }
       });
 
-    await executeDailies.useCommand(ctx, authorData);
+    await executeDailies.useCommand(authorData, commandUsed.command);
 
     bot.commandsInExecution -= 1;
 

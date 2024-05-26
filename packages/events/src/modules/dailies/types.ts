@@ -13,7 +13,7 @@ interface UseCommandDaily extends BaseDaily {
   name: string;
 }
 
-interface WinBetDaily extends BaseDaily {
+export interface WinBetDaily extends BaseDaily {
   type: 'win_bet';
   bet: 'blackjack' | 'roleta' | 'bicho';
 }
