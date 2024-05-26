@@ -508,6 +508,7 @@
     "users": "Loyal Users {{page}}º",
     "used": "Used **{{times}}** times",
     "use": "Used **{{times}}** times",
+    "total-used-commands": "{{user}} used **{{commands}}** commands.",
     "used-commands": "Used **{{times}}** commands",
     "command-required": "You need to inform which command you want to search for in this top!"
   },
@@ -657,6 +658,7 @@
     "no-user": "This user does't have an inventory",
     "title": "{{user}}'s Inventory",
     "no-item": "This user's inventory is empty!",
+    "no-item-active": "This user does not have any active items.",
     "active": "Active Items",
     "items": "Inventory Item",
     "use": "Use Items",

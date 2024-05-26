@@ -4,7 +4,7 @@ import { capitalize } from '../../utils/miscUtils';
 import { InteractionContext } from '../../types/menhera';
 import { calculateSkipCount, createPaginationButtons } from '.';
 import { getDisplayName } from '../../utils/discord/userUtils';
-import { getTopCommandsByUses } from '../../utils/apiRequests/statistics';
+import { getTopCommandsByUses, getUserProfileInfo } from '../../utils/apiRequests/statistics';
 import userRepository from '../../database/repositories/userRepository';
 import titlesRepository from '../../database/repositories/titlesRepository';
 
@@ -20,6 +20,8 @@ const executeUsedCommandsFromUserTop = async (
   if (!res || res.length === 0)
     return ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
 
+  const totalUsedCommands = await getUserProfileInfo(`${user.id}`);
+
   const userData = await userRepository.ensureFindUser(user.id);
 
   const rawTitle = await titlesRepository.getTitleInfo(userData.currentTitle);
@@ -33,6 +35,9 @@ const executeUsedCommandsFromUserTop = async (
       page: page > 1 ? page : 1,
     }),
     color: hexStringToNumber(embedColor),
+    description: totalUsedCommands
+      ? ctx.locale('commands:top.total-used-commands', { commands: totalUsedCommands.totalUses })
+      : undefined,
     footer: { text: translatedTitle ?? '' },
     fields: [],
   });

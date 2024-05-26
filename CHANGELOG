@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - **Missões diárias!** Todo dia 3 missões estarão disponíveis. Use `/daily` para ver e reinvidicar seus bônus!
+- O comando `/top usos comandos tipo:Comandos mais usados de um usuário` agora mostra o total de comandos usados pelo usuário. - Sugerido por @mareys.
+
+### Changed
+
+- Atualizado texto de nenhum item ativado no comando `/itens`. - Sugerido por @null00111111
 
 ### Removed
 

@@ -105,7 +105,7 @@ const buttonClickExecutor = async (ctx: ComponentInteractionContext): Promise<vo
                   )}\n\n`,
                 '',
               )
-            : ctx.locale('commands:itens.no-item'),
+            : ctx.locale('commands:itens.no-item-active'),
         inline: true,
       },
     ],

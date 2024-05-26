@@ -513,6 +513,7 @@
     "user": "Comandos Favoritos de {{user}} {{page}}º",
     "used": "Usado **{{times}}** vezes",
     "use": "Usou **{{times}}** vezes",
+    "total-used-commands": "{{user}} usou **{{commands}}** comandos.",
     "used-commands": "Usou **{{times}}** comandos",
     "command-required": "Tu precisa informar qual comando tu quer buscar nesse top!"
   },
@@ -663,6 +664,7 @@
     "no-user": "Este usuário não possui inventário",
     "title": "Inventário de {{user}}",
     "no-item": "O inventário deste usuário está vazio!",
+    "no-item-active": "Este usuário não possui nenhum item ativo.",
     "active": "Itens Ativos",
     "items": "Itens no Inventário",
     "banned": "Este usuário está **banido** de usar a Menhera",
