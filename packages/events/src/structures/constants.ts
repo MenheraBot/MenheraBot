@@ -28,6 +28,7 @@ export const EMOJIS = {
   question: '❓',
   yellow_circle: '🟡',
   heart: '❤️',
+  roll: '🔑',
   lick: '👅',
   time: '⏲️',
   sword: '⚔️',

@@ -4,9 +4,13 @@ import { StaticItemData } from '../hunt/types';
 import { Daily } from './types';
 
 export const FINISHED_DAILY_AWARD = 5_000;
+export const STARS_PRIZE = 7_000;
+export const SEED_AMOUNT = 3;
+export const PLANT_AMOUNT = 1;
+export const ROLLS_COUNT = 1;
+export const HUNT_AMOUNT = 2;
 export const DAILIES_AMOUNT = 3;
 
-// [ (hunt probabilities awards)[], (fazendinha)[], (outros, estrelinhas, temas, titulos)[]  ]
 const AvailableAwards = [
   {
     value: 'seed' as const,
@@ -28,11 +32,9 @@ const AvailableAwards = [
     value: 'plant' as const,
     probability: 15,
   },
-  {
-    value: 'theme' as const,
-    probability: 1,
-  },
 ];
+
+export type AwardValues = (typeof AvailableAwards)[number]['value'];
 
 const Dailies: Record<number, Daily> = {
   1: {
@@ -80,7 +82,7 @@ const getDailyById = <D extends Daily>(id: number): D => {
 const getAllDailies = (): StaticItemData<Daily>[] =>
   Object.entries(Dailies).map((d) => ({ id: Number(d[0]), data: d[1] }));
 
-const getRandomAward = () =>
+const getRandomAward = (): AwardValues =>
   calculateProbability<(typeof AvailableAwards)[number]>(AvailableAwards);
 
-export { getDailyById, getAllDailies };
+export { getDailyById, getAllDailies, getRandomAward };

@@ -1,6 +1,7 @@
 import userRepository from '../../database/repositories/userRepository';
 import { DatabaseUserSchema } from '../../types/database';
 import { calculateUserDailies } from './calculateUserDailies';
+
 import { DatabaseDaily } from './types';
 
 const getUserDailies = (user: DatabaseUserSchema): DatabaseDaily[] => {
@@ -15,7 +16,5 @@ const getUserDailies = (user: DatabaseUserSchema): DatabaseDaily[] => {
 
   return newDailies;
 };
-
-// const getDailyAwardOptions = () => {};
 
 export { getUserDailies };

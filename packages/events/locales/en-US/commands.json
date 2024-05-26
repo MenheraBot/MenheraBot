@@ -1211,7 +1211,16 @@
     "reedemed": "({{index}}) Reedemed",
     "unfinished": "({{index}}) {{has}}/{{need}}",
     "cannot-reedem": "You can't reedem this mission at the moment!",
-    "already-reedemed":"You have already reedemed the prizes for this mission!",
+    "already-reedemed": "You have already reedemed the prizes for this mission!",
+    "reedem-title": "Choose a bonus",
+    "reedemed-success": "Wise choice! You received **{{value}}x** {{emoji}} bonus for completing this daily quest!",
+    "reedem-options": {
+      "estrelinhas": "({{index}}) Stars",
+      "roll": "({{index}}) Roll",
+      "seed": "({{index}}) Seed",
+      "plant": "({{index}}) Plant",
+      "hunt": "({{index}}) Hunt"
+    },
     "descriptions": {
       "use_command": "{{emoji}} Use the command _{{command}}_ **{{amount}}** times. ({{has}}/{{need}})",
       "win_bet": "{{emoji}} Win _{{bet}}_ matches **{{amount}}** times. ({{has}}/{{need}})",

@@ -1216,7 +1216,16 @@
     "reedemed": "({{index}}) Resgatado",
     "unfinished": "({{index}}) {{has}}/{{need}}",
     "cannot-reedem": "Tu ainda não pode resgatar essa missão!",
-    "already-reedemed":"Tu já resgatou os prêmios dessa missão!",
+    "already-reedemed": "Tu já resgatou os prêmios dessa missão!",
+    "reedem-title": "Escolha um bônus",
+    "reedemed-success": "Ótima escolha! Tu recebeu **{{value}}x** {{emoji}} de bônus pela conclusão desta missão diária!",
+    "reedem-options": {
+      "estrelinhas": "({{index}}) Estrelinhas",
+      "roll": "({{index}}) Roll",
+      "seed": "({{index}}) Semente",
+      "plant": "({{index}}) Planta",
+      "hunt": "({{index}}) Caça"
+    },
     "descriptions": {
       "use_command": "{{emoji}} Use o comando _{{name}}_ **{{need}}** vezes. ({{has}}/{{need}})",
       "win_bet": "{{emoji}} Vença apostas no _{{bet}}_ **{{need}}** times. ({{has}}/{{need}})",

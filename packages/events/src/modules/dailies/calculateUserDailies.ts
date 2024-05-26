@@ -1,6 +1,57 @@
 import { randomFromArray } from '../../utils/miscUtils';
-import { DAILIES_AMOUNT, getAllDailies, getDailyById } from './dailies';
-import { DatabaseDaily } from './types';
+import {
+  DAILIES_AMOUNT,
+  HUNT_AMOUNT,
+  PLANT_AMOUNT,
+  ROLLS_COUNT,
+  SEED_AMOUNT,
+  STARS_PRIZE,
+  getAllDailies,
+  getDailyById,
+  getRandomAward,
+} from './dailies';
+import { Award, DatabaseDaily } from './types';
+
+const getDailyAwardOptions = (): [
+  Award<string | number>,
+  Award<string | number>,
+  Award<string | number>,
+] => {
+  const awards = [getRandomAward(), getRandomAward(), getRandomAward()];
+
+  const parsed = awards.map<Award<string | number>>((type) => {
+    switch (type) {
+      case 'estrelinhas':
+        return { type, value: STARS_PRIZE };
+      case 'roll':
+        return { type, value: ROLLS_COUNT };
+      case 'seed': {
+        const randomSeed = Math.floor(Math.random() * 25);
+        return { type, value: SEED_AMOUNT, helper: randomSeed };
+      }
+      case 'plant': {
+        const randomPlant = Math.floor(Math.random() * 25);
+        return { type, value: PLANT_AMOUNT, helper: randomPlant };
+      }
+      case 'hunt': {
+        const huntType = randomFromArray([
+          'demons' as const,
+          'giants' as const,
+          'angels' as const,
+          'archangels' as const,
+          'demigods' as const,
+          'gods' as const,
+        ]);
+
+        return { type, value: huntType === 'gods' ? 1 : HUNT_AMOUNT, helper: huntType };
+      }
+      default:
+        return { type, value: STARS_PRIZE };
+    }
+  });
+
+  return parsed as [Award<string | number>, Award<string | number>, Award<string | number>];
+};
 
 const calculateUserDailies = (): DatabaseDaily[] => {
   const newDailies: DatabaseDaily[] = [];
@@ -14,7 +65,13 @@ const calculateUserDailies = (): DatabaseDaily[] => {
           randomDaily.data.amountLimits[0],
       );
 
-      newDailies.push({ id: randomDaily.id, has: 0, need: randomAmount, redeemed: false });
+      newDailies.push({
+        id: randomDaily.id,
+        has: 0,
+        need: randomAmount,
+        redeemed: false,
+        awards: getDailyAwardOptions(),
+      });
     }
   }
 
