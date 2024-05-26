@@ -36,7 +36,10 @@ const executeUsedCommandsFromUserTop = async (
     }),
     color: hexStringToNumber(embedColor),
     description: totalUsedCommands
-      ? ctx.locale('commands:top.total-used-commands', { commands: totalUsedCommands.totalUses })
+      ? ctx.locale('commands:top.total-used-commands', {
+          commands: totalUsedCommands.totalUses,
+          user: getDisplayName(user),
+        })
       : undefined,
     footer: { text: translatedTitle ?? '' },
     fields: [],
