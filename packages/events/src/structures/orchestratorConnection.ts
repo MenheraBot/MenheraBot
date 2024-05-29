@@ -71,7 +71,7 @@ const createIpcConnection = async (): Promise<void> => {
             resolve();
             return;
           }
-          logger.debug(`[SHUTDOWN] There are still ${bot.commandsInExecution} running commands`);
+          logger.info(`[SHUTDOWN] There are still ${bot.commandsInExecution} running commands`);
         }, 1_000).unref();
       });
 
