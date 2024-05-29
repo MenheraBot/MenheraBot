@@ -54,7 +54,7 @@ const getAnnouncement = async (announcementId: string): Promise<null | DatabaseF
 
   MainRedisClient.setex(
     `fair_announcement:${announcementId}`,
-    3600,
+    604800,
     JSON.stringify(mongoToRedis(fromMongo)),
   );
 

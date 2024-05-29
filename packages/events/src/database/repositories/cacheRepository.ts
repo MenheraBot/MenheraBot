@@ -11,7 +11,7 @@ import { registerCacheStatus } from '../../structures/initializePrometheus';
 const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promise<User | null> => {
   if (userId === null || userId === 'null') return null;
 
-  const fromRedis = await MainRedisClient.getex(`discord_user:${userId}`, 'EX', 86400).catch(
+  const fromRedis = await MainRedisClient.getex(`discord_user:${userId}`, 'EX', 604800).catch(
     debugError,
   );
 
