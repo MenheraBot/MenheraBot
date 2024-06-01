@@ -87,7 +87,8 @@
   },
   "mamar": {
     "bot_uncensored": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
-    "bot": "{{author}} acabou de sujar a boca de óleo lambendo no bot {{mention}}",
+    "bot": "{{author}} acabou de sujar a boca de óleo lambendo o bot {{mention}}",
+    "not-allowed": "Ei... essa pessoa não quer ser mamada. Respeite a sua escolha",
     "self-mention_uncensored": "Não tenta me enganar, eu sei que tu não consegue 'LAMBER' mamar a si mesmo! Marque outra pessoa para mamar",
     "self-mention": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
     "embed_title_uncensored": "'LAMBER' Mamar",

@@ -10,6 +10,7 @@ import { getAssetLink } from '../../structures/cdnManager';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
+import userRepository from '../../database/repositories/userRepository';
 
 const BicudaCommand = createCommand({
   path: '',
@@ -53,6 +54,16 @@ const BicudaCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:mamar.user-banned'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
+
+    const userData = await userRepository.ensureFindUser(user.id);
+
+    if (!userData.allowMamar)
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:mamar.not-allowed'),
           flags: MessageFlags.EPHEMERAL,
         }),
       );
