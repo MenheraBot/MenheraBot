@@ -59,7 +59,7 @@ const createPaginationButtons = (
       ),
       style: ButtonStyles.Primary,
       label: ctx.locale('common:next'),
-      disabled: page === 99,
+      disabled: page === 100,
     }),
   ]);
 

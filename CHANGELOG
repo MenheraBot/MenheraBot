@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - A descrição de aceitar uma sarrada foi alterada. 
 - O comando `/casar` agora menciona usuários.
 
+### Hotfix
+
+- Os `/top`s vão até a página 100 agora.
+
 ## [5.17.1] - 2024-05-26
 
 ### Added
