@@ -11,6 +11,7 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import { EMOJIS } from '../../structures/constants';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { ApiTransactionReason } from '../../types/api';
+import { bot } from '../..';
 
 const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedButton, amount] = ctx.sentData;
@@ -34,6 +35,17 @@ const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promis
         user: mentionUser(ctx.commandAuthor.id),
       }),
       components: [],
+    });
+
+  if (ctx.commandAuthor.id === bot.ownerId)
+    return ctx.makeMessage({
+      content: `KKKKKKKKKKKKKK AE ${mentionUser(
+        bot.ownerId,
+      )} ENGANAMOS O BOBO NA CASCA DO OVO ${mentionUser(
+        ctx.user.id,
+      )} KKKKKKKKKK. Não, Lux não vai te mandar ${amount} :star: assim. Mas valeu a tentativa`,
+      components: [],
+      allowedMentions: { users: [bot.ownerId] },
     });
 
   ctx.makeMessage({

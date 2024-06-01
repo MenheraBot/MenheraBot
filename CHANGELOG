@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - **Bloquear mamadas**. Usuários podem escolher se querem ser mamadas ou não. 
+- Adicionado comando `/personalizar mamadas` para escolher se você quer ou não ser mamado.
+
+### Changed
+
+- A descrição de aceitar uma sarrada foi alterada. 
 
 ## [5.17.1] - 2024-05-26
 

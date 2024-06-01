@@ -89,6 +89,12 @@
     "bot_uncensored": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
     "bot": "{{author}} acabou de sujar a boca de óleo lambendo o bot {{mention}}",
     "not-allowed": "Ei... essa pessoa não quer ser mamada. Respeite a sua escolha",
+    "allow-question": "Tu quer ser mamado?",
+    "allow-description": "Me diga se você quer que outros usuários possam te mamar. Atualmente você {{permission}} ser mamado",
+    "allowed-true": "pode ✅",
+    "allowed-false": "não pode ❌",
+    "allow-true": "Quero ser mamado",
+    "allow-false": "Não quero ser mamado",
     "self-mention_uncensored": "Não tenta me enganar, eu sei que tu não consegue 'LAMBER' mamar a si mesmo! Marque outra pessoa para mamar",
     "self-mention": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
     "embed_title_uncensored": "'LAMBER' Mamar",
@@ -128,7 +134,7 @@
     },
     "cannot-sarrar-self": "Tu não pode sarrar consigo mesmo!",
     "embed_title": "Sarrar",
-    "embed_description": "{{mention}} aceitou o poder, e sarrou com {{author}}",
+    "embed_description": "{{mention}} aceitou o chamado, e sarrou com {{author}}",
     "sarrar": "Aceitar a Sarrada"
   },
   "atirar": {
