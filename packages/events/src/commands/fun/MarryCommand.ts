@@ -1,4 +1,8 @@
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import {
+  AllowedMentionsTypes,
+  ApplicationCommandOptionTypes,
+  ButtonStyles,
+} from 'discordeno/types';
 import { User } from 'discordeno/transformers';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
@@ -19,6 +23,7 @@ const executeMarry = async (ctx: ComponentInteractionContext): Promise<void> => 
         author: mentionUser(ctx.commandAuthor.id),
         toMarry: mentionUser(ctx.user.id),
       }),
+      allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
     });
 
   const [userData, commandAuthorData] = await Promise.all([
@@ -37,6 +42,7 @@ const executeMarry = async (ctx: ComponentInteractionContext): Promise<void> => 
       author: mentionUser(ctx.commandAuthor.id),
       toMarry: mentionUser(ctx.user.id),
     }),
+    allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
     components: [],
   });
 
@@ -123,6 +129,7 @@ const MarryCommand = createCommand({
         author: mentionUser(ctx.author.id),
         toMarry: mentionUser(mention.id),
       }),
+      allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
       components: [createActionRow([confirmButton, cancelButton])],
     });
 
