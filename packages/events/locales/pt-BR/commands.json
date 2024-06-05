@@ -1101,6 +1101,8 @@
         "no-such-product": "Esse produto não existe!",
         "not-enough-products": "Tu não tem **{{amount}}** {{emoji}} para anunciar.",
         "success": "Item anunciado! Ele já está disponível para compra por seus vizinhos",
+        "no-mate-announcement": "Não é possível anunciar Erva Mate {{emoji}} na feirinha!",
+        "already-announced": "Tu já possui um anúncio de {{emoji}} na feirinha! Tente anunciar outro produto.",
         "announce-limits": "Tu não tem anúncios disponíveis! Tu pode anunciar até no máximo **{{limit}}** itens",
         "out-needed-prices": "Tu não pode vender **{{amount}}** {{emoji}} por **{{price}}** :star:. O preço de venda desse item deve estar entre **{{min}}** e **{{max}}** :star: estrelinhas."
       },

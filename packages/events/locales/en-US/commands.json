@@ -1094,6 +1094,8 @@
     "feira": {
       "announce": {
         "no-such-product": "This product does not exist!",
+        "no-mate-announcement": "It is not possible to announce Mate {{emoji}} at the fair",
+        "already-announced": "You already have an announcement for {{emoji}} at the fair! Try advertising another product.",
         "not-enough-products": "You don't have **{{amount}}** {{emoji}} to announce.",
         "success": "Item announced! It is now available for purchase by your neighbors",
         "announce-limits": "You have no ads available! You can advertise up to a maximum of **{{limit}}** items",
