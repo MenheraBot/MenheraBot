@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased] 
 
+### Added
+
+- Adicionado um novo tipo de daily: **colher plantas**.
+
 ### Fixed
 
 - Corrigida a paginação infinita do comando `/fazendinha feira comprar`.

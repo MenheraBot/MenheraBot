@@ -2,6 +2,7 @@ import notificationRepository from '../../database/repositories/notificationRepo
 import userRepository from '../../database/repositories/userRepository';
 import { ChatInputInteractionCommand } from '../../types/commands';
 import { DatabaseUserSchema } from '../../types/database';
+import { AvailablePlants } from '../fazendinha/types';
 import { FINISHED_DAILY_AWARD, getDailyById } from './dailies';
 import { getUserDailies } from './getUserDailies';
 import { Daily, DatabaseDaily } from './types';
@@ -27,6 +28,8 @@ const executeDailies = async (
 
     needUpdate = true;
     daily.has += toIncrease;
+
+    daily.has = parseFloat(daily.has.toFixed(1));
 
     setter[`dailies.${i}`] = daily;
 
@@ -100,9 +103,22 @@ const successOnHunt = async (user: DatabaseUserSchema, times: number): Promise<v
   await executeDailies(user, shouldExecute, times);
 };
 
+const harvestPlant = async (
+  user: DatabaseUserSchema,
+  type: AvailablePlants,
+  weight: number,
+): Promise<void> => {
+  const shouldExecute = (dailyData: Daily, specification?: string) => {
+    return dailyData.type === 'harvest_plants' && `${type}` === specification;
+  };
+
+  await executeDailies(user, shouldExecute, weight);
+};
+
 export default {
   useCommand,
   winBet,
+  harvestPlant,
   winStarsInBet,
   announceProduct,
   successOnHunt,

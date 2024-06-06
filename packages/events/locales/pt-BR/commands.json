@@ -1247,6 +1247,7 @@
       "announce_product": "{{emoji}} Anuncie **{{need}}** produtos na feira da vizinhança. ({{has}}/{{need}})",
       "success_on_hunt": "{{emoji}} Obtenha sucesso em **{{need}}** caças. ({{has}}/{{need}})",
       "use_action_commands": "{{emoji}} Use **{{need}}** comandos de ação. ({{has}}/{{need}})",
+      "harvest_plants": "{{emoji}} Colha **{{need}}** Kg de _{{specification}}_. ({{has}}/{{need}})",
       "win_stars_in_bets": "{{emoji}} Conquiste **{{need}}** :star: jogando _blackjack_, _bicho_, ou _roleta_. ({{has}}/{{need}})"
     }
   }

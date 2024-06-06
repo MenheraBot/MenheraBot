@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ButtonComponent, ButtonStyles } from 'discordeno/types';
 import { createCommand } from '../../structures/command/createCommand';
 import { getUserDailies } from '../../modules/dailies/getUserDailies';
@@ -163,6 +164,7 @@ const DailyCommand = createCommand({
           const daily = getDailyById(d.id);
           return ctx.locale(`commands:daily.descriptions.${daily.type}`, {
             ...d,
+            specification: daily.specificationDisplay?.(ctx, d.specification!) ?? d.specification,
             count: d.need,
             emoji:
               // eslint-disable-next-line no-nested-ternary
