@@ -71,7 +71,7 @@ const finishGame = async (): Promise<void> => {
 
   const wonPlayers = players.filter((a) => a.didWin);
 
-  const biggestProfit = players.reduce((p, c) => (c.profit > p ? c.profit : p), 0);
+  const biggestProfit = players.reduce((p, c) => (c.profit > p && c.didWin ? c.profit : p), 0);
 
   const resultsEmbed = createEmbed({
     title: 'Resultados do Jogo do Bicho',
