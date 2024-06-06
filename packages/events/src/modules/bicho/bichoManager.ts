@@ -46,8 +46,6 @@ const finishGame = async (): Promise<void> => {
 
   postBichoResults(players, Date.now(), JSON.stringify(results));
 
-  let biggestProfit = 0;
-
   players.forEach(async (a) => {
     if (a.didWin) {
       const userData = await userRepository.ensureFindUser(a.id);
@@ -68,12 +66,12 @@ const finishGame = async (): Promise<void> => {
           stars: a.profit,
         },
       );
-
-      if (a.profit > biggestProfit) biggestProfit = a.profit;
     }
   });
 
   const wonPlayers = players.filter((a) => a.didWin);
+
+  const biggestProfit = players.reduce((p, c) => (c.profit > p ? c.profit : p), 0);
 
   const resultsEmbed = createEmbed({
     title: 'Resultados do Jogo do Bicho',
