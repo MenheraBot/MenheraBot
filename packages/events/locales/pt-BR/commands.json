@@ -846,7 +846,7 @@
       "edit": "Editar",
       "edit-title": "Editar sugestão",
       "thanks": "Sua sugestão foi enviada! Muito obrigada >.<",
-      "limited": "Tu tá limitado de enviar sugestões desde <t:{{unix}}>"
+      "limited": "Tu não pode mais enviar sugestões desde <t:{{unix}}> por mau uso do comando"
     },
     "suporte": {
       "message": "Está com algum problema, ou quer só conversar com mais gente que usa meus comandos? Entre em meu servidor de suporte: \n\nhttps://discord.gg/fZMdQbA\n|| SHHHHHhh, não fala pra moderação desse servidor que eu mandei esse convite, vai que eles me banam por divulgação... ||"
