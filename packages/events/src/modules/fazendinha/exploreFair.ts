@@ -150,18 +150,23 @@ const displayFair = async (
   embedColor: string,
   user?: User,
 ) => {
-  const annonucements = user
+  const totalAnnouncements = await fairRepository.getTotalAnnouncements();
+
+  const itemsToPick =
+    page === 0 ? MAX_ITEMS_PER_FAIR_PAGE : totalAnnouncements - page * MAX_ITEMS_PER_FAIR_PAGE;
+
+  const announcements = user
     ? await fairRepository.getUserProducts(user.id)
     : await Promise.all(
         (
           await fairRepository.getAnnouncementIds(
             page * MAX_ITEMS_PER_FAIR_PAGE,
-            MAX_ITEMS_PER_FAIR_PAGE,
+            itemsToPick > MAX_ITEMS_PER_FAIR_PAGE ? MAX_ITEMS_PER_FAIR_PAGE : itemsToPick,
           )
         ).map((a) => fairRepository.getAnnouncement(a)),
       );
 
-  if (annonucements.length === 0)
+  if (announcements.length === 0)
     return ctx.makeMessage({
       embeds: [],
       components: [],
@@ -189,7 +194,7 @@ const displayFair = async (
     placeholder: ctx.locale('commands:fazendinha.feira.comprar.select-item'),
   });
 
-  annonucements.forEach((item, i) => {
+  announcements.forEach((item, i) => {
     if (!item) return;
 
     embed.description += `${ctx.locale('commands:fazendinha.feira.comprar.description', {
@@ -244,7 +249,7 @@ const displayFair = async (
       ),
       label: ctx.locale('common:next'),
       style: ButtonStyles.Primary,
-      disabled: selectMenu.options.length < MAX_ITEMS_PER_FAIR_PAGE,
+      disabled: page * MAX_ITEMS_PER_FAIR_PAGE + announcements.length >= totalAnnouncements,
     });
 
     componentsToSend.push(createActionRow([backButton, nextButton]));
