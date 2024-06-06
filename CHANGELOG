@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.17.3] - 2024-06-06
+
+### Changed
+
+- Não é mais possível anunciar `Erva` na feirinha.
+- Não é mais possível anunciar uma planta que você já tenha um anúncio na feirinha.
+
+### Fixed
+
+- Corrigido o problema do "maior lucro" das mensagens do Jogo do Bicho no servidor de suporte - Reportado por @maycon.orp.
+
 ## [5.17.2] - 2024-06-01
 
 ### Added
