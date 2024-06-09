@@ -3,8 +3,8 @@ import { DatabaseFarmerSchema } from '../../types/database';
 import { InteractionContext } from '../../types/menhera';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils';
-import { Plants } from './constants';
-import { getFinishAllBonus, getUserDeliveries } from './deliveryUtils';
+import { FINISH_ALL_DELIVERIES_BONUS, Plants } from './constants';
+import { getUserDeliveries } from './deliveryUtils';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import farmerRepository from '../../database/repositories/farmerRepository';
@@ -76,7 +76,7 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
   });
 
   if (farmer.dailies.every((a) => a.finished)) {
-    const bonus = getFinishAllBonus(farmer.dailies);
+    const bonus = FINISH_ALL_DELIVERIES_BONUS;
 
     await Promise.all([
       postTransaction(
@@ -111,7 +111,7 @@ const executeDailyDelivery = async (
     color: hexStringToNumber(embedColor),
     fields: [],
     description: ctx.locale('commands:fazendinha.entregas.description', {
-      bonus: getFinishAllBonus(userDevlieries),
+      bonus: FINISH_ALL_DELIVERIES_BONUS,
       unix: millisToSeconds(endsIn),
     }),
   });
