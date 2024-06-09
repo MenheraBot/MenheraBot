@@ -1150,7 +1150,7 @@
       "deliver-embed-name-finished": "~~Entrega {{index}}~~ ✅",
       "deliver-embed-field": "Estrelinhas: **{{award}}** :star:",
       "deliver-embed-field-need": "Necessário: **{{amount}} Kg** {{emoji}}",
-      "description": "### Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas.\n### Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas\n\n### O caminhão partirá <t:{{unix}}:R>"
+      "description": "Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas. Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas\n\n O caminhão partirá <t:{{unix}}:R>"
     },
     "silo": {
       "embed-title": "Silo de {{user}}",
