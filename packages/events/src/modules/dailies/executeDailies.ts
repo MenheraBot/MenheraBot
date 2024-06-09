@@ -115,10 +115,19 @@ const harvestPlant = async (
   await executeDailies(user, shouldExecute, weight);
 };
 
+const finishDelivery = async (user: DatabaseUserSchema): Promise<void> => {
+  const shouldExecute = (dailyData: Daily) => {
+    return dailyData.type === 'finish_delivery';
+  };
+
+  await executeDailies(user, shouldExecute, 1);
+};
+
 export default {
   useCommand,
   winBet,
   harvestPlant,
+  finishDelivery,
   winStarsInBet,
   announceProduct,
   successOnHunt,

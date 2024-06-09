@@ -78,6 +78,10 @@ const Dailies: Record<number, Daily> = {
         Plants[Number(specification) as 1].emoji
       }`,
   },
+  28: {
+    type: 'finish_delivery',
+    amountLimits: [1, 3],
+  },
 };
 
 const populateCommand = (command: string): void => {

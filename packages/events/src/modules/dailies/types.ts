@@ -9,7 +9,8 @@ type DailyTypes =
   | 'announce_product'
   | 'success_on_hunt'
   | 'use_action_commands'
-  | 'harvest_plants';
+  | 'harvest_plants'
+  | 'finish_delivery';
 
 export interface Daily {
   type: DailyTypes;

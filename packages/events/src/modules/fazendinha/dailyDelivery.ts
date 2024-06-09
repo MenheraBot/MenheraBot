@@ -13,6 +13,8 @@ import starsRepository from '../../database/repositories/starsRepository';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
+import executeDailies from '../dailies/executeDailies';
+import userRepository from '../../database/repositories/userRepository';
 
 const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<void> => {
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
@@ -61,6 +63,8 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
       dailyUser.experience,
     ),
   ]);
+
+  await executeDailies.finishDelivery(await userRepository.ensureFindUser(ctx.user.id));
 
   await ctx.makeMessage({
     content: ctx.prettyResponse('wink', 'commands:fazendinha.entregas.deliver', {
