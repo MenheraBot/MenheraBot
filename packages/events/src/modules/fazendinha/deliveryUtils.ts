@@ -65,6 +65,6 @@ const getUserDeliveries = (farmer: DatabaseFarmerSchema): DeliveryMission[] => {
 };
 
 const getFinishAllBonus = (deliveries: DeliveryMission[]): number =>
-  Math.floor(deliveries.reduce((p, c) => p + c.award, 0) / 2);
+  Math.floor(deliveries.reduce((p, c) => p + c.award, 0) / 5);
 
 export { calculateUserDailyDeliveries, getUserDeliveries, getFinishAllBonus };

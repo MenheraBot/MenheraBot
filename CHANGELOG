@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Adicionado um novo tipo de daily: **colher plantas**.
 - Adicionado 41 novos gifs aos comandos de ação (Obg @mareys e @dszalone).
 
+### Changed
+
+- O limite máximo de peso para uma entrega do caminhão da fazendinha foi reduzido para `9 Kg`.
+- O número de entregas por dia foi reduzido para `6`.
+- O prêmio por finalizar todas entregas foi reduzido. 
+
 ### Fixed
 
 - Corrigida a paginação infinita do comando `/fazendinha feira comprar`.
