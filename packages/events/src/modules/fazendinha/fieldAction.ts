@@ -10,6 +10,8 @@ import { Plants } from './constants';
 import { getCurrentSeason } from './seasonsManager';
 import { AvailablePlants, PlantedField } from './types';
 import { getSiloLimits } from './siloUtils';
+import executeDailies from '../dailies/executeDailies';
+import userRepository from '../../database/repositories/userRepository';
 
 const plantField = async (
   ctx: ComponentInteractionContext,
@@ -126,6 +128,13 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
     );
 
   const harvestedWeight = state === 'MATURE' ? field.weight : undefined;
+
+  if (harvestedWeight)
+    executeDailies.harvestPlant(
+      await userRepository.ensureFindUser(ctx.user.id),
+      field.plantType,
+      harvestedWeight,
+    );
 
   displayPlantations(
     ctx,

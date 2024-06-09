@@ -29,18 +29,6 @@ const ExecuteFodase = async (
   finishCommand();
 };
 
-const ExecuteHumor = async (
-  ctx: ChatInputInteractionContext,
-  finishCommand: () => void,
-): Promise<void> => {
-  const selectedImage = getAssetLink('humor');
-
-  const embed = createEmbed({ image: { url: selectedImage }, color: COLORS.Random() });
-
-  ctx.makeMessage({ embeds: [embed] });
-  finishCommand();
-};
-
 const MemeCommand = createCommand({
   path: '',
   name: 'meme',
@@ -54,12 +42,6 @@ const MemeCommand = createCommand({
       descriptionLocalizations: { 'en-US': "「🤫」・Show that you don't care" },
       type: ApplicationCommandOptionTypes.SubCommand,
     },
-    {
-      name: 'humor',
-      description: '「🤣」・KK Tumor e Piadas',
-      descriptionLocalizations: { 'en-US': '「🤣」・LOL Humor and Jokes' },
-      type: ApplicationCommandOptionTypes.SubCommand,
-    },
   ],
   category: 'fun',
   authorDataFields: [],
@@ -67,7 +49,6 @@ const MemeCommand = createCommand({
     const command = ctx.getSubCommand();
 
     if (command === 'fds') return ExecuteFodase(ctx, finishCommand);
-    if (command === 'humor') return ExecuteHumor(ctx, finishCommand);
   },
 });
 

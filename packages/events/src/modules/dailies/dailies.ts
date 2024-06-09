@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { calculateProbability } from '../../utils/miscUtils';
+import { Plants } from '../fazendinha/constants';
 import { StaticItemData } from '../hunt/types';
 import { Daily } from './types';
 
@@ -67,6 +68,19 @@ const Dailies: Record<number, Daily> = {
     type: 'win_bet',
     amountLimits: [3, 10],
     specifications: ['blackjack', 'roleta'],
+  },
+  27: {
+    type: 'harvest_plants',
+    amountLimits: [2, 5],
+    specifications: Object.keys(Plants),
+    specificationDisplay: (ctx, specification) =>
+      `${ctx.locale(`data:plants.${specification as '1'}`)} ${
+        Plants[Number(specification) as 1].emoji
+      }`,
+  },
+  28: {
+    type: 'finish_delivery',
+    amountLimits: [1, 3],
   },
 };
 

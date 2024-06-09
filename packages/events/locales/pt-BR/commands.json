@@ -651,7 +651,7 @@
     "description": "Sua Mão: **{{userHand}}** -> `{{userTotal}}`\nMão da Menhera: **{{dealerCards}}** -> `{{dealerTotal}}`",
     "initial-options": "**[1] Começar** - Começe o jogo\n **[2] Desistir** - Desista deste jogo (e perca sua aposta)",
     "options": "**[1] Comprar** - Compre mais uma carta\n**[2] Parar** - Pare por aqui sua aposta",
-    "footer": "Suas estrelinhas já foram reduzidas! Para receber algo de volta, venca a partida",
+    "footer": "Suas estrelinhas já foram reduzidas! Para receber algo de volta, vença a partida",
     "footer-second-copy": "Esta é uma partida já em andamento, recomeçada por outro comando",
     "poor": "Tu não possui todas essas estrelinhas para apostar!",
     "your-hand": "Sua Mão",
@@ -1150,7 +1150,7 @@
       "deliver-embed-name-finished": "~~Entrega {{index}}~~ ✅",
       "deliver-embed-field": "Estrelinhas: **{{award}}** :star:",
       "deliver-embed-field-need": "Necessário: **{{amount}} Kg** {{emoji}}",
-      "description": "### Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas.\n### Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas\n\n### O caminhão partirá <t:{{unix}}:R>"
+      "description": "Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas. Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas\n\n O caminhão partirá <t:{{unix}}:R>"
     },
     "silo": {
       "embed-title": "Silo de {{user}}",
@@ -1247,7 +1247,11 @@
       "announce_product": "{{emoji}} Anuncie **{{need}}** produtos na feira da vizinhança. ({{has}}/{{need}})",
       "success_on_hunt": "{{emoji}} Obtenha sucesso em **{{need}}** caças. ({{has}}/{{need}})",
       "use_action_commands": "{{emoji}} Use **{{need}}** comandos de ação. ({{has}}/{{need}})",
-      "win_stars_in_bets": "{{emoji}} Conquiste **{{need}}** :star: jogando _blackjack_, _bicho_, ou _roleta_. ({{has}}/{{need}})"
+      "win_stars_in_bets": "{{emoji}} Conquiste **{{need}}** :star: jogando _blackjack_, _bicho_, ou _roleta_. ({{has}}/{{need}})",
+      "harvest_plants": "{{emoji}} Colha **{{need}}** Kg de _{{specification}}_. ({{has}}/{{need}})",
+      "finish_delivery": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})",
+      "finish_delivery-one": "{{emoji}} Realize **{{need}}** entrega da fazendinha. ({{has}}/{{need}})",
+      "finish_delivery-other": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})"
     }
   }
 }
