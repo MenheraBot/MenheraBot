@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased] 
+## [5.18.0] 
 
 ### Added
 
@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Changed
 
-- O limite máximo de peso para uma entrega do caminhão da fazendinha foi reduzido para `9 Kg`.
+- O limite máximo de peso para uma entrega do caminhão da fazendinha foi reduzido para `10 Kg`.
 - O número de entregas por dia foi reduzido para `6`.
 - O prêmio por finalizar todas entregas foi alterado para **30000** estrelinhas fixas.
 

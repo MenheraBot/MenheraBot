@@ -651,7 +651,7 @@
     "description": "Sua Mão: **{{userHand}}** -> `{{userTotal}}`\nMão da Menhera: **{{dealerCards}}** -> `{{dealerTotal}}`",
     "initial-options": "**[1] Começar** - Começe o jogo\n **[2] Desistir** - Desista deste jogo (e perca sua aposta)",
     "options": "**[1] Comprar** - Compre mais uma carta\n**[2] Parar** - Pare por aqui sua aposta",
-    "footer": "Suas estrelinhas já foram reduzidas! Para receber algo de volta, venca a partida",
+    "footer": "Suas estrelinhas já foram reduzidas! Para receber algo de volta, vença a partida",
     "footer-second-copy": "Esta é uma partida já em andamento, recomeçada por outro comando",
     "poor": "Tu não possui todas essas estrelinhas para apostar!",
     "your-hand": "Sua Mão",
