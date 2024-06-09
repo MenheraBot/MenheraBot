@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Corrigida a paginação infinita do comando `/fazendinha feira comprar`.
 
+### Removed 
+
+- O comando `/meme humor` foi deletado.
+
 ## [5.17.3] - 2024-06-06
 
 ### Changed
