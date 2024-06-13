@@ -1,11 +1,32 @@
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import {
+  ActionRow,
+  ApplicationCommandOptionTypes,
+  ButtonStyles,
+  TextStyles,
+} from 'discordeno/types';
 
+import { Embed } from 'discordeno/transformers';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import { bot } from '../..';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { createActionRow, createButton } from '../../utils/discord/componentUtils';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+  createTextInput,
+} from '../../utils/discord/componentUtils';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { extractFields } from '../../utils/discord/modalUtils';
+import { ModalInteraction } from '../../types/interaction';
+import { InteractionContext } from '../../types/menhera';
+import { getUserAvatar } from '../../utils/discord/userUtils';
+import { getEnviroments } from '../../utils/getEnviroments';
+import suggestionLimitRepository from '../../database/repositories/suggestionLimitRepository';
+import { millisToSeconds } from '../../utils/miscUtils';
+
+const { SUGGESTION_CHANNEL_ID } = getEnviroments(['SUGGESTION_CHANNEL_ID']);
 
 const executeSupportCommand = async (ctx: ChatInputInteractionContext) => {
   ctx.makeMessage({
@@ -45,6 +66,113 @@ const executeChangelogCommand = async (ctx: ChatInputInteractionContext) => {
   ctx.makeMessage({ embeds: [embed], components: [createActionRow([button])] });
 };
 
+const suggestionEmbedAndButton = (
+  ctx: InteractionContext,
+  suggestion: string,
+  embedColor: string,
+): [Embed, ActionRow] => [
+  createEmbed({
+    title: ctx.locale('commands:menhera.suggest.confirm-title'),
+    footer: { text: ctx.locale('commands:menhera.suggest.footer') },
+    description: suggestion,
+    color: hexStringToNumber(embedColor),
+    thumbnail: { url: getUserAvatar(ctx.user, { enableGif: true }) },
+  }),
+  createActionRow([
+    createButton({
+      label: ctx.locale('commands:menhera.suggest.edit'),
+      style: ButtonStyles.Secondary,
+      customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, 'EDIT', embedColor),
+    }),
+    createButton({
+      label: ctx.locale('commands:menhera.suggest.confirm'),
+      style: ButtonStyles.Primary,
+      customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, 'CONFIRM', embedColor),
+    }),
+  ]),
+];
+
+const handleSuggestionInteraction = async (
+  ctx: ComponentInteractionContext<ModalInteraction>,
+): Promise<void> => {
+  const [option, embedColor] = ctx.sentData;
+
+  if (option === 'CONFIRM') {
+    const suggestion = ctx.interaction.message?.embeds?.[0].description;
+
+    if (!suggestion) return ctx.ack();
+
+    bot.helpers.sendMessage(BigInt(SUGGESTION_CHANNEL_ID), {
+      content: `${ctx.user.id} ${ctx.user.username}\n\n${suggestion}`,
+    });
+
+    return ctx.makeMessage({
+      embeds: [],
+      components: [],
+      content: ctx.prettyResponse('wink', 'commands:menhera.suggest.thanks'),
+    });
+  }
+
+  if (option === 'EDIT') {
+    const suggestion = ctx.interaction.message?.embeds?.[0].description;
+
+    if (!suggestion) return ctx.ack();
+
+    return ctx.respondWithModal({
+      title: ctx.locale('commands:menhera.suggest.edit-title'),
+      customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, 'MODAL', embedColor),
+      components: [
+        createActionRow([
+          createTextInput({
+            customId: 'SUGGESTION',
+            label: ctx.locale('commands:menhera.suggest.edit-title'),
+            style: TextStyles.Paragraph,
+            minLength: 10,
+            maxLength: 3900,
+            required: true,
+            value: suggestion,
+            placeholder: suggestion,
+          }),
+        ]),
+      ],
+    });
+  }
+
+  if (option === 'MODAL') {
+    const suggestion = extractFields(ctx.interaction)[0].value;
+
+    const [embed, buttons] = suggestionEmbedAndButton(ctx, suggestion, embedColor);
+
+    return ctx.makeMessage({
+      embeds: [embed],
+      components: [buttons],
+      flags: MessageFlags.EPHEMERAL,
+    });
+  }
+};
+
+const executeSuggestCommand = async (ctx: ChatInputInteractionContext): Promise<void> => {
+  const suggestion = ctx.getOption<string>('sugestão', false, true);
+
+  const isUserLimited = await suggestionLimitRepository.getLimitData(ctx.user.id);
+
+  if (isUserLimited && isUserLimited.limited)
+    return ctx.makeMessage({
+      flags: MessageFlags.EPHEMERAL,
+      content: ctx.prettyResponse('error', 'commands:menhera.suggest.limited', {
+        unix: millisToSeconds(isUserLimited.limitedAt),
+      }),
+    });
+
+  const [embed, buttons] = suggestionEmbedAndButton(ctx, suggestion, ctx.authorData.selectedColor);
+
+  ctx.makeMessage({
+    embeds: [embed],
+    components: [buttons],
+    flags: MessageFlags.EPHEMERAL,
+  });
+};
+
 const MenheraCommand = createCommand({
   path: '',
   name: 'menhera',
@@ -52,13 +180,6 @@ const MenheraCommand = createCommand({
   descriptionLocalizations: { 'en-US': '「✨」・Information regarding Menhera' },
   category: 'info',
   options: [
-    /*     {
-      name: 'estatísticas',
-      nameLocalizations: { 'en-US': 'statistics' },
-      description: '「🤖」・Veja as estatísticas atuais da Menhera',
-      descriptionLocalizations: { 'en-US': "「🤖」・See Menhera's current stats" },
-      type: ApplicationCommandOptionTypes.SubCommand,
-    }, */
     {
       name: 'suporte',
       nameLocalizations: { 'en-US': 'support' },
@@ -73,8 +194,28 @@ const MenheraCommand = createCommand({
       descriptionLocalizations: { 'en-US': "「✨」・See information from Menhera's latest update" },
       type: ApplicationCommandOptionTypes.SubCommand,
     },
+    {
+      name: 'sugerir',
+      nameLocalizations: { 'en-US': 'suggest' },
+      description: '「🌺」・Alguma ideia extraordinária? Envie uma sugestão!',
+      descriptionLocalizations: { 'en-US': '「🌺」・Any extraordinary ideas? Send a suggestion!' },
+      type: ApplicationCommandOptionTypes.SubCommand,
+      options: [
+        {
+          type: ApplicationCommandOptionTypes.String,
+          name: 'sugestão',
+          nameLocalizations: { 'en-US': 'suggestion' },
+          description: 'Descreva com os maiores detalhes a sua ideia',
+          descriptionLocalizations: { 'en-US': 'Describe your idea in as much detail as possible' },
+          minLength: 10,
+          maxLength: 3900,
+          required: true,
+        },
+      ],
+    },
   ],
-  authorDataFields: [],
+  authorDataFields: ['selectedColor'],
+  commandRelatedExecutions: [handleSuggestionInteraction],
   execute: async (ctx, finishCommand) => {
     finishCommand();
 
@@ -84,7 +225,7 @@ const MenheraCommand = createCommand({
 
     if (subCommand === 'atualização') return executeChangelogCommand(ctx);
 
-    // if (subCommand === 'estatísticas') return executeStatisticsCommand(ctx, finishCommand);
+    if (subCommand === 'sugerir') return executeSuggestCommand(ctx);
   },
 });
 

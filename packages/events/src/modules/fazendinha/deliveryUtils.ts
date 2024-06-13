@@ -1,40 +1,22 @@
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { DatabaseFarmerSchema } from '../../types/database';
-import {
-  MAX_DAILY_AT_FULL_LEVEL,
-  MAX_DAILY_PLANTATION_REQUIREMENT_AT_FULL_LEVEL,
-  MIN_DAILY_AT_LEVEL_ZERO,
-  Plants,
-} from './constants';
-import { AvailablePlants, DeliveryMission } from './types';
+import { DELIVERIES_AMOUNT, MAX_DELIVERY_WEIGHT, MIN_DELIVERY_WEIGHT, Plants } from './constants';
+import { DeliveryMission } from './types';
 
-const getMaxUserDailies = (level: number): number =>
-  Math.floor(
-    level * ((MAX_DAILY_AT_FULL_LEVEL - MIN_DAILY_AT_LEVEL_ZERO) / AvailablePlants.Mushroom) +
-      MIN_DAILY_AT_LEVEL_ZERO,
+const getRandomAmount = (): number => {
+  return parseFloat(
+    (Math.random() * (MAX_DELIVERY_WEIGHT - MIN_DELIVERY_WEIGHT + 1) + MIN_DELIVERY_WEIGHT).toFixed(
+      1,
+    ),
   );
-
-const getRandomAmount = (level: number): number => {
-  const minimal = Math.floor(level / 4) + 1;
-  const maximumCount = Math.floor(level / 3) + 3;
-
-  const maximum =
-    maximumCount > MAX_DAILY_PLANTATION_REQUIREMENT_AT_FULL_LEVEL
-      ? MAX_DAILY_PLANTATION_REQUIREMENT_AT_FULL_LEVEL
-      : maximumCount;
-
-  return parseFloat((Math.random() * (maximum - minimal + 1) + minimal).toFixed(1));
 };
 
-const calculateUserDailyDeliveries = (farmer: DatabaseFarmerSchema): DeliveryMission[] => {
-  const userLevel = farmer.biggestSeed;
-  const maxUserDailies = getMaxUserDailies(userLevel);
-
+const calculateUserDailyDeliveries = (): DeliveryMission[] => {
   const toReturnDailies: DeliveryMission[] = [];
 
-  for (let i = 0; i < maxUserDailies; i++) {
-    const neededPlants = getRandomAmount(userLevel);
-    const plantType = Math.floor(Math.random() * (farmer.biggestSeed + 1));
+  for (let i = 0; i < DELIVERIES_AMOUNT; i++) {
+    const neededPlants = getRandomAmount();
+    const plantType = Math.floor(Math.random() * 25);
     const maxAward = (plantType + 1) * neededPlants * 30 + 10 * Plants[plantType as 1].sellValue;
     const minAward = maxAward * 0.7;
 
@@ -42,7 +24,7 @@ const calculateUserDailyDeliveries = (farmer: DatabaseFarmerSchema): DeliveryMis
 
     toReturnDailies.push({
       award,
-      experience: (plantType + 1) * 10,
+      experience: Math.floor((plantType + 1) * 10 + neededPlants * 50),
       needs: [{ weight: neededPlants, plant: plantType }],
       finished: false,
     });
@@ -51,21 +33,18 @@ const calculateUserDailyDeliveries = (farmer: DatabaseFarmerSchema): DeliveryMis
   return toReturnDailies;
 };
 
-const getUserDailies = (farmer: DatabaseFarmerSchema): DeliveryMission[] => {
+const getUserDeliveries = (farmer: DatabaseFarmerSchema): DeliveryMission[] => {
   const isUpToDate =
     farmer.dailyDayId === new Date().getDate() &&
     farmer.dailies.every((a) => a.needs.every((b) => 'weight' in b));
 
   if (isUpToDate) return farmer.dailies;
 
-  const newDailies = calculateUserDailyDeliveries(farmer);
+  const newDeliveries = calculateUserDailyDeliveries();
 
-  farmerRepository.updateDailies(farmer.id, newDailies);
+  farmerRepository.updateDeliveries(farmer.id, newDeliveries);
 
-  return newDailies;
+  return newDeliveries;
 };
 
-const getFinishAllBonus = (dailies: DeliveryMission[]): number =>
-  Math.floor(dailies.reduce((p, c) => p + c.award, 0) / 2);
-
-export { calculateUserDailyDeliveries, getUserDailies, getFinishAllBonus };
+export { calculateUserDailyDeliveries, getUserDeliveries };

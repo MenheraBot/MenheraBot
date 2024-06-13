@@ -1,10 +1,5 @@
 import { ButtonComponent, ButtonStyles } from 'discordeno/types';
-import {
-  calculateSkipCount,
-  createPaginationButtons,
-  topEmojis,
-  usersToIgnoreInTop,
-} from './index';
+import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from './index';
 import { InteractionContext } from '../../types/menhera';
 import { ApiHuntingTypes } from '../hunt/types';
 import cacheRepository from '../../database/repositories/cacheRepository';
@@ -38,7 +33,7 @@ const executeTopHuntStatistics = async (
     title: ctx.locale('commands:top.estatisticas.cacar.title', {
       type: ctx.locale(`commands:top.estatisticas.cacar.${type}`),
       page: page > 1 ? page : 1,
-      emoji: topEmojis[`${type}s`],
+      emoji: ctx.safeEmoji(`${type}s` as 'ok', true),
     }),
     description: ctx.locale(`commands:top.estatisticas.cacar.description.${topMode}`),
     color: COLORS.Pinkie,
@@ -72,7 +67,7 @@ const executeTopHuntStatistics = async (
 
     if (member) {
       if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
-      if (member.username.startsWith('Deleted User'))
+      if (member.username.startsWith('deleted_user_'))
         cacheRepository.addDeletedAccount([`${member.id}`]);
     }
 

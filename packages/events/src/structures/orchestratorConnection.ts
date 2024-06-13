@@ -71,7 +71,7 @@ const createIpcConnection = async (): Promise<void> => {
       logger.info('[ORCHESTRATOR] I was told to sleep');
       bot.shuttingDown = true;
 
-      logger.debug('Waiting for all commands to finish');
+      logger.info('[SHUTDOWN] Waiting for all commands to finish');
       await new Promise<void>((resolve) => {
         if (bot.commandsInExecution <= 0) return resolve();
 
@@ -79,8 +79,10 @@ const createIpcConnection = async (): Promise<void> => {
           if (bot.commandsInExecution <= 0) {
             clearInterval(interval);
             resolve();
+            return;
           }
-        }, 3000).unref();
+          logger.info(`[SHUTDOWN] There are still ${bot.commandsInExecution} running commands`);
+        }, 1_000).unref();
       });
 
       /* logger.info('[SHUTDOWN] Posting the command execution queue to API');

@@ -164,6 +164,7 @@ const displayPlantations = async (
   embedColor: string,
   selectedSeed: AvailablePlants,
   forceField: number,
+  harvestedWeight?: number,
 ): Promise<void> => {
   const [fields, buttons] = parseUserPlantations(
     ctx,
@@ -186,6 +187,13 @@ const displayPlantations = async (
     }),
     color: hexStringToNumber(embedColor),
     fields,
+    footer: harvestedWeight
+      ? {
+          text: ctx.locale('commands:fazendinha.plantations.harvest-weight', {
+            weight: harvestedWeight,
+          }),
+        }
+      : undefined,
   });
 
   const actionRows = chunkArray(buttons, 3).map((a) => createActionRow(a as [ButtonComponent]));

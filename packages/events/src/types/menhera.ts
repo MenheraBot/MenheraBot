@@ -9,6 +9,16 @@ export interface IdentifiedData<T> {
   data: T;
 }
 
+export interface ProbabilityAmount {
+  value: number;
+  probability: number;
+}
+
+export interface ProbabilityType {
+  value: string;
+  probability: number;
+}
+
 export type InteractionContext = ChatInputInteractionContext | ComponentInteractionContext;
 export type GenericContext = InteractionContext | FollowUpInteractionContext;
 

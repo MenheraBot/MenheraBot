@@ -5,6 +5,112 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.18.0] - 2024-06-08
+
+### Added
+
+- Adicionado dois novos tipos de daily: **colher plantas** e **finalizar entregas**.
+- Adicionado 41 novos gifs aos comandos de ação (Obg @mareys e @dszalone).
+
+### Changed
+
+- O limite máximo de peso para uma entrega do caminhão da fazendinha foi reduzido para `10 Kg`.
+- O número de entregas por dia foi reduzido para `6`.
+- O prêmio por finalizar todas entregas foi alterado para **30000** estrelinhas fixas.
+
+### Fixed
+
+- Corrigida a paginação infinita do comando `/fazendinha feira comprar`.
+
+### Removed 
+
+- O comando `/meme humor` foi deletado.
+
+## [5.17.3] - 2024-06-06
+
+### Changed
+
+- Não é mais possível anunciar `Erva` na feirinha.
+- Não é mais possível anunciar uma planta que você já tenha um anúncio na feirinha.
+
+### Fixed
+
+- Corrigido o problema do "maior lucro" das mensagens do Jogo do Bicho no servidor de suporte - Reportado por @maycon.orp.
+
+## [5.17.2] - 2024-06-01
+
+### Added
+
+- **Bloquear mamadas**. Usuários podem escolher se querem ser mamadas ou não. 
+- Adicionado comando `/personalizar mamadas` para escolher se você quer ou não ser mamado.
+
+### Changed
+
+- A descrição de aceitar uma sarrada foi alterada. 
+- O comando `/casar` agora menciona usuários.
+
+### Hotfix
+
+- Os `/top`s vão até a página 100 agora.
+
+## [5.17.1] - 2024-05-26
+
+### Added
+
+- Novos tipos de missões diárias adicionados!
+- Adicionado botão para usar um roll ao tentar caçar cansado. 
+
+### Changed
+
+- Reduzido a chance de um bônus de daily ser uma semente.
+- Adicionado emoji na mensagem de recusar Pix.
+- O tempo para o sorteio do bicho foi reduzido para **5** horas.
+- A mensagem de sua mão no Poker agora possui um botão para atualizar o valor da mão.
+
+### Fixed
+
+- Corrigido problema das missões diárias mudarem nos primeiros usos do comando `/daily`. 
+- Corrigido erro de português no aviso de Rate Limit.
+
+## [5.17.0] - 2024-05-26
+
+### Added
+
+- **Missões diárias!** Todo dia 3 missões estarão disponíveis. Use `/daily` para ver e reinvidicar seus bônus!
+- O comando `/top usos comandos tipo:Comandos mais usados de um usuário` agora mostra o total de comandos usados pelo usuário. - Sugerido por @mareys.
+
+### Changed
+
+- Atualizado texto de nenhum item ativado no comando `/itens`. - Sugerido por @null00111111
+
+### Removed
+
+- Removido limite de plantas na fazendinha. Todos usuários podem plantar todos tipos de sementes agora!
+
+## [5.16.0] - 2024-05-12
+
+### Added
+
+- Adicionado notificações para quando alguém compra alguma imagem que você criou.
+- Adicionado a informação de quantos Kg você colheu no `/fazendinha plantações`.
+- Novo comando `/menhera sugerir`. Envie suas melhores ideias para a Menhera.
+
+### Fixed
+
+- Se a Menhera não tiver permissão para usar emojis externos, ela usará emojis padrões.
+
+## [5.15.3] - 2024-05-08
+
+### Fixed
+
+- Corrigido inconsistência no display dos limites do `/fazendinha silo`.
+
+## [5.15.2] - 2024-05-05
+
+### Fixed
+
+- Corrigido a lógica de ignorar contas deletadas nos tops.
+
 ## [5.15.1] - 2024-05-01
 
 ### Added

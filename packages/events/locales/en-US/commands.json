@@ -87,6 +87,13 @@
     "self-mention_uncensored": "Don't try to deceive me, I know you can't suckle yourself! Appoint another person to suck",
     "self-mention": "Don't try to deceive me, I know you can't lick yourself! Appoint another person to lick",
     "embed_title_uncensored": "Suck",
+    "not-allowed": "Hey... this person doesn't want to be licked. Respect your choice",
+    "allow-question": "Do you want to be licked?",
+    "allow-description": "Tell me if you want other users to be able to lick you. Currently you {{permission}} be licked",
+    "allowed-true": "can ✅",
+    "allowed-false": "cannot ❌",
+    "allow-true": "I want to be licked",
+    "allow-false": "I don't wanna be licked",
     "embed_title": "Lick",
     "user-banned_uncensored": "You cannot suck this user because he is banned",
     "user-banned": "You cannot lick this user because he is banned",
@@ -365,6 +372,7 @@
   },
   "cacar": {
     "probabilities": "Your Hunt probabilities",
+    "use-a-roll": "Use a roll",
     "drop": "LESSS GOOO {{author}}. You dropped a hunting item! Do you realize how rare this is? For you to be aware, the item you gained, the **{{name}}** has a drop percentage of `{{chance}}%`, Congratulations!\n\nUse your item with the command {{command}}",
     "chances": "**{{count}}** ({{percentage}}%)**Amount**: {{count}}\n**Probability**: {{percentage}}",
     "hunt_description": "You went hunting **{{hunt}}** **{{count}}** time with Super Xandão, and you returned home with more **{{value}}** to count",
@@ -508,6 +516,7 @@
     "users": "Loyal Users {{page}}º",
     "used": "Used **{{times}}** times",
     "use": "Used **{{times}}** times",
+    "total-used-commands": "{{user}} used **{{commands}}** commands.",
     "used-commands": "Used **{{times}}** commands",
     "command-required": "You need to inform which command you want to search for in this top!"
   },
@@ -657,6 +666,7 @@
     "no-user": "This user does't have an inventory",
     "title": "{{user}}'s Inventory",
     "no-item": "This user's inventory is empty!",
+    "no-item-active": "This user does not have any active items.",
     "active": "Active Items",
     "items": "Inventory Item",
     "use": "Use Items",
@@ -824,6 +834,15 @@
       "older-releases": "Older versions",
       "no-changelog": "The announcement of the current update has not yet been made. Wait another 10 minutes and try again >.<"
     },
+    "suggest": {
+      "confirm-title": "Send suggestion?",
+      "footer": "Misuse of this command may restrict your access to Menhera",
+      "confirm": "Send",
+      "edit": "Edit",
+      "edit-title": "Edit suggestion",
+      "thanks": "Your suggestion has been sent! Thank you very much >.<",
+      "limited": "You are limited from sending suggestion since <t:{{unix}}>"
+    },
     "suporte": {
       "message": "Having a problem, or just want to chat with more people who use my commands? Join my support server: \n\nhttps://discord.gg/fZMdQbA\n ||SHHHHHhh, don't tell the moderation that I sent this invite, they might ban me for sending invites...||"
     },
@@ -964,6 +983,7 @@
     "someone-is-banned": "One of the users you selected is banned from Menhera and therefore cannot play Poker!",
     "someone-is-poor": "One of the users you selected does not have **{{stars}}** :star: to bet on a Poker match!",
     "accept-invite": "Accept invite",
+    "update-info": "Update info",
     "start-match": "Start match",
     "match-title-friendly": "Friendly Poker Match",
     "match-title-worth": "Official Poker Match",
@@ -1074,6 +1094,8 @@
     "feira": {
       "announce": {
         "no-such-product": "This product does not exist!",
+        "no-mate-announcement": "It is not possible to announce Mate {{emoji}} at the fair",
+        "already-announced": "You already have an announcement for {{emoji}} at the fair! Try advertising another product.",
         "not-enough-products": "You don't have **{{amount}}** {{emoji}} to announce.",
         "success": "Item announced! It is now available for purchase by your neighbors",
         "announce-limits": "You have no ads available! You can advertise up to a maximum of **{{limit}}** items",
@@ -1097,6 +1119,7 @@
     },
     "plantations": {
       "field": "Field ({{index}})",
+      "harvest-weight": "Amount harvested: {{weight}} Kg",
       "seeds": "Seeds",
       "description": "**Current season:** {{emoji}} _{{season}}_\n**Ends** <t:{{unix}}:R>",
       "silo": "Plants",
@@ -1139,7 +1162,7 @@
       "deliver-embed-name-finished": "~~Delivery {{index}}~~ ✅",
       "deliver-embed-field": "Stars: **{{award}}** :star:",
       "deliver-embed-field-need": "Needs: **{{amount}} kg** {{emoji}}",
-      "description": "### Once a day the delivery truck will appear at your farm to pick up deliveries.\n### Completing all deliveries before the truck leaves will give you an additional **{{bonus}}** :star: stars\n\n### The truck will leave <t:{{unix}}:R>"
+      "description": "Once a day the delivery truck will appear at your farm to pick up deliveries. Completing all deliveries before the truck leaves will give you an additional **{{bonus}}** :star: stars\n\nThe truck will leave <t:{{unix}}:R>"
     },
     "field-action": {
       "not-enough-seeds": "You don't have **{{plant}}** seeds to plant!",
@@ -1284,10 +1307,45 @@
     "all-done": "There you go! Your notifications have been marked as read!",
     "notifications": {
       "user-bought-theme": "**@{{username}}** purchased your theme **{{theme}}** on <t:{{unix}}:d> at <t:{{unix}}:T>",
+      "user-bought-image": "**@{{username}}** purchased your image **{{image}}** on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "user-bought-announcement": "Your **{{weight}} kg** {{emoji}} ad was bought for **{{stars}}** :star: at the fair by @{{username}} on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "user-won-bicho": "You won **{{stars}}** :star: with your bet in /bicho on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Heyy, Lux here! I just gave you a brand new Badge! Check your profile >.<",
-      "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Hi, Lux here. I added a title to your account! Take a look at `/personalize title` >.<"
+      "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Hi, Lux here. I added a title to your account! Take a look at `/personalize title` >.<",
+      "finished-daily": "",
+      "finished-daily-one": "You have completed **{{count}}** mission! Your rewards are **{{price}}** :star: on <t:{{unix}}:d> at <t:{{unix}}:T>",
+      "finished-daily-other": "You have completed **{{count}}** missions! Your rewards are **{{price}}** :star: on <t:{{unix}}:d> at <t:{{unix}}:T>"
+    }
+  },
+  "daily": {
+    "title": "Your daily missions",
+    "reedem": "({{index}}) Reedem",
+    "reedemed": "({{index}}) Reedemed",
+    "unfinished": "({{index}}) {{has}}/{{need}}",
+    "cannot-reedem": "You can't reedem this mission at the moment!",
+    "already-reedemed": "You have already reedemed the prizes for this mission!",
+    "reedem-title": "Choose a bonus",
+    "reedemed-success": "Wise choice! You received **{{value}}x** {{emoji}} bonus for completing this daily quest!",
+    "reedem-options": {
+      "estrelinhas": "({{index}}) Stars",
+      "roll": "({{index}}) Roll",
+      "seed": "({{index}}) Seed",
+      "plant": "({{index}}) Plant",
+      "hunt": "({{index}}) Hunt"
+    },
+    "descriptions": {
+      "win_bet": "{{emoji}} Win _{{specification}}_ matches **{{count}}** times. ({{has}}/{{need}})",
+      "win_bet-one": "{{emoji}} Win _{{specification}}_ matches **{{count}}** time. ({{has}}/{{need}})",
+      "win_bet-other": "{{emoji}} Win _{{specification}}_ matches **{{count}}** times. ({{has}}/{{need}})",
+      "use_command": "{{emoji}} Use the command _{{specification}}_ **{{need}}** times. ({{has}}/{{need}})",
+      "announce_product": "{{emoji}} Announce **{{need}}** products at the neighborhood fair. ({{has}}/{{need}})",
+      "success_on_hunt": "{{emoji}} Obtain success on **{{need}}** hunts. ({{has}}/{{need}})",
+      "use_action_commands": "{{emoji}} Use **{{need}}** action commands. ({{has}}/{{need}})",
+      "harvest_plants": "{{emoji}} Harvest **{{need}}** Kg of _{{specification}}_. ({{has}}/{{need}})",
+      "win_stars_in_bets": "{{emoji}} Conquer **{{need}}** :star: playing _bicho_, _blackjack_ or _roulette_. ({{has}}/{{need}})",
+      "finish_delivery": "{{emoji}} Make **{{need}}** deliveries from the farm. ({{has}}/{{need}})",
+      "finish_delivery-one": "{{emoji}} Make **{{need}}** delivery from the farm. ({{has}}/{{need}})",
+      "finish_delivery-other": "{{emoji}} Make **{{need}}** deliveries from the farm. ({{has}}/{{need}})"
     }
   }
 }

@@ -42,6 +42,9 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
   voteCooldown: user.voteCooldown,
   votes: user.votes,
   inactivityWarned: user.inactivityWarned,
+  dailies: user.dailies,
+  dailyDayId: user.dailyDayId,
+  allowMamar: user.allowMamar,
 });
 
 const findUser = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {
@@ -56,7 +59,7 @@ const findUser = async (userId: UserIdType): Promise<DatabaseUserSchema | null> 
   if (fromMongo) {
     await MainRedisClient.setex(
       `user:${userId}`,
-      86400,
+      604800,
       JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
     ).catch(debugError);
 
@@ -81,7 +84,7 @@ const updateUser = async (
 
     await MainRedisClient.setex(
       `user:${userId}`,
-      86400,
+      604800,
       JSON.stringify(
         parseMongoUserToRedisUser({ ...data, ...query, lastCommandAt: Date.now(), id: userId }),
       ),
@@ -100,7 +103,7 @@ const updateUserWithSpecialData = async (
   if (updatedUser) {
     await MainRedisClient.setex(
       `user:${userId}`,
-      86400,
+      604800,
       JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
     ).catch(debugError);
   }
@@ -122,7 +125,7 @@ const multiUpdateUsers = async (
 
       await MainRedisClient.setex(
         `user:${id}`,
-        86400,
+        604800,
         JSON.stringify(
           parseMongoUserToRedisUser({ ...data, ...query, lastCommandAt: Date.now(), id }),
         ),
@@ -145,7 +148,7 @@ const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> =
 
     await MainRedisClient.setex(
       `user:${userId}`,
-      86400,
+      604800,
       JSON.stringify(parseMongoUserToRedisUser(newUser)),
     ).catch(debugError);
 
@@ -154,7 +157,7 @@ const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> =
 
   await MainRedisClient.setex(
     `user:${userId}`,
-    86400,
+    604800,
     JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
   ).catch(debugError);
 

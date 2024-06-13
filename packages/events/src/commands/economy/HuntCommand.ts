@@ -1,22 +1,17 @@
-import { ApplicationCommandOptionTypes, DiscordEmbedField } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from 'discordeno/types';
 
 import userRepository from '../../database/repositories/userRepository';
 import huntRepository from '../../database/repositories/huntRepository';
 import commandRepository from '../../database/repositories/commandRepository';
-import { capitalize, millisToSeconds } from '../../utils/miscUtils';
+import { calculateProbability, capitalize, millisToSeconds } from '../../utils/miscUtils';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { COLORS, transactionableCommandOption } from '../../structures/constants';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import {
-  DatabaseHuntingTypes,
-  HuntCooldownBoostItem,
-  HuntProbabiltyProps,
-} from '../../modules/hunt/types';
+import { DatabaseHuntingTypes, HuntCooldownBoostItem } from '../../modules/hunt/types';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import {
-  calculateProbability,
   dropHuntItem,
   getMagicItemById,
   getUserHuntCooldown,
@@ -25,6 +20,11 @@ import {
 import { postHuntExecution, postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
+import { InteractionContext, ProbabilityAmount } from '../../types/menhera';
+import executeDailies from '../../modules/dailies/executeDailies';
+import { DatabaseUserSchema } from '../../types/database';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 
 const choices = [
   ...transactionableCommandOption.filter((a) => a.value !== 'estrelinhas'),
@@ -44,7 +44,7 @@ const executeDisplayProbabilities = async (
     value: getUserHuntProbability(ctx.authorData.inUseItems, huntType)
       .map((a) =>
         ctx.locale('commands:cacar.chances', {
-          count: a.amount,
+          count: a.value,
           percentage: a.probability,
         }),
       )
@@ -66,6 +66,159 @@ const executeDisplayProbabilities = async (
 
   ctx.makeMessage({ embeds: [embed] });
   finishCommand();
+};
+
+const executeHuntCommand = async (
+  ctx: InteractionContext,
+  user: DatabaseUserSchema,
+  selection: DatabaseHuntingTypes,
+  rollsToUse?: number,
+) => {
+  if (rollsToUse && rollsToUse > user.rolls)
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:cacar.rolls-poor'),
+      embeds: [],
+      components: [],
+      flags: MessageFlags.EPHEMERAL,
+    });
+
+  const canHunt = user.huntCooldown < Date.now();
+
+  if (!canHunt && !rollsToUse)
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:cacar.cooldown', {
+        unix: millisToSeconds(user.huntCooldown),
+      }),
+      components:
+        user.rolls > 0
+          ? [
+              createActionRow([
+                createButton({
+                  label: ctx.locale('commands:cacar.use-a-roll'),
+                  style: ButtonStyles.Primary,
+                  customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, selection),
+                  emoji: { name: ctx.safeEmoji('roll') },
+                }),
+              ]),
+            ]
+          : undefined,
+      embeds: [],
+      flags: MessageFlags.EPHEMERAL,
+    });
+
+  const avatar = getUserAvatar(ctx.user, { enableGif: true });
+
+  const cooldown = getUserHuntCooldown(user.inUseItems, selection) + Date.now();
+
+  const embed = createEmbed({
+    thumbnail: { url: avatar },
+    title: ctx.locale(`commands:cacar.${selection}`),
+  });
+
+  const timesToHunt = canHunt && rollsToUse ? rollsToUse + 1 : rollsToUse ?? 1;
+
+  const executeHunt = async (probability: ProbabilityAmount[]) => {
+    let value = 0;
+    let tries = 0;
+    let success = 0;
+
+    for (let i = timesToHunt; i > 0; i--) {
+      const taked = calculateProbability(probability);
+      value += taked;
+      tries += 1;
+      if (taked > 0) success += 1;
+    }
+
+    await huntRepository.executeHuntEntity(
+      ctx.user.id,
+      selection,
+      value,
+      cooldown,
+      rollsToUse ?? 0,
+    );
+
+    return { value, success, tries };
+  };
+
+  const result = await executeHunt(getUserHuntProbability(user.inUseItems, selection));
+
+  if (selection === 'gods') {
+    embed.description =
+      result.value > 0
+        ? ctx.locale('commands:cacar.god_hunted_success', {
+            count: result.value,
+            hunt: ctx.locale(`commands:cacar.gods`),
+            toRun: timesToHunt,
+          })
+        : ctx.locale('commands:cacar.god_hunted_fail', {
+            count: timesToHunt,
+          });
+
+    if (result.value > 0) embed.thumbnail = { url: 'https://i.imgur.com/053khaH.gif' };
+  } else
+    embed.description = ctx.locale('commands:cacar.hunt_description', {
+      value: result.value,
+      hunt: ctx.locale(`commands:cacar.${selection}`),
+      count: timesToHunt,
+    });
+
+  embed.color = COLORS[`Hunt${capitalize(selection)}`];
+
+  const APIHuntTypes = {
+    demons: 'demon',
+    giants: 'giant',
+    angels: 'angel',
+    archangels: 'archangel',
+    demigods: 'demigod',
+    gods: 'god',
+  } as const;
+
+  await ctx.makeMessage({ embeds: [embed], components: [], content: '' });
+
+  if (result.value > 0) {
+    await executeDailies.successOnHunt(user, result.success);
+    await postTransaction(
+      `${bot.id}`,
+      `${ctx.user.id}`,
+      result.value,
+      selection,
+      ApiTransactionReason.HUNT_COMMAND,
+    );
+  }
+
+  await postHuntExecution(
+    `${ctx.user.id}`,
+    APIHuntTypes[selection],
+    result,
+    getDisplayName(ctx.user, true),
+  );
+
+  const droppedItem = dropHuntItem(user.inventory, user.inUseItems, selection);
+
+  if (!droppedItem) return;
+
+  await userRepository.updateUserWithSpecialData(ctx.user.id, {
+    $push: { inventory: { id: droppedItem } },
+  });
+
+  const commandInfo = await commandRepository.getCommandInfo('itens');
+
+  ctx.followUp({
+    content: ctx.prettyResponse('wink', 'commands:cacar.drop', {
+      name: ctx.locale(`data:magic-items.${droppedItem as 1}.name`),
+      author: mentionUser(ctx.user.id),
+      command: `</itens:${commandInfo?.discordId}>`,
+      chance: (getMagicItemById(droppedItem).data as HuntCooldownBoostItem).dropChance,
+    }),
+  });
+};
+
+const clickUseRoll = async (ctx: ComponentInteractionContext) => {
+  const [selection] = ctx.sentData;
+
+  const user = await userRepository.ensureFindUser(ctx.user.id);
+
+  executeHuntCommand(ctx, user, selection as 'demons', 1);
 };
 
 const HuntCommand = createCommand({
@@ -94,8 +247,10 @@ const HuntCommand = createCommand({
     },
   ],
   category: 'economy',
+  commandRelatedExecutions: [clickUseRoll],
   authorDataFields: ['rolls', 'huntCooldown', 'inUseItems', 'selectedColor', 'inventory'],
   execute: async (ctx, finishCommand) => {
+    finishCommand();
     const selection = ctx.getOption<DatabaseHuntingTypes>('tipo', false, true);
 
     if (selection === ('probabilities' as string))
@@ -103,135 +258,7 @@ const HuntCommand = createCommand({
 
     const rollsToUse = ctx.getOption<number>('rolls', false);
 
-    if (rollsToUse && rollsToUse > ctx.authorData.rolls)
-      return finishCommand(
-        ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'commands:cacar.rolls-poor'),
-          flags: MessageFlags.EPHEMERAL,
-        }),
-      );
-
-    const canHunt = ctx.authorData.huntCooldown < Date.now();
-
-    if (!canHunt && !rollsToUse)
-      return finishCommand(
-        ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'commands:cacar.cooldown', {
-            unix: millisToSeconds(ctx.authorData.huntCooldown),
-          }),
-          flags: MessageFlags.EPHEMERAL,
-        }),
-      );
-
-    const avatar = getUserAvatar(ctx.author, { enableGif: true });
-
-    const cooldown = getUserHuntCooldown(ctx.authorData.inUseItems, selection) + Date.now();
-
-    const embed = createEmbed({
-      thumbnail: { url: avatar },
-      title: ctx.locale(`commands:cacar.${selection}`),
-    });
-
-    const timesToHunt = canHunt && rollsToUse ? rollsToUse + 1 : rollsToUse ?? 1;
-
-    const executeHunt = async (probability: HuntProbabiltyProps[]) => {
-      let value = 0;
-      let tries = 0;
-      let success = 0;
-
-      for (let i = timesToHunt; i > 0; i--) {
-        const taked = calculateProbability(probability);
-        value += taked;
-        tries += 1;
-        if (taked > 0) success += 1;
-      }
-
-      await huntRepository.executeHuntEntity(
-        ctx.author.id,
-        selection,
-        value,
-        cooldown,
-        rollsToUse ?? 0,
-      );
-
-      return { value, success, tries };
-    };
-
-    const result = await executeHunt(getUserHuntProbability(ctx.authorData.inUseItems, selection));
-
-    if (selection === 'gods') {
-      embed.description =
-        result.value > 0
-          ? ctx.locale('commands:cacar.god_hunted_success', {
-              count: result.value,
-              hunt: ctx.locale(`commands:cacar.gods`),
-              toRun: timesToHunt,
-            })
-          : ctx.locale('commands:cacar.god_hunted_fail', {
-              count: timesToHunt,
-            });
-
-      if (result.value > 0) embed.thumbnail = { url: 'https://i.imgur.com/053khaH.gif' };
-    } else
-      embed.description = ctx.locale('commands:cacar.hunt_description', {
-        value: result.value,
-        hunt: ctx.locale(`commands:cacar.${selection}`),
-        count: timesToHunt,
-      });
-
-    embed.color = COLORS[`Hunt${capitalize(selection)}`];
-
-    const APIHuntTypes = {
-      demons: 'demon',
-      giants: 'giant',
-      angels: 'angel',
-      archangels: 'archangel',
-      demigods: 'demigod',
-      gods: 'god',
-    } as const;
-
-    await ctx.makeMessage({ embeds: [embed] });
-
-    if (result.value > 0)
-      await postTransaction(
-        `${bot.id}`,
-        `${ctx.author.id}`,
-        result.value,
-        selection,
-        ApiTransactionReason.HUNT_COMMAND,
-      );
-
-    await postHuntExecution(
-      `${ctx.author.id}`,
-      APIHuntTypes[selection],
-      result,
-      getDisplayName(ctx.author, true),
-    );
-
-    const droppedItem = dropHuntItem(
-      ctx.authorData.inventory,
-      ctx.authorData.inUseItems,
-      selection,
-    );
-
-    if (!droppedItem) return finishCommand();
-
-    await userRepository.updateUserWithSpecialData(ctx.author.id, {
-      $push: { inventory: { id: droppedItem } },
-    });
-
-    const commandInfo = await commandRepository.getCommandInfo('itens');
-
-    ctx.followUp({
-      content: ctx.prettyResponse('wink', 'commands:cacar.drop', {
-        name: ctx.locale(`data:magic-items.${droppedItem as 1}.name`),
-        author: mentionUser(ctx.author.id),
-        command: `</itens:${commandInfo?.discordId}>`,
-        chance: (getMagicItemById(droppedItem).data as HuntCooldownBoostItem).dropChance,
-      }),
-    });
-
-    finishCommand();
+    executeHuntCommand(ctx, ctx.authorData, selection, rollsToUse);
   },
 });
 

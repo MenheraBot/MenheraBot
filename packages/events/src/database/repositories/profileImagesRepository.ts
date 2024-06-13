@@ -7,6 +7,7 @@ import starsRepository from './starsRepository';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
 import { postTransaction } from '../../utils/apiRequests/statistics';
+import notificationRepository from './notificationRepository';
 
 const registerImage = async (
   imageId: number,
@@ -82,9 +83,17 @@ const giveUploaderImageRoyalties = async (imageId: number, value: number): Promi
     { $inc: { timesSold: 1, totalEarned: receiveValue } },
   );
 
+  if (!imageData) return;
+
   await MainRedisClient.del(`image:${imageId}`);
 
-  await starsRepository.addStars(imageData?.uploaderId ?? '', receiveValue);
+  await starsRepository.addStars(imageData.uploaderId, receiveValue);
+
+  await notificationRepository.createNotification(
+    imageData.uploaderId,
+    'commands:notificações.notifications.user-bought-image',
+    { image: imageData.name },
+  );
 
   await postTransaction(
     `${bot.id}`,

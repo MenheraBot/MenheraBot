@@ -51,7 +51,7 @@ const executeUserCommandsTop = async (
 
     if (member) {
       if (i === 0) embed.thumbnail = { url: getUserAvatar(member, { enableGif: true }) };
-      if (member.username.startsWith('Deleted User'))
+      if (member.username.startsWith('deleted_user_'))
         cacheRepository.addDeletedAccount([res[i].id]);
     }
 

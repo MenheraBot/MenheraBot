@@ -24,6 +24,7 @@ import { sendInteractionResponse } from '../../utils/discord/interactionRequests
 import { debugError } from '../../utils/debugError';
 import { getFullCommandUsed } from '../../structures/command/getCommandOption';
 import ratelimitRepository from '../../database/repositories/ratelimitRepository';
+import executeDailies from '../../modules/dailies/executeDailies';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -158,10 +159,7 @@ const setInteractionCreateEvent = (): void => {
       }
     }
 
-    const authorData =
-      command.authorDataFields.length > 0
-        ? await userRepository.ensureFindUser(interaction.user.id)
-        : null;
+    const authorData = await userRepository.ensureFindUser(interaction.user.id);
 
     cacheRepository.setDiscordUser(bot.transformers.reverse.user(bot, interaction.user));
 
@@ -231,6 +229,8 @@ const setInteractionCreateEvent = (): void => {
           logger.error(err);
         }
       });
+
+    await executeDailies.useCommand(authorData, commandUsed.command, command.category);
 
     bot.commandsInExecution -= 1;
 

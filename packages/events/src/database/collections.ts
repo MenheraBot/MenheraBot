@@ -9,6 +9,7 @@ import {
   DatabaseGuildSchema,
   DatabaseNotificationSchema,
   DatabaseProfileImagesSchema,
+  DatabaseSuggestionLimitSchema,
   DatabaseTitlesSchema,
   DatabaseUserSchema,
   DatabaseUserThemesSchema,
@@ -84,6 +85,9 @@ const userSchema = new Schema({
   lastCommandAt: { type: Number, default: 0 },
   isBot: { type: Boolean, default: false },
   inactivityWarned: { type: Boolean, default: false },
+  dailies: { type: Array, default: [] },
+  dailyDayId: { type: Number, default: 0 },
+  allowMamar: { type: Boolean, default: true },
 });
 
 const themeCredits = new Schema({
@@ -113,8 +117,6 @@ const farmerSchema = new Schema({
   silo: { type: Array, default: [] },
   experience: { type: Number, deafult: 0 },
   siloUpgrades: { type: Number, default: 0 },
-  biggestSeed: { type: Number, default: 0 },
-  plantedFields: { type: Number, default: 0 },
   lastPlantedSeed: { type: Number, default: 0 },
   dailies: { type: Array, default: [] },
   dailyDayId: { type: Number, default: 0 },
@@ -156,6 +158,13 @@ const notificationSchema = new Schema({
   unread: { type: Boolean },
 });
 
+const suggestionLimitSchema = new Schema({
+  id: { type: String, unique: true, index: true },
+  limited: { type: Boolean, default: false },
+  limitedAt: { type: Number, default: Date.now },
+  suggestion: { type: String, default: '' },
+});
+
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
 export const guildsModel = model<DatabaseGuildSchema>('guild', guildSchema);
 export const usersModel = model<DatabaseUserSchema>('usersdb', userSchema);
@@ -169,4 +178,8 @@ export const characterModel = model<DatabaseCharacterSchema>('character', charac
 export const notificationModel = model<DatabaseNotificationSchema>(
   'notification',
   notificationSchema,
+);
+export const suggestionLimitModel = model<DatabaseSuggestionLimitSchema>(
+  'suggestlimit',
+  suggestionLimitSchema,
 );

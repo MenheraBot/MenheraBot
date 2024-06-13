@@ -87,7 +87,14 @@
   },
   "mamar": {
     "bot_uncensored": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
-    "bot": "{{author}} acabou de sujar a boca de óleo lambendo no bot {{mention}}",
+    "bot": "{{author}} acabou de sujar a boca de óleo lambendo o bot {{mention}}",
+    "not-allowed": "Ei... essa pessoa não quer ser mamada. Respeite a sua escolha",
+    "allow-question": "Tu quer ser mamado?",
+    "allow-description": "Me diga se você quer que outros usuários possam te mamar. Atualmente você {{permission}} ser mamado",
+    "allowed-true": "pode ✅",
+    "allowed-false": "não pode ❌",
+    "allow-true": "Quero ser mamado",
+    "allow-false": "Não quero ser mamado",
     "self-mention_uncensored": "Não tenta me enganar, eu sei que tu não consegue 'LAMBER' mamar a si mesmo! Marque outra pessoa para mamar",
     "self-mention": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
     "embed_title_uncensored": "'LAMBER' Mamar",
@@ -127,7 +134,7 @@
     },
     "cannot-sarrar-self": "Tu não pode sarrar consigo mesmo!",
     "embed_title": "Sarrar",
-    "embed_description": "{{mention}} aceitou o poder, e sarrou com {{author}}",
+    "embed_description": "{{mention}} aceitou o chamado, e sarrou com {{author}}",
     "sarrar": "Aceitar a Sarrada"
   },
   "atirar": {
@@ -375,6 +382,7 @@
     "drop_uncensored": "CARALHOOOO {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
     "drop": "Uoouu {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!\n\nAtive o seu item com o comando {{command}}",
     "probabilities": "Suas Probabilidades de Caça",
+    "use-a-roll": "Usar um roll",
     "chances": "**{{count}}** ({{percentage}}%)",
     "hunt_description": "Você saiu para caçar **{{hunt}}** **{{count}}** vezes com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta.",
     "god_hunted_success": "CARACA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR `{{count}}` DEUSES EM **{{toRun}}** TENTATIVAS! APENAS O BÁSICO MEU LINDO",
@@ -513,6 +521,7 @@
     "user": "Comandos Favoritos de {{user}} {{page}}º",
     "used": "Usado **{{times}}** vezes",
     "use": "Usou **{{times}}** vezes",
+    "total-used-commands": "{{user}} usou **{{commands}}** comandos.",
     "used-commands": "Usou **{{times}}** comandos",
     "command-required": "Tu precisa informar qual comando tu quer buscar nesse top!"
   },
@@ -642,7 +651,7 @@
     "description": "Sua Mão: **{{userHand}}** -> `{{userTotal}}`\nMão da Menhera: **{{dealerCards}}** -> `{{dealerTotal}}`",
     "initial-options": "**[1] Começar** - Começe o jogo\n **[2] Desistir** - Desista deste jogo (e perca sua aposta)",
     "options": "**[1] Comprar** - Compre mais uma carta\n**[2] Parar** - Pare por aqui sua aposta",
-    "footer": "Suas estrelinhas já foram reduzidas! Para receber algo de volta, venca a partida",
+    "footer": "Suas estrelinhas já foram reduzidas! Para receber algo de volta, vença a partida",
     "footer-second-copy": "Esta é uma partida já em andamento, recomeçada por outro comando",
     "poor": "Tu não possui todas essas estrelinhas para apostar!",
     "your-hand": "Sua Mão",
@@ -663,6 +672,7 @@
     "no-user": "Este usuário não possui inventário",
     "title": "Inventário de {{user}}",
     "no-item": "O inventário deste usuário está vazio!",
+    "no-item-active": "Este usuário não possui nenhum item ativo.",
     "active": "Itens Ativos",
     "items": "Itens no Inventário",
     "banned": "Este usuário está **banido** de usar a Menhera",
@@ -829,6 +839,15 @@
       "older-releases": "Versões anteriores",
       "no-changelog": "O anúncio da atualização atual ainda não foi feito. Aguarde mais uns 10 minutos e tente novamente >.<"
     },
+    "suggest": {
+      "confirm-title": "Encaminhar sugestão?",
+      "footer": "O uso indevido deste comando pode restringir seu acesso à Menhera",
+      "confirm": "Enviar",
+      "edit": "Editar",
+      "edit-title": "Editar sugestão",
+      "thanks": "Sua sugestão foi enviada! Muito obrigada >.<",
+      "limited": "Tu não pode mais enviar sugestões desde <t:{{unix}}> por mau uso do comando"
+    },
     "suporte": {
       "message": "Está com algum problema, ou quer só conversar com mais gente que usa meus comandos? Entre em meu servidor de suporte: \n\nhttps://discord.gg/fZMdQbA\n|| SHHHHHhh, não fala pra moderação desse servidor que eu mandei esse convite, vai que eles me banam por divulgação... ||"
     },
@@ -969,6 +988,7 @@
     "someone-is-banned": "Um dos usuários que você selecionou está banido da Menhera, portanto, não pode jogar Poker!",
     "someone-is-poor": "Um dos usuários que você selecionou não possui **{{stars}}** :star: para apostar em uma partida de Poker!",
     "accept-invite": "Aceitar convite",
+    "update-info": "Atualizar informações",
     "start-match": "Iniciar partida",
     "match-title-friendly": "Partida de Poker Amistosa",
     "match-title-worth": "Partida de Poker Oficial",
@@ -1081,6 +1101,8 @@
         "no-such-product": "Esse produto não existe!",
         "not-enough-products": "Tu não tem **{{amount}}** {{emoji}} para anunciar.",
         "success": "Item anunciado! Ele já está disponível para compra por seus vizinhos",
+        "no-mate-announcement": "Não é possível anunciar Erva Mate {{emoji}} na feirinha!",
+        "already-announced": "Tu já possui um anúncio de {{emoji}} na feirinha! Tente anunciar outro produto.",
         "announce-limits": "Tu não tem anúncios disponíveis! Tu pode anunciar até no máximo **{{limit}}** itens",
         "out-needed-prices": "Tu não pode vender **{{amount}}** {{emoji}} por **{{price}}** :star:. O preço de venda desse item deve estar entre **{{min}}** e **{{max}}** :star: estrelinhas."
       },
@@ -1102,6 +1124,7 @@
     },
     "plantations": {
       "field": "Campo ({{index}})",
+      "harvest-weight": "Quantidade colhida: {{weight}} Kg",
       "description": "**Estação atual**: {{emoji}} _{{season}}_\n**Termina** <t:{{unix}}:R>",
       "seeds": "Sementes",
       "silo": "Plantas",
@@ -1127,7 +1150,7 @@
       "deliver-embed-name-finished": "~~Entrega {{index}}~~ ✅",
       "deliver-embed-field": "Estrelinhas: **{{award}}** :star:",
       "deliver-embed-field-need": "Necessário: **{{amount}} Kg** {{emoji}}",
-      "description": "### Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas.\n### Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas\n\n### O caminhão partirá <t:{{unix}}:R>"
+      "description": "Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas. Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas\n\n O caminhão partirá <t:{{unix}}:R>"
     },
     "silo": {
       "embed-title": "Silo de {{user}}",
@@ -1289,10 +1312,45 @@
     "all-done": "Feitoria! Suas notificações foram marcadas como lidas!",
     "notifications": {
       "user-bought-theme": "@{{username}} comprou o seu tema **{{theme}}** em <t:{{unix}}:d> às <t:{{unix}}:T>",
+      "user-bought-image": "@{{username}} comprou sua imagem **{{image}}** em <t:{{unix}}:d> às <t:{{unix}}:T>",
       "user-bought-announcement": "Seu anúncio de **{{weight}} Kg** {{emoji}} foi comprado por **{{stars}}** :star: na feira por @{{username}} em <t:{{unix}}:d> às <t:{{unix}}:T>",
       "user-won-bicho": "Você ganhou **{{stars}}** :star: com sua aposta no Jogo do Bicho em <t:{{unix}}:d> às <t:{{unix}}:T>",
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Acabei de te dar uma **Badge** nova! Cheque seu perfil >.<",
-      "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Adicionei um título em sua conta! Da uma olhadinha em `/personalizar título` >.<"
+      "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Adicionei um título em sua conta! Da uma olhadinha em `/personalizar título` >.<",
+      "finished-daily": "",
+      "finished-daily-one": "Você completou **{{count}}** missão! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>",
+      "finished-daily-other": "Você completou **{{count}}** missões! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>"
+    }
+  },
+  "daily": {
+    "title": "Suas missões diárias",
+    "reedem": "({{index}}) Resgatar",
+    "reedemed": "({{index}}) Resgatado",
+    "unfinished": "({{index}}) {{has}}/{{need}}",
+    "cannot-reedem": "Tu ainda não pode resgatar essa missão!",
+    "already-reedemed": "Tu já resgatou os prêmios dessa missão!",
+    "reedem-title": "Escolha um bônus",
+    "reedemed-success": "Ótima escolha! Tu recebeu **{{value}}x** {{emoji}} de bônus pela conclusão desta missão diária!",
+    "reedem-options": {
+      "estrelinhas": "({{index}}) Estrelinhas",
+      "roll": "({{index}}) Roll",
+      "seed": "({{index}}) Semente",
+      "plant": "({{index}}) Planta",
+      "hunt": "({{index}}) Caça"
+    },
+    "descriptions": {
+      "win_bet": "{{emoji}} Vença apostas no _{{specification}}_ **{{count}}** vezes. ({{has}}/{{need}})",
+      "win_bet-one": "{{emoji}} Vença apostas no _{{specification}}_ **{{count}}** vez. ({{has}}/{{need}})",
+      "win_bet-other": "{{emoji}} Vença apostas no _{{specification}}_ **{{count}}** vezes. ({{has}}/{{need}})",
+      "use_command": "{{emoji}} Use o comando _{{specification}}_ **{{need}}** vezes. ({{has}}/{{need}})",
+      "announce_product": "{{emoji}} Anuncie **{{need}}** produtos na feira da vizinhança. ({{has}}/{{need}})",
+      "success_on_hunt": "{{emoji}} Obtenha sucesso em **{{need}}** caças. ({{has}}/{{need}})",
+      "use_action_commands": "{{emoji}} Use **{{need}}** comandos de ação. ({{has}}/{{need}})",
+      "win_stars_in_bets": "{{emoji}} Conquiste **{{need}}** :star: jogando _blackjack_, _bicho_, ou _roleta_. ({{has}}/{{need}})",
+      "harvest_plants": "{{emoji}} Colha **{{need}}** Kg de _{{specification}}_. ({{has}}/{{need}})",
+      "finish_delivery": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})",
+      "finish_delivery-one": "{{emoji}} Realize **{{need}}** entrega da fazendinha. ({{has}}/{{need}})",
+      "finish_delivery-other": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})"
     }
   }
 }

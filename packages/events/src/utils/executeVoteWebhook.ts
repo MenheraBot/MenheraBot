@@ -1,5 +1,4 @@
 import { UpdateQuery } from 'mongoose';
-import { DiscordEmbedField } from 'discordeno/types';
 import { bot } from '..';
 import userRepository from '../database/repositories/userRepository';
 import { DatabaseUserSchema } from '../types/database';
@@ -7,8 +6,6 @@ import { debugError } from './debugError';
 import { createEmbed } from './discord/embedUtils';
 import { postTransaction } from './apiRequests/statistics';
 import { ApiTransactionReason } from '../types/api';
-import { logger } from './logger';
-import giveRepository from '../database/repositories/giveRepository';
 
 const voteConstants = {
   baseRollAmount: 1,
@@ -22,8 +19,6 @@ const voteConstants = {
 
 const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<void> => {
   const user = await userRepository.ensureFindUser(userId);
-
-  logger.logSwitch(bot, 'User found in vote webhook', user);
 
   // Simulates the new vote before adding it all prizes
   user.votes += 1;
@@ -57,24 +52,6 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
     }
   }
 
-  logger.logSwitch(bot, 'After calculations');
-
-  const today = new Date();
-
-  const [day, month, year] = [today.getDate(), today.getUTCMonth(), today.getFullYear()];
-
-  const fields: DiscordEmbedField[] = [];
-
-  if (`${day}/${month}/${year}` === `7/4/2024` && !user.badges.some((a) => a.id === 27)) {
-    await giveRepository.giveBadgeToUser(userId, 27);
-
-    fields.push({
-      name: '🎉 | Presente de aniversário',
-      value:
-        'Obrigada por votar em mim no dia de meu aniversário! Esse presente é muito especial para mim...\nQuero te agradecer por estar comigo durante todo esse tempo. Adicionei uma badge em seu perfil. Da uma olhadinha ;)',
-    });
-  }
-
   const updateData: UpdateQuery<DatabaseUserSchema> = {
     $inc: {
       votes: 1,
@@ -88,8 +65,6 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
 
   await userRepository.updateUserWithSpecialData(userId, updateData);
 
-  logger.logSwitch(bot, 'After Special data');
-
   await postTransaction(
     `${bot.id}`,
     `${userId}`,
@@ -98,30 +73,20 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
     ApiTransactionReason.VOTE_THANK,
   );
 
-  logger.logSwitch(bot, 'After transaction');
-
   const embed = createEmbed({
     title: embedTitle,
     description: embedDescription,
     color: 0x7e40e9,
     image: { url: 'https://i.imgur.com/5XaGRDu.jpg' },
-    fields,
     thumbnail: { url: 'https://i.imgur.com/qtM9T9C.jpg' },
   });
 
   const userDM = await bot.helpers.getDmChannel(userId).catch(debugError);
 
-  logger.logSwitch(bot, 'After getting user dm ID: ', userDM?.id);
-
   if (userDM) bot.helpers.sendMessage(userDM.id, { embeds: [embed] }).catch((e) => debugError(e));
 
-  logger.logSwitch(bot, 'After sending user DM');
-
-  if (bot.prodLogSwitch) {
-    const afterAllUser = await userRepository.ensureFindUser(userId);
-
-    logger.logSwitch(bot, 'the user after all', afterAllUser);
-  }
+  if (userDM)
+    bot.helpers.sendMessage(userDM.id, { embeds: [embed] }).catch((e) => debugError(e, false));
 };
 
 export { executeVoteWebhook };

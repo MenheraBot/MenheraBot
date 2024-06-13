@@ -16,12 +16,15 @@ import farmerRepository from '../../database/repositories/farmerRepository';
 import { localizedResources } from '../../utils/miscUtils';
 import { respondWithChoices } from '../../utils/discord/interactionRequests';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
+import executeDailies from '../dailies/executeDailies';
 
 let plantNames: ApplicationCommandOptionChoice[] = [];
 
 const announceAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   if (plantNames.length === 0)
     plantNames = Object.keys(Plants).reduce<ApplicationCommandOptionChoice[]>((p, c) => {
+      if (c === `${AvailablePlants.Mate}`) return p;
+
       const names = localizedResources(`data:plants.${c as '1'}`);
 
       const plant = Plants[c as '1'];
@@ -124,6 +127,15 @@ const executeAnnounceProduct = async (
       content: ctx.prettyResponse('error', 'commands:fazendinha.feira.announce.no-such-product'),
     });
 
+  if (plant === AvailablePlants.Mate)
+    return ctx.makeMessage({
+      content: ctx.prettyResponse(
+        'error',
+        'commands:fazendinha.feira.announce.no-mate-announcement',
+        { emoji: plantInfo.emoji },
+      ),
+    });
+
   const userHaveItems = checkNeededItems([{ amount, plant }], farmer.silo);
 
   if (!userHaveItems)
@@ -151,6 +163,13 @@ const executeAnnounceProduct = async (
 
   const userAnnouncements = await fairRepository.getUserProducts(ctx.user.id);
 
+  if (userAnnouncements.some((a) => a.plantType === plant))
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.announce.already-announced', {
+        emoji: plantInfo.emoji,
+      }),
+    });
+
   if (userAnnouncements.length >= MAX_ITEMS_IN_FAIR_PER_USER)
     return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:fazendinha.feira.announce.announce-limits', {
@@ -175,6 +194,8 @@ const executeAnnounceProduct = async (
     ctx.user.id,
     removeItems(farmer.silo, [{ weight: amount, plant }]),
   );
+
+  await executeDailies.announceProduct(ctx.authorData);
 
   ctx.makeMessage({
     content: ctx.prettyResponse('success', 'commands:fazendinha.feira.announce.success'),

@@ -1,10 +1,10 @@
 {
   "name": "@menhera-bot/events",
   "type": "module",
-  "version": "5.15.1c",
+  "version": "5.18.0",
   "engines": {
     "node": ">=18"
-},
+  },
   "description": "The core package of Menhera. This package process all interactions that Menhera receives from users",
   "main": "dist/index.js",
   "repository": "https://github.com/MenheraBot/MenheraBot",
@@ -17,6 +17,7 @@
     "postbuild": "mv dist/src uwu && rm -rf dist && mv uwu dist",
     "typecheck": " tsc --project tsconfig.json --noEmit",
     "print-version": "echo version=$npm_package_version",
+    "build:dev": "yarn build && yarn dev",
     "start": "VERSION=$npm_package_version NODE_ENV=production node --es-module-specifier-resolution=node --no-warnings .",
     "dev": "VERSION=$npm_package_version NODE_ENV=development node --es-module-specifier-resolution=node --no-warnings -r dotenv/config ."
    },

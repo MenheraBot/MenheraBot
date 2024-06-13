@@ -21,11 +21,14 @@ export const EMOJIS = {
   bug: '🐛',
   ring: '💍',
   yes: '✅',
+  gift: '🎁',
+  calendar: '📅',
   no: '❌',
   map: '🗺️',
   question: '❓',
   yellow_circle: '🟡',
   heart: '❤️',
+  roll: '🔑',
   lick: '👅',
   time: '⏲️',
   gay_flag: '🏳️‍🌈',
@@ -63,6 +66,7 @@ export const EMOJIS = {
   badge_24: '<:badge_24:1110404657827811339>',
   badge_25: '<:badge_25:1163303420921401354>',
   badge_26: '<:badge_26:1163306957160062976>',
+  badge_27: '<:badge_27:1237388306187157647>',
 
   badge_100: '<:badge_9:960660998350602310>',
   badge_101: '<:MenheraThatsRight:767210250762977280>',
@@ -88,6 +92,58 @@ export const EMOJIS = {
   church: '⛪',
   hammer: '🔨',
   poison: '🧪',
+  badge_203: '<:badge_203:1237388179145883731>',
+};
+
+export const SAFE_EMOJIS = {
+  success: '✅',
+  error: '❌',
+  warn: '⚠️',
+  notify: '🔔',
+  sorry: '🥺',
+  wink: '😉',
+  ok: '🫡',
+  loading: '🦥',
+  smile: '😊',
+  devil: '😈',
+  demons: '😈',
+  angels: '👼',
+  demigods: '👾',
+  gods: '🧙‍♂️',
+};
+
+export const TOP_EMOJIS: { [key: string]: string } = {
+  mamou: EMOJIS.crown,
+  mamado: EMOJIS.lick,
+  estrelinhas: EMOJIS.estrelinhas,
+  demons: EMOJIS.demons,
+  giants: EMOJIS.giants,
+  angels: EMOJIS.angels,
+  archangels: EMOJIS.archangels,
+  demigods: EMOJIS.demigods,
+  gods: EMOJIS.gods,
+  votes: EMOJIS.ok,
+  blackjack: '🃏',
+  coinflip: '📀',
+  roulette: '🎡',
+  bicho: '🦌',
+};
+
+export const SAFE_TOP_EMOJIS = {
+  mamou: EMOJIS.crown,
+  mamado: EMOJIS.lick,
+  estrelinhas: EMOJIS.estrelinhas,
+  demons: SAFE_EMOJIS.demons,
+  giants: EMOJIS.giants,
+  angels: SAFE_EMOJIS.angels,
+  archangels: EMOJIS.archangels,
+  demigods: SAFE_EMOJIS.demigods,
+  gods: SAFE_EMOJIS.gods,
+  votes: SAFE_EMOJIS.ok,
+  blackjack: '🃏',
+  coinflip: '📀',
+  roulette: '🎡',
+  bicho: '🦌',
 };
 
 export const COLORS = {

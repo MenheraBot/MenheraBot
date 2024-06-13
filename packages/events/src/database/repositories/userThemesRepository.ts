@@ -84,7 +84,7 @@ const findEnsuredUserThemes = async (userId: BigString): Promise<DatabaseUserThe
 
     await MainRedisClient.setex(
       `user_themes:${userId}`,
-      3600,
+      604800,
       JSON.stringify(parseMongoUserToRedisUser(newUser)),
     ).catch(debugError);
 
@@ -93,7 +93,7 @@ const findEnsuredUserThemes = async (userId: BigString): Promise<DatabaseUserThe
 
   await MainRedisClient.setex(
     `user_themes:${userId}`,
-    3600,
+    604800,
     JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
   ).catch(debugError);
 
@@ -170,7 +170,7 @@ const addThemeToUserAccount = async (
   if (updatedUser) {
     await MainRedisClient.setex(
       `user_themes:${userId}`,
-      3600,
+      604800,
       JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
     ).catch(debugError);
   }
@@ -256,7 +256,7 @@ const setThemeToUserAccount = async (
 
     await MainRedisClient.setex(
       `user_themes:${userId}`,
-      3600,
+      604800,
       JSON.stringify(parseMongoUserToRedisUser({ ...data, [themeType]: themeId })),
     );
   }

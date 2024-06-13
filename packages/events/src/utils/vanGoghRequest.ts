@@ -14,7 +14,7 @@ const { VANGOGH_URL, MENHERA_AGENT, VANGOGH_TOKEN, VANGOGH_SOCKET_PATH } = getEn
 ]);
 
 const VanGoghApi = axios.create({
-  baseURL: VANGOGH_URL,
+  socketPath: VANGOGH_SOCKET_PATH,
   timeout: 10_000,
   headers: {
     'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export type VanGoghReturnData = ErrorReturn | SuccessReturn;
 
 const enableUnixSocket = (): void => {
   VanGoghApi.defaults.socketPath = VANGOGH_SOCKET_PATH;
-  VanGoghApi.defaults.baseURL = 'http://localhost/';
+  VanGoghApi.defaults.baseURL = undefined;
   logger.info('[VANGOGH] - Switched to Unix Socket calls');
 };
 
@@ -71,7 +71,7 @@ const vanGoghRequest = async <T>(route: VanGoghEndpoints, data: T): Promise<VanG
 
   const totalTime = Date.now() - startTime;
 
-  logger.logSwitch(bot, `[VAGOGH] - ${totalTime}ms in ${route}`);
+  logger.logSwitch(bot, `[VANGOGH] - ${totalTime}ms in ${route}`);
 
   return {
     err: false,

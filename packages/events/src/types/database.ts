@@ -7,6 +7,7 @@ import { AvailableLanguages, Translation } from './i18next';
 import { AvailableActions, InventoryItem, Location } from '../modules/roleplay/types';
 import { AbilityID } from '../modules/roleplay/data/abilities';
 import { InventoryItemID } from '../modules/roleplay/data/items';
+import { DatabaseDaily } from '../modules/dailies/types';
 
 export type ColorResolvable = `#${string}`;
 
@@ -57,6 +58,9 @@ export interface DatabaseUserSchema {
   lastCommandAt: number;
   isBot: boolean;
   inactivityWarned: boolean;
+  dailies: DatabaseDaily[];
+  dailyDayId: number;
+  allowMamar: boolean;
 }
 
 export interface DatabaseCreditsSchema {
@@ -151,8 +155,6 @@ export interface DatabaseFarmerSchema {
   seeds: QuantitativeSeed[];
   silo: QuantitativePlant[];
   siloUpgrades: number;
-  biggestSeed: number;
-  plantedFields: number;
   experience: number;
   lastPlantedSeed: AvailablePlants;
   dailies: DeliveryMission[];
@@ -188,4 +190,11 @@ export interface DatabaseNotificationSchema {
   translationValues?: Record<string, unknown>;
   createdAt: number;
   unread: boolean;
+}
+
+export interface DatabaseSuggestionLimitSchema {
+  id: string;
+  limited: boolean;
+  limitedAt: number;
+  suggestion: string;
 }

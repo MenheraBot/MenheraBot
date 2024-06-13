@@ -18,8 +18,6 @@ import { registerCacheStatus } from '../../structures/initializePrometheus';
 const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSchema => ({
   id: `${user.id}`,
   plantations: user.plantations,
-  biggestSeed: user.biggestSeed,
-  plantedFields: user.plantedFields,
   dailies: user.dailies,
   dailyDayId: user.dailyDayId,
   experience: user.experience,
@@ -43,7 +41,7 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
 
     await MainRedisClient.setex(
       `farmer:${userId}`,
-      3600,
+      604800,
       JSON.stringify(parseMongoUserToRedisUser(newUser)),
     ).catch(debugError);
 
@@ -59,7 +57,7 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
 
   await MainRedisClient.setex(
     `farmer:${userId}`,
-    3600,
+    604800,
     JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
   ).catch(debugError);
 
@@ -73,14 +71,13 @@ const executeHarvest = async (
   plant: AvailablePlants,
   alreadyInSilo: boolean,
   success: boolean,
-  plantedFields: number,
-  biggestSeed: number,
   weight: number,
 ): Promise<void> => {
-  const pushOrIncrement = {
+  const pushOrIncrement: Record<string, unknown> = {
     [alreadyInSilo ? '$inc' : '$push']: alreadyInSilo
       ? {
           [`silo.$[elem].weight`]: weight,
+          experience: Math.floor(weight * ((plant + 1) * 5)),
         }
       : {
           silo: {
@@ -90,10 +87,12 @@ const executeHarvest = async (
         },
   };
 
+  if (!alreadyInSilo) pushOrIncrement.$inc = { experience: Math.floor(weight * ((plant + 1) * 5)) };
+
   const updatedUser = await farmerModel.findOneAndUpdate(
     { id: `${farmerId}` },
     {
-      $set: { [`plantations.${fieldIndex}`]: field, plantedFields, biggestSeed },
+      $set: { [`plantations.${fieldIndex}`]: field },
       ...(success ? pushOrIncrement : {}),
     },
     {
@@ -105,7 +104,7 @@ const executeHarvest = async (
   if (updatedUser)
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
-      3600,
+      604800,
       JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
     ).catch(debugError);
 };
@@ -125,7 +124,7 @@ const updateSeeds = async (farmerId: BigString, seeds: QuantitativeSeed[]): Prom
 
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
-      3600,
+      604800,
       JSON.stringify(parseMongoUserToRedisUser({ ...data, seeds })),
     ).catch(debugError);
   }
@@ -154,7 +153,7 @@ const executePlant = async (
   if (updatedUser)
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
-      3600,
+      604800,
       JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
     ).catch(debugError);
 };
@@ -190,7 +189,7 @@ const updateSilo = async (
 
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
-      3600,
+      604800,
       JSON.stringify(parseMongoUserToRedisUser({ ...data, silo })),
     ).catch(debugError);
   }
@@ -206,13 +205,13 @@ const upgradeSilo = async (farmerId: BigString): Promise<void> => {
 
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
-      3600,
+      604800,
       JSON.stringify(parseMongoUserToRedisUser({ ...data, siloUpgrades: data.siloUpgrades + 1 })),
     ).catch(debugError);
   }
 };
 
-const updateDailies = async (farmerId: BigString, dailies: DeliveryMission[]): Promise<void> => {
+const updateDeliveries = async (farmerId: BigString, dailies: DeliveryMission[]): Promise<void> => {
   await farmerModel.updateOne(
     { id: `${farmerId}` },
     { $set: { dailies, dailyDayId: new Date().getDate() } },
@@ -225,7 +224,7 @@ const updateDailies = async (farmerId: BigString, dailies: DeliveryMission[]): P
 
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
-      3600,
+      604800,
       JSON.stringify(
         parseMongoUserToRedisUser({ ...data, dailies, dailyDayId: new Date().getDate() }),
       ),
@@ -233,7 +232,7 @@ const updateDailies = async (farmerId: BigString, dailies: DeliveryMission[]): P
   }
 };
 
-const finishDaily = async (
+const finishDelivery = async (
   farmerId: BigString,
   dailies: DeliveryMission[],
   silo: QuantitativePlant[],
@@ -282,8 +281,8 @@ export default {
   unlockField,
   updateSeason,
   updateSilo,
-  finishDaily,
+  finishDelivery,
   updateSeeds,
-  updateDailies,
+  updateDeliveries,
   executeHarvest,
 };

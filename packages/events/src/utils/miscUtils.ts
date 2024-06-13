@@ -1,6 +1,7 @@
 import i18next from 'i18next';
 import { AvailableLanguages, Translation, availableLanguages } from '../types/i18next';
 import { DatabaseUserThemesSchema } from '../types/database';
+import { ProbabilityAmount, ProbabilityType } from '../types/menhera';
 
 const capitalize = <S extends string>(str: S): Capitalize<S> =>
   (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<S>;
@@ -96,6 +97,23 @@ const ensureUserHaveDefaultThemes = (userThemes: DatabaseUserThemesSchema): void
   });
 };
 
+const calculateProbability = <Prob extends ProbabilityAmount | ProbabilityType>(
+  probabilities: Prob[],
+): Prob['value'] => {
+  let accumulator = probabilities.reduce((p, c) => p + c.probability, 0);
+  const chance = Math.floor(Math.random() * accumulator);
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const data of probabilities) {
+    accumulator -= data.probability;
+    if (chance >= accumulator) {
+      return data.value;
+    }
+  }
+
+  return 0;
+};
+
 export {
   capitalize,
   daysToMillis,
@@ -106,6 +124,7 @@ export {
   getCustomThemeField,
   millisToSeconds,
   localizedResources,
+  calculateProbability,
   ensureUserHaveDefaultThemes,
   chunkArray,
   minutesToMillis,

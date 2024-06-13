@@ -6,7 +6,7 @@ import i18next, { TFunction } from 'i18next';
 import { AvailableLanguages, Translation } from '../../types/i18next';
 import { ComponentInteraction } from '../../types/interaction';
 import { logger } from '../../utils/logger';
-import { EMOJIS } from '../constants';
+import { EMOJIS, SAFE_EMOJIS, SAFE_TOP_EMOJIS, TOP_EMOJIS } from '../constants';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import {
   editOriginalInteractionResponse,
@@ -14,6 +14,7 @@ import {
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests';
 import { injectRoleplayWarnIfNeeded } from './ChatInputInteractionContext';
+import { bot } from '../..';
 
 export type CanResolve = 'users' | 'members' | false;
 
@@ -50,8 +51,21 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
     return this.interaction.data.customId.split('|').slice(3);
   }
 
+  safeEmoji(emoji: keyof typeof EMOJIS, topEmojis?: boolean): string {
+    const canUseCustomEmojis = bot.utils
+      .calculatePermissions(this.interaction.appPermissions ?? 0n)
+      .includes('USE_EXTERNAL_EMOJIS');
+
+    const emojisToUse = topEmojis ? TOP_EMOJIS : EMOJIS;
+    const safeEmojisToUse = topEmojis ? SAFE_TOP_EMOJIS : SAFE_EMOJIS;
+
+    return canUseCustomEmojis
+      ? emojisToUse[emoji]
+      : safeEmojisToUse[emoji as 'gods'] || emojisToUse[emoji] || '🐛';
+  }
+
   prettyResponse(emoji: keyof typeof EMOJIS, text: Translation, translateOptions = {}): string {
-    return `${EMOJIS[emoji] || '🐛'} **|** ${this.locale(text, translateOptions)}`;
+    return `${this.safeEmoji(emoji)} **|** ${this.locale(text, translateOptions)}`;
   }
 
   async followUp(options: InteractionCallbackData): Promise<void> {

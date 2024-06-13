@@ -1,6 +1,6 @@
 import { ActionRow, ButtonStyles } from 'discordeno/types';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { COLORS, EMOJIS } from '../../structures/constants';
+import { COLORS } from '../../structures/constants';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { executeUserDataRelatedTop } from './userDataRelated';
 import { DatabaseUserSchema } from '../../types/database';
@@ -16,23 +16,6 @@ import { executeUserCommandsTop } from './userCommands';
 import { executeUsersByUsedCommandTop } from './usersByUsedCommand';
 
 const calculateSkipCount = (page: number): number => (page > 1 ? page - 1 : 0) * 10;
-
-const topEmojis: { [key: string]: string } = {
-  mamou: EMOJIS.crown,
-  mamado: EMOJIS.lick,
-  estrelinhas: EMOJIS.estrelinhas,
-  demons: EMOJIS.demons,
-  giants: EMOJIS.giants,
-  angels: EMOJIS.angels,
-  archangels: EMOJIS.archangels,
-  demigods: EMOJIS.demigods,
-  gods: EMOJIS.gods,
-  votes: EMOJIS.ok,
-  blackjack: '🃏',
-  coinflip: '📀',
-  roulette: '🎡',
-  bicho: '🦌',
-};
 
 const usersToIgnoreInTop = async (): Promise<string[]> =>
   Promise.all([
@@ -76,7 +59,7 @@ const createPaginationButtons = (
       ),
       style: ButtonStyles.Primary,
       label: ctx.locale('common:next'),
-      disabled: page === 99,
+      disabled: page === 100,
     }),
   ]);
 
@@ -106,7 +89,7 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
     return executeUserDataRelatedTop(
       ctx,
       firstInfo as keyof DatabaseUserSchema,
-      topEmojis[firstInfo],
+      ctx.safeEmoji(firstInfo as 'success', true),
       ctx.locale(`commands:top.economia.${firstInfo as 'mamou'}-title`),
       ctx.locale(`commands:top.economia.${firstInfo as 'mamou'}`),
       Number(page),
@@ -147,10 +130,4 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
     return executeGamblingTop(ctx, firstInfo as 'bicho', secondInfo as 'money', Number(page));
 };
 
-export {
-  calculateSkipCount,
-  topEmojis,
-  executeTopPagination,
-  usersToIgnoreInTop,
-  createPaginationButtons,
-};
+export { calculateSkipCount, executeTopPagination, usersToIgnoreInTop, createPaginationButtons };

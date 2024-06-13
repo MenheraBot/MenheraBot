@@ -7,6 +7,7 @@
     "rest": "yarn workspace @menhera-bot/rest",
     "orchestrator": "yarn workspace @menhera-bot/orchestrator",
     "events": "yarn workspace @menhera-bot/events",
+    "dev": "yarn events build:dev",
     "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
     "build:all": "concurrently \"yarn rest build\" \"yarn orchestrator build\" \"yarn events build\"",
     "run:lint": "eslint ."

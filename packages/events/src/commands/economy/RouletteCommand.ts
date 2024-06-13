@@ -19,6 +19,7 @@ import { ROULETTE_NUMBERS, WIN_MULTIPLIERS } from '../../modules/roulette/consta
 import { createCommand } from '../../structures/command/createCommand';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
+import executeDailies from '../../modules/dailies/executeDailies';
 
 const colorInHexa = {
   red: '#ff0000',
@@ -63,17 +64,20 @@ const finishRouletteBet = async (
     });
 
     if (didWin) {
-      starsRepository.addStars(ctx.user.id, profit);
-      postTransaction(
+      await starsRepository.addStars(ctx.user.id, profit);
+      await postTransaction(
         `${bot.id}`,
         `${ctx.user.id}`,
         profit,
         'estrelinhas',
         ApiTransactionReason.ROULETTE_COMMAND,
       );
+
+      await executeDailies.winBet(authorData, 'roleta');
+      await executeDailies.winStarsInBet(authorData, profit);
     } else {
-      starsRepository.removeStars(ctx.user.id, bet);
-      postTransaction(
+      await starsRepository.removeStars(ctx.user.id, bet);
+      await postTransaction(
         `${ctx.user.id}`,
         `${bot.id}`,
         bet,
@@ -82,7 +86,7 @@ const finishRouletteBet = async (
       );
     }
 
-    postRoulleteGame(
+    await postRoulleteGame(
       `${ctx.user.id}`,
       bet,
       operation,

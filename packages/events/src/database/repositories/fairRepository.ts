@@ -35,10 +35,13 @@ const deleteAnnouncement = async (id: string): Promise<void> => {
 };
 
 const getAnnouncementIds = async (skip: number, take: number): Promise<string[]> => {
-  const [, result] = await MainRedisClient.sscan(`fair_announcement:all`, skip, 'COUNT', take);
+  const fullAnnouncements = await MainRedisClient.smembers(`fair_announcement:all`);
 
-  return result;
+  return fullAnnouncements.slice(skip, skip + take);
 };
+
+const getTotalAnnouncements = async (): Promise<number> =>
+  MainRedisClient.scard('fair_announcement:all');
 
 const getAnnoucementNames = async (language: AvailableLanguages): Promise<string[]> =>
   MainRedisClient.smembers(`fair_announcement:${language}`);
@@ -54,7 +57,7 @@ const getAnnouncement = async (announcementId: string): Promise<null | DatabaseF
 
   MainRedisClient.setex(
     `fair_announcement:${announcementId}`,
-    3600,
+    604800,
     JSON.stringify(mongoToRedis(fromMongo)),
   );
 
@@ -124,5 +127,6 @@ export default {
   constructAnnouncements,
   getAnnoucementNames,
   getAnnouncementIds,
+  getTotalAnnouncements,
   getAnnouncement,
 };

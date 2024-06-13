@@ -53,7 +53,7 @@ const getUserUnreadNotifications = async (
 
   await MainRedisClient.setex(
     `notifications:${userId}`,
-    3600,
+    604800,
     JSON.stringify(fromMongo.map(parseNotification)),
   );
 

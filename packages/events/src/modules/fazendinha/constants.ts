@@ -9,9 +9,10 @@ export const MAXIMUM_PRICE_TO_SELL_IN_FAIR = 1.5;
 export const MINIMUM_PRICE_TO_SELL_IN_FAIR = 0.65;
 export const MAX_ITEMS_PER_FAIR_PAGE = 20;
 
-export const MAX_DAILY_AT_FULL_LEVEL = 9;
-export const MIN_DAILY_AT_LEVEL_ZERO = 3;
-export const MAX_DAILY_PLANTATION_REQUIREMENT_AT_FULL_LEVEL = 14;
+export const DELIVERIES_AMOUNT = 6;
+export const MAX_DELIVERY_WEIGHT = 9;
+export const MIN_DELIVERY_WEIGHT = 5;
+export const FINISH_ALL_DELIVERIES_BONUS = 30_000;
 
 export const PLANTATION_WEIGHT_MODIFIERS = {
   BASE_MIN_VALUE: 0.7,
@@ -46,7 +47,7 @@ export const UnloadFields: { [field: number]: UnlockFieldFile } = {
 
 export const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
   [AvailablePlants.Mate]: {
-    minutesToHarvest: 15,
+    minutesToHarvest: process.env.NODE_ENV === 'production' ? 15 : 0.1,
     minutesToRot: 60,
     emoji: '🌿',
     sellValue: 110,

@@ -13,8 +13,10 @@ import { capitalize } from '../../utils/miscUtils';
 import { ApiTransactionReason } from '../../types/api';
 import { resolveSeparatedStrings } from '../../utils/discord/componentUtils';
 import notificationRepository from '../../database/repositories/notificationRepository';
+import executeDailies from '../dailies/executeDailies';
+import userRepository from '../../database/repositories/userRepository';
 
-const GAME_DURATION = 1000 * 60 * 60 * 6;
+const GAME_DURATION = 1000 * 60 * 60 * 5;
 
 const generateResults = (): number[] => {
   const results = [];
@@ -44,30 +46,32 @@ const finishGame = async (): Promise<void> => {
 
   postBichoResults(players, Date.now(), JSON.stringify(results));
 
-  let biggestProfit = 0;
-
-  players.forEach((a) => {
+  players.forEach(async (a) => {
     if (a.didWin) {
-      starsRepository.addStars(a.id, a.profit);
-      postTransaction(
+      const userData = await userRepository.ensureFindUser(a.id);
+      await executeDailies.winBet(userData, 'bicho');
+      await executeDailies.winStarsInBet(userData, a.profit);
+      await starsRepository.addStars(a.id, a.profit);
+      await postTransaction(
         `${bot.id}`,
         `${a.id}`,
         a.profit,
         'estrelinhas',
         ApiTransactionReason.WIN_BICHO,
       );
-      notificationRepository.createNotification(
+      await notificationRepository.createNotification(
         a.id,
         'commands:notificações.notifications.user-won-bicho',
         {
           stars: a.profit,
         },
       );
-      if (a.profit > biggestProfit) biggestProfit = a.profit;
     }
   });
 
   const wonPlayers = players.filter((a) => a.didWin);
+
+  const biggestProfit = players.reduce((p, c) => (c.profit > p && c.didWin ? c.profit : p), 0);
 
   const resultsEmbed = createEmbed({
     title: 'Resultados do Jogo do Bicho',

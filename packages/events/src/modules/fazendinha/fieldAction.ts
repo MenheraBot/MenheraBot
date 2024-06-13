@@ -10,6 +10,8 @@ import { Plants } from './constants';
 import { getCurrentSeason } from './seasonsManager';
 import { AvailablePlants, PlantedField } from './types';
 import { getSiloLimits } from './siloUtils';
+import executeDailies from '../dailies/executeDailies';
+import userRepository from '../../database/repositories/userRepository';
 
 const plantField = async (
   ctx: ComponentInteractionContext,
@@ -108,11 +110,6 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
     upgrades: field.upgrades ?? [],
   };
 
-  const updateStats =
-    state === 'MATURE' &&
-    field.plantType === farmer.biggestSeed &&
-    farmer.biggestSeed < AvailablePlants.Mushroom;
-
   await farmerRepository.executeHarvest(
     ctx.user.id,
     selectedField,
@@ -120,13 +117,6 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
     field.plantType,
     farmer.silo.some((a) => a.plant === field.plantType),
     state === 'MATURE',
-    // eslint-disable-next-line no-nested-ternary
-    updateStats
-      ? farmer.plantedFields === 9
-        ? 0
-        : farmer.plantedFields + 1
-      : farmer.plantedFields,
-    updateStats && farmer.plantedFields === 9 ? farmer.biggestSeed + 1 : farmer.biggestSeed,
     field.weight ?? 1,
   );
 
@@ -137,12 +127,22 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
       state === 'MATURE' ? 'HARVEST' : 'ROTTED',
     );
 
+  const harvestedWeight = state === 'MATURE' ? field.weight : undefined;
+
+  if (harvestedWeight)
+    executeDailies.harvestPlant(
+      await userRepository.ensureFindUser(ctx.user.id),
+      field.plantType,
+      harvestedWeight,
+    );
+
   displayPlantations(
     ctx,
     farmer,
     embedColor,
     !userSeeds || userSeeds.amount <= 0 ? AvailablePlants.Mate : seed,
     -1,
+    harvestedWeight,
   );
 };
 

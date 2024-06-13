@@ -30,9 +30,9 @@ import ChatInputInteractionContext from '../../structures/command/ChatInputInter
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { createCommand } from '../../structures/command/createCommand';
 import { COLORS, EMOJIS } from '../../structures/constants';
-import { UserColor } from '../../types/database';
+import { DatabaseUserSchema, UserColor } from '../../types/database';
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
-import { IdentifiedData } from '../../types/menhera';
+import { IdentifiedData, InteractionContext } from '../../types/menhera';
 import {
   createActionRow,
   createButton,
@@ -995,6 +995,42 @@ const customizeProfileTheme = async (ctx: ComponentInteractionContext): Promise<
   }
 };
 
+const executeAllowMamada = async (
+  ctx: InteractionContext,
+  userData?: DatabaseUserSchema,
+): Promise<void> => {
+  if (ctx instanceof ComponentInteractionContext) {
+    const [toChange] = ctx.sentData;
+
+    await userRepository.updateUser(ctx.user.id, { allowMamar: toChange === 'true' });
+  }
+
+  const user = userData ?? (await userRepository.ensureFindUser(ctx.user.id));
+  const { allowMamar } = user;
+
+  const embed = createEmbed({
+    title: ctx.prettyResponse('question', 'commands:mamar.allow-question'),
+    color: hexStringToNumber(user.selectedColor),
+    thumbnail: { url: getUserAvatar(ctx.user, { enableGif: true }) },
+    description: ctx.locale('commands:mamar.allow-description', {
+      permission: ctx.locale(`commands:mamar.allowed-${allowMamar}`),
+    }),
+  });
+
+  ctx.makeMessage({
+    embeds: [embed],
+    components: [
+      createActionRow([
+        createButton({
+          label: ctx.locale(`commands:mamar.allow-${!allowMamar}`),
+          style: ButtonStyles.Secondary,
+          customId: createCustomId(5, ctx.user.id, ctx.originalInteractionId, !allowMamar),
+        }),
+      ]),
+    ],
+  });
+};
+
 const PersonalizeCommand = createCommand({
   path: '',
   name: 'personalizar',
@@ -1031,6 +1067,13 @@ const PersonalizeCommand = createCommand({
       nameLocalizations: { 'en-US': 'color' },
       description: '「🌈」・Muda a cor base da sua conta',
       descriptionLocalizations: { 'en-US': '「🌈」・Change your account base color' },
+      type: ApplicationCommandOptionTypes.SubCommand,
+    },
+    {
+      name: 'mamadas',
+      nameLocalizations: { 'en-US': 'licks' },
+      description: '「😝」・Informe a Menhera se tu quer ser mamado',
+      descriptionLocalizations: { 'en-US': '「😝」・Tell Menhera if you want to be licked' },
       type: ApplicationCommandOptionTypes.SubCommand,
     },
     {
@@ -1156,6 +1199,7 @@ const PersonalizeCommand = createCommand({
     executeColorComponents,
     executeSelectedImageComponent,
     customizeProfileTheme,
+    executeAllowMamada,
   ],
   execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();
@@ -1171,6 +1215,8 @@ const PersonalizeCommand = createCommand({
     if (command === 'badges') return executeBadgesCommand(ctx, finishCommand);
 
     if (command === 'título') return finishCommand(executeTitleCommand(ctx));
+
+    if (command === 'mamadas') return finishCommand(executeAllowMamada(ctx, ctx.authorData));
   },
 });
 

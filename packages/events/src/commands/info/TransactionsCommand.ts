@@ -16,7 +16,7 @@ import { getUserTransactions } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
 import { millisToSeconds } from '../../utils/miscUtils';
 import cacheRepository from '../../database/repositories/cacheRepository';
-import { EMOJIS, transactionableCommandOption } from '../../structures/constants';
+import { transactionableCommandOption } from '../../structures/constants';
 import {
   createActionRow,
   createButton,
@@ -358,7 +358,7 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
     })}${ctx.locale(`commands:transactions.transactions.${transactionType}`, {
       author,
       target,
-      emoji: EMOJIS[a.currencyType],
+      emoji: ctx.safeEmoji(a.currencyType),
       amount: a.amount,
       currencyType: ctx.locale(`common:${a.currencyType}`),
       reason: ctx.locale(`commands:transactions.reasons.${a.reason}`),
