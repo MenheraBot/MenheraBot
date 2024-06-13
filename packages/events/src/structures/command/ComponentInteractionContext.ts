@@ -13,7 +13,6 @@ import {
   sendFollowupMessage,
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests';
-import { injectRoleplayWarnIfNeeded } from './ChatInputInteractionContext';
 import { bot } from '../..';
 
 export type CanResolve = 'users' | 'members' | false;
@@ -69,8 +68,6 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   }
 
   async followUp(options: InteractionCallbackData): Promise<void> {
-    await injectRoleplayWarnIfNeeded(this, options);
-
     await sendFollowupMessage(this.interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: options,
@@ -114,8 +111,6 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   async respondInteraction(
     options: InteractionCallbackData & { attachments?: unknown[] },
   ): Promise<void> {
-    await injectRoleplayWarnIfNeeded(this, options);
-
     if (!this.replied) {
       await sendInteractionResponse(this.interaction.id, this.interaction.token, {
         type: InteractionResponseTypes.ChannelMessageWithSource,
@@ -131,8 +126,6 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   }
 
   async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
-    await injectRoleplayWarnIfNeeded(this, options);
-
     if (!this.replied) {
       this.replied = true;
       await sendInteractionResponse(this.interaction.id, this.interaction.token, {

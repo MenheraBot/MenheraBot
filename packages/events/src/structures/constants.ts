@@ -79,11 +79,12 @@ export const EMOJIS = {
   badge_200: '<:badge_19:1049144870469648485>',
   badge_201: '<:badge_21:1103511851788144771>',
   badge_202: '<:badge_22:1103513736288931892>',
+  badge_203: '<:badge_203:1237388179145883731>',
 
   // Roleplay
   chest: '<:Chest:760957557538947133>',
   magic_ball: '🔮',
-  dragonnys: '<:gold:960654694244573204>',
+  dragonnys: ':coin:',
   pin: '📍',
   zap: ':zap:',
   sword: '⚔️',
@@ -92,7 +93,6 @@ export const EMOJIS = {
   church: '⛪',
   hammer: '🔨',
   poison: '🧪',
-  badge_203: '<:badge_203:1237388179145883731>',
 };
 
 export const SAFE_EMOJIS = {
