@@ -119,7 +119,9 @@ const executeStartTravel = async (ctx: ComponentInteractionContext): Promise<voi
     content: ctx.prettyResponse('success', 'commands:viajar.start-travelling', {
       x,
       y,
-      unix: Date.now() + minutesToMillis(MINUTES_TO_TRAVEL_ONE_BLOCK) * distanceToTravel,
+      unix: millisToSeconds(
+        Date.now() + minutesToMillis(MINUTES_TO_TRAVEL_ONE_BLOCK) * distanceToTravel,
+      ),
     }),
     components: [],
     embeds: [],

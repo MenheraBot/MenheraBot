@@ -94,7 +94,7 @@ const getPaginationInfo = (
         createButton({
           label: ctx.locale(`commands:acessar.blacksmith.pagination.${a}`),
           style: ButtonStyles.Primary,
-          disabled: a === currentPage,
+          disabled: a === 'buy' || a === currentPage,
           customId: createCustomId(
             0,
             ctx.user.id,

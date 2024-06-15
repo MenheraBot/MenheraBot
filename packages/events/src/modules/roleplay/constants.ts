@@ -6,9 +6,8 @@ export const MINUTES_TO_FORCE_FINISH_BATTLE = 15;
 
 export const TOTAL_MAP_SIZE = [5, 5];
 
-export const RESURGE_DEFAULT_AMOUNT = 5;
-
-export const MINUTES_TO_RESURGE = 30;
+export const RESURGE_ENEMIES_DEFAULT_AMOUNT = 5;
+export const MINUTES_TO_RESURGE_ENEMIES = 30;
 
 export const MINUTES_TO_TRAVEL_ONE_BLOCK = 30;
 

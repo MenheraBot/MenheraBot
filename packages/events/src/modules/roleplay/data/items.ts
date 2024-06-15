@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise */
-
 enum ItemType {
   Drop,
   Armor,

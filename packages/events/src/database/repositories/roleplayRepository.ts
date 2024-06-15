@@ -7,8 +7,11 @@ import { debugError } from '../../utils/debugError';
 import { Location } from '../../modules/roleplay/types';
 import { Enemies, Enemy } from '../../modules/roleplay/data/enemies';
 import { minutesToMillis } from '../../utils/miscUtils';
-import { MINUTES_TO_RESURGE, RESURGE_DEFAULT_AMOUNT } from '../../modules/roleplay/constants';
 import { manipulateCharacterStatus } from '../../modules/roleplay/statusManipulation';
+import {
+  MINUTES_TO_RESURGE_ENEMIES,
+  RESURGE_ENEMIES_DEFAULT_AMOUNT,
+} from '../../modules/roleplay/constants';
 
 const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseCharacterSchema => ({
   id: `${user.id}`,
@@ -77,9 +80,10 @@ const getEnemiesInArea = async (area: Location): Promise<Enemy[]> => {
   );
 
   if (enemiesInArea === null)
-    await updateEnemyAreas({ [areaName]: RESURGE_DEFAULT_AMOUNT, [`r:${areaName}`]: 0 });
+    await updateEnemyAreas({ [areaName]: RESURGE_ENEMIES_DEFAULT_AMOUNT, [`r:${areaName}`]: 0 });
 
-  const totalEnemies = enemiesInArea === null ? RESURGE_DEFAULT_AMOUNT : Number(enemiesInArea);
+  const totalEnemies =
+    enemiesInArea === null ? RESURGE_ENEMIES_DEFAULT_AMOUNT : Number(enemiesInArea);
 
   if (totalEnemies)
     return Array.from({ length: Number(totalEnemies) }, (_, i) => ({
@@ -88,8 +92,8 @@ const getEnemiesInArea = async (area: Location): Promise<Enemy[]> => {
     })) as Enemy[];
 
   if (resurgeDate === null || Date.now() >= Number(resurgeDate)) {
-    await updateEnemyAreas({ [areaName]: RESURGE_DEFAULT_AMOUNT, [`r:${areaName}`]: 0 });
-    return Array.from({ length: Number(RESURGE_DEFAULT_AMOUNT) }, (_, i) => ({
+    await updateEnemyAreas({ [areaName]: RESURGE_ENEMIES_DEFAULT_AMOUNT, [`r:${areaName}`]: 0 });
+    return Array.from({ length: Number(RESURGE_ENEMIES_DEFAULT_AMOUNT) }, (_, i) => ({
       ...Enemies[1],
       id: i + 1,
     })) as Enemy[];
@@ -108,7 +112,7 @@ const decreaseEnemyFromArea = async (area: Location): Promise<void> => {
 
   if (total <= 0)
     await updateEnemyAreas({
-      [`r:${areaName}`]: Date.now() + minutesToMillis(MINUTES_TO_RESURGE),
+      [`r:${areaName}`]: Date.now() + minutesToMillis(MINUTES_TO_RESURGE_ENEMIES),
       [areaName]: 0,
     });
 };

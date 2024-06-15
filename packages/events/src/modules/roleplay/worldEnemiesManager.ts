@@ -1,7 +1,7 @@
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import { DatabaseCharacterSchema } from '../../types/database';
 import { randomFromArray } from '../../utils/miscUtils';
-import { RESURGE_DEFAULT_AMOUNT, TOTAL_MAP_SIZE } from './constants';
+import { RESURGE_ENEMIES_DEFAULT_AMOUNT, TOTAL_MAP_SIZE } from './constants';
 import { Enemy } from './data/enemies';
 
 const getCurrentAvailableEnemy = async (
@@ -30,7 +30,7 @@ const getCompleteWorld = async (): Promise<number[][]> => {
       const resurgeCooldown = currentEnemies[`r:${areaName}`];
 
       if (!enemies && (!resurgeCooldown || Date.now() >= resurgeCooldown)) {
-        enemies = RESURGE_DEFAULT_AMOUNT;
+        enemies = RESURGE_ENEMIES_DEFAULT_AMOUNT;
         updateRedis = true;
       }
 

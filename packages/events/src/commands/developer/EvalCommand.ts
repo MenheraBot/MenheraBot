@@ -14,8 +14,6 @@ import userRepository from '../../database/repositories/userRepository';
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
 import { createEmbed } from '../../utils/discord/embedUtils';
-import roleplayRepository from '../../database/repositories/roleplayRepository';
-import { Action } from '../../modules/roleplay/types';
 import notificationRepository from '../../database/repositories/notificationRepository';
 import { enableTcp, enableUnixSocket } from '../../utils/vanGoghRequest';
 import { InteractionContext } from '../../types/menhera';
@@ -23,9 +21,29 @@ import { createActionRow, createButton, createCustomId } from '../../utils/disco
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import titlesRepository from '../../database/repositories/titlesRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
+import roleplayRepository from '../../database/repositories/roleplayRepository';
+import { Action } from '../../modules/roleplay/types';
 
-const noop = (..._args: unknown[]) => undefined;
-noop(userRepository, enableTcp, enableUnixSocket, usersModel, redis, farmerModel);
+const f = {
+  reviveEnemies: async () => redis.del('world_enemies').then(() => 'ENEMIES_RESPAWN'),
+  revivePlayer: async (userId: BigString) =>
+    roleplayRepository
+      .updateCharacter(userId, { currentAction: { type: Action.DEATH, reviveAt: 0 } })
+      .then(() => 'USER_ALIVE'),
+
+  userRepository,
+  enableTcp,
+  enableUnixSocket,
+  usersModel,
+  userThemesRepository,
+  farmerModel,
+  redis,
+  characterModel,
+  titlesRepository,
+  titlesModel,
+  themeCreditsModel,
+  notificationRepository,
+};
 
 const executeEval = async (ctx: InteractionContext, toEval: string) => {
   try {
@@ -71,7 +89,7 @@ const EvalCommand = createCommand({
       type: ApplicationCommandOptionTypes.String,
       name: 'script',
       description: 'Scriptzinho dos casas',
-      required: true,
+      required: false,
     },
   ],
   devsOnly: true,
@@ -79,39 +97,18 @@ const EvalCommand = createCommand({
   authorDataFields: ['id'],
   commandRelatedExecutions: [handleConfirm],
   execute: async (ctx, finishCommand) => {
-    const boleham = {
-      reviveEnemies: async () => redis.del('world_enemies').then(() => 'ENEMIES_RESPAWN'),
-      revivePlayer: async (userId: BigString) =>
-        roleplayRepository
-          .updateCharacter(userId, { currentAction: { type: Action.DEATH, reviveAt: 0 } })
-          .then(() => 'USER_ALIVE'),
-    };
-
-    noop(
-      boleham,
-      userRepository,
-      enableTcp,
-      enableUnixSocket,
-      usersModel,
-      userThemesRepository,
-      farmerModel,
-      redis,
-      characterModel,
-      titlesRepository,
-      titlesModel,
-      themeCreditsModel,
-      notificationRepository,
-    );
     finishCommand();
-    const toEval = ctx.getOption<string>('script', false, true);
+    const toEval = ctx.getOption<string>('script', false, false);
 
-    if (toEval.includes('.flush') && process.env.NODE_ENV === 'production')
-      return ctx.makeMessage({ content: 'não VIIAAAAJAAAA querer limpar o redis de prod mano' });
+    if (!toEval)
+      return ctx.makeMessage({ content: `\`\`\`js\n${Object.keys(f).join('\n')}\n\`\`\`` });
 
-    if (process.env.NODE_ENV === 'production')
+    if (process.env.NODE_ENV === 'production') {
+      if (toEval.includes('.flush'))
+        return ctx.makeMessage({ content: 'não VIIAAAAJAAAA querer limpar o redis de prod mano' });
+
       await redis.setex(`eval:${ctx.originalInteractionId}`, 900, toEval);
 
-    if (process.env.NODE_ENV === 'production')
       return ctx.makeMessage({
         content: `\`\`\`js\n${toEval}\n\`\`\``,
         components: [
@@ -124,7 +121,7 @@ const EvalCommand = createCommand({
           ]),
         ],
       });
-
+    }
     executeEval(ctx, toEval);
   },
 });
