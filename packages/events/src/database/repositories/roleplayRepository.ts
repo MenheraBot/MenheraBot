@@ -71,6 +71,16 @@ const updateCharacter = async (
   await characterModel.updateOne({ id: `${userId}` }, query).catch(debugError);
 };
 
+const getResurgeTimeInArea = async (area: Location): Promise<number> => {
+  const key = `r:${area[0]}:${area[1]}`;
+
+  const resurgeDate = await MainRedisClient.hget('world_enemies', key);
+
+  if (resurgeDate === null || Date.now() >= Number(resurgeDate)) return -1;
+
+  return Number(resurgeDate);
+};
+
 const getEnemiesInArea = async (area: Location): Promise<Enemy[]> => {
   const areaName = `${area[0]}:${area[1]}`;
   const [enemiesInArea, resurgeDate] = await MainRedisClient.hmget(
@@ -130,6 +140,7 @@ export default {
   getCharacter,
   getAllEnemyAreas,
   updateEnemyAreas,
+  getResurgeTimeInArea,
   decreaseEnemyFromArea,
   getEnemiesInArea,
   updateCharacter,

@@ -1205,7 +1205,14 @@
   },
   "personagem": {
     "embed-title": "Personagem de {{user}}",
+    "explain-location": "Viaje pelo mundo com o comando </viajar:{{travelCommandId}}>. Fique de olho na densidade de inimigos da área em que você está.",
     "no-items": "Sem itens no inventário",
+    "user-in-travel": "{{user}} está viajando",
+    "travel-description": "{{user}} está em uma viagem para {{x}},{{y}}. Esta viagem deve se encerrar <t:{{unix}}:R>",
+    "user-in-church": "{{user}} está na Igreja",
+    "in-church-description": "{{user}} está recuperando suas forças na Igreja.",
+    "user-dead": "{{user}} está morto",
+    "dead-description": "{{user}} morreu. Os Dragões estão trazendo sua alma de volta. Tempo estimado para volta: <t:{{unix}}:R>",
     "display-item": "**{{amount}}x** - {{name}}",
     "effects": {
       "type": {
@@ -1227,11 +1234,13 @@
   },
   "viajar": {
     "start-travel": "Iniciar viagem",
+    "clean-area": "Área limpa",
+    "respawn-enemies": "Os inimigos dessa área foram eliminados.\nNovos inimigos devem ressurgir <t:{{unix}}:R>",
     "in-battle": "Tu não pode sair em uma viagem. Tu tá numa batalha! Ta querendo fugir? kk",
     "confirm-message": "Tu tem certeza que queres viajar para **{{x}}:{{y}}**?\nEssa viagem custará {{cost}} {{emoji}} de energia.\nTu chegarás no teu destino final <t:{{unix}}:R> (<t:{{unix}}>)",
     "already-there": "Tu não pode viajar pra essa localização porque tu já ta aí!",
     "other-action": "Não é possível iniciar uma viagem enquanto tu tá em outra atividade",
-    "too-tired": "Tu tá muito cansado para viajar a **{{x}}:{{y}}**. Para completar a viagem, tu precisaria de **{{cost}}** {{emoji}} de energia, mas tu só tem **{{amount}}** {{emoji}}",
+    "too-tired": "Tu tá muito cansado para viajar a **{{x}}:{{y}}**. Para completar a viagem, tu precisaria de **{{cost}}** {{emoji}} de energia, mas tu só tem **{{amount}}** {{emoji}}. Vá para a Igreja de sua região com </acessar igreja:{{churchCommandId}}> para recuperar suas forças.",
     "start-travelling": "Tu iniciou uma baita viagem para **{{x}}:{{y}}**. Previsão de chegada: <t:{{unix}}>",
     "embed-title": "Mapa de Boleham",
     "enemy-density": "Densidade de inimigos",
@@ -1273,6 +1282,7 @@
   "acessar": {
     "igreja": {
       "title": "Pontifícia Igreja de Boleham",
+      "praying-now": "Você está recuperando suas energias. Você deve se recuperar totalmente <t:{{unix}}:R>",
       "praying": "Que as bênçãos dos Dragões estejam contigo.",
       "no-needed": "Os Dragões Anciões Elementais são criaturas esnobes. Eles não te darão forças estando tão saudável assim",
       "recovered": "Suas energias foram revigoradas pelo poder dos Dragões Anciões Elementais.",

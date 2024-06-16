@@ -20,6 +20,10 @@ import { DatabaseCharacterSchema } from '../../types/database';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import { getAbility } from '../../modules/roleplay/data/abilities';
+import commandRepository from '../../database/repositories/commandRepository';
+import { Action } from '../../modules/roleplay/types';
+import { millisToSeconds } from '../../utils/miscUtils';
+import { calculateTravelTime } from '../../modules/roleplay/mapUtils';
 
 const characterPages = ['vitality', 'abilities', 'inventory', 'location'] as const;
 
@@ -40,13 +44,13 @@ const createCharacterNaviagtionButtons = (
     }),
   ) as [ButtonComponent];
 
-const createCharacterEmbed = (
+const createCharacterEmbed = async (
   ctx: InteractionContext,
   user: User,
   character: DatabaseCharacterSchema,
   selectedColor: string,
   currentField: Pages,
-): Embed => {
+): Promise<Embed> => {
   const embed = createEmbed({
     title: ctx.locale('commands:personagem.embed-title', { user: getDisplayName(user, false) }),
     thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
@@ -61,6 +65,23 @@ const createCharacterEmbed = (
           value: getUserStatusDisplay(ctx, prepareUserToBattle(character)),
         },
       ];
+
+      if (character.currentAction.type === Action.DEATH)
+        embed.fields.push({
+          name: ctx.locale('commands:personagem.user-dead', { user: getDisplayName(user) }),
+          value: ctx.locale('commands:personagem.dead-description', {
+            user: getDisplayName(user),
+            unix: millisToSeconds(character.currentAction.reviveAt),
+          }),
+        });
+
+      if (character.currentAction.type === Action.CHURCH)
+        embed.fields.push({
+          name: ctx.locale('commands:personagem.user-in-church', { user: getDisplayName(user) }),
+          value: ctx.locale('commands:personagem.in-church-description', {
+            user: getDisplayName(user),
+          }),
+        });
       break;
     case 'inventory':
       embed.fields = [
@@ -121,7 +142,21 @@ const createCharacterEmbed = (
     case 'location': {
       embed.description = `${ctx.prettyResponse('pin', 'roleplay:common.location')}: ${
         character.location
-      }`;
+      }\n\n${ctx.locale('commands:personagem.explain-location', {
+        travelCommandId: (await commandRepository.getCommandInfo('viajar'))?.discordId,
+      })}`;
+
+      if (character.currentAction.type === Action.TRAVEL)
+        embed.fields?.push({
+          name: ctx.locale('commands:personagem.user-in-travel', { user: getDisplayName(user) }),
+          value: ctx.locale('commands:personagem.travel-description', {
+            user: getDisplayName(user),
+            unix: millisToSeconds(
+              character.currentAction.startAt +
+                calculateTravelTime(character.currentAction.from, character.currentAction.to),
+            ),
+          }),
+        });
     }
   }
 
@@ -147,7 +182,7 @@ const navigateThrough = async (ctx: ComponentInteractionContext): Promise<void> 
 
   const character = await roleplayRepository.getCharacter(userId);
 
-  const embed = createCharacterEmbed(ctx, user, character, selectedColor, page);
+  const embed = await createCharacterEmbed(ctx, user, character, selectedColor, page);
 
   const buttons = createCharacterNaviagtionButtons(ctx, page, selectedColor, userId);
 
@@ -201,7 +236,7 @@ const CharacterCommand = createCommand({
 
     const character = await roleplayRepository.getCharacter(user.id);
 
-    const embed = createCharacterEmbed(
+    const embed = await createCharacterEmbed(
       ctx,
       user,
       character,

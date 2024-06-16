@@ -11,6 +11,29 @@ import { createEmbed, hexStringToNumber } from '../../../../utils/discord/embedU
 import { MessageFlags } from '../../../../utils/discord/messageUtils';
 import { Action } from '../../types';
 import ComponentInteractionContext from '../../../../structures/command/ComponentInteractionContext';
+import {
+  MAX_CHARACTER_ENERGY,
+  MAX_CHARACTER_LIFE,
+  STATUS_RECOVERY_IN_CHURCH_PER_MINUTE,
+} from '../../constants';
+import { millisToSeconds, minutesToMillis } from '../../../../utils/miscUtils';
+
+const fullyRecoveredAt = (life: number, energy: number): number => {
+  const missingLife = MAX_CHARACTER_LIFE - life;
+  const missingEnergy = MAX_CHARACTER_ENERGY - energy;
+
+  const fullyHealthMinutes = Math.round(missingLife / STATUS_RECOVERY_IN_CHURCH_PER_MINUTE.life);
+  const fullyEnergyMinutes = Math.round(
+    missingEnergy / STATUS_RECOVERY_IN_CHURCH_PER_MINUTE.energy,
+  );
+
+  const fullyHealthAt = Math.max(minutesToMillis(fullyHealthMinutes), 0);
+  const fullyEnergyAt = Math.max(minutesToMillis(fullyEnergyMinutes), 0);
+
+  return (fullyHealthAt || fullyEnergyAt) === 0
+    ? -1
+    : Math.max(Date.now() + fullyEnergyAt, Date.now() + fullyHealthAt);
+};
 
 const executeDisplayChurch = async (ctx: ChatInputInteractionContext): Promise<void> => {
   if (await battleRepository.isUserInBattle(ctx.user.id))
@@ -27,9 +50,20 @@ const executeDisplayChurch = async (ctx: ChatInputInteractionContext): Promise<v
       flags: MessageFlags.EPHEMERAL,
     });
 
+  const recoveredAt = fullyRecoveredAt(character.life, character.energy);
+
   const embed = createEmbed({
     title: ctx.prettyResponse('church', 'commands:acessar.igreja.title'),
-    description: ctx.locale('commands:acessar.igreja.description'),
+    description:
+      character.currentAction.type === Action.CHURCH && recoveredAt !== -1
+        ? ctx.locale('commands:acessar.igreja.praying-now', {
+            unix: millisToSeconds(recoveredAt),
+          })
+        : ctx.locale(
+            character.currentAction.type === Action.CHURCH
+              ? 'commands:acessar.igreja.recovered'
+              : 'commands:acessar.igreja.description',
+          ),
     color: hexStringToNumber(ctx.authorData.selectedColor),
   });
 

@@ -16,6 +16,7 @@ import {
 } from '../../modules/roleplay/mapUtils';
 import { millisToSeconds, minutesToMillis } from '../../utils/miscUtils';
 import { EMOJIS } from '../../structures/constants';
+import commandRepository from '../../database/repositories/commandRepository';
 
 const numberToEmoji = {
   0: ':zero:',
@@ -94,6 +95,7 @@ const executeStartTravel = async (ctx: ComponentInteractionContext): Promise<voi
   if (energyCost > character.energy)
     return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:viajar.too-tired', {
+        churchCommandId: (await commandRepository.getCommandInfo('acessar'))?.discordId,
         x: newLocation[0],
         y: newLocation[1],
         cost: energyCost,
@@ -161,6 +163,16 @@ const TravelCommand = createCommand({
         },
       ],
     });
+
+    const ressurectEnemiesTime = await roleplayRepository.getResurgeTimeInArea(character.location);
+
+    if (ressurectEnemiesTime !== -1)
+      embed.fields?.push({
+        name: ctx.locale('commands:viajar.clean-area'),
+        value: ctx.locale('commands:viajar.respawn-enemies', {
+          unix: millisToSeconds(ressurectEnemiesTime),
+        }),
+      });
 
     const action = character.currentAction;
     let colorfy = false;
