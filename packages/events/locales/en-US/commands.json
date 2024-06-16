@@ -1253,7 +1253,7 @@
     "in-battle": "You're already on an adventure, why would you want to go on another one? Kill your enemy!",
     "dead": "**You died!**\na You fought in battle and ended up dying. The veins of the dragons are restoring your soul. You will rise again <t:{{unix}}:R>",
     "other-action": "It is not possible to go into battle while doing something else.",
-    "no-enemies": "There are no enemies nearby at the moment",
+    "no-enemies": "There are no enemies nearby at the moment. Travel around the world to find more enemies with </viajar:{{travelCommandId}}>",
     "first-ability": {
       "title": "Choose your first ability",
       "description": "The Elemental Elder Dragons sensed your teleport to the new world. Knowing your entire journey, they would like to grace your arrival. You have the option to choose any of the skills below to be your first skill.",

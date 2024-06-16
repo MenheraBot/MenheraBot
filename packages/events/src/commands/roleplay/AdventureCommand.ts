@@ -13,6 +13,7 @@ import { createActionRow, createButton, createCustomId } from '../../utils/disco
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { Action, DeathAction } from '../../modules/roleplay/types';
 import { getCurrentAvailableEnemy } from '../../modules/roleplay/worldEnemiesManager';
+import commandRepository from '../../database/repositories/commandRepository';
 
 const executeSelectAbility = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedAbility] = ctx.sentData;
@@ -111,7 +112,9 @@ const AdventureCommand = createCommand({
 
     if (!enemy)
       return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:aventura.no-enemies'),
+        content: ctx.prettyResponse('error', 'commands:aventura.no-enemies', {
+          travelCommandId: (await commandRepository.getCommandInfo('viajar'))?.discordId,
+        }),
         flags: MessageFlags.EPHEMERAL,
       });
 

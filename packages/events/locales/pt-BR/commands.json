@@ -1236,16 +1236,16 @@
     "start-travel": "Iniciar viagem",
     "clean-area": "Área limpa",
     "respawn-enemies": "Os inimigos dessa área foram eliminados.\nNovos inimigos devem ressurgir <t:{{unix}}:R>",
-    "in-battle": "Tu não pode sair em uma viagem. Tu tá numa batalha! Ta querendo fugir? kk",
-    "confirm-message": "Tu tem certeza que queres viajar para **{{x}}:{{y}}**?\nEssa viagem custará {{cost}} {{emoji}} de energia.\nTu chegarás no teu destino final <t:{{unix}}:R> (<t:{{unix}}>)",
-    "already-there": "Tu não pode viajar pra essa localização porque tu já ta aí!",
+    "in-battle": "Você não pode sair em uma viagem. Você está em uma batalha! Ta querendo fugir? kk",
+    "confirm-message": "Você tem certeza que deseja viajar para **{{x}}:{{y}}**?\nEssa viagem custará {{cost}} {{emoji}} de energia.\nTu chegarás no teu destino final <t:{{unix}}:R> (<t:{{unix}}>)",
+    "already-there": "Você pode viajar pra essa localização por que você já está aí!",
     "other-action": "Não é possível iniciar uma viagem enquanto tu tá em outra atividade",
-    "too-tired": "Tu tá muito cansado para viajar a **{{x}}:{{y}}**. Para completar a viagem, tu precisaria de **{{cost}}** {{emoji}} de energia, mas tu só tem **{{amount}}** {{emoji}}. Vá para a Igreja de sua região com </acessar igreja:{{churchCommandId}}> para recuperar suas forças.",
-    "start-travelling": "Tu iniciou uma baita viagem para **{{x}}:{{y}}**. Previsão de chegada: <t:{{unix}}>",
+    "too-tired": "Você está muito cansado para viajar a **{{x}}:{{y}}**. Para completar a viagem, você precisaria de **{{cost}}** {{emoji}} de energia, mas você só tem **{{amount}}** {{emoji}}. Vá para a Igreja de sua região com </acessar igreja:{{churchCommandId}}> para recuperar suas forças.",
+    "start-travelling": "Você iniciou uma viagem para **{{x}}:{{y}}**. Previsão de chegada: <t:{{unix}}>",
     "embed-title": "Mapa de Boleham",
     "enemy-density": "Densidade de inimigos",
     "travelling": "Viajando",
-    "in-travel": "Tu ta em uma viagem para **{{x}}:{{y}}**. Tu vai chegar no teu destino <t:{{unix}}:R> (<t:{{unix}}>)"
+    "in-travel": "Você está em uma viagem para **{{x}}:{{y}}**. Você chegará em seu destino <t:{{unix}}:R> (<t:{{unix}}>)"
   },
   "aventura": {
     "confirm-join": "Entrar na batalha?",
@@ -1255,10 +1255,10 @@
     "enemy-stats-display": ":heart: **Vida**: {{life}}\n:dagger: **Dano**: {{damage}}{{effects}}",
     "fight": "Lutar",
     "adventure-not-found": "Que aventura é essa?... Não lembro",
-    "in-battle": "Tu já está em uma aventura, porque gostaria de ir em outra? Mate seu inimigo!",
-    "dead": "**Você morreu!**\n\nTu ratiou em uma batalha e acabou morrendo. As veias dos dragões estão restabelecendo a tua alma. Tu ressurgirá <t:{{unix}}:R>",
+    "in-battle": "Você já está em uma aventura, porque gostaria de ir em outra? Mate seu inimigo!",
+    "dead": "**Você morreu!**\n\nVocê errou em uma batalha e acabou morrendo. As veias dos dragões estão restabelecendo a tua alma. Tu ressurgirá <t:{{unix}}:R>",
     "other-action": "Não é possível ir para uma batalha enquanto tu tá fazendo outra coisa.",
-    "no-enemies": "Não há inimigos por perto no momento",
+    "no-enemies": "Não há inimigos por perto no momento. Viaje pelo mundo para encontrar mais inimigos com </viajar:{{travelCommandId}}>",
     "first-ability": {
       "title": "Escolha sua primeira habilidade",
       "description": "Os Dragões Anciões Elementais sentiram o seu teletransporte para o novo mundo. Sabendo de toda a sua trajetória, eles gostariam de agraciar a sua chegada. Você possui a opção de escolher qualquer uma das habilidades abaixo, para ser a sua primeira habilidade.",
@@ -1272,10 +1272,10 @@
       "energy-cost": "Custo de energia: {{cost}} :zap:",
       "timeout-killed": "A habilidade inata dos monstros de Boleham foi ativada. A batalha chegou na duração máxima de {{minutes}} minutos. Nesse estágio, a habilidade inata dos monstros 'Morte por Conhecimento' é ativada. Esta habilidade passivamente te analisa, e assim que a análise for concluída, expõe todos os teus pontos fracos, dando a chance do monstro te matar em um golpe.",
       "no-energy": "Tu não tem energia o suficiente para usar isso.",
-      "you-dead": "Tu foi morto",
+      "you-dead": "Você foi morto",
       "dead-description": "Por uma falha na tua postura de batalha, tu acabou morrendo. Os Dragões concordaram em permitir você ressurgir no mundo. Em algumas horas, você ressurgirá neste mundo, como se nada tivesse acontecido.",
       "enemy-dead": "Inimigo morto!",
-      "kill-message": "Tu matou **{{name}}**.\nBuscando em seu corpo por espólios, tu encontrou **{{amount}} {{itemName}}**",
+      "kill-message": "Você matou **{{name}}**.\nBuscando em seu corpo por espólios, você encontrou **{{amount}} {{itemName}}**",
       "timeout": "O inimigo não é bobo. Se tu não atacá-lo <t:{{unix}}:R>, ele te atacará!"
     }
   },
@@ -1290,11 +1290,11 @@
       "stop-praying": "Sair da Igreja",
       "description": "Entre na Igreja para recuperar as suas forças",
       "other-action": "Para entrar na Igreja é necessário estar totalmente focado. Não é possível rezar fazendo outra coisa.",
-      "in-battle": "Tu tá no meio de uma batalha, não é possível fugir daí para entrar na Igreja. Batalhe!"
+      "in-battle": "Você está no meio de uma batalha, não é possível fugir daí para entrar na Igreja. Batalhe!"
     },
     "blacksmith": {
       "title": "Ferreiro de Boleham",
-      "in-battle": "Tu ta em uma batalha no momento. Não há ferreiros por perto.",
+      "in-battle": "Você está em uma batalha no momento. Não há ferreiros por perto.",
       "pagination": {
         "sell": "Vender",
         "buy": "Comprar"
@@ -1302,9 +1302,9 @@
       "sell": {
         "sell": "Vender {{name}}",
         "title": "Vender itens",
-        "sold": "Tu vendeu os teus itens por **{{amount}}** {{emoji}} Dragonnys.",
-        "not-enough-items": "Tu ta querendo vender mais itens do que tu tem.",
-        "invalid-amount": "Tu tentou vender uma quantidade de itens inválida. Cheque os múltiplos de cada item corretamente.",
+        "sold": "Você vendeu itens por **{{amount}}** {{emoji}} Dragonnys.",
+        "not-enough-items": "Não é possível vender mais itens do que você possui.",
+        "invalid-amount": "Você informou uma quantidade de itens inválida. Cheque os múltiplos de cada item corretamente.",
         "select": "Selecione os itens que desejas vender",
         "need-math": "A venda deste item deve ser múltipla de {{amount}}",
         "no-items": "Tu não tem itens suficientes para vender",

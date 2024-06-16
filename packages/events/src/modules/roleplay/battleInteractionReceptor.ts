@@ -1,4 +1,5 @@
 import battleRepository from '../../database/repositories/battleRepository';
+import commandRepository from '../../database/repositories/commandRepository';
 import roleplayRepository from '../../database/repositories/roleplayRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../types/interaction';
@@ -32,7 +33,9 @@ const battleInteractionReceptor = async (ctx: ComponentInteractionContext): Prom
 
     if (!enemy)
       return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:aventura.no-enemies'),
+        content: ctx.prettyResponse('error', 'commands:aventura.no-enemies', {
+          travelCommandId: (await commandRepository.getCommandInfo('viajar'))?.discordId,
+        }),
         components: [],
         embeds: [],
       });
