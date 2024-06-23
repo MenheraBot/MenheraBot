@@ -1303,7 +1303,7 @@
         "invalid-amount": "Tui tried to sell an invalid quantity of items. Check the multiples of each item correctly.",
         "no-items": "You don't have enough items to sell",
         "need-math": "Sale of this item must be a multiple of {{amount}}",
-        "item-description": "{{name}} ({{amount}}x by {{value}} :star:)"
+        "item-description": "**{{name}}** - {{minAmount}} by {{value}} {{emoji}} [`{{amount}}`]\n"
       }
     }
   },

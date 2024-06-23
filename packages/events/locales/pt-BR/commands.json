@@ -1308,7 +1308,7 @@
         "select": "Selecione os itens que desejas vender",
         "need-math": "A venda deste item deve ser múltipla de {{amount}}",
         "no-items": "Tu não tem itens suficientes para vender",
-        "item-description": "{{name}} ({{amount}}x por {{value}} :star:)"
+        "item-description": "**{{name}}** - {{minAmount}} por {{value}} {{emoji}} [`{{amount}}`]\n"
       }
     }
   },

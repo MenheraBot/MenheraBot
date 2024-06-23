@@ -8,7 +8,6 @@ import { mentionUser } from '../../utils/discord/userUtils';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { createCommand } from '../../structures/command/createCommand';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import { EMOJIS } from '../../structures/constants';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { ApiTransactionReason } from '../../types/api';
 import { bot } from '../..';
@@ -51,7 +50,7 @@ const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promis
   ctx.makeMessage({
     content: ctx.prettyResponse('success', 'commands:presentear.transfered', {
       value: amount,
-      emoji: EMOJIS.estrelinhas,
+      emoji: ctx.safeEmoji('estrelinhas'),
       user: mentionUser(ctx.user.id),
       author: mentionUser(ctx.commandAuthor.id),
     }),
@@ -127,7 +126,7 @@ const GiftCommand = createCommand({
         content: ctx.prettyResponse('success', 'commands:presentear.transfered', {
           value: amount,
           author: mentionUser(ctx.author.id),
-          emoji: EMOJIS.estrelinhas,
+          emoji: ctx.safeEmoji('estrelinhas'),
           user: mentionUser(toSendUser.id),
         }),
       });
@@ -168,7 +167,7 @@ const GiftCommand = createCommand({
         user: mentionUser(toSendUser.id),
         author: mentionUser(ctx.author.id),
         count: amount,
-        emoji: EMOJIS.estrelinhas,
+        emoji: ctx.safeEmoji('estrelinhas'),
       }),
       allowedMentions: { users: [toSendUser.id] },
       components: [createActionRow([confirmButton, negateButton])],

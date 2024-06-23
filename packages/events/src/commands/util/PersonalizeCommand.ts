@@ -102,7 +102,7 @@ const createColorComponents = (
     ),
     minValues: 1,
     maxValues: 1,
-    placeholder: `${EMOJIS.rainbow} ${ctx.locale('commands:cor.choose')}`,
+    placeholder: `${ctx.safeEmoji('rainbow')} ${ctx.locale('commands:cor.choose')}`,
     options: [],
   });
 

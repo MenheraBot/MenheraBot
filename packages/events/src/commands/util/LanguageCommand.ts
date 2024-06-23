@@ -1,7 +1,6 @@
 import { ToggleBitfieldBigint } from 'discordeno/transformers';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import guildRepository from '../../database/repositories/guildRepository';
-import { EMOJIS } from '../../structures/constants';
 import { SelectMenuInteraction } from '../../types/interaction';
 import {
   createActionRow,
@@ -64,13 +63,13 @@ const LanguageCommand = createCommand({
           label: ctx.locale('common:english'),
           description: ctx.locale('commands:idioma.english'),
           value: 'en-US',
-          emoji: { name: EMOJIS.us },
+          emoji: { name: ctx.safeEmoji('us') },
         },
         {
           label: ctx.locale('common:portuguese'),
           description: ctx.locale('commands:idioma.portuguese'),
           value: 'pt-BR',
-          emoji: { name: EMOJIS.br },
+          emoji: { name: ctx.safeEmoji('br') },
         },
       ],
     });

@@ -15,7 +15,6 @@ import {
   getInTravelMapButtons,
 } from '../../modules/roleplay/mapUtils';
 import { millisToSeconds, minutesToMillis } from '../../utils/miscUtils';
-import { EMOJIS } from '../../structures/constants';
 import commandRepository from '../../database/repositories/commandRepository';
 
 const numberToEmoji = {
@@ -55,7 +54,7 @@ const confirmTravel = async (ctx: ComponentInteractionContext): Promise<void> =>
       y,
       unix: millisToSeconds(finishTravelAt),
       cost: distanceToTravel * 10,
-      emoji: EMOJIS.zap,
+      emoji: ctx.safeEmoji('zap'),
     }),
   });
 };
@@ -100,7 +99,7 @@ const executeStartTravel = async (ctx: ComponentInteractionContext): Promise<voi
         y: newLocation[1],
         cost: energyCost,
         amount: character.energy,
-        emoji: EMOJIS.zap,
+        emoji: ctx.safeEmoji('zap'),
       }),
       components: [],
       embeds: [],
