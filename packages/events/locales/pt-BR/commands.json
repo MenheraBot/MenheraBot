@@ -464,6 +464,7 @@
   },
   "top": {
     "economia": {
+      "rolls-title": "Placar de Rolls",
       "mamou-title": "Placar de Mamadores",
       "mamado-title": "Placar de Mamados",
       "demons-title": "Placar de Demônios",
@@ -482,6 +483,7 @@
       "angels": "Anjos",
       "archangels": "Arcanjos",
       "giants": "Gigantes",
+      "rolls": "Rolls",
       "demigods": "Semideuses",
       "gods": "Deuses"
     },

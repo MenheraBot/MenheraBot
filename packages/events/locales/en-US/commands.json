@@ -459,6 +459,7 @@
   },
   "top": {
     "economia": {
+      "rolls-title": "Rolls Dashboard",
       "mamou-title": "Lickers Leaderboard",
       "mamado-title": "Licked Leaderboard",
       "demons-title": "Demons Leaderboard",
@@ -478,6 +479,7 @@
       "giants": "Giants",
       "votes": "Votes",
       "gods": "Gods",
+      "rolls": "Rolls",
       "estrelinhas": "Estrelinhas"
     },
     "estatisticas": {

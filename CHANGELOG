@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Novo comando `/viajar` - Viaje pelo mundo de Boleham. Monstros são finitos em uma região. Após os inimigos da região serem completamente exterminados, as veias dos Dragões Elementais começam a revitalizar a área, trazendo novos inimigos à vida. Viaje por outras regiões para encontrar novos inimigos. 
 - Novo comando `/acessar igreja` - Revigore a sua vitalidade entrando em uma Igreja. A fé do Clero gera uma aura dentro das Igrejas, que regenera a sua **Vida** e **Energia** a cada minuto. 
 - Novo comando `/acessar ferreiro` - Venda os seus itens no ferreiro mais próximo. Alguns itens são apenas comercializados em maior quantidade, portanto se atente aos múltiplos do item para vender a quantidade correspondente. 
+- Criado um top de rolls no `/top diversos`. - Sugerido por @mich_solitario. 
 
 ## [5.18.0] - 2024-06-08
 
