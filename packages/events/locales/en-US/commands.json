@@ -1298,6 +1298,8 @@
         "sell": "Sell {{name}}",
         "title": "Sell items",
         "sold": "You sold your items for **{{amount}}** {{emoji}} Dragonnys.",
+        "sold-one": "You sold **{{count}}** item for **{{amount}}** {{emoji}} Dragonnys.",
+        "sold-other": "You sold **{{count}}** items for **{{amount}}** {{emoji}} Dragonnys.",
         "select": "Select the items you wanna sell",
         "not-enough-items": "You want to sell more items than you have.",
         "invalid-amount": "Tui tried to sell an invalid quantity of items. Check the multiples of each item correctly.",

@@ -1302,12 +1302,14 @@
       "sell": {
         "sell": "Vender {{name}}",
         "title": "Vender itens",
-        "sold": "Você vendeu itens por **{{amount}}** {{emoji}} Dragonnys.",
+        "sold": "Você vendeu **{{count}}** itens por **{{amount}}** {{emoji}} Dragonnys.",
+        "sold-one": "Você vendeu **{{count}}** item por **{{amount}}** {{emoji}} Dragonnys.",
+        "sold-other": "Você vendeu **{{count}}** itens por **{{amount}}** {{emoji}} Dragonnys.",
         "not-enough-items": "Não é possível vender mais itens do que você possui.",
-        "invalid-amount": "Você informou uma quantidade de itens inválida. Cheque os múltiplos de cada item corretamente.",
+        "invalid-amount": "Você informou uma quantidade de itens inferior ao necessário para vender. Você deve vender **{{name}}** em múltiplos de {{value}}, portanto a quantidade mínima de itens é {{value}}",
         "select": "Selecione os itens que desejas vender",
         "need-math": "A venda deste item deve ser múltipla de {{amount}}",
-        "no-items": "Tu não tem itens suficientes para vender",
+        "no-items": "Você não tem itens suficientes para vender",
         "item-description": "**{{name}}** - {{minAmount}} por {{value}} {{emoji}} [`{{amount}}`]\n"
       }
     }

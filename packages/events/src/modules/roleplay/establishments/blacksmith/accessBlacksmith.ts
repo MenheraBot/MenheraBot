@@ -53,13 +53,13 @@ const getPaginationInfo = (
       character.inventory.forEach((i) => {
         const item = getItem<DropItem>(i.id);
 
-        embed.description += `- **${i.amount}x${
-          item.sellMinAmount ? ` / ${item.sellMinAmount}x` : ''
-        }** - ${ctx.locale('commands:acessar.blacksmith.sell.item-description', {
+        embed.description += ctx.locale('commands:acessar.blacksmith.sell.item-description', {
           name: ctx.locale(`items:${i.id}.name`),
           amount: i.amount,
           value: item.sellValue,
-        })}\n`;
+          minAmount: item.sellMinAmount ?? 1,
+          emoji: ctx.safeEmoji('dragonnys'),
+        });
 
         if (item.sellMinAmount && item.sellMinAmount > i.amount) return;
 

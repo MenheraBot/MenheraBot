@@ -13,7 +13,6 @@ import { extractFields } from '../../../../utils/discord/modalUtils';
 import { InventoryItem } from '../../types';
 import { MessageFlags } from '../../../../utils/discord/messageUtils';
 import battleRepository from '../../../../database/repositories/battleRepository';
-import { EMOJIS } from '../../../../structures/constants';
 
 const executeSellItem = async (
   ctx: ComponentInteractionContext<ModalInteraction>,
@@ -22,22 +21,24 @@ const executeSellItem = async (
 
   const character = await roleplayRepository.getCharacter(ctx.user.id);
 
-  const userSelected: Array<InventoryItem & { item: DropItem }> = sentItems.map((item) => ({
-    amount: parseInt(item.value, 10),
-    id: Number(item.customId) as 1,
-    item: getItem<DropItem>(item.customId),
-  }));
+  const userSelected: Array<InventoryItem & { item: DropItem }> = sentItems.map((item) => {
+    const itemData = getItem<DropItem>(item.customId);
+    let selectedAmount = parseInt(item.value, 10);
+
+    if (itemData.sellMinAmount && selectedAmount % itemData.sellMinAmount !== 0)
+      selectedAmount -= selectedAmount % itemData.sellMinAmount;
+
+    return {
+      amount: selectedAmount,
+      id: Number(item.customId) as 1,
+      item: itemData,
+    };
+  });
 
   if (!inventoryUtils.userHasAllItems(character.inventory, userSelected))
     return ctx.respondInteraction({
       flags: MessageFlags.EPHEMERAL,
       content: ctx.prettyResponse('error', 'commands:acessar.blacksmith.sell.not-enough-items'),
-    });
-
-  if (userSelected.some((a) => a.item.sellMinAmount && a.amount % a.item.sellMinAmount !== 0))
-    return ctx.respondInteraction({
-      flags: MessageFlags.EPHEMERAL,
-      content: ctx.prettyResponse('error', 'commands:acessar.blacksmith.sell.invalid-amount'),
     });
 
   if (await battleRepository.isUserInBattle(ctx.user.id))
@@ -46,10 +47,22 @@ const executeSellItem = async (
       content: ctx.prettyResponse('error', 'commands:acessar.blacksmith.in-battle'),
     });
 
-  const totalMoney = userSelected.reduce(
-    (p, c) =>
-      (c.item.sellMinAmount ? c.amount / c.item.sellMinAmount : c.amount) * c.item.sellValue + p,
-    0,
+  if (
+    userSelected.some(
+      (a) => a.amount < 1 || (a.item.sellMinAmount && a.amount % a.item.sellMinAmount !== 0),
+    )
+  )
+    return ctx.respondInteraction({
+      flags: MessageFlags.EPHEMERAL,
+      content: ctx.prettyResponse('error', 'commands:acessar.blacksmith.sell.invalid-amount'),
+    });
+
+  const [totalMoney, totalItems] = userSelected.reduce(
+    (p, c) => [
+      (c.item.sellMinAmount ? c.amount / c.item.sellMinAmount : c.amount) * c.item.sellValue + p[0],
+      p[1] + c.amount,
+    ],
+    [0, 0],
   );
 
   const newInventory = inventoryUtils.removeItems(character.inventory, userSelected);
@@ -64,7 +77,8 @@ const executeSellItem = async (
     embeds: [],
     content: ctx.prettyResponse('success', 'commands:acessar.blacksmith.sell.sold', {
       amount: totalMoney,
-      emoji: EMOJIS.dragonnys,
+      count: totalItems,
+      emoji: ctx.safeEmoji('dragonnys'),
     }),
   });
 };
