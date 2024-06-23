@@ -9,7 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
-- Sistema de ...!
+- **Boleham está de volta!** - Mais uma vez a Menhera está implementando um sistema de RPG. Dessa vez quero fazer funcionar. Veja todos os comandos do RPG buscando por `/rpg` no Discord.
+- Novo comando `/personagem` - Veja as informações de seu personagem. 
+- Novo comando `/aventura` - Vá para uma aventura contra um monstro de sua região. Escolha a sua ação a cada turno, podendo selecionar habilidades para causar efeitos como `envenenamento` e `cura`, ou apenas aplicar `dano` a seu inimigo. Cuidado para não ficar sem energia, isso é fatal. 
+- Novo comando `/viajar` - Viaje pelo mundo de Boleham. Monstros são finitos em uma região. Após os inimigos da região serem completamente exterminados, as veias dos Dragões Elementais começam a revitalizar a área, trazendo novos inimigos à vida. Viaje por outras regiões para encontrar novos inimigos. 
+- Novo comando `/acessar igreja` - Revigore a sua vitalidade entrando em uma Igreja. A fé do Clero gera uma aura dentro das Igrejas, que regenera a sua **Vida** e **Energia** a cada minuto. 
+- Novo comando `/acessar ferreiro` - Venda os seus itens no ferreiro mais próximo. Alguns itens são apenas comercializados em maior quantidade, portanto se atente aos múltiplos do item para vender a quantidade correspondente. 
 
 ## [5.18.0] - 2024-06-08
 

@@ -133,9 +133,9 @@ const TravelCommand = createCommand({
   path: '',
   name: 'viajar',
   nameLocalizations: { 'en-US': 'travel' },
-  description: '「RPG」・Viaja para outro lugar do mundo',
+  description: '「RPG」・Viaje pelo mundo de Boleham',
   descriptionLocalizations: {
-    'en-US': '「RPG」・Travel around the world',
+    'en-US': '「RPG」・Travel around the World of Boleham',
   },
   category: 'roleplay',
   commandRelatedExecutions: [confirmTravel, executeStartTravel],
