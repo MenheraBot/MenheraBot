@@ -23,11 +23,12 @@ const executeTopHuntStatistics = async (
 
   const results = await getTopHunters(skip, usersToIgnore, type, topMode);
 
-  if (!results) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
-
-    return;
-  }
+  if (!results)
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'common:api-error'),
+      embeds: [],
+      components: [],
+    });
 
   const embed = createEmbed({
     title: ctx.locale('commands:top.estatisticas.cacar.title', {
@@ -41,9 +42,7 @@ const executeTopHuntStatistics = async (
   });
 
   const [members, titles] = await Promise.all([
-    Promise.all(
-      results.map(async (a) => cacheRepository.getDiscordUser(`${a.user_id}`, page <= 3)),
-    ),
+    Promise.all(results.map(async (a) => cacheRepository.getDiscordUser(`${a.user_id}`))),
     Promise.all(results.map(async (a) => userRepository.ensureFindUser(`${a.user_id}`))),
   ]);
 

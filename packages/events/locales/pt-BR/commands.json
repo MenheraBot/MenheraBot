@@ -487,6 +487,10 @@
       "demigods": "Semideuses",
       "gods": "Deuses"
     },
+    "fazendeiros": {
+      "title": "{{emoji}} | Melhores Fazendeiros de {{plant}} {{page}}º",
+      "harvested": "Colheitas realizadas"
+    },
     "estatisticas": {
       "cacar": {
         "title": "{{emoji}} | Melhores Caçadores de {{type}} {{page}}º",

@@ -14,6 +14,8 @@ import { executeUserCommandsTop } from '../../modules/top/userCommands';
 import { executeTopPagination } from '../../modules/top';
 import { executeUsersByUsedCommandTop } from '../../modules/top/usersByUsedCommand';
 import { bot } from '../..';
+import { executeFarmersTop } from '../../modules/top/farmersTop';
+import { AvailablePlants } from '../../modules/fazendinha/types';
 
 const TopCommand = createCommand({
   path: '',
@@ -38,6 +40,27 @@ const TopCommand = createCommand({
           required: true,
           choices: transactionableCommandOption.filter((a) => a.value !== 'estrelinhas'),
         },
+        {
+          type: ApplicationCommandOptionTypes.Integer,
+          name: 'página',
+          nameLocalizations: { 'en-US': 'page' },
+          description: 'Página do top que tu quer ver',
+          descriptionLocalizations: { 'en-US': 'Top page you want to see' },
+          required: false,
+          minValue: 2,
+          maxValue: 100,
+        },
+      ],
+    },
+    {
+      name: 'fazendeiros',
+      nameLocalizations: { 'en-US': 'farmers' },
+      description: '「🌿」・Veja os fazendeiros que mais conseguiram colheram plantas',
+      descriptionLocalizations: {
+        'en-US': '「🌿」・See the farmers who harvested the most plants',
+      },
+      type: ApplicationCommandOptionTypes.SubCommand,
+      options: [
         {
           type: ApplicationCommandOptionTypes.Integer,
           name: 'página',
@@ -366,6 +389,11 @@ const TopCommand = createCommand({
           page,
           COLORS.Purple,
         );
+      }
+      case 'fazendeiros': {
+        const page = ctx.getOption<number>('página', false) ?? 0;
+
+        return executeFarmersTop(ctx, page, ctx.authorData.selectedColor, AvailablePlants.Mate);
       }
       case 'comandos': {
         const type = ctx.getOption<'commands' | 'user'>('tipo', false, true);

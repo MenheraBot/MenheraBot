@@ -482,6 +482,10 @@
       "rolls": "Rolls",
       "estrelinhas": "Estrelinhas"
     },
+    "fazendeiros": {
+      "title": "{{emoji}} | Best Farmers of {{plant}} {{page}}º",
+      "harvested": "Harvested"
+    },
     "estatisticas": {
       "cacar": {
         "title": "{{emoji}} | Best Hunters of {{type}} {{page}}º",

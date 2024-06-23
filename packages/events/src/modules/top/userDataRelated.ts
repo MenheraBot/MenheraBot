@@ -1,5 +1,5 @@
 import { ButtonComponent, ButtonStyles } from 'discordeno/types';
-import { calculateSkipCount, createPaginationButtons } from '.';
+import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from '.';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import userRepository from '../../database/repositories/userRepository';
 import { DatabaseUserSchema } from '../../types/database';
@@ -20,11 +20,9 @@ const executeUserDataRelatedTop = async (
 ): Promise<void> => {
   const skip = calculateSkipCount(page);
 
-  const res = await userRepository.getTopRanking(
-    label,
-    skip,
-    await cacheRepository.getDeletedAccounts(),
-  );
+  const usersToIgnore = await usersToIgnoreInTop();
+
+  const res = await userRepository.getTopRanking(label, skip, usersToIgnore);
 
   const embed = createEmbed({
     title: `${emoji} | ${embedTitle} ${page > 1 ? page : 1}º`,
@@ -33,7 +31,7 @@ const executeUserDataRelatedTop = async (
   });
 
   const [members, titles] = await Promise.all([
-    Promise.all(res.map(async (a) => cacheRepository.getDiscordUser(`${a.id}`, page <= 3))),
+    Promise.all(res.map(async (a) => cacheRepository.getDiscordUser(`${a.id}`))),
     Promise.all(res.map(async (a) => userRepository.ensureFindUser(`${a.id}`))),
   ]);
 

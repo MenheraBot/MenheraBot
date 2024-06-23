@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Novo comando `/acessar ferreiro` - Venda os seus itens no ferreiro mais próximo. Alguns itens são apenas comercializados em maior quantidade, portanto se atente aos múltiplos do item para vender a quantidade correspondente. 
 - Criado um top de rolls no `/top diversos`. - Sugerido por @mich_solitario. 
 - Trocar missões diárias! Agora é possível mudar uma de suas missões diárias. Missões trocadas não dão prêmios em estrelinhas, mas ainda dão o bônus especial. - Sugerido por @mich_solitario.
+- Novo comando `/top fazendeiros`. Veja os fazendeiros que mais colheram um tipo de planta.
+
+### Changed
+
+- A Menhera não busca mais pelo nome dos usuários das 3 primeiras páginas dos `/top`. 
 
 ## [5.18.0] - 2024-06-08
 
