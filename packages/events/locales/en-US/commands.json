@@ -1302,7 +1302,7 @@
         "sold-other": "You sold **{{count}}** items for **{{amount}}** {{emoji}} Dragonnys.",
         "select": "Select the items you wanna sell",
         "not-enough-items": "You want to sell more items than you have.",
-        "invalid-amount": "Tui tried to sell an invalid quantity of items. Check the multiples of each item correctly.",
+        "invalid-amount": "You sent a amount of items lower than necessary to sell. You must sell **{{name}}** in multiples of {{value}}, therefore the minimum quantity of items is {{value}}",
         "no-items": "You don't have enough items to sell",
         "need-math": "Sale of this item must be a multiple of {{amount}}",
         "item-description": "**{{name}}** - {{minAmount}} by {{value}} {{emoji}} [`{{amount}}`]\n"

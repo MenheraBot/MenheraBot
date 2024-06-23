@@ -47,14 +47,17 @@ const executeSellItem = async (
       content: ctx.prettyResponse('error', 'commands:acessar.blacksmith.in-battle'),
     });
 
-  if (
-    userSelected.some(
-      (a) => a.amount < 1 || (a.item.sellMinAmount && a.amount % a.item.sellMinAmount !== 0),
-    )
-  )
+  const firstWrongItem = userSelected.find(
+    (a) => a.amount < 1 || (a.item.sellMinAmount && a.amount % a.item.sellMinAmount !== 0),
+  );
+
+  if (firstWrongItem)
     return ctx.respondInteraction({
       flags: MessageFlags.EPHEMERAL,
-      content: ctx.prettyResponse('error', 'commands:acessar.blacksmith.sell.invalid-amount'),
+      content: ctx.prettyResponse('error', 'commands:acessar.blacksmith.sell.invalid-amount', {
+        name: ctx.locale(`items:${firstWrongItem.id}.name`),
+        value: firstWrongItem.item.sellMinAmount ?? 1,
+      }),
     });
 
   const [totalMoney, totalItems] = userSelected.reduce(
