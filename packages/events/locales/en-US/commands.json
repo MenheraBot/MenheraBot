@@ -1333,6 +1333,12 @@
   },
   "daily": {
     "title": "Your daily missions",
+    "change-daily": "Change mission",
+    "already-changed": "You can only change one mission per day.",
+    "change-title": "Choose one mission to change",
+    "change": "({{index}}) Change mission",
+    "success-changed": "The mission **{{index}}** was changed! Check out your new mission:\n\n- {{newDaily}}",
+    "change-footer": "You won't earn stars for completing a mission that you changed, just the special prize.",
     "reedem": "({{index}}) Reedem",
     "reedemed": "({{index}}) Reedemed",
     "unfinished": "({{index}}) {{has}}/{{need}}",

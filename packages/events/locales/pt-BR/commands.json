@@ -1332,14 +1332,20 @@
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Acabei de te dar uma **Badge** nova! Cheque seu perfil >.<",
       "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Adicionei um título em sua conta! Da uma olhadinha em `/personalizar título` >.<",
       "finished-daily": "",
-      "finished-daily-one": "Você completou **{{count}}** missão! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>",
-      "finished-daily-other": "Você completou **{{count}}** missões! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>"
+      "finished-daily-one": "Você completou **{{count}}** missão! Sua recompensa é **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>",
+      "finished-daily-other": "Você completou **{{count}}** missões! Sua recompensa é **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>"
     }
   },
   "daily": {
     "title": "Suas missões diárias",
     "reedem": "({{index}}) Resgatar",
     "reedemed": "({{index}}) Resgatado",
+    "change-daily": "Trocar missão",
+    "already-changed": "Você só pode trocar uma missão por dia.",
+    "success-changed": "A missão **{{index}}** foi trocada! Você recebeu uma nova missão:\n\n- {{newDaily}}",
+    "change": "({{index}}) Trocar missão",
+    "change-title": "Escolha uma missão para trocar",
+    "change-footer": "Você não ganhará estrelinhas por completar uma missão trocada, apenas o prêmio especial.",
     "unfinished": "({{index}}) {{has}}/{{need}}",
     "cannot-reedem": "Tu ainda não pode resgatar essa missão!",
     "already-reedemed": "Tu já resgatou os prêmios dessa missão!",

@@ -24,6 +24,7 @@ export const EMOJIS = {
   gift: '🎁',
   calendar: '📅',
   no: '❌',
+  swap: '🔀',
   map: '🗺️',
   question: '❓',
   yellow_circle: '🟡',
