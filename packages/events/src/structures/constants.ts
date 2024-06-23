@@ -125,6 +125,7 @@ export const TOP_EMOJIS: { [key: string]: string } = {
   gods: EMOJIS.gods,
   votes: EMOJIS.ok,
   rolls: EMOJIS.roll,
+  completedDailies: EMOJIS.calendar,
   blackjack: '🃏',
   coinflip: '📀',
   roulette: '🎡',

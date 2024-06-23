@@ -112,6 +112,11 @@ const TopCommand = createCommand({
               name: '🔑 | Rolls',
               value: 'rolls',
             },
+            {
+              name: '📆 | Missões diárias',
+              nameLocalizations: { 'en-US': '📆 | Daily missions' },
+              value: 'completedDailies',
+            },
           ],
         },
         {

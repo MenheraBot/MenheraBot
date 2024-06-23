@@ -42,8 +42,8 @@ const executeTopHuntStatistics = async (
   });
 
   const [members, titles] = await Promise.all([
-    Promise.all(results.map(async (a) => cacheRepository.getDiscordUser(`${a.user_id}`))),
-    Promise.all(results.map(async (a) => userRepository.ensureFindUser(`${a.user_id}`))),
+    Promise.all(results.map((a) => cacheRepository.getDiscordUser(`${a.user_id}`))),
+    Promise.all(results.map((a) => userRepository.ensureFindUser(`${a.user_id}`))),
   ]);
 
   const resolvedTitles = await Promise.all(

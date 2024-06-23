@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Criado um top de rolls no `/top diversos`. - Sugerido por @mich_solitario. 
 - Trocar missões diárias! Agora é possível mudar uma de suas missões diárias. Missões trocadas não dão prêmios em estrelinhas, mas ainda dão o bônus especial. - Sugerido por @mich_solitario.
 - Novo comando `/top fazendeiros`. Veja os fazendeiros que mais colheram um tipo de planta.
+- Criado um top de missões diárias no `/top diversos`. Apenas as dailies finalizadas após o lançamento desta versão contam.
 
 ### Changed
 

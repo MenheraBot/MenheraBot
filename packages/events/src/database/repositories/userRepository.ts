@@ -45,6 +45,7 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
   dailies: user.dailies,
   dailyDayId: user.dailyDayId,
   allowMamar: user.allowMamar,
+  completedDailies: user.completedDailies,
 });
 
 const findUser = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {
@@ -184,7 +185,6 @@ const getTopRanking = async (
     skip,
     limit,
     sort: { [field]: -1 },
-    lean: true,
   });
 
   return res.map((a) => ({ id: a.id, value: a[field] }));

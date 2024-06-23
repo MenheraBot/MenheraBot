@@ -103,6 +103,7 @@ const changeDaily = async (
   await userRepository.updateUser(ctx.user.id, { dailies: userDailies });
 
   const daily = getDailyById(userDaily.id);
+
   const newDailyDescription = ctx.locale(`commands:daily.descriptions.${daily.type}`, {
     ...userDaily,
     specification:

@@ -46,6 +46,7 @@ const executeDailies = async (
   if (finishedDailies > 0) {
     const award = availableForPrizeDailies * FINISHED_DAILY_AWARD;
     incrementer.estrelinhas = award;
+    incrementer.completedDailies = finishedDailies;
 
     notificationRepository.createNotification(
       user.id,

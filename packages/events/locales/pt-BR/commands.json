@@ -465,6 +465,7 @@
   "top": {
     "economia": {
       "rolls-title": "Placar de Rolls",
+      "completedDailies-title": "Placar de Missões diárias",
       "mamou-title": "Placar de Mamadores",
       "mamado-title": "Placar de Mamados",
       "demons-title": "Placar de Demônios",
@@ -482,6 +483,7 @@
       "demons": "Demônios",
       "angels": "Anjos",
       "archangels": "Arcanjos",
+      "completedDailies": "Missões diárias completadas",
       "giants": "Gigantes",
       "rolls": "Rolls",
       "demigods": "Semideuses",
