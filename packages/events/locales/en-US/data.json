@@ -270,6 +270,10 @@
     "49": { 
       "name": "Sunflower",
       "description": "A sunflower lost among various card backgrounds"
+    },
+    "50": {
+      "name": "He's looking",
+      "description": "The eye that sees everything"
     }
   },
   "plants": {

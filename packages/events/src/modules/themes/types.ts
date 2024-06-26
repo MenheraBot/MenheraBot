@@ -12,6 +12,7 @@ export type AvailableCardBackgroundThemes =
   | 'frostbite'
   | 'berserk'
   | 'sunflower'
+  | 'hes_looking'
   | 'lamenta_caelorum';
 
 export type AvailableTableThemes =

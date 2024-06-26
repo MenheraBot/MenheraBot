@@ -270,6 +270,10 @@
     "49": { 
       "name": "Girassol",
       "description": "Um girrasol perdido em meio a vários fundos de cartas"
+    },
+    "50": {
+      "name": "Ele está de olho",
+      "description": "O olho que tudo vê"
     }
   },
   "plants": {

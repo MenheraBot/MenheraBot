@@ -300,9 +300,14 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     theme: 'berserk',
   },
   49: {
-    price: 23500,
+    price: 23_500,
     type: 'card_background',
     theme: 'sunflower',
+  },
+  50: {
+    price: 15_000,
+    type: 'card_background',
+    theme: 'hes_looking',
   },
 };
 
