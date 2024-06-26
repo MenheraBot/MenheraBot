@@ -253,6 +253,19 @@
     "46": {
       "name": "Frozen",
       "description": "A cold touch to your profile"
+    },
+    "47": {
+      "name": "Political Aspects",
+      "description": "To live is to be political, so show your side (Patriot, Communist or Communist Patriot)",
+      "customFields": {
+        "useImage": "Use image instead of color",
+        "communistTheme": "Use communist version",
+        "patriotTheme": "Use patriot version"
+      }
+    }, 
+    "48": {
+      "name": "Berserk",
+      "description": "The thirst for revenge corrupts you inside"
     }
   },
   "plants": {
