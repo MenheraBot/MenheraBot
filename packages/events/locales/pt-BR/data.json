@@ -266,6 +266,10 @@
     "48": {
       "name": "Berserk",
       "description": "A sede de vingança te corrompe por dentro"
+    },
+    "49": { 
+      "name": "Girassol",
+      "description": "Um girrasol perdido em meio a vários fundos de cartas"
     }
   },
   "plants": {

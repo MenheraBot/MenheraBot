@@ -266,6 +266,10 @@
     "48": {
       "name": "Berserk",
       "description": "The thirst for revenge corrupts you inside"
+    },
+    "49": { 
+      "name": "Sunflower",
+      "description": "A sunflower lost among various card backgrounds"
     }
   },
   "plants": {
