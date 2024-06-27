@@ -6,7 +6,7 @@ import shopRepository from '../../database/repositories/shopRepository';
 import { HuntMagicItems } from '../hunt/magicItems';
 import { HuntProbablyBoostItem } from '../hunt/types';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { COLORS, EMOJIS } from '../../structures/constants';
+import { COLORS } from '../../structures/constants';
 import {
   createActionRow,
   createCustomId,
@@ -76,7 +76,9 @@ const buyItems = async (
       selectMenu.options.push({
         label: ctx.locale(`data:magic-items.${i as 1}.name`),
         value: `${i}`,
-        description: `${(HuntMagicItems[i] as HuntProbablyBoostItem).cost} ${EMOJIS.estrelinhas}`,
+        description: `${(HuntMagicItems[i] as HuntProbablyBoostItem).cost} ${ctx.safeEmoji(
+          'estrelinhas',
+        )}`,
       });
   }
 

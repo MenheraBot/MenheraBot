@@ -52,47 +52,55 @@ const getDailyAwardOptions = (): [
   return parsed as [Award<string | number>, Award<string | number>, Award<string | number>];
 };
 
-const calculateUserDailies = (): DatabaseDaily[] => {
-  const newDailies: DatabaseDaily[] = [];
+const getUniqueDaily = (currentDailies: DatabaseDaily[]): DatabaseDaily => {
   const allDailies = getAllDailies();
 
-  while (newDailies.length < DAILIES_AMOUNT) {
-    const randomDaily = randomFromArray(allDailies);
+  const availableDailies = allDailies.filter(
+    (daily) =>
+      !currentDailies.some(
+        (d) => daily.id === d.id && (!d.specification || d.specification.length === 1),
+      ),
+  );
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    const randomDaily = randomFromArray(availableDailies);
+
+    const randomAmount = Math.floor(
+      Math.random() * (randomDaily.data.amountLimits[1] - randomDaily.data.amountLimits[0]) +
+        randomDaily.data.amountLimits[0],
+    );
+
+    const specification = randomDaily.data.specifications
+      ? randomFromArray(randomDaily.data.specifications)
+      : undefined;
 
     if (
-      !newDailies.some(
-        (d) =>
-          d.id === randomDaily.id &&
-          (!randomDaily.data.specifications || randomDaily.data.specifications.length === 1),
+      !(
+        specification &&
+        currentDailies.some((a) => a.id === randomDaily.id && a.specification === specification)
       )
-    ) {
-      const randomAmount = Math.floor(
-        Math.random() * (randomDaily.data.amountLimits[1] - randomDaily.data.amountLimits[0]) +
-          randomDaily.data.amountLimits[0],
-      );
+    )
+      return {
+        id: randomDaily.id,
+        has: 0,
+        need: randomAmount,
+        redeemed: false,
+        awards: getDailyAwardOptions(),
+        specification,
+      };
+  }
+};
 
-      const specification = randomDaily.data.specifications
-        ? randomFromArray(randomDaily.data.specifications)
-        : undefined;
+const calculateUserDailies = (): DatabaseDaily[] => {
+  const newDailies: DatabaseDaily[] = [];
 
-      if (
-        !(
-          specification &&
-          newDailies.some((a) => a.id === randomDaily.id && a.specification === specification)
-        )
-      )
-        newDailies.push({
-          id: randomDaily.id,
-          has: 0,
-          need: randomAmount,
-          redeemed: false,
-          awards: getDailyAwardOptions(),
-          specification,
-        });
-    }
+  while (newDailies.length < DAILIES_AMOUNT) {
+    const randomDaily = getUniqueDaily(newDailies);
+    newDailies.push(randomDaily);
   }
 
   return newDailies;
 };
 
-export { calculateUserDailies };
+export { calculateUserDailies, getUniqueDaily };

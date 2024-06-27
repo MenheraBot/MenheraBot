@@ -10,11 +10,15 @@ export type AvailableCardBackgroundThemes =
   | 'nocturnal'
   | 'morning'
   | 'frostbite'
+  | 'berserk'
+  | 'sunflower'
+  | 'hes_looking'
   | 'lamenta_caelorum';
 
 export type AvailableTableThemes =
   | 'green'
   | 'blue'
+  | 'berserk'
   | 'red'
   | 'pink'
   | 'rounded'
@@ -38,7 +42,9 @@ export type AvailableProfilesThemes =
   | 'mural'
   | 'website'
   | 'memories'
-  | 'frozen';
+  | 'frozen'
+  | 'berserk'
+  | 'comuna_patrio';
 
 export type AvailableThemeTypes =
   | 'profile'

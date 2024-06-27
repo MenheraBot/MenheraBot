@@ -18,6 +18,8 @@ import { bot } from '../..';
 
 export type CanResolve = 'users' | 'members' | 'attachments' | false;
 
+export const ROLEPLAY_COMMANDS = ['acessar', 'aventura', 'personagem', 'viajar'];
+
 export default class {
   public replied = false;
 
@@ -38,6 +40,10 @@ export default class {
 
     this.subCommandGroup = subCommandGroup;
     this.subCommand = subCommand;
+  }
+
+  get interactionToken(): string {
+    return this.interaction.token;
   }
 
   get author(): User {

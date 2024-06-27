@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import userThemesRepository from '../../database/repositories/userThemesRepository';
-import { COLORS, EMOJIS } from '../../structures/constants';
+import { COLORS } from '../../structures/constants';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { randomFromArray } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
@@ -179,7 +179,7 @@ const EightballCommand = createCommand({
     });
 
     const embed = createEmbed({
-      title: `${EMOJIS.question} | ${ctx.locale('commands:8ball.ask')}`,
+      title: `${ctx.safeEmoji('question')} | ${ctx.locale('commands:8ball.ask')}`,
       footer: { text: ctx.locale('commands:8ball.themes') },
     });
 

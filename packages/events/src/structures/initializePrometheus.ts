@@ -9,8 +9,6 @@ let stuckQueuesCounter: Counter;
 let redisCacheCounter: Counter;
 
 const initializePrometheus = (): void => {
-  if (process.env.NOMICROSERVICES) return;
-
   register = new client.Registry();
 
   commandsCounter = new client.Counter({

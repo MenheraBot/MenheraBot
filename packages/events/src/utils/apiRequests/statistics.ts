@@ -268,9 +268,26 @@ const getFazendinhaStatistics = async (
   return result.data;
 };
 
+const getTopFarmers = async (
+  skip: number,
+  bannedUsers: string[],
+  plantType: AvailablePlants,
+): Promise<{ user_id: string; harvest: number }[] | null> => {
+  const res = await dataRequest
+    .get('/statistics/fazendinha/top', { data: { skip, bannedUsers, plantType } })
+    .catch(debugError);
+
+  if (!res) return null;
+
+  if (!res.data.error) return res.data;
+
+  return null;
+};
+
 export {
   postHuntExecution,
   postBichoResults,
+  getTopFarmers,
   getTopCommandsByUses,
   postCoinflipMatch,
   getPokerStats,

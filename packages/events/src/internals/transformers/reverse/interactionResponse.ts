@@ -1,4 +1,4 @@
-import { Bot, DiscordInteractionResponse, InteractionResponse } from 'discordeno/*';
+import { Bot, DiscordInteractionResponse, InteractionResponse } from 'discordeno';
 
 const transformInteractionResponseToDiscordInteractionResponse = (
   bot: Bot,

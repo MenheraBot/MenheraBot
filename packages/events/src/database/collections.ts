@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 import {
+  DatabaseCharacterSchema,
   DatabaseCommandSchema,
   DatabaseCreditsSchema,
   DatabaseFarmerSchema,
@@ -13,6 +14,7 @@ import {
   DatabaseUserSchema,
   DatabaseUserThemesSchema,
 } from '../types/database';
+import { Action } from '../modules/roleplay/types';
 
 const { Schema, model } = mongoose;
 
@@ -86,6 +88,7 @@ const userSchema = new Schema({
   dailies: { type: Array, default: [] },
   dailyDayId: { type: Number, default: 0 },
   allowMamar: { type: Boolean, default: true },
+  completedDailies: { type: Number, default: 0 },
 });
 
 const themeCredits = new Schema({
@@ -136,6 +139,18 @@ const feirinhaSchema = new Schema({
   [`name_en-US`]: { type: String },
 });
 
+const characterSchema = new Schema({
+  id: { type: String, unique: true, index: true },
+  life: { type: Number, default: 100 },
+  energy: { type: Number, default: 100 },
+  inventory: { type: Array, default: [] },
+  abilities: { type: Array, default: [] },
+  location: { type: Array, default: [0, 0] },
+  currentAction: { type: Object, default: { type: Action.NONE } },
+  money: { type: Number, default: 0 },
+  equipment: { type: Array, default: [] },
+});
+
 const notificationSchema = new Schema({
   userId: { type: String },
   translationKey: { type: String },
@@ -160,6 +175,7 @@ export const profileImagesModel = model<DatabaseProfileImagesSchema>('images', p
 export const farmerModel = model<DatabaseFarmerSchema>('farmer', farmerSchema);
 export const titlesModel = model<DatabaseTitlesSchema>('titles', titlesSchema);
 export const feirinhaModel = model<DatabaseFeirinhaSchema>('feirinha', feirinhaSchema);
+export const characterModel = model<DatabaseCharacterSchema>('character', characterSchema);
 export const notificationModel = model<DatabaseNotificationSchema>(
   'notification',
   notificationSchema,

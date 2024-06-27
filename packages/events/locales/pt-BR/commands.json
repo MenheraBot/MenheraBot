@@ -464,6 +464,8 @@
   },
   "top": {
     "economia": {
+      "rolls-title": "Placar de Rolls",
+      "completedDailies-title": "Placar de Missões diárias",
       "mamou-title": "Placar de Mamadores",
       "mamado-title": "Placar de Mamados",
       "demons-title": "Placar de Demônios",
@@ -481,9 +483,15 @@
       "demons": "Demônios",
       "angels": "Anjos",
       "archangels": "Arcanjos",
+      "completedDailies": "Missões diárias completadas",
       "giants": "Gigantes",
+      "rolls": "Rolls",
       "demigods": "Semideuses",
       "gods": "Deuses"
+    },
+    "fazendeiros": {
+      "title": "{{emoji}} | Melhores Fazendeiros de {{plant}} {{page}}º",
+      "harvested": "Colheitas realizadas"
     },
     "estatisticas": {
       "cacar": {
@@ -1203,6 +1211,117 @@
     "unknown-title": "Esse título não existe!",
     "success": "O teu título foi alterado com sucesso!"
   },
+  "personagem": {
+    "embed-title": "Personagem de {{user}}",
+    "explain-location": "Viaje pelo mundo com o comando </viajar:{{travelCommandId}}>. Fique de olho na densidade de inimigos da área em que você está.",
+    "no-items": "Sem itens no inventário",
+    "user-in-travel": "{{user}} está viajando",
+    "travel-description": "{{user}} está em uma viagem para {{x}},{{y}}. Esta viagem deve se encerrar <t:{{unix}}:R>",
+    "user-in-church": "{{user}} está na Igreja",
+    "in-church-description": "{{user}} está recuperando suas forças na Igreja.",
+    "user-dead": "{{user}} está morto",
+    "dead-description": "{{user}} morreu. Os Dragões estão trazendo sua alma de volta. Tempo estimado para volta: <t:{{unix}}:R>",
+    "display-item": "**{{amount}}x** - {{name}}",
+    "effects": {
+      "type": {
+        "heal": "Cura",
+        "damage": "Ataca",
+        "poison": "Envenena"
+      },
+      "target": {
+        "player": "você",
+        "enemy": "o inimigo"
+      }
+    },
+    "turns-effect-display": "$t(commands:personagem.effects.type.{{type}}) $t(commands:personagem.effects.target.{{applyTo}}) em {{value}} {{emoji}} por **{{timesToApply}}** turnos.",
+    "effect-display": "$t(commands:personagem.effects.type.{{type}}) $t(commands:personagem.effects.target.{{applyTo}}) em {{value}} {{emoji}}",
+    "no-abilities": "Sem habilidades",
+    "display-ability": "**{{name}}** ({{proficience}} pfc.)",
+    "in-battle-user": "Não foi possível obter o status de **{{name}}**, ele está em uma batalha",
+    "bot-mentioned": "As tecnologias atuais não permitem o teletransporte de robôs para o mundo de Boleham"
+  },
+  "viajar": {
+    "start-travel": "Iniciar viagem",
+    "clean-area": "Área limpa",
+    "respawn-enemies": "Os inimigos dessa área foram eliminados.\nNovos inimigos devem ressurgir <t:{{unix}}:R>",
+    "in-battle": "Você não pode sair em uma viagem. Você está em uma batalha! Ta querendo fugir? kk",
+    "confirm-message": "Você tem certeza que deseja viajar para **{{x}}:{{y}}**?\nEssa viagem custará {{cost}} {{emoji}} de energia.\nTu chegarás no teu destino final <t:{{unix}}:R> (<t:{{unix}}>)",
+    "already-there": "Você pode viajar pra essa localização por que você já está aí!",
+    "other-action": "Não é possível iniciar uma viagem enquanto tu tá em outra atividade",
+    "too-tired": "Você está muito cansado para viajar a **{{x}}:{{y}}**. Para completar a viagem, você precisaria de **{{cost}}** {{emoji}} de energia, mas você só tem **{{amount}}** {{emoji}}. Vá para a Igreja de sua região com </acessar igreja:{{churchCommandId}}> para recuperar suas forças.",
+    "start-travelling": "Você iniciou uma viagem para **{{x}}:{{y}}**. Previsão de chegada: <t:{{unix}}>",
+    "embed-title": "Mapa de Boleham",
+    "enemy-density": "Densidade de inimigos",
+    "travelling": "Viajando",
+    "in-travel": "Você está em uma viagem para **{{x}}:{{y}}**. Você chegará em seu destino <t:{{unix}}:R> (<t:{{unix}}>)"
+  },
+  "aventura": {
+    "confirm-join": "Entrar na batalha?",
+    "your-stats": "Seus status",
+    "user-stats-display": ":heart: **Vida**: {{life}}\n:zap: **Energia**: {{energy}}{{effects}}",
+    "enemy-stats": "Status de {{name}}",
+    "enemy-stats-display": ":heart: **Vida**: {{life}}\n:dagger: **Dano**: {{damage}}{{effects}}",
+    "fight": "Lutar",
+    "adventure-not-found": "Que aventura é essa?... Não lembro",
+    "in-battle": "Você já está em uma aventura, porque gostaria de ir em outra? Mate seu inimigo!",
+    "dead": "**Você morreu!**\n\nVocê errou em uma batalha e acabou morrendo. As veias dos dragões estão restabelecendo a tua alma. Tu ressurgirá <t:{{unix}}:R>",
+    "other-action": "Não é possível ir para uma batalha enquanto tu tá fazendo outra coisa.",
+    "no-enemies": "Não há inimigos por perto no momento. Viaje pelo mundo para encontrar mais inimigos com </viajar:{{travelCommandId}}>",
+    "first-ability": {
+      "title": "Escolha sua primeira habilidade",
+      "description": "Os Dragões Anciões Elementais sentiram o seu teletransporte para o novo mundo. Sabendo de toda a sua trajetória, eles gostariam de agraciar a sua chegada. Você possui a opção de escolher qualquer uma das habilidades abaixo, para ser a sua primeira habilidade.",
+      "already-learned": "Tu já aprendeu uma habilidade essencial. Não seja desonesto."
+    },
+    "battle": {
+      "title": "Estatísticas da Batalha",
+      "effect": "{{type}} - {{amount}} {{emoji}} {{turns}}x",
+      "kill": "Mate o teu inimigo!",
+      "actions": "Ações Disponíveis",
+      "energy-cost": "Custo de energia: {{cost}} :zap:",
+      "timeout-killed": "A habilidade inata dos monstros de Boleham foi ativada. A batalha chegou na duração máxima de {{minutes}} minutos. Nesse estágio, a habilidade inata dos monstros 'Morte por Conhecimento' é ativada. Esta habilidade passivamente te analisa, e assim que a análise for concluída, expõe todos os teus pontos fracos, dando a chance do monstro te matar em um golpe.",
+      "no-energy": "Tu não tem energia o suficiente para usar isso.",
+      "you-dead": "Você foi morto",
+      "dead-description": "Por uma falha na tua postura de batalha, tu acabou morrendo. Os Dragões concordaram em permitir você ressurgir no mundo. Em algumas horas, você ressurgirá neste mundo, como se nada tivesse acontecido.",
+      "enemy-dead": "Inimigo morto!",
+      "kill-message": "Você matou **{{name}}**.\nBuscando em seu corpo por espólios, você encontrou **{{amount}} {{itemName}}**",
+      "timeout": "O inimigo não é bobo. Se tu não atacá-lo <t:{{unix}}:R>, ele te atacará!"
+    }
+  },
+  "acessar": {
+    "igreja": {
+      "title": "Pontifícia Igreja de Boleham",
+      "praying-now": "Você está recuperando suas energias. Você deve se recuperar totalmente <t:{{unix}}:R>",
+      "praying": "Que as bênçãos dos Dragões estejam contigo.",
+      "no-needed": "Os Dragões Anciões Elementais são criaturas esnobes. Eles não te darão forças estando tão saudável assim",
+      "recovered": "Suas energias foram revigoradas pelo poder dos Dragões Anciões Elementais.",
+      "start-praying": "Revigorar-se",
+      "stop-praying": "Sair da Igreja",
+      "description": "Entre na Igreja para recuperar as suas forças",
+      "other-action": "Para entrar na Igreja é necessário estar totalmente focado. Não é possível rezar fazendo outra coisa.",
+      "in-battle": "Você está no meio de uma batalha, não é possível fugir daí para entrar na Igreja. Batalhe!"
+    },
+    "blacksmith": {
+      "title": "Ferreiro de Boleham",
+      "in-battle": "Você está em uma batalha no momento. Não há ferreiros por perto.",
+      "pagination": {
+        "sell": "Vender",
+        "buy": "Comprar"
+      },
+      "sell": {
+        "sell": "Vender {{name}}",
+        "title": "Vender itens",
+        "sold": "Você vendeu **{{count}}** itens por **{{amount}}** {{emoji}} Dragonnys.",
+        "sold-one": "Você vendeu **{{count}}** item por **{{amount}}** {{emoji}} Dragonnys.",
+        "sold-other": "Você vendeu **{{count}}** itens por **{{amount}}** {{emoji}} Dragonnys.",
+        "not-enough-items": "Não é possível vender mais itens do que você possui.",
+        "invalid-amount": "Você informou uma quantidade de itens inferior ao necessário para vender. Você deve vender **{{name}}** em múltiplos de {{value}}, portanto a quantidade mínima de itens é {{value}}",
+        "select": "Selecione os itens que desejas vender",
+        "need-math": "A venda deste item deve ser múltipla de {{amount}}",
+        "no-items": "Você não tem itens suficientes para vender",
+        "item-description": "**{{name}}** - {{minAmount}} por {{value}} {{emoji}} [`{{amount}}`]\n"
+      }
+    }
+  },
   "notificações": {
     "no-unread-notificaions": "Você não possui nenhuma nova notificação. Cheque novamente em outro momento ;)",
     "your-notifications": "Suas notificações",
@@ -1219,14 +1338,20 @@
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Acabei de te dar uma **Badge** nova! Cheque seu perfil >.<",
       "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Adicionei um título em sua conta! Da uma olhadinha em `/personalizar título` >.<",
       "finished-daily": "",
-      "finished-daily-one": "Você completou **{{count}}** missão! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>",
-      "finished-daily-other": "Você completou **{{count}}** missões! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>"
+      "finished-daily-one": "Você completou **{{count}}** missão! Sua recompensa é **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>",
+      "finished-daily-other": "Você completou **{{count}}** missões! Sua recompensa é **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>"
     }
   },
   "daily": {
     "title": "Suas missões diárias",
     "reedem": "({{index}}) Resgatar",
     "reedemed": "({{index}}) Resgatado",
+    "change-daily": "Trocar missão",
+    "already-changed": "Você só pode trocar uma missão por dia.",
+    "success-changed": "A missão **{{index}}** foi trocada! Você recebeu uma nova missão:\n\n- {{newDaily}}",
+    "change": "({{index}}) Trocar missão",
+    "change-title": "Escolha uma missão para trocar",
+    "change-footer": "Você não ganhará estrelinhas por completar uma missão trocada, apenas o prêmio especial.",
     "unfinished": "({{index}}) {{has}}/{{need}}",
     "cannot-reedem": "Tu ainda não pode resgatar essa missão!",
     "already-reedemed": "Tu já resgatou os prêmios dessa missão!",

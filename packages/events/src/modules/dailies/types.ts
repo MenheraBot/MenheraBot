@@ -30,6 +30,7 @@ export type DatabaseDaily = {
   need: number;
   has: number;
   redeemed: boolean;
+  changed?: true;
   specification?: string;
   awards: [Award<number | string>, Award<number | string>, Award<number | string>];
 };

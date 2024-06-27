@@ -26,8 +26,9 @@ This monorepo is divided in 3 main packages. The REST takes care of making conta
 git clone https://github.com/MenheraBot/MenheraBot.git
 ```
 
-2. 💻 Populate the env files. 
-> Every package has a .env.example file with every entry needed. Just create a .env file with all the entries.
+2. 💻 Populate the env files.
+
+   > Every package has a .env.example file with every entry needed. Just create a .env file with all the entries.
 
 3. 🔥 Install deps and build all the packages
 
@@ -42,7 +43,7 @@ yarn install && yarn build:all
 ```bash
 # yarn rest dev
 yarn orchestrator dev
-yarn events dev:nomicroservices
+yarn events dev
 ```
 
 5. 🐦 Running tests
@@ -89,7 +90,6 @@ Discord: **@ysnoopydogy**
 Twitter: **[@Luxanna_Dev](https://twitter.com/Luxanna_Dev)**
 
 Email: **[contact@luancaliel.dev](mailto:contact@luancaliel.dev)**
-
 
 ## 📜 | Source
 

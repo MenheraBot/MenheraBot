@@ -26,14 +26,14 @@ setupEventHandlers();
 await createIpcConnection();
 setupInternals(bot);
 
+logger.info('[READY] I am ready to process events!');
+
 if (process.env.NODE_ENV === 'development') {
-  logger.debug('Starting local gateway to receive events');
   await startBot(bot);
-  // @ts-expect-error Cant send string
+
+  // @ts-expect-error Not expected string here
   bot.events.ready('MASTER');
 }
-
-logger.info('[READY] I am ready to process events!');
 
 if (process.env.NODE_ENV === 'production') updateCommandsOnApi();
 

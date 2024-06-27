@@ -285,6 +285,43 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     imageCompatible: false,
     needApiData: false,
   },
+  47: {
+    price: 100_000,
+    type: 'profile',
+    theme: 'comuna_patrio',
+    colorCompatible: true,
+    imageCompatible: true,
+    needApiData: true,
+    customEdits: ['useImage', 'communistTheme', 'patriotTheme'],
+  },
+  48: {
+    price: 50_000,
+    type: 'card_background',
+    theme: 'berserk',
+  },
+  49: {
+    price: 23_500,
+    type: 'card_background',
+    theme: 'sunflower',
+  },
+  50: {
+    price: 15_000,
+    type: 'card_background',
+    theme: 'hes_looking',
+  },
+  51: {
+    price: 130_000,
+    colorCompatible: false,
+    imageCompatible: false,
+    needApiData: true,
+    theme: 'berserk',
+    type: 'profile',
+  },
+  52: {
+    price: 90_000,
+    type: 'table',
+    theme: 'berserk',
+  },
 };
 
 export default Themes;

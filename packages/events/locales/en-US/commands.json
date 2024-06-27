@@ -459,6 +459,7 @@
   },
   "top": {
     "economia": {
+      "rolls-title": "Rolls Dashboard",
       "mamou-title": "Lickers Leaderboard",
       "mamado-title": "Licked Leaderboard",
       "demons-title": "Demons Leaderboard",
@@ -478,7 +479,12 @@
       "giants": "Giants",
       "votes": "Votes",
       "gods": "Gods",
+      "rolls": "Rolls",
       "estrelinhas": "Estrelinhas"
+    },
+    "fazendeiros": {
+      "title": "{{emoji}} | Best Farmers of {{plant}} {{page}}º",
+      "harvested": "Harvested"
     },
     "estatisticas": {
       "cacar": {
@@ -1198,6 +1204,117 @@
     "unknown-title": "This title does not exist!",
     "success": "Your title has been changed successfully!"
   },
+  "personagem": {
+    "embed-title": "{{user}}'s Character",
+    "no-items": "No items in inventory",
+    "explain-location": "Travel the world with the </viajar:{{travelCommandId}}> command. Keep an eye on the enemy density in the area you are in.",
+    "display-item": "**{{amount}}x** - {{name}}",
+    "user-in-travel": "{{user}} is traveling",
+    "travel-description": "{{user}} is on a trip to {{x}},{{y}}. This trip must end <t:{{unix}}:R>",
+    "user-in-church": "{{user}} is in Church",
+    "in-church-description": "{{user}} is recovering its strength in the Church.",
+    "user-dead": "{{user}} is dead",
+    "dead-description": "{{user}} died. The Dragons are bringing your soul back. Estimated return time: <t:{{unix}}:R>",
+    "no-abilities": "No abilities",
+    "effects": {
+      "type": {
+        "heal": "Heal",
+        "damage": "Attack",
+        "poison": "Poison"
+      },
+      "target": {
+        "player": "you",
+        "enemy": "your enemy"
+      }
+    },
+    "turns-effect-display": "$t(commands:personagem.effects.type.{{type}}) $t(commands:personagem.effects.target.{{applyTo}}) in {{value}} {{emoji}} for **{{timesToApply}}** turns.",
+    "effect-display": "$t(commands:personagem.effects.type.{{type}}) $t(commands:personagem.effects.target.{{applyTo}}) in {{value}} {{emoji}}",
+    "display-ability": "**{{name}}** ({{proficience}} pfc.)",
+    "in-battle-user": "Unable to obtain **{{name}}**'s status, they are on a battle",
+    "bot-mentioned": "Current technologies do not allow robots to teleport to Boleham's world"
+  },
+  "viajar": {
+    "start-travel": "Start trip",
+    "clean-area": "Clean area",
+    "respawn-enemies": "Enemies in this area have been eliminated.\nNew enemies should respawn <t:{{unix}}:R>",
+    "in-battle": "You can't go on a trip. You're in a battle! Do you wanna run away? lol",
+    "confirm-message": "Are you sure you want to travel to **{{x}}:{{y}}**?\nThis trip will cost {{cost}} {{emoji}} energy.\nYou will arrive at your final destination <t:{{unix}}:R> (<t:{{unix}}>)",
+    "already-there": "You can't travel to that location because you're already there!",
+    "other-action": "It is not possible to start a trip while you are in another activity",
+    "too-tired": "You're too tired to travel to **{{x}}:{{y}}**. To complete the trip, you would need **{{cost}}** {{emoji}} energy, but you only have **{{amount}}** {{emoji}}. Go to your local Church with </acessar igreja:{{churchCommandId}}> to rest.",
+    "start-travelling": "You started a great journey to **{{x}}:{{y}}**. ETA: <t:{{unix}}>",
+    "embed-title": "Boleham's Map",
+    "enemy-density": "Enemy density",
+    "travelling": "Travelling",
+    "in-travel": "You're on a trip to **{{x}}:{{y}}**. You will arrive at your destination <t:{{unix}}:R> (<t:{{unix}}>)"
+  },
+  "aventura": {
+    "confirm-join": "Join the battle?",
+    "fight": "Battle",
+    "your-stats": "Your status",
+    "user-stats-display": ":heart: **Life**: {{life}}\n:zap: **Energy**: {{energy}}{{effects}}",
+    "enemy-stats": "{{name}}'s status",
+    "enemy-stats-display": ":heart: **Life**: {{life}}\n:dagger: **Damage**: {{damage}}{{effects}}",
+    "adventure-not-found": "What adventure is this?... I don't remember",
+    "in-battle": "You're already on an adventure, why would you want to go on another one? Kill your enemy!",
+    "dead": "**You died!**\na You fought in battle and ended up dying. The veins of the dragons are restoring your soul. You will rise again <t:{{unix}}:R>",
+    "other-action": "It is not possible to go into battle while doing something else.",
+    "no-enemies": "There are no enemies nearby at the moment. Travel around the world to find more enemies with </viajar:{{travelCommandId}}>",
+    "first-ability": {
+      "title": "Choose your first ability",
+      "description": "The Elemental Elder Dragons sensed your teleport to the new world. Knowing your entire journey, they would like to grace your arrival. You have the option to choose any of the skills below to be your first skill.",
+      "already-learned": "You have already learned an essential skill. Don't be dishonest."
+    },
+    "battle": {
+      "title": "Battle Statistics",
+      "effect": "{{type}} - {{amount}} {{emoji}} {{turns}}x",
+      "kill": "Kill your enemy!",
+      "actions": "Available Actions",
+      "energy-cost": "Energy cost: {{cost}} :zap:",
+      "no-energy": "You don't have enough energy to use that.",
+      "timeout-killed": "The Boleham monsters' innate ability has been activated. The battle has reached its maximum duration of {{minutes}} minutes. At this stage, the monsters' innate ability 'Death by Knowledge' is activated. This ability passively analyzes you, and once the analysis is completed, it exposes all your weak points, giving the monster the chance to kill you in one blow.",
+      "you-dead": "You were killed",
+      "dead-description": "Due to a flaw in your battle posture, you ended up dying. The Dragons agreed to allow you to ressurge in the world. In a few hours, you will reappear in this world, as if nothing had happened.",
+      "enemy-dead": "Enemy dead!",
+      "kill-message": "You killed {{name}}.\nSearching his body for loot, you found **{{amount}} {{itemName}}**",
+      "timeout": "The enemy is not stupid. If you don't attack him <t:{{unix}}:R>, he will attack you!"
+    }
+  },
+  "acessar": {
+    "igreja": {
+      "title": "Pontifical Church of Boleham",
+      "praying-now": "You are recovering your energy. You should recover fully <t:{{unix}}:R>",
+      "praying": "May the blessings of the Dragons be with you.",
+      "no-needed": "Elemental Elder Dragons are snobbish creatures. They won't give you strength when you're this healthy",
+      "recovered": "Their energies have been reinvigorated by the power of the Elemental Elder Dragons.",
+      "start-praying": "Start praying",
+      "stop-praying": "Leave the Church",
+      "description": "Enter the Church to regain your strength",
+      "other-action": "To enter the Church you need to be totally focused. It is not possible to pray while doing anything else.",
+      "in-battle": "You're in the middle of a battle, it's not possible to escape to enter the Church. Battle!"
+    },
+    "blacksmith": {
+      "title": "Boleham's Blacksmith",
+      "in-battle": "You are in a battle at the moment. There are no blacksmiths arround",
+      "pagination": {
+        "sell": "Sell",
+        "buy": "Buy"
+      },
+      "sell": {
+        "sell": "Sell {{name}}",
+        "title": "Sell items",
+        "sold": "You sold your items for **{{amount}}** {{emoji}} Dragonnys.",
+        "sold-one": "You sold **{{count}}** item for **{{amount}}** {{emoji}} Dragonnys.",
+        "sold-other": "You sold **{{count}}** items for **{{amount}}** {{emoji}} Dragonnys.",
+        "select": "Select the items you wanna sell",
+        "not-enough-items": "You want to sell more items than you have.",
+        "invalid-amount": "You sent a amount of items lower than necessary to sell. You must sell **{{name}}** in multiples of {{value}}, therefore the minimum quantity of items is {{value}}",
+        "no-items": "You don't have enough items to sell",
+        "need-math": "Sale of this item must be a multiple of {{amount}}",
+        "item-description": "**{{name}}** - {{minAmount}} by {{value}} {{emoji}} [`{{amount}}`]\n"
+      }
+    }
+  },
   "notificações": {
     "no-unread-notificaions": "You don't have any new notifications. Check back later ;)",
     "your-notifications": "Your notifications",
@@ -1220,6 +1337,12 @@
   },
   "daily": {
     "title": "Your daily missions",
+    "change-daily": "Change mission",
+    "already-changed": "You can only change one mission per day.",
+    "change-title": "Choose one mission to change",
+    "change": "({{index}}) Change mission",
+    "success-changed": "The mission **{{index}}** was changed! Check out your new mission:\n\n- {{newDaily}}",
+    "change-footer": "You won't earn stars for completing a mission that you changed, just the special prize.",
     "reedem": "({{index}}) Reedem",
     "reedemed": "({{index}}) Reedemed",
     "unfinished": "({{index}}) {{has}}/{{need}}",

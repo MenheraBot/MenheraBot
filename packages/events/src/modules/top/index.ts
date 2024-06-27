@@ -14,6 +14,7 @@ import { executeUsedCommandsTop } from './usedCommands';
 import { executeUsedCommandsFromUserTop } from './usedCommandsFromUser';
 import { executeUserCommandsTop } from './userCommands';
 import { executeUsersByUsedCommandTop } from './usersByUsedCommand';
+import { executeFarmersTop } from './farmersTop';
 
 const calculateSkipCount = (page: number): number => (page > 1 ? page - 1 : 0) * 10;
 
@@ -23,7 +24,15 @@ const usersToIgnoreInTop = async (): Promise<string[]> =>
     cacheRepository.getDeletedAccounts(),
   ]).then((a) => a[0].concat(a[1]));
 
-type TopType = 'gambling' | 'hunt' | 'economy' | 'commands' | 'command' | 'user' | 'users';
+type TopType =
+  | 'gambling'
+  | 'hunt'
+  | 'economy'
+  | 'commands'
+  | 'command'
+  | 'user'
+  | 'users'
+  | 'farmers';
 
 const createPaginationButtons = (
   ctx: InteractionContext,
@@ -95,6 +104,13 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
       Number(page),
       COLORS.Purple,
     );
+  }
+
+  if (command === 'farmers') {
+    let plant = Number(secondInfo);
+    if (secondInfo === 'CHANGE') plant = Number(ctx.interaction?.data?.values?.[0]);
+
+    return executeFarmersTop(ctx, Number(page), firstInfo, plant);
   }
 
   if (command === 'commands') return executeUsedCommandsTop(ctx, Number(page), firstInfo);

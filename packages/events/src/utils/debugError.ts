@@ -4,6 +4,8 @@ import { logger } from './logger';
 
 export const debugError = (err: Error, toSentry = true): null => {
   logger.error('Debug Error', err.message);
+  logger.error(err);
+
   // @ts-expect-error Not every errors are http errors
   if (toSentry && err?.response?.status !== 404)
     try {

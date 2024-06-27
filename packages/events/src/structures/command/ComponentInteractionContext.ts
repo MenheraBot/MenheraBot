@@ -26,6 +26,10 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
     this.i18n = i18next.getFixedT(guildLocale);
   }
 
+  get interactionToken(): string {
+    return this.interaction.token;
+  }
+
   get user(): User {
     return this.interaction.user;
   }

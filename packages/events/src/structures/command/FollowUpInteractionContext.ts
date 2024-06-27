@@ -1,20 +1,24 @@
 import { InteractionCallbackData, InteractionResponseTypes } from 'discordeno';
 
-import { TFunction } from 'i18next';
+import { TFunction, getFixedT } from 'i18next';
 import { debugError } from '../../utils/debugError';
-import { Translation } from '../../types/i18next';
-import { EMOJIS } from '../../structures/constants';
+import { AvailableLanguages, Translation } from '../../types/i18next';
+import { EMOJIS } from '../constants';
 import {
   editOriginalInteractionResponse,
   sendFollowupMessage,
 } from '../../utils/discord/interactionRequests';
 
 export default class {
+  private i18n: TFunction;
+
   constructor(
-    private interactionToken: string,
+    public interactionToken: string,
     public originalInteractionId: string,
-    private i18n: TFunction,
-  ) {}
+    public guildLocale: AvailableLanguages,
+  ) {
+    this.i18n = getFixedT(guildLocale);
+  }
 
   async followUp(options: InteractionCallbackData): Promise<void> {
     await sendFollowupMessage(this.interactionToken, {
