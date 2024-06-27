@@ -309,6 +309,19 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     type: 'card_background',
     theme: 'hes_looking',
   },
+  51: {
+    price: 130_000,
+    colorCompatible: false,
+    imageCompatible: false,
+    needApiData: true,
+    theme: 'berserk',
+    type: 'profile',
+  },
+  52: {
+    price: 90_000,
+    type: 'table',
+    theme: 'berserk',
+  },
 };
 
 export default Themes;

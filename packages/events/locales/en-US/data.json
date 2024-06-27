@@ -274,6 +274,14 @@
     "50": {
       "name": "He's looking",
       "description": "The eye that sees everything"
+    },
+    "51": {
+      "name": "Berserk Mode",
+      "description": "The thirst for revenge corrupts you inside"
+    },
+    "52": {
+      "name": "Berserk Table",
+      "description": "The thirst for revenge corrupts you inside"
     }
   },
   "plants": {

@@ -274,6 +274,14 @@
     "50": {
       "name": "Ele está de olho",
       "description": "O olho que tudo vê"
+    },
+    "51": {
+      "name": "Berserk Mode",
+      "description": "A sede de vingança te corrompe por dentro"
+    },
+    "52": {
+      "name": "Berserk Table",
+      "description": "A sede de vingança te corrompe por dentro"
     }
   },
   "plants": {

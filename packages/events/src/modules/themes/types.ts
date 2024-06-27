@@ -18,6 +18,7 @@ export type AvailableCardBackgroundThemes =
 export type AvailableTableThemes =
   | 'green'
   | 'blue'
+  | 'berserk'
   | 'red'
   | 'pink'
   | 'rounded'
@@ -42,6 +43,7 @@ export type AvailableProfilesThemes =
   | 'website'
   | 'memories'
   | 'frozen'
+  | 'berserk'
   | 'comuna_patrio';
 
 export type AvailableThemeTypes =
