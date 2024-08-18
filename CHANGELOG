@@ -20,10 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Novo comando `/top fazendeiros`. Veja os fazendeiros que mais colheram um tipo de planta.
 - Criado um top de missões diárias no `/top diversos`. Apenas as dailies finalizadas após o lançamento desta versão contam.
 - Novo tema de fundo de carta: Berserk. Criado por @dszalone.
-- Novo tema de perfil: Aspectos Políticos. Este tema é especial, pois são 3 em 1. Você pode alterar entre 3 fundos do tema com as customizações. Cirado por @bielviana.
 - Novo tema de fundo de carta: Girassol. Criado por @mareys.
 - Novo tema de fundo de carta: Ele está de olho. Criado por @maycon.orp.
-- Novo tema de perfil: Berserk Mode. Criado por @dszalone.
 - Novo tema de mesa: Berserk Table. Criado por @dszalone.
 
 ### Changed
