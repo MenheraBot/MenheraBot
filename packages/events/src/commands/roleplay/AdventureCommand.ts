@@ -18,7 +18,7 @@ import commandRepository from '../../database/repositories/commandRepository';
 const executeSelectAbility = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedAbility] = ctx.sentData;
 
-  const character = await roleplayRepository.getCharacter(ctx.user.id);
+  const character = await roleplayRepository.getEnsuredCharacter(ctx.user.id);
 
   if (character.abilities.length > 0)
     return ctx.makeMessage({

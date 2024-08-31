@@ -25,25 +25,7 @@ const parseMongoUserToRedisUser = (user: DatabaseCharacterSchema): DatabaseChara
   equipment: user.equipment,
 });
 
-const getCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema> => {
-  const fromRedis = await MainRedisClient.get(`character:${userId}`);
-
-  if (fromRedis) {
-    const char = JSON.parse(fromRedis);
-
-    return manipulateCharacterStatus(char);
-  }
-
-  const fromMongo = await characterModel.findOne({ id: `${userId}` });
-
-  if (fromMongo) {
-    const char = parseMongoUserToRedisUser(fromMongo);
-
-    await MainRedisClient.setex(`character:${userId}`, 3600, JSON.stringify(char));
-
-    return manipulateCharacterStatus(char);
-  }
-
+const createCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema> => {
   const created = await characterModel.create({
     id: `${userId}`,
   });
@@ -60,6 +42,46 @@ const getCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema>
   );
 
   return parseMongoUserToRedisUser(created);
+};
+
+const getCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema | null> => {
+  const fromRedis = await MainRedisClient.get(`character:${userId}`);
+
+  if (fromRedis) {
+    const char = JSON.parse(fromRedis);
+
+    return manipulateCharacterStatus(char);
+  }
+
+  const fromMongo = await characterModel.findOne({ id: `${userId}` });
+
+  if (!fromMongo) return null;
+
+  const char = parseMongoUserToRedisUser(fromMongo);
+
+  await MainRedisClient.setex(`character:${userId}`, 3600, JSON.stringify(char));
+
+  return manipulateCharacterStatus(char);
+};
+
+const getEnsuredCharacter = async (userId: BigString): Promise<DatabaseCharacterSchema> => {
+  const fromRedis = await MainRedisClient.get(`character:${userId}`);
+
+  if (fromRedis) {
+    const char = JSON.parse(fromRedis);
+
+    return manipulateCharacterStatus(char);
+  }
+
+  const fromMongo = await characterModel.findOne({ id: `${userId}` });
+
+  if (!fromMongo) throw new Error(`UserID ${userId} does not exists. Cannot ensure return`);
+
+  const char = parseMongoUserToRedisUser(fromMongo);
+
+  await MainRedisClient.setex(`character:${userId}`, 3600, JSON.stringify(char));
+
+  return manipulateCharacterStatus(char);
 };
 
 const updateCharacter = async (
@@ -138,7 +160,9 @@ const getAllEnemyAreas = async (): Promise<Record<string, number>> => {
 
 export default {
   getCharacter,
+  createCharacter,
   getAllEnemyAreas,
+  getEnsuredCharacter,
   updateEnemyAreas,
   getResurgeTimeInArea,
   decreaseEnemyFromArea,
