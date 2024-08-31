@@ -39,6 +39,12 @@ const createIpcConnection = async (): Promise<void> => {
   orchestratorClient = new Client({ path: ORCHESTRATOR_SOCKET_PATH });
 
   orchestratorClient.on('message', async (msg) => {
+    if (msg.type === 'ACK_INTERACTION_RESPONSE') {
+      bot.ackInteraction.get(msg.data.id)?.();
+      bot.ackInteraction.delete(msg.data.id);
+      return;
+    }
+
     if (msg.type === 'VOTE_WEBHOOK') {
       logger.logSwitch(bot, 'new vote webhook message', msg);
       executeVoteWebhook(msg.data.user, msg.data.isWeekend);

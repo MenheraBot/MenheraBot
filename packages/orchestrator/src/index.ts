@@ -37,6 +37,7 @@ export enum RequestType {
   YouMayRest = 'YOU_MAY_REST',
   SimonSays = 'SIMON_SAYS',
   AreYouOk = 'ARE_YOU_OK',
+  AckInteractionResponse = 'ACK_INTERACTION_RESPONSE',
 }
 
 const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => {
