@@ -30,6 +30,7 @@ export interface MenheraClient extends Bot {
   isMaster: boolean;
   commandsInExecution: number;
   respondInteraction: Map<BigString, (...args: unknown[]) => unknown>;
+  ackInteraction: Map<BigString, () => void>;
   changelog: {
     versionName: string;
     date: string;

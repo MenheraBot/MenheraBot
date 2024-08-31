@@ -11,15 +11,22 @@ const handleRequest = async (ctx: Context): Promise<void> => {
     return;
   }
 
-  const response = await sendEvent(RequestType.InteractionCreate, { body: ctx.request.body });
+  const response = (await sendEvent(RequestType.InteractionCreate, { body: ctx.request.body })) as {
+    discord: unknown;
+    id: string;
+  };
 
   if (!response) {
     ctx.status = 500;
     return;
   }
 
-  ctx.body = response;
+  ctx.body = response.discord;
   ctx.status = HTTPResponseCodes.Ok;
+
+  ctx.res.once('finish', () => {
+    sendEvent(RequestType.AckInteractionResponse, { id: response.id });
+  });
 };
 
 const createPostInteractionRouter = (): Router => {

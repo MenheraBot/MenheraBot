@@ -53,8 +53,16 @@ const sendInteractionResponse = async (
       }),
     });
 
-  respond(bot.transformers.reverse.interactionResponse(bot, options));
-  bot.respondInteraction.delete(`${interactionId}`);
+  return new Promise((r) => {
+    bot.ackInteraction.set(`${interactionId}`, r);
+
+    respond({
+      discord: bot.transformers.reverse.interactionResponse(bot, options),
+      id: `${interactionId}`,
+    });
+
+    bot.respondInteraction.delete(`${interactionId}`);
+  });
 };
 
 const editOriginalInteractionResponse = (
