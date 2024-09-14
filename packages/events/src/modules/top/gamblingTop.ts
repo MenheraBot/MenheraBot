@@ -21,11 +21,12 @@ const executeGamblingTop = async (
 
   const results = await getTopGamblingUsers(skip, usersToIgnore, topMode, gameMode);
 
-  if (!results) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
-
-    return;
-  }
+  if (!results)
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'common:api-error'),
+      embeds: [],
+      components: [],
+    });
 
   const embed = createEmbed({
     title: ctx.locale('commands:top.estatisticas.apostas.title', {
@@ -39,10 +40,8 @@ const executeGamblingTop = async (
   });
 
   const [members, titles] = await Promise.all([
-    Promise.all(
-      results.map(async (a) => cacheRepository.getDiscordUser(`${a.user_id}`, page <= 3)),
-    ),
-    Promise.all(results.map(async (a) => userRepository.ensureFindUser(`${a.user_id}`))),
+    Promise.all(results.map((a) => cacheRepository.getDiscordUser(`${a.user_id}`))),
+    Promise.all(results.map((a) => userRepository.ensureFindUser(`${a.user_id}`))),
   ]);
 
   const resolvedTitles = await Promise.all(

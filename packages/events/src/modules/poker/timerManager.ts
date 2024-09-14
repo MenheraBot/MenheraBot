@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { getFixedT } from 'i18next';
 import { bot } from '../..';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import { getOrchestratorClient } from '../../structures/orchestratorConnection';
 import { updateGameState } from './turnManager';
-import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { DeleteMatchTimer, PokerTimer, TimeoutFoldTimer, TimerActionType } from './types';
 import { closeTable } from './matchManager';
 import { getPlayerBySeat } from './playerControl';
 import { executeAction } from './playerBet';
+import FollowUpInteractionContext from '../../structures/command/FollowUpInteractionContext';
 
 const timers = new Map<string, NodeJS.Timeout>();
 
@@ -18,10 +17,10 @@ const executeDeleteMatch = async (timer: DeleteMatchTimer) => {
 
   if (gameData.inMatch) return;
 
-  const ctx = new PokerFollowupInteractionContext(
+  const ctx = new FollowUpInteractionContext(
     gameData.interactionToken,
     gameData.originalInteractionId,
-    getFixedT(gameData.language),
+    gameData.language,
   );
 
   closeTable(ctx, gameData);
@@ -37,10 +36,10 @@ const executeFoldTimeout = async (timer: TimeoutFoldTimer) => {
 
   executeAction(gameData, player, 'FOLD');
 
-  const ctx = new PokerFollowupInteractionContext(
+  const ctx = new FollowUpInteractionContext(
     gameData.interactionToken,
     gameData.originalInteractionId,
-    getFixedT(gameData.language),
+    gameData.language,
   );
 
   return updateGameState(ctx, gameData);
@@ -71,7 +70,7 @@ const startPokerTimeout = (timerId: string, timerMetadata: PokerTimer): void => 
   if (!bot.isMaster) {
     getOrchestratorClient().send({
       type: 'BE_MERCURY',
-      action: 'SET_TIMER',
+      action: 'POKER:SET_TIMER',
       timerId,
       timerMetadata,
     });
@@ -89,7 +88,7 @@ const startPokerTimeout = (timerId: string, timerMetadata: PokerTimer): void => 
 
 const clearPokerTimer = (timerId: string): void => {
   if (!bot.isMaster) {
-    getOrchestratorClient().send({ type: 'BE_MERCURY', action: 'CLEAR_TIMER', timerId });
+    getOrchestratorClient().send({ type: 'BE_MERCURY', action: 'POKER:CLEAR_TIMER', timerId });
     return;
   }
 

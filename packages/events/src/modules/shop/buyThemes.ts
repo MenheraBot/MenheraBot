@@ -30,6 +30,7 @@ import {
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests';
 import giveRepository from '../../database/repositories/giveRepository';
+import { InteractionContext } from '../../types/menhera';
 
 const themeByIndex = {
   0: 'profile',
@@ -66,7 +67,7 @@ const executeActivateTheme = async (ctx: ComponentInteractionContext): Promise<v
 };
 
 const createThemeComponents = (
-  ctx: ChatInputInteractionContext | ComponentInteractionContext,
+  ctx: InteractionContext,
   preview: boolean,
   currentThemeType: (typeof themeByIndex)[keyof typeof themeByIndex],
 ): ActionRow[] => {

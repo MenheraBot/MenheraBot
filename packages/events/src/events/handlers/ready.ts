@@ -4,6 +4,7 @@ import notificationRepository from '../../database/repositories/notificationRepo
 import { bot } from '../../index';
 import { startGameLoop } from '../../modules/bicho/bichoManager';
 import { setupTimers } from '../../modules/poker/timerManager';
+import { setupBattleTimers } from '../../modules/roleplay/battle/battleTimers';
 import { inactivityPunishment } from '../../structures/inactivityPunishment';
 import { logger } from '../../utils/logger';
 
@@ -18,6 +19,7 @@ const setReadyEvent = (): void => {
 
     await startGameLoop();
     await setupTimers();
+    await setupBattleTimers();
     await blacklistRepository.constructBannedUsers();
     await notificationRepository.deleteOldNotifications();
     await fairRepository.constructAnnouncements();

@@ -19,10 +19,8 @@
     "print-version": "echo version=$npm_package_version",
     "build:dev": "yarn build && yarn dev",
     "start": "VERSION=$npm_package_version NODE_ENV=production node --es-module-specifier-resolution=node --no-warnings .",
-    "dev": "VERSION=$npm_package_version NODE_ENV=development node --es-module-specifier-resolution=node --no-warnings -r dotenv/config .",
-    "beta": "VERSION=$npm_package_version NODE_ENV=development node --es-module-specifier-resolution=node --no-warnings .",
-    "dev:nomicroservices": "VERSION=$npm_package_version NODE_ENV=development NOMICROSERVICES=true node --es-module-specifier-resolution=node --no-warnings -r dotenv/config ."
-  },
+    "dev": "VERSION=$npm_package_version NODE_ENV=development node --es-module-specifier-resolution=node --no-warnings -r dotenv/config ."
+   },
   "dependencies": {
     "@sentry/node": "^7.77.0",
     "axios": "^1.7.4",
@@ -32,7 +30,7 @@
     "ioredis": "^5.2.2",
     "md5": "^2.3.0",
     "mongoose": "6.12.0",
-    "net-ipc": "^2.0.1",
+    "net-ipc": "^2.2.0",
     "pokersolver": "^2.1.4",
     "prom-client": "^14.1.1",
     "string-similarity": "^4.0.4"

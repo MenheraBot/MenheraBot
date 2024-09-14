@@ -4,7 +4,7 @@ import PokerSolver from 'pokersolver';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
-import { InteractionContext } from '../../types/menhera';
+import { GenericContext, InteractionContext } from '../../types/menhera';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
@@ -16,16 +16,14 @@ import { getAvailableActions, getPlayerBySeat } from './playerControl';
 import { getNextPlayableSeat } from './turnManager';
 import { clearPokerTimer, startPokerTimeout } from './timerManager';
 import { capitalize, millisToSeconds } from '../../utils/miscUtils';
-import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
+
 import { executeBlinds } from './executeBlinds';
 import { AUTO_FOLD_TIMEOUT_IN_SECONDS, DEFAULT_CHIPS } from './constants';
 import { convertChipsToStars } from './afterMatchLobby';
 import { postPokerRound } from '../../utils/apiRequests/statistics';
+import FollowUpInteractionContext from '../../structures/command/FollowUpInteractionContext';
 
-const makeShowdown = async (
-  ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
-  gameData: PokerMatch,
-): Promise<void> => {
+const makeShowdown = async (ctx: GenericContext, gameData: PokerMatch): Promise<void> => {
   gameData.stage = 'showdown';
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -81,7 +79,7 @@ const getTableImage = async (gameData: PokerMatch) => {
 };
 
 const finishRound = async (
-  ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
+  ctx: GenericContext,
   gameData: PokerMatch,
   winners: PokerPlayer[],
   reason: string,
@@ -224,7 +222,7 @@ const startFoldTimeout = (gameData: PokerMatch, executeAt: number): void => {
 const clearFoldTimeout = (playerId: string): void => clearPokerTimer(`fold_timeout:${playerId}`);
 
 const createTableMessage = async (
-  ctx: InteractionContext | PokerFollowupInteractionContext,
+  ctx: InteractionContext | FollowUpInteractionContext,
   gameData: PokerMatch,
   lastActionMessage = '',
 ): Promise<void> => {
@@ -360,7 +358,7 @@ const setupGame = async (
     matchId: `${ctx.interaction.id}`,
     originalInteractionId,
     masterId: players[0],
-    language: ctx.interaction.guildLocale ?? 'pt-BR',
+    language: (ctx.interaction.guildLocale as 'pt-BR') ?? 'pt-BR',
     embedColor,
     worthGame: chips > 0,
     players: playersData,
@@ -402,7 +400,7 @@ const cleanupGame = (gameData: PokerMatch): void => {
 };
 
 const closeTable = async (
-  ctx: ComponentInteractionContext | PokerFollowupInteractionContext,
+  ctx: GenericContext,
   gameData: PokerMatch,
   followUp = false,
 ): Promise<void> => {

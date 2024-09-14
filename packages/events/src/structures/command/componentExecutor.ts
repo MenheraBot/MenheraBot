@@ -68,7 +68,8 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
 
   if (!command) return errorReply(T('permissions:UNKNOWN_SLASH'));
 
-  if (!command.commandRelatedExecutions || command.commandRelatedExecutions.length === 0) return;
+  if (!command.commandRelatedExecutions || command.commandRelatedExecutions.length === 0)
+    return errorReply(T('permissions:UNKNOWN_SLASH'));
 
   if (bot.shuttingDown)
     return errorReply(

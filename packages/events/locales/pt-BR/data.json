@@ -253,6 +253,35 @@
     "46": {
       "name": "Congelado",
       "description": "Um toque frio para o seu perfil"
+    },
+    "47": {
+      "name": "Aspectos Políticos",
+      "description": "Viver é ser político, então mostre seu lado (Patriota, Comunista ou Patriota Comunista)",
+      "customFields": {
+        "useImage": "Usar imagem invés de cor",
+        "communistTheme": "Usar versão comunista",
+        "patriotTheme": "Usar versão patriota"
+      }
+    }, 
+    "48": {
+      "name": "Berserk",
+      "description": "A sede de vingança te corrompe por dentro"
+    },
+    "49": { 
+      "name": "Girassol",
+      "description": "Um girrasol perdido em meio a vários fundos de cartas"
+    },
+    "50": {
+      "name": "Ele está de olho",
+      "description": "O olho que tudo vê"
+    },
+    "51": {
+      "name": "Berserk Mode",
+      "description": "A sede de vingança te corrompe por dentro"
+    },
+    "52": {
+      "name": "Berserk Table",
+      "description": "A sede de vingança te corrompe por dentro"
     }
   },
   "plants": {

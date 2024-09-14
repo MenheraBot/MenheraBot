@@ -3,7 +3,6 @@ import shopRepository from '../../database/repositories/shopRepository';
 import userRepository from '../../database/repositories/userRepository';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { EMOJIS } from '../../structures/constants';
 import { ModalInteraction } from '../../types/interaction';
 import {
   createActionRow,
@@ -248,7 +247,7 @@ const buyColor = async (
 
         p.push({
           label: c.nome.replaceAll('**', ''),
-          description: `${c.cor} | ${c.price} ${EMOJIS.estrelinhas}`,
+          description: `${c.cor} | ${c.price} ${ctx.safeEmoji('estrelinhas')}`,
           value: c.cor,
         });
         return p;

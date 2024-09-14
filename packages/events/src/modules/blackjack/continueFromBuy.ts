@@ -1,16 +1,15 @@
 import blackjackRepository from '../../database/repositories/blackjackRepository';
 import { getHandValue, hideMenheraCard, numbersToBlackjackCards } from './blackjackMatch';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import {
   AvailableCardBackgroundThemes,
   AvailableCardThemes,
   AvailableTableThemes,
 } from '../themes/types';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { sendBlackjackMessage } from './sendBlackjackMessage';
+import { InteractionContext } from '../../types/menhera';
 
 const continueFromBuy = async (
-  ctx: ChatInputInteractionContext | ComponentInteractionContext,
+  ctx: InteractionContext,
   bet: number,
   oldPLayerCards: number[],
   dealerCards: number[],

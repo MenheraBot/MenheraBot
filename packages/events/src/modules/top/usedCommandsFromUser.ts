@@ -18,7 +18,11 @@ const executeUsedCommandsFromUserTop = async (
   const res = await getTopCommandsByUses(skip, `${user.id}`);
 
   if (!res || res.length === 0)
-    return ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'common:api-error'),
+      components: [],
+      embeds: [],
+    });
 
   const totalUsedCommands = await getUserProfileInfo(`${user.id}`);
 
@@ -35,13 +39,13 @@ const executeUsedCommandsFromUserTop = async (
       page: page > 1 ? page : 1,
     }),
     color: hexStringToNumber(embedColor),
+    footer: translatedTitle ? { text: translatedTitle } : undefined,
     description: totalUsedCommands
       ? ctx.locale('commands:top.total-used-commands', {
           commands: totalUsedCommands.totalUses,
           user: getDisplayName(user),
         })
       : undefined,
-    footer: { text: translatedTitle ?? '' },
     fields: [],
   });
 

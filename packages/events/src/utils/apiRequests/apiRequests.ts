@@ -19,7 +19,7 @@ const dataRequest = axios.create({
 
 const statusRequest = axios.create({
   baseURL: `${MENHERA_API_URL}/info`,
-  timeout: 5000,
+  timeout: 3000,
   headers: {
     'Content-Type': 'application/json',
     'User-Agent': MENHERA_AGENT,

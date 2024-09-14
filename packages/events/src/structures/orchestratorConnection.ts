@@ -8,9 +8,10 @@ import { getEnviroments } from '../utils/getEnviroments';
 import { logger } from '../utils/logger';
 import { updateCommandsOnApi } from '../utils/updateApiCommands';
 import { getInteractionsCounter, getRegister } from './initializePrometheus';
-import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
 import cacheRepository from '../database/repositories/cacheRepository';
 import { getUserAvatar } from '../utils/discord/userUtils';
+import { clearBattleTimer, startBattleTimer } from '../modules/roleplay/battle/battleTimers';
+import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
 
 const numberTypeToName = {
   1: 'PING',
@@ -52,9 +53,18 @@ const createIpcConnection = async (): Promise<void> => {
     }
 
     if (msg.type === 'SIMON_SAYS') {
-      if (msg.action === 'SET_TIMER') return startPokerTimeout(msg.timerId, msg.timerMetadata);
+      const [type, name] = msg.action.split(':') as ['BATTLE' | 'POKER', string];
+      const toExecute =
+        name === 'CLEAR_TIMER' ? (`${type}_CLEAR` as const) : (`${type}_TIMEOUT` as const);
 
-      return clearPokerTimer(msg.timerId);
+      const availableFunctions = {
+        BATTLE_TIMEOUT: startBattleTimer,
+        POKER_TIMEOUT: startPokerTimeout,
+        BATTLE_CLEAR: clearBattleTimer,
+        POKER_CLEAR: clearPokerTimer,
+      };
+
+      return availableFunctions[toExecute](msg.timerId, msg.timerMetadata);
     }
 
     if (msg.type === 'UPDATE_COMMANDS') {
@@ -138,13 +148,12 @@ const createIpcConnection = async (): Promise<void> => {
         break;
       }
       case 'INTERACTION_CREATE': {
-        if (!process.env.NOMICROSERVICES)
-          getInteractionsCounter().inc(
-            {
-              type: numberTypeToName[msg.data.body.type as 1],
-            },
-            0.5,
-          );
+        getInteractionsCounter().inc(
+          {
+            type: numberTypeToName[msg.data.body.type as 1],
+          },
+          0.5,
+        );
 
         bot.respondInteraction.set((msg.data.body as DiscordInteraction).id, ack);
 

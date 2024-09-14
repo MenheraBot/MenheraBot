@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Boleham está de volta!** - Mais uma vez a Menhera está implementando um sistema de RPG. Dessa vez quero fazer funcionar. Veja todos os comandos do RPG buscando por `/rpg` no Discord.
+- Novo comando `/personagem` - Veja as informações de seu personagem. 
+- Novo comando `/aventura` - Vá para uma aventura contra um monstro de sua região. Escolha a sua ação a cada turno, podendo selecionar habilidades para causar efeitos como `envenenamento` e `cura`, ou apenas aplicar `dano` a seu inimigo. Cuidado para não ficar sem energia, isso é fatal. 
+- Novo comando `/viajar` - Viaje pelo mundo de Boleham. Monstros são finitos em uma região. Após os inimigos da região serem completamente exterminados, as veias dos Dragões Elementais começam a revitalizar a área, trazendo novos inimigos à vida. Viaje por outras regiões para encontrar novos inimigos. 
+- Novo comando `/acessar igreja` - Revigore a sua vitalidade entrando em uma Igreja. A fé do Clero gera uma aura dentro das Igrejas, que regenera a sua **Vida** e **Energia** a cada minuto. 
+- Novo comando `/acessar ferreiro` - Venda os seus itens no ferreiro mais próximo. Alguns itens são apenas comercializados em maior quantidade, portanto se atente aos múltiplos do item para vender a quantidade correspondente. 
+- Criado um top de rolls no `/top diversos`. - Sugerido por @mich_solitario. 
+- Trocar missões diárias! Agora é possível mudar uma de suas missões diárias. Missões trocadas não dão prêmios em estrelinhas, mas ainda dão o bônus especial. - Sugerido por @mich_solitario.
+- Novo comando `/top fazendeiros`. Veja os fazendeiros que mais colheram um tipo de planta.
+- Criado um top de missões diárias no `/top diversos`. Apenas as dailies finalizadas após o lançamento desta versão contam.
+- Novo tema de fundo de carta: Berserk. Criado por @dszalone.
+- Novo tema de fundo de carta: Girassol. Criado por @mareys.
+- Novo tema de fundo de carta: Ele está de olho. Criado por @maycon.orp.
+- Novo tema de mesa: Berserk Table. Criado por @dszalone.
+
+### Changed
+
+- A Menhera não busca mais pelo nome dos usuários das 3 primeiras páginas dos `/top`. 
+
 ## [5.18.0] - 2024-06-08
 
 ### Added

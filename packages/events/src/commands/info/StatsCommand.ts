@@ -56,7 +56,7 @@ const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand:
     color: hexStringToNumber(ctx.authorData.selectedColor),
     fields: [
       {
-        name: `${EMOJIS.demons} | ${ctx.locale('commands:status.hunt.demon')}`,
+        name: `${ctx.safeEmoji('demons')} | ${ctx.locale('commands:status.hunt.demon')}`,
         value: `${ctx.locale('commands:status.hunt.display-data', {
           tries: huntData.demon_tries,
           success: calculateSuccess(huntData.demon_success, huntData.demon_tries),
@@ -65,7 +65,7 @@ const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand:
         inline: true,
       },
       {
-        name: `${EMOJIS.giants} | ${ctx.locale('commands:status.hunt.giant')}`,
+        name: `${ctx.safeEmoji('giants')} | ${ctx.locale('commands:status.hunt.giant')}`,
         value: `${ctx.locale('commands:status.hunt.display-data', {
           tries: huntData.giant_tries,
           success: calculateSuccess(huntData.giant_success, huntData.giant_tries),
@@ -74,7 +74,7 @@ const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand:
         inline: true,
       },
       {
-        name: `${EMOJIS.angels} | ${ctx.locale('commands:status.hunt.angel')}`,
+        name: `${ctx.safeEmoji('angels')} | ${ctx.locale('commands:status.hunt.angel')}`,
         value: `${ctx.locale('commands:status.hunt.display-data', {
           tries: huntData.angel_tries,
           success: calculateSuccess(huntData.angel_success, huntData.angel_tries),
@@ -83,7 +83,7 @@ const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand:
         inline: true,
       },
       {
-        name: `${EMOJIS.archangels} | ${ctx.locale('commands:status.hunt.archangel')}`,
+        name: `${ctx.safeEmoji('archangels')} | ${ctx.locale('commands:status.hunt.archangel')}`,
         value: `${ctx.locale('commands:status.hunt.display-data', {
           tries: huntData.archangel_tries,
           success: calculateSuccess(huntData.archangel_success, huntData.archangel_tries),
@@ -92,7 +92,7 @@ const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand:
         inline: true,
       },
       {
-        name: `${EMOJIS.demigods} | ${ctx.locale('commands:status.hunt.demigod')}`,
+        name: `${ctx.safeEmoji('demigods')} | ${ctx.locale('commands:status.hunt.demigod')}`,
         value: `${ctx.locale('commands:status.hunt.display-data', {
           tries: huntData.demigod_tries,
           success: calculateSuccess(huntData.demigod_success, huntData.demigod_tries),
@@ -101,7 +101,7 @@ const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand:
         inline: true,
       },
       {
-        name: `${EMOJIS.gods} | ${ctx.locale('commands:status.hunt.god')}`,
+        name: `${ctx.safeEmoji('gods')} | ${ctx.locale('commands:status.hunt.god')}`,
         value: `${ctx.locale('commands:status.hunt.display-data', {
           tries: huntData.god_tries,
           success: calculateSuccess(huntData.god_success, huntData.god_tries),

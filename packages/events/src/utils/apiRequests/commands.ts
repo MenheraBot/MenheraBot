@@ -30,12 +30,11 @@ const forceBatchCommandsExecutionPost = async (): Promise<void> => {
 };
 
 const postCommandExecution = async (info: UsedCommandData): Promise<void> => {
-  await dataRequest.post(`/usages/commands?command=${info.commandName}`, info).catch(debugError);
-  /* batchCommandsExecution.push(info);
-
-
- */
+  if (process.env.NODE_ENV === 'production')
+    await dataRequest.post(`/usages/commands?command=${info.commandName}`, info).catch(debugError);
+  // batchCommandsExecution.push(info);
 };
+
 const updateCommandMaintenanteStatus = async (
   commandName: string,
   maintenanceData: MaintenanceCommandData,
