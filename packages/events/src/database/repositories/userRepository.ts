@@ -186,7 +186,7 @@ const getTopRanking = async (
     lean: true,
   });
 
-  return res.map((a) => ({ id: a.id, value: a[field] }));
+  return res.map((a) => ({ id: a.id, value: a[field] ?? 0 }));
 };
 
 export default {
