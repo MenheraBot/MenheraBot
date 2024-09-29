@@ -168,7 +168,6 @@ const ProfileCommand = createCommand({
         file: {
           name: 'profile.png',
           blob: new Blob([Buffer.from(imageFromRedis, 'base64')], {
-            encoding: 'base64',
             type: 'image/png',
           }),
         },

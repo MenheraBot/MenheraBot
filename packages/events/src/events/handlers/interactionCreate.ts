@@ -227,6 +227,8 @@ const setInteractionCreateEvent = (): void => {
           bot.helpers.sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
             embeds: [embed],
           });
+
+          logger.error(err);
         }
       });
 

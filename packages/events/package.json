@@ -1,7 +1,7 @@
 {
   "name": "@menhera-bot/events",
   "type": "module",
-  "version": "5.18.0",
+  "version": "5.19.0",
   "engines": {
     "node": ">=18"
   },
@@ -32,7 +32,7 @@
     "ioredis": "^5.2.2",
     "md5": "^2.3.0",
     "mongoose": "6.12.0",
-    "net-ipc": "^2.0.1",
+    "net-ipc": "^2.2.0",
     "pokersolver": "^2.1.4",
     "prom-client": "^14.1.1",
     "string-similarity": "^4.0.4"

@@ -464,6 +464,8 @@
   },
   "top": {
     "economia": {
+      "completedDailies-title": "Placar de Missões diárias",
+      "rolls-title": "Placar de Rolls",
       "mamou-title": "Placar de Mamadores",
       "mamado-title": "Placar de Mamados",
       "demons-title": "Placar de Demônios",
@@ -477,13 +479,19 @@
       "estrelinhas": "Estrelinhas",
       "mamou": "Mamou",
       "votes": "Votos",
+      "completedDailies": "Missões diárias completadas",
       "mamado": "Mamado",
       "demons": "Demônios",
       "angels": "Anjos",
+      "rolls": "Rolls",
       "archangels": "Arcanjos",
       "giants": "Gigantes",
       "demigods": "Semideuses",
       "gods": "Deuses"
+    },
+    "fazendeiros": {
+      "title": "{{emoji}} | Melhores Fazendeiros de {{plant}} {{page}}º",
+      "harvested": "Colheitas realizadas"
     },
     "estatisticas": {
       "cacar": {
@@ -1225,6 +1233,13 @@
   },
   "daily": {
     "title": "Suas missões diárias",
+
+    "change-daily": "Trocar missão",
+    "already-changed": "Você só pode trocar uma missão por dia.",
+    "success-changed": "A missão **{{index}}** foi trocada! Você recebeu uma nova missão:\n\n- {{newDaily}}",
+    "change": "({{index}}) Trocar missão",
+    "change-title": "Escolha uma missão para trocar",
+    "change-footer": "Você não ganhará estrelinhas por completar uma missão trocada, apenas o prêmio especial.",
     "reedem": "({{index}}) Resgatar",
     "reedemed": "({{index}}) Resgatado",
     "unfinished": "({{index}}) {{has}}/{{need}}",

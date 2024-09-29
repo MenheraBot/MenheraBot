@@ -13,7 +13,11 @@ const executeUsedCommandsTop = async (
   const res = await getTopCommandsByUses(skip);
 
   if (!res || res.length === 0)
-    return ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'common:api-error'),
+      components: [],
+      embeds: [],
+    });
 
   const embed = createEmbed({
     title: ctx.prettyResponse('robot', 'commands:top.commands', { page: page > 1 ? page : 1 }),

@@ -2,7 +2,7 @@ import { Collection, createRestManager, handleInteractionCreate } from 'discorde
 
 import { transformInteractionResponseToDiscordInteractionResponse } from '../internals/transformers/reverse/interactionResponse';
 import { initializeRedis, initializeMongo } from '../database/databases';
-import { loadLocales } from './localteStructure';
+import { loadLocales } from './localeStructure';
 import { initializeSentry } from './initializeSentry';
 import { getEnviroments } from '../utils/getEnviroments';
 import { MenheraClient } from '../types/menhera';

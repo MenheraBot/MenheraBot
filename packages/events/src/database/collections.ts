@@ -86,6 +86,7 @@ const userSchema = new Schema({
   dailies: { type: Array, default: [] },
   dailyDayId: { type: Number, default: 0 },
   allowMamar: { type: Boolean, default: true },
+  completedDailies: { type: Number, default: 0 },
 });
 
 const themeCredits = new Schema({
