@@ -19,6 +19,7 @@ const executeDailies = async (
 
   let needUpdate = false;
   let finishedDailies = 0;
+  let availableForPrizeDailies = 0;
 
   userDailies.forEach((daily, i) => {
     const dailyData = getDailyById(daily.id);
@@ -34,13 +35,16 @@ const executeDailies = async (
     setter[`dailies.${i}`] = daily;
 
     if (daily.has > daily.need) daily.has = daily.need;
-    if (daily.has >= daily.need) finishedDailies += 1;
+    if (daily.has >= daily.need) {
+      finishedDailies += 1;
+      if (!daily.changed) availableForPrizeDailies += 1;
+    }
   }, []);
 
   if (!needUpdate) return;
 
   if (finishedDailies > 0) {
-    const award = finishedDailies * FINISHED_DAILY_AWARD;
+    const award = availableForPrizeDailies * FINISHED_DAILY_AWARD;
     incrementer.estrelinhas = award;
 
     notificationRepository.createNotification(

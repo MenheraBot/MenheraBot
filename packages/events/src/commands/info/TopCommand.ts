@@ -85,6 +85,10 @@ const TopCommand = createCommand({
               nameLocalizations: { 'en-US': '🆙 | Votes' },
               value: 'votes',
             },
+            {
+              name: '🔑 | Rolls',
+              value: 'rolls',
+            },
           ],
         },
         {
