@@ -37,12 +37,12 @@ yarn install && yarn build:all
 
 4. 🏃‍♂️ Running all services
 
-> Open 2 terminals and execute each command in a different one. The EVENTS package depends on the other package.
+> Open 2 terminals and execute each command in a different one. The EVENTS package depends on the other package in production.
 
 ```bash
 # yarn rest dev
-yarn orchestrator dev
-yarn events dev:nomicroservices
+# yarn orchestrator dev
+yarn events dev
 ```
 
 5. 🐦 Running tests
