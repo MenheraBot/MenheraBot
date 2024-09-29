@@ -45,7 +45,7 @@ const executeUsedCommandsFromUserTop = async (
           user: getDisplayName(user),
         })
       : undefined,
-    footer: { text: translatedTitle ?? '' },
+    footer: translatedTitle ? { text: translatedTitle } : undefined,
     fields: [],
   });
 

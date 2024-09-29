@@ -6,6 +6,8 @@ let retryTimeout: NodeJS.Timeout;
 let retries = 0;
 
 const loadChangelog = async (): Promise<void> => {
+  if (process.env.NODE_ENV === 'development') return;
+
   logger.info('[CHANGELOG] Getting the current update changelog');
 
   const response = await axios
