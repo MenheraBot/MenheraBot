@@ -1,3 +1,4 @@
+import { EMOJIS } from '../../structures/constants';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { Plants } from '../fazendinha/constants';
 import { huntValues } from './constants';
@@ -26,6 +27,7 @@ const sellInfo = async (
             archangel: huntValues.archangels,
             demi: huntValues.demigods,
             god: huntValues.gods,
+            emojis: EMOJIS,
           }),
           inline: false,
         },

@@ -314,7 +314,7 @@
       "main": {
         "fields": {
           "name": "Valor das Caças",
-          "value": "<:DEMON:758765044443381780> Demônios - **{{demon}}**⭐\n🦍 Gigantes - **{{giant}}**⭐ \n<:ANGEL:758765044204437535> Anjos - **{{angel}}**⭐\n👼 Arcanjos - **{{archangel}}**⭐\n<:SEMIGOD:758766732235374674> SemiDeuses - **{{demi}}**⭐\n<:God:758474639570894899> Deuses - **{{god}}**⭐"
+          "value": "{{emojis.demons}} Demônios - **{{demon}}**⭐\n🦍 Gigantes - **{{giant}}**⭐ \n{{emojis.angels}} Anjos - **{{angel}}**⭐\n👼 Arcanjos - **{{archangel}}**⭐\n{{emojis.demigods}} Semideuses - **{{demi}}**⭐\n{{emojis.gods}} Deuses - **{{god}}**⭐"
         }
       },
       "invalid-args": "Este valor não é um número válido! Você deve passar a opção e a quantidade",

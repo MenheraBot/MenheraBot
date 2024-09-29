@@ -1,6 +1,7 @@
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
+import { EMOJIS } from '../../structures/constants';
 import userRepository from '../../database/repositories/userRepository';
 import { createCommand } from '../../structures/command/createCommand';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
@@ -53,42 +54,42 @@ const WalletCommand = createCommand({
       color: hexStringToNumber(userData.selectedColor),
       fields: [
         {
-          name: `⭐ | ${ctx.locale('commands:carteira.stars')}`,
+          name: `${EMOJIS.estrelinhas} | ${ctx.locale('commands:carteira.stars')}`,
           value: `**${userData.estrelinhas}**`,
           inline: true,
         },
         {
-          name: `🔑 | ${ctx.locale('commands:carteira.rolls')}`,
+          name: `${EMOJIS.roll} | ${ctx.locale('commands:carteira.rolls')}`,
           value: `**${userData.rolls}**`,
           inline: true,
         },
         {
-          name: `<:DEMON:758765044443381780> | ${ctx.locale('commands:carteira.demons')} `,
+          name: `${EMOJIS.demons} | ${ctx.locale('commands:carteira.demons')} `,
           value: `**${userData.demons}**`,
           inline: true,
         },
         {
-          name: `🦍 | ${ctx.locale('commands:carteira.giants')}`,
+          name: `${EMOJIS.giants} | ${ctx.locale('commands:carteira.giants')}`,
           value: `**${userData.giants}**`,
           inline: true,
         },
         {
-          name: `<:ANGEL:758765044204437535> | ${ctx.locale('commands:carteira.angels')}`,
+          name: `${EMOJIS.angels} | ${ctx.locale('commands:carteira.angels')}`,
           value: `**${userData.angels}**`,
           inline: true,
         },
         {
-          name: `👼| ${ctx.locale('commands:carteira.archangel')}`,
+          name: `${EMOJIS.archangels} | ${ctx.locale('commands:carteira.archangel')}`,
           value: `**${userData.archangels}**`,
           inline: true,
         },
         {
-          name: `<:SemiGod:758766732235374674> | ${ctx.locale('commands:carteira.sd')}`,
+          name: `${EMOJIS.demigods} | ${ctx.locale('commands:carteira.sd')}`,
           value: `**${userData.demigods}**`,
           inline: true,
         },
         {
-          name: `<:God:758474639570894899> | ${ctx.locale('commands:carteira.god')}`,
+          name: `${EMOJIS.gods} | ${ctx.locale('commands:carteira.god')}`,
           value: `**${userData.gods}**`,
           inline: true,
         },

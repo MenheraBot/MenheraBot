@@ -309,7 +309,7 @@
       "main": {
         "fields": {
           "name": "Sales Options",
-          "value": "<:DEMON:758765044443381780> Demons - **{{demon}}**⭐ \n🦍 Giants - **{{giant}}**⭐\n<:ANGEL:758765044204437535> Angels - **{{angel}}**⭐\n👼 Archangels - **{{archangel}}**⭐\n<:SEMIGOD:758766732235374674> Demigods - **{{demi}}**⭐\n<:God:758474639570894899> Gods - **{{god}}**⭐"
+          "value": "{{emojis.demons}} Demons - **{{demon}}**⭐ \n🦍 Giants - **{{giant}}**⭐\n{{emojis.angels}} Angels - **{{angel}}**⭐\n👼 Archangels - **{{archangel}}**⭐\n{{emojis.demigods}} Demigods - **{{demi}}**⭐\n{{emojis.gods}} Gods - **{{god}}**⭐"
         }
       },
       "invalid-args": "this value is not a valid number! You must say the option and the quantity",
