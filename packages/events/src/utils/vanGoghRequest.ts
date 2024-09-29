@@ -14,8 +14,8 @@ const { VANGOGH_URL, MENHERA_AGENT, VANGOGH_TOKEN, VANGOGH_SOCKET_PATH } = getEn
 ]);
 
 const VanGoghApi = axios.create({
-  socketPath: VANGOGH_SOCKET_PATH,
-  timeout: 10_000,
+  baseURL: VANGOGH_URL,
+  timeout: 7_000,
   headers: {
     'Content-Type': 'application/json',
     'User-Agent': MENHERA_AGENT,
