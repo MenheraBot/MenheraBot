@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import { User } from 'discordeno/transformers';
-import { executeFarmersTop } from 'modules/top/farmersTop';
+import { executeFarmersTop } from '../../modules/top/farmersTop';
 import { ApiHuntingTypes, DatabaseHuntingTypes } from '../../modules/hunt/types';
 import { createCommand } from '../../structures/command/createCommand';
 import { COLORS, transactionableCommandOption } from '../../structures/constants';
@@ -111,6 +111,11 @@ const TopCommand = createCommand({
             {
               name: '🔑 | Rolls',
               value: 'rolls',
+            },
+            {
+              name: '📆 | Missões diárias',
+              nameLocalizations: { 'en-US': '📆 | Daily missions' },
+              value: 'completedDailies',
             },
           ],
         },

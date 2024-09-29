@@ -58,6 +58,7 @@ export interface DatabaseUserSchema {
   dailies: DatabaseDaily[];
   dailyDayId: number;
   allowMamar: boolean;
+  completedDailies: number;
 }
 
 export interface DatabaseCreditsSchema {

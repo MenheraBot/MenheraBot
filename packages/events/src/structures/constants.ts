@@ -108,6 +108,7 @@ export const TOP_EMOJIS: { [key: string]: string } = {
   estrelinhas: EMOJIS.estrelinhas,
   demons: EMOJIS.demons,
   giants: EMOJIS.giants,
+  completedDailies: EMOJIS.calendar,
   angels: EMOJIS.angels,
   archangels: EMOJIS.archangels,
   demigods: EMOJIS.demigods,

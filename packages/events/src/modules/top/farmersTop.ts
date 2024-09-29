@@ -44,8 +44,8 @@ const executeFarmersTop = async (
   });
 
   const [members, titles] = await Promise.all([
-    Promise.all(res.map(async (a) => cacheRepository.getDiscordUser(`${a.user_id}`))),
-    Promise.all(res.map(async (a) => userRepository.ensureFindUser(`${a.user_id}`))),
+    Promise.all(res.map((a) => cacheRepository.getDiscordUser(`${a.user_id}`))),
+    Promise.all(res.map((a) => userRepository.ensureFindUser(`${a.user_id}`))),
   ]);
 
   const resolvedTitles = await Promise.all(

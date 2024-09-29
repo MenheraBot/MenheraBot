@@ -31,8 +31,8 @@ const executeUserCommandsTop = async (
   });
 
   const [members, titles] = await Promise.all([
-    Promise.all(res.map(async (a) => cacheRepository.getDiscordUser(`${a.id}`, page <= 3))),
-    Promise.all(res.map(async (a) => userRepository.ensureFindUser(`${a.id}`))),
+    Promise.all(res.map((a) => cacheRepository.getDiscordUser(`${a.id}`))),
+    Promise.all(res.map((a) => userRepository.ensureFindUser(`${a.id}`))),
   ]);
 
   const resolvedTitles = await Promise.all(
