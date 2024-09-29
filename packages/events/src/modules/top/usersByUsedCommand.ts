@@ -19,7 +19,11 @@ const executeUsersByUsedCommandTop = async (
   const res = await getTopUsersByUses(skip, usersToIgnore, commandName);
 
   if (!res || res.length === 0)
-    return ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'common:api-error'),
+      components: [],
+      embeds: [],
+    });
 
   const embed = createEmbed({
     title: ctx.prettyResponse('smile', 'commands:top.users-by-commands', {

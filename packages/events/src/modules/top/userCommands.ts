@@ -18,7 +18,11 @@ const executeUserCommandsTop = async (
   const res = await getTopUsersByUses(skip, usersToIgnore);
 
   if (!res || res.length === 0)
-    return ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'common:api-error'),
+      components: [],
+      embeds: [],
+    });
 
   const embed = createEmbed({
     title: ctx.prettyResponse('smile', 'commands:top.users', { page: page > 1 ? page : 1 }),

@@ -21,11 +21,12 @@ const executeGamblingTop = async (
 
   const results = await getTopGamblingUsers(skip, usersToIgnore, topMode, gameMode);
 
-  if (!results) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
-
-    return;
-  }
+  if (!results)
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'common:api-error'),
+      embeds: [],
+      components: [],
+    });
 
   const embed = createEmbed({
     title: ctx.locale('commands:top.estatisticas.apostas.title', {

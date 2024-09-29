@@ -18,7 +18,11 @@ const executeUsedCommandsFromUserTop = async (
   const res = await getTopCommandsByUses(skip, `${user.id}`);
 
   if (!res || res.length === 0)
-    return ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:api-error') });
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'common:api-error'),
+      components: [],
+      embeds: [],
+    });
 
   const totalUsedCommands = await getUserProfileInfo(`${user.id}`);
 
