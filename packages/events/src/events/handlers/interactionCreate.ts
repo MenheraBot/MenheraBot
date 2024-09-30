@@ -176,8 +176,10 @@ const setInteractionCreateEvent = (): void => {
 
     commandRepository.setOriginalInteraction(interaction.id, {
       fullCommandUsed: commandUsed.fullCommand,
+      originalInteractionToken: interaction.token,
       originalInteractionId: `${interaction.id}`,
       commandName,
+      locale: guildLocale,
     });
 
     if (!process.env.NOMICROSERVICES)

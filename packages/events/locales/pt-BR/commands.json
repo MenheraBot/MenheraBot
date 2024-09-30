@@ -1277,6 +1277,8 @@
     "rock": "Pedra",
     "paper": "Papel",
     "scissors": "Tesoura",    
+    "waiting": "Aguardando a escolha dos jogadores...",
+    "interaction-lost": "As informações da partida foram perdidas. Use o comando novamente",
     "make-your-choice": "Faça sua escolha",
     "confirm-game-official": "{{user}} você foi desafiado para um jogo de **:rock: Pedra, :page_facing_up: Papel e :scissors: Tesoura** contra {{author}} valendo **{{amount}}** :star:",
     "confirm-game-friendly": "{{user}} voce foi desafiado para um jogo amistoso de **:rock: Pedra, :page_facing_up: Papel e :scissors: Tesoura** contra {{author}}"

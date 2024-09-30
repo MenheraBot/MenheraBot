@@ -29,7 +29,7 @@
     "discordeno": "^18.0.1",
     "i18next": "^21.8.14",
     "i18next-fs-backend": "^1.1.4",
-    "ioredis": "^5.2.2",
+    "ioredis": "^5.4.1",
     "md5": "^2.3.0",
     "mongoose": "6.12.0",
     "net-ipc": "^2.2.0",

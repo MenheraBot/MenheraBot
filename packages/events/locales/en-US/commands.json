@@ -1269,6 +1269,8 @@
     "banned-user":"This user cannot bet because they're banned from Menhera!",
     "confirm-button": "Accept challenge",   
     "make-your-choice": "Make your choice",
+    "waiting": "Waiting for players to choose.",
+    "interaction-lost": "The game info were lost. Please use the command again",
     "rock": "Rock",
     "paper": "Paper",
     "scissors": "Scissors",    
