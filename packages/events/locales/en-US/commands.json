@@ -175,7 +175,7 @@
     "bot": "Bots cannot bet e.e",
     "self-mention": "you cannot bet against yourself",
     "no-dbuser": "this user does not have a Menhera's Bank account!",
-    "poor": "{{user}} don't have **{{value}}** {{currency}} to bet on!",
+    "poor": "{{user}} don't have **{{amount}}** {{currency}} to bet on!",
     "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** {{emoji}}. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept?",
     "cara": "HEADS",
     "coroa": "TAILS",
@@ -1262,5 +1262,17 @@
       "finish_delivery-one": "{{emoji}} Make **{{need}}** delivery from the farm. ({{has}}/{{need}})",
       "finish_delivery-other": "{{emoji}} Make **{{need}}** deliveries from the farm. ({{has}}/{{need}})"
     }
+  },
+  "pedrapapeltesoura": {
+    "self-mention": "You cannot bet against yourself",
+    "poor": "{{user}} don't have **{{amount}}** :star: to bet on!",
+    "banned-user":"This user cannot bet because they're banned from Menhera!",
+    "confirm-button": "Accept challenge",   
+    "make-your-choice": "Make your choice",
+    "rock": "Rock",
+    "paper": "Paper",
+    "scissors": "Scissors",    
+    "confirm-game-official": "{{user}} you were challenged to a **:rock: Rock, :page_facing_up: paper, :scissors: Scissors** game against {{author}} worth **{{amount}}** :star:",
+    "confirm-game-friendly": "{{user}} you were challenged to a friendly **:rock: Rock, :page_facing_up: paper, :scissors: Scissors** game against {{author}}"
   }
 }

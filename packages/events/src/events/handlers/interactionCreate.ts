@@ -248,7 +248,7 @@ const setInteractionCreateEvent = (): void => {
       args: interaction.data?.options ?? [],
     };
 
-    postCommandExecution(data);
+    if (process.env.NODE_ENV !== 'development') postCommandExecution(data);
   };
 };
 

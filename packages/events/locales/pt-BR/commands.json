@@ -1268,5 +1268,17 @@
       "finish_delivery-one": "{{emoji}} Realize **{{need}}** entrega da fazendinha. ({{has}}/{{need}})",
       "finish_delivery-other": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})"
     }
+  },
+  "pedrapapeltesoura": {
+    "self-mention": "Você não pode apostar contra si mesmo",
+    "poor": "{{user}} não possui **{{amount}}** :star: para apostar!",
+    "banned-user":"Este usuário não pode apostar pois está banido da Menhera!",
+    "confirm-button": "Aceitar desafio",
+    "rock": "Pedra",
+    "paper": "Papel",
+    "scissors": "Tesoura",    
+    "make-your-choice": "Faça sua escolha",
+    "confirm-game-official": "{{user}} você foi desafiado para um jogo de **:rock: Pedra, :page_facing_up: Papel e :scissors: Tesoura** contra {{author}} valendo **{{amount}}** :star:",
+    "confirm-game-friendly": "{{user}} voce foi desafiado para um jogo amistoso de **:rock: Pedra, :page_facing_up: Papel e :scissors: Tesoura** contra {{author}}"
   }
 }
