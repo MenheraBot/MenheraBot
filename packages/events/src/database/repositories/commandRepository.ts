@@ -4,6 +4,7 @@ import { DatabaseCommandSchema } from '../../types/database';
 import { commandsModel } from '../collections';
 import { debugError } from '../../utils/debugError';
 import { registerCacheStatus } from '../../structures/initializePrometheus';
+import { AvailableLanguages } from '../../types/i18next';
 
 const getCommandInfoById = async (commandId: BigString): Promise<DatabaseCommandSchema | null> => {
   const fromRedis = await MainRedisClient.get(`command:${commandId}`);
@@ -99,6 +100,8 @@ const setMaintenanceInfo = async (
 
 interface OriginalInteraction {
   originalInteractionId: string;
+  originalInteractionToken: string;
+  locale: AvailableLanguages;
   fullCommandUsed: string;
   commandName: string;
 }
@@ -128,10 +131,14 @@ const deleteOriginalInteraction = (interactionId: BigString): void => {
   MainRedisClient.del(`original_interaction:${interactionId}`);
 };
 
+const getInteractionExpiration = async (interactionId: BigString): Promise<number> =>
+  MainRedisClient.ttl(`original_interaction:${interactionId}`);
+
 export default {
   getCommandInfoById,
   getCommandInfo,
   getOriginalInteraction,
+  getInteractionExpiration,
   deleteOriginalInteraction,
   setOriginalInteraction,
   setMaintenanceInfo,

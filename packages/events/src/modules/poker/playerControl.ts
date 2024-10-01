@@ -14,11 +14,10 @@ import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { VanGoghEndpoints, VanGoghReturnData, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { Action, PokerMatch, PokerPlayer } from './types';
-import { InteractionContext } from '../../types/menhera';
+import { GenericContext } from '../../types/menhera';
 import { SelectMenuUsersInteraction } from '../../types/interaction';
 import pokerRepository from '../../database/repositories/pokerRepository';
 import { mentionUser } from '../../utils/discord/userUtils';
-import PokerFollowupInteractionContext from './PokerFollowupInteractionContext';
 import { getOpenedCards, getPokerCard } from './cardUtils';
 import { Translation } from '../../types/i18next';
 
@@ -156,11 +155,7 @@ const executeMasterAction = async (
   });
 };
 
-const localizedAction = (
-  ctx: InteractionContext | PokerFollowupInteractionContext,
-  action: Action,
-  chips?: number,
-): SelectOption => ({
+const localizedAction = (ctx: GenericContext, action: Action, chips?: number): SelectOption => ({
   label: ctx.locale(`commands:poker.actions.${action}`),
   value: chips ? `${action}|${chips}` : action,
   description: ctx.locale(`commands:poker.actions.${action}-description`, { chips }),
@@ -169,10 +164,7 @@ const localizedAction = (
 const getPlayerBySeat = (gameData: PokerMatch, seatId: number): PokerPlayer =>
   gameData.players.find((a) => a.seatId === seatId)!;
 
-const getAvailableActions = (
-  ctx: InteractionContext | PokerFollowupInteractionContext,
-  gameData: PokerMatch,
-): SelectMenuComponent => {
+const getAvailableActions = (ctx: GenericContext, gameData: PokerMatch): SelectMenuComponent => {
   const player = gameData.players.find((p) => p.seatId === gameData.seatToPlay)!;
 
   const availableActions: SelectOption[] = [localizedAction(ctx, 'FOLD')];

@@ -175,7 +175,7 @@
     "bot": "Bots cannot bet e.e",
     "self-mention": "you cannot bet against yourself",
     "no-dbuser": "this user does not have a Menhera's Bank account!",
-    "poor": "{{user}} don't have **{{value}}** {{currency}} to bet on!",
+    "poor": "{{user}} don't have **{{amount}}** {{currency}} to bet on!",
     "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** {{emoji}}. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept?",
     "cara": "HEADS",
     "coroa": "TAILS",
@@ -507,12 +507,13 @@
       },
       "apostas": {
         "title": "{{emoji}} | Best Bettors of {{type}} {{page}}º",
-        "bicho": "Jogo do Bicho",
+        "bicho": "Bicho's Game",
         "blackjack": "Blackjack",
+        "rock_paper_scissors": "Rock, Paper, Scissors",
         "coinflip": "Coniflip",
         "roulette": "Roulette",
         "description": {
-          "money": "Sorted by **Estrelinhas Earned**",
+          "money": "Sorted by **Stars Earned**",
           "wins": "Sorted by **Most Wins**",
           "text": "Stars Won: **{{earnMoney}}** :star:\nStars Lost: **{{lostMoney}}** :star:\nGames Won: **{{wonGames}}** `({{winPercentage}}%)`\nLost Games: **{{lostGames}}** `({{lostPercentage}}%)`"
         }
@@ -556,6 +557,11 @@
       "notify-footer": "With notify purchases active, every time a user buys a design from you, Menhera will try to send a message in your DM showing this",
       "description": "**Type:** $t(common:theme_types.{{type}})\n**Royalty:**: {{royalty}}%\n**Profit:** {{profit}} :star:\n**Sold:** {{sold}}\nRegistered at {{registered}}"
     },
+    "rock_paper_scissors": {
+      "embed-title": "{{user}}'s Rock, Paper, Scissors stats",
+      "no-data": "This uer have never played a Rock Paper Scissors game!",
+      "used": "Selected **{{used}}** times"
+    },
     "fazendeiro": {
       "title": "{{user}}'s Farm Statistics",
       "field-data": "**Harvest:** {{harvest}}\n**Rotted:** {{rotted}}",
@@ -568,6 +574,7 @@
       "played": "Matches Played",
       "wins": "Wins",
       "loses": "Losses",
+      "draws": "Draws",
       "earnMoney": "Earned Money",
       "lostMoney": "Lost Money",
       "profit": "Total Profit",
@@ -977,7 +984,9 @@
       "daily_farm": "farm delivery",
       "daily_farm_title": "Daily Delivery",
       "buy_fair": "buying in fair",
-      "buy_fair_title": "Fair"
+      "buy_fair_title": "Fair",
+      "rps_command": "betting on rock paper scissors",
+      "rps_command_title": "Rock Paper Scissors" 
     }
   },
   "poker": {
@@ -1262,5 +1271,26 @@
       "finish_delivery-one": "{{emoji}} Make **{{need}}** delivery from the farm. ({{has}}/{{need}})",
       "finish_delivery-other": "{{emoji}} Make **{{need}}** deliveries from the farm. ({{has}}/{{need}})"
     }
+  },
+  "pedrapapeltesoura": {
+    "self-mention": "You cannot bet against yourself",
+    "poor": "{{user}} don't have **{{amount}}** :star: to bet on!",
+    "someone-poor": "Algum dos usuários jogando não possui as estrelinhas suficientes para apostar",
+    "banned-user":"This user cannot bet because they're banned from Menhera!",
+    "confirm-button": "Accept challenge",   
+    "make-your-choice": "Make your choice",
+    "results-title": "Rock Paper Scissors Results",
+    "user-choice": "{{user}} chose {{choice}}!",
+    "result-draw": "## It's a draw!",
+    "results": "{{winner}} beat {{loser}}",
+    "waiting": "Waiting for players to choose.",
+    "bot": "Bots cannot play Rock, Paper, Scissors :(",
+    "results-footer": "This match was worth {{betValue}} ⭐",
+    "interaction-lost": "The game info were lost. Please use the command again",
+    "rock": "Rock",
+    "paper": "Paper",
+    "scissors": "Scissors",    
+    "confirm-game-official": "{{user}} you were challenged to a **:rock: Rock, :page_facing_up: paper, :scissors: Scissors** game against {{author}} worth **{{amount}}** :star:",
+    "confirm-game-friendly": "{{user}} you were challenged to a friendly **:rock: Rock, :page_facing_up: paper, :scissors: Scissors** game against {{author}}"
   }
 }

@@ -514,6 +514,7 @@
         "title": "{{emoji}} | Melhores Apostadores de {{type}} {{page}}º",
         "bicho": "Jogo do Bicho",
         "blackjack": "Blackjack",
+        "rock_paper_scissors": "Pedra, Papel e Tesoura",
         "coinflip": "Coniflip",
         "roulette": "Roleta",
         "description": {
@@ -546,6 +547,11 @@
     "success": "Seu 'Sobre Mim' foi alterado com sucesso! Você pode ver as mudanças com {{command}}"
   },
   "status": {
+    "rock_paper_scissors": {
+      "embed-title": "Estatísticas de Pedra, Papel e Tesoura de {{user}}",
+      "no-data": "Este usuário nunca jogou uma partida de pedra, papel e tesoura!",
+      "used": "Escolheu **{{used}}** vezes"
+    },
     "poker": {
       "embed-title": "Estatísticas de Poker de {{user}}",
       "no-data": "Este usuário nunca jogou uma partida de poker!",
@@ -573,6 +579,7 @@
       "played": "Partidas Jogadas",
       "wins": "Vitórias",
       "loses": "Derrotas",
+      "draws": "Empates",
       "earnMoney": "Estrelinhas Ganhas",
       "lostMoney": "Estrelinhas Perdidas",
       "profit": "Lucro Total",
@@ -982,7 +989,9 @@
       "daily_farm": "entrega da fazendinha",
       "daily_farm_title": "Entregas Diárias",
       "buy_fair": "comprar na feira",
-      "buy_fair_title": "Feirinha"
+      "buy_fair_title": "Feirinha",
+      "rps_command": "apostar no pedra, papel e tesoura",
+      "rps_command_title": "Pedra, Papel e Tesoura" 
     }
   },
   "poker": {
@@ -1268,5 +1277,26 @@
       "finish_delivery-one": "{{emoji}} Realize **{{need}}** entrega da fazendinha. ({{has}}/{{need}})",
       "finish_delivery-other": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})"
     }
+  },
+  "pedrapapeltesoura": {
+    "self-mention": "Você não pode apostar contra si mesmo",
+    "poor": "{{user}} não possui **{{amount}}** :star: para apostar!",
+    "someone-poor": "Some of the users playing do not have enough stars to bet",
+    "banned-user":"Este usuário não pode apostar pois está banido da Menhera!",
+    "confirm-button": "Aceitar desafio",
+    "bot": "Bots não podem jogar Pedra, Papel e Tesoura :(",
+    "rock": "Pedra",
+    "paper": "Papel",
+    "scissors": "Tesoura",    
+    "result-draw": "## É um empate!",
+    "results": "## {{winner}} ganhou de {{loser}}",
+    "results-title": "Resultados do Pedra Papel e Tesoura",
+    "user-choice": "{{user}} escolheu {{choice}}!",
+    "results-footer": "Esta partida valia {{betValue}} ⭐",
+    "waiting": "Aguardando a escolha dos jogadores...",
+    "interaction-lost": "As informações da partida foram perdidas. Use o comando novamente",
+    "make-your-choice": "Faça sua escolha",
+    "confirm-game-official": "{{user}} você foi desafiado para um jogo de **:rock: Pedra, :page_facing_up: Papel e :scissors: Tesoura** contra {{author}} valendo **{{amount}}** :star:",
+    "confirm-game-friendly": "{{user}} voce foi desafiado para um jogo amistoso de **:rock: Pedra, :page_facing_up: Papel e :scissors: Tesoura** contra {{author}}"
   }
 }
