@@ -977,7 +977,9 @@
       "daily_farm": "farm delivery",
       "daily_farm_title": "Daily Delivery",
       "buy_fair": "buying in fair",
-      "buy_fair_title": "Fair"
+      "buy_fair_title": "Fair",
+      "rps_command": "betting on rock paper scissors",
+      "rps_command_title": "Rock Paper Scissors" 
     }
   },
   "poker": {

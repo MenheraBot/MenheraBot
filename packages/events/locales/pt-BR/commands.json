@@ -982,7 +982,9 @@
       "daily_farm": "entrega da fazendinha",
       "daily_farm_title": "Entregas Diárias",
       "buy_fair": "comprar na feira",
-      "buy_fair_title": "Feirinha"
+      "buy_fair_title": "Feirinha",
+      "rps_command": "apostar no pedra, papel e tesoura",
+      "rps_command_title": "Pedra, Papel e Tesoura" 
     }
   },
   "poker": {

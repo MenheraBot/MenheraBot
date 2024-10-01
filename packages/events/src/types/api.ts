@@ -85,6 +85,7 @@ export enum ApiTransactionReason {
   UPGRADE_FARM = 'upgrade_farm',
   DAILY_FARM = 'daily_farm',
   BUY_FAIR = 'buy_fair',
+  ROCK_PAPER_SCISSORS_COMMAND = 'rps_command',
 }
 
 type TransactionType = DatabaseHuntingTypes | 'estrelinhas';
