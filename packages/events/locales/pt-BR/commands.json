@@ -514,6 +514,7 @@
         "title": "{{emoji}} | Melhores Apostadores de {{type}} {{page}}º",
         "bicho": "Jogo do Bicho",
         "blackjack": "Blackjack",
+        "rock_paper_scissors": "Pedra, Papel e Tesoura",
         "coinflip": "Coniflip",
         "roulette": "Roleta",
         "description": {
@@ -546,6 +547,11 @@
     "success": "Seu 'Sobre Mim' foi alterado com sucesso! Você pode ver as mudanças com {{command}}"
   },
   "status": {
+    "rock_paper_scissors": {
+      "embed-title": "Estatísticas de Pedra, Papel e Tesoura de {{user}}",
+      "no-data": "Este usuário nunca jogou uma partida de pedra, papel e tesoura!",
+      "used": "Escolheu **{{used}}** vezes"
+    },
     "poker": {
       "embed-title": "Estatísticas de Poker de {{user}}",
       "no-data": "Este usuário nunca jogou uma partida de poker!",
@@ -573,6 +579,7 @@
       "played": "Partidas Jogadas",
       "wins": "Vitórias",
       "loses": "Derrotas",
+      "draws": "Empates",
       "earnMoney": "Estrelinhas Ganhas",
       "lostMoney": "Estrelinhas Perdidas",
       "profit": "Lucro Total",

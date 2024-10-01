@@ -507,12 +507,13 @@
       },
       "apostas": {
         "title": "{{emoji}} | Best Bettors of {{type}} {{page}}º",
-        "bicho": "Jogo do Bicho",
+        "bicho": "Bicho's Game",
         "blackjack": "Blackjack",
+        "rock_paper_scissors": "Rock, Paper, Scissors",
         "coinflip": "Coniflip",
         "roulette": "Roulette",
         "description": {
-          "money": "Sorted by **Estrelinhas Earned**",
+          "money": "Sorted by **Stars Earned**",
           "wins": "Sorted by **Most Wins**",
           "text": "Stars Won: **{{earnMoney}}** :star:\nStars Lost: **{{lostMoney}}** :star:\nGames Won: **{{wonGames}}** `({{winPercentage}}%)`\nLost Games: **{{lostGames}}** `({{lostPercentage}}%)`"
         }
@@ -556,6 +557,11 @@
       "notify-footer": "With notify purchases active, every time a user buys a design from you, Menhera will try to send a message in your DM showing this",
       "description": "**Type:** $t(common:theme_types.{{type}})\n**Royalty:**: {{royalty}}%\n**Profit:** {{profit}} :star:\n**Sold:** {{sold}}\nRegistered at {{registered}}"
     },
+    "rock_paper_scissors": {
+      "embed-title": "{{user}}'s Rock, Paper, Scissors stats",
+      "no-data": "This uer have never played a Rock Paper Scissors game!",
+      "used": "Selected **{{used}}** times"
+    },
     "fazendeiro": {
       "title": "{{user}}'s Farm Statistics",
       "field-data": "**Harvest:** {{harvest}}\n**Rotted:** {{rotted}}",
@@ -568,6 +574,7 @@
       "played": "Matches Played",
       "wins": "Wins",
       "loses": "Losses",
+      "draws": "Draws",
       "earnMoney": "Earned Money",
       "lostMoney": "Lost Money",
       "profit": "Total Profit",
