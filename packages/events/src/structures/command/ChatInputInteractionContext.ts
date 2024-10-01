@@ -47,8 +47,8 @@ export default class {
     return this.author;
   }
 
-  get originalInteractionId(): bigint {
-    return this.interaction.id ?? 0n;
+  get originalInteractionId(): string {
+    return `${this.interaction.id}`;
   }
 
   get channelId(): bigint {

@@ -3,11 +3,16 @@ import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from '
 import { TFunction } from 'i18next';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { ApiGamblingGameCompatible, ApiGamblingGameStats } from '../../types/api';
+import {
+  ApiGamblingGameCompatible,
+  ApiGamblingGameStats,
+  ApiRockPaperScissorsStats,
+} from '../../types/api';
 import {
   getFazendinhaStatistics,
   getGamblingGameStats,
   getPokerStats,
+  getRockPaperScissorsStatistics,
   getUserHuntStats,
 } from '../../utils/apiRequests/statistics';
 import { COLORS, EMOJIS } from '../../structures/constants';
@@ -193,12 +198,13 @@ const executeDesignerStats = async (
 };
 
 const makeGamblingStatisticsEmbed = (
-  data: ApiGamblingGameStats,
+  data: ApiGamblingGameStats | ApiRockPaperScissorsStats,
   translate: TFunction,
   type: string,
   userTag: string,
 ): Embed => {
   const totalMoney = data.winMoney - data.lostMoney;
+  const isRps = 'drawGames' in data;
 
   const embed = createEmbed({
     title: translate(`commands:status.${type as 'coinflip'}.embed-title`, { user: userTag }),
@@ -206,8 +212,10 @@ const makeGamblingStatisticsEmbed = (
     footer: { text: translate('commands:status.coinflip.embed-footer') },
     fields: [
       {
-        name: `🎰 | ${translate('commands:status.coinflip.played')}`,
-        value: `**${data.playedGames}**`,
+        name: `🎰 | ${translate(`commands:status.coinflip.${isRps ? 'draws' : 'played'}`)}`,
+        value: isRps
+          ? `**${data.drawGames}** | (${data.drawPorcentage}) **%**`
+          : `**${data.playedGames}**`,
         inline: true,
       },
       {
@@ -274,6 +282,44 @@ const executeGamblingGameStats = async (
 
   ctx.makeMessage({ embeds: [embed] });
   finishCommand();
+};
+
+const executeRockPaperScissorsGameStats = async (ctx: ChatInputInteractionContext) => {
+  const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
+
+  const data = await getRockPaperScissorsStatistics(user.id);
+
+  if (!data)
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', `commands:status.rock_paper_scissors.no-data`),
+    });
+
+  const embed = makeGamblingStatisticsEmbed(
+    data,
+    ctx.i18n,
+    'rock_paper_scissors',
+    getDisplayName(user),
+  );
+
+  embed.fields?.push(
+    {
+      name: ctx.prettyResponse('rock', 'commands:pedrapapeltesoura.rock'),
+      value: ctx.locale('commands:status.rock_paper_scissors.used', { used: data.rock }),
+      inline: true,
+    },
+    {
+      name: ctx.prettyResponse('paper', 'commands:pedrapapeltesoura.paper'),
+      value: ctx.locale('commands:status.rock_paper_scissors.used', { used: data.paper }),
+      inline: true,
+    },
+    {
+      name: ctx.prettyResponse('scissors', 'commands:pedrapapeltesoura.scissors'),
+      value: ctx.locale('commands:status.rock_paper_scissors.used', { used: data.scissors }),
+      inline: true,
+    },
+  );
+
+  ctx.makeMessage({ embeds: [embed] });
 };
 
 const executePokerStats = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
@@ -364,6 +410,24 @@ const StatsCommand = createCommand({
       type: ApplicationCommandOptionTypes.SubCommand,
       description: '「🦌」・Veja as estatísticas do jogo do bicho de alguém',
       descriptionLocalizations: { 'en-US': "「🦌」・View someone's Animal Game statistics" },
+      options: [
+        {
+          name: 'user',
+          description: 'Usuário para ver as estatísticas',
+          descriptionLocalizations: { 'en-US': 'User to see statistics' },
+          type: ApplicationCommandOptionTypes.User,
+          required: false,
+        },
+      ],
+    },
+    {
+      name: 'pedra_papel_tesoura',
+      nameLocalizations: { 'en-US': 'rock_paper_scissors' },
+      type: ApplicationCommandOptionTypes.SubCommand,
+      description: '「✂️」・Veja as estatísticas de pedra, papel e tesoura de alguém',
+      descriptionLocalizations: {
+        'en-US': "「🎡」・View someone's rock, paper, scissors statistics",
+      },
       options: [
         {
           name: 'user',
@@ -478,6 +542,8 @@ const StatsCommand = createCommand({
         return executeDesignerStats(ctx, finishCommand);
       case 'fazendeiro':
         return executeFazendeiroCommand(ctx, finishCommand);
+      case 'pedra_papel_tesoura':
+        return executeRockPaperScissorsGameStats(ctx);
       case 'caçar':
         return executeHuntStats(ctx, finishCommand);
       case 'roleta':

@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.20.0] - 2024-10-01
+
+### Added
+
+- Novo comando: **Pedra, Papel e Tesoura**. Jogue contra seus amigos, e se quiser aposte estrelinhas! - Sugerido por @maycon.orp
+- Novo comando: **Estatísticas de Pedra Papel e Tesoura**. Veja as estatísticas de jogos de pedra, papel e tesoura de usuários com `/estatísticas pedra_papel_tesoura`.
+
+### Changed
+
+- O comando `/Transações` agora permite filtrar por jogos de pedra papel e tesoura. Também, não é mais possível filtrar por Transações de "o mestre mandou".
+
 ## [5.19.0] - 2024-09-29
 
 ### Added

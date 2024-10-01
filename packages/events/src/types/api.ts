@@ -36,6 +36,20 @@ export interface ApiGamblingGameStats {
   error?: boolean;
 }
 
+export interface ApiRockPaperScissorsStats {
+  drawGames: number;
+  lostGames: number;
+  winGames: number;
+  winMoney: number;
+  lostMoney: number;
+  winPorcentage: string;
+  lostPorcentage: string;
+  drawPorcentage: string;
+  rock: number;
+  paper: number;
+  scissors: number;
+}
+
 export type ApiPokerUserStats = ApiGamblingGameStats & Record<Lowercase<PokerWinReasons>, number>;
 
 export interface ApiUserProfileStats {
@@ -45,7 +59,12 @@ export interface ApiUserProfileStats {
 
 export type MayReturnError<T> = T | { error: true };
 
-export type ApiGamblingGameCompatible = 'coinflip' | 'blackjack' | 'roulette' | 'bicho';
+export type ApiGamblingGameCompatible =
+  | 'coinflip'
+  | 'blackjack'
+  | 'roulette'
+  | 'bicho'
+  | 'rock_paper_scissors';
 
 export type TopHunters<Hunt extends ApiHuntingTypes> = {
   user_id: string;
@@ -85,6 +104,7 @@ export enum ApiTransactionReason {
   UPGRADE_FARM = 'upgrade_farm',
   DAILY_FARM = 'daily_farm',
   BUY_FAIR = 'buy_fair',
+  ROCK_PAPER_SCISSORS_COMMAND = 'rps_command',
 }
 
 type TransactionType = DatabaseHuntingTypes | 'estrelinhas';

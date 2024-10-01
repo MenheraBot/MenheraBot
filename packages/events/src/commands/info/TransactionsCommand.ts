@@ -30,7 +30,9 @@ import { ApiTransactionReason, TransactionRegister } from '../../types/api';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { InteractionContext } from '../../types/menhera';
 
-const TRANSACTION_REASONS = Object.freeze(Object.values(ApiTransactionReason));
+const TRANSACTION_REASONS = Object.freeze(
+  Object.values(ApiTransactionReason).filter((f) => f !== ApiTransactionReason.SIMON_SAYS),
+) as ApiTransactionReason[];
 
 const getDefault = <T>(p: T[], c: SelectOption): T[] => {
   if (!c.default) return p;

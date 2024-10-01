@@ -6,6 +6,7 @@ import {
   ApiGamblingGameStats,
   ApiHuntStats,
   ApiPokerUserStats,
+  ApiRockPaperScissorsStats,
   ApiTransactionReason,
   ApiUserProfileStats,
   BanInfo,
@@ -281,6 +282,26 @@ const getTopFarmers = async (
   return null;
 };
 
+const postRockPaperScissorsGame = async (
+  users: { id: string; selected: string; won: boolean }[],
+  draw: boolean,
+  bet: number,
+): Promise<void> => {
+  await dataRequest.post('/statistics/rockpaperscissors', { users, draw, bet }).catch(debugError);
+};
+
+const getRockPaperScissorsStatistics = async (
+  userId: BigString,
+): Promise<null | ApiRockPaperScissorsStats> => {
+  const result = await dataRequest
+    .get(`/statistics/rockpaperscissors?userId=${userId}`)
+    .catch(debugError);
+
+  if (!result) return null;
+
+  return result.data;
+};
+
 export {
   postHuntExecution,
   postBichoResults,
@@ -288,6 +309,8 @@ export {
   getTopFarmers,
   postCoinflipMatch,
   getPokerStats,
+  getRockPaperScissorsStatistics,
+  postRockPaperScissorsGame,
   getUserTransactions,
   getFazendinhaStatistics,
   getGamblingGameStats,
