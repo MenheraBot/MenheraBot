@@ -1,6 +1,7 @@
 import { BigString } from 'discordeno/types';
 import { MainRedisClient } from '../databases';
 import commandRepository from './commandRepository';
+import starsRepository from './starsRepository';
 
 export type RockPaperScissorsSelection = 'ROCK' | 'PAPER' | 'SCISSORS';
 
@@ -34,4 +35,11 @@ const deleteMatch = async (matchId: BigString): Promise<void> => {
   await MainRedisClient.del(key);
 };
 
-export default { setupGame, registerSelection, getMatchData, deleteMatch };
+const applyBets = async (winnerId: BigString, loserId: BigString, value: number): Promise<void> => {
+  await Promise.all([
+    starsRepository.removeStars(loserId, value),
+    starsRepository.addStars(winnerId, value),
+  ]);
+};
+
+export default { setupGame, registerSelection, getMatchData, deleteMatch, applyBets };

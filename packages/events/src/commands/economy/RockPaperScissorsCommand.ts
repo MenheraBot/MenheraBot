@@ -12,18 +12,19 @@ import rockPaperScissorsRepository, {
   RockPaperScissorsGame,
   RockPaperScissorsSelection,
 } from '../../database/repositories/rockPaperScissorsRepository';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
+import { postRockPaperScissorsGame } from '../../utils/apiRequests/statistics';
 
 const rockPaperScissors = (
   game: RockPaperScissorsGame,
-):
-  | {
-      winner: [string, RockPaperScissorsSelection];
-      loser: [string, RockPaperScissorsSelection];
-    }
-  | false => {
+): {
+  winner: [string, RockPaperScissorsSelection];
+  loser: [string, RockPaperScissorsSelection];
+  draw: boolean;
+} => {
   const [firstUser, secondUser] = Object.entries(game).filter(([key]) => key !== 'betValue');
 
-  if (firstUser[1] === secondUser[1]) return false;
+  if (firstUser[1] === secondUser[1]) return { winner: firstUser, loser: secondUser, draw: true };
 
   const winningCombinations: { [key in RockPaperScissorsSelection]: RockPaperScissorsSelection } = {
     ROCK: 'SCISSORS',
@@ -32,16 +33,17 @@ const rockPaperScissors = (
   };
 
   if (winningCombinations[firstUser[1]] === secondUser[1])
-    return { winner: firstUser, loser: secondUser };
+    return { winner: firstUser, loser: secondUser, draw: false };
 
-  return { winner: secondUser, loser: firstUser };
+  return { winner: secondUser, loser: firstUser, draw: false };
 };
 
 const handleInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [action, betValue, selection] = ctx.sentData as [
+  const [action, betValue, selection, color] = ctx.sentData as [
     'CONFIRM' | 'SELECT',
     string,
     RockPaperScissorsSelection,
+    string,
   ];
 
   if (action === 'CONFIRM') {
@@ -52,7 +54,15 @@ const handleInteractions = async (ctx: ComponentInteractionContext): Promise<voi
         createActionRow([
           createButton({
             label: ctx.locale('commands:pedrapapeltesoura.rock'),
-            customId: createCustomId(0, 'N', ctx.originalInteractionId, 'SELECT', betValue, 'ROCK'),
+            customId: createCustomId(
+              0,
+              'N',
+              ctx.originalInteractionId,
+              'SELECT',
+              betValue,
+              'ROCK',
+              color,
+            ),
             style: ButtonStyles.Primary,
             emoji: { name: '🪨' },
           }),
@@ -65,6 +75,7 @@ const handleInteractions = async (ctx: ComponentInteractionContext): Promise<voi
               'SELECT',
               betValue,
               'PAPER',
+              color,
             ),
             style: ButtonStyles.Primary,
             emoji: { name: '📄' },
@@ -78,6 +89,7 @@ const handleInteractions = async (ctx: ComponentInteractionContext): Promise<voi
               'SELECT',
               betValue,
               'SCISSORS',
+              color,
             ),
             style: ButtonStyles.Primary,
             emoji: { name: '✂️' },
@@ -98,6 +110,7 @@ const handleInteractions = async (ctx: ComponentInteractionContext): Promise<voi
 
     const authorMessage = new GenericInteractionContext(
       originalInteraction.originalInteractionToken,
+      originalInteraction.originalInteractionId,
       originalInteraction.locale,
     );
 
@@ -123,6 +136,8 @@ const handleInteractions = async (ctx: ComponentInteractionContext): Promise<voi
 
   if (Object.keys(gameData).length < 3) return;
 
+  await rockPaperScissorsRepository.deleteMatch(ctx.originalInteractionId);
+
   const originalInteraction = await commandRepository.getOriginalInteraction(
     ctx.originalInteractionId,
   );
@@ -133,29 +148,75 @@ const handleInteractions = async (ctx: ComponentInteractionContext): Promise<voi
       content: ctx.prettyResponse('error', 'commands:pedrapapeltesoura.interaction-lost'),
     });
 
-  const gameFinished = rockPaperScissors(gameData);
+  const gameResults = rockPaperScissors(gameData);
+  const { winner, loser, draw } = gameResults;
+  const parsedBet = Number(betValue);
+
+  const winnerSelected = winner[1].toLowerCase() as Lowercase<RockPaperScissorsSelection>;
+  const loserSelected = loser[1].toLowerCase() as Lowercase<RockPaperScissorsSelection>;
 
   const originalInteractionContext = new GenericInteractionContext(
     originalInteraction.originalInteractionToken,
+    originalInteraction.originalInteractionId,
     originalInteraction.locale,
   );
 
-  if (!gameFinished) {
-    originalInteractionContext.makeMessage({ content: 'Foi um empate' });
+  if (parsedBet > 0 && !draw) {
+    const [firstUserData, secondUserData] = await Promise.all([
+      userRepository.ensureFindUser(winner[0]),
+      userRepository.ensureFindUser(loser[0]),
+    ]);
 
-    await rockPaperScissorsRepository.deleteMatch(ctx.originalInteractionId);
-    return;
+    if (firstUserData.estrelinhas < parsedBet || secondUserData.estrelinhas < parsedBet)
+      return originalInteractionContext.makeMessage({
+        components: [],
+        content: ctx.prettyResponse('error', 'commands:pedrapapeltesoura.someone-poor'),
+      });
+
+    await rockPaperScissorsRepository.applyBets(winner[0], loser[0], parsedBet);
   }
 
-  originalInteractionContext.makeMessage({
-    content: `o vencedor foi ${mentionUser(gameFinished.winner[0])} que escolheu ${
-      gameFinished.winner[1]
-    }\n\nValeu ao perdedor ${mentionUser(gameFinished.loser[0])} que escolheu ${
-      gameFinished.loser[1]
-    }`,
+  const embed = createEmbed({
+    color: hexStringToNumber(color),
+    title: ctx.locale('commands:pedrapapeltesoura.results-title'),
+    description: ctx.locale(`commands:pedrapapeltesoura.${draw ? 'result-draw' : 'results'}`, {
+      winner: mentionUser(winner[0]),
+      loser: mentionUser(loser[0]),
+    }),
+    fields: [
+      {
+        name: ' ',
+        value: ctx.prettyResponse(winnerSelected, 'commands:pedrapapeltesoura.user-choice', {
+          user: mentionUser(winner[0]),
+          choice: ctx.locale(`commands:pedrapapeltesoura.${winnerSelected}`),
+        }),
+        inline: true,
+      },
+      {
+        name: ' ',
+        value: ctx.prettyResponse(loserSelected, 'commands:pedrapapeltesoura.user-choice', {
+          user: mentionUser(loser[0]),
+          choice: ctx.locale(`commands:pedrapapeltesoura.${loserSelected}`),
+        }),
+        inline: true,
+      },
+    ],
+    footer:
+      parsedBet > 0
+        ? { text: ctx.locale('commands:pedrapapeltesoura.results-footer', { betValue }) }
+        : undefined,
   });
 
-  await rockPaperScissorsRepository.deleteMatch(ctx.originalInteractionId);
+  await originalInteractionContext.makeMessage({ content: '', components: [], embeds: [embed] });
+
+  await postRockPaperScissorsGame(
+    [
+      { id: winner[0], selected: winnerSelected, won: !draw },
+      { id: loser[0], selected: loserSelected, won: false },
+    ],
+    draw,
+    parsedBet,
+  );
 };
 
 const RockPaperScissorsCommand = createCommand({
@@ -220,6 +281,15 @@ const RockPaperScissorsCommand = createCommand({
         flags: MessageFlags.EPHEMERAL,
       });
 
+    if (user.toggles.bot)
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:pedrapapeltesoura.bot', {
+          user: mentionUser(ctx.user.id),
+          amount: input,
+        }),
+        flags: MessageFlags.EPHEMERAL,
+      });
+
     if (input && input > ctx.authorData.estrelinhas)
       return ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:pedrapapeltesoura.poor', {
@@ -247,7 +317,15 @@ const RockPaperScissorsCommand = createCommand({
       });
 
     const confirmButton = createButton({
-      customId: createCustomId(0, user.id, ctx.originalInteractionId, 'CONFIRM', input ?? 0),
+      customId: createCustomId(
+        0,
+        user.id,
+        ctx.originalInteractionId,
+        'CONFIRM',
+        input ?? 0,
+        'N',
+        ctx.authorData.selectedColor,
+      ),
       label: ctx.locale('commands:pedrapapeltesoura.confirm-button'),
       style: ButtonStyles.Success,
     });

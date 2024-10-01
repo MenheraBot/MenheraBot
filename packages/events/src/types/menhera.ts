@@ -20,8 +20,9 @@ export interface ProbabilityType {
 }
 
 export type InteractionContext = ChatInputInteractionContext | ComponentInteractionContext;
+
 export type GenericContext =
-  | ChatInputInteractionCommand
+  | ChatInputInteractionContext
   | ComponentInteractionContext
   | GenericInteractionContext;
 

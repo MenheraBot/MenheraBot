@@ -12,7 +12,11 @@ import {
 export default class {
   private i18n: TFunction;
 
-  constructor(private interactionToken: string, public guildLocale: AvailableLanguages) {
+  constructor(
+    private interactionToken: string,
+    public originalInteractionId: string,
+    public guildLocale: AvailableLanguages,
+  ) {
     this.i18n = i18next.getFixedT(guildLocale);
   }
 

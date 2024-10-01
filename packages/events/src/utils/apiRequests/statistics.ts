@@ -281,6 +281,14 @@ const getTopFarmers = async (
   return null;
 };
 
+const postRockPaperScissorsGame = async (
+  users: { id: string; selected: string; won: boolean }[],
+  draw: boolean,
+  bet: number,
+): Promise<void> => {
+  await dataRequest.post('/statistics/rockpaperscissors', { users, draw, bet }).catch(debugError);
+};
+
 export {
   postHuntExecution,
   postBichoResults,
@@ -288,6 +296,7 @@ export {
   getTopFarmers,
   postCoinflipMatch,
   getPokerStats,
+  postRockPaperScissorsGame,
   getUserTransactions,
   getFazendinhaStatistics,
   getGamblingGameStats,
