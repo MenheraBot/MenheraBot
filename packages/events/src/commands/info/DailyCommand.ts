@@ -88,7 +88,10 @@ const getMissionButtons = (
           ? ButtonStyles.Success
           : ButtonStyles.Secondary,
       customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, action, index),
-      disabled: action !== 'CHANGE' && getDailyStatus(daily) !== 'reedem',
+      disabled:
+        action !== 'CHANGE'
+          ? getDailyStatus(daily) !== 'reedem'
+          : getDailyStatus(daily) !== 'unfinished',
     }),
   ) as [ButtonComponent];
 

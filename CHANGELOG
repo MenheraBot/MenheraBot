@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.20.1] - 2024-10-06
+
+### Fixed
+
+- Não é mais possível trocar missões diárias já finalizadas. - Reportado por @mareys e @0_tal_do_mabs
+
+
 ## [5.20.0] - 2024-10-01
 
 ### Added
