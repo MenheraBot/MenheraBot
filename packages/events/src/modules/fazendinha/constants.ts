@@ -166,9 +166,9 @@ export const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
   [AvailablePlants.HotPepper]: {
     minutesToHarvest: 100,
     minutesToRot: 50,
-    emoji: '🌶',
-    sellValue: 1071,
-    buyValue: 264,
+    emoji: '🏵',
+    sellValue: 1102,
+    buyValue: 202,
     bestSeason: 'spring',
     worstSeason: 'winter',
   },

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Evento de Dia dos Mortos** - Celebre o feriado mexicano até o dia 02 de novembro. A famosa flor *Cempasúchil* está disponível para ser plantada no `/fazendinha`! Compre já na loja `/loja comprar sementes`.
+
 ## [5.20.1] - 2024-10-06
 
 ### Fixed
