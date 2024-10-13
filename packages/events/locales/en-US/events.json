@@ -15,11 +15,12 @@
     "currency": "**Cempasúchil:** {{currency}}",
     "embed-description": "{{currency}}\n## Event Shop\n",
     "select-one": "Choose what you want to buy",
+    "poor": "You don't have enough Cempasúchil {{emoji}} to buy this!",
     "prizes":{
-      "event-title": {
-        "name": "Title _Day of the Dead 2024_",
-        "description": "**Cost:**: {{price}} {{emoji}}"
-      }
+      "description": "**Cost:** {{price}} {{emoji}}",
+      "event-title": "Title '_Guardian of the Underworld_'",
+      "event-badge":"Badge _Day of the Dead 2024_",
+      "stars": "⭐ 1000 Stars"
     }
   }
 }

@@ -15,10 +15,12 @@
     "currency": "**Cempasúchil:** {{currency}}",
     "embed-description": "{{currency}}\n## Loja do Evento\n",
     "select-one": "Escolha o que você quer comprar",
+    "poor": "Você não tem Cempasúchil {{emoji}} suficiente para comprar isso!",
     "prizes":{
-      "description": "**Custo:**: {{price}} {{emoji}}",
-      "event-title": "Título _Dia dos Mortos 2024_",
-      "event-badge":"Badge _Dia dos Mortos 2024_"
+      "description": "**Custo:** {{price}} {{emoji}}",
+      "event-title": "Título _'Guardião do Submundo'_",
+      "event-badge":"Badge _Dia dos Mortos 2024_",
+      "stars": "⭐ 1000 Estrelinhas"
     }
   }
 }
