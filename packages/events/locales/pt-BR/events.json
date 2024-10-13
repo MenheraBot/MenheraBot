@@ -9,5 +9,9 @@
   },
   "christmas": "Feliz Natal! Você ganhou um 🎁 do Papai Noel, cheque seu perfil!",
   "banned_long_ago": "muito tempo atrás...",
-  "banned_no_reason": "Não sei o motivo..."
+  "banned_no_reason": "Não sei o motivo...",
+  "dia-dos-mortos": {
+    "embed-title": "Evento de Dia dos Mortos",
+    "currency": "**Cempasúchil:** {{currency}}"
+  }
 }

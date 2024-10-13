@@ -1142,7 +1142,7 @@
       "silo": "Plants",
       "harvest": "Harvest",
       "discart": "Discart",
-      "season-boost-false": "⚠️ The current season is bad for this plant",
+      "season-boost-false": "⚠️ The current season is unfavorable for this plant",
       "season-boost-true": "✨ The current season is perfect for this plant",
       "plant": "Plant",
       "field-action": "{{action}} ({{index}})",

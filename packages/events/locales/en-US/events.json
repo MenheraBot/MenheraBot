@@ -9,5 +9,8 @@
   },
   "christmas": "Merry Christmas! You got a 🎁 from Santa Claus, check your profile!",
   "banned_long_ago": "A long time ago",
-  "banned_no_reason": "Not sure why"
+  "banned_no_reason": "Not sure why",
+  "dia-dos-mortos": {
+    "embed-title": "Day of the Dead Event"
+  }
 }
