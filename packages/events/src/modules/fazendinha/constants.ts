@@ -14,6 +14,8 @@ export const MAX_DELIVERY_WEIGHT = 9;
 export const MIN_DELIVERY_WEIGHT = 5;
 export const FINISH_ALL_DELIVERIES_BONUS = 30_000;
 
+export const CempasuchilPlant = AvailablePlants.HotPepper;
+
 export const PLANTATION_WEIGHT_MODIFIERS = {
   BASE_MIN_VALUE: 0.7,
   BASE_MAX_VALUE: 1.3,
@@ -168,7 +170,7 @@ export const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
     minutesToRot: 50,
     emoji: '🏵',
     sellValue: 1102,
-    buyValue: 202,
+    buyValue: 188,
     bestSeason: 'spring',
     worstSeason: 'winter',
   },
