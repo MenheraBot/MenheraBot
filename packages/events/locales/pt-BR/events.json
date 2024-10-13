@@ -14,6 +14,7 @@
     "embed-title": "Evento de Dia dos Mortos",
     "currency": "**Cempasúchil:** {{currency}}",
     "embed-description": "{{currency}}\n## Loja do Evento\n",
+    "select-one": "Escolha o que você quer comprar",
     "prizes":{
       "description": "**Custo:**: {{price}} {{emoji}}",
       "event-title": "Título _Dia dos Mortos 2024_",
