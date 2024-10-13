@@ -3,6 +3,20 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { createCommand } from '../../structures/command/createCommand';
 import eventRepository from '../../database/repositories/eventRepository';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
+import { CempasuchilPlant, Plants } from '../../modules/fazendinha/constants';
+
+const buyableItems = [
+  {
+    id: 'event-title' as const,
+    oneTime: true,
+    price: 10,
+  },
+  {
+    id: 'event-badge' as const,
+    oneTime: true,
+    price: 20,
+  },
+];
 
 const DiaDeMuertosCommand = createCommand({
   path: '',
@@ -43,8 +57,18 @@ const DiaDeMuertosCommand = createCommand({
 
     const embed = createEmbed({
       title: ctx.prettyResponse('cempasuchil', 'events:dia-dos-mortos.embed-title'),
-      description: ctx.locale('events:dia-dos-mortos.currency', { currency: userEvents.currency }),
+      description: ctx.locale('events:dia-dos-mortos.embed-description', {
+        currency: ctx.locale('events:dia-dos-mortos.currency', { currency: userEvents.currency }),
+      }),
       color: hexStringToNumber(ctx.authorData.selectedColor),
+      fields: buyableItems.map((item) => ({
+        name: ctx.locale(`events:dia-dos-mortos.prizes.${item.id}`),
+        value: ctx.locale(`events:dia-dos-mortos.prizes.description`, {
+          price: item.price,
+          emoji: Plants[CempasuchilPlant].emoji,
+        }),
+        inline: true,
+      })),
     });
 
     await ctx.makeMessage({

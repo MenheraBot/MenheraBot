@@ -11,6 +11,14 @@
   "banned_long_ago": "A long time ago",
   "banned_no_reason": "Not sure why",
   "dia-dos-mortos": {
-    "embed-title": "Day of the Dead Event"
+    "embed-title": "Day of the Dead Event",
+    "currency": "**Cempasúchil:** {{currency}}",
+    "embed-description": "{{currency}}\n## Event Shop\n",
+    "prizes":{
+      "event-title": {
+        "name": "Title _Day of the Dead 2024_",
+        "description": "**Cost:**: {{price}} {{emoji}}"
+      }
+    }
   }
 }

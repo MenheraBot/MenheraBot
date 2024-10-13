@@ -185,6 +185,13 @@ const profileBadges = {
     rarityLevel: BadgeRarity.SpecialEvents,
     description: 'Badge dada a todos usuários que votaram em mim durante meu aniversário de 4 anos',
   },
+  28: {
+    name: 'Dia dos Mortos 2024',
+    availableStartAt: '13/10/2024',
+    availableStopAt: '02/11/2024',
+    rarityLevel: BadgeRarity.SpecialEvents,
+    description: 'Badge disponível para compra na loja do evento de Dia dos Mortos de 2024',
+  },
   // -- Badges de Aniversário --
   200: {
     name: 'Um ano com a Menhera',

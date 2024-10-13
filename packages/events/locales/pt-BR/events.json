@@ -12,6 +12,12 @@
   "banned_no_reason": "Não sei o motivo...",
   "dia-dos-mortos": {
     "embed-title": "Evento de Dia dos Mortos",
-    "currency": "**Cempasúchil:** {{currency}}"
+    "currency": "**Cempasúchil:** {{currency}}",
+    "embed-description": "{{currency}}\n## Loja do Evento\n",
+    "prizes":{
+      "description": "**Custo:**: {{price}} {{emoji}}",
+      "event-title": "Título _Dia dos Mortos 2024_",
+      "event-badge":"Badge _Dia dos Mortos 2024_"
+    }
   }
 }
