@@ -139,7 +139,7 @@ const getAvailableSeeds = (
                   }`,
                 )
               : ''
-          }` || undefined,
+          }`.slice(0, 99) || undefined,
         emoji: { name: plant.emoji },
         value: `${seed.plant}`,
         default: selectedSeed === seed.plant,
