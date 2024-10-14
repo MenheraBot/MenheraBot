@@ -14,6 +14,7 @@ import giveRepository from '../../database/repositories/giveRepository';
 import starsRepository from '../../database/repositories/starsRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../types/interaction';
+import userRepository from '../../database/repositories/userRepository';
 
 const buyableItems = [
   {
@@ -49,9 +50,28 @@ const handleInteraction = async (ctx: ComponentInteractionContext<SelectMenuInte
       content: ctx.prettyResponse('error', 'events:dia-dos-mortos.poor', {
         emoji: Plants[CempasuchilPlant].emoji,
       }),
+      embeds: [],
+      components: [],
     });
 
-  // TODO(ySnoopyDogy): DO IT!
+  const user = await userRepository.ensureFindUser(ctx.user.id);
+
+  if (selectedItem.canBuy && !selectedItem.canBuy(user))
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'events:dia-dos-mortos.already-bought'),
+      embeds: [],
+      components: [],
+    });
+
+  await selectedItem.executeBuy(ctx.user.id);
+
+  ctx.makeMessage({
+    content: ctx.prettyResponse('success', 'events:dia-dos-mortos.success', {
+      item: ctx.locale(`events:dia-dos-mortos.prizes.${selectedItemId as 'description'}`),
+    }),
+    components: [],
+    embeds: [],
+  });
 };
 
 const DiaDeMuertosCommand = createCommand({

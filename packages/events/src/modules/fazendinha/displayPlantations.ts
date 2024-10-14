@@ -12,7 +12,7 @@ import {
 import { chunkArray, millisToSeconds } from '../../utils/miscUtils';
 import { InteractionContext } from '../../types/menhera';
 import { getPlantationState } from './plantationState';
-import { Plants } from './constants';
+import { CempasuchilPlant, Plants } from './constants';
 import { getSeasonalInfo } from './seasonsManager';
 
 const PlantStateIcon: Record<PlantationState, string> = {
@@ -126,11 +126,19 @@ const getAvailableSeeds = (
           name: ctx.locale(`data:plants.${seed.plant}`),
           amount: seed.amount,
         }),
-        description: includeDescription
-          ? ctx.locale(
-              `commands:fazendinha.plantations.season-boost-${plant.bestSeason === currentSeason}`,
-            )
-          : undefined,
+        description: `${
+          seed.plant === CempasuchilPlant
+            ? ctx.locale('events:dia-dos-mortos.plant-boost-message')
+            : ''
+        }${
+          includeDescription
+            ? ctx.locale(
+                `commands:fazendinha.plantations.season-boost-${
+                  plant.bestSeason === currentSeason
+                }`,
+              )
+            : ''
+        }`,
         emoji: { name: plant.emoji },
         value: `${seed.plant}`,
         default: selectedSeed === seed.plant,

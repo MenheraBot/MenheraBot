@@ -12,10 +12,13 @@
   "banned_no_reason": "Not sure why",
   "dia-dos-mortos": {
     "embed-title": "Day of the Dead Event",
+    "success": "All done. You bought {{item}}!",
+    "plant-boost-message": "Day of the Dead: This plant is at its best. ",
     "currency": "**Cempasúchil:** {{currency}}",
     "embed-description": "{{currency}}\n## Event Shop\n",
     "select-one": "Choose what you want to buy",
     "poor": "You don't have enough Cempasúchil {{emoji}} to buy this!",
+    "already-bought": "You have already bought this item!",
     "prizes":{
       "description": "**Cost:** {{price}} {{emoji}}",
       "event-title": "Title '_Guardian of the Underworld_'",

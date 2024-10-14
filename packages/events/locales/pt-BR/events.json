@@ -11,11 +11,14 @@
   "banned_long_ago": "muito tempo atrás...",
   "banned_no_reason": "Não sei o motivo...",
   "dia-dos-mortos": {
+    "success": "Feitoria! Você comprou {{item}}!",
     "embed-title": "Evento de Dia dos Mortos",
     "currency": "**Cempasúchil:** {{currency}}",
+    "plant-boost-message": "Dia dos mortos: esta planta está em sua melhor época. ",
     "embed-description": "{{currency}}\n## Loja do Evento\n",
     "select-one": "Escolha o que você quer comprar",
     "poor": "Você não tem Cempasúchil {{emoji}} suficiente para comprar isso!",
+    "already-bought": "Você já comprou este item!",
     "prizes":{
       "description": "**Custo:** {{price}} {{emoji}}",
       "event-title": "Título _'Guardião do Submundo'_",

@@ -23,6 +23,7 @@ export const PLANTATION_WEIGHT_MODIFIERS = {
   WORST_SEASON_DEBUFF: 0.2,
   DIRT_QUALITY_MAX_BUFF: 0.3,
   DIRT_QUALITY_MIN_BUFF: 0.1,
+  EVENT_BUFF: 0.3,
 };
 
 export const UnloadFields: { [field: number]: UnlockFieldFile } = {
