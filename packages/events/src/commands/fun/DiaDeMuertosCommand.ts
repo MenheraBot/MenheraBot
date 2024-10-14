@@ -15,6 +15,7 @@ import starsRepository from '../../database/repositories/starsRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../types/interaction';
 import userRepository from '../../database/repositories/userRepository';
+import { negate } from '../../utils/miscUtils';
 
 const buyableItems = [
   {
@@ -64,6 +65,7 @@ const handleInteraction = async (ctx: ComponentInteractionContext<SelectMenuInte
     });
 
   await selectedItem.executeBuy(ctx.user.id);
+  await eventRepository.incrementUserCurrency(ctx.user.id, negate(selectedItem.price));
 
   ctx.makeMessage({
     content: ctx.prettyResponse('success', 'events:dia-dos-mortos.success', {
@@ -130,12 +132,16 @@ const DiaDeMuertosCommand = createCommand({
         buyableItems.map(async (item) => {
           if (eventUser.currency >= item.price && (!item.canBuy || item.canBuy(ctx.authorData)))
             selectMenu.options.push({
-              label: ctx.locale(`events:dia-dos-mortos.prizes.${item.id}`),
+              label: ctx.locale(`events:dia-dos-mortos.prizes.${item.id}`).replaceAll('_', ''),
               value: item.id,
             });
 
+          const alreadyBoughtText = item.canBuy && !item.canBuy(ctx.authorData) ? `~~` : '';
+
           return {
-            name: ctx.locale(`events:dia-dos-mortos.prizes.${item.id}`),
+            name: `${alreadyBoughtText}${ctx.locale(
+              `events:dia-dos-mortos.prizes.${item.id}`,
+            )}${alreadyBoughtText}`,
             value: ctx.locale(`events:dia-dos-mortos.prizes.description`, {
               price: item.price,
               emoji: Plants[CempasuchilPlant].emoji,

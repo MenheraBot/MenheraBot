@@ -161,7 +161,6 @@ const buySeeds = async (
         }),
         emoji: { name: Plants[CempasuchilPlant].emoji },
         value: `${CempasuchilPlant}`,
-        default: true,
       },
     ],
     minValues: 1,

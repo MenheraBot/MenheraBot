@@ -2,7 +2,7 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 import { inspect } from 'node:util';
 
-import { farmerModel, usersModel } from '../../database/collections';
+import { eventModel, farmerModel, usersModel } from '../../database/collections';
 import { MainRedisClient as redis } from '../../database/databases';
 import userRepository from '../../database/repositories/userRepository';
 import { bot } from '../../index';
@@ -14,7 +14,7 @@ import { createActionRow, createButton, createCustomId } from '../../utils/disco
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 
 const noop = (..._args: unknown[]) => undefined;
-noop(userRepository, enableTcp, enableUnixSocket, usersModel, redis, farmerModel);
+noop(userRepository, enableTcp, enableUnixSocket, usersModel, redis, farmerModel, eventModel);
 
 const executeEval = async (ctx: InteractionContext, toEval: string) => {
   try {
