@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import {
   DatabaseCommandSchema,
   DatabaseCreditsSchema,
+  DatabaseEventSchema,
   DatabaseFarmerSchema,
   DatabaseFeirinhaSchema,
   DatabaseGuildSchema,
@@ -152,6 +153,11 @@ const suggestionLimitSchema = new Schema({
   suggestion: { type: String, default: '' },
 });
 
+const eventSchema = new Schema({
+  userId: { type: String, unique: true, index: true },
+  currency: { type: Number, default: 0 },
+});
+
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
 export const guildsModel = model<DatabaseGuildSchema>('guild', guildSchema);
 export const usersModel = model<DatabaseUserSchema>('usersdb', userSchema);
@@ -169,3 +175,4 @@ export const suggestionLimitModel = model<DatabaseSuggestionLimitSchema>(
   'suggestlimit',
   suggestionLimitSchema,
 );
+export const eventModel = model<DatabaseEventSchema>('eventData', eventSchema);

@@ -43,6 +43,7 @@ export const EMOJIS = {
   scape: '🐥',
   lock: '🔒',
   list: '📜',
+  cempasuchil: '🏵',
   estrelinhas: '⭐',
   lhama: '🦙',
   // EMOJIS DE FLUFFETYS

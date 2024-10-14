@@ -3,7 +3,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { Plants } from '../fazendinha/constants';
+import { CempasuchilPlant, Plants } from '../fazendinha/constants';
 import {
   createActionRow,
   createCustomId,
@@ -21,6 +21,7 @@ import { ApiTransactionReason } from '../../types/api';
 import commandRepository from '../../database/repositories/commandRepository';
 import { getSiloLimits } from '../fazendinha/siloUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
+import { AvailablePlants } from '../fazendinha/types';
 
 const handleBuySeedsInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [option] = ctx.sentData;
@@ -153,36 +154,58 @@ const buySeeds = async (
       'SHOW_MODAL',
       ctx.authorData.selectedColor,
     ),
-    options: [],
+    options: [
+      {
+        label: ctx.locale(`commands:loja.buy_seeds.seed`, {
+          plant: ctx.locale(`data:plants.${CempasuchilPlant}`),
+        }),
+        emoji: { name: Plants[CempasuchilPlant].emoji },
+        value: `${CempasuchilPlant}`,
+      },
+    ],
     minValues: 1,
     placeholder: ctx.locale('commands:loja.buy_seeds.select'),
   });
 
+  const cempasuchilData = Plants[CempasuchilPlant];
+
   const embed = createEmbed({
     title: ctx.locale('commands:loja.buy_seeds.embed-title'),
     color: hexStringToNumber(ctx.authorData.selectedColor),
-    fields: Object.entries(Plants)
-      .filter((a) => a[0] !== '0')
-      .map(([plant, data]) => {
-        selectMenu.options.push({
-          label: ctx.locale(`commands:loja.buy_seeds.seed`, {
-            plant: ctx.locale(`data:plants.${plant as '1'}`),
-          }),
-          emoji: { name: Plants[plant as '1'].emoji },
-          value: `${plant}`,
-        });
+    fields: [
+      {
+        inline: true,
+        name: `${Plants[CempasuchilPlant].emoji} ${ctx.locale(`data:plants.${CempasuchilPlant}`)}`,
+        value: ctx.locale('commands:loja.buy_seeds.plant-stats', {
+          sellValue: cempasuchilData.sellValue,
+          buyValue: cempasuchilData.buyValue,
+          harvestTime: cempasuchilData.minutesToHarvest,
+          rotTime: cempasuchilData.minutesToRot,
+        }),
+      },
+      ...Object.entries(Plants)
+        .filter((a) => a[0] !== `${AvailablePlants.Mate}` && a[0] !== `${CempasuchilPlant}`)
+        .map(([plant, data]) => {
+          selectMenu.options.push({
+            label: ctx.locale(`commands:loja.buy_seeds.seed`, {
+              plant: ctx.locale(`data:plants.${plant as '1'}`),
+            }),
+            emoji: { name: Plants[plant as '1'].emoji },
+            value: plant,
+          });
 
-        return {
-          name: `${Plants[plant as '1'].emoji} ${ctx.locale(`data:plants.${plant as '1'}`)}`,
-          inline: true,
-          value: ctx.locale('commands:loja.buy_seeds.plant-stats', {
-            sellValue: data.sellValue,
-            buyValue: data.buyValue,
-            harvestTime: data.minutesToHarvest,
-            rotTime: data.minutesToRot,
-          }),
-        };
-      }),
+          return {
+            name: `${Plants[plant as '1'].emoji} ${ctx.locale(`data:plants.${plant as '1'}`)}`,
+            inline: true,
+            value: ctx.locale('commands:loja.buy_seeds.plant-stats', {
+              sellValue: data.sellValue,
+              buyValue: data.buyValue,
+              harvestTime: data.minutesToHarvest,
+              rotTime: data.minutesToRot,
+            }),
+          };
+        }),
+    ],
   });
 
   selectMenu.maxValues = selectMenu.options.length > 5 ? 5 : selectMenu.options.length;
