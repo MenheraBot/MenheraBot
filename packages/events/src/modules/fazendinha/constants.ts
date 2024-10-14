@@ -14,6 +14,8 @@ export const MAX_DELIVERY_WEIGHT = 9;
 export const MIN_DELIVERY_WEIGHT = 5;
 export const FINISH_ALL_DELIVERIES_BONUS = 30_000;
 
+export const CempasuchilPlant = AvailablePlants.HotPepper;
+
 export const PLANTATION_WEIGHT_MODIFIERS = {
   BASE_MIN_VALUE: 0.7,
   BASE_MAX_VALUE: 1.3,
@@ -21,6 +23,7 @@ export const PLANTATION_WEIGHT_MODIFIERS = {
   WORST_SEASON_DEBUFF: 0.2,
   DIRT_QUALITY_MAX_BUFF: 0.3,
   DIRT_QUALITY_MIN_BUFF: 0.1,
+  EVENT_BUFF: 0.3,
 };
 
 export const UnloadFields: { [field: number]: UnlockFieldFile } = {
@@ -166,9 +169,9 @@ export const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
   [AvailablePlants.HotPepper]: {
     minutesToHarvest: 100,
     minutesToRot: 50,
-    emoji: '🌶',
-    sellValue: 1071,
-    buyValue: 264,
+    emoji: '🏵',
+    sellValue: 1102,
+    buyValue: 188,
     bestSeason: 'spring',
     worstSeason: 'winter',
   },

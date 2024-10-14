@@ -174,3 +174,8 @@ export interface DatabaseSuggestionLimitSchema {
   limitedAt: number;
   suggestion: string;
 }
+
+export interface DatabaseEventSchema {
+  userId: string;
+  currency: number;
+}

@@ -47,7 +47,7 @@ export interface PlantedField {
   plantedSeason: Seasons;
   isPlanted: true;
   plantType: AvailablePlants;
-  weight: number;
+  weight?: number;
   upgrades: FieldUpgrade[];
 }
 
