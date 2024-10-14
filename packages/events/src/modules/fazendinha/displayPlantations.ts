@@ -126,19 +126,20 @@ const getAvailableSeeds = (
           name: ctx.locale(`data:plants.${seed.plant}`),
           amount: seed.amount,
         }),
-        description: `${
-          seed.plant === CempasuchilPlant
-            ? ctx.locale('events:dia-dos-mortos.plant-boost-message')
-            : ''
-        }${
-          includeDescription
-            ? ctx.locale(
-                `commands:fazendinha.plantations.season-boost-${
-                  plant.bestSeason === currentSeason
-                }`,
-              )
-            : ''
-        }`,
+        description:
+          `${
+            seed.plant === CempasuchilPlant
+              ? ctx.locale('events:dia-dos-mortos.plant-boost-message')
+              : ''
+          }${
+            includeDescription
+              ? ctx.locale(
+                  `commands:fazendinha.plantations.season-boost-${
+                    plant.bestSeason === currentSeason
+                  }`,
+                )
+              : ''
+          }` || undefined,
         emoji: { name: plant.emoji },
         value: `${seed.plant}`,
         default: selectedSeed === seed.plant,
