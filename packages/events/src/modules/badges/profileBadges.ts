@@ -187,7 +187,7 @@ const profileBadges = {
   },
   28: {
     name: 'Dia dos Mortos 2024',
-    availableStartAt: '13/10/2024',
+    availableStartAt: '14/10/2024',
     availableStopAt: '02/11/2024',
     rarityLevel: BadgeRarity.SpecialEvents,
     description: 'Badge disponível para compra na loja do evento de Dia dos Mortos de 2024',
