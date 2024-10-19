@@ -71,27 +71,25 @@ const EvalCommand = createCommand({
     finishCommand();
     const toEval = ctx.getOption<string>('script', false, true);
 
-    if (toEval.includes('.flush') && process.env.NODE_ENV === 'production')
+    if (process.env.NODE_ENV !== 'production') return executeEval(ctx, toEval);
+
+    if (toEval.includes('.flush'))
       return ctx.makeMessage({ content: 'não VIIAAAAJAAAA querer limpar o redis de prod mano' });
 
-    if (process.env.NODE_ENV === 'production')
-      await redis.setex(`eval:${ctx.originalInteractionId}`, 900, toEval);
+    await redis.setex(`eval:${ctx.originalInteractionId}`, 900, toEval);
 
-    if (process.env.NODE_ENV === 'production')
-      return ctx.makeMessage({
-        content: `\`\`\`js\n${toEval}\n\`\`\``,
-        components: [
-          createActionRow([
-            createButton({
-              label: 'executar em prod',
-              style: ButtonStyles.Danger,
-              customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId),
-            }),
-          ]),
-        ],
-      });
-
-    executeEval(ctx, toEval);
+    return ctx.makeMessage({
+      content: `\`\`\`js\n${toEval}\n\`\`\``,
+      components: [
+        createActionRow([
+          createButton({
+            label: 'executar em prod',
+            style: ButtonStyles.Danger,
+            customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId),
+          }),
+        ]),
+      ],
+    });
   },
 });
 
