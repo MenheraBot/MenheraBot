@@ -16,6 +16,7 @@ import { executeTopPagination } from '../../modules/top';
 import { executeUsersByUsedCommandTop } from '../../modules/top/usersByUsedCommand';
 import { bot } from '../..';
 import { AvailablePlants } from '../../modules/fazendinha/types';
+import { executeFarmersExperienceTop } from '../../modules/top/farmersExperienceTop';
 
 const TopCommand = createCommand({
   path: '',
@@ -61,6 +62,30 @@ const TopCommand = createCommand({
       },
       type: ApplicationCommandOptionTypes.SubCommand,
       options: [
+        {
+          type: ApplicationCommandOptionTypes.String,
+          name: 'tipo',
+          nameLocalizations: { 'en-US': 'type' },
+          description: 'Qual estatística de fazendeiro você deseja?',
+          descriptionLocalizations: { 'en-US': 'What farmer statistic do you want?' },
+          required: true,
+          choices: [
+            {
+              name: '🌿 | Mais plantas colhidas',
+              value: 'plants',
+              nameLocalizations: {
+                'en-US': '🌿 | Most plants harvested',
+              },
+            },
+            {
+              name: '🍀 | Experiência',
+              value: 'experience',
+              nameLocalizations: {
+                'en-US': '🍀 | Experience',
+              },
+            },
+          ],
+        },
         {
           type: ApplicationCommandOptionTypes.Integer,
           name: 'página',
@@ -397,8 +422,12 @@ const TopCommand = createCommand({
       }
       case 'fazendeiros': {
         const page = ctx.getOption<number>('página', false) ?? 0;
+        const type = ctx.getOption<'experience' | 'plants'>('tipo', false, true);
 
-        return executeFarmersTop(ctx, page, ctx.authorData.selectedColor, AvailablePlants.Mate);
+        if (type === 'plants')
+          return executeFarmersTop(ctx, page, ctx.authorData.selectedColor, AvailablePlants.Mate);
+
+        return executeFarmersExperienceTop(ctx, page, ctx.authorData.selectedColor);
       }
       case 'comandos': {
         const type = ctx.getOption<'commands' | 'user'>('tipo', false, true);

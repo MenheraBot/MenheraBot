@@ -486,7 +486,9 @@
     },
     "fazendeiros": {
       "title": "{{emoji}} | Best Farmers of {{plant}} {{page}}º",
-      "harvested": "Harvested"
+      "harvested": "Harvested",
+      "experience-title": "Most experienced farmers {{page}}º",
+      "experience": "Experience"
     },
     "estatisticas": {
       "cacar": {

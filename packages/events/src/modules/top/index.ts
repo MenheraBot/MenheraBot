@@ -15,6 +15,7 @@ import { executeUsedCommandsFromUserTop } from './usedCommandsFromUser';
 import { executeUserCommandsTop } from './userCommands';
 import { executeUsersByUsedCommandTop } from './usersByUsedCommand';
 import { executeFarmersTop } from './farmersTop';
+import { executeFarmersExperienceTop } from './farmersExperienceTop';
 
 const calculateSkipCount = (page: number): number => (page > 1 ? page - 1 : 0) * 10;
 
@@ -107,6 +108,9 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
   }
 
   if (command === 'farmers') {
+    if (secondInfo === 'EXPERIENCE')
+      return executeFarmersExperienceTop(ctx, Number(page), firstInfo);
+
     let plant = Number(secondInfo);
     if (secondInfo === 'CHANGE') plant = Number(ctx.interaction?.data?.values?.[0]);
 

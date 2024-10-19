@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- Adicionado um novo top! Use o comando `/top fazendeiros tipo:experiência` para ver os fazendeiros mais experiêntes.
+
 ### Changed
 
 - O `/personalizar título` agora possui bullet points para diferenciar os títulos, facilitando na visualização mobile. - Sugerido por @mareys. 

@@ -491,7 +491,9 @@
     },
     "fazendeiros": {
       "title": "{{emoji}} | Melhores Fazendeiros de {{plant}} {{page}}º",
-      "harvested": "Colheitas realizadas"
+      "harvested": "Colheitas realizadas",
+      "experience-title": "Fazendeiros mais experientes {{page}}º",
+      "experience": "Experiência"
     },
     "estatisticas": {
       "cacar": {
