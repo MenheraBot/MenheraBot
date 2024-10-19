@@ -574,7 +574,7 @@ const executeTitleCommand = async (ctx: ChatInputInteractionContext): Promise<vo
       description: allTitles
         .map(
           (title) =>
-            `${
+            `- ${
               title.textLocalizations?.[ctx.guildLocale as 'pt-BR'] ?? title.text
             } - <t:${millisToSeconds(
               userData.titles.find((a) => a.id === title.titleId)?.aquiredAt ?? 0,
