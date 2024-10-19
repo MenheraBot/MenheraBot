@@ -57,6 +57,7 @@ import { debugError } from '../../utils/debugError';
 import { VangoghUserprofileData } from '../info/ProfileCommand';
 import { logger } from '../../utils/logger';
 import { bot } from '../..';
+import { AvailableLanguages } from '../../types/i18next';
 
 const executeAboutMeCommand = async (
   ctx: ChatInputInteractionContext,
@@ -470,7 +471,9 @@ export const executeTituleAutocompleteInteraction = async (
   try {
     const ratings = findBestMatch(
       `${input}`,
-      userTitles.map((a) => a.textLocalizations?.[interaction.locale as 'pt-BR'] ?? a.text),
+      userTitles.map(
+        (a) => a.textLocalizations?.[interaction.locale as AvailableLanguages] ?? a.text,
+      ),
     ).ratings.reduce<ApplicationCommandOptionChoice[]>(
       (p, c) => {
         if (p.length >= 23 || c.rating < 0.3) return p;
@@ -574,9 +577,7 @@ const executeTitleCommand = async (ctx: ChatInputInteractionContext): Promise<vo
       description: allTitles
         .map(
           (title) =>
-            `- ${
-              title.textLocalizations?.[ctx.guildLocale as 'pt-BR'] ?? title.text
-            } - <t:${millisToSeconds(
+            `- ${title.textLocalizations?.[ctx.guildLocale] ?? title.text} - <t:${millisToSeconds(
               userData.titles.find((a) => a.id === title.titleId)?.aquiredAt ?? 0,
             )}>`,
         )
@@ -921,7 +922,8 @@ const createCustomizeMessage = async (
       mamadas: userData.mamado,
       mamou: userData.mamou,
       title: userTitle
-        ? userTitle.textLocalizations?.[ctx.interaction.locale as 'en-US'] ?? userTitle.text
+        ? userTitle.textLocalizations?.[ctx.interaction.locale as AvailableLanguages] ??
+          userTitle.text
         : '',
       hiddingBadges: userData.hiddingBadges,
       marryUsername: '',

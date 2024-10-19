@@ -20,6 +20,7 @@ import { executeBlinds } from './executeBlinds';
 import { AUTO_FOLD_TIMEOUT_IN_SECONDS, DEFAULT_CHIPS } from './constants';
 import { convertChipsToStars } from './afterMatchLobby';
 import { postPokerRound } from '../../utils/apiRequests/statistics';
+import { AvailableLanguages } from '../../types/i18next';
 
 const makeShowdown = async (ctx: GenericContext, gameData: PokerMatch): Promise<void> => {
   gameData.stage = 'showdown';
@@ -356,7 +357,7 @@ const setupGame = async (
     matchId: `${ctx.interaction.id}`,
     originalInteractionId,
     masterId: players[0],
-    language: (ctx.interaction.guildLocale as 'pt-BR') ?? 'pt-BR',
+    language: (ctx.interaction.guildLocale as AvailableLanguages) ?? 'pt-BR',
     embedColor,
     worthGame: chips > 0,
     players: playersData,

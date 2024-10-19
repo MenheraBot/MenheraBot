@@ -54,7 +54,7 @@ const executeAdministrateFair = async (
 
   fromUser.forEach((item, i) => {
     embed.fields?.push({
-      name: `${item[`name_${ctx.guildLocale as 'pt-BR'}`]} (${i + 1})`,
+      name: `${item[`name_${ctx.guildLocale}`]} (${i + 1})`,
       inline: true,
       value: `${item.price} :star:\n${Plants[item.plantType].emoji} ${item.weight} kg`,
     });

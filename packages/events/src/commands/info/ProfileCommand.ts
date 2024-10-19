@@ -119,9 +119,7 @@ const ProfileCommand = createCommand({
       hiddingBadges: user.hiddingBadges,
       marryUsername: '',
       marryDate: user.marriedDate ?? '',
-      title: userTitle
-        ? userTitle.textLocalizations?.[ctx.guildLocale as 'en-US'] ?? userTitle.text
-        : '',
+      title: userTitle ? userTitle.textLocalizations?.[ctx.guildLocale] ?? userTitle.text : '',
       married: false,
     };
 
