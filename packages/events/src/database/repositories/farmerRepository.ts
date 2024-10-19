@@ -277,16 +277,12 @@ const getTopRanking = async (
   ignoreUsers: string[] = [],
   limit = 10,
 ): Promise<Array<{ id: number; value: number }>> => {
-  const res = await farmerModel.find(
-    { ban: false, id: { $nin: ignoreUsers } },
-    ['experience', 'id'],
-    {
-      skip,
-      limit,
-      sort: { experience: -1 },
-      lean: true,
-    },
-  );
+  const res = await farmerModel.find({ id: { $nin: ignoreUsers } }, ['experience', 'id'], {
+    skip,
+    limit,
+    sort: { experience: -1 },
+    lean: true,
+  });
 
   return res.map((a) => ({ id: a.id, value: a.experience ?? 0 }));
 };
