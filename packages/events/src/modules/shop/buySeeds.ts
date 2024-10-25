@@ -22,6 +22,7 @@ import commandRepository from '../../database/repositories/commandRepository';
 import { getSiloLimits } from '../fazendinha/siloUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { AvailablePlants } from '../fazendinha/types';
+import { SeasonEmojis } from '../fazendinha/displayPlantations';
 
 const handleBuySeedsInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [option] = ctx.sentData;
@@ -181,6 +182,8 @@ const buySeeds = async (
           buyValue: cempasuchilData.buyValue,
           harvestTime: cempasuchilData.minutesToHarvest,
           rotTime: cempasuchilData.minutesToRot,
+          bestSeason: SeasonEmojis[cempasuchilData.bestSeason],
+          worstSeason: SeasonEmojis[cempasuchilData.worstSeason],
         }),
       },
       ...Object.entries(Plants)
@@ -202,6 +205,8 @@ const buySeeds = async (
               buyValue: data.buyValue,
               harvestTime: data.minutesToHarvest,
               rotTime: data.minutesToRot,
+              bestSeason: SeasonEmojis[data.bestSeason],
+              worstSeason: SeasonEmojis[data.worstSeason],
             }),
           };
         }),

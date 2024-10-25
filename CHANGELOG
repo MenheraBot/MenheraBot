@@ -5,11 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Adicionado a melhor e pior estação das sementes no `/loja comprar sementes`. - Sugerido por @0_tal_do_mabs
+
 ## [5.20.3] - 2024-10-19
 
 ### Added
 
-- Adicionado um novo top! Use o comando `/top fazendeiros tipo:experiência` para ver os fazendeiros mais experiêntes.
+- Adicionado um novo top! Use o comando `/top fazendeiros tipo:experiência` para ver os fazendeiros mais experientes.
 
 ### Changed
 

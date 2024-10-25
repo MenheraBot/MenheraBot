@@ -225,4 +225,4 @@ const displayPlantations = async (
   });
 };
 
-export { displayPlantations, repeatIcon, PlantStateIcon };
+export { displayPlantations, repeatIcon, PlantStateIcon, SeasonEmojis };
