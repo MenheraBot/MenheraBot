@@ -23,7 +23,6 @@ export const PLANTATION_WEIGHT_MODIFIERS = {
   WORST_SEASON_DEBUFF: 0.2,
   DIRT_QUALITY_MAX_BUFF: 0.3,
   DIRT_QUALITY_MIN_BUFF: 0.1,
-  EVENT_BUFF: 0.3,
 };
 
 export const UnloadFields: { [field: number]: UnlockFieldFile } = {
@@ -169,9 +168,9 @@ export const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
   [AvailablePlants.HotPepper]: {
     minutesToHarvest: 100,
     minutesToRot: 50,
-    emoji: '🏵',
-    sellValue: 1102,
-    buyValue: 188,
+    emoji: '🌶',
+    sellValue: 1071,
+    buyValue: 264,
     bestSeason: 'spring',
     worstSeason: 'winter',
   },

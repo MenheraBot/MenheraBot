@@ -9,33 +9,37 @@ import {
   createCustomId,
   createSelectMenu,
 } from '../../utils/discord/componentUtils';
-import { DatabaseUserSchema } from '../../types/database';
+import { DatabaseEventSchema, DatabaseUserSchema } from '../../types/database';
 import giveRepository from '../../database/repositories/giveRepository';
 import starsRepository from '../../database/repositories/starsRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { SelectMenuInteraction } from '../../types/interaction';
 import userRepository from '../../database/repositories/userRepository';
 import { negate } from '../../utils/miscUtils';
+import { MessageFlags } from '../../utils/discord/messageUtils';
 
 const buyableItems = [
   {
     id: 'stars' as const,
-    price: 1,
-    executeBuy: async (userId: BigString) => starsRepository.addStars(userId, 1000),
+    price: (eventUser: DatabaseEventSchema) => eventUser.currency,
+    executeBuy: async (userId: BigString, eventUser: DatabaseEventSchema) =>
+      starsRepository.addStars(userId, eventUser.currency * 1000),
   },
   {
     id: 'event-title' as const,
     canBuy: (user: DatabaseUserSchema) => !user.titles.some((title) => title.id === 18),
     executeBuy: async (userId: BigString) => giveRepository.giveTitleToUser(userId, 18),
-    price: 30,
+    price: () => 30,
   },
   {
     id: 'event-badge' as const,
     canBuy: (user: DatabaseUserSchema) => !user.badges.some((badge) => badge.id === 28),
     executeBuy: async (userId: BigString) => giveRepository.giveBadgeToUser(userId, 28),
-    price: 50,
+    price: () => 50,
   },
 ];
+
+const THIRD_OF_NOVEMBER = 1730602800000;
 
 const handleInteraction = async (ctx: ComponentInteractionContext<SelectMenuInteraction>) => {
   const [selectedItemId] = ctx.interaction.data.values;
@@ -46,7 +50,7 @@ const handleInteraction = async (ctx: ComponentInteractionContext<SelectMenuInte
 
   const eventUser = await eventRepository.getUser(ctx.user.id);
 
-  if (eventUser.currency < selectedItem.price)
+  if (eventUser.currency < selectedItem.price(eventUser))
     return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'events:dia-dos-mortos.poor', {
         emoji: Plants[CempasuchilPlant].emoji,
@@ -64,12 +68,14 @@ const handleInteraction = async (ctx: ComponentInteractionContext<SelectMenuInte
       components: [],
     });
 
-  await selectedItem.executeBuy(ctx.user.id);
-  await eventRepository.incrementUserCurrency(ctx.user.id, negate(selectedItem.price));
+  await selectedItem.executeBuy(ctx.user.id, eventUser);
+  await eventRepository.incrementUserCurrency(ctx.user.id, negate(selectedItem.price(eventUser)));
 
   ctx.makeMessage({
     content: ctx.prettyResponse('success', 'events:dia-dos-mortos.success', {
-      item: ctx.locale(`events:dia-dos-mortos.prizes.${selectedItemId as 'description'}`),
+      item: ctx.locale(`events:dia-dos-mortos.prizes.${selectedItemId as 'description'}`, {
+        amount: selectedItem.price(eventUser),
+      }),
     }),
     components: [],
     embeds: [],
@@ -112,7 +118,19 @@ const DiaDeMuertosCommand = createCommand({
   execute: async (ctx, finishCommand) => {
     finishCommand();
 
+    if (Date.now() >= THIRD_OF_NOVEMBER)
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'events:dia-dos-mortos.event-ended'),
+        flags: MessageFlags.EPHEMERAL,
+      });
+
     const eventUser = await eventRepository.getUser(ctx.user.id);
+
+    if (eventUser.currency <= 0)
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('wink', 'events:dia-dos-mortos.thanks'),
+        flags: MessageFlags.EPHEMERAL,
+      });
 
     const selectMenu = createSelectMenu({
       customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, 'BUY'),
@@ -130,21 +148,28 @@ const DiaDeMuertosCommand = createCommand({
       color: hexStringToNumber(ctx.authorData.selectedColor),
       fields: await Promise.all(
         buyableItems.map(async (item) => {
-          if (eventUser.currency >= item.price && (!item.canBuy || item.canBuy(ctx.authorData)))
+          if (
+            eventUser.currency >= item.price(eventUser) &&
+            (!item.canBuy || item.canBuy(ctx.authorData))
+          )
             selectMenu.options.push({
-              label: ctx.locale(`events:dia-dos-mortos.prizes.${item.id}`).replaceAll('_', ''),
+              label: ctx
+                .locale(`events:dia-dos-mortos.prizes.${item.id}`, {
+                  amount: item.price(eventUser) * 1000,
+                })
+                .replaceAll('_', ''),
               value: item.id,
             });
 
           const alreadyBoughtText = item.canBuy && !item.canBuy(ctx.authorData) ? `~~` : '';
 
           return {
-            name: `${alreadyBoughtText}${ctx.locale(
-              `events:dia-dos-mortos.prizes.${item.id}`,
-            )}${alreadyBoughtText}`,
+            name: `${alreadyBoughtText}${ctx.locale(`events:dia-dos-mortos.prizes.${item.id}`, {
+              amount: item.price(eventUser) * 1000,
+            })}${alreadyBoughtText}`,
             value: ctx.locale(`events:dia-dos-mortos.prizes.description`, {
-              price: item.price,
-              emoji: Plants[CempasuchilPlant].emoji,
+              price: item.price(eventUser),
+              emoji: '🏵',
             }),
             inline: true,
           };

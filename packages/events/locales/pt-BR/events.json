@@ -12,18 +12,20 @@
   "banned_no_reason": "Não sei o motivo...",
   "dia-dos-mortos": {
     "success": "Feitoria! Você comprou {{item}}!",
-    "embed-title": "Evento de Dia dos Mortos",
+    "embed-title": "O evento terminou",
     "currency": "**Cempasúchil:** {{currency}}",
+    "event-ended": "O evento terminou!",
     "plant-boost-message": "Dia dos mortos: esta planta está em sua melhor época. ",
-    "embed-description": "{{currency}}\n## Loja do Evento\n",
+    "embed-description": "{{currency}}\n\nO evento terminou. Gaste todos os seus Cempasúchil até o fim do dia 02 de novembro\n\n## Loja do Evento\n",
     "select-one": "Escolha o que você quer comprar",
     "poor": "Você não tem Cempasúchil {{emoji}} suficiente para comprar isso!",
+    "thanks": "Obrigada por participar do evento!",
     "already-bought": "Você já comprou este item!",
     "prizes":{
       "description": "**Custo:** {{price}} {{emoji}}",
       "event-title": "Título _'Guardião do Submundo'_",
       "event-badge":"Badge _Dia dos Mortos 2024_",
-      "stars": "⭐ 1000 Estrelinhas"
+      "stars": "⭐ {{amount}} Estrelinhas"
     }
   }
 }
