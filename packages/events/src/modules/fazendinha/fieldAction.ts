@@ -6,13 +6,12 @@ import { postFazendinhaAction } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { displayPlantations } from './displayPlantations';
 import { getFieldWeight, getHarvestTime, getPlantationState } from './plantationState';
-import { CempasuchilPlant, Plants } from './constants';
+import { Plants } from './constants';
 import { getCurrentSeason } from './seasonsManager';
 import { AvailablePlants, PlantedField } from './types';
 import { getSiloLimits } from './siloUtils';
 import executeDailies from '../dailies/executeDailies';
 import userRepository from '../../database/repositories/userRepository';
-import eventRepository from '../../database/repositories/eventRepository';
 
 const plantField = async (
   ctx: ComponentInteractionContext,
@@ -130,16 +129,12 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   const harvestedWeight = state === 'MATURE' ? field.weight ?? 1 : undefined;
 
-  if (harvestedWeight) {
-    if (field.plantType === CempasuchilPlant)
-      await eventRepository.incrementUserCurrency(ctx.user.id, Math.round(harvestedWeight));
-
+  if (harvestedWeight)
     executeDailies.harvestPlant(
       await userRepository.ensureFindUser(ctx.user.id),
       field.plantType,
       harvestedWeight,
     );
-  }
 
   displayPlantations(
     ctx,

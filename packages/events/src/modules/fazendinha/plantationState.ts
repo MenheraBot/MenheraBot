@@ -1,5 +1,5 @@
 import { minutesToMillis } from '../../utils/miscUtils';
-import { CempasuchilPlant, PLANTATION_WEIGHT_MODIFIERS, Plants } from './constants';
+import { PLANTATION_WEIGHT_MODIFIERS, Plants } from './constants';
 import {
   SEASONAL_HARVEST_BUFF,
   SEASONAL_HARVEST_DEBUFF,
@@ -68,8 +68,6 @@ const getFieldWeight = (
     maxValue += PLANTATION_WEIGHT_MODIFIERS.DIRT_QUALITY_MAX_BUFF;
     minValue += PLANTATION_WEIGHT_MODIFIERS.DIRT_QUALITY_MIN_BUFF;
   }
-
-  if (plant === CempasuchilPlant) maxValue += PLANTATION_WEIGHT_MODIFIERS.EVENT_BUFF;
 
   const weight = parseFloat((Math.random() * (maxValue - minValue) + minValue).toFixed(1));
 
