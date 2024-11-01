@@ -9,23 +9,5 @@
   },
   "christmas": "Merry Christmas! You got a 🎁 from Santa Claus, check your profile!",
   "banned_long_ago": "A long time ago",
-  "banned_no_reason": "Not sure why",
-  "dia-dos-mortos": {
-    "embed-title": "The event has ended",
-    "success": "All done. You bought {{item}}!",
-    "plant-boost-message": "Day of the Dead: This plant is at its best. ",
-    "currency": "**Cempasúchil:** {{currency}}",
-    "event-ended": "The event ended!",
-    "embed-description": "{{currency}}\n\nThe event has ended. Spend all your Cempasúchil by the end of November 2nd\n\n## Event Shop\n",
-    "select-one": "Choose what you want to buy",
-    "thanks": "Thanks for participating!",
-    "poor": "You don't have enough Cempasúchil {{emoji}} to buy this!",
-    "already-bought": "You have already bought this item!",
-    "prizes":{
-      "description": "**Cost:** {{price}} {{emoji}}",
-      "event-title": "Title '_Guardian of the Underworld_'",
-      "event-badge":"Badge _Day of the Dead 2024_",
-      "stars": "⭐ {{amount}} Stars"
-    }
-  }
+  "banned_no_reason": "Not sure why"
 }
