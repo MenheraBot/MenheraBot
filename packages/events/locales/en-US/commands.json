@@ -1144,6 +1144,7 @@
       "silo": "Plants",
       "harvest": "Harvest",
       "discart": "Discart",
+      "collect": "Collect",
       "season-boost-false": "⚠️ The current season is unfavorable for this plant",
       "season-boost-true": "✨ The current season is perfect for this plant",
       "plant": "Plant",
