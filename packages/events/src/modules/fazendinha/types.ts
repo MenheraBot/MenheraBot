@@ -35,12 +35,12 @@ export type SeasonData = {
   endsAt: number;
 };
 
-type DirtQualityUpgrade = {
-  type: 'dirt_quality';
-  usages: number;
+type FertilizerUpgrade = {
+  type: 'fertilizer';
+  expiresAt: number;
 };
 
-export type FieldUpgrade = DirtQualityUpgrade;
+export type FieldUpgrade = FertilizerUpgrade;
 
 export interface PlantedField {
   harvestAt: number;

@@ -81,8 +81,12 @@ const parseUserPlantations = (
           index: i + 1,
           action: ctx.locale(
             `commands:fazendinha.plantations.${
-              // eslint-disable-next-line no-nested-ternary
-              field.isPlanted ? (plantState === 'MATURE' ? 'harvest' : 'discart') : 'plant'
+              {
+                MATURE: 'harvest' as const,
+                ROTTEN: 'collect' as const,
+                GROWING: 'discart' as const,
+                EMPTY: 'plant' as const,
+              }[plantState]
             }`,
           ),
         }),
