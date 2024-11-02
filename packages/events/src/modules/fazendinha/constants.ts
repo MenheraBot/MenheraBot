@@ -19,8 +19,8 @@ export const PLANTATION_WEIGHT_MODIFIERS = {
   BASE_MAX_VALUE: 1.3,
   BEST_SEASON_BUFF: 0.2,
   WORST_SEASON_DEBUFF: 0.2,
-  DIRT_QUALITY_MAX_BUFF: 0.3,
-  DIRT_QUALITY_MIN_BUFF: 0.1,
+  FERTILIZER_MAX_BUFF: 0.3,
+  FERTILIZER_MIN_BUFF: 0.1,
 };
 
 export const UnloadFields: { [field: number]: UnlockFieldFile } = {

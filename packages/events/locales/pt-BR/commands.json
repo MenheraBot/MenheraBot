@@ -1150,6 +1150,7 @@
       "harvest": "Colher",
       "plant": "Plantar",
       "discart": "Descartar",
+      "collect": "Coletar",
       "season-boost-false": "⚠️ A estação atual é desfavorável para essa planta",
       "season-boost-true": "✨ A estação atual é perfeita para essa planta",
       "field-action": "{{action}} ({{index}})",
