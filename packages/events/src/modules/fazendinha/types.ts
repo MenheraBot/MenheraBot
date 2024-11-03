@@ -28,6 +28,10 @@ export enum AvailablePlants {
   Mushroom,
 }
 
+export enum AvailableItems {
+  Fertilizer,
+}
+
 export type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
 
 export type SeasonData = {
@@ -68,6 +72,10 @@ export interface PlantsFile {
   buyValue: number;
   bestSeason: Seasons;
   worstSeason: Seasons;
+}
+
+export interface ItemsFile {
+  maxUsages: number;
 }
 
 export interface DeliveryMission {
