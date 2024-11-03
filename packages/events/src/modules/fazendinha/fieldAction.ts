@@ -97,13 +97,17 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   const currentLimits = getSiloLimits(farmer);
 
-  if (state === 'MATURE' && currentLimits.used + (field.weight ?? 1) >= currentLimits.limit)
-    return ctx.respondInteraction({
-      flags: MessageFlags.EPHEMERAL,
-      content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
-        limit: currentLimits.limit,
-      }),
-    });
+  if (currentLimits.used + (field.weight ?? 1) >= currentLimits.limit) {
+    if (currentLimits.used === currentLimits.limit)
+      return ctx.respondInteraction({
+        flags: MessageFlags.EPHEMERAL,
+        content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
+          limit: currentLimits.limit,
+        }),
+      });
+
+    field.weight = parseFloat((currentLimits.limit - currentLimits.used).toFixed(1));
+  }
 
   farmer.plantations[selectedField] = {
     isPlanted: false,

@@ -22,6 +22,7 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
   dailyDayId: user.dailyDayId,
   experience: user.experience,
   seeds: user.seeds,
+  items: user.items,
   siloUpgrades: user.siloUpgrades,
   silo: user.silo.map((a) => ({ ...a, weight: parseFloat((a.weight ?? a.amount).toFixed(1)) })),
   lastPlantedSeed: user.lastPlantedSeed,

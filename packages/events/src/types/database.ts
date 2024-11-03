@@ -124,6 +124,11 @@ export type QuantitativeSeed = {
   plant: AvailablePlants;
 };
 
+export interface QuantitativeItem {
+  id: number;
+  amount: number;
+}
+
 export type QuantitativePlant = {
   amount?: number;
   plant: AvailablePlants;
@@ -152,6 +157,7 @@ export interface DatabaseFarmerSchema {
   plantations: Plantation[];
   seeds: QuantitativeSeed[];
   silo: QuantitativePlant[];
+  items: QuantitativeItem[];
   siloUpgrades: number;
   experience: number;
   lastPlantedSeed: AvailablePlants;
