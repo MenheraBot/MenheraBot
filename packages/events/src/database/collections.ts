@@ -115,6 +115,7 @@ const farmerSchema = new Schema({
   plantations: { type: Array, default: [{ isPlanted: false }] },
   seeds: { type: Array, default: [] },
   silo: { type: Array, default: [] },
+  items: { type: Array, default: [] },
   experience: { type: Number, deafult: 0 },
   siloUpgrades: { type: Number, default: 0 },
   lastPlantedSeed: { type: Number, default: 0 },
