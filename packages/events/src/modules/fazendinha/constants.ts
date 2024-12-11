@@ -1,3 +1,4 @@
+import { hoursToMillis } from '../../utils/miscUtils';
 import { AvailableItems, AvailablePlants, ItemsFile, PlantsFile, UnlockFieldFile } from './types';
 
 export const INITIAL_LIMIT_FOR_SILO = 35;
@@ -47,7 +48,8 @@ export const UnloadFields: { [field: number]: UnlockFieldFile } = {
 
 export const Items: { [Item in AvailableItems]: ItemsFile } = {
   [AvailableItems.Fertilizer]: {
-    maxUsages: 3,
+    duration: hoursToMillis(6),
+    emoji: '<:fertilizer:1316543322139136095>',
   },
 };
 
