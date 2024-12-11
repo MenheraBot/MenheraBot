@@ -75,7 +75,8 @@ export interface PlantsFile {
 }
 
 export interface ItemsFile {
-  maxUsages: number;
+  duration: number;
+  emoji: string;
 }
 
 export interface DeliveryMission {

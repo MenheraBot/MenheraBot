@@ -10,7 +10,7 @@ import { DatabaseFarmerSchema } from '../../types/database';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getDisplayName } from '../../utils/discord/userUtils';
 import { AvailablePlants } from './types';
-import { Plants } from './constants';
+import { Items, Plants } from './constants';
 import {
   createActionRow,
   createButton,
@@ -78,6 +78,12 @@ const displaySilo = async (
       return p;
     }, []),
     footer: { text: ctx.locale('commands:fazendinha.silo.footer', { ...getSiloLimits(farmer) }) },
+  });
+
+  embed.fields?.push({
+    name: 'Itens',
+    value: `- ${Items[0].emoji} 4x Fertilizantes`,
+    inline: true,
   });
 
   const sellButton = createButton({

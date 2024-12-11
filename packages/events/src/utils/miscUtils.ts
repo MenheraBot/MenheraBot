@@ -17,6 +17,8 @@ const millisToHours = (milli: number): number => Math.floor(milli / 1000 / 60 / 
 
 const minutesToMillis = (minutes: number): number => 1000 * 60 * minutes;
 
+const hoursToMillis = (hours: number): number => minutesToMillis(60 * hours);
+
 const daysToMillis = (days: number): number => 1000 * 60 * 60 * 24 * days;
 
 const getElapsedTime = (since: number, unit: 'seconds' | 'minutes'): number => {
@@ -121,6 +123,7 @@ export {
   millisToSeconds,
   localizedResources,
   calculateProbability,
+  hoursToMillis,
   ensureUserHaveDefaultThemes,
   chunkArray,
   minutesToMillis,
