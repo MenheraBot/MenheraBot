@@ -199,7 +199,7 @@ const FazendinhaCommand = createCommand({
     const farmer = await farmerRepository.getFarmer(ctx.author.id);
 
     const lastPlantedSeedFromSilo = farmer.seeds.find(
-      (b) => b.plant === farmer.lastPlantedSeed ?? AvailablePlants.Mate,
+      (b) => b.plant === farmer.lastPlantedSeed || AvailablePlants.Mate,
     );
 
     const group = ctx.getSubCommandGroup();

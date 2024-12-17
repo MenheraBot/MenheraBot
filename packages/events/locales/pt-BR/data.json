@@ -281,5 +281,8 @@
     "22": "Pêssego",
     "23": "Cereja",
     "24": "Cogumelo"
+  },
+  "farm-items": {
+    "0": "Fertilizantes"
   }
 }
