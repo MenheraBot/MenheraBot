@@ -1158,6 +1158,7 @@
       "not-enough-plants": "You no longer have these plants to sell",
       "max": "{{plant}} (Max. {{amount}})",
       "sell-plants": "Sell plants",
+      "items": "Items",
       "sell-plant": "Sell {{plant}}",
       "sell-all": "Sell Everything",
       "sell-title": "Sell your plants",
