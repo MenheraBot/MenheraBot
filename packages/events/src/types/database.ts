@@ -1,6 +1,11 @@
 import { Localization } from 'discordeno/types';
 import { profileBadges } from '../modules/badges/profileBadges';
-import { AvailablePlants, DeliveryMission, Plantation } from '../modules/fazendinha/types';
+import {
+  AvailableItems,
+  AvailablePlants,
+  DeliveryMission,
+  Plantation,
+} from '../modules/fazendinha/types';
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
 import { AvailableLanguages, Translation } from './i18next';
@@ -125,7 +130,7 @@ export type QuantitativeSeed = {
 };
 
 export interface QuantitativeItem {
-  id: number;
+  id: AvailableItems;
   amount: number;
 }
 

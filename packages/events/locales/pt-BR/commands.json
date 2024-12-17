@@ -1174,6 +1174,7 @@
     },
     "silo": {
       "embed-title": "Silo de {{user}}",
+      "items": "Itens",
       "nothing": "**Nada**",
       "not-enough-plants": "Tu não possui mais essas plantas pra vender",
       "max": "{{plant}} (Max. {{amount}})",

@@ -81,8 +81,24 @@ const displaySilo = async (
   });
 
   embed.fields?.push({
-    name: 'Itens',
-    value: `- ${Items[0].emoji} 4x Fertilizantes`,
+    name: ctx.locale('commands:fazendinha.silo.items'),
+    value:
+      farmer.items.length === 0
+        ? ctx.locale('commands:fazendinha.silo.nothing')
+        : farmer.items
+            .flatMap((item) =>
+              item.amount > 0
+                ? [
+                    ctx.locale('commands:fazendinha.silo.display-other', {
+                      emoji: Items[item.id].emoji,
+                      amount: item.amount,
+                      metric: 'x',
+                      plant: ctx.locale(`data:farm-items.${item.id}`),
+                    }),
+                  ]
+                : [],
+            )
+            .join('\n'),
     inline: true,
   });
 
