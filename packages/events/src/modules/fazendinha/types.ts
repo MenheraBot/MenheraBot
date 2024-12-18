@@ -40,7 +40,7 @@ export type SeasonData = {
 };
 
 type FertilizerUpgrade = {
-  type: 'fertilizer';
+  id: AvailableItems.Fertilizer;
   expiresAt: number;
 };
 
@@ -52,12 +52,12 @@ export interface PlantedField {
   isPlanted: true;
   plantType: AvailablePlants;
   weight?: number;
-  upgrades: FieldUpgrade[];
+  upgrades?: FieldUpgrade[];
 }
 
 export interface EmptyField {
   isPlanted: false;
-  upgrades: FieldUpgrade[];
+  upgrades?: FieldUpgrade[];
 }
 
 export type PlantationState = 'EMPTY' | 'GROWING' | 'MATURE' | 'ROTTEN';

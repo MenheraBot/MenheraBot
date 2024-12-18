@@ -15,17 +15,58 @@ import starsRepository from '../../database/repositories/starsRepository';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
+import { millisToSeconds } from '../../utils/miscUtils';
+
+const displayAdministrateField = async (
+  ctx: ComponentInteractionContext,
+  field: number,
+): Promise<void> => {
+  const user = await userRepository.ensureFindUser(ctx.user.id);
+  const farmer = await farmerRepository.getFarmer(ctx.user.id);
+
+  const embed = createEmbed({
+    title: ctx.locale('commands:fazendinha.admin.fields.title', { field: field + 1 }),
+    color: hexStringToNumber(user.selectedColor),
+    fields: [],
+  });
+
+  const buttons = farmer.plantations.map((f, i) => {
+    embed.fields?.push({
+      name: 'Melhorias do campo X',
+      value:
+        f.upgrades && f.upgrades.length > 0
+          ? f.upgrades
+              .map(
+                (u) =>
+                  `${ctx.locale(`data:farm-items.${u.id}`)}.\nExpira: <t:${millisToSeconds(
+                    u.expiresAt,
+                  )}:R>`,
+              )
+              .join('\n')
+          : 'Sem melhorias no momento',
+    });
+
+    return createButton({
+      label: ctx.locale('commands:fazendinha.admin.admin', {
+        field: i + 1,
+      }),
+      style: ButtonStyles.Primary,
+      customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'ADMIN', i),
+      disabled: i === field,
+    });
+  });
+
+  const components = [createActionRow(buttons as [ButtonComponent])];
+
+  ctx.makeMessage({ embeds: [embed], components });
+};
 
 const handleAdministrativeComponents = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [action] = ctx.sentData;
+  const [action, field] = ctx.sentData;
 
   if (action === 'UNLOCK') return executeUnlockField(ctx);
 
-  if (action === 'ADMIN')
-    return ctx.respondInteraction({
-      flags: MessageFlags.EPHEMERAL,
-      content: ctx.prettyResponse('wink', 'permissions:WIP'),
-    });
+  if (action === 'ADMIN') return displayAdministrateField(ctx, Number(field));
 };
 
 const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<void> => {

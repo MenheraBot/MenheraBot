@@ -1208,6 +1208,9 @@
         "button": "Melhorar silo",
         "description": "Aumente o limite de seu silo em **{{increase}}** espaços por apenas **{{cost}}** :star:\nAtualmente tu tem **{{limit}}** espaços de limite."
       },
+      "fields":{
+        "title": "Administrar campo {{field}}"
+      },
       "unlocked-field": "Você comprou esse terreno de seu vizinho!",
       "your-fields": "Seus Campos",
       "admin": "Administrar {{field}}",
