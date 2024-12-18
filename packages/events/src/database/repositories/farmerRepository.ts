@@ -22,7 +22,7 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
   dailyDayId: user.dailyDayId,
   experience: user.experience,
   seeds: user.seeds,
-  items: user.items,
+  items: user.items ?? [],
   siloUpgrades: user.siloUpgrades,
   silo: user.silo.map((a) => ({ ...a, weight: parseFloat((a.weight ?? a.amount).toFixed(1)) })),
   lastPlantedSeed: user.lastPlantedSeed,
@@ -33,7 +33,7 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
 
   registerCacheStatus(fromRedis, 'farmer');
 
-  if (fromRedis) return JSON.parse(fromRedis);
+  if (fromRedis) return parseMongoUserToRedisUser(JSON.parse(fromRedis));
 
   const fromMongo = await farmerModel.findOne({ id: userId }).catch(debugError);
 
