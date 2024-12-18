@@ -58,10 +58,11 @@ const executeBuyImage = async (
   userId: BigString,
   imageId: number,
   price: number,
+  username: string,
 ): Promise<void> => {
   await starsRepository.removeStars(userId, price);
   await userThemesRepository.addProfileImage(userId, imageId);
-  await profileImagesRepository.giveUploaderImageRoyalties(imageId, price);
+  await profileImagesRepository.giveUploaderImageRoyalties(imageId, price, username);
 
   await postTransaction(
     `${userId}`,

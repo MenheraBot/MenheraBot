@@ -1,9 +1,12 @@
 import { DatabaseFarmerSchema, QuantitativePlant, QuantitativeSeed } from '../../types/database';
 import { INITIAL_LIMIT_FOR_SILO, SILO_LIMIT_INCREASE_BY_LEVEL } from './constants';
 
-type QuantitativeItem = QuantitativePlant | QuantitativeSeed;
+type QuantitativePlantItem = QuantitativePlant | QuantitativeSeed;
 
-const checkNeededItems = (need: Array<QuantitativeItem>, has: Array<QuantitativeItem>): boolean =>
+const checkNeededItems = (
+  need: Array<QuantitativePlantItem>,
+  has: Array<QuantitativePlantItem>,
+): boolean =>
   need.every((needed) =>
     has.some((user) => {
       const userHas = 'weight' in user ? user.weight : user.amount;
@@ -13,7 +16,7 @@ const checkNeededItems = (need: Array<QuantitativeItem>, has: Array<Quantitative
     }),
   );
 
-const addItems = <T extends QuantitativeItem>(user: T[], toAdd: T[]): T[] =>
+const addItems = <T extends QuantitativePlantItem>(user: T[], toAdd: T[]): T[] =>
   toAdd.reduce<T[]>((p, c) => {
     const fromUser = p.find((a) => a.plant === c.plant);
 
@@ -31,7 +34,7 @@ const addItems = <T extends QuantitativeItem>(user: T[], toAdd: T[]): T[] =>
     return p;
   }, user);
 
-const removeItems = <T extends QuantitativeItem>(user: T[], toRemove: T[]): T[] =>
+const removeItems = <T extends QuantitativePlantItem>(user: T[], toRemove: T[]): T[] =>
   user.reduce<T[]>((p, c) => {
     const remove = toRemove.find((a) => a.plant === c.plant);
 
@@ -60,7 +63,9 @@ interface SiloLimits {
 }
 
 const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
-  const countQuantitative = (items: QuantitativeItem[]): number =>
+  const countQuantitative = (
+    items: QuantitativePlantItem[] | DatabaseFarmerSchema['items'],
+  ): number =>
     items.reduce(
       (p, c) =>
         p +
@@ -71,7 +76,11 @@ const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
     );
 
   const used = parseFloat(
-    (countQuantitative(user.silo) + countQuantitative(user.seeds)).toFixed(1),
+    (
+      countQuantitative(user.silo) +
+      countQuantitative(user.seeds) +
+      countQuantitative(user.items)
+    ).toFixed(1),
   );
 
   const limit = parseFloat(
