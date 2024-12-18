@@ -1203,6 +1203,9 @@
         "button": "Upgrade silo",
         "description": "Increase your silo limit by **{{increase}}** spaces for just **{{cost}}** :star:\nCurrently you have **{{limit}}** limit spaces."
       },
+      "fields":{
+        "title": "Administrate field {{field}}"
+      },
       "unlocked-field": "You bought this land from your neighbor!",
       "your-fields": "Your Fields",
       "admin": "Manage {{field}}",
