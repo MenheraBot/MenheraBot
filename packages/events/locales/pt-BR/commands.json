@@ -1181,6 +1181,7 @@
       "sell-plants": "Vender plantas",
       "sell-plant": "Vender {{plant}}",
       "sell-all": "Vender tudo",
+      "use-items":  "Usar itens",
       "sell-title": "Venda suas plantas",
       "no-plants": "Tu não possui plantas para vender",
       "description": "{{text}}\n- {{emoji}} **{{amount}}{{metric}}** - {{plant}} (**{{value}}** :star:)",

@@ -1160,6 +1160,7 @@
       "sell-plants": "Sell plants",
       "items": "Items",
       "sell-plant": "Sell {{plant}}",
+      "use-items":  "Use items",
       "sell-all": "Sell Everything",
       "sell-title": "Sell your plants",
       "no-plants": "You don't have plants to sell",

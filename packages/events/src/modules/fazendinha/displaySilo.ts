@@ -109,9 +109,17 @@ const displaySilo = async (
     customId: createCustomId(8, ctx.user.id, ctx.originalInteractionId, 'DISPLAY', embedColor),
   });
 
+  const useItemsButton = createButton({
+    label: ctx.locale('commands:fazendinha.silo.use-items'),
+    style: ButtonStyles.Primary,
+    customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'ADMIN', 0),
+    disabled: farmer.items.length === 0 || farmer.items.every((i) => i.amount <= 0),
+  });
+
   ctx.makeMessage({
     embeds: [embed],
-    components: farmer.id === `${ctx.user.id}` ? [createActionRow([sellButton])] : [],
+    components:
+      farmer.id === `${ctx.user.id}` ? [createActionRow([sellButton, useItemsButton])] : [],
   });
 };
 
