@@ -1,11 +1,21 @@
 import { minutesToMillis } from '../../utils/miscUtils';
-import { PLANTATION_WEIGHT_MODIFIERS, Plants } from './constants';
+import { PLANTATION_HARVEST_MODIFIERS, PLANTATION_WEIGHT_MODIFIERS, Plants } from './constants';
 import {
   SEASONAL_HARVEST_BUFF,
   SEASONAL_HARVEST_DEBUFF,
   SEASONAL_ROT_DEBUFF,
 } from './seasonsManager';
-import { AvailablePlants, FieldUpgrade, Plantation, PlantationState, Seasons } from './types';
+import {
+  AvailableItems,
+  AvailablePlants,
+  FieldUpgrade,
+  Plantation,
+  PlantationState,
+  Seasons,
+} from './types';
+
+const isUpgradeApplied = (buff: AvailableItems, upgrades: FieldUpgrade[]): boolean =>
+  upgrades.some((u) => u.id === buff && u.expiresAt > Date.now());
 
 const getPlantationState = (field: Plantation): [PlantationState, number] => {
   if (!field.isPlanted) return ['EMPTY', -1];
@@ -24,28 +34,26 @@ const getPlantationState = (field: Plantation): [PlantationState, number] => {
   return ['MATURE', timeToRot];
 };
 
-const getHarvestTime = (currentSeason: Seasons, plant: AvailablePlants): number => {
+const getHarvestTime = (
+  currentSeason: Seasons,
+  plant: AvailablePlants,
+  fieldUpgrades: FieldUpgrade[],
+): number => {
   const plantFile = Plants[plant];
 
+  let timeToReduce = 0;
+
+  if (isUpgradeApplied(AvailableItems.Fertilizer, fieldUpgrades))
+    timeToReduce +=
+      plantFile.minutesToHarvest * PLANTATION_HARVEST_MODIFIERS.FERTILIZER_HARVERST_BUFF;
+
   if (currentSeason === plantFile.bestSeason)
-    return (
-      Date.now() +
-      minutesToMillis(
-        Math.floor(plantFile.minutesToHarvest - plantFile.minutesToHarvest * SEASONAL_HARVEST_BUFF),
-      )
-    );
+    timeToReduce += plantFile.minutesToHarvest * SEASONAL_HARVEST_BUFF;
 
   if (currentSeason === plantFile.worstSeason)
-    return (
-      Date.now() +
-      minutesToMillis(
-        Math.floor(
-          plantFile.minutesToHarvest + plantFile.minutesToHarvest * SEASONAL_HARVEST_DEBUFF,
-        ),
-      )
-    );
+    timeToReduce -= plantFile.minutesToHarvest * SEASONAL_HARVEST_DEBUFF;
 
-  return Date.now() + minutesToMillis(plantFile.minutesToHarvest);
+  return Date.now() + Math.floor(minutesToMillis(plantFile.minutesToHarvest - timeToReduce));
 };
 
 const getFieldWeight = (
@@ -64,7 +72,7 @@ const getFieldWeight = (
   if (currentSeason === plantData.worstSeason)
     minValue -= PLANTATION_WEIGHT_MODIFIERS.WORST_SEASON_DEBUFF;
 
-  if (fieldUpgrades.some((a) => a.type === 'fertilizer' && a.expiresAt < Date.now())) {
+  if (isUpgradeApplied(AvailableItems.Fertilizer, fieldUpgrades)) {
     maxValue += PLANTATION_WEIGHT_MODIFIERS.FERTILIZER_MAX_BUFF;
     minValue += PLANTATION_WEIGHT_MODIFIERS.FERTILIZER_MIN_BUFF;
   }

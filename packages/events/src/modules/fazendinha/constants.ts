@@ -24,6 +24,10 @@ export const PLANTATION_WEIGHT_MODIFIERS = {
   FERTILIZER_MIN_BUFF: 0.3,
 };
 
+export const PLANTATION_HARVEST_MODIFIERS = {
+  FERTILIZER_HARVERST_BUFF: 15 / 100,
+};
+
 export const UnloadFields: { [field: number]: UnlockFieldFile } = {
   1: {
     cost: 50_000,

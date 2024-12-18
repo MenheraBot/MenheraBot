@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased] 
 
+### Added
+
+- **Melhorias de campos!** - Agora é possível melhorar os campos da fazendinha com os *Fertilizantes*. Os fertilizantes garantem que as plantações retornem mais plantas, e que amadureçam mais rápido.
+
 ### Changed
 
 - Quando o seu silo não está em sua capacidade máxima e você colhe uma planta que ultrapassaria o limite, agora o peso colhido é reduzido para o que cabe em seu silo. Com isso a colheita de uma planta só será impedida se o silo estiver completamente cheio. 

@@ -32,9 +32,9 @@ const plantField = async (
 
   const currentSeason = await getCurrentSeason();
 
-  const harvestAt = getHarvestTime(currentSeason, seed);
-
   const fieldUpgrades = farmer.plantations[selectedField].upgrades ?? [];
+
+  const harvestAt = getHarvestTime(currentSeason, seed, fieldUpgrades);
 
   const weight = getFieldWeight(seed, currentSeason, fieldUpgrades);
 
