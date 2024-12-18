@@ -75,7 +75,11 @@ const getAvailableToBuyImages = (
     .then((res) => res.map((b) => ({ name: b.name, id: b.imageId, price: b.price })));
 };
 
-const giveUploaderImageRoyalties = async (imageId: number, value: number): Promise<void> => {
+const giveUploaderImageRoyalties = async (
+  imageId: number,
+  value: number,
+  username: string,
+): Promise<void> => {
   const receiveValue = Math.floor(0.01 * value);
 
   const imageData = await profileImagesModel.findOneAndUpdate(
@@ -92,7 +96,7 @@ const giveUploaderImageRoyalties = async (imageId: number, value: number): Promi
   await notificationRepository.createNotification(
     imageData.uploaderId,
     'commands:notificações.notifications.user-bought-image',
-    { image: imageData.name },
+    { image: imageData.name, username },
   );
 
   await postTransaction(

@@ -138,7 +138,12 @@ const executeBuyImagesSelectComponent = async (ctx: ComponentInteractionContext)
         content: ctx.prettyResponse('error', 'commands:loja.buy_images.already-has'),
       });
 
-    await shopRepository.executeBuyImage(ctx.user.id, selectedImage, imageData.price);
+    await shopRepository.executeBuyImage(
+      ctx.user.id,
+      selectedImage,
+      imageData.price,
+      ctx.user.username,
+    );
 
     const commandInfo = await commandRepository.getCommandInfo('personalizar');
 
