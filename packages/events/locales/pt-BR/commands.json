@@ -1210,7 +1210,13 @@
         "description": "Aumente o limite de seu silo em **{{increase}}** espaços por apenas **{{cost}}** :star:\nAtualmente tu tem **{{limit}}** espaços de limite."
       },
       "fields":{
-        "title": "Administrar campo {{field}}"
+        "title": "Administrar campos",
+        "use-item": "Usar item no campo {{field}}",
+        "footer": "Administrando o campo {{field}}",
+        "no-upgrades": "Nenhuma melhoria aplicada no momento.",
+        "upgrade": "{{emoji}} {{upgrade}}\n{{expireLabel}} <t:{{unix}}:R>",
+        "expires": "Expira",
+        "expired": "Expirou"
       },
       "unlocked-field": "Você comprou esse terreno de seu vizinho!",
       "your-fields": "Seus Campos",
