@@ -1216,7 +1216,10 @@
         "no-upgrades": "Nenhuma melhoria aplicada no momento.",
         "upgrade": "{{emoji}} {{upgrade}}\n{{expireLabel}} <t:{{unix}}:R>",
         "expires": "Expira",
-        "expired": "Expirou"
+        "expired": "Expirou",
+        "no-item": "Você não possui mais o item {{emoji}} **{{item}}** para usar em seu campo!",
+        "use-anyway": "Usar mesmo assim",
+        "confirm-usage": "Este campo já está com esta melhoria ativada. Você tem certeza que deseja utilizar esse item no campo {{index}}? O tempo restante da melhoria atual será descartado."
       },
       "unlocked-field": "Você comprou esse terreno de seu vizinho!",
       "your-fields": "Seus Campos",
