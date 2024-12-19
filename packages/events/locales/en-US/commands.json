@@ -1205,7 +1205,13 @@
         "description": "Increase your silo limit by **{{increase}}** spaces for just **{{cost}}** :star:\nCurrently you have **{{limit}}** limit spaces."
       },
       "fields":{
-        "title": "Administrate field {{field}}"
+        "title": "Manage fields",
+        "use-item": "Use item on field {{field}}",
+        "footer": "Managing field {{field}}",
+        "no-upgrades": "No upgrades applied at the moment.",
+        "upgrade": "{{emoji}} {{upgrade}}\n{{expireLabel}} <t:{{unix}}:R>",
+        "expires": "Expires",
+        "expired": "Expired"
       },
       "unlocked-field": "You bought this land from your neighbor!",
       "your-fields": "Your Fields",
