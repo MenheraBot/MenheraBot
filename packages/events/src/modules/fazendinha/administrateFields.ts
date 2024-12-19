@@ -1,16 +1,21 @@
-import { ButtonComponent, ButtonStyles } from 'discordeno/types';
+import { ActionRow, ButtonComponent, ButtonStyles, SelectOption } from 'discordeno/types';
 import userRepository from '../../database/repositories/userRepository';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { DatabaseFarmerSchema } from '../../types/database';
 import { InteractionContext } from '../../types/menhera';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { PlantStateIcon, repeatIcon } from './displayPlantations';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { Plants, UnloadFields } from './constants';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+  createSelectMenu,
+} from '../../utils/discord/componentUtils';
+import { Items, Plants, UnloadFields } from './constants';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { checkNeededItems, removeItems } from './siloUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
+import { extractNameAndIdFromEmoji, MessageFlags } from '../../utils/discord/messageUtils';
 import starsRepository from '../../database/repositories/starsRepository';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
@@ -25,25 +30,33 @@ const displayAdministrateField = async (
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
   const embed = createEmbed({
-    title: ctx.locale('commands:fazendinha.admin.fields.title', { field: field + 1 }),
+    title: ctx.locale('commands:fazendinha.admin.fields.title'),
     color: hexStringToNumber(user.selectedColor),
     fields: [],
+    footer: { text: ctx.locale('commands:fazendinha.admin.fields.footer', { field: field + 1 }) },
   });
 
   const buttons = farmer.plantations.map((f, i) => {
     embed.fields?.push({
-      name: 'Melhorias do campo X',
+      inline: true,
+      name: ctx.locale('commands:fazendinha.plantations.field', { index: i + 1 }),
       value:
         f.upgrades && f.upgrades.length > 0
           ? f.upgrades
-              .map(
-                (u) =>
-                  `${ctx.locale(`data:farm-items.${u.id}`)}.\nExpira: <t:${millisToSeconds(
-                    u.expiresAt,
-                  )}:R>`,
+              .map((u) =>
+                ctx.locale('commands:fazendinha.admin.fields.upgrade', {
+                  emoji: Items[u.id].emoji,
+                  upgrade: ctx.locale(`data:farm-items.${u.id}`),
+                  unix: millisToSeconds(u.expiresAt),
+                  expireLabel: ctx.locale(
+                    `commands:fazendinha.admin.fields.${
+                      u.expiresAt > Date.now() ? 'expires' : 'expired'
+                    }`,
+                  ),
+                }),
               )
               .join('\n')
-          : 'Sem melhorias no momento',
+          : `:x: ${ctx.locale('commands:fazendinha.admin.fields.no-upgrades')}`,
     });
 
     return createButton({
@@ -56,7 +69,29 @@ const displayAdministrateField = async (
     });
   });
 
-  const components = [createActionRow(buttons as [ButtonComponent])];
+  const selectMenu = createSelectMenu({
+    customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'USE_ITEM', field),
+    maxValues: 1,
+    minValues: 1,
+    placeholder: ctx.locale('commands:fazendinha.admin.fields.use-item', { field: field + 1 }),
+    options: farmer.items.flatMap<SelectOption>((item) =>
+      item.amount <= 0
+        ? []
+        : [
+            {
+              label: `${item.amount}x ${ctx.locale(`data:farm-items.${item.id}`)}`,
+              value: `${item.id}`,
+              emoji: extractNameAndIdFromEmoji(Items[item.id].emoji),
+            },
+          ],
+    ),
+  });
+
+  const components: ActionRow[] = [];
+
+  if (selectMenu.options.length > 0) components.push(createActionRow([selectMenu]));
+
+  components.push(createActionRow(buttons as [ButtonComponent]));
 
   ctx.makeMessage({ embeds: [embed], components });
 };
