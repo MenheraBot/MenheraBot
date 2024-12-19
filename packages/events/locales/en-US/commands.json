@@ -1211,7 +1211,10 @@
         "no-upgrades": "No upgrades applied at the moment.",
         "upgrade": "{{emoji}} {{upgrade}}\n{{expireLabel}} <t:{{unix}}:R>",
         "expires": "Expires",
-        "expired": "Expired"
+        "expired": "Expired",
+        "no-item": "You no longer have the item {{emoji}} **{{item}}** to use on your field!",
+        "use-anyway": "Use anyway",
+        "confirm-usage": "This field already has this upgrade enabled. Are you sure you want to use this item in the {{index}} field? The remaining time of the current upgrade will be discarded."
       },
       "unlocked-field": "You bought this land from your neighbor!",
       "your-fields": "Your Fields",

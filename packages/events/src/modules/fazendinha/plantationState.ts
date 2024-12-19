@@ -82,4 +82,4 @@ const getFieldWeight = (
   return weight;
 };
 
-export { getPlantationState, getHarvestTime, getFieldWeight };
+export { getPlantationState, getHarvestTime, getFieldWeight, isUpgradeApplied };

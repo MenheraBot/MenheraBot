@@ -21,6 +21,8 @@ import { postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
 import { millisToSeconds } from '../../utils/miscUtils';
+import { AvailableItems } from './types';
+import { isUpgradeApplied } from './plantationState';
 
 const displayAdministrateField = async (
   ctx: ComponentInteractionContext,
@@ -96,8 +98,67 @@ const displayAdministrateField = async (
   ctx.makeMessage({ embeds: [embed], components });
 };
 
+const executeUseItem = async (
+  ctx: ComponentInteractionContext,
+  field: number,
+  itemId: AvailableItems,
+  confirmed: boolean,
+): Promise<void> => {
+  const itemData = Items[itemId];
+
+  const farmer = await farmerRepository.getFarmer(ctx.user.id);
+
+  const item = farmer.items.find((i) => i.id === itemId && i.amount > 0);
+
+  if (!item)
+    return ctx.respondInteraction({
+      content: ctx.prettyResponse('error', 'commands:fazendinha.admin.fields.no-item', {
+        item: ctx.locale(`data:farm-items.${itemId}`),
+        emoji: itemData.emoji,
+      }),
+    });
+
+  const upgrades = farmer.plantations[field].upgrades ?? [];
+
+  if (isUpgradeApplied(itemId, upgrades) && !confirmed)
+    return ctx.makeMessage({
+      embeds: [],
+      content: ctx.prettyResponse('question', 'commands:fazendinha.admin.fields.confirm-usage', {
+        index: field + 1,
+      }),
+      components: [
+        createActionRow([
+          createButton({
+            label: ctx.locale('commands:fazendinha.admin.fields.use-anyway'),
+            style: ButtonStyles.Secondary,
+            customId: createCustomId(
+              3,
+              ctx.user.id,
+              ctx.originalInteractionId,
+              'USE_ITEM',
+              field,
+              itemId,
+              true,
+            ),
+          }),
+        ]),
+      ],
+    });
+};
+
 const handleAdministrativeComponents = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [action, field] = ctx.sentData;
+  const [action, field, sentItemId, confirmed] = ctx.sentData;
+
+  if (action === 'USE_ITEM') {
+    const itemId = sentItemId ?? ctx.interaction.data.values?.[0];
+
+    return executeUseItem(
+      ctx,
+      Number(field),
+      Number(itemId) as AvailableItems,
+      confirmed === 'true',
+    );
+  }
 
   if (action === 'UNLOCK') return executeUnlockField(ctx);
 
