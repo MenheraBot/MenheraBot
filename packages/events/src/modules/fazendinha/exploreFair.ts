@@ -5,7 +5,7 @@ import { getOptionFromInteraction } from '../../structures/command/getCommandOpt
 import { InteractionContext } from '../../types/menhera';
 import fairRepository from '../../database/repositories/fairRepository';
 import { DatabaseFarmerSchema } from '../../types/database';
-import { addItems, getSiloLimits } from './siloUtils';
+import { addPlants, getSiloLimits } from './siloUtils';
 import userRepository from '../../database/repositories/userRepository';
 import starsRepository from '../../database/repositories/starsRepository';
 import farmerRepository from '../../database/repositories/farmerRepository';
@@ -114,7 +114,7 @@ const executeBuyItem = async (
     fairRepository.deleteAnnouncement(announcement._id),
     farmerRepository.updateSilo(
       ctx.user.id,
-      addItems(farmer.silo, [{ weight: announcement.weight, plant: announcement.plantType }]),
+      addPlants(farmer.silo, [{ weight: announcement.weight, plant: announcement.plantType }]),
     ),
     postTransaction(
       `${ctx.user.id}`,

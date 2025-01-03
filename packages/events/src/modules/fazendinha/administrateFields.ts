@@ -14,7 +14,7 @@ import {
 import { Items, Plants, UnloadFields } from './constants';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import farmerRepository from '../../database/repositories/farmerRepository';
-import { checkNeededItems, removeItems } from './siloUtils';
+import { checkNeededPlants, removeItems, removePlants } from './siloUtils';
 import { extractNameAndIdFromEmoji, MessageFlags } from '../../utils/discord/messageUtils';
 import starsRepository from '../../database/repositories/starsRepository';
 import { postTransaction } from '../../utils/apiRequests/statistics';
@@ -144,6 +144,10 @@ const executeUseItem = async (
         ]),
       ],
     });
+
+  // TODO
+
+  removeItems(farmer.items, [{ id: item.id, amount: 1 }]);
 };
 
 const handleAdministrativeComponents = async (ctx: ComponentInteractionContext): Promise<void> => {
@@ -173,7 +177,7 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
   const neededItems = UnloadFields[Number(selectedField)];
 
   const userData = await userRepository.ensureFindUser(ctx.user.id);
-  const canUnlock = checkNeededItems(neededItems.neededPlants, farmer.silo);
+  const canUnlock = checkNeededPlants(neededItems.neededPlants, farmer.silo);
 
   if (!canUnlock || userData.estrelinhas < neededItems.cost)
     return ctx.respondInteraction({
@@ -203,7 +207,7 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
 
   await farmerRepository.updateSilo(
     ctx.user.id,
-    removeItems(farmer.silo, neededItems.neededPlants),
+    removePlants(farmer.silo, neededItems.neededPlants),
   );
 
   ctx.makeMessage({
