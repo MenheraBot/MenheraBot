@@ -8,7 +8,7 @@ import { getUserDeliveries } from './deliveryUtils';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import farmerRepository from '../../database/repositories/farmerRepository';
-import { checkNeededItems, removeItems } from './siloUtils';
+import { checkNeededPlants, removePlants } from './siloUtils';
 import starsRepository from '../../database/repositories/starsRepository';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
@@ -36,7 +36,7 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
       content: ctx.prettyResponse('error', 'commands:fazendinha.entregas.already-finished'),
     });
 
-  const canFinishDaily = dailyUser.needs.every((e) => checkNeededItems([e], farmer.silo));
+  const canFinishDaily = dailyUser.needs.every((e) => checkNeededPlants([e], farmer.silo));
 
   if (!canFinishDaily)
     return ctx.makeMessage({
@@ -59,7 +59,7 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
     farmerRepository.finishDelivery(
       ctx.user.id,
       farmer.dailies,
-      removeItems(farmer.silo, dailyUser.needs),
+      removePlants(farmer.silo, dailyUser.needs),
       dailyUser.experience,
     ),
   ]);

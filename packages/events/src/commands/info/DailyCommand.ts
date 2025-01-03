@@ -13,7 +13,7 @@ import { InteractionContext } from '../../types/menhera';
 import { Plants } from '../../modules/fazendinha/constants';
 import { AvailablePlants } from '../../modules/fazendinha/types';
 import farmerRepository from '../../database/repositories/farmerRepository';
-import { addItems } from '../../modules/fazendinha/siloUtils';
+import { addPlants } from '../../modules/fazendinha/siloUtils';
 import { DatabaseUserSchema } from '../../types/database';
 import { getUniqueDaily } from '../../modules/dailies/calculateUserDailies';
 
@@ -200,7 +200,7 @@ const handleButtonInteractions = async (ctx: ComponentInteractionContext): Promi
       case 'seed': {
         const farmer = await farmerRepository.getFarmer(ctx.user.id);
         updateFunction = farmerRepository.updateSeeds;
-        updateObject = addItems(farmer.seeds, [
+        updateObject = addPlants(farmer.seeds, [
           { plant: selectedAward.helper as AvailablePlants, amount: selectedAward.value },
         ]);
         break;
@@ -208,7 +208,7 @@ const handleButtonInteractions = async (ctx: ComponentInteractionContext): Promi
       case 'plant': {
         const farmer = await farmerRepository.getFarmer(ctx.user.id);
         updateFunction = farmerRepository.updateSilo;
-        updateObject = addItems(farmer.silo, [
+        updateObject = addPlants(farmer.silo, [
           { plant: selectedAward.helper as AvailablePlants, weight: selectedAward.value },
         ]);
         break;
