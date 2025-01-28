@@ -1217,6 +1217,7 @@
         "upgrade": "{{emoji}} {{upgrade}}\n{{expireLabel}} <t:{{unix}}:R>",
         "expires": "Expira",
         "expired": "Expirou",
+        "upgrade-applied": "Melhoria ativada com sucesso! Ela expirará <t:{{unix}}:R>",
         "no-item": "Você não possui mais o item {{emoji}} **{{item}}** para usar em seu campo!",
         "use-anyway": "Usar mesmo assim",
         "confirm-usage": "Este campo já está com esta melhoria ativada. Você tem certeza que deseja utilizar esse item no campo {{index}}? O tempo restante da melhoria atual será descartado."

@@ -159,6 +159,22 @@ const executePlant = async (
     ).catch(debugError);
 };
 
+const applyUpgrade = async (
+  farmerId: BigString,
+  items: DatabaseFarmerSchema['items'],
+  fieldIndex: number,
+  field: Plantation,
+): Promise<void> => {
+  await farmerModel.findOneAndUpdate(
+    { id: `${farmerId}` },
+    {
+      $set: { [`plantations.${fieldIndex}`]: field, items },
+    },
+  );
+
+  await MainRedisClient.del(`farmer:${farmerId}`);
+};
+
 const unlockField = async (farmerId: BigString): Promise<void> => {
   await farmerModel.updateOne(
     {
@@ -301,5 +317,6 @@ export default {
   finishDelivery,
   updateSeeds,
   updateDeliveries,
+  applyUpgrade,
   executeHarvest,
 };
