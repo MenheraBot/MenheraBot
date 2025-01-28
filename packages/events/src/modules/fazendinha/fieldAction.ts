@@ -6,9 +6,9 @@ import { postFazendinhaAction } from '../../utils/apiRequests/statistics';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { displayPlantations } from './displayPlantations';
 import { getFieldWeight, getHarvestTime, getPlantationState } from './plantationState';
-import { Plants } from './constants';
+import { Items, Plants } from './constants';
 import { getCurrentSeason } from './seasonsManager';
-import { AvailablePlants, PlantedField } from './types';
+import { AvailableItems, AvailablePlants, Plantation, PlantedField } from './types';
 import { getSiloLimits } from './siloUtils';
 import executeDailies from '../dailies/executeDailies';
 import userRepository from '../../database/repositories/userRepository';
@@ -160,4 +160,22 @@ const changeSelectedSeed = async (
   displayPlantations(ctx, farmer, embedColor, Number(ctx.interaction.data.values[0]), -1);
 };
 
-export { executeFieldAction, changeSelectedSeed };
+const applyUpgrade = (buffId: AvailableItems, field: Plantation): Plantation => {
+  const upgrades = field.upgrades ?? [];
+
+  const currentUpgrade = upgrades.find((u) => u.id === buffId);
+
+  const item = Items[buffId];
+  const expiresAt = Date.now() + item.duration;
+
+  if (currentUpgrade) {
+    currentUpgrade.expiresAt = expiresAt;
+    return field;
+  }
+
+  upgrades.push({ id: buffId, expiresAt });
+
+  return { ...field, upgrades };
+};
+
+export { executeFieldAction, changeSelectedSeed, applyUpgrade };

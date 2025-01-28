@@ -23,6 +23,7 @@ import { ApiTransactionReason } from '../../types/api';
 import { millisToSeconds } from '../../utils/miscUtils';
 import { AvailableItems } from './types';
 import { isUpgradeApplied } from './plantationState';
+import { applyUpgrade } from './fieldAction';
 
 const displayAdministrateField = async (
   ctx: ComponentInteractionContext,
@@ -145,9 +146,19 @@ const executeUseItem = async (
       ],
     });
 
-  // TODO
+  const updatedItems = removeItems(farmer.items, [{ id: item.id, amount: 1 }]);
 
-  removeItems(farmer.items, [{ id: item.id, amount: 1 }]);
+  const updatedField = applyUpgrade(itemId, farmer.plantations[field]);
+
+  await farmerRepository.applyUpgrade(ctx.user.id, updatedItems, field, updatedField);
+
+  ctx.makeMessage({
+    embeds: [],
+    components: [],
+    content: ctx.prettyResponse('success', 'commands:fazendinha.admin.fields.upgrade-applied', {
+      unix: millisToSeconds(Date.now() + itemData.duration),
+    }),
+  });
 };
 
 const handleAdministrativeComponents = async (ctx: ComponentInteractionContext): Promise<void> => {

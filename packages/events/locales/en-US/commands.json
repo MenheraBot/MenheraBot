@@ -1212,6 +1212,7 @@
         "upgrade": "{{emoji}} {{upgrade}}\n{{expireLabel}} <t:{{unix}}:R>",
         "expires": "Expires",
         "expired": "Expired",
+        "upgrade-applied": "Upgrade activated! It will expire <t:{{unix}}:R>",
         "no-item": "You no longer have the item {{emoji}} **{{item}}** to use on your field!",
         "use-anyway": "Use anyway",
         "confirm-usage": "This field already has this upgrade enabled. Are you sure you want to use this item in the {{index}} field? The remaining time of the current upgrade will be discarded."
