@@ -1137,7 +1137,7 @@
       "select-between": "⭐ | Write any value between {{min}} and {{max}}"
     },
     "plantations": {
-      "field": "Field ({{index}})",
+      "field": "{{emojis}}Field ({{index}})",
       "harvest-weight": "Amount harvested: {{weight}} Kg",
       "seeds": "Seeds",
       "description": "**Current season:** {{emoji}} _{{season}}_\n**Ends** <t:{{unix}}:R>",

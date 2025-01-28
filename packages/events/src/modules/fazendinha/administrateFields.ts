@@ -42,7 +42,7 @@ const displayAdministrateField = async (
   const buttons = farmer.plantations.map((f, i) => {
     embed.fields?.push({
       inline: true,
-      name: ctx.locale('commands:fazendinha.plantations.field', { index: i + 1 }),
+      name: ctx.locale('commands:fazendinha.plantations.field', { index: i + 1, emojis: '' }),
       value:
         f.upgrades && f.upgrades.length > 0
           ? f.upgrades
@@ -254,7 +254,7 @@ const executeAdministrateFields = async (
     embed.fields?.push({
       name: `${i < plantationsLength ? '' : ':lock:'}${ctx.locale(
         'commands:fazendinha.plantations.field',
-        { index: i + 1 },
+        { index: i + 1, emojis: '' },
       )}`,
       value: i < plantationsLength ? emojis : `||${emojis}||`,
       inline: true,

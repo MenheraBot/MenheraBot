@@ -12,7 +12,7 @@ import {
 import { chunkArray, millisToSeconds } from '../../utils/miscUtils';
 import { InteractionContext } from '../../types/menhera';
 import { getPlantationState } from './plantationState';
-import { Plants } from './constants';
+import { Items, Plants } from './constants';
 import { getSeasonalInfo } from './seasonsManager';
 
 const PlantStateIcon: Record<PlantationState, string> = {
@@ -69,8 +69,19 @@ const parseUserPlantations = (
     const [plantState, timeToAction] = getPlantationState(field);
     const fieldText = getPlantationDisplay(ctx, plantState, timeToAction, field);
 
+    const upgrades = field.upgrades ?? [];
+
+    const prependTitle = upgrades.reduce<string>((text, upgrade) => {
+      if (upgrade.expiresAt <= Date.now()) return text;
+
+      return `${text}${Items[upgrade.id].emoji}`;
+    }, '');
+
     fields.push({
-      name: ctx.locale('commands:fazendinha.plantations.field', { index: i + 1 }),
+      name: ctx.locale('commands:fazendinha.plantations.field', {
+        index: i + 1,
+        emojis: prependTitle,
+      }),
       value: fieldText,
       inline: true,
     });

@@ -1142,7 +1142,7 @@
       "select-between": "⭐ | Digite qualquer valor entre {{min}} e {{max}}"
     },
     "plantations": {
-      "field": "Campo ({{index}})",
+      "field": "{{emojis}}Campo ({{index}})",
       "harvest-weight": "Quantidade colhida: {{weight}} Kg",
       "description": "**Estação atual**: {{emoji}} _{{season}}_\n**Termina** <t:{{unix}}:R>",
       "seeds": "Sementes",
