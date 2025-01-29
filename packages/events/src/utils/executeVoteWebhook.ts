@@ -6,6 +6,11 @@ import { debugError } from './debugError';
 import { createEmbed } from './discord/embedUtils';
 import { postTransaction } from './apiRequests/statistics';
 import { ApiTransactionReason } from '../types/api';
+import { calculateProbability } from './miscUtils';
+import farmerRepository from '../database/repositories/farmerRepository';
+import { addItems } from '../modules/fazendinha/siloUtils';
+import { AvailableItems } from '../modules/fazendinha/types';
+import { Items } from '../modules/fazendinha/constants';
 
 const voteConstants = {
   baseRollAmount: 1,
@@ -16,6 +21,11 @@ const voteConstants = {
   roll20Multiplier: 4,
   star20Multiplier: 4,
 };
+
+const fertilizerProbability = [
+  { value: 0, probability: 60 },
+  { value: 1, probability: 40 },
+];
 
 const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<void> => {
   const user = await userRepository.ensureFindUser(userId);
@@ -72,6 +82,20 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
     'estrelinhas',
     ApiTransactionReason.VOTE_THANK,
   );
+
+  const droppedItem = calculateProbability(fertilizerProbability);
+
+  if (droppedItem !== 0) {
+    const farmer = await farmerRepository.getFarmer(userId);
+
+    const newItems = addItems(farmer.items, [{ id: AvailableItems.Fertilizer, amount: 1 }]);
+
+    await farmerRepository.updateItems(userId, newItems);
+
+    embedDescription += `\n\nVocê também ganhou 1x ${
+      Items[AvailableItems.Fertilizer].emoji
+    } Fertilizante! Use em sua fazendinha com /fazendinha administrar campos`;
+  }
 
   const embed = createEmbed({
     title: embedTitle,
