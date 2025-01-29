@@ -1,7 +1,12 @@
 import { BigString } from 'discordeno/types';
 
 import { farmerModel } from '../collections';
-import { DatabaseFarmerSchema, QuantitativePlant, QuantitativeSeed } from '../../types/database';
+import {
+  DatabaseFarmerSchema,
+  QuantitativeItem,
+  QuantitativePlant,
+  QuantitativeSeed,
+} from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
 import {
@@ -63,6 +68,12 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
   ).catch(debugError);
 
   return parseMongoUserToRedisUser(fromMongo);
+};
+
+const updateItems = async (farmerId: BigString, items: QuantitativeItem[]): Promise<void> => {
+  await farmerModel.updateOne({ id: `${farmerId}` }, { items });
+
+  await MainRedisClient.del(`farmer:${farmerId}`);
 };
 
 const executeHarvest = async (
@@ -315,6 +326,7 @@ export default {
   updateSeason,
   updateSilo,
   finishDelivery,
+  updateItems,
   updateSeeds,
   updateDeliveries,
   applyUpgrade,

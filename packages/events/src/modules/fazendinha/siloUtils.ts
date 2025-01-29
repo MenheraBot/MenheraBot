@@ -21,6 +21,20 @@ const checkNeededPlants = (
     }),
   );
 
+const addItems = (user: QuantitativeItem[], toAdd: QuantitativeItem[]): QuantitativeItem[] =>
+  toAdd.reduce<QuantitativeItem[]>((p, c) => {
+    const fromUser = p.find((a) => a.id === c.id);
+
+    if (!fromUser) {
+      p.push(c);
+      return p;
+    }
+
+    fromUser.amount = fromUser.amount <= 0 ? c.amount : fromUser.amount + c.amount;
+
+    return p;
+  }, user);
+
 const removeItems = (user: QuantitativeItem[], toRemove: QuantitativeItem[]): QuantitativeItem[] =>
   user.reduce<QuantitativeItem[]>((p, c) => {
     const remove = toRemove.find((a) => a.id === c.id);
@@ -113,4 +127,4 @@ const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
   return { used, limit };
 };
 
-export { checkNeededPlants, removePlants, addPlants, getSiloLimits, removeItems };
+export { checkNeededPlants, removePlants, addPlants, getSiloLimits, removeItems, addItems };
