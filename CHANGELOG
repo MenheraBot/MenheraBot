@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - A notificação de participação de lucros na compra de imagens foi corrigida. 
+- Removida a possibilidade da semente de erva ser um prêmio em dailies. - Reportado por @mareys.
 
 ## [5.20.7] - 2025-01-02
 
