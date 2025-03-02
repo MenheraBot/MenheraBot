@@ -490,10 +490,13 @@
       "gods": "Deuses"
     },
     "fazendeiros": {
-      "title": "{{emoji}} | Melhores Fazendeiros de {{plant}} {{page}}º",
+      "title": "{{emoji}} | {{subtitle}} Fazendeiros de {{plant}} {{page}}º",
       "harvested": "Colheitas realizadas",
+      "rotten": "Colheitas perdidas",
       "experience-title": "Fazendeiros mais experientes {{page}}º",
-      "experience": "Experiência"
+      "experience": "Experiência",
+      "subtitle-rotten": "Piores",
+      "subtitle-harvested": "Melhores"
     },
     "estatisticas": {
       "cacar": {

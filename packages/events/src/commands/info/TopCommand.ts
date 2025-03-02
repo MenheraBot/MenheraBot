@@ -72,9 +72,16 @@ const TopCommand = createCommand({
           choices: [
             {
               name: '🌿 | Mais plantas colhidas',
-              value: 'plants',
+              value: 'harvested',
               nameLocalizations: {
                 'en-US': '🌿 | Most plants harvested',
+              },
+            },
+            {
+              name: '🍂 | Mais plantas apodrecidas',
+              value: 'rotten',
+              nameLocalizations: {
+                'en-US': '🍂 | Most rotted plants',
               },
             },
             {
@@ -422,12 +429,18 @@ const TopCommand = createCommand({
       }
       case 'fazendeiros': {
         const page = ctx.getOption<number>('página', false) ?? 0;
-        const type = ctx.getOption<'experience' | 'plants'>('tipo', false, true);
+        const type = ctx.getOption<'experience' | 'harvested' | 'rotten'>('tipo', false, true);
 
-        if (type === 'plants')
-          return executeFarmersTop(ctx, page, ctx.authorData.selectedColor, AvailablePlants.Mate);
+        if (type === 'experience')
+          return executeFarmersExperienceTop(ctx, page, ctx.authorData.selectedColor);
 
-        return executeFarmersExperienceTop(ctx, page, ctx.authorData.selectedColor);
+        return executeFarmersTop(
+          ctx,
+          page,
+          ctx.authorData.selectedColor,
+          AvailablePlants.Mate,
+          type,
+        );
       }
       case 'comandos': {
         const type = ctx.getOption<'commands' | 'user'>('tipo', false, true);

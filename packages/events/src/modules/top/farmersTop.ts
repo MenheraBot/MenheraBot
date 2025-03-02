@@ -19,12 +19,13 @@ const executeFarmersTop = async (
   page: number,
   embedColor: string,
   plantType: AvailablePlants,
+  orderBy: 'harvested' | 'rotten',
 ): Promise<void> => {
   const skip = calculateSkipCount(page);
 
   const usersToIgnore = await usersToIgnoreInTop();
 
-  const res = await getTopFarmers(skip, usersToIgnore, plantType);
+  const res = await getTopFarmers(skip, usersToIgnore, plantType, orderBy);
 
   if (!res || res.length === 0)
     return ctx.makeMessage({
@@ -35,6 +36,7 @@ const executeFarmersTop = async (
 
   const embed = createEmbed({
     title: ctx.locale('commands:top.fazendeiros.title', {
+      subtitle: ctx.locale(`commands:top.fazendeiros.subtitle-${orderBy}`),
       page: page > 1 ? page : 1,
       emoji: Plants[plantType].emoji,
       plant: ctx.locale(`data:plants.${plantType}`),
@@ -77,12 +79,21 @@ const executeFarmersTop = async (
       name: `**${skip + 1 + i} -** ${memberName}`,
       value: `${ctx.locale('commands:top.fazendeiros.harvested')}: **${res[i].harvest}** ${
         Plants[plantType].emoji
-      }${translatedTitle ? `\n> ${translatedTitle}` : ''}`,
+      }\n${ctx.locale('commands:top.fazendeiros.rotten')}: **${res[i].rotten}** 🍂${
+        translatedTitle ? `\n> ${translatedTitle}` : ''
+      }`,
       inline: false,
     });
   }
 
-  const buttons = createPaginationButtons(ctx, 'farmers', embedColor, `${plantType}`, page);
+  const buttons = createPaginationButtons(
+    ctx,
+    'farmers',
+    embedColor,
+    `${plantType}`,
+    page,
+    orderBy,
+  );
 
   const selectMenu = createActionRow([
     createSelectMenu({
@@ -94,6 +105,7 @@ const executeFarmersTop = async (
         embedColor,
         'CHANGE',
         page,
+        orderBy,
       ),
       maxValues: 1,
       options: Object.keys(Plants).map((a) => ({

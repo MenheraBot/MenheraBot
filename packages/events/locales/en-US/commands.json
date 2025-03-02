@@ -485,10 +485,13 @@
       "estrelinhas": "Estrelinhas"
     },
     "fazendeiros": {
-      "title": "{{emoji}} | Best Farmers of {{plant}} {{page}}º",
+      "title": "{{emoji}} | {{subtitle}} Farmers of {{plant}} {{page}}º",
       "harvested": "Harvested",
+      "rotten": "Rotted",
       "experience-title": "Most experienced farmers {{page}}º",
-      "experience": "Experience"
+      "experience": "Experience",
+      "subtitle-rotten": "Worst",
+      "subtitle-harvested": "Best"
     },
     "estatisticas": {
       "cacar": {
