@@ -47,6 +47,8 @@ const displayAdministrateField = async (
         f.upgrades && f.upgrades.length > 0
           ? f.upgrades
               .map((u) =>
+                // TODO(ysnoopyDogy): Quando tiver novos tipos de upgrades, tem que mudar a forma que apresenta
+                // não ter upgrades para não ficar uma lista quebrada. Preguića de fazer agora =/
                 ctx.locale(
                   u.expiresAt > Date.now()
                     ? 'commands:fazendinha.admin.fields.upgrade'

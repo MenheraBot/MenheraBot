@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - Quando o seu silo não está em sua capacidade máxima e você colhe uma planta que ultrapassaria o limite, agora o peso colhido é reduzido para o que cabe em seu silo. Com isso a colheita de uma planta só será impedida se o silo estiver completamente cheio. 
+- O `/fazendinha feira comprar` agora mostra o nome do usuário, ao invés da menção do anunciante.
 
 ### Fixed
 
