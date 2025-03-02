@@ -79,7 +79,7 @@ const executeFarmersTop = async (
       name: `**${skip + 1 + i} -** ${memberName}`,
       value: `${ctx.locale('commands:top.fazendeiros.harvested')}: **${res[i].harvest}** ${
         Plants[plantType].emoji
-      }\n${ctx.locale('commands:top.fazendeiros.rotten')}: **${res[i].rotten}** 🍂${
+      }\n${ctx.locale('commands:top.fazendeiros.rotten')}: **${res[i].rotted}** 🍂${
         translatedTitle ? `\n> ${translatedTitle}` : ''
       }`,
       inline: false,
