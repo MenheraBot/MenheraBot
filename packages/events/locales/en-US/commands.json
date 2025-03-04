@@ -1215,6 +1215,8 @@
         "upgrade": "{{emoji}} {{upgrade}}\n{{expireLabel}} <t:{{unix}}:R>",
         "expires": "Expires",
         "expired": "Expired",
+        "help-item-title": "How to get items?",
+        "help-item": "Currently, it is only possible to get items for the fields by voting for Menhera. With each vote, there is a **40%** chance of getting an item. On weekends, the chance doubles to **80%**",
         "upgrade-applied": "Upgrade activated! It will expire <t:{{unix}}:R>",
         "no-item": "You no longer have the item {{emoji}} **{{item}}** to use on your field!",
         "use-anyway": "Use anyway",
