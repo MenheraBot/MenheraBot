@@ -27,6 +27,11 @@ const fertilizerProbability = [
   { value: 1, probability: 40 },
 ];
 
+const weekendFertilizerProbability = [
+  { value: 0, probability: 20 },
+  { value: 1, probability: 80 },
+];
+
 const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<void> => {
   const user = await userRepository.ensureFindUser(userId);
 
@@ -83,7 +88,9 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
     ApiTransactionReason.VOTE_THANK,
   );
 
-  const droppedItem = calculateProbability(fertilizerProbability);
+  const droppedItem = calculateProbability(
+    isWeekend ? weekendFertilizerProbability : fertilizerProbability,
+  );
 
   if (droppedItem !== 0) {
     const farmer = await farmerRepository.getFarmer(userId);
