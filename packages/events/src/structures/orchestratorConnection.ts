@@ -11,6 +11,9 @@ import { getInteractionsCounter, getRegister } from './initializePrometheus';
 import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
 import cacheRepository from '../database/repositories/cacheRepository';
 import { getUserAvatar } from '../utils/discord/userUtils';
+import starsRepository from '../database/repositories/starsRepository';
+import { postTransaction } from '../utils/apiRequests/statistics';
+import { ApiTransactionReason } from '../types/api';
 
 const numberTypeToName = {
   1: 'PING',
@@ -151,6 +154,24 @@ const createIpcConnection = async (): Promise<void> => {
         bot.events.interactionCreate(
           bot,
           bot.transformers.interaction(bot, msg.data.body as DiscordInteraction),
+        );
+
+        break;
+      }
+      case 'THANK_SUGGESTION': {
+        const { userId } = msg.data;
+
+        if (!userId) return ack(false);
+
+        await starsRepository.addStars(userId as string, 5_000);
+        // TODO
+        // await notificationRepository.createNotification(userId, )
+        await postTransaction(
+          `${bot.applicationId}`,
+          userId,
+          5000,
+          'estrelinhas',
+          ApiTransactionReason.PIX_COMMAND,
         );
 
         break;
