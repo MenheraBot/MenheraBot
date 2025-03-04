@@ -1220,6 +1220,8 @@
         "upgrade": "{{emoji}} {{upgrade}}\n{{expireLabel}} <t:{{unix}}:R>",
         "expires": "Expira",
         "expired": "Expirou",
+        "help-item-title": "Como conseguir itens?",
+        "help-item": "Atualmente só é possível conseguir items para os campos votando na Menhera. A cada voto existe **40%** de chance de ganhar um item. Em finais de semana, a chance dobra para **80%**",
         "upgrade-applied": "Melhoria ativada com sucesso! Ela expirará <t:{{unix}}:R>",
         "no-item": "Você não possui mais o item {{emoji}} **{{item}}** para usar em seu campo!",
         "use-anyway": "Usar mesmo assim",

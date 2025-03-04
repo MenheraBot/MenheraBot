@@ -25,6 +25,36 @@ import { AvailableItems } from './types';
 import { isUpgradeApplied } from './plantationState';
 import { applyUpgrade } from './fieldAction';
 
+const displayItemsHelp = async (ctx: ComponentInteractionContext) => {
+  const authorData = await userRepository.ensureFindUser(ctx.user.id);
+
+  const voteCooldown = authorData.voteCooldown - Date.now();
+
+  const components: ActionRow[] = [];
+
+  if (voteCooldown < 0)
+    components.push(
+      createActionRow([
+        createButton({
+          style: ButtonStyles.Link,
+          url: `https://top.gg/bot/${bot.applicationId}/vote`,
+          label: ctx.locale('commands:cooldowns.click-to-vote'),
+        }),
+      ]),
+    );
+
+  ctx.makeMessage({
+    components,
+    embeds: [
+      createEmbed({
+        color: hexStringToNumber(authorData.selectedColor),
+        title: ctx.prettyResponse('question', 'commands:fazendinha.admin.fields.help-item-title'),
+        description: ctx.locale('commands:fazendinha.admin.fields.help-item'),
+      }),
+    ],
+  });
+};
+
 const displayAdministrateField = async (
   ctx: ComponentInteractionContext,
   field: number,
@@ -97,7 +127,13 @@ const displayAdministrateField = async (
 
   if (selectMenu.options.length > 0) components.push(createActionRow([selectMenu]));
 
-  components.push(createActionRow(buttons as [ButtonComponent]));
+  const helpButton = createButton({
+    label: ctx.locale('commands:fazendinha.admin.fields.help-item-title'),
+    style: ButtonStyles.Secondary,
+    customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'SHOW_HELP'),
+  });
+
+  components.push(createActionRow([...(buttons as [ButtonComponent]), helpButton]));
 
   ctx.makeMessage({ embeds: [embed], components });
 };
@@ -177,6 +213,8 @@ const handleAdministrativeComponents = async (ctx: ComponentInteractionContext):
       confirmed === 'true',
     );
   }
+
+  if (action === 'SHOW_HELP') return displayItemsHelp(ctx);
 
   if (action === 'UNLOCK') return executeUnlockField(ctx);
 
