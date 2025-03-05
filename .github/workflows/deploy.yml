@@ -47,7 +47,7 @@ jobs:
         run: yarn --silent events print-version | tail -n1 >> "$GITHUB_OUTPUT"
 
       - name: Archive build output
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: events
           path: packages/events/events.tar
