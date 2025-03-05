@@ -25,7 +25,7 @@ const purgeNotificationCache = (userId: BigString): void => {
 const createNotification = async (
   userId: BigString,
   translationKey: Translation,
-  translationValues: unknown,
+  translationValues: unknown = {},
 ): Promise<void> => {
   purgeNotificationCache(userId);
 

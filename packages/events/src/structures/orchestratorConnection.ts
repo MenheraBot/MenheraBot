@@ -14,6 +14,7 @@ import { getUserAvatar } from '../utils/discord/userUtils';
 import starsRepository from '../database/repositories/starsRepository';
 import { postTransaction } from '../utils/apiRequests/statistics';
 import { ApiTransactionReason } from '../types/api';
+import notificationRepository from '../database/repositories/notificationRepository';
 
 const numberTypeToName = {
   1: 'PING',
@@ -163,16 +164,19 @@ const createIpcConnection = async (): Promise<void> => {
 
         if (!userId) return ack(false);
 
-        await starsRepository.addStars(userId as string, 5_000);
-        // TODO
-        // await notificationRepository.createNotification(userId, )
-        await postTransaction(
-          `${bot.applicationId}`,
-          userId,
-          5000,
-          'estrelinhas',
-          ApiTransactionReason.PIX_COMMAND,
-        );
+        await Promise.all([
+          starsRepository.addStars(userId as string, 5_000),
+          notificationRepository.createNotification(userId, 'commands:menhera.suggest.approved'),
+          postTransaction(
+            `${bot.applicationId}`,
+            userId,
+            5000,
+            'estrelinhas',
+            ApiTransactionReason.PIX_COMMAND,
+          ),
+        ]);
+
+        ack(true);
 
         break;
       }
