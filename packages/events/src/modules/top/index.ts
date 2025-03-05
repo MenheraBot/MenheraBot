@@ -41,6 +41,7 @@ const createPaginationButtons = (
   firstInfo: string,
   secondInfo: string,
   page: number,
+  thirdInfo = '',
 ): ActionRow =>
   createActionRow([
     createButton({
@@ -52,6 +53,7 @@ const createPaginationButtons = (
         firstInfo,
         secondInfo,
         page === 0 ? 1 : page - 1,
+        thirdInfo,
       ),
       style: ButtonStyles.Primary,
       label: ctx.locale('common:back'),
@@ -66,6 +68,7 @@ const createPaginationButtons = (
         firstInfo,
         secondInfo,
         page === 0 ? 2 : page + 1,
+        thirdInfo,
       ),
       style: ButtonStyles.Primary,
       label: ctx.locale('common:next'),
@@ -74,7 +77,7 @@ const createPaginationButtons = (
   ]);
 
 const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [command, firstInfo, secondInfo, page] = ctx.sentData;
+  const [command, firstInfo, secondInfo, page, thirdInfo] = ctx.sentData;
 
   await ctx.makeMessage({
     components: [
@@ -114,7 +117,7 @@ const executeTopPagination = async (ctx: ComponentInteractionContext): Promise<v
     let plant = Number(secondInfo);
     if (secondInfo === 'CHANGE') plant = Number(ctx.interaction?.data?.values?.[0]);
 
-    return executeFarmersTop(ctx, Number(page), firstInfo, plant);
+    return executeFarmersTop(ctx, Number(page), firstInfo, plant, thirdInfo as 'harvested');
   }
 
   if (command === 'commands') return executeUsedCommandsTop(ctx, Number(page), firstInfo);

@@ -485,10 +485,13 @@
       "estrelinhas": "Estrelinhas"
     },
     "fazendeiros": {
-      "title": "{{emoji}} | Best Farmers of {{plant}} {{page}}º",
+      "title": "{{emoji}} | {{subtitle}} Farmers of {{plant}} {{page}}º",
       "harvested": "Harvested",
+      "rotten": "Rotted",
       "experience-title": "Most experienced farmers {{page}}º",
-      "experience": "Experience"
+      "experience": "Experience",
+      "subtitle-rotten": "Worst",
+      "subtitle-harvested": "Best"
     },
     "estatisticas": {
       "cacar": {
@@ -855,6 +858,7 @@
       "confirm-title": "Send suggestion?",
       "footer": "Misuse of this command may restrict your access to Menhera",
       "confirm": "Send",
+      "approved": "Your suggestion was approved! I sent you a thank you gift. Thank you <3",
       "edit": "Edit",
       "edit-title": "Edit suggestion",
       "thanks": "Your suggestion has been sent! Thank you very much >.<",
@@ -1137,13 +1141,14 @@
       "select-between": "⭐ | Write any value between {{min}} and {{max}}"
     },
     "plantations": {
-      "field": "Field ({{index}})",
+      "field": "{{emojis}}Field ({{index}})",
       "harvest-weight": "Amount harvested: {{weight}} Kg",
       "seeds": "Seeds",
       "description": "**Current season:** {{emoji}} _{{season}}_\n**Ends** <t:{{unix}}:R>",
       "silo": "Plants",
       "harvest": "Harvest",
       "discart": "Discart",
+      "collect": "Collect",
       "season-boost-false": "⚠️ The current season is unfavorable for this plant",
       "season-boost-true": "✨ The current season is perfect for this plant",
       "plant": "Plant",
@@ -1157,7 +1162,9 @@
       "not-enough-plants": "You no longer have these plants to sell",
       "max": "{{plant}} (Max. {{amount}})",
       "sell-plants": "Sell plants",
+      "items": "Items",
       "sell-plant": "Sell {{plant}}",
+      "use-items":  "Use items",
       "sell-all": "Sell Everything",
       "sell-title": "Sell your plants",
       "no-plants": "You don't have plants to sell",
@@ -1200,6 +1207,21 @@
         "title": "Upgrade your silo",
         "button": "Upgrade silo",
         "description": "Increase your silo limit by **{{increase}}** spaces for just **{{cost}}** :star:\nCurrently you have **{{limit}}** limit spaces."
+      },
+      "fields":{
+        "title": "Manage fields",
+        "use-item": "Use item on field {{field}}",
+        "footer": "Managing field {{field}}",
+        "no-upgrades": "No upgrades applied at the moment.",
+        "upgrade": "{{emoji}} {{upgrade}}\n{{expireLabel}} <t:{{unix}}:R>",
+        "expires": "Expires",
+        "expired": "Expired",
+        "help-item-title": "How to get items?",
+        "help-item": "Currently, it is only possible to get items for the fields by voting for Menhera. With each vote, there is a **40%** chance of getting an item. On weekends, the chance doubles to **80%**",
+        "upgrade-applied": "Upgrade activated! It will expire <t:{{unix}}:R>",
+        "no-item": "You no longer have the item {{emoji}} **{{item}}** to use on your field!",
+        "use-anyway": "Use anyway",
+        "confirm-usage": "This field already has this upgrade enabled. Are you sure you want to use this item in the {{index}} field? The remaining time of the current upgrade will be discarded."
       },
       "unlocked-field": "You bought this land from your neighbor!",
       "your-fields": "Your Fields",

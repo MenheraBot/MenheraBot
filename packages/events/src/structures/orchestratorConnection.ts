@@ -11,6 +11,10 @@ import { getInteractionsCounter, getRegister } from './initializePrometheus';
 import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
 import cacheRepository from '../database/repositories/cacheRepository';
 import { getUserAvatar } from '../utils/discord/userUtils';
+import starsRepository from '../database/repositories/starsRepository';
+import { postTransaction } from '../utils/apiRequests/statistics';
+import { ApiTransactionReason } from '../types/api';
+import notificationRepository from '../database/repositories/notificationRepository';
 
 const numberTypeToName = {
   1: 'PING',
@@ -152,6 +156,27 @@ const createIpcConnection = async (): Promise<void> => {
           bot,
           bot.transformers.interaction(bot, msg.data.body as DiscordInteraction),
         );
+
+        break;
+      }
+      case 'THANK_SUGGESTION': {
+        const { userId } = msg.data;
+
+        if (!userId) return ack(false);
+
+        await Promise.all([
+          starsRepository.addStars(userId as string, 5_000),
+          notificationRepository.createNotification(userId, 'commands:menhera.suggest.approved'),
+          postTransaction(
+            `${bot.applicationId}`,
+            userId,
+            5000,
+            'estrelinhas',
+            ApiTransactionReason.PIX_COMMAND,
+          ),
+        ]);
+
+        ack(true);
 
         break;
       }

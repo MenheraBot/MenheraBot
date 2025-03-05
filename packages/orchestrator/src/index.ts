@@ -37,6 +37,7 @@ export enum RequestType {
   YouMayRest = 'YOU_MAY_REST',
   SimonSays = 'SIMON_SAYS',
   AreYouOk = 'ARE_YOU_OK',
+  ThankSuggestion = 'THANK_SUGGESTION',
   AckInteractionResponse = 'ACK_INTERACTION_RESPONSE',
 }
 
@@ -57,7 +58,11 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
 
   const toUseClient = clientsToUse[eventsCounter % clientsToUse.length];
 
-  if ([RequestType.InteractionCreate, RequestType.TellMeUsers].includes(type)) {
+  if (
+    [RequestType.InteractionCreate, RequestType.TellMeUsers, RequestType.ThankSuggestion].includes(
+      type,
+    )
+  ) {
     const result = await toUseClient.conn.request({ type, data }).catch(() => null);
     return result;
   }

@@ -1,9 +1,17 @@
-import { DatabaseFarmerSchema, QuantitativePlant, QuantitativeSeed } from '../../types/database';
+import {
+  DatabaseFarmerSchema,
+  QuantitativeItem,
+  QuantitativePlant,
+  QuantitativeSeed,
+} from '../../types/database';
 import { INITIAL_LIMIT_FOR_SILO, SILO_LIMIT_INCREASE_BY_LEVEL } from './constants';
 
-type QuantitativeItem = QuantitativePlant | QuantitativeSeed;
+type QuantitativePlantItem = QuantitativePlant | QuantitativeSeed;
 
-const checkNeededItems = (need: Array<QuantitativeItem>, has: Array<QuantitativeItem>): boolean =>
+const checkNeededPlants = (
+  need: Array<QuantitativePlantItem>,
+  has: Array<QuantitativePlantItem>,
+): boolean =>
   need.every((needed) =>
     has.some((user) => {
       const userHas = 'weight' in user ? user.weight : user.amount;
@@ -13,7 +21,41 @@ const checkNeededItems = (need: Array<QuantitativeItem>, has: Array<Quantitative
     }),
   );
 
-const addItems = <T extends QuantitativeItem>(user: T[], toAdd: T[]): T[] =>
+const addItems = (user: QuantitativeItem[], toAdd: QuantitativeItem[]): QuantitativeItem[] =>
+  toAdd.reduce<QuantitativeItem[]>((p, c) => {
+    const fromUser = p.find((a) => a.id === c.id);
+
+    if (!fromUser) {
+      p.push(c);
+      return p;
+    }
+
+    fromUser.amount = fromUser.amount <= 0 ? c.amount : fromUser.amount + c.amount;
+
+    return p;
+  }, user);
+
+const removeItems = (user: QuantitativeItem[], toRemove: QuantitativeItem[]): QuantitativeItem[] =>
+  user.reduce<QuantitativeItem[]>((p, c) => {
+    const remove = toRemove.find((a) => a.id === c.id);
+
+    if (!remove) {
+      p.push(c);
+      return p;
+    }
+
+    const newAmount = c.amount - remove.amount;
+
+    if (newAmount > 0)
+      p.push({
+        id: c.id,
+        amount: newAmount,
+      });
+
+    return p;
+  }, []);
+
+const addPlants = <T extends QuantitativePlantItem>(user: T[], toAdd: T[]): T[] =>
   toAdd.reduce<T[]>((p, c) => {
     const fromUser = p.find((a) => a.plant === c.plant);
 
@@ -31,7 +73,7 @@ const addItems = <T extends QuantitativeItem>(user: T[], toAdd: T[]): T[] =>
     return p;
   }, user);
 
-const removeItems = <T extends QuantitativeItem>(user: T[], toRemove: T[]): T[] =>
+const removePlants = <T extends QuantitativePlantItem>(user: T[], toRemove: T[]): T[] =>
   user.reduce<T[]>((p, c) => {
     const remove = toRemove.find((a) => a.plant === c.plant);
 
@@ -60,7 +102,7 @@ interface SiloLimits {
 }
 
 const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
-  const countQuantitative = (items: QuantitativeItem[]): number =>
+  const countQuantitative = (items: Array<QuantitativePlantItem | QuantitativeItem>): number =>
     items.reduce(
       (p, c) =>
         p +
@@ -71,7 +113,11 @@ const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
     );
 
   const used = parseFloat(
-    (countQuantitative(user.silo) + countQuantitative(user.seeds)).toFixed(1),
+    (
+      countQuantitative(user.silo) +
+      countQuantitative(user.seeds) +
+      countQuantitative(user.items)
+    ).toFixed(1),
   );
 
   const limit = parseFloat(
@@ -81,4 +127,4 @@ const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
   return { used, limit };
 };
 
-export { checkNeededItems, removeItems, addItems, getSiloLimits };
+export { checkNeededPlants, removePlants, addPlants, getSiloLimits, removeItems, addItems };

@@ -1,6 +1,11 @@
 import { Localization } from 'discordeno/types';
 import { profileBadges } from '../modules/badges/profileBadges';
-import { AvailablePlants, DeliveryMission, Plantation } from '../modules/fazendinha/types';
+import {
+  AvailableItems,
+  AvailablePlants,
+  DeliveryMission,
+  Plantation,
+} from '../modules/fazendinha/types';
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
 import { AvailableLanguages, Translation } from './i18next';
@@ -124,6 +129,11 @@ export type QuantitativeSeed = {
   plant: AvailablePlants;
 };
 
+export interface QuantitativeItem {
+  id: AvailableItems;
+  amount: number;
+}
+
 export type QuantitativePlant = {
   amount?: number;
   plant: AvailablePlants;
@@ -152,6 +162,7 @@ export interface DatabaseFarmerSchema {
   plantations: Plantation[];
   seeds: QuantitativeSeed[];
   silo: QuantitativePlant[];
+  items: QuantitativeItem[];
   siloUpgrades: number;
   experience: number;
   lastPlantedSeed: AvailablePlants;

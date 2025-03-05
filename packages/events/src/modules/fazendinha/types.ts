@@ -28,6 +28,10 @@ export enum AvailablePlants {
   Mushroom,
 }
 
+export enum AvailableItems {
+  Fertilizer,
+}
+
 export type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
 
 export type SeasonData = {
@@ -35,12 +39,12 @@ export type SeasonData = {
   endsAt: number;
 };
 
-type DirtQualityUpgrade = {
-  type: 'dirt_quality';
-  usages: number;
+type FertilizerUpgrade = {
+  id: AvailableItems.Fertilizer;
+  expiresAt: number;
 };
 
-export type FieldUpgrade = DirtQualityUpgrade;
+export type FieldUpgrade = FertilizerUpgrade;
 
 export interface PlantedField {
   harvestAt: number;
@@ -48,12 +52,12 @@ export interface PlantedField {
   isPlanted: true;
   plantType: AvailablePlants;
   weight?: number;
-  upgrades: FieldUpgrade[];
+  upgrades?: FieldUpgrade[];
 }
 
 export interface EmptyField {
   isPlanted: false;
-  upgrades: FieldUpgrade[];
+  upgrades?: FieldUpgrade[];
 }
 
 export type PlantationState = 'EMPTY' | 'GROWING' | 'MATURE' | 'ROTTEN';
@@ -68,6 +72,11 @@ export interface PlantsFile {
   buyValue: number;
   bestSeason: Seasons;
   worstSeason: Seasons;
+}
+
+export interface ItemsFile {
+  duration: number;
+  emoji: string;
 }
 
 export interface DeliveryMission {

@@ -25,7 +25,7 @@ const getDailyAwardOptions = (): [
       case 'roll':
         return { type, value: ROLLS_COUNT };
       case 'seed': {
-        const randomSeed = Math.floor(Math.random() * 25);
+        const randomSeed = Math.floor(Math.random() * 24) + 1;
         return { type, value: SEED_AMOUNT, helper: randomSeed };
       }
       case 'plant': {

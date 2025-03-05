@@ -273,9 +273,10 @@ const getTopFarmers = async (
   skip: number,
   bannedUsers: string[],
   plantType: AvailablePlants,
-): Promise<{ user_id: string; harvest: number }[] | null> => {
+  orderBy: 'rotten' | 'harvested',
+): Promise<{ user_id: string; harvest: number; rotted: number }[] | null> => {
   const res = await dataRequest
-    .get('/statistics/fazendinha/top', { data: { skip, bannedUsers, plantType } })
+    .get('/statistics/fazendinha/top', { data: { skip, bannedUsers, plantType, orderBy } })
     .catch(debugError);
   if (!res) return null;
   if (!res.data.error) return res.data;

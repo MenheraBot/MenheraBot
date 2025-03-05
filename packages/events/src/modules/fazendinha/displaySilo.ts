@@ -10,7 +10,7 @@ import { DatabaseFarmerSchema } from '../../types/database';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getDisplayName } from '../../utils/discord/userUtils';
 import { AvailablePlants } from './types';
-import { Plants } from './constants';
+import { Items, Plants } from './constants';
 import {
   createActionRow,
   createButton,
@@ -80,6 +80,28 @@ const displaySilo = async (
     footer: { text: ctx.locale('commands:fazendinha.silo.footer', { ...getSiloLimits(farmer) }) },
   });
 
+  embed.fields?.push({
+    name: ctx.locale('commands:fazendinha.silo.items'),
+    value:
+      farmer.items.length === 0
+        ? ctx.locale('commands:fazendinha.silo.nothing')
+        : farmer.items
+            .flatMap((item) =>
+              item.amount > 0
+                ? [
+                    ctx.locale('commands:fazendinha.silo.display-other', {
+                      emoji: Items[item.id].emoji,
+                      amount: item.amount,
+                      metric: 'x',
+                      plant: ctx.locale(`data:farm-items.${item.id}`),
+                    }),
+                  ]
+                : [],
+            )
+            .join('\n'),
+    inline: true,
+  });
+
   const sellButton = createButton({
     label: ctx.locale('commands:fazendinha.silo.sell-plants'),
     style: maySell ? ButtonStyles.Success : ButtonStyles.Secondary,
@@ -87,9 +109,17 @@ const displaySilo = async (
     customId: createCustomId(8, ctx.user.id, ctx.originalInteractionId, 'DISPLAY', embedColor),
   });
 
+  const useItemsButton = createButton({
+    label: ctx.locale('commands:fazendinha.silo.use-items'),
+    style: ButtonStyles.Primary,
+    customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'ADMIN', 0),
+    disabled: farmer.items.length === 0 || farmer.items.every((i) => i.amount <= 0),
+  });
+
   ctx.makeMessage({
     embeds: [embed],
-    components: farmer.id === `${ctx.user.id}` ? [createActionRow([sellButton])] : [],
+    components:
+      farmer.id === `${ctx.user.id}` ? [createActionRow([sellButton, useItemsButton])] : [],
   });
 };
 

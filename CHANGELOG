@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.21.0] 
+
+### Added
+
+- **Melhorias de campos!** - Agora é possível melhorar os campos da fazendinha com os *Fertilizantes*. Os fertilizantes garantem que as plantações retornem mais plantas, e que amadureçam mais rápido. Use seus itens em `/fazendinha administrar campos`.
+- É possível ganhar fertilizantes votando na Menhera! A chance para ganhar um fertilizante ao votar é de **40%**. Em finais de semana, a chance dobra para **80%**. Em atualizações futuras, será possível conseguir fertilizantes de outras formas.
+- Adicionado novo top de fazendeiros: `/top fazendeiros tipo: mais plantas apodrecidas`.
+- Sugestões aprovadas são notificadas com o `/notificações` - Sugerido por @tinyteca.
+
+### Changed
+
+- Quando o seu silo não está em sua capacidade máxima e você colhe uma planta que ultrapassaria o limite, agora o peso colhido é reduzido para o que cabe em seu silo. Com isso a colheita de uma planta só será impedida se o silo estiver completamente cheio. 
+- O `/fazendinha feira comprar` agora mostra o nome do usuário, ao invés da menção do anunciante.
+
+### Fixed
+
+- A notificação de participação de lucros na compra de imagens foi corrigida. 
+- Removida a possibilidade da semente de erva ser um prêmio em dailies. - Reportado por @mareys.
+
 ## [5.20.7] - 2025-01-02
 
 ### Fixed

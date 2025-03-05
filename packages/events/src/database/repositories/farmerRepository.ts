@@ -1,7 +1,12 @@
 import { BigString } from 'discordeno/types';
 
 import { farmerModel } from '../collections';
-import { DatabaseFarmerSchema, QuantitativePlant, QuantitativeSeed } from '../../types/database';
+import {
+  DatabaseFarmerSchema,
+  QuantitativeItem,
+  QuantitativePlant,
+  QuantitativeSeed,
+} from '../../types/database';
 import { MainRedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
 import {
@@ -22,6 +27,7 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
   dailyDayId: user.dailyDayId,
   experience: user.experience,
   seeds: user.seeds,
+  items: user.items ?? [],
   siloUpgrades: user.siloUpgrades,
   silo: user.silo.map((a) => ({ ...a, weight: parseFloat((a.weight ?? a.amount).toFixed(1)) })),
   lastPlantedSeed: user.lastPlantedSeed,
@@ -32,7 +38,7 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
 
   registerCacheStatus(fromRedis, 'farmer');
 
-  if (fromRedis) return JSON.parse(fromRedis);
+  if (fromRedis) return parseMongoUserToRedisUser(JSON.parse(fromRedis));
 
   const fromMongo = await farmerModel.findOne({ id: userId }).catch(debugError);
 
@@ -62,6 +68,12 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
   ).catch(debugError);
 
   return parseMongoUserToRedisUser(fromMongo);
+};
+
+const updateItems = async (farmerId: BigString, items: QuantitativeItem[]): Promise<void> => {
+  await farmerModel.updateOne({ id: `${farmerId}` }, { items });
+
+  await MainRedisClient.del(`farmer:${farmerId}`);
 };
 
 const executeHarvest = async (
@@ -156,6 +168,22 @@ const executePlant = async (
       604800,
       JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
     ).catch(debugError);
+};
+
+const applyUpgrade = async (
+  farmerId: BigString,
+  items: DatabaseFarmerSchema['items'],
+  fieldIndex: number,
+  field: Plantation,
+): Promise<void> => {
+  await farmerModel.findOneAndUpdate(
+    { id: `${farmerId}` },
+    {
+      $set: { [`plantations.${fieldIndex}`]: field, items },
+    },
+  );
+
+  await MainRedisClient.del(`farmer:${farmerId}`);
 };
 
 const unlockField = async (farmerId: BigString): Promise<void> => {
@@ -298,7 +326,9 @@ export default {
   updateSeason,
   updateSilo,
   finishDelivery,
+  updateItems,
   updateSeeds,
   updateDeliveries,
+  applyUpgrade,
   executeHarvest,
 };

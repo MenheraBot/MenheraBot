@@ -5,7 +5,7 @@ import { getOptionFromInteraction } from '../../structures/command/getCommandOpt
 import { InteractionContext } from '../../types/menhera';
 import fairRepository from '../../database/repositories/fairRepository';
 import { DatabaseFarmerSchema } from '../../types/database';
-import { addItems, getSiloLimits } from './siloUtils';
+import { addPlants, getSiloLimits } from './siloUtils';
 import userRepository from '../../database/repositories/userRepository';
 import starsRepository from '../../database/repositories/starsRepository';
 import farmerRepository from '../../database/repositories/farmerRepository';
@@ -27,6 +27,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { SelectMenuInteraction } from '../../types/interaction';
 import { localizedResources } from '../../utils/miscUtils';
 import notificationRepository from '../../database/repositories/notificationRepository';
+import cacheRepository from '../../database/repositories/cacheRepository';
 
 const listItemAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'item', false) ?? '';
@@ -114,7 +115,7 @@ const executeBuyItem = async (
     fairRepository.deleteAnnouncement(announcement._id),
     farmerRepository.updateSilo(
       ctx.user.id,
-      addItems(farmer.silo, [{ weight: announcement.weight, plant: announcement.plantType }]),
+      addPlants(farmer.silo, [{ weight: announcement.weight, plant: announcement.plantType }]),
     ),
     postTransaction(
       `${ctx.user.id}`,
@@ -194,30 +195,48 @@ const displayFair = async (
     placeholder: ctx.locale('commands:fazendinha.feira.comprar.select-item'),
   });
 
-  announcements.forEach((item, i) => {
-    if (!item) return;
+  await new Promise((r) => {
+    let done = 0;
 
-    embed.description += `${ctx.locale('commands:fazendinha.feira.comprar.description', {
-      amount: item.weight,
-      emoji: Plants[item.plantType].emoji,
-      plant: ctx.locale(`data:plants.${item.plantType}`),
-      price: item.price,
-    })}${
-      !user
-        ? ctx.locale('commands:fazendinha.feira.comprar.user-info', {
-            user: mentionUser(item.userId),
-            index: i + 1,
-          })
-        : ''
-    }`;
+    const finishPromise = () => {
+      done += 1;
+      if (done >= announcements.length) return r(done);
+    };
 
-    selectMenu.options.push({
-      label: `${item.weight} Kg ${ctx.locale(`data:plants.${item.plantType}`)}${
-        user ? '' : ` (${i + 1})`
-      }`,
-      value: item._id,
-      description: `${item.price} ⭐`,
-      emoji: { name: Plants[item.plantType].emoji },
+    announcements.forEach(async (item, i) => {
+      if (!item) return finishPromise();
+
+      const userName = user
+        ? ''
+        : ` ${
+            (await cacheRepository.getDiscordUser(item.userId, false))?.username ??
+            mentionUser(item.userId)
+          }`;
+
+      embed.description += `${ctx.locale('commands:fazendinha.feira.comprar.description', {
+        amount: item.weight,
+        emoji: Plants[item.plantType].emoji,
+        plant: ctx.locale(`data:plants.${item.plantType}`),
+        price: item.price,
+      })}${
+        !user
+          ? ctx.locale('commands:fazendinha.feira.comprar.user-info', {
+              user: userName,
+              index: i + 1,
+            })
+          : ''
+      }`;
+
+      selectMenu.options.push({
+        label: `${item.weight} Kg ${ctx.locale(`data:plants.${item.plantType}`)}${
+          user ? '' : ` (${i + 1})`
+        }`,
+        value: item._id,
+        description: `${item.price} ⭐`,
+        emoji: { name: Plants[item.plantType].emoji },
+      });
+
+      finishPromise();
     });
   });
 

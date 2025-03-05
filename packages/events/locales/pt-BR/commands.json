@@ -490,10 +490,13 @@
       "gods": "Deuses"
     },
     "fazendeiros": {
-      "title": "{{emoji}} | Melhores Fazendeiros de {{plant}} {{page}}º",
+      "title": "{{emoji}} | {{subtitle}} Fazendeiros de {{plant}} {{page}}º",
       "harvested": "Colheitas realizadas",
+      "rotten": "Colheitas perdidas",
       "experience-title": "Fazendeiros mais experientes {{page}}º",
-      "experience": "Experiência"
+      "experience": "Experiência",
+      "subtitle-rotten": "Piores",
+      "subtitle-harvested": "Melhores"
     },
     "estatisticas": {
       "cacar": {
@@ -860,6 +863,7 @@
       "confirm-title": "Encaminhar sugestão?",
       "footer": "O uso indevido deste comando pode restringir seu acesso à Menhera",
       "confirm": "Enviar",
+      "approved": "Uma sugestão sua foi aprovada! Te enviei um pix de agradecimento. Obrigada <3",
       "edit": "Editar",
       "edit-title": "Editar sugestão",
       "thanks": "Sua sugestão foi enviada! Muito obrigada >.<",
@@ -1142,7 +1146,7 @@
       "select-between": "⭐ | Digite qualquer valor entre {{min}} e {{max}}"
     },
     "plantations": {
-      "field": "Campo ({{index}})",
+      "field": "{{emojis}}Campo ({{index}})",
       "harvest-weight": "Quantidade colhida: {{weight}} Kg",
       "description": "**Estação atual**: {{emoji}} _{{season}}_\n**Termina** <t:{{unix}}:R>",
       "seeds": "Sementes",
@@ -1150,6 +1154,7 @@
       "harvest": "Colher",
       "plant": "Plantar",
       "discart": "Descartar",
+      "collect": "Coletar",
       "season-boost-false": "⚠️ A estação atual é desfavorável para essa planta",
       "season-boost-true": "✨ A estação atual é perfeita para essa planta",
       "field-action": "{{action}} ({{index}})",
@@ -1173,12 +1178,14 @@
     },
     "silo": {
       "embed-title": "Silo de {{user}}",
+      "items": "Itens",
       "nothing": "**Nada**",
       "not-enough-plants": "Tu não possui mais essas plantas pra vender",
       "max": "{{plant}} (Max. {{amount}})",
       "sell-plants": "Vender plantas",
       "sell-plant": "Vender {{plant}}",
       "sell-all": "Vender tudo",
+      "use-items":  "Usar itens",
       "sell-title": "Venda suas plantas",
       "no-plants": "Tu não possui plantas para vender",
       "description": "{{text}}\n- {{emoji}} **{{amount}}{{metric}}** - {{plant}} (**{{value}}** :star:)",
@@ -1205,6 +1212,21 @@
         "title": "Melhore seu silo",
         "button": "Melhorar silo",
         "description": "Aumente o limite de seu silo em **{{increase}}** espaços por apenas **{{cost}}** :star:\nAtualmente tu tem **{{limit}}** espaços de limite."
+      },
+      "fields":{
+        "title": "Administrar campos",
+        "use-item": "Usar item no campo {{field}}",
+        "footer": "Administrando o campo {{field}}",
+        "no-upgrades": "Nenhuma melhoria aplicada no momento.",
+        "upgrade": "{{emoji}} {{upgrade}}\n{{expireLabel}} <t:{{unix}}:R>",
+        "expires": "Expira",
+        "expired": "Expirou",
+        "help-item-title": "Como conseguir itens?",
+        "help-item": "Atualmente só é possível conseguir items para os campos votando na Menhera. A cada voto existe **40%** de chance de ganhar um item. Em finais de semana, a chance dobra para **80%**",
+        "upgrade-applied": "Melhoria ativada com sucesso! Ela expirará <t:{{unix}}:R>",
+        "no-item": "Você não possui mais o item {{emoji}} **{{item}}** para usar em seu campo!",
+        "use-anyway": "Usar mesmo assim",
+        "confirm-usage": "Este campo já está com esta melhoria ativada. Você tem certeza que deseja utilizar esse item no campo {{index}}? O tempo restante da melhoria atual será descartado."
       },
       "unlocked-field": "Você comprou esse terreno de seu vizinho!",
       "your-fields": "Seus Campos",

@@ -10,7 +10,7 @@ import {
   MINIMUM_PRICE_TO_SELL_IN_FAIR,
   Plants,
 } from './constants';
-import { checkNeededItems, removeItems } from './siloUtils';
+import { checkNeededPlants, removePlants } from './siloUtils';
 import { AvailablePlants } from './types';
 import farmerRepository from '../../database/repositories/farmerRepository';
 import { localizedResources } from '../../utils/miscUtils';
@@ -136,7 +136,7 @@ const executeAnnounceProduct = async (
       ),
     });
 
-  const userHaveItems = checkNeededItems([{ amount, plant }], farmer.silo);
+  const userHaveItems = checkNeededPlants([{ amount, plant }], farmer.silo);
 
   if (!userHaveItems)
     return ctx.makeMessage({
@@ -192,7 +192,7 @@ const executeAnnounceProduct = async (
 
   await farmerRepository.updateSilo(
     ctx.user.id,
-    removeItems(farmer.silo, [{ weight: amount, plant }]),
+    removePlants(farmer.silo, [{ weight: amount, plant }]),
   );
 
   await executeDailies.announceProduct(ctx.authorData);

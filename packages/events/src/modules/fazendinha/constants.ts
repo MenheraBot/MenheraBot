@@ -1,4 +1,5 @@
-import { AvailablePlants, PlantsFile, UnlockFieldFile } from './types';
+import { hoursToMillis } from '../../utils/miscUtils';
+import { AvailableItems, AvailablePlants, ItemsFile, PlantsFile, UnlockFieldFile } from './types';
 
 export const INITIAL_LIMIT_FOR_SILO = 35;
 export const SILO_LIMIT_INCREASE_BY_LEVEL = 5;
@@ -19,8 +20,12 @@ export const PLANTATION_WEIGHT_MODIFIERS = {
   BASE_MAX_VALUE: 1.3,
   BEST_SEASON_BUFF: 0.2,
   WORST_SEASON_DEBUFF: 0.2,
-  DIRT_QUALITY_MAX_BUFF: 0.3,
-  DIRT_QUALITY_MIN_BUFF: 0.1,
+  FERTILIZER_MAX_BUFF: 0.5,
+  FERTILIZER_MIN_BUFF: 0.3,
+};
+
+export const PLANTATION_HARVEST_MODIFIERS = {
+  FERTILIZER_HARVERST_BUFF: 15 / 100,
 };
 
 export const UnloadFields: { [field: number]: UnlockFieldFile } = {
@@ -42,6 +47,13 @@ export const UnloadFields: { [field: number]: UnlockFieldFile } = {
       { weight: 4, plant: AvailablePlants.Mango },
       { weight: 6, plant: AvailablePlants.Pineapple },
     ],
+  },
+};
+
+export const Items: { [Item in AvailableItems]: ItemsFile } = {
+  [AvailableItems.Fertilizer]: {
+    duration: hoursToMillis(6),
+    emoji: '<:fertilizer:1316543322139136095>',
   },
 };
 
