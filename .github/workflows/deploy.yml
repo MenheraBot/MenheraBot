@@ -101,7 +101,7 @@ jobs:
         run: curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION="2.21.2" bash
 
       - name: Download events build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: events
           path: ./
