@@ -8,6 +8,7 @@ import { createRequestCommandsRouter } from './routes/requestCommands';
 import { createVoteWebhookRouter } from './routes/voteWebhook';
 import { createRequestUserDataRouter } from './routes/requestUserData';
 import { createPingRouter } from './routes/ping';
+import { createThankSuggestionRouter } from './routes/thankSuggestion';
 
 const server = new Koa();
 
@@ -33,6 +34,7 @@ const registerAllRouters = (): void => {
   registerRouter(createRequestCommandsRouter());
   registerRouter(createRequestUserDataRouter());
   registerRouter(createPingRouter());
+  registerRouter(createThankSuggestionRouter());
 };
 
 export { createHttpServer, registerAllRouters };
