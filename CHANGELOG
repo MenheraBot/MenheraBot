@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - **Melhorias de campos!** - Agora é possível melhorar os campos da fazendinha com os *Fertilizantes*. Os fertilizantes garantem que as plantações retornem mais plantas, e que amadureçam mais rápido. Use seus itens em `/fazendinha administrar campos`.
 - É possível ganhar fertilizantes votando na Menhera! A chance para ganhar um fertilizante ao votar é de **40%**. Em finais de semana, a chance dobra para **80%**. Em atualizações futuras, será possível conseguir fertilizantes de outras formas.
-- Adicionado novo top de fazendeiros: `/top fazendeiros tipo: mais plantas apodrecidas`
+- Adicionado novo top de fazendeiros: `/top fazendeiros tipo: mais plantas apodrecidas`.
+- Sugestões aprovadas são notificadas com o `/notificações` - Sugerido por @tinyteca.
 
 ### Changed
 

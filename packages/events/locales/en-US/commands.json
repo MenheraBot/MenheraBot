@@ -858,6 +858,7 @@
       "confirm-title": "Send suggestion?",
       "footer": "Misuse of this command may restrict your access to Menhera",
       "confirm": "Send",
+      "approved": "Your suggestion was approved! I sent you a thank you gift. Thank you <3",
       "edit": "Edit",
       "edit-title": "Edit suggestion",
       "thanks": "Your suggestion has been sent! Thank you very much >.<",
