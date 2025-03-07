@@ -16,6 +16,7 @@ import farmerRepository from '../../database/repositories/farmerRepository';
 import { addPlants } from '../../modules/fazendinha/siloUtils';
 import { DatabaseUserSchema } from '../../types/database';
 import { getUniqueDaily } from '../../modules/dailies/calculateUserDailies';
+import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils';
 
 const getDailyStatus = (daily: DatabaseDaily): 'reedem' | 'unfinished' | 'reedemed' =>
   // eslint-disable-next-line no-nested-ternary
@@ -63,7 +64,9 @@ const getMissionsEmbed = (
             : ctx.safeEmoji('gift'),
         });
       })
-      .join('\n- ')}`,
+      .join('\n- ')}\n\n${ctx.locale('commands:daily.reset', {
+      unix: millisToSeconds(Date.now() + getMillisecondsToTheEndOfDay()),
+    })}`,
   });
 
 const getMissionButtons = (

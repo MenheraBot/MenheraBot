@@ -1261,6 +1261,7 @@
   },
   "daily": {
     "title": "Your daily missions",
+    "reset": "Dailies will be changed <t:{{unix}}:R>",
     "change-daily": "Change mission",
     "already-changed": "You can only change one mission per day.",
     "change-title": "Choose one mission to change",

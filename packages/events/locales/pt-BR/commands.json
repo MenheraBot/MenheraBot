@@ -1266,7 +1266,7 @@
   },
   "daily": {
     "title": "Suas missões diárias",
-
+    "reset": "As missões serão trocadas <t:{{unix}}:R>",
     "change-daily": "Trocar missão",
     "already-changed": "Você só pode trocar uma missão por dia.",
     "success-changed": "A missão **{{index}}** foi trocada! Você recebeu uma nova missão:\n\n- {{newDaily}}",
