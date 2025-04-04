@@ -992,7 +992,7 @@
       "buy_fair": "buying in fair",
       "buy_fair_title": "Fair",
       "rps_command": "betting on rock paper scissors",
-      "rps_command_title": "Rock Paper Scissors" 
+      "rps_command_title": "Rock Paper Scissors"
     }
   },
   "poker": {
@@ -1164,7 +1164,7 @@
       "sell-plants": "Sell plants",
       "items": "Items",
       "sell-plant": "Sell {{plant}}",
-      "use-items":  "Use items",
+      "use-items": "Use items",
       "sell-all": "Sell Everything",
       "sell-title": "Sell your plants",
       "no-plants": "You don't have plants to sell",
@@ -1181,7 +1181,6 @@
       "no-plants": "You do not have the necessary plans to complete the delivery",
       "deliver": "Yayy! Delivery completed! You received **{{award}}** :star:",
       "finished-bonus": "Complete truck! You've received a **{{award}}** :star: bonus for delivering all your daily deliveries!",
-
       "daily-deliveries": "Daily Deliveries",
       "deliver-button": "Deliver {{index}}",
       "deliver-embed-name": "Delivery {{index}}",
@@ -1208,10 +1207,13 @@
         "button": "Upgrade silo",
         "description": "Increase your silo limit by **{{increase}}** spaces for just **{{cost}}** :star:\nCurrently you have **{{limit}}** limit spaces."
       },
-      "fields":{
+      "fields": {
+        "apply-to-all": "All fields",
         "title": "Manage fields",
         "use-item": "Use item on field {{field}}",
+        "use-item-all": "Use item on all fields",
         "footer": "Managing field {{field}}",
+        "footer-all": "Managing all fields",
         "no-upgrades": "No upgrades applied at the moment.",
         "upgrade": "{{emoji}} {{upgrade}}\n{{expireLabel}} <t:{{unix}}:R>",
         "expires": "Expires",
@@ -1220,8 +1222,10 @@
         "help-item": "Currently, it is only possible to get items for the fields by voting for Menhera. With each vote, there is a **40%** chance of getting an item. On weekends, the chance doubles to **80%**",
         "upgrade-applied": "Upgrade activated! It will expire <t:{{unix}}:R>",
         "no-item": "You no longer have the item {{emoji}} **{{item}}** to use on your field!",
+        "no-item-to-all": "You don't have sufficient {{emoji}} **{{item}}** to use in all fields!",
         "use-anyway": "Use anyway",
-        "confirm-usage": "This field already has this upgrade enabled. Are you sure you want to use this item in the {{index}} field? The remaining time of the current upgrade will be discarded."
+        "confirm-usage": "This field already has this upgrade enabled. Are you sure you want to use this item in the {{index}} field? The remaining time of the current upgrade will be discarded.",
+        "confirm-usage-all": "Some field already has this upgrade enabled. Are you sure you want to use this item in all fields? The remaining time of the current upgrade will be discarded."
       },
       "unlocked-field": "You bought this land from your neighbor!",
       "your-fields": "Your Fields",
@@ -1301,8 +1305,8 @@
     "self-mention": "You cannot bet against yourself",
     "poor": "{{user}} don't have **{{amount}}** :star: to bet on!",
     "someone-poor": "Algum dos usuários jogando não possui as estrelinhas suficientes para apostar",
-    "banned-user":"This user cannot bet because they're banned from Menhera!",
-    "confirm-button": "Accept challenge",   
+    "banned-user": "This user cannot bet because they're banned from Menhera!",
+    "confirm-button": "Accept challenge",
     "make-your-choice": "Make your choice",
     "results-title": "Rock Paper Scissors Results",
     "user-choice": "{{user}} chose {{choice}}!",
@@ -1314,7 +1318,7 @@
     "interaction-lost": "The game info were lost. Please use the command again",
     "rock": "Rock",
     "paper": "Paper",
-    "scissors": "Scissors",    
+    "scissors": "Scissors",
     "confirm-game-official": "{{user}} you were challenged to a **:rock: Rock, :page_facing_up: paper, :scissors: Scissors** game against {{author}} worth **{{amount}}** :star:",
     "confirm-game-friendly": "{{user}} you were challenged to a friendly **:rock: Rock, :page_facing_up: paper, :scissors: Scissors** game against {{author}}"
   }

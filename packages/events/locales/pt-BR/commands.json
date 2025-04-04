@@ -997,7 +997,7 @@
       "buy_fair": "comprar na feira",
       "buy_fair_title": "Feirinha",
       "rps_command": "apostar no pedra, papel e tesoura",
-      "rps_command_title": "Pedra, Papel e Tesoura" 
+      "rps_command_title": "Pedra, Papel e Tesoura"
     }
   },
   "poker": {
@@ -1167,7 +1167,6 @@
       "no-plants": "Tu não tem as plantas necessárias para finalizar a entrega",
       "deliver": "Yayy! Entrega finalizada! Tu recebeu **{{award}}** :star:",
       "finished-bonus": "Caminhão completo! Você recebeu um bônus de **{{award}}** :star: por conseguir entregar todas as suas entregas diárias!",
-
       "daily-deliveries": "Entregas Diárias",
       "deliver-button": "Entregar {{index}}",
       "deliver-embed-name": "Entrega {{index}}",
@@ -1185,7 +1184,7 @@
       "sell-plants": "Vender plantas",
       "sell-plant": "Vender {{plant}}",
       "sell-all": "Vender tudo",
-      "use-items":  "Usar itens",
+      "use-items": "Usar itens",
       "sell-title": "Venda suas plantas",
       "no-plants": "Tu não possui plantas para vender",
       "description": "{{text}}\n- {{emoji}} **{{amount}}{{metric}}** - {{plant}} (**{{value}}** :star:)",
@@ -1213,10 +1212,13 @@
         "button": "Melhorar silo",
         "description": "Aumente o limite de seu silo em **{{increase}}** espaços por apenas **{{cost}}** :star:\nAtualmente tu tem **{{limit}}** espaços de limite."
       },
-      "fields":{
+      "fields": {
+        "apply-to-all": "Todos campos",
         "title": "Administrar campos",
         "use-item": "Usar item no campo {{field}}",
+        "use-item-all": "Usar item em todos os campos",
         "footer": "Administrando o campo {{field}}",
+        "footer-all": "Administrando todos campos",
         "no-upgrades": "Nenhuma melhoria aplicada no momento.",
         "upgrade": "{{emoji}} {{upgrade}}\n{{expireLabel}} <t:{{unix}}:R>",
         "expires": "Expira",
@@ -1225,8 +1227,10 @@
         "help-item": "Atualmente só é possível conseguir items para os campos votando na Menhera. A cada voto existe **40%** de chance de ganhar um item. Em finais de semana, a chance dobra para **80%**",
         "upgrade-applied": "Melhoria ativada com sucesso! Ela expirará <t:{{unix}}:R>",
         "no-item": "Você não possui mais o item {{emoji}} **{{item}}** para usar em seu campo!",
+        "no-item-to-all": "Você não possui {{emoji}} **{{item}}** o suficiente para usar em todos os campos!",
         "use-anyway": "Usar mesmo assim",
-        "confirm-usage": "Este campo já está com esta melhoria ativada. Você tem certeza que deseja utilizar esse item no campo {{index}}? O tempo restante da melhoria atual será descartado."
+        "confirm-usage": "Este campo já está com esta melhoria ativada. Você tem certeza que deseja utilizar esse item no campo {{index}}? O tempo restante da melhoria atual será descartado.",
+        "confirm-usage-all": "Algum campo já está com esta melhoria ativada. Você tem certeza que deseja utilizar esse item em todos os campos? O tempo restante da melhoria atual será descartado."
       },
       "unlocked-field": "Você comprou esse terreno de seu vizinho!",
       "your-fields": "Seus Campos",
@@ -1306,12 +1310,12 @@
     "self-mention": "Você não pode apostar contra si mesmo",
     "poor": "{{user}} não possui **{{amount}}** :star: para apostar!",
     "someone-poor": "Some of the users playing do not have enough stars to bet",
-    "banned-user":"Este usuário não pode apostar pois está banido da Menhera!",
+    "banned-user": "Este usuário não pode apostar pois está banido da Menhera!",
     "confirm-button": "Aceitar desafio",
     "bot": "Bots não podem jogar Pedra, Papel e Tesoura :(",
     "rock": "Pedra",
     "paper": "Papel",
-    "scissors": "Tesoura",    
+    "scissors": "Tesoura",
     "result-draw": "## É um empate!",
     "results": "## {{winner}} ganhou de {{loser}}",
     "results-title": "Resultados do Pedra Papel e Tesoura",

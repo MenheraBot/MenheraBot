@@ -174,14 +174,24 @@ const applyUpgrade = async (
   farmerId: BigString,
   items: DatabaseFarmerSchema['items'],
   fieldIndex: number,
-  field: Plantation,
+  field: Plantation | Plantation[],
+  multiple: boolean,
 ): Promise<void> => {
-  await farmerModel.findOneAndUpdate(
-    { id: `${farmerId}` },
-    {
-      $set: { [`plantations.${fieldIndex}`]: field, items },
-    },
-  );
+  if (multiple) {
+    await farmerModel.findOneAndUpdate(
+      { id: `${farmerId}` },
+      {
+        $set: { plantations: field, items },
+      },
+    );
+  } else {
+    await farmerModel.findOneAndUpdate(
+      { id: `${farmerId}` },
+      {
+        $set: { [`plantations.${fieldIndex}`]: field, items },
+      },
+    );
+  }
 
   await MainRedisClient.del(`farmer:${farmerId}`);
 };

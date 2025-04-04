@@ -58,6 +58,7 @@ const displayItemsHelp = async (ctx: ComponentInteractionContext) => {
 const displayAdministrateField = async (
   ctx: ComponentInteractionContext,
   field: number,
+  applyToAll: boolean,
 ): Promise<void> => {
   const user = await userRepository.ensureFindUser(ctx.user.id);
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
@@ -66,7 +67,14 @@ const displayAdministrateField = async (
     title: ctx.locale('commands:fazendinha.admin.fields.title'),
     color: hexStringToNumber(user.selectedColor),
     fields: [],
-    footer: { text: ctx.locale('commands:fazendinha.admin.fields.footer', { field: field + 1 }) },
+    footer: {
+      text: ctx.locale(
+        `commands:fazendinha.admin.fields.footer${applyToAll ? ('-all' as const) : ''}`,
+        {
+          field: field + 1,
+        },
+      ),
+    },
   });
 
   const buttons = farmer.plantations.map((f, i) => {
@@ -100,17 +108,44 @@ const displayAdministrateField = async (
         field: i + 1,
       }),
       style: ButtonStyles.Primary,
-      customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'ADMIN', i),
+      customId: createCustomId(
+        3,
+        ctx.user.id,
+        ctx.originalInteractionId,
+        'ADMIN',
+        i,
+        0,
+        0,
+        applyToAll,
+      ),
       disabled: i === field,
     });
   });
 
+  const itemsToAllFields = farmer.items.filter((i) => i.amount >= farmer.plantations.length);
+
+  const itemsToUse = applyToAll ? itemsToAllFields : farmer.items;
+
   const selectMenu = createSelectMenu({
-    customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'USE_ITEM', field),
+    customId: createCustomId(
+      3,
+      ctx.user.id,
+      ctx.originalInteractionId,
+      'USE_ITEM',
+      field,
+      -1,
+      -1,
+      applyToAll,
+    ),
     maxValues: 1,
     minValues: 1,
-    placeholder: ctx.locale('commands:fazendinha.admin.fields.use-item', { field: field + 1 }),
-    options: farmer.items.flatMap<SelectOption>((item) =>
+    placeholder: ctx.locale(
+      applyToAll
+        ? 'commands:fazendinha.admin.fields.use-item-all'
+        : 'commands:fazendinha.admin.fields.use-item',
+      { field: field + 1 },
+    ),
+    options: itemsToUse.flatMap<SelectOption>((item) =>
       item.amount <= 0
         ? []
         : [
@@ -133,7 +168,25 @@ const displayAdministrateField = async (
     customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'SHOW_HELP'),
   });
 
-  components.push(createActionRow([...(buttons as [ButtonComponent]), helpButton]));
+  const applyToAllButton = createButton({
+    label: ctx.locale('commands:fazendinha.admin.fields.apply-to-all'),
+    style: applyToAll ? ButtonStyles.Success : ButtonStyles.Secondary,
+    customId: createCustomId(
+      3,
+      ctx.user.id,
+      ctx.originalInteractionId,
+      'ALL_FIELDS',
+      field,
+      -1,
+      -1,
+      applyToAll,
+    ),
+    disabled: itemsToAllFields.length === 0 && !applyToAll,
+  });
+
+  components.push(
+    createActionRow([...(buttons as [ButtonComponent]), helpButton, applyToAllButton]),
+  );
 
   ctx.makeMessage({ embeds: [embed], components });
 };
@@ -143,6 +196,7 @@ const executeUseItem = async (
   field: number,
   itemId: AvailableItems,
   confirmed: boolean,
+  applyToAll: boolean,
 ): Promise<void> => {
   const itemData = Items[itemId];
 
@@ -158,14 +212,31 @@ const executeUseItem = async (
       }),
     });
 
+  if (applyToAll && item.amount < farmer.plantations.length)
+    return ctx.respondInteraction({
+      content: ctx.prettyResponse('error', 'commands:fazendinha.admin.fields.no-item-to-all', {
+        item: ctx.locale(`data:farm-items.${itemId}`),
+        emoji: itemData.emoji,
+      }),
+    });
+
   const upgrades = farmer.plantations[field].upgrades ?? [];
 
-  if (isUpgradeApplied(itemId, upgrades) && !confirmed)
+  if (
+    (applyToAll
+      ? farmer.plantations.some((p) => isUpgradeApplied(itemId, p.upgrades ?? []))
+      : isUpgradeApplied(itemId, upgrades)) &&
+    !confirmed
+  )
     return ctx.makeMessage({
       embeds: [],
-      content: ctx.prettyResponse('question', 'commands:fazendinha.admin.fields.confirm-usage', {
-        index: field + 1,
-      }),
+      content: ctx.prettyResponse(
+        'question',
+        'commands:fazendinha.admin.fields.confirm-usage-all',
+        {
+          index: field + 1,
+        },
+      ),
       components: [
         createActionRow([
           createButton({
@@ -179,17 +250,22 @@ const executeUseItem = async (
               field,
               itemId,
               true,
+              applyToAll,
             ),
           }),
         ]),
       ],
     });
 
-  const updatedItems = removeItems(farmer.items, [{ id: item.id, amount: 1 }]);
+  const updatedItems = removeItems(farmer.items, [
+    { id: item.id, amount: applyToAll ? farmer.plantations.length : 1 },
+  ]);
 
-  const updatedField = applyUpgrade(itemId, farmer.plantations[field]);
+  const updatedFields = applyToAll
+    ? farmer.plantations.map((p) => applyUpgrade(itemId, p))
+    : applyUpgrade(itemId, farmer.plantations[field]);
 
-  await farmerRepository.applyUpgrade(ctx.user.id, updatedItems, field, updatedField);
+  await farmerRepository.applyUpgrade(ctx.user.id, updatedItems, field, updatedFields, applyToAll);
 
   ctx.makeMessage({
     embeds: [],
@@ -201,16 +277,18 @@ const executeUseItem = async (
 };
 
 const handleAdministrativeComponents = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [action, field, sentItemId, confirmed] = ctx.sentData;
+  const [action, field, sentItemId, confirmed, applyToAll] = ctx.sentData;
 
   if (action === 'USE_ITEM') {
-    const itemId = sentItemId ?? ctx.interaction.data.values?.[0];
+    const itemId =
+      sentItemId && sentItemId !== '-1' ? sentItemId : ctx.interaction.data.values?.[0];
 
     return executeUseItem(
       ctx,
       Number(field),
       Number(itemId) as AvailableItems,
       confirmed === 'true',
+      applyToAll === 'true',
     );
   }
 
@@ -218,7 +296,11 @@ const handleAdministrativeComponents = async (ctx: ComponentInteractionContext):
 
   if (action === 'UNLOCK') return executeUnlockField(ctx);
 
-  if (action === 'ADMIN') return displayAdministrateField(ctx, Number(field));
+  if (action === 'ADMIN')
+    return displayAdministrateField(ctx, Number(field), applyToAll === 'true');
+
+  if (action === 'ALL_FIELDS')
+    return displayAdministrateField(ctx, Number(field), applyToAll !== 'true');
 };
 
 const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<void> => {
