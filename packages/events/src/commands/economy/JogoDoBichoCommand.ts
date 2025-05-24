@@ -35,6 +35,8 @@ import bichoRepository from '../../database/repositories/bichoRepository';
 import { postTransaction } from '../../utils/apiRequests/statistics';
 import { bot } from '../..';
 import { ApiTransactionReason } from '../../types/api';
+import executeDailies from '../../modules/dailies/executeDailies';
+import { DatabaseUserSchema } from '../../types/database';
 
 const tabledAnimals = (() => {
   let text = '';
@@ -82,6 +84,9 @@ const finishUserBet = async (
 
   const [selectedBet, bet] = ctx.sentData;
 
+  const registerBetDaily = (userData: DatabaseUserSchema) =>
+    executeDailies.justBet(userData, 'bicho');
+
   switch (selectedBet) {
     case 'MODAL': {
       const userInput = extractFields(ctx.interaction as ModalInteraction)[0].value;
@@ -124,6 +129,7 @@ const finishUserBet = async (
         'estrelinhas',
         ApiTransactionReason.BICHO_COMMAND,
       );
+      await registerBetDaily(userData);
       break;
     }
     case 'UNITY': {
@@ -150,6 +156,7 @@ const finishUserBet = async (
         'estrelinhas',
         ApiTransactionReason.BICHO_COMMAND,
       );
+      await registerBetDaily(userData);
       break;
     }
     case 'SEQUENCE':

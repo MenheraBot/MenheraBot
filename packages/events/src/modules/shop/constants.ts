@@ -18,7 +18,7 @@ const colorPrices = {
   green: 30_000,
   pink: 30_000,
   yellow: 30_000,
-  your_choice: 50_000,
+  your_choice: 35_000,
 };
 
 const customImagePrice = 150_000;

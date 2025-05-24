@@ -165,12 +165,12 @@ const createIpcConnection = async (): Promise<void> => {
         if (!userId) return ack(false);
 
         await Promise.all([
-          starsRepository.addStars(userId as string, 5_000),
+          starsRepository.addStars(userId as string, 30_000),
           notificationRepository.createNotification(userId, 'commands:menhera.suggest.approved'),
           postTransaction(
             `${bot.applicationId}`,
             userId,
-            5000,
+            30_000,
             'estrelinhas',
             ApiTransactionReason.PIX_COMMAND,
           ),

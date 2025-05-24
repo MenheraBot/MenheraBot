@@ -60,7 +60,7 @@ const Dailies: Record<number, Daily> = {
     amountLimits: [10000, 40000],
   },
   25: {
-    type: 'win_bet',
+    type: 'just_bet',
     amountLimits: [1, 2],
     specifications: ['bicho'],
   },

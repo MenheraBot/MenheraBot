@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.21.2] - 2025-05-24
+
+### Added
+
+- Agora é possível ver as missões diárias de outro usuário.
+
+### Changed
+
+- A missão `Vença apostas no bicho` foi atualizada para `Aposte no bicho`. - Sugerido por @jokzy.y
+- O prêmio para uma sugestão aprovada foi aumentada de `5000` para `30000` estrelinhas. 
+- Aumentado o limite de apostas do Blackjack de `50000`para `100000` estrelinhas. - Sugerido por @jokzy.y
+- Diminuído o preço da cor customizada de `50_000` para `35_000`. - Sugerido por @mareys
+
 ## [5.21.1] - 2025-04-04
 
 ### Added

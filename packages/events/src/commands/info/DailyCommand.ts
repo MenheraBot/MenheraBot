@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ButtonComponent, ButtonStyles } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonComponent, ButtonStyles } from 'discordeno/types';
+import { User } from 'discordeno/transformers';
 import { createCommand } from '../../structures/command/createCommand';
 import { getUserDailies } from '../../modules/dailies/getUserDailies';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
@@ -17,6 +18,7 @@ import { addPlants } from '../../modules/fazendinha/siloUtils';
 import { DatabaseUserSchema } from '../../types/database';
 import { getUniqueDaily } from '../../modules/dailies/calculateUserDailies';
 import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils';
+import { getDisplayName } from '../../utils/discord/userUtils';
 
 const getDailyStatus = (daily: DatabaseDaily): 'reedem' | 'unfinished' | 'reedemed' =>
   // eslint-disable-next-line no-nested-ternary
@@ -40,11 +42,13 @@ const getMissionsEmbed = (
   user: DatabaseUserSchema,
   userDailies: DatabaseDaily[],
   isChangeEmbed: boolean,
+  username: string,
 ) =>
   createEmbed({
     title: ctx.prettyResponse(
       'calendar',
       isChangeEmbed ? 'commands:daily.change-title' : 'commands:daily.title',
+      { username },
     ),
     color: hexStringToNumber(user.selectedColor),
     footer: isChangeEmbed ? { text: ctx.locale('commands:daily.change-footer') } : undefined,
@@ -144,7 +148,7 @@ const handleButtonInteractions = async (ctx: ComponentInteractionContext): Promi
         content: ctx.prettyResponse('error', 'commands:daily.already-changed'),
       });
 
-    const embed = getMissionsEmbed(ctx, user, userDailies, true);
+    const embed = getMissionsEmbed(ctx, user, userDailies, true, ctx.user.username);
     const buttons = getMissionButtons(ctx, userDailies, 'CHANGE');
 
     return ctx.makeMessage({ components: [createActionRow(buttons)], embeds: [embed] });
@@ -280,13 +284,28 @@ const DailyCommand = createCommand({
   descriptionLocalizations: { 'en-US': '「📅」・See and reedem your daily missions' },
   category: 'info',
   authorDataFields: ['dailies', 'dailyDayId', 'selectedColor', 'estrelinhas'],
+  options: [
+    {
+      name: 'user',
+      type: ApplicationCommandOptionTypes.User,
+      description: 'Usuário para ver suas dailies',
+      descriptionLocalizations: { 'en-US': 'User to check the dailies' },
+      required: false,
+    },
+  ],
   commandRelatedExecutions: [handleButtonInteractions],
   execute: async (ctx, finishCommand) => {
     finishCommand();
+    const userToCheck = ctx.getOption<User>('user', 'users', false) ?? ctx.author;
 
-    const userDailies = await getUserDailies(ctx.authorData);
+    const userData =
+      userToCheck.id === ctx.user.id
+        ? ctx.authorData
+        : await userRepository.ensureFindUser(userToCheck.id);
 
-    const embed = getMissionsEmbed(ctx, ctx.authorData, userDailies, false);
+    const userDailies = await getUserDailies(userData);
+
+    const embed = getMissionsEmbed(ctx, userData, userDailies, false, getDisplayName(userToCheck));
 
     const buttons = getMissionButtons(ctx, userDailies, 'REEDEM');
 
@@ -301,7 +320,10 @@ const DailyCommand = createCommand({
       }),
     );
 
-    ctx.makeMessage({ embeds: [embed], components: [createActionRow(buttons)] });
+    ctx.makeMessage({
+      embeds: [embed],
+      components: userToCheck.id === ctx.user.id ? [createActionRow(buttons)] : [],
+    });
   },
 });
 

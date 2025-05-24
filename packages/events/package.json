@@ -1,16 +1,16 @@
 {
   "name": "@menhera-bot/events",
   "type": "module",
-  "version": "5.21.1",
+  "version": "5.21.2",
   "engines": {
     "node": ">=18"
   },
   "description": "The core package of Menhera. This package process all interactions that Menhera receives from users",
   "main": "dist/index.js",
   "repository": "https://github.com/MenheraBot/MenheraBot",
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "readme": "https://github.com/MenheraBot/MenheraBot#readme",
-  "author": "Luxanna Crownguard (ySnoopyDogy)",
+  "author": "Luan Caliel (ySnoopyDogy)",
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "tsc --project tsconfig.build.json",
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@sentry/node": "^7.77.0",
-    "axios": "^1.7.4",
+    "axios": "^1.8.2",
     "discordeno": "^18.0.1",
     "i18next": "^21.8.14",
     "i18next-fs-backend": "^1.1.4",
