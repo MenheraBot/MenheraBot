@@ -22,7 +22,7 @@
     "qs": "^6.11.2"
   },
   "repository": "https://github.com/MenheraBot/MenheraBot",
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "readme": "https://github.com/MenheraBot/MenheraBot#readme",
   "devDependencies": {
     "@types/koa-router": "^7.4.4"
