@@ -1269,7 +1269,7 @@
     }
   },
   "daily": {
-    "title": "Suas missões diárias",
+    "title": "Missões diárias de {{username}}",
     "reset": "As missões serão trocadas <t:{{unix}}:R>",
     "change-daily": "Trocar missão",
     "already-changed": "Você só pode trocar uma missão por dia.",
