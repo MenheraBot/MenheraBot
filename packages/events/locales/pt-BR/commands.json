@@ -1292,6 +1292,9 @@
       "hunt": "({{index}}) Caça"
     },
     "descriptions": {
+      "just_bet": "{{emoji}} Aposte no _{{specification}}_ **{{count}}** vezes. ({{has}}/{{need}})",
+      "just_bet-one": "{{emoji}} Aposte no _{{specification}}_ **{{count}}** vez. ({{has}}/{{need}})",
+      "just_bet-other": "{{emoji}} Aposte no _{{specification}}_ **{{count}}** vezes. ({{has}}/{{need}})",
       "win_bet": "{{emoji}} Vença apostas no _{{specification}}_ **{{count}}** vezes. ({{has}}/{{need}})",
       "win_bet-one": "{{emoji}} Vença apostas no _{{specification}}_ **{{count}}** vez. ({{has}}/{{need}})",
       "win_bet-other": "{{emoji}} Vença apostas no _{{specification}}_ **{{count}}** vezes. ({{has}}/{{need}})",

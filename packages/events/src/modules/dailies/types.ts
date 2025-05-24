@@ -5,6 +5,7 @@ import { AwardValues } from './dailies';
 type DailyTypes =
   | 'use_command'
   | 'win_bet'
+  | 'just_bet'
   | 'win_stars_in_bets'
   | 'announce_product'
   | 'success_on_hunt'
