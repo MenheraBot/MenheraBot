@@ -12,13 +12,11 @@
     "build:all": "concurrently \"yarn rest build\" \"yarn orchestrator build\" \"yarn events build\"",
     "run:lint": "eslint ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MenheraBot/MenheraBot.git"
-  },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": "https://github.com/MenheraBot/MenheraBot",
+  "license": "AGPL-3.0-only",
+  "readme": "https://github.com/MenheraBot/MenheraBot#readme",
+  "author": "Luan Caliel (ySnoopyDogy)",
   "bugs": {
     "url": "https://github.com/MenheraBot/MenheraBot/issues"
   },

@@ -81,12 +81,17 @@ const winStarsInBet = async (user: DatabaseUserSchema, amount: number): Promise<
   await executeDailies(user, shouldExecute, amount);
 };
 
-const winBet = async (
-  user: DatabaseUserSchema,
-  bet: 'roleta' | 'bicho' | 'blackjack',
-): Promise<void> => {
+const winBet = async (user: DatabaseUserSchema, bet: 'roleta' | 'blackjack'): Promise<void> => {
   const shouldExecute = (dailyData: Daily, specification?: string) => {
     return dailyData.type === 'win_bet' && specification === bet;
+  };
+
+  await executeDailies(user, shouldExecute);
+};
+
+const justBet = async (user: DatabaseUserSchema, bet: 'bicho'): Promise<void> => {
+  const shouldExecute = (dailyData: Daily, specification?: string) => {
+    return dailyData.type === 'just_bet' && specification === bet;
   };
 
   await executeDailies(user, shouldExecute);
@@ -130,6 +135,7 @@ const finishDelivery = async (user: DatabaseUserSchema): Promise<void> => {
 
 export default {
   useCommand,
+  justBet,
   winBet,
   harvestPlant,
   finishDelivery,

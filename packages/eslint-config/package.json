@@ -2,7 +2,7 @@
   "name": "@menhera-bot/eslint-config",
   "version": "1.0.0",
   "main": ".eslintrc.js",
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "private": true,
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.8.2",

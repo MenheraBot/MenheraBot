@@ -49,7 +49,6 @@ const finishGame = async (): Promise<void> => {
   players.forEach(async (a) => {
     if (a.didWin) {
       const userData = await userRepository.ensureFindUser(a.id);
-      await executeDailies.winBet(userData, 'bicho');
       await executeDailies.winStarsInBet(userData, a.profit);
       await starsRepository.addStars(a.id, a.profit);
       await postTransaction(

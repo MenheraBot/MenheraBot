@@ -1264,7 +1264,7 @@
     }
   },
   "daily": {
-    "title": "Your daily missions",
+    "title": "{{username}}'s daily missions",
     "reset": "Dailies will be changed <t:{{unix}}:R>",
     "change-daily": "Change mission",
     "already-changed": "You can only change one mission per day.",
@@ -1287,6 +1287,9 @@
       "hunt": "({{index}}) Hunt"
     },
     "descriptions": {
+      "just_bet": "{{emoji}} Bet on _{{specification}}_ **{{count}}** times. ({{has}}/{{need}})",
+      "just_bet-one": "{{emoji}} Bet on _{{specification}}_ **{{count}}** time. ({{has}}/{{need}})",
+      "just_bet-other": "{{emoji}} Bet on _{{specification}}_ **{{count}}** times. ({{has}}/{{need}})",
       "win_bet": "{{emoji}} Win _{{specification}}_ matches **{{count}}** times. ({{has}}/{{need}})",
       "win_bet-one": "{{emoji}} Win _{{specification}}_ matches **{{count}}** time. ({{has}}/{{need}})",
       "win_bet-other": "{{emoji}} Win _{{specification}}_ matches **{{count}}** times. ({{has}}/{{need}})",
