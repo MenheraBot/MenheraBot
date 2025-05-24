@@ -137,7 +137,7 @@ const BlackjackCommand = createCommand({
       type: ApplicationCommandOptionTypes.Integer,
       required: false,
       minValue: 10,
-      maxValue: 50000,
+      maxValue: 100000,
     },
   ],
   category: 'economy',

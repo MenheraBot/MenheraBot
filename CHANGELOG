@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - A missão `Vença apostas no bicho` foi atualizada para `Aposte no bicho`. - Sugerido por @jokzy.y
 - O prêmio para uma sugestão aprovada foi aumentada de `5000` para `30000` estrelinhas. 
+- Aumentado o limite de apostas do Blackjack de `50000`para `100000` estrelinhas. - Sugerido por @jokzy.y
+- Diminuido o preço da cor customizada de `50_000` para `35_000`. - Sugerido por @mareys
 
 ## [5.21.1] - 2025-04-04
 
