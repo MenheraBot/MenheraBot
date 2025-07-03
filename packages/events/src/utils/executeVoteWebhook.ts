@@ -8,7 +8,7 @@ import { postTransaction } from './apiRequests/statistics';
 import { ApiTransactionReason } from '../types/api';
 import { calculateProbability } from './miscUtils';
 import farmerRepository from '../database/repositories/farmerRepository';
-import { addItems } from '../modules/fazendinha/siloUtils';
+import { addItems, getSiloLimits } from '../modules/fazendinha/siloUtils';
 import { AvailableItems } from '../modules/fazendinha/types';
 import { Items } from '../modules/fazendinha/constants';
 
@@ -95,13 +95,23 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
   if (droppedItem !== 0) {
     const farmer = await farmerRepository.getFarmer(userId);
 
-    const newItems = addItems(farmer.items, [{ id: AvailableItems.Fertilizer, amount: 1 }]);
+    const siloLimit = getSiloLimits(farmer);
 
-    await farmerRepository.updateItems(userId, newItems);
+    const canGetItem = siloLimit.used - siloLimit.limit >= 1;
 
-    embedDescription += `\n\nVocê também ganhou 1x ${
-      Items[AvailableItems.Fertilizer].emoji
-    } Fertilizante! Use em sua fazendinha com /fazendinha administrar campos`;
+    if (canGetItem) {
+      const newItems = addItems(farmer.items, [{ id: AvailableItems.Fertilizer, amount: 1 }]);
+
+      await farmerRepository.updateItems(userId, newItems);
+    }
+
+    embedDescription += canGetItem
+      ? `\n\nVocê também ganhou 1x ${
+          Items[AvailableItems.Fertilizer].emoji
+        } Fertilizante! Use em sua fazendinha com /fazendinha administrar campos`
+      : `\n\nVocê poderia ter ganhado 1x ${
+          Items[AvailableItems.Fertilizer].emoji
+        } Fertilizante, mas infelizmente você não tem espaço em seu silo!`;
   }
 
   const embed = createEmbed({
