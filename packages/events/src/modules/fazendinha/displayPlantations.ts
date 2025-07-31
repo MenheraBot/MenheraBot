@@ -48,8 +48,10 @@ const getPlantationDisplay = (
   const toUseEmoji =
     state === 'MATURE' ? Plants[(field as PlantedField).plantType].emoji : PlantStateIcon[state];
 
+  const unix = millisToSeconds(timeToAction);
+
   return ctx.locale('commands:fazendinha.plant-states-message.message', {
-    unix: field.isPlanted ? `<t:${millisToSeconds(timeToAction)}:R>` : undefined,
+    unix: field.isPlanted ? `<t:${unix}:R>\n<t:${unix}:d> <t:${unix}:T>` : undefined,
     emojis: repeatIcon(toUseEmoji),
     state: ctx.locale(`commands:fazendinha.plant-states-message.${state}`),
   });
