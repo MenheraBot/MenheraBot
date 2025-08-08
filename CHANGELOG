@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.21.5] - 2025-08-08
+
+### Fixed
+
+- Corrigido cálculo de espaço do silo para receber fertilizantes. - Reportado por @start_0
+
 ## [5.21.4] - 2025-07-31
 
 ### Changed
