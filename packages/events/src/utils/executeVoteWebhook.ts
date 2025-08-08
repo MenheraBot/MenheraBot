@@ -97,7 +97,7 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
 
     const siloLimit = getSiloLimits(farmer);
 
-    const canGetItem = siloLimit.used - siloLimit.limit >= 1;
+    const canGetItem = siloLimit.limit - siloLimit.used >= 1;
 
     if (canGetItem) {
       const newItems = addItems(farmer.items, [{ id: AvailableItems.Fertilizer, amount: 1 }]);
