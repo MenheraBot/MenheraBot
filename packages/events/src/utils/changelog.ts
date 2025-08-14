@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { bot } from '..';
 import { logger } from './logger';
+import { DEVELOPMENT_ENVIROMENT } from './getEnviroments';
 
 let retryTimeout: NodeJS.Timeout;
 let retries = 0;
 
 const loadChangelog = async (): Promise<void> => {
-  if (process.env.NODE_ENV === 'development') return;
+  if (DEVELOPMENT_ENVIROMENT) return;
 
   logger.info('[CHANGELOG] Getting the current update changelog');
 

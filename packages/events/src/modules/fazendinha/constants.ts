@@ -1,3 +1,4 @@
+import { chooseBasedOnEnv } from '../../utils/getEnviroments';
 import { hoursToMillis } from '../../utils/miscUtils';
 import { AvailableItems, AvailablePlants, ItemsFile, PlantsFile, UnlockFieldFile } from './types';
 
@@ -59,7 +60,7 @@ export const Items: { [Item in AvailableItems]: ItemsFile } = {
 
 export const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
   [AvailablePlants.Mate]: {
-    minutesToHarvest: process.env.NODE_ENV === 'production' ? 15 : 0.1,
+    minutesToHarvest: chooseBasedOnEnv(15, 0.1),
     minutesToRot: 60,
     emoji: '🌿',
     sellValue: 110,

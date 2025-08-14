@@ -4,7 +4,7 @@ import { transformInteractionResponseToDiscordInteractionResponse } from '../int
 import { initializeRedis, initializeMongo } from '../database/databases';
 import { loadLocales } from './localeStructure';
 import { initializeSentry } from './initializeSentry';
-import { getEnviroments } from '../utils/getEnviroments';
+import { getEnviroments, TEST_ENVIROMENT } from '../utils/getEnviroments';
 import { MenheraClient } from '../types/menhera';
 import { logger } from '../utils/logger';
 import { updateAssets } from './cdnManager';
@@ -48,7 +48,7 @@ const initializeServices = async (): Promise<void> => {
   await loadLocales();
   await loadChangelog();
 
-  if (process.env.NODE_ENV === 'test') return;
+  if (TEST_ENVIROMENT) return;
 
   await initializeMongo();
   await initializeRedis();

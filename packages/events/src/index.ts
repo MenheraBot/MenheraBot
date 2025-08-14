@@ -4,7 +4,11 @@ import { setupEventHandlers } from './events/index';
 import { createIpcConnection } from './structures/orchestratorConnection';
 import { initializeServices, setupInternals, setupMenheraClient } from './structures/menheraClient';
 import { MenheraClient } from './types/menhera';
-import { getEnviroments } from './utils/getEnviroments';
+import {
+  DEVELOPMENT_ENVIROMENT,
+  getEnviroments,
+  PRODUCTION_ENVIROMENT,
+} from './utils/getEnviroments';
 import { logger } from './utils/logger';
 import { updateCommandsOnApi } from './utils/updateApiCommands';
 
@@ -26,7 +30,7 @@ setupEventHandlers();
 await createIpcConnection();
 setupInternals(bot);
 
-if (process.env.NODE_ENV === 'development') {
+if (DEVELOPMENT_ENVIROMENT) {
   logger.debug('Starting local gateway to receive events');
   await startBot(bot);
   // @ts-expect-error Cant send string
@@ -35,6 +39,6 @@ if (process.env.NODE_ENV === 'development') {
 
 logger.info('[READY] I am ready to process events!');
 
-if (process.env.NODE_ENV === 'production') updateCommandsOnApi();
+if (PRODUCTION_ENVIROMENT) updateCommandsOnApi();
 
 export { bot };

@@ -1,5 +1,6 @@
 import client, { Counter, Registry } from 'prom-client';
 import { logger } from '../utils/logger';
+import { IGNORE_MICROSSERVICES } from '../utils/getEnviroments';
 
 let register: Registry;
 let commandsCounter: Counter;
@@ -9,7 +10,7 @@ let stuckQueuesCounter: Counter;
 let redisCacheCounter: Counter;
 
 const initializePrometheus = (): void => {
-  if (process.env.NOMICROSERVICES) return;
+  if (IGNORE_MICROSSERVICES) return;
 
   register = new client.Registry();
 
@@ -57,7 +58,7 @@ const getStuckQueuesCounter = (): Counter => stuckQueuesCounter;
 const getRedisCacheCounter = (): Counter => redisCacheCounter;
 
 const registerCacheStatus = (data: unknown, type: string): void => {
-  if (process.env.NOMICROSERVICES) return;
+  if (IGNORE_MICROSSERVICES) return;
 
   if (!redisCacheCounter) return logger.debug('Prometheus counters are not ready', data, type);
 

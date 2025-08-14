@@ -12,6 +12,7 @@ import { enableTcp, enableUnixSocket } from '../../utils/vanGoghRequest';
 import { InteractionContext } from '../../types/menhera';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { PRODUCTION_ENVIROMENT } from '../../utils/getEnviroments';
 
 const noop = (..._args: unknown[]) => undefined;
 noop(userRepository, enableTcp, enableUnixSocket, usersModel, redis, farmerModel, eventModel);
@@ -71,7 +72,7 @@ const EvalCommand = createCommand({
     finishCommand();
     const toEval = ctx.getOption<string>('script', false, true);
 
-    if (process.env.NODE_ENV !== 'production') return executeEval(ctx, toEval);
+    if (!PRODUCTION_ENVIROMENT) return executeEval(ctx, toEval);
 
     if (toEval.includes('.flush'))
       return ctx.makeMessage({ content: 'não VIIAAAAJAAAA querer limpar o redis de prod mano' });

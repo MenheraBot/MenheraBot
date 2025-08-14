@@ -1,7 +1,7 @@
 import { logger } from './logger';
 import { MenheraClient } from '../types/menhera';
 import { createEmbed } from './discord/embedUtils';
-import { getEnviroments } from './getEnviroments';
+import { getEnviroments, IGNORE_MICROSSERVICES } from './getEnviroments';
 import { getStuckQueuesCounter } from '../structures/initializePrometheus';
 import { debugError } from './debugError';
 
@@ -24,7 +24,7 @@ const freeStuckQueues = (bot: MenheraClient): void => {
         );
         queue.remaining = 1;
 
-        if (!process.env.NOMICROSERVICES) getStuckQueuesCounter().inc(1);
+        if (!IGNORE_MICROSSERVICES) getStuckQueuesCounter().inc(1);
 
         const embed = createEmbed({
           color: 0xf08c18,

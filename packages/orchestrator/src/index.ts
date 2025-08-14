@@ -5,7 +5,8 @@ import { mergeMetrics } from './prometheusWorkarround';
 import { respondInteraction } from './respondInteraction';
 import { createHttpServer, registerAllRouters } from './server/httpServer';
 import { PrometheusResponse } from './server/routes/prometheus';
-import { getEnviroments } from './getEnviroments';
+import { DEVELOPMENT_ENVIROMENT, getEnviroments } from './getEnviroments';
+import { startGateway } from './development/discordGateway';
 
 const { ORCHESTRATOR_SOCKET_PATH } = getEnviroments(['ORCHESTRATOR_SOCKET_PATH']);
 
@@ -226,6 +227,8 @@ orchestratorServer.on('disconnect', (conn) => {
 
 orchestratorServer.on('ready', () => {
   console.log('[ORCHESTRATOR] The service has been started');
+  if (DEVELOPMENT_ENVIROMENT) return startGateway();
+
   createHttpServer();
   registerAllRouters();
 });
@@ -240,5 +243,7 @@ process.on('SIGTERM', async () => {
   await orchestratorServer.close(true);
   process.exit(0);
 });
+
+export type SendEventFunction = typeof sendEvent;
 
 export { sendEvent };

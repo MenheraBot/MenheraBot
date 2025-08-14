@@ -11,7 +11,7 @@ import { bot } from '../../index';
 import guildRepository from '../../database/repositories/guildRepository';
 import ComponentInteractionContext from './ComponentInteractionContext';
 import { createEmbed } from '../../utils/discord/embedUtils';
-import { getEnviroments } from '../../utils/getEnviroments';
+import { chooseBasedOnEnv, getEnviroments } from '../../utils/getEnviroments';
 import { ComponentInteraction } from '../../types/interaction';
 import cacheRepository from '../../database/repositories/cacheRepository';
 import { logger } from '../../utils/logger';
@@ -132,12 +132,9 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
         const errorMessage = err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
         const embed = createEmbed({
           color: 0xfd0000,
-          title: `${process.env.NODE_ENV === 'development' ? '[DEV]' : ''} ${T(
-            'events:error_embed.title',
-            {
-              cmd: command.name,
-            },
-          )}`,
+          title: `${chooseBasedOnEnv('', '[DEV]')} ${T('events:error_embed.title', {
+            cmd: command.name,
+          })}`,
           description: `\`\`\`js\n${errorMessage}\`\`\``,
           fields: [
             {

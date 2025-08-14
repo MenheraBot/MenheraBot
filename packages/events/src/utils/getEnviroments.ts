@@ -12,4 +12,19 @@ const getEnviroments = <Key extends string>(variables: Key[]): Record<Key, strin
   return fromEnv;
 };
 
-export { getEnviroments };
+const PRODUCTION_ENVIROMENT = process.env.NODE_ENV === 'production';
+const DEVELOPMENT_ENVIROMENT = process.env.NODE_ENV === 'development';
+const TEST_ENVIROMENT = process.env.NODE_ENV === 'test';
+const IGNORE_MICROSSERVICES = process.env.NOMICROSERVICES;
+
+const chooseBasedOnEnv = <T extends unknown>(returnInProduction: T, returnInOtherEnvs: T): T =>
+  PRODUCTION_ENVIROMENT ? returnInProduction : returnInOtherEnvs;
+
+export {
+  getEnviroments,
+  chooseBasedOnEnv,
+  DEVELOPMENT_ENVIROMENT,
+  TEST_ENVIROMENT,
+  PRODUCTION_ENVIROMENT,
+  IGNORE_MICROSSERVICES,
+};

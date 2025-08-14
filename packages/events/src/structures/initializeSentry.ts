@@ -1,11 +1,11 @@
 import * as Sentry from '@sentry/node';
 import { hostname } from 'node:os';
-import { getEnviroments } from '../utils/getEnviroments';
+import { getEnviroments, IGNORE_MICROSSERVICES } from '../utils/getEnviroments';
 
 const initializeSentry = (): void => {
   const { SENTRY_DSN } = getEnviroments(['SENTRY_DSN']);
 
-  if (process.env.NOMICROSERVICES) return;
+  if (IGNORE_MICROSSERVICES) return;
 
   Sentry.init({
     dsn: SENTRY_DSN,

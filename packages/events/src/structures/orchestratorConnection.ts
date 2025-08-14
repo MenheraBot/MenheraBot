@@ -4,7 +4,12 @@ import { DiscordInteraction } from 'discordeno/types';
 import { bot } from '..';
 import { closeConnections } from '../database/databases';
 import { executeVoteWebhook } from '../utils/executeVoteWebhook';
-import { getEnviroments } from '../utils/getEnviroments';
+import {
+  DEVELOPMENT_ENVIROMENT,
+  getEnviroments,
+  IGNORE_MICROSSERVICES,
+  TEST_ENVIROMENT,
+} from '../utils/getEnviroments';
 import { logger } from '../utils/logger';
 import { updateCommandsOnApi } from '../utils/updateApiCommands';
 import { getInteractionsCounter, getRegister } from './initializePrometheus';
@@ -34,7 +39,7 @@ let orchestratorClient: Client;
 const getOrchestratorClient = (): Client => orchestratorClient;
 
 const createIpcConnection = async (): Promise<void> => {
-  if (process.env.NODE_ENV === 'development') return;
+  if (DEVELOPMENT_ENVIROMENT) return;
 
   const { ORCHESTRATOR_SOCKET_PATH } = getEnviroments(['ORCHESTRATOR_SOCKET_PATH']);
 
@@ -142,7 +147,7 @@ const createIpcConnection = async (): Promise<void> => {
         break;
       }
       case 'INTERACTION_CREATE': {
-        if (!process.env.NOMICROSERVICES)
+        if (!IGNORE_MICROSSERVICES)
           getInteractionsCounter().inc(
             {
               type: numberTypeToName[msg.data.body.type as 1],
@@ -217,7 +222,7 @@ const createIpcConnection = async (): Promise<void> => {
     orchestratorClient.send({ type: 'IDENTIFY', version: process.env.VERSION });
   });
 
-  if (process.env.NODE_ENV === 'test') return;
+  if (TEST_ENVIROMENT) return;
 
   await orchestratorClient.connect().catch(logger.panic);
 };

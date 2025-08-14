@@ -1,29 +1,29 @@
 import Redis from 'ioredis';
 import mongoose from 'mongoose';
 
-import { getEnviroments } from '../utils/getEnviroments';
+import { chooseBasedOnEnv, getEnviroments } from '../utils/getEnviroments';
 import { logger } from '../utils/logger';
 
 const { REDIS_PATH } = getEnviroments(['REDIS_PATH']);
 
 const MainRedisClient = new Redis({
-  db: process.env.NODE_ENV === 'development' ? 1 : 0,
+  db: chooseBasedOnEnv(0, 1),
   lazyConnect: true,
   maxRetriesPerRequest: 2,
   connectTimeout: 5_000,
   commandTimeout: 3_000,
-  path: process.env.NODE_ENV === 'production' ? REDIS_PATH : undefined,
-  host: process.env.NODE_ENV === 'production' ? undefined : process.env.REDIS_URL,
+  path: chooseBasedOnEnv(REDIS_PATH, undefined),
+  host: chooseBasedOnEnv(undefined, process.env.REDIS_URL),
 });
 
 const VangoghRedisClient = new Redis({
-  db: process.env.NODE_ENV === 'development' ? 2 : 6,
+  db: chooseBasedOnEnv(6, 2),
   lazyConnect: true,
   maxRetriesPerRequest: 2,
   connectTimeout: 5_000,
   commandTimeout: 3_000,
-  path: process.env.NODE_ENV === 'production' ? REDIS_PATH : undefined,
-  host: process.env.NODE_ENV === 'production' ? undefined : process.env.REDIS_URL,
+  path: chooseBasedOnEnv(REDIS_PATH, undefined),
+  host: chooseBasedOnEnv(undefined, process.env.REDIS_URL),
 });
 
 const initializeMongo = async (): Promise<void> => {

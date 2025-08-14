@@ -16,7 +16,12 @@ import { postCommandExecution } from '../../utils/apiRequests/commands';
 import { getUserLastBanData } from '../../utils/apiRequests/statistics';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import { getEnviroments } from '../../utils/getEnviroments';
+import {
+  chooseBasedOnEnv,
+  DEVELOPMENT_ENVIROMENT,
+  getEnviroments,
+  IGNORE_MICROSSERVICES,
+} from '../../utils/getEnviroments';
 import { logger } from '../../utils/logger';
 import { millisToSeconds } from '../../utils/miscUtils';
 import cacheRepository from '../../database/repositories/cacheRepository';
@@ -136,7 +141,7 @@ const setInteractionCreateEvent = (): void => {
       );
 
       if (isRateLimited) {
-        if (!process.env.NOMICROSERVICES)
+        if (!IGNORE_MICROSSERVICES)
           getRateLimitCounter().inc(
             {
               type: ratelimitRepository.limitLevels[info.ratelimit],
@@ -182,7 +187,7 @@ const setInteractionCreateEvent = (): void => {
       locale: guildLocale,
     });
 
-    if (!process.env.NOMICROSERVICES)
+    if (!IGNORE_MICROSSERVICES)
       getCommandsCounter().inc(
         {
           command_name: commandUsed.command,
@@ -210,12 +215,9 @@ const setInteractionCreateEvent = (): void => {
             err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
           const embed = createEmbed({
             color: 0xfd0000,
-            title: `${process.env.NODE_ENV === 'development' ? '[DEV]' : ''} ${T(
-              'events:error_embed.title',
-              {
-                cmd: command.name,
-              },
-            )}`,
+            title: `${chooseBasedOnEnv('', '[DEV]')} ${T('events:error_embed.title', {
+              cmd: command.name,
+            })}`,
             description: `\`\`\`js\n${errorMessage}\`\`\``,
             fields: [
               {
@@ -250,7 +252,7 @@ const setInteractionCreateEvent = (): void => {
       args: interaction.data?.options ?? [],
     };
 
-    if (process.env.NODE_ENV !== 'development') postCommandExecution(data);
+    if (!DEVELOPMENT_ENVIROMENT) postCommandExecution(data);
   };
 };
 
