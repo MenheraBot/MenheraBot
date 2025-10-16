@@ -3,17 +3,17 @@ import { InteractionCallbackData, InteractionResponseTypes } from 'discordeno';
 import { Interaction, User } from 'discordeno/transformers';
 import i18next, { TFunction } from 'i18next';
 
-import { DatabaseUserSchema } from '../../types/database';
-import { AvailableLanguages, Translation } from '../../types/i18next';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { logger } from '../../utils/logger';
-import { EMOJIS, TOP_EMOJIS } from '../constants';
-import { getFullCommandUsed, getOptionFromInteraction } from './getCommandOption';
+import { DatabaseUserSchema } from '../../types/database.js';
+import { AvailableLanguages, Translation } from '../../types/i18next.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { logger } from '../../utils/logger.js';
+import { EMOJIS, TOP_EMOJIS } from '../constants.js';
+import { getFullCommandUsed, getOptionFromInteraction } from './getCommandOption.js';
 import {
   editOriginalInteractionResponse,
   sendFollowupMessage,
   sendInteractionResponse,
-} from '../../utils/discord/interactionRequests';
+} from '../../utils/discord/interactionRequests.js';
 
 export type CanResolve = 'users' | 'members' | 'attachments' | false;
 

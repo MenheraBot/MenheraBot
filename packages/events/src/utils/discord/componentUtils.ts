@@ -1,12 +1,13 @@
-import {
+import type {
   ActionRow,
   BigString,
   ButtonComponent,
   InputTextComponent,
-  MessageComponentTypes,
   SelectMenuComponent,
   SelectMenuUsersComponent,
 } from 'discordeno/types';
+
+import { MessageComponentTypes } from 'discordeno/types';
 
 type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
@@ -32,7 +33,6 @@ const createSelectMenu = (
 });
 
 export type UpdatedSelectMenuUsersComponent = SelectMenuUsersComponent & {
-  // eslint-disable-next-line camelcase
   defaultValues?: { id: BigString; type: 'user' }[];
 };
 

@@ -1,26 +1,26 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
-import blackjackRepository from '../../database/repositories/blackjackRepository';
-import { makeDealerPlay } from '../../modules/blackjack/makeDealerPlay';
-import starsRepository from '../../database/repositories/starsRepository';
-import { createActionRow, createButton } from '../../utils/discord/componentUtils';
-import { continueFromBuy } from '../../modules/blackjack/continueFromBuy';
-import { finishMatch } from '../../modules/blackjack/finishMatch';
+import blackjackRepository from '../../database/repositories/blackjackRepository.js';
+import { makeDealerPlay } from '../../modules/blackjack/makeDealerPlay.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import { createActionRow, createButton } from '../../utils/discord/componentUtils.js';
+import { continueFromBuy } from '../../modules/blackjack/continueFromBuy.js';
+import { finishMatch } from '../../modules/blackjack/finishMatch.js';
 import {
   getHandValue,
   hideMenheraCard,
   numbersToBlackjackCards,
-} from '../../modules/blackjack/blackjackMatch';
-import userThemesRepository from '../../database/repositories/userThemesRepository';
-import { BLACKJACK_PRIZE_MULTIPLIERS, shuffleCards } from '../../modules/blackjack';
+} from '../../modules/blackjack/blackjackMatch.js';
+import userThemesRepository from '../../database/repositories/userThemesRepository.js';
+import { BLACKJACK_PRIZE_MULTIPLIERS, shuffleCards } from '../../modules/blackjack/index.js';
 
-import { createCommand } from '../../structures/command/createCommand';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
-import { EMOJIS } from '../../structures/constants';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { bot } from '../..';
-import { ApiTransactionReason } from '../../types/api';
-import { sendBlackjackMessage } from '../../modules/blackjack/sendBlackjackMessage';
+import { createCommand } from '../../structures/command/createCommand.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils.js';
+import { EMOJIS } from '../../structures/constants.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { sendBlackjackMessage } from '../../modules/blackjack/sendBlackjackMessage.js';
 
 const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedButton, embedColor] = ctx.sentData;

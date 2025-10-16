@@ -1,12 +1,12 @@
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import {
   AvailableCardBackgroundThemes,
   AvailableCardThemes,
   AvailableTableThemes,
-} from '../themes/types';
-import { BLACKJACK_PRIZE_MULTIPLIERS } from './index';
-import { getHandValue, numbersToBlackjackCards } from './blackjackMatch';
-import { finishMatch } from './finishMatch';
+} from '../themes/types.js';
+import { BLACKJACK_PRIZE_MULTIPLIERS } from './index.js';
+import { getHandValue, numbersToBlackjackCards } from './blackjackMatch.js';
+import { finishMatch } from './finishMatch.js';
 
 const makeDealerPlay = async (
   ctx: ComponentInteractionContext,

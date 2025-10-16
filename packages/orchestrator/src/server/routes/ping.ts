@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 import { HTTPResponseCodes } from 'discordeno/types';
 import { Context } from 'koa';
-import { RequestType, sendEvent } from '../..';
+import { RequestType, sendEvent } from '../../index.js';
 
 const handleRequest = async (ctx: Context): Promise<void> => {
   ctx.status = HTTPResponseCodes.Ok;

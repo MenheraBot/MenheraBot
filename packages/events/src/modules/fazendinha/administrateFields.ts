@@ -1,29 +1,29 @@
 import { ActionRow, ButtonComponent, ButtonStyles, SelectOption } from 'discordeno/types';
-import userRepository from '../../database/repositories/userRepository';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { DatabaseFarmerSchema } from '../../types/database';
-import { InteractionContext } from '../../types/menhera';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { PlantStateIcon, repeatIcon } from './displayPlantations';
+import userRepository from '../../database/repositories/userRepository.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { DatabaseFarmerSchema } from '../../types/database.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { PlantStateIcon, repeatIcon } from './displayPlantations.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createSelectMenu,
-} from '../../utils/discord/componentUtils';
-import { Items, Plants, UnloadFields } from './constants';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import farmerRepository from '../../database/repositories/farmerRepository';
-import { checkNeededPlants, removeItems, removePlants } from './siloUtils';
-import { extractNameAndIdFromEmoji, MessageFlags } from '../../utils/discord/messageUtils';
-import starsRepository from '../../database/repositories/starsRepository';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { bot } from '../..';
-import { ApiTransactionReason } from '../../types/api';
-import { millisToSeconds } from '../../utils/miscUtils';
-import { AvailableItems } from './types';
-import { isUpgradeApplied } from './plantationState';
-import { applyUpgrade } from './fieldAction';
+} from '../../utils/discord/componentUtils.js';
+import { Items, Plants, UnloadFields } from './constants.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import { checkNeededPlants, removeItems, removePlants } from './siloUtils.js';
+import { extractNameAndIdFromEmoji, MessageFlags } from '../../utils/discord/messageUtils.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { millisToSeconds } from '../../utils/miscUtils.js';
+import { AvailableItems } from './types.js';
+import { isUpgradeApplied } from './plantationState.js';
+import { applyUpgrade } from './fieldAction.js';
 
 const displayItemsHelp = async (ctx: ComponentInteractionContext) => {
   const authorData = await userRepository.ensureFindUser(ctx.user.id);

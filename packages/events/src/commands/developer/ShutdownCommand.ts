@@ -1,7 +1,7 @@
-import { logger } from '../../utils/logger';
-import { closeConnections } from '../../database/databases';
-import { bot } from '../../index';
-import { createCommand } from '../../structures/command/createCommand';
+import { logger } from '../../utils/logger.js';
+import { closeConnections } from '../../database/databases.js';
+import { bot } from '../../index.js';
+import { createCommand } from '../../structures/command/createCommand.js';
 
 const ShutdownCommand = createCommand({
   path: '',

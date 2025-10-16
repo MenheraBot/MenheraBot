@@ -1,8 +1,8 @@
 import { createRestManager } from 'discordeno/rest';
-import { RequestTypes } from './types';
-import sendRequest from './requests/sendRequest';
-import runMethod from './requests/runMethod';
-import config from './config';
+import { RequestTypes } from './types.js';
+import sendRequest from './requests/sendRequest.js';
+import runMethod from './requests/runMethod.js';
+import config from './config.js';
 
 const { DISCORD_TOKEN, REST_AUTHORIZATION } = config(['DISCORD_TOKEN', 'REST_AUTHORIZATION']);
 
@@ -12,7 +12,6 @@ const rest = createRestManager({
 });
 
 rest.debug = (log) => {
-  // eslint-disable-next-line no-console
   if (log.includes('REST - fetchFailed')) console.log(log);
 };
 

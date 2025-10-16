@@ -1,21 +1,25 @@
 import { ActionRow, ButtonStyles } from 'discordeno/types';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { COLORS } from '../../structures/constants';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { executeUserDataRelatedTop } from './userDataRelated';
-import { DatabaseUserSchema } from '../../types/database';
-import { executeTopHuntStatistics } from './huntStatistics';
-import { ApiHuntingTypes } from '../hunt/types';
-import { executeGamblingTop } from './gamblingTop';
-import blacklistRepository from '../../database/repositories/blacklistRepository';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import { InteractionContext } from '../../types/menhera';
-import { executeUsedCommandsTop } from './usedCommands';
-import { executeUsedCommandsFromUserTop } from './usedCommandsFromUser';
-import { executeUserCommandsTop } from './userCommands';
-import { executeUsersByUsedCommandTop } from './usersByUsedCommand';
-import { executeFarmersTop } from './farmersTop';
-import { executeFarmersExperienceTop } from './farmersExperienceTop';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { COLORS } from '../../structures/constants.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import { executeUserDataRelatedTop } from './userDataRelated.js';
+import { DatabaseUserSchema } from '../../types/database.js';
+import { executeTopHuntStatistics } from './huntStatistics.js';
+import { ApiHuntingTypes } from '../hunt/types.js';
+import { executeGamblingTop } from './gamblingTop.js';
+import blacklistRepository from '../../database/repositories/blacklistRepository.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { executeUsedCommandsTop } from './usedCommands.js';
+import { executeUsedCommandsFromUserTop } from './usedCommandsFromUser.js';
+import { executeUserCommandsTop } from './userCommands.js';
+import { executeUsersByUsedCommandTop } from './usersByUsedCommand.js';
+import { executeFarmersTop } from './farmersTop.js';
+import { executeFarmersExperienceTop } from './farmersExperienceTop.js';
 
 const calculateSkipCount = (page: number): number => (page > 1 ? page - 1 : 0) * 10;
 

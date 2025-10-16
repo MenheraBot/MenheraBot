@@ -1,20 +1,20 @@
 import { Client } from 'net-ipc';
 
 import { DiscordInteraction } from 'discordeno/types';
-import { bot } from '..';
-import { closeConnections } from '../database/databases';
-import { executeVoteWebhook } from '../utils/executeVoteWebhook';
-import { getEnviroments } from '../utils/getEnviroments';
-import { logger } from '../utils/logger';
-import { updateCommandsOnApi } from '../utils/updateApiCommands';
-import { getInteractionsCounter, getRegister } from './initializePrometheus';
-import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
-import cacheRepository from '../database/repositories/cacheRepository';
-import { getUserAvatar } from '../utils/discord/userUtils';
-import starsRepository from '../database/repositories/starsRepository';
-import { postTransaction } from '../utils/apiRequests/statistics';
-import { ApiTransactionReason } from '../types/api';
-import notificationRepository from '../database/repositories/notificationRepository';
+import { bot } from '../index.js';
+import { closeConnections } from '../database/databases.js';
+import { executeVoteWebhook } from '../utils/executeVoteWebhook.js';
+import { getEnviroments } from '../utils/getEnviroments.js';
+import { logger } from '../utils/logger.js';
+import { updateCommandsOnApi } from '../utils/updateApiCommands.js';
+import { getInteractionsCounter, getRegister } from './initializePrometheus.js';
+import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager.js';
+import cacheRepository from '../database/repositories/cacheRepository.js';
+import { getUserAvatar } from '../utils/discord/userUtils.js';
+import starsRepository from '../database/repositories/starsRepository.js';
+import { postTransaction } from '../utils/apiRequests/statistics.js';
+import { ApiTransactionReason } from '../types/api.js';
+import notificationRepository from '../database/repositories/notificationRepository.js';
 
 const numberTypeToName = {
   1: 'PING',

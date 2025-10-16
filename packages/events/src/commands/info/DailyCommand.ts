@@ -1,27 +1,29 @@
-/* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ApplicationCommandOptionTypes, ButtonComponent, ButtonStyles } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
-import { createCommand } from '../../structures/command/createCommand';
-import { getUserDailies } from '../../modules/dailies/getUserDailies';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { getDailyById } from '../../modules/dailies/dailies';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { Award, DatabaseDaily } from '../../modules/dailies/types';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import userRepository from '../../database/repositories/userRepository';
-import { InteractionContext } from '../../types/menhera';
-import { Plants } from '../../modules/fazendinha/constants';
-import { AvailablePlants } from '../../modules/fazendinha/types';
-import farmerRepository from '../../database/repositories/farmerRepository';
-import { addPlants } from '../../modules/fazendinha/siloUtils';
-import { DatabaseUserSchema } from '../../types/database';
-import { getUniqueDaily } from '../../modules/dailies/calculateUserDailies';
-import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils';
-import { getDisplayName } from '../../utils/discord/userUtils';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { getUserDailies } from '../../modules/dailies/getUserDailies.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getDailyById } from '../../modules/dailies/dailies.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import { Award, DatabaseDaily } from '../../modules/dailies/types.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { Plants } from '../../modules/fazendinha/constants.js';
+import { AvailablePlants } from '../../modules/fazendinha/types.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import { addPlants } from '../../modules/fazendinha/siloUtils.js';
+import { DatabaseUserSchema } from '../../types/database.js';
+import { getUniqueDaily } from '../../modules/dailies/calculateUserDailies.js';
+import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
 
 const getDailyStatus = (daily: DatabaseDaily): 'reedem' | 'unfinished' | 'reedemed' =>
-  // eslint-disable-next-line no-nested-ternary
   daily.redeemed ? 'reedemed' : daily.has >= daily.need ? 'reedem' : 'unfinished';
 
 const getAwardEmoji = (ctx: InteractionContext, award: Award<string | number>): string => {
@@ -62,10 +64,10 @@ const getMissionsEmbed = (
           emoji: isChangeEmbed
             ? ctx.safeEmoji('swap')
             : d.has < d.need
-            ? ctx.safeEmoji('hourglass')
-            : d.redeemed
-            ? ctx.safeEmoji('success')
-            : ctx.safeEmoji('gift'),
+              ? ctx.safeEmoji('hourglass')
+              : d.redeemed
+                ? ctx.safeEmoji('success')
+                : ctx.safeEmoji('gift'),
         });
       })
       .join('\n- ')}\n\n${ctx.locale('commands:daily.reset', {
@@ -92,8 +94,8 @@ const getMissionButtons = (
         action === 'CHANGE'
           ? ButtonStyles.Danger
           : getDailyStatus(daily) === 'reedem'
-          ? ButtonStyles.Success
-          : ButtonStyles.Secondary,
+            ? ButtonStyles.Success
+            : ButtonStyles.Secondary,
       customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, action, index),
       disabled:
         action !== 'CHANGE'

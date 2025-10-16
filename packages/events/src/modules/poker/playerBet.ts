@@ -1,16 +1,16 @@
 import { TextStyles } from 'discordeno/types';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction.js';
 import {
   createActionRow,
   createCustomId,
   createTextInput,
   resolveSeparatedStrings,
-} from '../../utils/discord/componentUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { extractFields } from '../../utils/discord/modalUtils';
-import { getPreviousPlayableSeat, updateGameState } from './turnManager';
-import { Action, PokerMatch, PokerPlayer } from './types';
+} from '../../utils/discord/componentUtils.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { extractFields } from '../../utils/discord/modalUtils.js';
+import { getPreviousPlayableSeat, updateGameState } from './turnManager.js';
+import { Action, PokerMatch, PokerPlayer } from './types.js';
 
 const executeAction = (
   gameData: PokerMatch,

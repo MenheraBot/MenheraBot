@@ -1,22 +1,22 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import { User } from 'discordeno/transformers';
-import { executeFarmersTop } from '../../modules/top/farmersTop';
-import { ApiHuntingTypes, DatabaseHuntingTypes } from '../../modules/hunt/types';
-import { createCommand } from '../../structures/command/createCommand';
-import { COLORS, transactionableCommandOption } from '../../structures/constants';
-import { DatabaseUserSchema } from '../../types/database';
-import { executeGamblingTop } from '../../modules/top/gamblingTop';
-import { executeTopHuntStatistics } from '../../modules/top/huntStatistics';
-import { executeUserDataRelatedTop } from '../../modules/top/userDataRelated';
-import { executeUsedCommandsFromUserTop } from '../../modules/top/usedCommandsFromUser';
-import { executeUsedCommandsTop } from '../../modules/top/usedCommands';
-import { executeUserCommandsTop } from '../../modules/top/userCommands';
-import { executeTopPagination } from '../../modules/top';
-import { executeUsersByUsedCommandTop } from '../../modules/top/usersByUsedCommand';
-import { bot } from '../..';
-import { AvailablePlants } from '../../modules/fazendinha/types';
-import { executeFarmersExperienceTop } from '../../modules/top/farmersExperienceTop';
+import { executeFarmersTop } from '../../modules/top/farmersTop.js';
+import { ApiHuntingTypes, DatabaseHuntingTypes } from '../../modules/hunt/types.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { COLORS, transactionableCommandOption } from '../../structures/constants.js';
+import { DatabaseUserSchema } from '../../types/database.js';
+import { executeGamblingTop } from '../../modules/top/gamblingTop.js';
+import { executeTopHuntStatistics } from '../../modules/top/huntStatistics.js';
+import { executeUserDataRelatedTop } from '../../modules/top/userDataRelated.js';
+import { executeUsedCommandsFromUserTop } from '../../modules/top/usedCommandsFromUser.js';
+import { executeUsedCommandsTop } from '../../modules/top/usedCommands.js';
+import { executeUserCommandsTop } from '../../modules/top/userCommands.js';
+import { executeTopPagination } from '../../modules/top/index.js';
+import { executeUsersByUsedCommandTop } from '../../modules/top/usersByUsedCommand.js';
+import { bot } from '../../index.js';
+import { AvailablePlants } from '../../modules/fazendinha/types.js';
+import { executeFarmersExperienceTop } from '../../modules/top/farmersExperienceTop.js';
 
 const TopCommand = createCommand({
   path: '',

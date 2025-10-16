@@ -1,9 +1,9 @@
 import { BigString } from 'discordeno/types';
-import { DatabaseFeirinhaSchema } from '../../types/database';
-import { feirinhaModel } from '../collections';
-import { AvailablePlants } from '../../modules/fazendinha/types';
-import { MainRedisClient } from '../databases';
-import { AvailableLanguages } from '../../types/i18next';
+import { DatabaseFeirinhaSchema } from '../../types/database.js';
+import { feirinhaModel } from '../collections.js';
+import { AvailablePlants } from '../../modules/fazendinha/types.js';
+import { MainRedisClient } from '../databases.js';
+import { AvailableLanguages } from '../../types/i18next.js';
 
 const mongoToRedis = (announcement: DatabaseFeirinhaSchema): DatabaseFeirinhaSchema => ({
   _id: announcement._id,

@@ -1,4 +1,4 @@
-import { defaultHuntCooldown, defaultHuntingProbabilities } from './defaultValues';
+import { defaultHuntCooldown, defaultHuntingProbabilities } from './defaultValues.js';
 import {
   DatabaseHuntingTypes,
   HuntCooldownBoostItem,
@@ -6,9 +6,9 @@ import {
   HuntProbablyBoostItem,
   MagicItemsFile,
   StaticItemData,
-} from './types';
-import { HuntMagicItems } from './magicItems';
-import { ProbabilityAmount } from '../../types/menhera';
+} from './types.js';
+import { HuntMagicItems } from './magicItems.js';
+import { ProbabilityAmount } from '../../types/menhera.js';
 
 const getMagicItemById = (itemId: number): StaticItemData<MagicItemsFile> => {
   const item = HuntMagicItems[itemId];

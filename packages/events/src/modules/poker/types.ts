@@ -1,5 +1,5 @@
-import { AvailableLanguages } from '../../types/i18next';
-import { AvailableCardBackgroundThemes, AvailableCardThemes } from '../themes/types';
+import { AvailableLanguages } from '../../types/i18next.js';
+import { AvailableCardBackgroundThemes, AvailableCardThemes } from '../themes/types.js';
 
 export interface PokerPlayer {
   id: string;
@@ -35,12 +35,12 @@ type HAND_TYPES =
 
 export type PokerWinReasons = HAND_TYPES | 'FOLDED';
 
-export type PokerApiUser = {
+export interface PokerApiUser {
   id: string;
   won: boolean;
   reason: PokerWinReasons;
   chips: number;
-};
+}
 
 export interface PokerCard {
   displayValue: string;

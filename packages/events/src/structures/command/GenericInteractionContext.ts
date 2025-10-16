@@ -1,13 +1,13 @@
 import { InteractionCallbackData, InteractionResponseTypes } from 'discordeno';
 
 import i18next, { TFunction } from 'i18next';
-import { debugError } from '../../utils/debugError';
-import { AvailableLanguages, Translation } from '../../types/i18next';
-import { EMOJIS, TOP_EMOJIS } from '../constants';
+import { debugError } from '../../utils/debugError.js';
+import { AvailableLanguages, Translation } from '../../types/i18next.js';
+import { EMOJIS, TOP_EMOJIS } from '../constants.js';
 import {
   editOriginalInteractionResponse,
   sendFollowupMessage,
-} from '../../utils/discord/interactionRequests';
+} from '../../utils/discord/interactionRequests.js';
 
 export default class {
   private i18n: TFunction;

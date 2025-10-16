@@ -1,10 +1,10 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
-import { COLORS } from '../../structures/constants';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { getAssetLink } from '../../structures/cdnManager';
-import { createCommand } from '../../structures/command/createCommand';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import { COLORS } from '../../structures/constants.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { getAssetLink } from '../../structures/cdnManager.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 
 const ExecuteFodase = async (
   ctx: ChatInputInteractionContext,

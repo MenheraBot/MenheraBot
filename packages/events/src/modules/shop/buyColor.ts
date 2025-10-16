@@ -1,20 +1,20 @@
 import { TextStyles } from 'discordeno/types';
-import shopRepository from '../../database/repositories/shopRepository';
-import userRepository from '../../database/repositories/userRepository';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { EMOJIS } from '../../structures/constants';
-import { ModalInteraction } from '../../types/interaction';
+import shopRepository from '../../database/repositories/shopRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { EMOJIS } from '../../structures/constants.js';
+import { ModalInteraction } from '../../types/interaction.js';
 import {
   createActionRow,
   createCustomId,
   createSelectMenu,
   createTextInput,
-} from '../../utils/discord/componentUtils';
-import { extractFields } from '../../utils/discord/modalUtils';
-import { colorPrices } from './constants';
-import { debugError } from '../../utils/debugError';
-import commandRepository from '../../database/repositories/commandRepository';
+} from '../../utils/discord/componentUtils.js';
+import { extractFields } from '../../utils/discord/modalUtils.js';
+import { colorPrices } from './constants.js';
+import { debugError } from '../../utils/debugError.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
 
 const executeBuyColorSelectComponent = async (ctx: ComponentInteractionContext): Promise<void> => {
   const availableColors = [
@@ -242,7 +242,7 @@ const buyColor = async (
     customId: createCustomId(0, ctx.author.id, ctx.originalInteractionId, 'SELECT'),
     minValues: 1,
     maxValues: 1,
-    options: availableColors.reduce<Array<{ label: string; description: string; value: string }>>(
+    options: availableColors.reduce<{ label: string; description: string; value: string }[]>(
       (p, c) => {
         if (ctx.authorData.colors.some((a) => a.cor === c.cor)) return p;
 

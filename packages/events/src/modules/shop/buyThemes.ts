@@ -1,35 +1,35 @@
 import { ActionRow, ButtonStyles, InteractionResponseTypes } from 'discordeno/types';
 
 import md5 from 'md5';
-import commandRepository from '../../database/repositories/commandRepository';
-import shopRepository from '../../database/repositories/shopRepository';
-import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
-import userRepository from '../../database/repositories/userRepository';
+import commandRepository from '../../database/repositories/commandRepository.js';
+import shopRepository from '../../database/repositories/shopRepository.js';
+import themeCreditsRepository from '../../database/repositories/themeCreditsRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
 import userThemesRepository, {
   UserSelectedThemeTypes,
-} from '../../database/repositories/userThemesRepository';
-import { bot } from '../../index';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { SelectMenuInteraction } from '../../types/interaction';
-import { debugError } from '../../utils/debugError';
+} from '../../database/repositories/userThemesRepository.js';
+import { bot } from '../../index.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { SelectMenuInteraction } from '../../types/interaction.js';
+import { debugError } from '../../utils/debugError.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createSelectMenu,
-} from '../../utils/discord/componentUtils';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { getThemeById, getThemesByType, getUserActiveThemes } from '../themes/getThemes';
-import { ProfileTheme, ThemeFile } from '../themes/types';
-import { helloKittyThemes, previewProfileData, unbuyableThemes } from './constants';
+} from '../../utils/discord/componentUtils.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
+import { getThemeById, getThemesByType, getUserActiveThemes } from '../themes/getThemes.js';
+import { ProfileTheme, ThemeFile } from '../themes/types.js';
+import { helloKittyThemes, previewProfileData, unbuyableThemes } from './constants.js';
 import {
   editOriginalInteractionResponse,
   sendInteractionResponse,
-} from '../../utils/discord/interactionRequests';
-import giveRepository from '../../database/repositories/giveRepository';
+} from '../../utils/discord/interactionRequests.js';
+import giveRepository from '../../database/repositories/giveRepository.js';
 
 const themeByIndex = {
   0: 'profile',
@@ -41,7 +41,7 @@ const themeByIndex = {
   6: 'eb_menhera',
 } as const;
 
-const themeTypeToDatabaseField: { [x in ThemeFile['type']]: UserSelectedThemeTypes } = {
+const themeTypeToDatabaseField: Record<ThemeFile['type'], UserSelectedThemeTypes> = {
   card_background: 'selectedCardBackgroundTheme',
   cards: 'selectedCardTheme',
   eb_background: 'selectedEbBackgroundTheme',
@@ -224,9 +224,7 @@ const changeThemeType = async (
 
   const credits = await themeCreditsRepository.getThemesOwnerId(themes.map((a) => a.id));
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const theme of themes) {
-    // eslint-disable-next-line no-continue
     if (unbuyableThemes.includes(theme.id)) continue;
     const inInventory = userThemesIds.some((a) => a.id === theme.id);
 
@@ -496,7 +494,7 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
       changeThemeType(6, preview, ctx, authorData.selectedColor);
       break;
     case 'PREVIEW': {
-      const indexByTheme: { [key: string]: 0 | 1 | 2 | 3 | 4 | 5 | 6 } = {
+      const indexByTheme: Record<string, 0 | 1 | 2 | 3 | 4 | 5 | 6> = {
         profile: 0,
         cards: 1,
         card_background: 2,

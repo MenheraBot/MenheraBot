@@ -1,19 +1,19 @@
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import userRepository from '../../database/repositories/userRepository';
-import commandRepository from '../../database/repositories/commandRepository';
-import { SelectMenuInteraction } from '../../types/interaction';
-import shopRepository from '../../database/repositories/shopRepository';
-import { HuntMagicItems } from '../hunt/magicItems';
-import { HuntProbablyBoostItem } from '../hunt/types';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { COLORS, EMOJIS } from '../../structures/constants';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
+import { SelectMenuInteraction } from '../../types/interaction.js';
+import shopRepository from '../../database/repositories/shopRepository.js';
+import { HuntMagicItems } from '../hunt/magicItems.js';
+import { HuntProbablyBoostItem } from '../hunt/types.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { COLORS, EMOJIS } from '../../structures/constants.js';
 import {
   createActionRow,
   createCustomId,
   createSelectMenu,
-} from '../../utils/discord/componentUtils';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { getUserAvatar } from '../../utils/discord/userUtils';
+} from '../../utils/discord/componentUtils.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { getUserAvatar } from '../../utils/discord/userUtils.js';
 
 const executeSelectItem = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,

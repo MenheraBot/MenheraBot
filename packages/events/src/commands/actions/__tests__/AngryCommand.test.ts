@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import i18next from 'i18next';
-import angryCommand from '../AngryCommand';
+import angryCommand from '../AngryCommand.js';
 
 describe('AngryCommand tests', () => {
   const context = {

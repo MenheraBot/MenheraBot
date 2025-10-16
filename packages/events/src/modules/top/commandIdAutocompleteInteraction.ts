@@ -1,8 +1,8 @@
 import { ApplicationCommandOptionChoice, Interaction } from 'discordeno/transformers';
 import { findBestMatch } from 'string-similarity';
-import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
-import { bot } from '../..';
-import { respondWithChoices } from '../../utils/discord/interactionRequests';
+import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
+import { bot } from '../../index.js';
+import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
 
 const namedCommands: ApplicationCommandOptionChoice[] = [];
 

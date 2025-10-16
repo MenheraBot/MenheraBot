@@ -1,13 +1,13 @@
 import { BigString } from 'discordeno/types';
 
-import { MainRedisClient } from '../databases';
-import { themeCreditsModel } from '../collections';
-import { DatabaseCreditsSchema } from '../../types/database';
-import starsRepository from './starsRepository';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { bot } from '../..';
-import { ApiTransactionReason } from '../../types/api';
-import { registerCacheStatus } from '../../structures/initializePrometheus';
+import { MainRedisClient } from '../databases.js';
+import { themeCreditsModel } from '../collections.js';
+import { DatabaseCreditsSchema } from '../../types/database.js';
+import starsRepository from './starsRepository.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { registerCacheStatus } from '../../structures/initializePrometheus.js';
 
 const registerTheme = async (
   themeId: number,

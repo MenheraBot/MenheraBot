@@ -1,9 +1,8 @@
-/* eslint-disable camelcase */
 import axios from 'axios';
 
-import { debugError } from '../utils/debugError';
-import { getEnviroments } from '../utils/getEnviroments';
-import { logger } from '../utils/logger';
+import { debugError } from '../utils/debugError.js';
+import { getEnviroments } from '../utils/getEnviroments.js';
+import { logger } from '../utils/logger.js';
 
 interface AssetsLimit {
   angry: number;

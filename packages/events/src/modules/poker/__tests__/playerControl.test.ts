@@ -1,6 +1,6 @@
-import ComponentInteractionContext from '../../../structures/command/ComponentInteractionContext';
-import { getAvailableActions } from '../playerControl';
-import { mockGame, mockPlayer } from './playerSeats.test';
+import ComponentInteractionContext from '../../../structures/command/ComponentInteractionContext.js';
+import { getAvailableActions } from '../playerControl.js';
+import { mockGame, mockPlayer } from './playerSeats.test.js';
 
 describe('Checking the user options', () => {
   const game = mockGame();

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { ThemeFile } from './types';
+import { ThemeFile } from './types.js';
 
-const Themes: { [id: number]: ThemeFile } & Object = {
+const Themes: Record<number, ThemeFile> & object = {
   1: {
     price: 70_000,
     type: 'table',

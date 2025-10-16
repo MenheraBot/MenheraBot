@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { BigString } from 'discordeno/types';
 import { AxiosError } from 'axios';
 import {
@@ -14,13 +13,13 @@ import {
   TopGamblingUser,
   TopHunters,
   TransactionRegister,
-} from '../../types/api';
-import { BichoWinner } from '../../modules/bicho/types';
-import { ApiHuntingTypes } from '../../modules/hunt/types';
-import { debugError } from '../debugError';
-import { dataRequest } from './apiRequests';
-import { PokerApiUser } from '../../modules/poker/types';
-import { AvailablePlants } from '../../modules/fazendinha/types';
+} from '../../types/api.js';
+import { BichoWinner } from '../../modules/bicho/types.js';
+import { ApiHuntingTypes } from '../../modules/hunt/types.js';
+import { debugError } from '../debugError.js';
+import { dataRequest } from './apiRequests.js';
+import { PokerApiUser } from '../../modules/poker/types.js';
+import { AvailablePlants } from '../../modules/fazendinha/types.js';
 
 const postHuntExecution = async (
   userId: string,
@@ -216,7 +215,7 @@ const postTransaction = async (
 const getUserTransactions = async (
   users: string[],
   page: number,
-  types: Readonly<ApiTransactionReason[]>,
+  types: readonly ApiTransactionReason[],
   currency: string[],
 ): Promise<TransactionRegister[] | null> => {
   const result = await dataRequest

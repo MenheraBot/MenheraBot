@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { bot } from '..';
-import { logger } from './logger';
+import { bot } from '../index.js';
+import { logger } from './logger.js';
 
 let retryTimeout: NodeJS.Timeout;
 let retries = 0;

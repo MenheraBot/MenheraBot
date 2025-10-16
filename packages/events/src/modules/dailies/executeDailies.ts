@@ -1,11 +1,11 @@
-import notificationRepository from '../../database/repositories/notificationRepository';
-import userRepository from '../../database/repositories/userRepository';
-import { ChatInputInteractionCommand } from '../../types/commands';
-import { DatabaseUserSchema } from '../../types/database';
-import { AvailablePlants } from '../fazendinha/types';
-import { FINISHED_DAILY_AWARD, getDailyById } from './dailies';
-import { getUserDailies } from './getUserDailies';
-import { Daily, DatabaseDaily } from './types';
+import notificationRepository from '../../database/repositories/notificationRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { ChatInputInteractionCommand } from '../../types/commands.js';
+import { DatabaseUserSchema } from '../../types/database.js';
+import { AvailablePlants } from '../fazendinha/types.js';
+import { FINISHED_DAILY_AWARD, getDailyById } from './dailies.js';
+import { getUserDailies } from './getUserDailies.js';
+import { Daily, DatabaseDaily } from './types.js';
 
 const executeDailies = async (
   user: DatabaseUserSchema,

@@ -1,6 +1,5 @@
-/* eslint-disable no-continue */
-import { BICHO_ANIMALS, didUserWin } from './finishBets';
-import { BichoBetType } from './types';
+import { BICHO_ANIMALS, didUserWin } from './finishBets.js';
+import { BichoBetType } from './types.js';
 
 describe('Bicho didUserWin function', () => {
   // 'vaca', 'águia', 'veado', 'leão', 'galo'

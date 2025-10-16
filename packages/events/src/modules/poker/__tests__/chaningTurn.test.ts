@@ -1,5 +1,5 @@
-import { updatePlayerTurn } from '../turnManager';
-import { mockGame, mockPlayer } from './playerSeats.test';
+import { updatePlayerTurn } from '../turnManager.js';
+import { mockGame, mockPlayer } from './playerSeats.test.js';
 
 describe('Related to updating the turn to play', () => {
   const game = mockGame();

@@ -1,7 +1,7 @@
 import i18next from 'i18next';
-import { AvailableLanguages, Translation, availableLanguages } from '../types/i18next';
-import { DatabaseUserThemesSchema } from '../types/database';
-import { ProbabilityAmount, ProbabilityType } from '../types/menhera';
+import { AvailableLanguages, Translation, availableLanguages } from '../types/i18next.js';
+import { DatabaseUserThemesSchema } from '../types/database.js';
+import { ProbabilityAmount, ProbabilityType } from '../types/menhera.js';
 
 const capitalize = <S extends string>(str: S): Capitalize<S> =>
   (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<S>;
@@ -33,14 +33,17 @@ const localizedResources = (
   key: Translation,
   options?: Record<string, unknown>,
 ): Record<AvailableLanguages, string> => {
-  return availableLanguages.reduce((p, c) => {
-    const fixedT = i18next.getFixedT(c);
-    const result = fixedT(key, options);
+  return availableLanguages.reduce(
+    (p, c) => {
+      const fixedT = i18next.getFixedT(c);
+      const result = fixedT(key, options);
 
-    p[c] = result;
+      p[c] = result;
 
-    return p;
-  }, {} as Record<string, string>);
+      return p;
+    },
+    {} as Record<string, string>,
+  );
 };
 
 const chunkArray = <T>(arr: T[], chunkSize: number): T[][] => {
@@ -102,7 +105,6 @@ const calculateProbability = <Prob extends ProbabilityAmount | ProbabilityType>(
   let accumulator = probabilities.reduce((p, c) => p + c.probability, 0);
   const chance = Math.floor(Math.random() * accumulator);
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const data of probabilities) {
     accumulator -= data.probability;
     if (chance >= accumulator) {

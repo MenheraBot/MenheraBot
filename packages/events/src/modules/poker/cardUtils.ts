@@ -1,5 +1,5 @@
-import { shuffleCards } from '../blackjack';
-import { CARD_SUITE, PokerCard, PokerMatch } from './types';
+import { shuffleCards } from '../blackjack/index.js';
+import { CARD_SUITE, PokerCard, PokerMatch } from './types.js';
 
 export const getCardSuit = (cardId: number): CARD_SUITE => {
   switch (Math.ceil(cardId / 13) - 1) {

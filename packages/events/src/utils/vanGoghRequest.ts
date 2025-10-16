@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { Blob } from 'node:buffer';
 
-import { getEnviroments } from './getEnviroments';
-import { debugError } from './debugError';
-import { logger } from './logger';
-import { bot } from '..';
+import { getEnviroments } from './getEnviroments.js';
+import { debugError } from './debugError.js';
+import { logger } from './logger.js';
+import { bot } from '../index.js';
 
 const { VANGOGH_URL, MENHERA_AGENT, VANGOGH_TOKEN, VANGOGH_SOCKET_PATH } = getEnviroments([
   'VANGOGH_SOCKET_PATH',

@@ -1,9 +1,8 @@
-/* eslint-disable no-use-before-define */
 import { CreateSlashApplicationCommand } from 'discordeno';
 
-import ComponentInteractionContext from '../structures/command/ComponentInteractionContext';
-import ChatInputInteractionContext from '../structures/command/ChatInputInteractionContext';
-import { DatabaseUserSchema } from './database';
+import ComponentInteractionContext from '../structures/command/ComponentInteractionContext.js';
+import ChatInputInteractionContext from '../structures/command/ChatInputInteractionContext.js';
+import { DatabaseUserSchema } from './database.js';
 
 type CommandCategory =
   | 'economy'
@@ -18,7 +17,7 @@ type CommandCategory =
 export interface ChatInputCommandConfig extends CreateSlashApplicationCommand {
   devsOnly?: true;
   category: CommandCategory;
-  authorDataFields: Array<keyof DatabaseUserSchema>;
+  authorDataFields: (keyof DatabaseUserSchema)[];
 }
 
 export interface ChatInputInteractionCommand extends Readonly<ChatInputCommandConfig> {

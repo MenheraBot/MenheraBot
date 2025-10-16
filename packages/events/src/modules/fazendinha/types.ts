@@ -1,4 +1,4 @@
-import { QuantitativePlant } from '../../types/database';
+import { QuantitativePlant } from '../../types/database.js';
 
 export enum AvailablePlants {
   Mate,
@@ -34,15 +34,15 @@ export enum AvailableItems {
 
 export type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
 
-export type SeasonData = {
+export interface SeasonData {
   currentSeason: Seasons;
   endsAt: number;
-};
+}
 
-type FertilizerUpgrade = {
+interface FertilizerUpgrade {
   id: AvailableItems.Fertilizer;
   expiresAt: number;
-};
+}
 
 export type FieldUpgrade = FertilizerUpgrade;
 

@@ -1,18 +1,18 @@
 import { ApplicationCommandOptionTypes, CamelCase } from 'discordeno/types';
 
 import { User } from 'discordeno/transformers';
-import { bot } from '../..';
-import profileImagesRepository from '../../database/repositories/profileImagesRepository';
-import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
-import userRepository from '../../database/repositories/userRepository';
-import userThemesRepository from '../../database/repositories/userThemesRepository';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { createCommand } from '../../structures/command/createCommand';
-import { getThemeById } from '../../modules/themes/getThemes';
-import { debugError } from '../../utils/debugError';
-import { AvailableThemeTypes } from '../../modules/themes/types';
-import titlesRepository from '../../database/repositories/titlesRepository';
-import giveRepository from '../../database/repositories/giveRepository';
+import { bot } from '../../index.js';
+import profileImagesRepository from '../../database/repositories/profileImagesRepository.js';
+import themeCreditsRepository from '../../database/repositories/themeCreditsRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import userThemesRepository from '../../database/repositories/userThemesRepository.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { getThemeById } from '../../modules/themes/getThemes.js';
+import { debugError } from '../../utils/debugError.js';
+import { AvailableThemeTypes } from '../../modules/themes/types.js';
+import titlesRepository from '../../database/repositories/titlesRepository.js';
+import giveRepository from '../../database/repositories/giveRepository.js';
 
 const snakeCaseToCamelCase = <T extends string>(input: T): CamelCase<T> =>
   input

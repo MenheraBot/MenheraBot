@@ -16,35 +16,31 @@ jobs:
       version: ${{ steps.version.outputs.version }}
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v5
+        
+      - uses: actions/setup-node@v6
         with:
-          node-version: 18.4.0
-          cache: 'yarn'
+          node-version: 22.20.0
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run eslint
-        run: yarn run:lint
+        run: pnpm run:lint
 
-      - name: Build Events package
-        run: yarn events build
+      - name: Build packages
+        run: pnpm -r build
 
-      - name: Execute typecheck in Orchestrator
-        run: yarn orchestrator typecheck
-
-      - name: Execute Jest in all packages
-        run: yarn test
+      - name: Run Jest
+        run: pnpm test
 
       - name: Tar events build
         run: cd packages/events && tar -cvf events.tar dist
 
       - id: version
         name: Store version in Github Output
-        run: yarn --silent events print-version | tail -n1 >> "$GITHUB_OUTPUT"
+        run: pnpm --silent events print-version | tail -n1 >> "$GITHUB_OUTPUT"
 
       - name: Archive build output
         uses: actions/upload-artifact@v4
@@ -64,7 +60,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
       - name: Build events image
         run: docker build . --file Dockerfile --tag events --target events --label "runnumber=${GITHUB_RUN_ID}"
@@ -95,7 +91,7 @@ jobs:
     env:
       version: ${{ needs.test-release-version.outputs.version }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
       - name: Download sentry cli
         run: curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION="2.21.2" bash

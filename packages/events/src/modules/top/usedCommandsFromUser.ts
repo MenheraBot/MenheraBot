@@ -1,12 +1,12 @@
 import { User } from 'discordeno/transformers';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { capitalize } from '../../utils/miscUtils';
-import { InteractionContext } from '../../types/menhera';
-import { calculateSkipCount, createPaginationButtons } from '.';
-import { getDisplayName } from '../../utils/discord/userUtils';
-import { getTopCommandsByUses, getUserProfileInfo } from '../../utils/apiRequests/statistics';
-import userRepository from '../../database/repositories/userRepository';
-import titlesRepository from '../../database/repositories/titlesRepository';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { capitalize } from '../../utils/miscUtils.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { calculateSkipCount, createPaginationButtons } from './index.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
+import { getTopCommandsByUses, getUserProfileInfo } from '../../utils/apiRequests/statistics.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import titlesRepository from '../../database/repositories/titlesRepository.js';
 
 const executeUsedCommandsFromUserTop = async (
   ctx: InteractionContext,

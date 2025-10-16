@@ -6,36 +6,36 @@ import {
 } from 'discordeno/types';
 import { Embed } from 'discordeno/transformers';
 import * as Sentry from '@sentry/node';
-import { createCommand } from '../../structures/command/createCommand';
+import { createCommand } from '../../structures/command/createCommand.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createUsersSelectMenu,
-} from '../../utils/discord/componentUtils';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import pokerRepository from '../../database/repositories/pokerRepository';
+} from '../../utils/discord/componentUtils.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import pokerRepository from '../../database/repositories/pokerRepository.js';
 import {
   ModalInteraction,
   SelectMenuInteraction,
   SelectMenuUsersInteraction,
-} from '../../types/interaction';
-import { mentionUser } from '../../utils/discord/userUtils';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { MessageFlags, removeNonNumbers } from '../../utils/discord/messageUtils';
-import { closeTable, setupGame } from '../../modules/poker/matchManager';
+} from '../../types/interaction.js';
+import { mentionUser } from '../../utils/discord/userUtils.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { MessageFlags, removeNonNumbers } from '../../utils/discord/messageUtils.js';
+import { closeTable, setupGame } from '../../modules/poker/matchManager.js';
 import {
   executeMasterAction,
   forceRemovePlayers,
   showPlayerCards,
   updatePlayerHandValue,
-} from '../../modules/poker/playerControl';
-import { afterLobbyAction } from '../../modules/poker/afterMatchLobby';
-import userRepository from '../../database/repositories/userRepository';
-import starsRepository from '../../database/repositories/starsRepository';
-import { handleUserSelection, validateUserBet } from '../../modules/poker/playerBet';
-import { DEFAULT_CHIPS, MAX_POKER_PLAYERS } from '../../modules/poker/constants';
-import { logger } from '../../utils/logger';
+} from '../../modules/poker/playerControl.js';
+import { afterLobbyAction } from '../../modules/poker/afterMatchLobby.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import { handleUserSelection, validateUserBet } from '../../modules/poker/playerBet.js';
+import { DEFAULT_CHIPS, MAX_POKER_PLAYERS } from '../../modules/poker/constants.js';
+import { logger } from '../../utils/logger.js';
 
 const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [matchId, action, lobbyAction] = ctx.sentData;

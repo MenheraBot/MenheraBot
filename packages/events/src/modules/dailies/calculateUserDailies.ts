@@ -1,4 +1,4 @@
-import { randomFromArray } from '../../utils/miscUtils';
+import { randomFromArray } from '../../utils/miscUtils.js';
 import {
   DAILIES_AMOUNT,
   HUNT_AMOUNT,
@@ -8,8 +8,8 @@ import {
   STARS_PRIZE,
   getAllDailies,
   getRandomAward,
-} from './dailies';
-import { Award, DatabaseDaily } from './types';
+} from './dailies.js';
+import { Award, DatabaseDaily } from './types.js';
 
 const getDailyAwardOptions = (): [
   Award<string | number>,
@@ -62,7 +62,6 @@ const getUniqueDaily = (currentDailies: DatabaseDaily[]): DatabaseDaily => {
       ),
   );
 
-  // eslint-disable-next-line no-constant-condition
   while (true) {
     const randomDaily = randomFromArray(availableDailies);
 

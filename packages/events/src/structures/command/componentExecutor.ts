@@ -2,23 +2,23 @@ import { Interaction } from 'discordeno/transformers';
 import { AllowedMentionsTypes, InteractionResponseTypes } from 'discordeno/types';
 import i18next from 'i18next';
 
-import { mentionUser } from '../../utils/discord/userUtils';
-import commandRepository from '../../database/repositories/commandRepository';
-import userRepository from '../../database/repositories/userRepository';
-import blacklistRepository from '../../database/repositories/blacklistRepository';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { bot } from '../../index';
-import guildRepository from '../../database/repositories/guildRepository';
-import ComponentInteractionContext from './ComponentInteractionContext';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { getEnviroments } from '../../utils/getEnviroments';
-import { ComponentInteraction } from '../../types/interaction';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import { logger } from '../../utils/logger';
+import { mentionUser } from '../../utils/discord/userUtils.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import blacklistRepository from '../../database/repositories/blacklistRepository.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { bot } from '../../index.js';
+import guildRepository from '../../database/repositories/guildRepository.js';
+import ComponentInteractionContext from './ComponentInteractionContext.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { getEnviroments } from '../../utils/getEnviroments.js';
+import { ComponentInteraction } from '../../types/interaction.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import { logger } from '../../utils/logger.js';
 import {
   sendFollowupMessage,
   sendInteractionResponse,
-} from '../../utils/discord/interactionRequests';
+} from '../../utils/discord/interactionRequests.js';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',

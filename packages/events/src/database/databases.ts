@@ -1,8 +1,8 @@
-import Redis from 'ioredis';
+import { Redis } from 'ioredis';
 import mongoose from 'mongoose';
 
-import { getEnviroments } from '../utils/getEnviroments';
-import { logger } from '../utils/logger';
+import { getEnviroments } from '../utils/getEnviroments.js';
+import { logger } from '../utils/logger.js';
 
 const { REDIS_PATH } = getEnviroments(['REDIS_PATH']);
 

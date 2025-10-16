@@ -1,10 +1,10 @@
 import { BigString } from 'discordeno/types';
 import { UpdateQuery } from 'mongoose';
-import { DatabaseEventSchema } from '../../types/database';
-import { MainRedisClient } from '../databases';
-import { debugError } from '../../utils/debugError';
-import { registerCacheStatus } from '../../structures/initializePrometheus';
-import { eventModel } from '../collections';
+import { DatabaseEventSchema } from '../../types/database.js';
+import { MainRedisClient } from '../databases.js';
+import { debugError } from '../../utils/debugError.js';
+import { registerCacheStatus } from '../../structures/initializePrometheus.js';
+import { eventModel } from '../collections.js';
 
 const parseMongoUserToRedisUser = (user: DatabaseEventSchema): DatabaseEventSchema => ({
   userId: user.userId,

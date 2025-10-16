@@ -1,14 +1,14 @@
 import { ToggleBitfieldBigint } from 'discordeno/transformers';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import guildRepository from '../../database/repositories/guildRepository';
-import { EMOJIS } from '../../structures/constants';
-import { SelectMenuInteraction } from '../../types/interaction';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import guildRepository from '../../database/repositories/guildRepository.js';
+import { EMOJIS } from '../../structures/constants.js';
+import { SelectMenuInteraction } from '../../types/interaction.js';
 import {
   createActionRow,
   createCustomId,
   createSelectMenu,
-} from '../../utils/discord/componentUtils';
-import { createCommand } from '../../structures/command/createCommand';
+} from '../../utils/discord/componentUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
 
 const changeLanguage = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
@@ -41,7 +41,6 @@ const LanguageCommand = createCommand({
   execute: async (ctx, finishCommand) => {
     if (
       !new ToggleBitfieldBigint(ctx.interaction.member?.permissions as bigint).contains(
-        // eslint-disable-next-line no-bitwise
         BigInt(1 << 5),
       )
     ) {

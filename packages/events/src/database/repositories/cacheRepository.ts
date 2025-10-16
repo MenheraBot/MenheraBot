@@ -1,12 +1,12 @@
 import { Attachment, User } from 'discordeno/transformers';
 import { BigString, DiscordUser } from 'discordeno/types';
 
-import { bot } from '../../index';
-import { UserIdType } from '../../types/database';
-import { debugError } from '../../utils/debugError';
+import { bot } from '../../index.js';
+import { UserIdType } from '../../types/database.js';
+import { debugError } from '../../utils/debugError.js';
 
-import { MainRedisClient } from '../databases';
-import { registerCacheStatus } from '../../structures/initializePrometheus';
+import { MainRedisClient } from '../databases.js';
+import { registerCacheStatus } from '../../structures/initializePrometheus.js';
 
 const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promise<User | null> => {
   if (userId === null || userId === 'null') return null;

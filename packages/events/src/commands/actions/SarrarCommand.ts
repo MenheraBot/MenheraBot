@@ -1,14 +1,18 @@
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { createCommand } from '../../structures/command/createCommand';
-import { COLORS } from '../../structures/constants';
-import { getAssetLink } from '../../structures/cdnManager';
-import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { COLORS } from '../../structures/constants.js';
+import { getAssetLink } from '../../structures/cdnManager.js';
+import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 
 const sarrada = async (ctx: ComponentInteractionContext): Promise<void> => {
   const { commandAuthor } = ctx;

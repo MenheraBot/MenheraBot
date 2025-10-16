@@ -1,11 +1,11 @@
 import { UpdateQuery } from 'mongoose';
 
 import { BigString } from 'discordeno/types';
-import { usersModel } from '../collections';
-import { DatabaseUserSchema, UserIdType } from '../../types/database';
-import { MainRedisClient } from '../databases';
-import { debugError } from '../../utils/debugError';
-import { registerCacheStatus } from '../../structures/initializePrometheus';
+import { usersModel } from '../collections.js';
+import { DatabaseUserSchema, UserIdType } from '../../types/database.js';
+import { MainRedisClient } from '../databases.js';
+import { debugError } from '../../utils/debugError.js';
+import { registerCacheStatus } from '../../structures/initializePrometheus.js';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema => ({
   _id: `${user._id}`,
@@ -178,7 +178,7 @@ const getTopRanking = async (
   skip: number,
   ignoreUsers: string[] = [],
   limit = 10,
-): Promise<Array<{ id: number; value: number }>> => {
+): Promise<{ id: number; value: number }[]> => {
   const res = await usersModel.find({ ban: false, id: { $nin: ignoreUsers } }, [field, 'id'], {
     skip,
     limit,

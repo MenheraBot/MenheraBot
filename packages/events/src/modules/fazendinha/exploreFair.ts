@@ -1,33 +1,33 @@
 import { Interaction, User } from 'discordeno/transformers';
 import { findBestMatch } from 'string-similarity';
 import { ButtonStyles } from 'discordeno/types';
-import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
-import { InteractionContext } from '../../types/menhera';
-import fairRepository from '../../database/repositories/fairRepository';
-import { DatabaseFarmerSchema } from '../../types/database';
-import { addPlants, getSiloLimits } from './siloUtils';
-import userRepository from '../../database/repositories/userRepository';
-import starsRepository from '../../database/repositories/starsRepository';
-import farmerRepository from '../../database/repositories/farmerRepository';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { ApiTransactionReason } from '../../types/api';
-import { respondWithChoices } from '../../utils/discord/interactionRequests';
+import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
+import { InteractionContext } from '../../types/menhera.js';
+import fairRepository from '../../database/repositories/fairRepository.js';
+import { DatabaseFarmerSchema } from '../../types/database.js';
+import { addPlants, getSiloLimits } from './siloUtils.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createSelectMenu,
   resolveSeparatedStrings,
-} from '../../utils/discord/componentUtils';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { MAX_ITEMS_PER_FAIR_PAGE, Plants } from './constants';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { SelectMenuInteraction } from '../../types/interaction';
-import { localizedResources } from '../../utils/miscUtils';
-import notificationRepository from '../../database/repositories/notificationRepository';
-import cacheRepository from '../../database/repositories/cacheRepository';
+} from '../../utils/discord/componentUtils.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
+import { MAX_ITEMS_PER_FAIR_PAGE, Plants } from './constants.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { SelectMenuInteraction } from '../../types/interaction.js';
+import { localizedResources } from '../../utils/miscUtils.js';
+import notificationRepository from '../../database/repositories/notificationRepository.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
 
 const listItemAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'item', false) ?? '';

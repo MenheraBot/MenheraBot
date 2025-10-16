@@ -1,9 +1,9 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
 
-import { getUserAvatar } from '../../utils/discord/userUtils';
-import { createCommand } from '../../structures/command/createCommand';
-import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
+import { getUserAvatar } from '../../utils/discord/userUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
 
 const GadoCommand = createCommand({
   path: '',

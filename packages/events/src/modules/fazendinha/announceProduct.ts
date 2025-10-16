@@ -1,22 +1,22 @@
 import i18next from 'i18next';
 import { ApplicationCommandOptionChoice, Interaction } from 'discordeno/transformers';
 import { findBestMatch } from 'string-similarity';
-import fairRepository from '../../database/repositories/fairRepository';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { DatabaseFarmerSchema } from '../../types/database';
+import fairRepository from '../../database/repositories/fairRepository.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { DatabaseFarmerSchema } from '../../types/database.js';
 import {
   MAXIMUM_PRICE_TO_SELL_IN_FAIR,
   MAX_ITEMS_IN_FAIR_PER_USER,
   MINIMUM_PRICE_TO_SELL_IN_FAIR,
   Plants,
-} from './constants';
-import { checkNeededPlants, removePlants } from './siloUtils';
-import { AvailablePlants } from './types';
-import farmerRepository from '../../database/repositories/farmerRepository';
-import { localizedResources } from '../../utils/miscUtils';
-import { respondWithChoices } from '../../utils/discord/interactionRequests';
-import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
-import executeDailies from '../dailies/executeDailies';
+} from './constants.js';
+import { checkNeededPlants, removePlants } from './siloUtils.js';
+import { AvailablePlants } from './types.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import { localizedResources } from '../../utils/miscUtils.js';
+import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
+import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
+import executeDailies from '../dailies/executeDailies.js';
 
 let plantNames: ApplicationCommandOptionChoice[] = [];
 

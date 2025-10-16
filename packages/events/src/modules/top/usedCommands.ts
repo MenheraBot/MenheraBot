@@ -1,8 +1,8 @@
-import { calculateSkipCount, createPaginationButtons } from '.';
-import { InteractionContext } from '../../types/menhera';
-import { getTopCommandsByUses } from '../../utils/apiRequests/statistics';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { capitalize } from '../../utils/miscUtils';
+import { calculateSkipCount, createPaginationButtons } from './index.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { getTopCommandsByUses } from '../../utils/apiRequests/statistics.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { capitalize } from '../../utils/miscUtils.js';
 
 const executeUsedCommandsTop = async (
   ctx: InteractionContext,

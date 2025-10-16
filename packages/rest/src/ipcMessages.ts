@@ -1,6 +1,5 @@
-/* eslint-disable no-console */
 import { Connection } from 'net-ipc';
-import { ConnectionInfo } from './types';
+import { ConnectionInfo } from './types.js';
 
 const handleIdentify = (connections: ConnectionInfo[], connection: Connection): void => {
   const isReconnect = connections.find((a) => a.internalId === connection.id);

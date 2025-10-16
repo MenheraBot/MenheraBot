@@ -1,10 +1,10 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
 
-import { mentionUser } from '../../utils/discord/userUtils';
-import { randomFromArray } from '../../utils/miscUtils';
-import { createActionRow, createButton } from '../../utils/discord/componentUtils';
-import { createCommand } from '../../structures/command/createCommand';
+import { mentionUser } from '../../utils/discord/userUtils.js';
+import { randomFromArray } from '../../utils/miscUtils.js';
+import { createActionRow, createButton } from '../../utils/discord/componentUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
 
 export const availableAuthors = [
   'Zinédine Zidane',

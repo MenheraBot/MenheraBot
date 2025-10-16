@@ -1,17 +1,21 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
 
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import { createButton, createActionRow, createCustomId } from '../../utils/discord/componentUtils';
-import relationshipRepostory from '../../database/repositories/relationshipRepostory';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { createCommand } from '../../structures/command/createCommand';
-import userRepository from '../../database/repositories/userRepository';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
+import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import {
+  createButton,
+  createActionRow,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import relationshipRepostory from '../../database/repositories/relationshipRepostory.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 
 const executeFinishTrisalConfirmation = async (ctx: ComponentInteractionContext): Promise<void> => {
   const authorData = await userRepository.ensureFindUser(ctx.user.id);
@@ -289,12 +293,11 @@ const executeDisplayTrisal = async (
   const marryOne = await cacheRepository.getDiscordUser(userData.trisal[0]);
   const marryTwo = await cacheRepository.getDiscordUser(userData.trisal[1]);
   const marryThree =
-    // eslint-disable-next-line no-nested-ternary
     userData.trisal.length === 3
       ? await cacheRepository.getDiscordUser(userData.trisal[2])
       : user.id === ctx.author.id
-      ? ctx.author
-      : null;
+        ? ctx.author
+        : null;
 
   if (!marryOne || !marryTwo || !marryThree)
     return finishCommand(

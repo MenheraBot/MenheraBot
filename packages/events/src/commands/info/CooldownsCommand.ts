@@ -6,19 +6,19 @@ import {
 } from 'discordeno/types';
 
 import { User } from 'discordeno/transformers';
-import { bot } from '../../index';
-import { createActionRow, createButton } from '../../utils/discord/componentUtils';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { createCommand } from '../../structures/command/createCommand';
-import farmerRepository from '../../database/repositories/farmerRepository';
-import userRepository from '../../database/repositories/userRepository';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { getDisplayName } from '../../utils/discord/userUtils';
-import { InteractionContext } from '../../types/menhera';
-import { getPlantationState } from '../../modules/fazendinha/plantationState';
-import { millisToSeconds } from '../../utils/miscUtils';
-import notificationRepository from '../../database/repositories/notificationRepository';
-import commandRepository from '../../database/repositories/commandRepository';
+import { bot } from '../../index.js';
+import { createActionRow, createButton } from '../../utils/discord/componentUtils.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { getPlantationState } from '../../modules/fazendinha/plantationState.js';
+import { millisToSeconds } from '../../utils/miscUtils.js';
+import notificationRepository from '../../database/repositories/notificationRepository.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
 
 const canDo = (value: number): boolean => value <= 0;
 

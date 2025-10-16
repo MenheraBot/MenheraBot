@@ -1,8 +1,8 @@
 import { ImageSize, routes } from 'discordeno';
 import { User } from 'discordeno/transformers';
 
-import { bot } from '../../index';
-import { toWritableUtf } from '../miscUtils';
+import { bot } from '../../index.js';
+import { toWritableUtf } from '../miscUtils.js';
 
 const getUserAvatar = (
   user: User,

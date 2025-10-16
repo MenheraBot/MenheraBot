@@ -1,10 +1,10 @@
 import { resolve } from 'node:path';
 
-import commandRepository from '../../database/repositories/commandRepository';
-import { ChatInputInteractionCommand } from '../../types/commands';
-import { readDirectory } from '../../utils/fileUtils';
-import { bot } from '../../index';
-import { populateCommand } from '../../modules/dailies/dailies';
+import commandRepository from '../../database/repositories/commandRepository.js';
+import { ChatInputInteractionCommand } from '../../types/commands.js';
+import { readDirectory } from '../../utils/fileUtils.js';
+import { bot } from '../../index.js';
+import { populateCommand } from '../../modules/dailies/dailies.js';
 
 const loadCommands = (): void => {
   const addToMap = (command: ChatInputInteractionCommand, filePath: string): void => {

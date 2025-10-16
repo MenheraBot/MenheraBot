@@ -22,12 +22,12 @@ export interface SendRequest {
   };
 }
 
-export type ConnectionInfo = {
+export interface ConnectionInfo {
   internalId: string;
   connected: boolean;
   connectedAt: number;
   disconnectedAt: number;
-};
+}
 
 export interface IdentifyMessage {
   type: 'IDENTIFY';

@@ -1,9 +1,9 @@
 import { BigString, Localization } from 'discordeno/types';
 
-import { MainRedisClient } from '../databases';
-import { titlesModel } from '../collections';
-import { DatabaseTitlesSchema } from '../../types/database';
-import { registerCacheStatus } from '../../structures/initializePrometheus';
+import { MainRedisClient } from '../databases.js';
+import { titlesModel } from '../collections.js';
+import { DatabaseTitlesSchema } from '../../types/database.js';
+import { registerCacheStatus } from '../../structures/initializePrometheus.js';
 
 const parseMongoDataToRedis = (title: DatabaseTitlesSchema): DatabaseTitlesSchema => ({
   registeredAt: title.registeredAt,

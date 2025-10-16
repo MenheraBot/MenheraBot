@@ -1,17 +1,21 @@
 import { ButtonStyles } from 'discordeno/types';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { DatabaseFarmerSchema } from '../../types/database';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { MAX_SILO_UPGRADES, SILO_LIMIT_INCREASE_BY_LEVEL } from './constants';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import farmerRepository from '../../database/repositories/farmerRepository';
-import userRepository from '../../database/repositories/userRepository';
-import starsRepository from '../../database/repositories/starsRepository';
-import { getSiloLimits } from './siloUtils';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { ApiTransactionReason } from '../../types/api';
-import { bot } from '../..';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { DatabaseFarmerSchema } from '../../types/database.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import { MAX_SILO_UPGRADES, SILO_LIMIT_INCREASE_BY_LEVEL } from './constants.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import { getSiloLimits } from './siloUtils.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { bot } from '../../index.js';
 
 const handleUpgradeSilo = async (ctx: ComponentInteractionContext): Promise<void> => {
   const farmer = await farmerRepository.getFarmer(ctx.user.id);

@@ -1,22 +1,28 @@
-/* eslint-disable no-console */
-import { DiscordInteraction } from 'discordeno/*';
+import { DiscordInteraction } from 'discordeno';
 import { Connection, Server } from 'net-ipc';
-import { mergeMetrics } from './prometheusWorkarround';
-import { respondInteraction } from './respondInteraction';
-import { createHttpServer, registerAllRouters } from './server/httpServer';
-import { PrometheusResponse } from './server/routes/prometheus';
-import { getEnviroments } from './getEnviroments';
+import Koa from 'koa'
+import { mergeMetrics } from './prometheusWorkarround.js';
+import { respondInteraction } from './respondInteraction.js';
+import { createHttpServer, registerAllRouters } from './server/httpServer.js';
+import { PrometheusResponse } from './server/routes/prometheus.js';
+import { getEnviroments } from './getEnviroments.js';
+
+declare module 'koa' {
+    interface Request extends Koa.BaseRequest {
+        body?: any;
+    }
+}
 
 const { ORCHESTRATOR_SOCKET_PATH } = getEnviroments(['ORCHESTRATOR_SOCKET_PATH']);
 
 const orchestratorServer = new Server({ path: ORCHESTRATOR_SOCKET_PATH });
 
-type EventClientConnection = {
+interface EventClientConnection {
   id: string;
   conn: Connection;
   isMaster: boolean;
   version: string;
-};
+}
 
 let currentVersion: string;
 let swappingVersions = false;

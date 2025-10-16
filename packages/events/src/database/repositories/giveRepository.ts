@@ -1,8 +1,8 @@
 import { BigString } from 'discordeno/types';
-import { negate } from '../../utils/miscUtils';
-import userRepository from './userRepository';
-import { profileBadges } from '../../modules/badges/profileBadges';
-import { MainRedisClient } from '../databases';
+import { negate } from '../../utils/miscUtils.js';
+import userRepository from './userRepository.js';
+import { profileBadges } from '../../modules/badges/profileBadges.js';
+import { MainRedisClient } from '../databases.js';
 
 const executeGive = async (
   field: 'estrelinhas',

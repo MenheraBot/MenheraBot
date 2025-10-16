@@ -1,20 +1,20 @@
 import { Collection, createRestManager, handleInteractionCreate } from 'discordeno';
 
-import { transformInteractionResponseToDiscordInteractionResponse } from '../internals/transformers/reverse/interactionResponse';
-import { initializeRedis, initializeMongo } from '../database/databases';
-import { loadLocales } from './localeStructure';
-import { initializeSentry } from './initializeSentry';
-import { getEnviroments } from '../utils/getEnviroments';
-import { MenheraClient } from '../types/menhera';
-import { logger } from '../utils/logger';
-import { updateAssets } from './cdnManager';
-import { initializePrometheus } from './initializePrometheus';
-import { transformDiscordUserToUser } from '../internals/transformers/reverse/transformDiscordUserToUser';
-import { transfromUserToDiscordUser } from '../internals/transformers/transformUserToDiscordUser';
-import { transformComponentToDiscordComponent } from '../internals/transformers/reverse/component';
-import { loadChangelog } from '../utils/changelog';
-import { freeStuckQueues } from '../utils/freeStuckQueues';
-import { loadCommands } from './command/loadCommands';
+import { transformInteractionResponseToDiscordInteractionResponse } from '../internals/transformers/reverse/interactionResponse.js';
+import { initializeRedis, initializeMongo } from '../database/databases.js';
+import { loadLocales } from './localeStructure.js';
+import { initializeSentry } from './initializeSentry.js';
+import { getEnviroments } from '../utils/getEnviroments.js';
+import { MenheraClient } from '../types/menhera.js';
+import { logger } from '../utils/logger.js';
+import { updateAssets } from './cdnManager.js';
+import { initializePrometheus } from './initializePrometheus.js';
+import { transformDiscordUserToUser } from '../internals/transformers/reverse/transformDiscordUserToUser.js';
+import { transfromUserToDiscordUser } from '../internals/transformers/transformUserToDiscordUser.js';
+import { transformComponentToDiscordComponent } from '../internals/transformers/reverse/component.js';
+import { loadChangelog } from '../utils/changelog.js';
+import { freeStuckQueues } from '../utils/freeStuckQueues.js';
+import { loadCommands } from './command/loadCommands.js';
 
 const setupMenheraClient = (client: MenheraClient): void => {
   const { OWNER_ID } = getEnviroments(['OWNER_ID']);

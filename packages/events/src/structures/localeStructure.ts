@@ -4,9 +4,9 @@ import i18next from 'i18next';
 import translationBackend from 'i18next-fs-backend';
 import { fileURLToPath } from 'node:url';
 
-import { logger } from '../utils/logger';
-import { debugError } from '../utils/debugError';
-import { availableLanguages } from '../types/i18next';
+import { logger } from '../utils/logger.js';
+import { debugError } from '../utils/debugError.js';
+import { availableLanguages } from '../types/i18next.js';
 
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

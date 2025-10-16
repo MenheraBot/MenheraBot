@@ -1,7 +1,6 @@
-/* eslint-disable no-console */
 import { HTTPResponseCodes, verifySignature } from 'discordeno';
 import { Context, Next } from 'koa';
-import { getEnviroments } from '../../getEnviroments';
+import { getEnviroments } from '../../getEnviroments.js';
 
 const verifyDiscordRequests = (ctx: Context, next: Next): void | Promise<unknown> => {
   const { DISCORD_PUBLIC_KEY } = getEnviroments(['DISCORD_PUBLIC_KEY']);

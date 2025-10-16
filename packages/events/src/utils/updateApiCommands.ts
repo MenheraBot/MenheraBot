@@ -1,6 +1,6 @@
-import { bot } from '..';
-import { ApiCommandInformation } from '../types/commands';
-import { postCommandsInformation } from './apiRequests/commands';
+import { bot } from '../index.js';
+import { ApiCommandInformation } from '../types/commands.js';
+import { postCommandsInformation } from './apiRequests/commands.js';
 
 const updateCommandsOnApi = async (): Promise<void> => {
   const toAPIData = new Map<string, ApiCommandInformation>();

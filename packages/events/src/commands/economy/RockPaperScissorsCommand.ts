@@ -1,19 +1,23 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { createCommand } from '../../structures/command/createCommand';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { mentionUser } from '../../utils/discord/userUtils';
-import userRepository from '../../database/repositories/userRepository';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import GenericInteractionContext from '../../structures/command/GenericInteractionContext';
-import commandRepository from '../../database/repositories/commandRepository';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { mentionUser } from '../../utils/discord/userUtils.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import GenericInteractionContext from '../../structures/command/GenericInteractionContext.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
 import rockPaperScissorsRepository, {
   RockPaperScissorsGame,
   RockPaperScissorsSelection,
-} from '../../database/repositories/rockPaperScissorsRepository';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { postRockPaperScissorsGame } from '../../utils/apiRequests/statistics';
+} from '../../database/repositories/rockPaperScissorsRepository.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { postRockPaperScissorsGame } from '../../utils/apiRequests/statistics.js';
 
 const rockPaperScissors = (
   game: RockPaperScissorsGame,
@@ -26,7 +30,7 @@ const rockPaperScissors = (
 
   if (firstUser[1] === secondUser[1]) return { winner: firstUser, loser: secondUser, draw: true };
 
-  const winningCombinations: { [key in RockPaperScissorsSelection]: RockPaperScissorsSelection } = {
+  const winningCombinations: Record<RockPaperScissorsSelection, RockPaperScissorsSelection> = {
     ROCK: 'SCISSORS',
     PAPER: 'ROCK',
     SCISSORS: 'PAPER',

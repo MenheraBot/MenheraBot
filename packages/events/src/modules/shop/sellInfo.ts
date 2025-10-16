@@ -1,7 +1,7 @@
-import { EMOJIS } from '../../structures/constants';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { Plants } from '../fazendinha/constants';
-import { huntValues } from './constants';
+import { EMOJIS } from '../../structures/constants.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { Plants } from '../fazendinha/constants.js';
+import { huntValues } from './constants.js';
 
 const sellInfo = async (
   ctx: ChatInputInteractionContext,

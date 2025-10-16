@@ -7,9 +7,9 @@ import {
   InteractionResponseTypes,
   RestSendRequestOptions,
 } from 'discordeno';
-import { bot } from '../../index';
-import { debugError } from '../debugError';
-import { logger } from '../logger';
+import { bot } from '../../index.js';
+import { debugError } from '../debugError.js';
+import { logger } from '../logger.js';
 
 const sendRequest = async (options: RestSendRequestOptions, currentTry = 1): Promise<void> =>
   new Promise((res, rej): void => {

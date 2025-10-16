@@ -17,7 +17,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
       - name: Build the image
         run: docker build . --file Dockerfile.beta --tag beta --target events --label "runnumber=${GITHUB_RUN_ID}"

@@ -1,10 +1,10 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { createCommand } from '../../structures/command/createCommand';
-import { toWritableUtf } from '../../utils/miscUtils';
-import { getDisplayName } from '../../utils/discord/userUtils';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { toWritableUtf } from '../../utils/miscUtils.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
 
 const PhiloCommand = createCommand({
   path: '',

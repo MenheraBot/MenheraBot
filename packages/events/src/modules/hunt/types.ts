@@ -1,4 +1,4 @@
-import { ProbabilityAmount } from '../../types/menhera';
+import { ProbabilityAmount } from '../../types/menhera.js';
 
 export type DatabaseHuntingTypes =
   | 'demons'
@@ -19,7 +19,7 @@ export interface HuntProbability {
   gods: ProbabilityAmount[];
 }
 
-export type HuntProbabilities = { [K in DatabaseHuntingTypes]: ProbabilityAmount[] };
+export type HuntProbabilities = Record<DatabaseHuntingTypes, ProbabilityAmount[]>;
 
 export interface HuntMagicItem {
   id: number;

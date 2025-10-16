@@ -1,7 +1,6 @@
-import { ApiHuntingTypes, DatabaseHuntingTypes } from '../modules/hunt/types';
-import { PokerWinReasons } from '../modules/poker/types';
+import { ApiHuntingTypes, DatabaseHuntingTypes } from '../modules/hunt/types.js';
+import { PokerWinReasons } from '../modules/poker/types.js';
 
-/* eslint-disable camelcase */
 export interface ApiHuntStats {
   user_id: string;
   demon_tries: number;
@@ -70,13 +69,13 @@ export type TopHunters<Hunt extends ApiHuntingTypes> = {
   user_id: string;
 } & Pick<ApiHuntStats, `${Hunt}_success` | `${Hunt}_hunted` | `${Hunt}_tries`>;
 
-export type TopGamblingUser = {
+export interface TopGamblingUser {
   user_id: string;
   earn_money: number;
   lost_games: number;
   lost_money: number;
   won_games: number;
-};
+}
 
 export enum ApiTransactionReason {
   SIMON_SAYS = 'simon_says',

@@ -1,5 +1,5 @@
-import { VangoghUserprofileData } from '../../commands/info/ProfileCommand';
-import { getProfileImageUrl } from '../../structures/cdnManager';
+import { VangoghUserprofileData } from '../../commands/info/ProfileCommand.js';
+import { getProfileImageUrl } from '../../structures/cdnManager.js';
 
 const huntValues = {
   roll: 15_000,

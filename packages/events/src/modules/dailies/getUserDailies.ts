@@ -1,8 +1,8 @@
-import userRepository from '../../database/repositories/userRepository';
-import { DatabaseUserSchema } from '../../types/database';
-import { calculateUserDailies } from './calculateUserDailies';
+import userRepository from '../../database/repositories/userRepository.js';
+import { DatabaseUserSchema } from '../../types/database.js';
+import { calculateUserDailies } from './calculateUserDailies.js';
 
-import { DatabaseDaily } from './types';
+import { DatabaseDaily } from './types.js';
 
 const getUserDailies = async (user: DatabaseUserSchema): Promise<DatabaseDaily[]> => {
   const todayDayId = new Date().getDate();

@@ -1,8 +1,8 @@
-import shopRepository from '../../database/repositories/shopRepository';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { DatabaseHuntingTypes } from '../hunt/types';
-import { huntValues } from './constants';
+import shopRepository from '../../database/repositories/shopRepository.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { DatabaseHuntingTypes } from '../hunt/types.js';
+import { huntValues } from './constants.js';
 
 const sellHunts = async (
   ctx: ChatInputInteractionContext,

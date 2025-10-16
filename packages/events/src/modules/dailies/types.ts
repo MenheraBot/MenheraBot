@@ -1,7 +1,6 @@
-import { InteractionContext } from '../../types/menhera';
-import { AwardValues } from './dailies';
+import { InteractionContext } from '../../types/menhera.js';
+import { AwardValues } from './dailies.js';
 
-/* eslint-disable camelcase */
 type DailyTypes =
   | 'use_command'
   | 'win_bet'
@@ -20,13 +19,13 @@ export interface Daily {
   specificationDisplay?: (ctx: InteractionContext, specification: string) => string;
 }
 
-export type Award<Helper extends number | string> = {
+export interface Award<Helper extends number | string> {
   type: AwardValues;
   value: number;
   helper?: Helper;
-};
+}
 
-export type DatabaseDaily = {
+export interface DatabaseDaily {
   id: number;
   need: number;
   has: number;
@@ -34,4 +33,4 @@ export type DatabaseDaily = {
   changed?: true;
   specification?: string;
   awards: [Award<number | string>, Award<number | string>, Award<number | string>];
-};
+}

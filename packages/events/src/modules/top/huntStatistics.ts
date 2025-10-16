@@ -1,15 +1,15 @@
 import { ButtonComponent, ButtonStyles } from 'discordeno/types';
-import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from './index';
-import { InteractionContext } from '../../types/menhera';
-import { ApiHuntingTypes } from '../hunt/types';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import { getTopHunters } from '../../utils/apiRequests/statistics';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { COLORS } from '../../structures/constants';
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import { createActionRow, createButton } from '../../utils/discord/componentUtils';
-import userRepository from '../../database/repositories/userRepository';
-import titlesRepository from '../../database/repositories/titlesRepository';
+import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from './index.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { ApiHuntingTypes } from '../hunt/types.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import { getTopHunters } from '../../utils/apiRequests/statistics.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { COLORS } from '../../structures/constants.js';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
+import { createActionRow, createButton } from '../../utils/discord/componentUtils.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import titlesRepository from '../../database/repositories/titlesRepository.js';
 
 const executeTopHuntStatistics = async (
   ctx: InteractionContext,

@@ -1,28 +1,28 @@
 import { ActionRow, TextStyles } from 'discordeno/types';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { Plants } from '../fazendinha/constants';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { Plants } from '../fazendinha/constants.js';
 import {
   createActionRow,
   createCustomId,
   createSelectMenu,
   createTextInput,
-} from '../../utils/discord/componentUtils';
-import { QuantitativeSeed } from '../../types/database';
-import { extractFields } from '../../utils/discord/modalUtils';
-import userRepository from '../../database/repositories/userRepository';
-import starsRepository from '../../database/repositories/starsRepository';
-import farmerRepository from '../../database/repositories/farmerRepository';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { bot } from '../..';
-import { ApiTransactionReason } from '../../types/api';
-import commandRepository from '../../database/repositories/commandRepository';
-import { getSiloLimits } from '../fazendinha/siloUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { AvailablePlants } from '../fazendinha/types';
-import { SeasonEmojis } from '../fazendinha/displayPlantations';
+} from '../../utils/discord/componentUtils.js';
+import { QuantitativeSeed } from '../../types/database.js';
+import { extractFields } from '../../utils/discord/modalUtils.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
+import { getSiloLimits } from '../fazendinha/siloUtils.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { AvailablePlants } from '../fazendinha/types.js';
+import { SeasonEmojis } from '../fazendinha/displayPlantations.js';
 
 const handleBuySeedsInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [option] = ctx.sentData;

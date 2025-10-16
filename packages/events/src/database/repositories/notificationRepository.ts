@@ -1,10 +1,10 @@
 import { BigString } from 'discordeno/types';
-import { notificationModel } from '../collections';
-import { DatabaseNotificationSchema } from '../../types/database';
-import { MainRedisClient } from '../databases';
-import { daysToMillis } from '../../utils/miscUtils';
-import { Translation } from '../../types/i18next';
-import { registerCacheStatus } from '../../structures/initializePrometheus';
+import { notificationModel } from '../collections.js';
+import { DatabaseNotificationSchema } from '../../types/database.js';
+import { MainRedisClient } from '../databases.js';
+import { daysToMillis } from '../../utils/miscUtils.js';
+import { Translation } from '../../types/i18next.js';
+import { registerCacheStatus } from '../../structures/initializePrometheus.js';
 
 const parseNotification = (
   notification: DatabaseNotificationSchema,

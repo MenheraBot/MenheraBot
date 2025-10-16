@@ -3,16 +3,16 @@ import { InteractionCallbackData, InteractionResponseTypes } from 'discordeno';
 import { User } from 'discordeno/transformers';
 import i18next, { TFunction } from 'i18next';
 
-import { AvailableLanguages, Translation } from '../../types/i18next';
-import { ComponentInteraction } from '../../types/interaction';
-import { logger } from '../../utils/logger';
-import { EMOJIS, TOP_EMOJIS } from '../constants';
-import { MessageFlags } from '../../utils/discord/messageUtils';
+import { AvailableLanguages, Translation } from '../../types/i18next.js';
+import { ComponentInteraction } from '../../types/interaction.js';
+import { logger } from '../../utils/logger.js';
+import { EMOJIS, TOP_EMOJIS } from '../constants.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import {
   editOriginalInteractionResponse,
   sendFollowupMessage,
   sendInteractionResponse,
-} from '../../utils/discord/interactionRequests';
+} from '../../utils/discord/interactionRequests.js';
 
 export type CanResolve = 'users' | 'members' | false;
 
@@ -21,7 +21,10 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
 
   public i18n: TFunction;
 
-  constructor(public interaction: InteractionType, public guildLocale: AvailableLanguages) {
+  constructor(
+    public interaction: InteractionType,
+    public guildLocale: AvailableLanguages,
+  ) {
     this.i18n = i18next.getFixedT(guildLocale);
   }
 

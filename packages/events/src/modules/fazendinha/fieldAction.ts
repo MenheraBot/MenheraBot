@@ -1,17 +1,17 @@
-import farmerRepository from '../../database/repositories/farmerRepository';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { DatabaseFarmerSchema } from '../../types/database';
-import { SelectMenuInteraction } from '../../types/interaction';
-import { postFazendinhaAction } from '../../utils/apiRequests/statistics';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { displayPlantations } from './displayPlantations';
-import { getFieldWeight, getHarvestTime, getPlantationState } from './plantationState';
-import { Items, Plants } from './constants';
-import { getCurrentSeason } from './seasonsManager';
-import { AvailableItems, AvailablePlants, Plantation, PlantedField } from './types';
-import { getSiloLimits } from './siloUtils';
-import executeDailies from '../dailies/executeDailies';
-import userRepository from '../../database/repositories/userRepository';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { DatabaseFarmerSchema } from '../../types/database.js';
+import { SelectMenuInteraction } from '../../types/interaction.js';
+import { postFazendinhaAction } from '../../utils/apiRequests/statistics.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { displayPlantations } from './displayPlantations.js';
+import { getFieldWeight, getHarvestTime, getPlantationState } from './plantationState.js';
+import { Items, Plants } from './constants.js';
+import { getCurrentSeason } from './seasonsManager.js';
+import { AvailableItems, AvailablePlants, Plantation, PlantedField } from './types.js';
+import { getSiloLimits } from './siloUtils.js';
+import executeDailies from '../dailies/executeDailies.js';
+import userRepository from '../../database/repositories/userRepository.js';
 
 const plantField = async (
   ctx: ComponentInteractionContext,
@@ -131,7 +131,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
       state === 'MATURE' ? 'HARVEST' : 'ROTTED',
     );
 
-  const harvestedWeight = state === 'MATURE' ? field.weight ?? 1 : undefined;
+  const harvestedWeight = state === 'MATURE' ? (field.weight ?? 1) : undefined;
 
   if (harvestedWeight)
     executeDailies.harvestPlant(

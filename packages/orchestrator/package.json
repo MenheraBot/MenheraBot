@@ -1,8 +1,8 @@
 {
   "name": "@menhera-bot/orchestrator",
-  "version": "1.1.3",
+  "version": "2.0.0",
   "engines": {
-    "node": ">=18"
+    "node": ">=22.0.0"
   },
   "description": "Menhera's bridge from the outside world to internal stack. Receive external webhooks and provide metrics",
   "main": "dist/index.js",
@@ -25,6 +25,8 @@
   "license": "AGPL-3.0-only",
   "readme": "https://github.com/MenheraBot/MenheraBot#readme",
   "devDependencies": {
-    "@types/koa-router": "^7.4.4"
+    "@types/koa": "^3.0.0",
+    "@types/koa-router": "^7.4.4",
+    "@types/qs": "^6.14.0"
   }
 }

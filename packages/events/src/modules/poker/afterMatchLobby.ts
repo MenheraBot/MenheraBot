@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Embed } from 'discordeno/transformers';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { PokerMatch, PokerPlayer } from './types';
-import { mentionUser } from '../../utils/discord/userUtils';
-import starsRepository from '../../database/repositories/starsRepository';
-import { closeTable, startNextMatch } from './matchManager';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { bot } from '../..';
-import { ApiTransactionReason } from '../../types/api';
-import pokerRepository from '../../database/repositories/pokerRepository';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { PokerMatch, PokerPlayer } from './types.js';
+import { mentionUser } from '../../utils/discord/userUtils.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import { closeTable, startNextMatch } from './matchManager.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import pokerRepository from '../../database/repositories/pokerRepository.js';
 
 const convertChipsToStars = async (gameData: PokerMatch, player: PokerPlayer): Promise<void> => {
   if (!gameData.worthGame) return;

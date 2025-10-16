@@ -1,30 +1,30 @@
 import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
 import i18next from 'i18next';
 
-import blacklistRepository from '../../database/repositories/blacklistRepository';
-import commandRepository from '../../database/repositories/commandRepository';
-import guildRepository from '../../database/repositories/guildRepository';
-import userRepository from '../../database/repositories/userRepository';
-import { bot } from '../../index';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { autocompleteInteraction } from '../../structures/command/autocompleteInteraction';
-import { componentExecutor } from '../../structures/command/componentExecutor';
-import { getCommandsCounter, getRateLimitCounter } from '../../structures/initializePrometheus';
-import { UsedCommandData } from '../../types/commands';
-import { DatabaseUserSchema } from '../../types/database';
-import { postCommandExecution } from '../../utils/apiRequests/commands';
-import { getUserLastBanData } from '../../utils/apiRequests/statistics';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { getEnviroments } from '../../utils/getEnviroments';
-import { logger } from '../../utils/logger';
-import { millisToSeconds } from '../../utils/miscUtils';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
-import { debugError } from '../../utils/debugError';
-import { getFullCommandUsed } from '../../structures/command/getCommandOption';
-import ratelimitRepository from '../../database/repositories/ratelimitRepository';
-import executeDailies from '../../modules/dailies/executeDailies';
+import blacklistRepository from '../../database/repositories/blacklistRepository.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
+import guildRepository from '../../database/repositories/guildRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { bot } from '../../index.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { autocompleteInteraction } from '../../structures/command/autocompleteInteraction.js';
+import { componentExecutor } from '../../structures/command/componentExecutor.js';
+import { getCommandsCounter, getRateLimitCounter } from '../../structures/initializePrometheus.js';
+import { UsedCommandData } from '../../types/commands.js';
+import { DatabaseUserSchema } from '../../types/database.js';
+import { postCommandExecution } from '../../utils/apiRequests/commands.js';
+import { getUserLastBanData } from '../../utils/apiRequests/statistics.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { getEnviroments } from '../../utils/getEnviroments.js';
+import { logger } from '../../utils/logger.js';
+import { millisToSeconds } from '../../utils/miscUtils.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import { sendInteractionResponse } from '../../utils/discord/interactionRequests.js';
+import { debugError } from '../../utils/debugError.js';
+import { getFullCommandUsed } from '../../structures/command/getCommandOption.js';
+import ratelimitRepository from '../../database/repositories/ratelimitRepository.js';
+import executeDailies from '../../modules/dailies/executeDailies.js';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -70,7 +70,6 @@ const setInteractionCreateEvent = (): void => {
 
       const banReason = bannedInfo?.banReason ?? T('events:banned_no_reason');
 
-      // eslint-disable-next-line no-nested-ternary
       const bannedSince = bannedInfo?.bannedSince
         ? bannedInfo.bannedSince !== 'NO_DATA'
           ? `<t:${millisToSeconds(Number(bannedInfo.bannedSince))}>`

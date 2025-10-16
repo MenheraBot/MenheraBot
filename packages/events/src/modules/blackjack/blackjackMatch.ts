@@ -1,19 +1,19 @@
 import { Embed } from 'discordeno/transformers';
 import { ActionRow } from 'discordeno/types';
-import { getUserAvatar } from '../../utils/discord/userUtils';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { VanGoghEndpoints, vanGoghRequest, VanGoghReturnData } from '../../utils/vanGoghRequest';
+import { getUserAvatar } from '../../utils/discord/userUtils.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { VanGoghEndpoints, vanGoghRequest, VanGoghReturnData } from '../../utils/vanGoghRequest.js';
 import {
   AvailableCardBackgroundThemes,
   AvailableCardThemes,
   AvailableTableThemes,
-} from '../themes/types';
-import { BlackjackCard } from './types';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+} from '../themes/types.js';
+import { BlackjackCard } from './types.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 
-const numbersToBlackjackCards = (cards: Array<number>): Array<BlackjackCard> =>
-  cards.reduce((p: Array<BlackjackCard>, c: number) => {
+const numbersToBlackjackCards = (cards: number[]): BlackjackCard[] =>
+  cards.reduce((p: BlackjackCard[], c: number) => {
     const multiplier = Math.ceil(c / 13) - 1;
     const newC = c - multiplier * 13;
 

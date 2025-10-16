@@ -1,25 +1,25 @@
 import { ActionRow, ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import userRepository from '../../database/repositories/userRepository';
-import starsRepository from '../../database/repositories/starsRepository';
-import { postRoulleteGame, postTransaction } from '../../utils/apiRequests/statistics';
-import { SelectMenuInteraction } from '../../types/interaction';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import { postRoulleteGame, postTransaction } from '../../utils/apiRequests/statistics.js';
+import { SelectMenuInteraction } from '../../types/interaction.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createSelectMenu,
   resolveSeparatedStrings,
-} from '../../utils/discord/componentUtils';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { randomFromArray } from '../../utils/miscUtils';
-import { ROULETTE_NUMBERS, WIN_MULTIPLIERS } from '../../modules/roulette/constants';
+} from '../../utils/discord/componentUtils.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { randomFromArray } from '../../utils/miscUtils.js';
+import { ROULETTE_NUMBERS, WIN_MULTIPLIERS } from '../../modules/roulette/constants.js';
 
-import { createCommand } from '../../structures/command/createCommand';
-import { bot } from '../..';
-import { ApiTransactionReason } from '../../types/api';
-import executeDailies from '../../modules/dailies/executeDailies';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import executeDailies from '../../modules/dailies/executeDailies.js';
 
 const colorInHexa = {
   red: '#ff0000',
@@ -253,12 +253,9 @@ const executeAskForBetsButton = async (ctx: ComponentInteractionContext): Promis
     case 'LOWHIGH':
     case 'COLOR':
     case 'ODDEVEN': {
-      const firstLabel =
-        // eslint-disable-next-line no-nested-ternary
-        operation === 'COLOR' ? 'red' : operation === 'ODDEVEN' ? 'odd' : 'low';
+      const firstLabel = operation === 'COLOR' ? 'red' : operation === 'ODDEVEN' ? 'odd' : 'low';
 
       const secondLabel =
-        // eslint-disable-next-line no-nested-ternary
         operation === 'COLOR' ? 'black' : operation === 'ODDEVEN' ? 'even' : 'high';
 
       const selectMenu = createSelectMenu({

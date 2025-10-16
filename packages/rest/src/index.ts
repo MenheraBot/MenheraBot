@@ -1,9 +1,8 @@
-/* eslint-disable no-console */
 import { Server } from 'net-ipc';
-import config from './config';
-import { handleRequest } from './handleRequest';
-import { handleIdentify } from './ipcMessages';
-import { ConnectionInfo, IdentifyMessage, RequestTypes } from './types';
+import config from './config.js';
+import { handleRequest } from './handleRequest.js';
+import { handleIdentify } from './ipcMessages.js';
+import { ConnectionInfo, IdentifyMessage, RequestTypes } from './types.js';
 
 const { SOCKET_PATH } = config(['SOCKET_PATH']);
 

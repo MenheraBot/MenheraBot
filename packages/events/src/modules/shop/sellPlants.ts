@@ -1,15 +1,15 @@
-import { bot } from '../..';
-import farmerRepository from '../../database/repositories/farmerRepository';
-import starsRepository from '../../database/repositories/starsRepository';
-import userRepository from '../../database/repositories/userRepository';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { ApiTransactionReason } from '../../types/api';
-import { DatabaseFarmerSchema, QuantitativePlant } from '../../types/database';
-import { ModalInteraction } from '../../types/interaction';
-import { InteractionContext } from '../../types/menhera';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { extractFields } from '../../utils/discord/modalUtils';
-import { Plants } from '../fazendinha/constants';
+import { bot } from '../../index.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { DatabaseFarmerSchema, QuantitativePlant } from '../../types/database.js';
+import { ModalInteraction } from '../../types/interaction.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { extractFields } from '../../utils/discord/modalUtils.js';
+import { Plants } from '../fazendinha/constants.js';
 
 const receiveModal = async (
   ctx: ComponentInteractionContext<ModalInteraction>,

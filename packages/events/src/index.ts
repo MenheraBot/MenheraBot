@@ -1,12 +1,16 @@
 import { createBot, startBot } from 'discordeno';
 
-import { setupEventHandlers } from './events/index';
-import { createIpcConnection } from './structures/orchestratorConnection';
-import { initializeServices, setupInternals, setupMenheraClient } from './structures/menheraClient';
-import { MenheraClient } from './types/menhera';
-import { getEnviroments } from './utils/getEnviroments';
-import { logger } from './utils/logger';
-import { updateCommandsOnApi } from './utils/updateApiCommands';
+import { setupEventHandlers } from './events/index.js';
+import { createIpcConnection } from './structures/orchestratorConnection.js';
+import {
+  initializeServices,
+  setupInternals,
+  setupMenheraClient,
+} from './structures/menheraClient.js';
+import { MenheraClient } from './types/menhera.js';
+import { getEnviroments } from './utils/getEnviroments.js';
+import { logger } from './utils/logger.js';
+import { updateCommandsOnApi } from './utils/updateApiCommands.js';
 
 const { DISCORD_TOKEN, DISCORD_APPLICATION_ID } = getEnviroments([
   'DISCORD_TOKEN',

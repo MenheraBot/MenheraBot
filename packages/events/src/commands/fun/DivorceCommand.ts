@@ -1,12 +1,16 @@
 import { ButtonStyles } from 'discordeno/types';
 
-import userRepository from '../../database/repositories/userRepository';
-import { mentionUser } from '../../utils/discord/userUtils';
-import relationshipRepostory from '../../database/repositories/relationshipRepostory';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { createCommand } from '../../structures/command/createCommand';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import userRepository from '../../database/repositories/userRepository.js';
+import { mentionUser } from '../../utils/discord/userUtils.js';
+import relationshipRepostory from '../../database/repositories/relationshipRepostory.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 
 const executeDivorce = async (ctx: ComponentInteractionContext): Promise<void> => {
   const authorData = await userRepository.ensureFindUser(ctx.user.id);

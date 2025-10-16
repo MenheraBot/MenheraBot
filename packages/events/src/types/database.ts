@@ -1,15 +1,15 @@
 import { Localization } from 'discordeno/types';
-import { profileBadges } from '../modules/badges/profileBadges';
+import { profileBadges } from '../modules/badges/profileBadges.js';
 import {
   AvailableItems,
   AvailablePlants,
   DeliveryMission,
   Plantation,
-} from '../modules/fazendinha/types';
-import { HuntMagicItem } from '../modules/hunt/types';
-import { UserBuyableTheme } from '../modules/themes/types';
-import { AvailableLanguages, Translation } from './i18next';
-import { DatabaseDaily } from '../modules/dailies/types';
+} from '../modules/fazendinha/types.js';
+import { HuntMagicItem } from '../modules/hunt/types.js';
+import { UserBuyableTheme } from '../modules/themes/types.js';
+import { AvailableLanguages, Translation } from './i18next.js';
+import { DatabaseDaily } from '../modules/dailies/types.js';
 
 export type ColorResolvable = `#${string}`;
 
@@ -49,7 +49,7 @@ export interface DatabaseUserSchema {
   estrelinhas: number;
   votes: number;
   badges: UserBadge[];
-  hiddingBadges: Array<UserBadge['id']>;
+  hiddingBadges: UserBadge['id'][];
   titles: UserBuyableTheme[];
   currentTitle: number;
   huntCooldown: number;
@@ -124,21 +124,21 @@ export interface DatabaseCommandSchema {
   discordId: string;
 }
 
-export type QuantitativeSeed = {
+export interface QuantitativeSeed {
   amount: number;
   plant: AvailablePlants;
-};
+}
 
 export interface QuantitativeItem {
   id: AvailableItems;
   amount: number;
 }
 
-export type QuantitativePlant = {
+export interface QuantitativePlant {
   amount?: number;
   plant: AvailablePlants;
   weight: number;
-};
+}
 
 export interface DatabaseTitlesSchema {
   titleId: number;

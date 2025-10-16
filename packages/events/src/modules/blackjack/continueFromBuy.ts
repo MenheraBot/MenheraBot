@@ -1,13 +1,13 @@
-import blackjackRepository from '../../database/repositories/blackjackRepository';
-import { getHandValue, hideMenheraCard, numbersToBlackjackCards } from './blackjackMatch';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import blackjackRepository from '../../database/repositories/blackjackRepository.js';
+import { getHandValue, hideMenheraCard, numbersToBlackjackCards } from './blackjackMatch.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import {
   AvailableCardBackgroundThemes,
   AvailableCardThemes,
   AvailableTableThemes,
-} from '../themes/types';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { sendBlackjackMessage } from './sendBlackjackMessage';
+} from '../themes/types.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { sendBlackjackMessage } from './sendBlackjackMessage.js';
 
 const continueFromBuy = async (
   ctx: ChatInputInteractionContext | ComponentInteractionContext,

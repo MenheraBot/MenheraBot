@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 import { HTTPResponseCodes } from 'discordeno/types';
-import { RequestType, sendEvent } from '../..';
-import { getEnviroments } from '../../getEnviroments';
+import { RequestType, sendEvent } from '../../index.js';
+import { getEnviroments } from '../../getEnviroments.js';
 
 const createVoteWebhookRouter = (): Router => {
   const router = new Router();

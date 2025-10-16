@@ -1,8 +1,8 @@
 import { BigString, Bot, Collection } from 'discordeno';
-import { ChatInputInteractionCommand } from './commands';
-import ComponentInteractionContext from '../structures/command/ComponentInteractionContext';
-import ChatInputInteractionContext from '../structures/command/ChatInputInteractionContext';
-import GenericInteractionContext from '../structures/command/GenericInteractionContext';
+import { ChatInputInteractionCommand } from './commands.js';
+import ComponentInteractionContext from '../structures/command/ComponentInteractionContext.js';
+import ChatInputInteractionContext from '../structures/command/ChatInputInteractionContext.js';
+import GenericInteractionContext from '../structures/command/GenericInteractionContext.js';
 
 export interface IdentifiedData<T> {
   id: number;

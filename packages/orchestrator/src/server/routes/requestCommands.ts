@@ -1,7 +1,7 @@
 import { Context } from 'koa';
 import Router from 'koa-router';
 import { HTTPResponseCodes } from 'discordeno/types';
-import { RequestType, sendEvent } from '../..';
+import { RequestType, sendEvent } from '../../index.js';
 
 const handleRequest = async (ctx: Context): Promise<void> => {
   if (!ctx.req.headers.authorization) return ctx.throw(HTTPResponseCodes.Unauthorized);

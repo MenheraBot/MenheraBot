@@ -2,23 +2,26 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 import { inspect } from 'node:util';
 
-import { eventModel, farmerModel, usersModel } from '../../database/collections';
-import { MainRedisClient as redis } from '../../database/databases';
-import userRepository from '../../database/repositories/userRepository';
-import { bot } from '../../index';
-import { createCommand } from '../../structures/command/createCommand';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { enableTcp, enableUnixSocket } from '../../utils/vanGoghRequest';
-import { InteractionContext } from '../../types/menhera';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { eventModel, farmerModel, usersModel } from '../../database/collections.js';
+import { MainRedisClient as redis } from '../../database/databases.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { bot } from '../../index.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { enableTcp, enableUnixSocket } from '../../utils/vanGoghRequest.js';
+import { InteractionContext } from '../../types/menhera.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 
 const noop = (..._args: unknown[]) => undefined;
 noop(userRepository, enableTcp, enableUnixSocket, usersModel, redis, farmerModel, eventModel);
 
 const executeEval = async (ctx: InteractionContext, toEval: string) => {
   try {
-    // eslint-disable-next-line no-eval
     let evaled = await eval(toEval);
     evaled = inspect(evaled, { depth: 4 });
     evaled = evaled.replace(new RegExp(`${bot.token}`, 'g'), undefined);

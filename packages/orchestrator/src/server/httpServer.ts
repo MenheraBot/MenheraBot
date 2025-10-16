@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import { koaBody } from 'koa-body';
 import Router from 'koa-router';
-import { getEnviroments } from '../getEnviroments';
+import { getEnviroments } from '../getEnviroments.js';
 import { createPostInteractionRouter } from './routes/postInteraction';
 import { createPrometheusRouter } from './routes/prometheus';
 import { createRequestCommandsRouter } from './routes/requestCommands';
@@ -16,7 +16,6 @@ const createHttpServer = (): void => {
   const { HTTP_SERVER_PORT } = getEnviroments(['HTTP_SERVER_PORT']);
 
   server.listen(HTTP_SERVER_PORT, () => {
-    // eslint-disable-next-line no-console
     console.log(`[HTTP] Server started at port ${HTTP_SERVER_PORT}`);
   });
 

@@ -2,8 +2,8 @@ import { Context } from 'koa';
 import Router from 'koa-router';
 import { HTTPResponseCodes } from 'discordeno/types';
 import qs from 'qs';
-import { RequestType, sendEvent } from '../..';
-import { getEnviroments } from '../../getEnviroments';
+import { RequestType, sendEvent } from '../../index.js';
+import { getEnviroments } from '../../getEnviroments.js';
 
 const { MENHERA_API_TOKEN } = getEnviroments(['MENHERA_API_TOKEN']);
 

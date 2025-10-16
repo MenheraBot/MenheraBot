@@ -1,6 +1,6 @@
 import { BigString } from 'discordeno/types';
-import { negate } from '../../utils/miscUtils';
-import userRepository from './userRepository';
+import { negate } from '../../utils/miscUtils.js';
+import userRepository from './userRepository.js';
 
 const addStars = async (userId: BigString, value: number): Promise<void> => {
   await userRepository.updateUserWithSpecialData(userId, { $inc: { estrelinhas: value } });

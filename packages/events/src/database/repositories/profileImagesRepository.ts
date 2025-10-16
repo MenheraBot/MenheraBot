@@ -1,13 +1,13 @@
 import { BigString } from 'discordeno/types';
 
-import { DatabaseProfileImagesSchema } from '../../types/database';
-import { profileImagesModel } from '../collections';
-import { MainRedisClient } from '../databases';
-import starsRepository from './starsRepository';
-import { bot } from '../..';
-import { ApiTransactionReason } from '../../types/api';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import notificationRepository from './notificationRepository';
+import { DatabaseProfileImagesSchema } from '../../types/database.js';
+import { profileImagesModel } from '../collections.js';
+import { MainRedisClient } from '../databases.js';
+import starsRepository from './starsRepository.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import notificationRepository from './notificationRepository.js';
 
 const registerImage = async (
   imageId: number,

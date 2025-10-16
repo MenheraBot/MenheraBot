@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getEnviroments } from '../getEnviroments';
+import { getEnviroments } from '../getEnviroments.js';
 
 const { MENHERA_API_URL, MENHERA_AGENT, MENHERA_API_TOKEN } = getEnviroments([
   'MENHERA_API_URL',

@@ -1,5 +1,5 @@
-import { getNextPlayableSeat, getPreviousPlayableSeat } from '../turnManager';
-import { PokerMatch, PokerPlayer } from '../types';
+import { getNextPlayableSeat, getPreviousPlayableSeat } from '../turnManager.js';
+import { PokerMatch, PokerPlayer } from '../types.js';
 
 export const mockGame = (): PokerMatch => ({
   communityCards: [0, 0, 0, 0, 0],

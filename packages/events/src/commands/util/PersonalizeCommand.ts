@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionChoice, Embed, Interaction } from 'discordeno/transformers';
+import type { ApplicationCommandOptionChoice, Embed, Interaction } from 'discordeno/transformers';
 import * as Sentry from '@sentry/node';
 import {
   ActionRow,
@@ -15,49 +15,49 @@ import { User } from 'discordeno';
 import md5 from 'md5';
 import { findBestMatch } from 'string-similarity';
 import i18next from 'i18next';
-import { usersModel } from '../../database/collections';
-import commandRepository from '../../database/repositories/commandRepository';
-import profileImagesRepository from '../../database/repositories/profileImagesRepository';
-import userRepository from '../../database/repositories/userRepository';
-import userThemesRepository from '../../database/repositories/userThemesRepository';
-import { getUserBadges } from '../../modules/badges/getUserBadges';
-import { profileBadges } from '../../modules/badges/profileBadges';
-import { previewProfileData } from '../../modules/shop/constants';
-import { getThemeById, getUserActiveThemes } from '../../modules/themes/getThemes';
-import { AvailableThemeTypes, ProfileTheme, ThemeFile } from '../../modules/themes/types';
-import { getProfileImageUrl } from '../../structures/cdnManager';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { createCommand } from '../../structures/command/createCommand';
-import { COLORS, EMOJIS } from '../../structures/constants';
-import { DatabaseUserSchema, UserColor } from '../../types/database';
-import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
-import { IdentifiedData, InteractionContext } from '../../types/menhera';
+import { usersModel } from '../../database/collections.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
+import profileImagesRepository from '../../database/repositories/profileImagesRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import userThemesRepository from '../../database/repositories/userThemesRepository.js';
+import { getUserBadges } from '../../modules/badges/getUserBadges.js';
+import { profileBadges } from '../../modules/badges/profileBadges.js';
+import { previewProfileData } from '../../modules/shop/constants.js';
+import { getThemeById, getUserActiveThemes } from '../../modules/themes/getThemes.js';
+import { AvailableThemeTypes, ProfileTheme, ThemeFile } from '../../modules/themes/types.js';
+import { getProfileImageUrl } from '../../structures/cdnManager.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { COLORS, EMOJIS } from '../../structures/constants.js';
+import { DatabaseUserSchema, UserColor } from '../../types/database.js';
+import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction.js';
+import { IdentifiedData, InteractionContext } from '../../types/menhera.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createSelectMenu,
   createTextInput,
-} from '../../utils/discord/componentUtils';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils';
-import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
+} from '../../utils/discord/componentUtils.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils.js';
+import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
 import {
   ensureUserHaveDefaultThemes,
   getCustomThemeField,
   millisToSeconds,
   toWritableUtf,
-} from '../../utils/miscUtils';
-import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import titlesRepository from '../../database/repositories/titlesRepository';
-import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
-import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
-import { debugError } from '../../utils/debugError';
-import { VangoghUserprofileData } from '../info/ProfileCommand';
-import { logger } from '../../utils/logger';
-import { bot } from '../..';
-import { AvailableLanguages } from '../../types/i18next';
+} from '../../utils/miscUtils.js';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
+import titlesRepository from '../../database/repositories/titlesRepository.js';
+import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
+import { sendInteractionResponse } from '../../utils/discord/interactionRequests.js';
+import { debugError } from '../../utils/debugError.js';
+import { VangoghUserprofileData } from '../info/ProfileCommand.js';
+import { logger } from '../../utils/logger.js';
+import { bot } from '../../index.js';
+import { AvailableLanguages } from '../../types/i18next.js';
 
 const executeAboutMeCommand = async (
   ctx: ChatInputInteractionContext,
@@ -330,7 +330,7 @@ const executeColorComponents = async (
 };
 
 const getEmojiFromColorName = (color: string): string => {
-  const colors: { [key: string]: string } = {
+  const colors: Record<string, string> = {
     '0': '🇧🇷',
     '1': '💜',
     '2': '🔴',
@@ -777,7 +777,7 @@ const executeThemesCommand = async (
 
   ensureUserHaveDefaultThemes(userThemes);
 
-  const availableThemes = getUserActiveThemes(userThemes).reduce<Array<IdentifiedData<ThemeFile>>>(
+  const availableThemes = getUserActiveThemes(userThemes).reduce<IdentifiedData<ThemeFile>[]>(
     (p, c) => {
       if (c.inUse) return p;
 
@@ -922,8 +922,8 @@ const createCustomizeMessage = async (
       mamadas: userData.mamado,
       mamou: userData.mamou,
       title: userTitle
-        ? userTitle.textLocalizations?.[ctx.interaction.locale as AvailableLanguages] ??
-          userTitle.text
+        ? (userTitle.textLocalizations?.[ctx.interaction.locale as AvailableLanguages] ??
+          userTitle.text)
         : '',
       hiddingBadges: userData.hiddingBadges,
       marryUsername: '',

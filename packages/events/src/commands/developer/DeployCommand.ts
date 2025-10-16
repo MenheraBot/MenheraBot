@@ -1,9 +1,9 @@
 import { ApplicationCommandOptionTypes, CreateSlashApplicationCommand } from 'discordeno/types';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import commandRepository from '../../database/repositories/commandRepository';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
 
-import { bot } from '../../index';
-import { createCommand } from '../../structures/command/createCommand';
+import { bot } from '../../index.js';
+import { createCommand } from '../../structures/command/createCommand.js';
 
 const DeployCommand = createCommand({
   path: '',
