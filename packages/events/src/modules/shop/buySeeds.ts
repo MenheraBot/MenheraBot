@@ -1,4 +1,4 @@
-import { ActionRow, TextStyles } from 'discordeno/types';
+import { ActionRow, TextStyles } from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';

@@ -1,6 +1,6 @@
 import { Client } from 'net-ipc';
 
-import { DiscordInteraction } from 'discordeno/types';
+import { DiscordInteraction } from '@discordeno/bot';
 import { bot } from '../index.js';
 import { closeConnections } from '../database/databases.js';
 import { executeVoteWebhook } from '../utils/executeVoteWebhook.js';

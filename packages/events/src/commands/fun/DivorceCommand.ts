@@ -1,4 +1,4 @@
-import { ButtonStyles } from 'discordeno/types';
+import { ButtonStyles } from '@discordeno/bot';
 
 import userRepository from '../../database/repositories/userRepository.js';
 import { mentionUser } from '../../utils/discord/userUtils.js';

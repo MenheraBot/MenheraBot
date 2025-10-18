@@ -1,8 +1,7 @@
-import { Embed } from 'discordeno/transformers';
-import { ActionRow } from 'discordeno/types';
+import { ActionRow } from '@discordeno/bot';
 import { getUserAvatar } from '../../utils/discord/userUtils.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { createEmbed, Embed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { VanGoghEndpoints, vanGoghRequest, VanGoghReturnData } from '../../utils/vanGoghRequest.js';
 import {
   AvailableCardBackgroundThemes,
@@ -104,7 +103,7 @@ const safeImageReply = async (
   ctx.makeMessage({
     embeds: [embed],
     components,
-    file: { blob: image.data, name: `blackjack-${timestamp}.png` },
+    files: [{ blob: image.data, name: `blackjack-${timestamp}.png` }],
   });
 };
 

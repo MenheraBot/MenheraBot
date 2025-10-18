@@ -1,4 +1,4 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 import { MainRedisClient } from '../databases.js';
 import { getElapsedTime, numberizeAllValues } from '../../utils/miscUtils.js';
 

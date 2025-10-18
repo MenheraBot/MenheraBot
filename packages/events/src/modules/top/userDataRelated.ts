@@ -1,4 +1,4 @@
-import { ButtonComponent, ButtonStyles } from 'discordeno/types';
+import { ButtonComponent, ButtonStyles } from '@discordeno/bot';
 import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from './index.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import userRepository from '../../database/repositories/userRepository.js';

@@ -1,4 +1,4 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 import { notificationModel } from '../collections.js';
 import { DatabaseNotificationSchema } from '../../types/database.js';
 import { MainRedisClient } from '../databases.js';

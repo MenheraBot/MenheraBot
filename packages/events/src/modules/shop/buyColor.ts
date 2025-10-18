@@ -1,4 +1,4 @@
-import { TextStyles } from 'discordeno/types';
+import { TextStyles } from '@discordeno/bot';
 import shopRepository from '../../database/repositories/shopRepository.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';

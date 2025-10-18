@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
 import userThemesRepository from '../../database/repositories/userThemesRepository.js';
 import { COLORS, EMOJIS } from '../../structures/constants.js';
@@ -206,10 +206,10 @@ const EightballCommand = createCommand({
 
     await ctx.makeMessage({
       embeds: [embed],
-      file: {
+      files: [{
         name: `bola-oititcho.png`,
         blob: res.data,
-      },
+      }],
     });
 
     finishCommand();

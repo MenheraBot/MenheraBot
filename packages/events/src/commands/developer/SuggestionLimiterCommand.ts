@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionTypes, ButtonStyles, TextStyles } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes, ButtonStyles, TextStyles } from '@discordeno/bot';
+import { User } from '@discordeno/bot';
 
 import { createCommand } from '../../structures/command/createCommand.js';
 import suggestionLimitRepository from '../../database/repositories/suggestionLimitRepository.js';

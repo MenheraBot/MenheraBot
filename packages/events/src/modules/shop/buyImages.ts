@@ -1,11 +1,11 @@
-import { Attachment } from 'discordeno/transformers';
+import { Attachment } from '@discordeno/bot';
 import {
   ActionRow,
   ButtonComponent,
   ButtonStyles,
   SelectMenuComponent,
   TextStyles,
-} from 'discordeno/types';
+} from '@discordeno/bot';
 import { bot } from '../../index.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import commandRepository from '../../database/repositories/commandRepository.js';

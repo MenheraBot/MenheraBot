@@ -1,4 +1,4 @@
-import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
+import { InteractionResponseTypes, InteractionTypes } from '@discordeno/bot';
 import i18next from 'i18next';
 
 import blacklistRepository from '../../database/repositories/blacklistRepository.js';

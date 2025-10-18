@@ -1,4 +1,4 @@
-import { ButtonStyles } from 'discordeno/types';
+import { ButtonStyles } from '@discordeno/bot';
 import PokerSolver from 'pokersolver';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import pokerRepository from '../../database/repositories/pokerRepository.js';
@@ -192,7 +192,7 @@ const finishRound = async (
   await ctx.makeMessage({
     embeds: [embed],
     attachments: [],
-    file: image.err ? undefined : { name: 'poker.png', blob: image.data },
+    files: image.err ? undefined : [{ name: 'poker.png', blob: image.data }],
     components: canHaveOtherMatch ? [createActionRow([finishTable, exitTable, nextMatch])] : [],
     allowedMentions: { users: winners.map((a) => BigInt(a.id)) },
     // @ts-expect-error This key has plural
@@ -292,7 +292,7 @@ const createTableMessage = async (
   await ctx.makeMessage({
     allowedMentions: { users: [BigInt(nextPlayer)] },
     embeds: [embed],
-    file: image.err ? undefined : { name: 'poker.png', blob: image.data },
+    files: image.err ? undefined : [{ name: 'poker.png', blob: image.data }],
     attachments: [],
     components: [
       createActionRow([getAvailableActions(ctx, gameData)]),

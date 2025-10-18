@@ -1,4 +1,4 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 
 import { getThemeById } from '../../modules/themes/getThemes.js';
 import {

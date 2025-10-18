@@ -1,5 +1,5 @@
-import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { User } from '@discordeno/bot';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
 import { EMOJIS } from '../../structures/constants.js';
 import userRepository from '../../database/repositories/userRepository.js';

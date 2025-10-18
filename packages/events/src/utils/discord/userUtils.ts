@@ -1,5 +1,4 @@
-import { ImageSize, routes } from 'discordeno';
-import { User } from 'discordeno/transformers';
+import { ImageSize, User } from '@discordeno/bot';
 
 import { bot } from '../../index.js';
 import { toWritableUtf } from '../miscUtils.js';

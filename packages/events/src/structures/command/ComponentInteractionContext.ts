@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
-import { InteractionCallbackData, InteractionResponseTypes } from 'discordeno';
-import { User } from 'discordeno/transformers';
+import { InteractionCallbackData, InteractionResponseTypes } from '@discordeno/bot';
+import { User } from '@discordeno/bot';
 import i18next, { TFunction } from 'i18next';
 
 import { AvailableLanguages, Translation } from '../../types/i18next.js';

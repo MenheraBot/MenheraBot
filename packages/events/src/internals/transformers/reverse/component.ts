@@ -1,4 +1,4 @@
-import { Bot, Component, DiscordComponent } from 'discordeno';
+import { Bot, Component, DiscordComponent } from '@discordeno/bot';
 
 const transformComponentToDiscordComponent = (bot: Bot, payload: Component): DiscordComponent => {
   return {

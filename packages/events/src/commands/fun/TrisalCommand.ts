@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
+import { User } from '@discordeno/bot';
 
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
@@ -335,7 +335,7 @@ const executeDisplayTrisal = async (
     image: { url: 'attachment://trisal-kawaii.png' },
   });
 
-  ctx.makeMessage({ embeds: [embed], file: { blob: res.data, name: 'trisal-kawaii.png' } });
+  ctx.makeMessage({ embeds: [embed], files: [{ blob: res.data, name: 'trisal-kawaii.png' }] });
   finishCommand();
 };
 

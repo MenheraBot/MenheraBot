@@ -1,4 +1,4 @@
-import { ActionRow, ButtonComponent, ButtonStyles, SelectOption } from 'discordeno/types';
+import { ActionRow, ButtonComponent, ButtonStyles, SelectOption } from '@discordeno/bot';
 import userRepository from '../../database/repositories/userRepository.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { DatabaseFarmerSchema } from '../../types/database.js';

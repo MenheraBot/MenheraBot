@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ApplicationCommandOptionTypes, ButtonComponent, ButtonStyles } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes, ButtonComponent, ButtonStyles } from '@discordeno/bot';
+import { User } from '@discordeno/bot';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { getUserDailies } from '../../modules/dailies/getUserDailies.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';

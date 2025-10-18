@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes, CreateSlashApplicationCommand } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, CreateSlashApplicationCommand } from '@discordeno/bot';
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import commandRepository from '../../database/repositories/commandRepository.js';
 

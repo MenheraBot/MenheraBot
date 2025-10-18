@@ -1,4 +1,4 @@
-import { ToggleBitfieldBigint } from 'discordeno/transformers';
+import { ToggleBitfieldBigint } from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import guildRepository from '../../database/repositories/guildRepository.js';
 import { EMOJIS } from '../../structures/constants.js';

@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
 import { toWritableUtf } from '../../utils/miscUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
@@ -48,10 +48,10 @@ const AstolfoCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      file: {
+      files: [{
         name: 'astolfo.png',
         blob: res.data,
-      },
+      }],
     });
 
     finishCommand();

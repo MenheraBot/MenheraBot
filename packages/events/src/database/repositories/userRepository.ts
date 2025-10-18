@@ -1,6 +1,6 @@
 import { UpdateQuery } from 'mongoose';
 
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 import { usersModel } from '../collections.js';
 import { DatabaseUserSchema, UserIdType } from '../../types/database.js';
 import { MainRedisClient } from '../databases.js';

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Embed } from 'discordeno/transformers';
+import { Embed } from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { PokerMatch, PokerPlayer } from './types.js';
 import { mentionUser } from '../../utils/discord/userUtils.js';

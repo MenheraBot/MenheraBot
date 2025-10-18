@@ -5,21 +5,21 @@ import {
   InteractionCallbackData,
   InteractionResponse,
   InteractionResponseTypes,
-  RestSendRequestOptions,
-} from 'discordeno';
+  SendRequestOptions,
+} from '@discordeno/bot';
 import { bot } from '../../index.js';
 import { debugError } from '../debugError.js';
 import { logger } from '../logger.js';
 
-const sendRequest = async (options: RestSendRequestOptions, currentTry = 1): Promise<void> =>
+const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise<void> =>
   new Promise((res, rej): void => {
     try {
-      bot.rest.sendRequest(bot.rest, options).then(() => {
+      bot.rest.sendRequest(options).then(() => {
         res();
       });
     } catch (e) {
       logger.error(
-        `[SEND REQUEST] Failed to send request to ${options.url}. Current try ${currentTry}`,
+        `[SEND REQUEST] Failed to send request to ${options.route}. Current try ${currentTry}`,
       );
       if (currentTry >= 3)
         return rej(new Error('Too many failed requests when sending interaction'));
@@ -42,12 +42,12 @@ const sendInteractionResponse = async (
   if (!respond)
     return sendRequest({
       method: 'POST',
-      url: bot.constants.routes.INTERACTION_ID_TOKEN(interactionId, token),
+      url: bot.rest.routes.INTERACTION_ID_TOKEN(interactionId, token),
       payload: bot.rest.createRequestBody(bot.rest, {
         method: 'POST',
         body: {
-          ...bot.transformers.reverse.interactionResponse(bot, options),
-          file: options?.data?.file,
+          ...bot.transformers.interactionCallbackResponse(bot, options),
+          files: options?.data?.files,
         },
         unauthorized: true,
       }),
@@ -79,7 +79,7 @@ const editOriginalInteractionResponse = (
           type: InteractionResponseTypes.UpdateMessage,
           data: options,
         }).data,
-        file: options?.file,
+        files: options?.files,
       },
       unauthorized: true,
     }),
@@ -93,7 +93,7 @@ const sendFollowupMessage = async (token: string, options: InteractionResponse):
       method: 'POST',
       body: {
         ...bot.transformers.reverse.interactionResponse(bot, options).data,
-        file: options?.data?.file,
+        files: options?.data?.files,
       },
       unauthorized: true,
     }),

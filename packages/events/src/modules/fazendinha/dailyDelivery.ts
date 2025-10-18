@@ -1,4 +1,4 @@
-import { ActionRow, ButtonStyles } from 'discordeno';
+import { ActionRow, ButtonStyles } from '@discordeno/bot';
 import { DatabaseFarmerSchema } from '../../types/database.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';

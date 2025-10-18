@@ -1,4 +1,4 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 import { DatabaseFeirinhaSchema } from '../../types/database.js';
 import { feirinhaModel } from '../collections.js';
 import { AvailablePlants } from '../../modules/fazendinha/types.js';

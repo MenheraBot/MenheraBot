@@ -1,4 +1,4 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 import { guildsModel } from '../collections.js';
 import { MainRedisClient } from '../databases.js';
 import { AvailableLanguages } from '../../types/i18next.js';

@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
+import { User } from '@discordeno/bot';
 
 import { getUserAvatar } from '../../utils/discord/userUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
@@ -42,10 +42,10 @@ const GadoCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      file: {
+      files: [{
         name: 'gado-dimaaais.png',
         blob: res.data,
-      },
+      }],
     });
 
     finishCommand();

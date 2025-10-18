@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { Member, User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
+import { Member, User } from '@discordeno/bot';
 
 import userRepository from '../../database/repositories/userRepository.js';
 import { getUserAvatar } from '../../utils/discord/userUtils.js';
@@ -132,7 +132,7 @@ const ShipCommand = createCommand({
     await ctx.makeMessage({
       content: ctx.locale('commands:ship.message-start'),
       embeds: [embed],
-      file: shipImage.err ? undefined : { blob: shipImage.data, name: 'ship.png' },
+      files: shipImage.err ? undefined : [{ blob: shipImage.data, name: 'ship.png' }],
     });
 
     finishCommand();

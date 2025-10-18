@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
+import { User } from '@discordeno/bot';
 
 import { mentionUser } from '../../utils/discord/userUtils.js';
 import { randomFromArray } from '../../utils/miscUtils.js';

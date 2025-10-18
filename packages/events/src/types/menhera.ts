@@ -1,4 +1,4 @@
-import { BigString, Bot, Collection } from 'discordeno';
+import { BigString, Bot, Collection } from '@discordeno/bot';
 import { ChatInputInteractionCommand } from './commands.js';
 import ComponentInteractionContext from '../structures/command/ComponentInteractionContext.js';
 import ChatInputInteractionContext from '../structures/command/ChatInputInteractionContext.js';

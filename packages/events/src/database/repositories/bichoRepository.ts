@@ -1,4 +1,4 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 import { BetPlayer, BichoGameInfo } from '../../modules/bicho/types.js';
 import { MainRedisClient } from '../databases.js';
 

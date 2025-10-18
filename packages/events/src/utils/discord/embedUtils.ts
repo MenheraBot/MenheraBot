@@ -1,4 +1,6 @@
-import { Embed } from 'discordeno/transformers';
+import { Camelize, DiscordEmbed } from '@discordeno/bot';
+
+export type Embed = Camelize<DiscordEmbed>;
 
 const createEmbed = (data: Embed): Embed => data;
 

@@ -1,4 +1,4 @@
-import { Collection, createRestManager, handleInteractionCreate } from 'discordeno';
+import { Collection, createRestManager, handleInteractionCreate } from '@discordeno/bot';
 
 import { transformInteractionResponseToDiscordInteractionResponse } from '../internals/transformers/reverse/interactionResponse.js';
 import { initializeRedis, initializeMongo } from '../database/databases.js';

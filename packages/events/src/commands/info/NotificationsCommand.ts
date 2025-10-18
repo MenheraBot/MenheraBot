@@ -1,5 +1,5 @@
 import md5 from 'md5';
-import { ButtonStyles } from 'discordeno/types';
+import { ButtonStyles } from '@discordeno/bot';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';

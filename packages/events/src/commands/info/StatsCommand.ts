@@ -1,5 +1,4 @@
-import { Embed, User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField, User } from '@discordeno/bot';
 import { TFunction } from 'i18next';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
@@ -25,7 +24,7 @@ import {
   createButton,
   createCustomId,
 } from '../../utils/discord/componentUtils.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { createEmbed, Embed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
 import { chunkArray, millisToSeconds } from '../../utils/miscUtils.js';

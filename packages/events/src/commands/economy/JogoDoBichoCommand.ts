@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes, ButtonStyles, TextStyles } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles, TextStyles } from '@discordeno/bot';
 
 import userRepository from '../../database/repositories/userRepository.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';

@@ -1,4 +1,4 @@
-import { ButtonComponent, ButtonStyles } from 'discordeno/types';
+import { ButtonComponent, ButtonStyles } from '@discordeno/bot';
 import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from './index.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { ApiHuntingTypes } from '../hunt/types.js';

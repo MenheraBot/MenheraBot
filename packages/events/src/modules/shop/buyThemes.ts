@@ -1,4 +1,4 @@
-import { ActionRow, ButtonStyles, InteractionResponseTypes } from 'discordeno/types';
+import { ActionRow, ButtonStyles, InteractionResponseTypes } from '@discordeno/bot';
 
 import md5 from 'md5';
 import commandRepository from '../../database/repositories/commandRepository.js';
@@ -333,10 +333,10 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
           }
 
           await editOriginalInteractionResponse(ctx.interaction.token, {
-            file: {
+            files: [{
               name: 'profile-preview.png',
               blob: res.data,
-            },
+            }],
           });
 
           return;
@@ -363,10 +363,10 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
         }
 
         await editOriginalInteractionResponse(ctx.interaction.token, {
-          file: {
+          files: [{
             name: 'theme-preview.png',
             blob: res.data,
-          },
+          }],
         });
 
         return;

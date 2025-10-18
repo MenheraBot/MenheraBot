@@ -1,4 +1,4 @@
-import { ButtonComponent, ButtonStyles, DiscordEmbedField, SelectOption } from 'discordeno/types';
+import { ButtonComponent, ButtonStyles, DiscordEmbedField, SelectOption } from '@discordeno/bot';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
 import { AvailablePlants, Plantation, PlantationState, PlantedField, Seasons } from './types.js';

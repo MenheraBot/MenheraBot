@@ -1,6 +1,6 @@
-import { Interaction, User } from 'discordeno/transformers';
+import { Interaction, User } from '@discordeno/bot';
 import { findBestMatch } from 'string-similarity';
-import { ButtonStyles } from 'discordeno/types';
+import { ButtonStyles } from '@discordeno/bot';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
 import { InteractionContext } from '../../types/menhera.js';
 import fairRepository from '../../database/repositories/fairRepository.js';

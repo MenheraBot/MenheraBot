@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
@@ -48,10 +48,10 @@ const PhiloCommand = createCommand({
       );
 
     ctx.makeMessage({
-      file: {
+      files: [{
         blob: res.data,
         name: 'aristoteles.png',
-      },
+      }],
     });
 
     finishCommand();

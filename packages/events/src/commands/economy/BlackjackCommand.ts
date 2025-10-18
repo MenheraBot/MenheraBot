@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 import blackjackRepository from '../../database/repositories/blackjackRepository.js';
 import { makeDealerPlay } from '../../modules/blackjack/makeDealerPlay.js';
 import starsRepository from '../../database/repositories/starsRepository.js';

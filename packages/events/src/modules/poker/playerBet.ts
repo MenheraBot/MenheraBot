@@ -1,4 +1,4 @@
-import { TextStyles } from 'discordeno/types';
+import { TextStyles } from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction.js';
 import {

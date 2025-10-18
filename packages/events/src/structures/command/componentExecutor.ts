@@ -1,5 +1,5 @@
-import { Interaction } from 'discordeno/transformers';
-import { AllowedMentionsTypes, InteractionResponseTypes } from 'discordeno/types';
+import { Interaction } from '@discordeno/bot';
+import { AllowedMentionsTypes, InteractionResponseTypes } from '@discordeno/bot';
 import i18next from 'i18next';
 
 import { mentionUser } from '../../utils/discord/userUtils.js';

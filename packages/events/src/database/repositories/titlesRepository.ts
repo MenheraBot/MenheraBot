@@ -1,4 +1,4 @@
-import { BigString, Localization } from 'discordeno/types';
+import { BigString, Localization } from '@discordeno/bot';
 
 import { MainRedisClient } from '../databases.js';
 import { titlesModel } from '../collections.js';

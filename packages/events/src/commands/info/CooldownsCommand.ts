@@ -3,9 +3,9 @@ import {
   ApplicationCommandOptionTypes,
   ButtonStyles,
   DiscordEmbedField,
-} from 'discordeno/types';
+} from '@discordeno/bot';
 
-import { User } from 'discordeno/transformers';
+import { User } from '@discordeno/bot';
 import { bot } from '../../index.js';
 import { createActionRow, createButton } from '../../utils/discord/componentUtils.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';

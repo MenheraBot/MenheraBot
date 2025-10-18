@@ -1,4 +1,4 @@
-import { Interaction } from 'discordeno/transformers';
+import { Interaction } from '@discordeno/bot';
 import { executeGivebadgeAutocomplete } from '../../modules/badges/givebadgeCommandAutocompleteInteraction.js';
 import { executeCommandNameAutocomplete } from '../../modules/top/commandIdAutocompleteInteraction.js';
 import { executeTituleAutocompleteInteraction } from '../../commands/util/PersonalizeCommand.js';

@@ -3,8 +3,7 @@ import {
   ApplicationCommandOptionTypes,
   ButtonComponent,
   ButtonStyles,
-} from 'discordeno/types';
-import { Embed } from 'discordeno/transformers';
+} from '@discordeno/bot';
 import * as Sentry from '@sentry/node';
 import { createCommand } from '../../structures/command/createCommand.js';
 import {
@@ -21,7 +20,7 @@ import {
   SelectMenuUsersInteraction,
 } from '../../types/interaction.js';
 import { mentionUser } from '../../utils/discord/userUtils.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { createEmbed, Embed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { MessageFlags, removeNonNumbers } from '../../utils/discord/messageUtils.js';
 import { closeTable, setupGame } from '../../modules/poker/matchManager.js';
 import {

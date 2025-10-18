@@ -1,9 +1,9 @@
-import { User } from 'discordeno/transformers';
+import { User } from '@discordeno/bot';
 import {
   AllowedMentionsTypes,
   ApplicationCommandOptionTypes,
   ButtonStyles,
-} from 'discordeno/types';
+} from '@discordeno/bot';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { postCoinflipMatch, postTransaction } from '../../utils/apiRequests/statistics.js';

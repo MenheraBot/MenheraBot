@@ -5,9 +5,9 @@ import type {
   InputTextComponent,
   SelectMenuComponent,
   SelectMenuUsersComponent,
-} from 'discordeno/types';
+} from '@discordeno/bot';
 
-import { MessageComponentTypes } from 'discordeno/types';
+import { MessageComponentTypes } from '@discordeno/bot';
 
 type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 

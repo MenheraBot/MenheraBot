@@ -1,4 +1,4 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 import { suggestionLimitModel } from '../collections.js';
 import { DatabaseSuggestionLimitSchema } from '../../types/database.js';
 

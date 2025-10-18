@@ -1,4 +1,4 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 import { AxiosError } from 'axios';
 import {
   ApiGamblingGameCompatible,

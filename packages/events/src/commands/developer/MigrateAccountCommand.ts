@@ -1,6 +1,6 @@
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 
-import { User } from 'discordeno/transformers';
+import { User } from '@discordeno/bot';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
 import {

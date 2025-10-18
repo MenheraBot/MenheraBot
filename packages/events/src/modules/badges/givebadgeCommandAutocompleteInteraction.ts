@@ -1,5 +1,5 @@
-import { Interaction } from 'discordeno/transformers';
-import { InteractionResponseTypes } from 'discordeno/types';
+import { Interaction } from '@discordeno/bot';
+import { InteractionResponseTypes } from '@discordeno/bot';
 import { findBestMatch } from 'string-similarity';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
 import { debugError } from '../../utils/debugError.js';

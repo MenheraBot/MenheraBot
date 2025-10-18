@@ -1,4 +1,4 @@
-import { ActionRow, ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import { ActionRow, ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import userRepository from '../../database/repositories/userRepository.js';

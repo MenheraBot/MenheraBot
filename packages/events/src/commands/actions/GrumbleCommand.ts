@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
 import { TODAYS_YEAR, COLORS } from '../../structures/constants.js';
 import { getAssetLink } from '../../structures/cdnManager.js';

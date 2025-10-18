@@ -1,4 +1,4 @@
-import { createBot, startBot } from 'discordeno';
+import { createBot, DesiredPropertiesBehavior } from '@discordeno/bot';
 
 import { setupEventHandlers } from './events/index.js';
 import { createIpcConnection } from './structures/orchestratorConnection.js';
@@ -19,8 +19,26 @@ const { DISCORD_TOKEN, DISCORD_APPLICATION_ID } = getEnviroments([
 
 const bot = createBot({
   token: DISCORD_TOKEN,
-  botId: BigInt(DISCORD_APPLICATION_ID),
   applicationId: BigInt(DISCORD_APPLICATION_ID),
+  desiredPropertiesBehavior: DesiredPropertiesBehavior.RemoveKey,
+  desiredProperties: {
+    user: {
+      avatar: true,
+      discriminator: true,
+      globalName: true,
+      id: true,
+      locale: true,
+      toggles: true,
+      username: true,
+    },
+    attachment: {
+      contentType: true,
+      url: true,
+      size: true,
+    },
+    // TODO
+    component: {}
+  }
 }) as MenheraClient;
 
 setupMenheraClient(bot);
@@ -32,7 +50,7 @@ setupInternals(bot);
 
 if (process.env.NODE_ENV === 'development') {
   logger.debug('Starting local gateway to receive events');
-  await startBot(bot);
+  await bot.start()
   // @ts-expect-error Cant send string
   bot.events.ready('MASTER');
 }

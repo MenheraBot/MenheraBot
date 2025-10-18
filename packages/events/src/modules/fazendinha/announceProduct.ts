@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import { ApplicationCommandOptionChoice, Interaction } from 'discordeno/transformers';
+import { ApplicationCommandOptionChoice, Interaction } from '@discordeno/bot';
 import { findBestMatch } from 'string-similarity';
 import fairRepository from '../../database/repositories/fairRepository.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';

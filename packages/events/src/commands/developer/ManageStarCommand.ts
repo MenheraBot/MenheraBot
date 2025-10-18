@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
+import { User } from '@discordeno/bot';
 import starsRepository from '../../database/repositories/starsRepository.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { ApiTransactionReason } from '../../types/api.js';

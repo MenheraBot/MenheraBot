@@ -1,5 +1,4 @@
-import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { User, ApplicationCommandOptionTypes } from '@discordeno/bot';
 
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import { TODAYS_YEAR, COLORS } from '../../structures/constants.js';

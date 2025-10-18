@@ -1,4 +1,4 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 import { UpdateQuery } from 'mongoose';
 import { DatabaseEventSchema } from '../../types/database.js';
 import { MainRedisClient } from '../databases.js';

@@ -1,4 +1,4 @@
-import { CreateSlashApplicationCommand } from 'discordeno';
+import { CreateApplicationCommand } from '@discordeno/bot';
 
 import ComponentInteractionContext from '../structures/command/ComponentInteractionContext.js';
 import ChatInputInteractionContext from '../structures/command/ChatInputInteractionContext.js';
@@ -14,7 +14,7 @@ type CommandCategory =
   | 'util'
   | 'event';
 
-export interface ChatInputCommandConfig extends CreateSlashApplicationCommand {
+export interface ChatInputCommandConfig extends CreateApplicationCommand {
   devsOnly?: true;
   category: CommandCategory;
   authorDataFields: (keyof DatabaseUserSchema)[];

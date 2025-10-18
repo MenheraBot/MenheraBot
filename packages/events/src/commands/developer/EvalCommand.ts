@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 import { inspect } from 'node:util';
 
 import { eventModel, farmerModel, usersModel } from '../../database/collections.js';

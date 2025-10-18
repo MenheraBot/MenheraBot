@@ -1,5 +1,4 @@
-import { ToggleBitfield, User } from 'discordeno/transformers';
-import { UserFlags } from 'discordeno/types';
+import { ToggleBitfield, User, UserFlags } from '@discordeno/bot';
 import mongoose from 'mongoose';
 
 import { DatabaseUserSchema, UserBadge } from '../../types/database.js';

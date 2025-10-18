@@ -1,4 +1,4 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 
 import { DatabaseProfileImagesSchema } from '../../types/database.js';
 import { profileImagesModel } from '../collections.js';

@@ -1,5 +1,5 @@
-import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { User } from '@discordeno/bot';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 import userRepository from '../../database/repositories/userRepository.js';
 
 import { createCommand } from '../../structures/command/createCommand.js';

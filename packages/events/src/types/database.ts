@@ -1,4 +1,4 @@
-import { Localization } from 'discordeno/types';
+import { Localization } from '@discordeno/bot';
 import { profileBadges } from '../modules/badges/profileBadges.js';
 import {
   AvailableItems,

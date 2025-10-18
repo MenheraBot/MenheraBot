@@ -1,5 +1,5 @@
-import { BigString } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+import { BigString } from '@discordeno/bot';
+import { User } from '@discordeno/bot';
 import { DatabaseHuntingTypes } from '../../modules/hunt/types.js';
 import { AvailableThemeTypes } from '../../modules/themes/types.js';
 import { UserColor } from '../../types/database.js';

@@ -1,6 +1,6 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
-import { User } from 'discordeno/transformers';
+import { User } from '@discordeno/bot';
 import { executeFarmersTop } from '../../modules/top/farmersTop.js';
 import { ApiHuntingTypes, DatabaseHuntingTypes } from '../../modules/hunt/types.js';
 import { createCommand } from '../../structures/command/createCommand.js';

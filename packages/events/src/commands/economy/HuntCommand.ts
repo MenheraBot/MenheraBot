@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from '@discordeno/bot';
 
 import userRepository from '../../database/repositories/userRepository.js';
 import huntRepository from '../../database/repositories/huntRepository.js';

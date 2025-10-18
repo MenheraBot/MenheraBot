@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
+import { User } from '@discordeno/bot';
 
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
@@ -64,10 +64,10 @@ const VascoCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      file: {
+      files: [{
         name: 'vasco.png',
         blob: res.data,
-      },
+      }],
     });
 
     finishCommand();

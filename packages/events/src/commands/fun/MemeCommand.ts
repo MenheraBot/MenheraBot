@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
 import { COLORS } from '../../structures/constants.js';
 import { createEmbed } from '../../utils/discord/embedUtils.js';

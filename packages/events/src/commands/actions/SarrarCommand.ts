@@ -1,5 +1,5 @@
-import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import { User } from '@discordeno/bot';
+import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import {

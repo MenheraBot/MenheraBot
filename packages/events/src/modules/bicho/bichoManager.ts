@@ -1,4 +1,4 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 import bichoRepository from '../../database/repositories/bichoRepository.js';
 import { postBichoResults, postTransaction } from '../../utils/apiRequests/statistics.js';
 import starsRepository from '../../database/repositories/starsRepository.js';

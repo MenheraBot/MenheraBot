@@ -1,6 +1,6 @@
-import { ApplicationCommandOptionTypes, CamelCase } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, CamelCase } from '@discordeno/bot';
 
-import { User } from 'discordeno/transformers';
+import { User } from '@discordeno/bot';
 import { bot } from '../../index.js';
 import profileImagesRepository from '../../database/repositories/profileImagesRepository.js';
 import themeCreditsRepository from '../../database/repositories/themeCreditsRepository.js';

@@ -3,10 +3,10 @@ import {
   ApplicationCommandOptionTypes,
   ButtonComponent,
   ButtonStyles,
-  SelectMenuComponent,
+  StringSelectComponent,
   SelectOption,
-} from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+} from '@discordeno/bot';
+import { User } from '@discordeno/bot';
 import { createCommand } from '../../structures/command/createCommand.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
@@ -48,7 +48,7 @@ const resolveUser = (
 };
 
 const getSentOptions = (ctx: ComponentInteractionContext, index: number): SelectOption[] =>
-  (ctx.interaction.message?.components?.[index]?.components?.[0] as SelectMenuComponent).options;
+  (ctx.interaction.message?.components?.[index]?.components?.[0] as StringSelectComponent).options;
 
 const getTransactionComponents = (
   ctx: InteractionContext,

@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 import { updateCommandMaintenanteStatus } from '../../utils/apiRequests/commands.js';
 import commandRepository from '../../database/repositories/commandRepository.js';
 

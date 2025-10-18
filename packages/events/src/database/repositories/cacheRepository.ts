@@ -1,5 +1,5 @@
-import { Attachment, User } from 'discordeno/transformers';
-import { BigString, DiscordUser } from 'discordeno/types';
+import { Attachment, User } from '@discordeno/bot';
+import { BigString, DiscordUser } from '@discordeno/bot';
 
 import { bot } from '../../index.js';
 import { UserIdType } from '../../types/database.js';

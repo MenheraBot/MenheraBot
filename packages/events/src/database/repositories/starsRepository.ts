@@ -1,4 +1,4 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 import { negate } from '../../utils/miscUtils.js';
 import userRepository from './userRepository.js';
 

@@ -1,4 +1,4 @@
-import { User } from 'discordeno/transformers';
+import { User } from '@discordeno/bot';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { capitalize } from '../../utils/miscUtils.js';
 import { InteractionContext } from '../../types/menhera.js';

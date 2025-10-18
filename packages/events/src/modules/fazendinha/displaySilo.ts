@@ -4,7 +4,7 @@ import {
   DiscordEmbedField,
   SelectOption,
   TextStyles,
-} from 'discordeno/types';
+} from '@discordeno/bot';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { DatabaseFarmerSchema } from '../../types/database.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';

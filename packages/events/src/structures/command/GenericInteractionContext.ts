@@ -1,4 +1,4 @@
-import { InteractionCallbackData, InteractionResponseTypes } from 'discordeno';
+import { InteractionCallbackData, InteractionResponseTypes } from '@discordeno/bot';
 
 import i18next, { TFunction } from 'i18next';
 import { debugError } from '../../utils/debugError.js';

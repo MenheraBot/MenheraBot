@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
+import { User } from '@discordeno/bot';
 
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
@@ -41,10 +41,10 @@ const MacetavaCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      file: {
+      files: [{
         name: 'macetava-afu.png',
         blob: res.data,
-      },
+      }],
     });
 
     finishCommand();

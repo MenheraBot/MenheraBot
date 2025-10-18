@@ -1,5 +1,5 @@
-import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { User } from '@discordeno/bot';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
 import blacklistRepository from '../../database/repositories/blacklistRepository.js';
 import relationshipRepostory from '../../database/repositories/relationshipRepostory.js';

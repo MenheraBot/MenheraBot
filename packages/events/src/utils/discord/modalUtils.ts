@@ -1,4 +1,4 @@
-import { InputTextComponent } from 'discordeno/types';
+import { InputTextComponent } from '@discordeno/bot';
 import { ModalInteraction } from '../../types/interaction.js';
 
 interface FieldData {

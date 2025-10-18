@@ -1,4 +1,4 @@
-import { ActionRow, ButtonStyles } from 'discordeno/types';
+import { ActionRow, ButtonStyles } from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { COLORS } from '../../structures/constants.js';
 import {

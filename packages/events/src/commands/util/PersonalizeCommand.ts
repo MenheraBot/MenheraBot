@@ -1,16 +1,16 @@
-import type { ApplicationCommandOptionChoice, Embed, Interaction } from 'discordeno/transformers';
+import type { ApplicationCommandOptionChoice, Interaction } from '@discordeno/bot';
 import * as Sentry from '@sentry/node';
 import {
   ActionRow,
   ApplicationCommandOptionTypes,
   ButtonStyles,
-  InputTextComponent,
+  TextInputComponent,
   InteractionResponseTypes,
-  SelectMenuComponent,
+  StringSelectComponent,
   TextStyles,
-} from 'discordeno/types';
+} from '@discordeno/bot';
 
-import { User } from 'discordeno';
+import { User } from '@discordeno/bot';
 
 import md5 from 'md5';
 import { findBestMatch } from 'string-similarity';
@@ -40,7 +40,7 @@ import {
   createSelectMenu,
   createTextInput,
 } from '../../utils/discord/componentUtils.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { createEmbed, Embed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils.js';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
 import {
@@ -213,7 +213,7 @@ const executeColorComponents = async (
   switch (type) {
     case 'MODAL': {
       const component = (ctx.interaction as ModalInteraction).data.components[0]
-        .components[0] as InputTextComponent;
+        .components[0] as TextInputComponent;
       const newName = component.value as string;
       const oldColor = component.customId;
 
@@ -665,7 +665,7 @@ const executeBadgesCommand = async (
   userBadges.forEach((a, i) => {
     const isSelected = userData.hiddingBadges.includes(a.id);
 
-    if (!selectMenu.options.some((b) => b.value === `${a.id}`))
+    if (!selectMenu.options.some((b: { value: string }) => b.value === `${a.id}`))
       selectMenu.options.push({
         label: profileBadges[a.id as 1].name,
         value: `${a.id}`,
@@ -953,16 +953,18 @@ const createCustomizeMessage = async (
 
   if (!res.err) {
     embed.image = { url: 'attachment://profile.png' };
-    toSendFile = {
-      name: 'profile.png',
-      blob: res.data,
-    };
+    toSendFile = [
+      {
+        name: 'profile.png',
+        blob: res.data,
+      },
+    ];
   }
 
   await ctx.makeMessage({
     components: [createActionRow([selectMenu]), createActionRow([saveButton])],
     content: '',
-    file: toSendFile,
+    files: toSendFile,
     attachments: typeof toSendFile === 'undefined' ? [] : undefined,
     embeds: [embed],
   });
@@ -977,7 +979,8 @@ const customizeProfileTheme = async (ctx: ComponentInteractionContext): Promise<
 
   if (type === 'SAVE') {
     const data = (
-      (ctx.interaction.message?.components as ActionRow[])[0]?.components[0] as SelectMenuComponent
+      (ctx.interaction.message?.components as ActionRow[])[0]
+        ?.components[0] as StringSelectComponent
     ).options
       .map((a) => {
         const splitted = a.value.split('|');

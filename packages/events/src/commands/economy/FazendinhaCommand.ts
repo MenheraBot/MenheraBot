@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
+import { User } from '@discordeno/bot';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { displayPlantations } from '../../modules/fazendinha/displayPlantations.js';

@@ -1,4 +1,4 @@
-import { ActionRow, ButtonStyles } from 'discordeno/types';
+import { ActionRow, ButtonStyles } from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';

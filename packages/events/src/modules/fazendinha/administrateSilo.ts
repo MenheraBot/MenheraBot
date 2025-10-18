@@ -1,4 +1,4 @@
-import { ButtonStyles } from 'discordeno/types';
+import { ButtonStyles } from '@discordeno/bot';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { DatabaseFarmerSchema } from '../../types/database.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';

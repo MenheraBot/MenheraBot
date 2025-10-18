@@ -3,9 +3,9 @@ import {
   ApplicationCommandOptionTypes,
   ButtonStyles,
   TextStyles,
-} from 'discordeno/types';
+} from '@discordeno/bot';
 
-import { Embed } from 'discordeno/transformers';
+import { Embed } from '@discordeno/bot';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';

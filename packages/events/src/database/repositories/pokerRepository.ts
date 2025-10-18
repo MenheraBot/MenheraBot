@@ -1,4 +1,4 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 import { MainRedisClient } from '../databases.js';
 import { PokerMatch, PokerTimer } from '../../modules/poker/types.js';
 

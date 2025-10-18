@@ -1,5 +1,5 @@
-import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { User } from '@discordeno/bot';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 import md5 from 'md5';
 
 import { bot } from '../../index.js';
@@ -163,12 +163,12 @@ const ProfileCommand = createCommand({
       }
 
       await ctx.makeMessage({
-        file: {
+        files: [{
           name: 'profile.png',
           blob: new Blob([Buffer.from(imageFromRedis, 'base64')], {
             type: 'image/png',
           }),
-        },
+        }],
       });
 
       finishCommand();
@@ -204,10 +204,10 @@ const ProfileCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      file: {
+      files: [{
         name: 'profile.png',
         blob: res.data,
-      },
+      }],
     });
 
     finishCommand();

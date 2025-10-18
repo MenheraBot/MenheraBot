@@ -1,4 +1,4 @@
-import { ButtonStyles, DiscordEmbedField } from 'discordeno/types';
+import { ButtonStyles, DiscordEmbedField } from '@discordeno/bot';
 import { InteractionContext } from '../../types/menhera.js';
 import {
   createActionRow,

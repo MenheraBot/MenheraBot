@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionChoice, Interaction } from 'discordeno/transformers';
+import { ApplicationCommandOptionChoice, Interaction } from '@discordeno/bot';
 import { findBestMatch } from 'string-similarity';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
 import { bot } from '../../index.js';

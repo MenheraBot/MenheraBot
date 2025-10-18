@@ -1,4 +1,4 @@
-import { Bot, DiscordUser, User } from 'discordeno';
+import { Bot, DiscordUser, User } from '@discordeno/bot';
 
 const transfromUserToDiscordUser = (bot: Bot, payload: User): DiscordUser => ({
   id: bot.utils.bigintToSnowflake(payload.id),

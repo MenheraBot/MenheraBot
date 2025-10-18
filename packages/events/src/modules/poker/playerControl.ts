@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ButtonStyles, SelectMenuComponent, SelectOption } from 'discordeno/types';
+import { ButtonStyles, StringSelectComponent, SelectOption } from '@discordeno/bot';
 import PokerSolver from 'pokersolver';
 import userRepository from '../../database/repositories/userRepository.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
@@ -54,7 +54,7 @@ const updatePlayerHandValue = async (
 
   await ctx.makeMessage({
     embeds: [embed],
-    file: !image || image.err ? undefined : { name: 'poker.png', blob: image.data },
+    files: !image || image.err ? undefined : [{ name: 'poker.png', blob: image.data }],
     flags: MessageFlags.EPHEMERAL,
     components: [
       createActionRow([
@@ -164,7 +164,7 @@ const localizedAction = (ctx: GenericContext, action: Action, chips?: number): S
 const getPlayerBySeat = (gameData: PokerMatch, seatId: number): PokerPlayer =>
   gameData.players.find((a) => a.seatId === seatId)!;
 
-const getAvailableActions = (ctx: GenericContext, gameData: PokerMatch): SelectMenuComponent => {
+const getAvailableActions = (ctx: GenericContext, gameData: PokerMatch): StringSelectComponent => {
   const player = gameData.players.find((p) => p.seatId === gameData.seatToPlay)!;
 
   const availableActions: SelectOption[] = [localizedAction(ctx, 'FOLD')];
