@@ -314,7 +314,7 @@ const getTopRanking = async (
   skip: number,
   ignoreUsers: string[] = [],
   limit = 10,
-): Promise<{ id: number; value: number }[]> => {
+): Promise<{ id: string; value: number }[]> => {
   const res = await farmerModel.find({ id: { $nin: ignoreUsers } }, ['experience', 'id'], {
     skip,
     limit,

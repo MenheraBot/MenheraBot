@@ -178,7 +178,7 @@ const getTopRanking = async (
   skip: number,
   ignoreUsers: string[] = [],
   limit = 10,
-): Promise<{ id: number; value: number }[]> => {
+): Promise<{ id: string; value: number }[]> => {
   const res = await usersModel.find({ ban: false, id: { $nin: ignoreUsers } }, [field, 'id'], {
     skip,
     limit,
@@ -186,7 +186,7 @@ const getTopRanking = async (
     lean: true,
   });
 
-  return res.map((a) => ({ id: a.id, value: a[field] ?? 0 }));
+  return res.map((a) => ({ id: a.id, value: (a[field] ?? 0) as number }));
 };
 
 export default {

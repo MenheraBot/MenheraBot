@@ -71,7 +71,7 @@ const registerTitle = async (ctx: ChatInputInteractionContext): Promise<void> =>
   const ptBr = ctx.getOption<string>('portugues', false, true);
   const enUs = ctx.getOption<string>('ingles', false, true);
 
-  const totalTitles = await titlesRepository.getTitlesCount();
+  const totalTitles = await titlesRepository.getLatestTitleId();
 
   await titlesRepository.registerTitle(totalTitles + 1, ptBr, { 'en-US': enUs });
 
