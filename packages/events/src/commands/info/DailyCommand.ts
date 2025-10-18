@@ -187,7 +187,6 @@ const handleButtonInteractions = async (ctx: ComponentInteractionContext): Promi
     const selectedAward = missionToReedem.awards[Number(itemIndex)];
 
     let updateObject: unknown = {};
-    // eslint-disable-next-line @typescript-eslint/ban-types
     let updateFunction: Function = userRepository.updateUserWithSpecialData;
 
     switch (selectedAward.type) {

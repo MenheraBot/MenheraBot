@@ -1,6 +1,6 @@
 import { DiscordInteraction } from 'discordeno';
 import { Connection, Server } from 'net-ipc';
-import Koa from 'koa'
+import Koa from 'koa';
 import { mergeMetrics } from './prometheusWorkarround.js';
 import { respondInteraction } from './respondInteraction.js';
 import { createHttpServer, registerAllRouters } from './server/httpServer.js';
@@ -8,9 +8,9 @@ import { PrometheusResponse } from './server/routes/prometheus.js';
 import { getEnviroments } from './getEnviroments.js';
 
 declare module 'koa' {
-    interface Request extends Koa.BaseRequest {
-        body?: any;
-    }
+  interface Request extends Koa.BaseRequest {
+    body?: any;
+  }
 }
 
 const { ORCHESTRATOR_SOCKET_PATH } = getEnviroments(['ORCHESTRATOR_SOCKET_PATH']);

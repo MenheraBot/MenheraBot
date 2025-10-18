@@ -18,29 +18,29 @@
     "typecheck": " tsc --project tsconfig.json --noEmit",
     "print-version": "echo version=$npm_package_version",
     "build:dev": "pnpm build && pnpm dev",
-    "start": "VERSION=$npm_package_version NODE_ENV=production node --es-module-specifier-resolution=node --no-warnings .",
-    "dev": "VERSION=$npm_package_version NODE_ENV=development node --es-module-specifier-resolution=node --no-warnings -r dotenv/config .",
-    "beta": "VERSION=$npm_package_version NODE_ENV=development node --es-module-specifier-resolution=node --no-warnings .",
-    "dev:nomicroservices": "VERSION=$npm_package_version NODE_ENV=development NOMICROSERVICES=true node --es-module-specifier-resolution=node --no-warnings -r dotenv/config ."
+    "start": "VERSION=$npm_package_version NODE_ENV=production node .",
+    "dev": "VERSION=$npm_package_version NODE_ENV=development node -r dotenv/config .",
+    "beta": "VERSION=$npm_package_version NODE_ENV=development node .",
+    "dev:nomicroservices": "VERSION=$npm_package_version NODE_ENV=development NOMICROSERVICES=true node -r dotenv/config ."
   },
   "dependencies": {
-    "@sentry/node": "^7.77.0",
-    "axios": "^1.12.0",
+    "@sentry/node": "^7.120.4",
+    "axios": "^1.12.2",
     "discordeno": "^18.0.1",
-    "i18next": "^21.8.14",
-    "i18next-fs-backend": "^1.1.4",
-    "ioredis": "^5.4.1",
+    "i18next": "^21.10.0",
+    "i18next-fs-backend": "^1.2.0",
+    "ioredis": "^5.8.1",
     "md5": "^2.3.0",
     "mongoose": "6.13.5",
-    "net-ipc": "^2.2.0",
+    "net-ipc": "^2.2.2",
     "pokersolver": "^2.1.4",
-    "prom-client": "^14.1.1",
+    "prom-client": "^14.2.0",
     "string-similarity": "^4.0.4"
   },
   "devDependencies": {
     "@jest/globals": "^30.2.0",
-    "@types/i18next-fs-backend": "^1.1.2",
-    "@types/md5": "^2.3.2",
-    "@types/string-similarity": "^4.0.0"
+    "@types/i18next-fs-backend": "^1.2.0",
+    "@types/md5": "^2.3.6",
+    "@types/string-similarity": "^4.0.2"
   }
 }

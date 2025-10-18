@@ -16,10 +16,12 @@ export default defineConfig(
     plugins: {
       import: importPlugin,
     },
+    files: ['packages/**/*.ts'],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        project: './tsconfig.json',
+        project: ['./tsconfig.json'],
+        tsconfigRootDir: import.meta.dirname,
       },
       ecmaVersion: 2022,
       sourceType: 'module',
@@ -80,6 +82,7 @@ export default defineConfig(
         node: {
           extensions: ['.js', '.ts'],
         },
+        typescript: {},
       },
     },
   },
