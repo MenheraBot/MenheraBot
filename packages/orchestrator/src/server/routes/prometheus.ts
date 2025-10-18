@@ -1,6 +1,6 @@
-import Router from 'koa-router';
-import { HTTPResponseCodes } from 'discordeno/types';
+import Router from '@koa/router';
 import { RequestType, sendEvent } from '../../index.js';
+import { HTTPResponseCodes } from '../httpServer.js';
 
 export interface PrometheusResponse {
   contentType: string;

@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import { koaBody } from 'koa-body';
-import Router from 'koa-router';
+import Router from '@koa/router';
 import { getEnviroments } from '../getEnviroments.js';
 import { createPostInteractionRouter } from './routes/postInteraction';
 import { createPrometheusRouter } from './routes/prometheus';
@@ -9,6 +9,14 @@ import { createVoteWebhookRouter } from './routes/voteWebhook';
 import { createRequestUserDataRouter } from './routes/requestUserData';
 import { createPingRouter } from './routes/ping';
 import { createThankSuggestionRouter } from './routes/thankSuggestion';
+
+export enum HTTPResponseCodes {
+  Ok = 200,
+  BadRequest = 400,
+  Unauthorized = 401,
+  Forbidden = 403,
+  NotFound = 404
+}
 
 const server = new Koa();
 

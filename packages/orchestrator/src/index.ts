@@ -1,4 +1,4 @@
-import { DiscordInteraction } from 'discordeno';
+import { DiscordInteraction } from '@discordeno/types';
 import { Connection, Server } from 'net-ipc';
 import Koa from 'koa';
 import { mergeMetrics } from './prometheusWorkarround.js';
