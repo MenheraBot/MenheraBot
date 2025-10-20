@@ -10,13 +10,12 @@ import { bot } from '../../index.js';
 import { debugError } from '../debugError.js';
 import { logger } from '../logger.js';
 import { Interaction } from '../../types/discordeno.js';
+import { noop } from '../miscUtils.js';
 
 const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise<void> =>
   new Promise((res, rej): void => {
     try {
-      bot.rest.sendRequest(options).then(() => {
-        res();
-      });
+      bot.rest.sendRequest({ ...options, resolve: () => res() });
     } catch (e) {
       logger.error(
         `[SEND REQUEST] Failed to send request to ${options.route}. Current try ${currentTry}`,
@@ -49,8 +48,8 @@ const sendInteractionResponse = async (
         unauthorized: true,
       },
       runThroughQueue: false,
-      resolve: () => undefined,
-      reject: () => undefined,
+      resolve: noop,
+      reject: noop,
       retryCount: 0,
     });
 
@@ -58,9 +57,8 @@ const sendInteractionResponse = async (
     bot.ackInteraction.set(`${interactionId}`, r);
 
     respond({
-      // FIXME: This is not working, but i think this entire file is not working as well
       // @ts-expect-error
-      discord: bot.transformers.interactionCallbackResponse(bot, options),
+      discord: bot.transformers.interactionCallbackResponse(bot, { interaction: options }),
       id: `${interactionId}`,
     });
 
@@ -81,8 +79,8 @@ const editOriginalInteractionResponse = (
       unauthorized: true,
     },
     runThroughQueue: false,
-    reject: () => undefined,
-    resolve: () => undefined,
+    reject: noop,
+    resolve: noop,
     retryCount: 0,
   });
 
@@ -97,8 +95,8 @@ const sendFollowupMessage = async (token: string, options: InteractionResponse):
     },
     runThroughQueue: false,
     retryCount: 0,
-    reject: () => undefined,
-    resolve: () => undefined,
+    reject: noop,
+    resolve: noop,
   });
 
 const respondWithChoices = (

@@ -23,6 +23,7 @@ import { debugError } from '../../utils/debugError.js';
 import { userThemesModel } from '../collections.js';
 import { MainRedisClient } from '../databases.js';
 import { registerCacheStatus } from '../../structures/initializePrometheus.js';
+import { noop } from '../../utils/miscUtils.js';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserThemesSchema): DatabaseUserThemesSchema => ({
   id: `${user.id}`,
@@ -165,7 +166,7 @@ const addThemeToUserAccount = async (
       { $push: { [themeType]: { id: themeId, aquiredAt: Date.now() } } },
       { new: true },
     )
-    .catch(() => null);
+    .catch(noop);
 
   if (updatedUser) {
     await MainRedisClient.setex(

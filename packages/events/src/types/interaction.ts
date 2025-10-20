@@ -1,8 +1,4 @@
-import {
-  Collection,
-  TextInputComponent,
-  MessageComponentTypes,
-} from '@discordeno/bot';
+import { Collection, TextInputComponent, MessageComponentTypes } from '@discordeno/bot';
 import { Interaction, Member, User } from './discordeno.js';
 
 export type ComponentInteraction = Interaction & { data: { customId: string } };

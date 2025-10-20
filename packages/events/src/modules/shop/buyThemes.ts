@@ -333,10 +333,12 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
           }
 
           await editOriginalInteractionResponse(ctx.interaction.token, {
-            files: [{
-              name: 'profile-preview.png',
-              blob: res.data,
-            }],
+            files: [
+              {
+                name: 'profile-preview.png',
+                blob: res.data,
+              },
+            ],
           });
 
           return;
@@ -363,10 +365,12 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
         }
 
         await editOriginalInteractionResponse(ctx.interaction.token, {
-          files: [{
-            name: 'theme-preview.png',
-            blob: res.data,
-          }],
+          files: [
+            {
+              name: 'theme-preview.png',
+              blob: res.data,
+            },
+          ],
         });
 
         return;

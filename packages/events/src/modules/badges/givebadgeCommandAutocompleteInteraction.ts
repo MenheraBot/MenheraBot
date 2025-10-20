@@ -1,4 +1,3 @@
-
 import { InteractionResponseTypes } from '@discordeno/bot';
 import { findBestMatch } from 'string-similarity';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';

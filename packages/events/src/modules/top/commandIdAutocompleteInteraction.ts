@@ -13,7 +13,11 @@ const getCommandNames = () => {
   const fromBot = bot.commands.array().reduce<ApplicationCommandOptionChoice[]>((p, c) => {
     if (c.devsOnly) return p;
 
-    p.push({ value: c.name, name: `/${c.name}`, nameLocalizations: c.nameLocalizations || undefined });
+    p.push({
+      value: c.name,
+      name: `/${c.name}`,
+      nameLocalizations: c.nameLocalizations || undefined,
+    });
 
     if (c.nameLocalizations?.['en-US'])
       p.push({

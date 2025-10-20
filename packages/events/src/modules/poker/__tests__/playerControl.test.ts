@@ -1,4 +1,5 @@
 import ComponentInteractionContext from '../../../structures/command/ComponentInteractionContext.js';
+import { noop } from '../../../utils/miscUtils.js';
 import { getAvailableActions } from '../playerControl.js';
 import { mockGame, mockPlayer } from './playerSeats.test.js';
 
@@ -8,7 +9,7 @@ describe('Checking the user options', () => {
   game.players = [mockPlayer(0)];
   const ctxMock = {
     originalInteractionId: '',
-    locale: () => undefined,
+    locale: noop,
   } as unknown as ComponentInteractionContext;
 
   test('The current pot is bigger than user chips', () => {

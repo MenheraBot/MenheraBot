@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 import { inspect } from 'node:util';
 
@@ -16,8 +15,8 @@ import {
   createCustomId,
 } from '../../utils/discord/componentUtils.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { noop } from '../../utils/miscUtils.js';
 
-const noop = (..._args: unknown[]) => undefined;
 noop(userRepository, enableTcp, enableUnixSocket, usersModel, redis, farmerModel, eventModel);
 
 const executeEval = async (ctx: InteractionContext, toEval: string) => {

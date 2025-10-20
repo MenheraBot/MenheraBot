@@ -18,7 +18,7 @@ import { createEmbed } from '../../utils/discord/embedUtils.js';
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import { getEnviroments } from '../../utils/getEnviroments.js';
 import { logger } from '../../utils/logger.js';
-import { millisToSeconds } from '../../utils/miscUtils.js';
+import { millisToSeconds, noop } from '../../utils/miscUtils.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import { sendInteractionResponse } from '../../utils/discord/interactionRequests.js';
 import { debugError } from '../../utils/debugError.js';
@@ -191,50 +191,46 @@ const setInteractionCreateEvent = (): void => {
         0.5,
       );
 
-    await command
-      .execute(ctx, () => null)
-      .catch((err) => {
-        errorReply(
-          T('events:error_embed.title', {
-            cmd: command.name,
-          }),
-        );
+    await command.execute(ctx, noop).catch((err) => {
+      errorReply(
+        T('events:error_embed.title', {
+          cmd: command.name,
+        }),
+      );
 
-        commandRepository.deleteOriginalInteraction(interaction.id);
+      commandRepository.deleteOriginalInteraction(interaction.id)
 
-        // eslint-disable-next-line no-param-reassign
-        if (typeof err === 'string') err = new Error(err);
+      // eslint-disable-next-line no-param-reassign
+      if (typeof err === 'string') err = new Error(err);
 
-        if (err instanceof Error && err.stack) {
-          const errorMessage =
-            err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
-          const embed = createEmbed({
-            color: 0xfd0000,
-            title: `${process.env.NODE_ENV === 'development' ? '[DEV]' : ''} ${T(
-              'events:error_embed.title',
-              {
-                cmd: command.name,
-              },
-            )}`,
-            description: `\`\`\`js\n${errorMessage}\`\`\``,
-            fields: [
-              {
-                name: '<:atencao:759603958418767922> | Quem Usou',
-                value: `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guildId}\``,
-              },
-            ],
-            timestamp: `${Date.now()}`,
-          });
+      if (err instanceof Error && err.stack) {
+        const errorMessage = err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
+        const embed = createEmbed({
+          color: 0xfd0000,
+          title: `${process.env.NODE_ENV === 'development' ? '[DEV]' : ''} ${T(
+            'events:error_embed.title',
+            {
+              cmd: command.name,
+            },
+          )}`,
+          description: `\`\`\`js\n${errorMessage}\`\`\``,
+          fields: [
+            {
+              name: '<:atencao:759603958418767922> | Quem Usou',
+              value: `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guildId}\``,
+            },
+          ],
+        });
 
-          bot.helpers.executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
-            embeds: [embed],
-          });
+        bot.helpers.executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
+          embeds: [embed],
+        }).catch(noop)
 
-          logger.error(err);
-        }
-      });
+        logger.error(err);
+      }
+    })
 
-    await executeDailies.useCommand(authorData, commandUsed.command, command.category);
+    await executeDailies.useCommand(authorData, commandUsed.command, command.category).catch(noop);
 
     bot.commandsInExecution -= 1;
 
@@ -250,7 +246,7 @@ const setInteractionCreateEvent = (): void => {
       args: interaction.data?.options ?? [],
     };
 
-    if (process.env.NODE_ENV !== 'development') postCommandExecution(data);
+    if (process.env.NODE_ENV !== 'development') postCommandExecution(data).catch(noop);
   };
 };
 

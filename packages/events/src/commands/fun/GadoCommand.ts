@@ -42,10 +42,12 @@ const GadoCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      files: [{
-        name: 'gado-dimaaais.png',
-        blob: res.data,
-      }],
+      files: [
+        {
+          name: 'gado-dimaaais.png',
+          blob: res.data,
+        },
+      ],
     });
 
     finishCommand();

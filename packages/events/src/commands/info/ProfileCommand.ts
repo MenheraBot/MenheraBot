@@ -163,12 +163,14 @@ const ProfileCommand = createCommand({
       }
 
       await ctx.makeMessage({
-        files: [{
-          name: 'profile.png',
-          blob: new Blob([Buffer.from(imageFromRedis, 'base64')], {
-            type: 'image/png',
-          }),
-        }],
+        files: [
+          {
+            name: 'profile.png',
+            blob: new Blob([Buffer.from(imageFromRedis, 'base64')], {
+              type: 'image/png',
+            }),
+          },
+        ],
       });
 
       finishCommand();
@@ -204,10 +206,12 @@ const ProfileCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      files: [{
-        name: 'profile.png',
-        blob: res.data,
-      }],
+      files: [
+        {
+          name: 'profile.png',
+          blob: res.data,
+        },
+      ],
     });
 
     finishCommand();

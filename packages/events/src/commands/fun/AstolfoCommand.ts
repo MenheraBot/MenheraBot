@@ -48,10 +48,12 @@ const AstolfoCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      files: [{
-        name: 'astolfo.png',
-        blob: res.data,
-      }],
+      files: [
+        {
+          name: 'astolfo.png',
+          blob: res.data,
+        },
+      ],
     });
 
     finishCommand();

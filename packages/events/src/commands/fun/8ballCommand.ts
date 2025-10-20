@@ -206,10 +206,12 @@ const EightballCommand = createCommand({
 
     await ctx.makeMessage({
       embeds: [embed],
-      files: [{
-        name: `bola-oititcho.png`,
-        blob: res.data,
-      }],
+      files: [
+        {
+          name: `bola-oititcho.png`,
+          blob: res.data,
+        },
+      ],
     });
 
     finishCommand();

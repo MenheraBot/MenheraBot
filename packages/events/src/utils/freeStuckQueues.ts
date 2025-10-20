@@ -30,7 +30,7 @@ const freeStuckQueues = (bot: MenheraClient): void => {
           color: 0xf08c18,
           title: 'Stuck Queue',
           description: `Detected a stuck queue in ${path}. There are ${queue.waiting.length} requets waiting`,
-          timestamp: `${Date.now()}`,
+          timestamp: Date.now(),
         });
 
         bot.helpers

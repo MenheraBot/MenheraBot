@@ -1,6 +1,7 @@
 import { jest } from '@jest/globals';
 import i18next from 'i18next';
 import angryCommand from '../AngryCommand.js';
+import { noop } from '../../../utils/miscUtils.js';
 
 describe('AngryCommand tests', () => {
   const context = {
@@ -16,8 +17,6 @@ describe('AngryCommand tests', () => {
       i18next.getFixedT('pt-BR')(text, data),
     ),
   };
-
-  const noop = () => undefined;
 
   beforeEach(() => {
     context.getOption = jest.fn();

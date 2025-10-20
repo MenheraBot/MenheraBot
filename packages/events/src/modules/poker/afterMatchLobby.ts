@@ -117,7 +117,7 @@ const afterLobbyAction = async (
     embeds: [
       createEmbed({
         ...oldEmbed,
-        timestamp: oldEmbed.timestamp ? `${oldEmbed.timestamp}` : undefined,
+        timestamp: oldEmbed.timestamp,
       }),
     ],
     attachments: [],

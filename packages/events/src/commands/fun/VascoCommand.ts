@@ -64,10 +64,12 @@ const VascoCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      files: [{
-        name: 'vasco.png',
-        blob: res.data,
-      }],
+      files: [
+        {
+          name: 'vasco.png',
+          blob: res.data,
+        },
+      ],
     });
 
     finishCommand();

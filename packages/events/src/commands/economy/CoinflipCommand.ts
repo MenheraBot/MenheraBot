@@ -1,8 +1,4 @@
-import {
-  AllowedMentionsTypes,
-  ApplicationCommandOptionTypes,
-  ButtonStyles,
-} from '@discordeno/bot';
+import { AllowedMentionsTypes, ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { postCoinflipMatch, postTransaction } from '../../utils/apiRequests/statistics.js';

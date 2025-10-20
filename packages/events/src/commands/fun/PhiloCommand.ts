@@ -48,10 +48,12 @@ const PhiloCommand = createCommand({
       );
 
     ctx.makeMessage({
-      files: [{
-        blob: res.data,
-        name: 'aristoteles.png',
-      }],
+      files: [
+        {
+          blob: res.data,
+          name: 'aristoteles.png',
+        },
+      ],
     });
 
     finishCommand();

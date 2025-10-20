@@ -29,6 +29,8 @@ const getElapsedTime = (since: number, unit: 'seconds' | 'minutes'): number => {
 
 const negate = (value: number): number => value * -1;
 
+const noop = (..._args: unknown[]) => null;
+
 const localizedResources = (
   key: Translation,
   options?: Record<string, unknown>,
@@ -132,5 +134,6 @@ export {
   getElapsedTime,
   millisToHours,
   negate,
+  noop,
   getMillisecondsToTheEndOfDay,
 };

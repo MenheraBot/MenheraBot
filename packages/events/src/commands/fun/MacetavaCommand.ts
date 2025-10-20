@@ -41,10 +41,12 @@ const MacetavaCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      files: [{
-        name: 'macetava-afu.png',
-        blob: res.data,
-      }],
+      files: [
+        {
+          name: 'macetava-afu.png',
+          blob: res.data,
+        },
+      ],
     });
 
     finishCommand();

@@ -74,7 +74,7 @@ const finishGame = async (): Promise<void> => {
 
   const resultsEmbed = createEmbed({
     title: 'Resultados do Jogo do Bicho',
-    timestamp: `${Date.now()}`,
+    timestamp: Date.now(),
     color: COLORS.Random(),
     description: `\`\`\`js\n1°) ${results[0]} (${capitalize(mapResultToAnimal(results[0]))})\n2°) ${
       results[1]

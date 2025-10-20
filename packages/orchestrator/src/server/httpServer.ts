@@ -15,7 +15,7 @@ export enum HTTPResponseCodes {
   BadRequest = 400,
   Unauthorized = 401,
   Forbidden = 403,
-  NotFound = 404
+  NotFound = 404,
 }
 
 const server = new Koa();

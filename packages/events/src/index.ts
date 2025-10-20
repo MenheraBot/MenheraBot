@@ -1,7 +1,4 @@
-import {
-  createBot,
-  DesiredPropertiesBehavior,
-} from '@discordeno/bot';
+import { createBot, DesiredPropertiesBehavior } from '@discordeno/bot';
 
 import { setupEventHandlers } from './events/index.js';
 import { createIpcConnection } from './structures/orchestratorConnection.js';
@@ -26,8 +23,7 @@ export interface BotDesiredProperties extends Required<typeof desiredProperties>
 const bot = createBot({
   token: DISCORD_TOKEN,
   applicationId: BigInt(DISCORD_APPLICATION_ID),
-  // FIXME: Change to RemoveKey after migration
-  desiredPropertiesBehavior: DesiredPropertiesBehavior.ChangeType,
+  desiredPropertiesBehavior: DesiredPropertiesBehavior.RemoveKey,
   desiredProperties: desiredProperties as BotDesiredProperties,
 }) as MenheraClient;
 

@@ -19,6 +19,7 @@ import {
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests.js';
 import { Interaction } from '../../types/discordeno.js';
+import { noop } from '../../utils/miscUtils.js';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -41,7 +42,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
       data: {
         components: [],
       },
-    }).catch(() => null);
+    }).catch(noop);
 
     await sendFollowupMessage(interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
@@ -49,7 +50,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
         content: `<:negacao:759603958317711371> | ${T('permissions:COMPONENT_OUTDATED')}`,
         flags: MessageFlags.EPHEMERAL,
       },
-    }).catch(() => null);
+    }).catch(noop);
     return;
   }
 
@@ -61,7 +62,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
         flags: MessageFlags.EPHEMERAL,
         allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
       },
-    }).catch(() => null);
+    }).catch(noop);
   };
 
   const command = bot.commands.get(originalInteraction.commandName);
@@ -145,13 +146,13 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
               value: `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guildId}\``,
             },
           ],
-          timestamp: `${Date.now()}`,
+          timestamp: Date.now(),
         });
 
         bot.helpers.executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
           embeds: [embed],
           content: `COMPONENTE UTILIZADO! Index: ${executorIndex}\n${originalInteraction.fullCommandUsed}`,
-        });
+        }).catch(noop)
       }
     });
 
