@@ -1,4 +1,3 @@
-import { User } from '@discordeno/bot';
 import {
   AllowedMentionsTypes,
   ApplicationCommandOptionTypes,
@@ -20,6 +19,7 @@ import { createCommand } from '../../structures/command/createCommand.js';
 import { transactionableCommandOption } from '../../structures/constants.js';
 import { huntValues } from '../../modules/shop/constants.js';
 import { ApiTransactionReason } from '../../types/api.js';
+import { User } from '../../types/discordeno.js';
 
 const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [input, currency] = ctx.sentData as [
@@ -119,7 +119,7 @@ const CoinflipCommand = createCommand({
     const input = ctx.getOption<number>('aposta', false, true);
     const currency = 'estrelinhas';
 
-    if (user.toggles.bot)
+    if (user.bot)
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:coinflip.bot'),

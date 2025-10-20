@@ -1,4 +1,4 @@
-import { User, ApplicationCommandOptionTypes } from '@discordeno/bot';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import { TODAYS_YEAR, COLORS } from '../../structures/constants.js';
@@ -7,6 +7,7 @@ import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
 import { createEmbed } from '../../utils/discord/embedUtils.js';
 import { capitalize } from '../../utils/miscUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
+import { User } from '../../types/discordeno.js';
 
 const BiteCommand = createCommand({
   path: '',
@@ -38,7 +39,7 @@ const BiteCommand = createCommand({
     const user = ctx.getOption<User>('user', 'users', true);
     const reason = ctx.getOption<string>('motivo', false);
 
-    if (user.toggles.bot)
+    if (user.bot)
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('warn', 'commands:morder.bot'),

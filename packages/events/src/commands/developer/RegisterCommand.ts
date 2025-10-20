@@ -1,6 +1,5 @@
 import { ApplicationCommandOptionTypes, CamelCase } from '@discordeno/bot';
 
-import { User } from '@discordeno/bot';
 import { bot } from '../../index.js';
 import profileImagesRepository from '../../database/repositories/profileImagesRepository.js';
 import themeCreditsRepository from '../../database/repositories/themeCreditsRepository.js';
@@ -13,6 +12,7 @@ import { debugError } from '../../utils/debugError.js';
 import { AvailableThemeTypes } from '../../modules/themes/types.js';
 import titlesRepository from '../../database/repositories/titlesRepository.js';
 import giveRepository from '../../database/repositories/giveRepository.js';
+import { User } from '../../types/discordeno.js';
 
 const snakeCaseToCamelCase = <T extends string>(input: T): CamelCase<T> =>
   input

@@ -1,5 +1,4 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
-import { User } from '@discordeno/bot';
 
 import blacklistRepository from '../../database/repositories/blacklistRepository.js';
 import userRepository from '../../database/repositories/userRepository.js';
@@ -11,6 +10,7 @@ import {
   createButton,
   createCustomId,
 } from '../../utils/discord/componentUtils.js';
+import { User } from '../../types/discordeno.js';
 
 const executeAllTimeBans = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [userId] = ctx.sentData;

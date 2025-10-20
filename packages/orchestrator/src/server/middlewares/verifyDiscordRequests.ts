@@ -8,8 +8,8 @@ const { DISCORD_PUBLIC_KEY } = getEnviroments(['DISCORD_PUBLIC_KEY']);
 
 const publicKey = createPublicKey({
   key: Buffer.concat([
-    Buffer.from('MCowBQYDK2VwAyEA', 'base64'),
-    Buffer.from(DISCORD_PUBLIC_KEY, 'hex'),
+    new Uint8Array(Buffer.from('MCowBQYDK2VwAyEA', 'base64')),
+    new Uint8Array(Buffer.from(DISCORD_PUBLIC_KEY, 'hex')),
   ]),
   format: 'der',
   type: 'spki',
@@ -20,8 +20,8 @@ const verifyInteractionSignature = (
   timestamp: string,
   body: string,
 ): boolean => {
-  const message = Buffer.from(timestamp + body, 'utf-8');
-  const signatureBuffer = Buffer.from(signature, 'hex');
+  const message = new Uint8Array(Buffer.from(timestamp + body, 'utf-8'));
+  const signatureBuffer = new Uint8Array(Buffer.from(signature, 'hex'));
 
   return verify(null, message, publicKey, signatureBuffer);
 };
@@ -42,7 +42,7 @@ const verifyDiscordRequests = async (ctx: Context, next: Next): Promise<unknown>
   if (!signature || !timestamp || !rawBody)
     return ctx.throw(HTTPResponseCodes.Unauthorized, 'Invalid request signature');
 
-  const isValid = await verifyInteractionSignature(signature, timestamp, rawBody);
+  const isValid = verifyInteractionSignature(signature, timestamp, rawBody);
 
   if (!isValid) return ctx.throw(HTTPResponseCodes.Unauthorized, 'Invalid request signature');
 

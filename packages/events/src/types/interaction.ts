@@ -1,11 +1,9 @@
 import {
-  Interaction,
-  Member,
-  User,
   Collection,
   TextInputComponent,
   MessageComponentTypes,
 } from '@discordeno/bot';
+import { Interaction, Member, User } from './discordeno.js';
 
 export type ComponentInteraction = Interaction & { data: { customId: string } };
 export type SelectMenuInteraction = ComponentInteraction & { data: { values: string[] } };

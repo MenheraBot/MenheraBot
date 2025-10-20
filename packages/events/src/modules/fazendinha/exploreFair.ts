@@ -1,4 +1,3 @@
-import { Interaction, User } from '@discordeno/bot';
 import { findBestMatch } from 'string-similarity';
 import { ButtonStyles } from '@discordeno/bot';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
@@ -28,6 +27,7 @@ import { SelectMenuInteraction } from '../../types/interaction.js';
 import { localizedResources } from '../../utils/miscUtils.js';
 import notificationRepository from '../../database/repositories/notificationRepository.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
+import { Interaction, User } from '../../types/discordeno.js';
 
 const listItemAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'item', false) ?? '';

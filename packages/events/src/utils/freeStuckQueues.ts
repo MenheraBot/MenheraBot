@@ -12,7 +12,7 @@ const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
 
 const freeStuckQueues = (bot: MenheraClient): void => {
   setInterval(() => {
-    bot.rest.pathQueues.forEach((queue, path) => {
+    bot.rest.queues.forEach((queue, path) => {
       if (
         queue.remaining === 0 &&
         queue.waiting.length > 0 &&
@@ -30,11 +30,11 @@ const freeStuckQueues = (bot: MenheraClient): void => {
           color: 0xf08c18,
           title: 'Stuck Queue',
           description: `Detected a stuck queue in ${path}. There are ${queue.waiting.length} requets waiting`,
-          timestamp: Date.now(),
+          timestamp: `${Date.now()}`,
         });
 
         bot.helpers
-          .sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
+          .executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
             embeds: [embed],
             content: `<@${bot.ownerId}>`,
             allowedMentions: { users: [bot.ownerId] },

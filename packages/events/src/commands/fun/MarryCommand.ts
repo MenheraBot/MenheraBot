@@ -3,7 +3,6 @@ import {
   ApplicationCommandOptionTypes,
   ButtonStyles,
 } from '@discordeno/bot';
-import { User } from '@discordeno/bot';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import userRepository from '../../database/repositories/userRepository.js';
@@ -16,6 +15,7 @@ import {
   createButton,
   createCustomId,
 } from '../../utils/discord/componentUtils.js';
+import { User } from '../../types/discordeno.js';
 
 const executeMarry = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedButton] = ctx.sentData;
@@ -82,7 +82,7 @@ const MarryCommand = createCommand({
 
     const mention = ctx.getOption<User>('user', 'users', true);
 
-    if (mention.toggles.bot)
+    if (mention.bot)
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:casar.bot'),

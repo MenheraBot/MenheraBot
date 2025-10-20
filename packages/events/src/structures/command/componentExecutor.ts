@@ -1,4 +1,3 @@
-import { Interaction } from '@discordeno/bot';
 import { AllowedMentionsTypes, InteractionResponseTypes } from '@discordeno/bot';
 import i18next from 'i18next';
 
@@ -19,6 +18,7 @@ import {
   sendFollowupMessage,
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests.js';
+import { Interaction } from '../../types/discordeno.js';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -145,10 +145,10 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
               value: `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guildId}\``,
             },
           ],
-          timestamp: Date.now(),
+          timestamp: `${Date.now()}`,
         });
 
-        bot.helpers.sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
+        bot.helpers.executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
           embeds: [embed],
           content: `COMPONENTE UTILIZADO! Index: ${executorIndex}\n${originalInteraction.fullCommandUsed}`,
         });

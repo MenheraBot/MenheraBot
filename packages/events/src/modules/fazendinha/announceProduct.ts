@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import { ApplicationCommandOptionChoice, Interaction } from '@discordeno/bot';
+import { ApplicationCommandOptionChoice } from '@discordeno/bot';
 import { findBestMatch } from 'string-similarity';
 import fairRepository from '../../database/repositories/fairRepository.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
@@ -17,6 +17,7 @@ import { localizedResources } from '../../utils/miscUtils.js';
 import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
 import executeDailies from '../dailies/executeDailies.js';
+import { Interaction } from '../../types/discordeno.js';
 
 let plantNames: ApplicationCommandOptionChoice[] = [];
 
@@ -46,9 +47,9 @@ const announceAutocomplete = async (interaction: Interaction): Promise<void | nu
   if (typeof options === 'undefined') return;
 
   const focused = options.find((a) => a.focused);
-  const input = focused.value;
+  const input = focused?.value;
 
-  if (focused.name === 'produto') {
+  if (focused?.name === 'produto') {
     const searchString = plantNames.map(
       (a) => a.nameLocalizations?.[(interaction.locale as 'en-US') ?? 'pt-BR'] ?? a.name,
     );
@@ -84,7 +85,7 @@ const announceAutocomplete = async (interaction: Interaction): Promise<void | nu
     ]);
   };
 
-  if (focused.name === 'preço') {
+  if (focused?.name === 'preço') {
     const plant = getOptionFromInteraction<number>(interaction, 'produto', false);
     const amount = getOptionFromInteraction(interaction, 'quantidade', false);
 

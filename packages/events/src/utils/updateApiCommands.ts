@@ -12,7 +12,7 @@ const updateCommandsOnApi = async (): Promise<void> => {
     toAPIData.set(c.name, {
       name: c.name,
       category: c.category,
-      description: c.description,
+      description: c.description ?? '',
       options: c.options ?? [],
       descriptionLocalizations: c.descriptionLocalizations,
       nameLocalizations: c.nameLocalizations,

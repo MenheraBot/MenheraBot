@@ -1,5 +1,4 @@
 import { ApplicationCommandOptionTypes } from '@discordeno/bot';
-import { User } from '@discordeno/bot';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { displayPlantations } from '../../modules/fazendinha/displayPlantations.js';
@@ -24,6 +23,7 @@ import {
 } from '../../modules/fazendinha/administrateFair.js';
 import { executeAnnounceProduct } from '../../modules/fazendinha/announceProduct.js';
 import { executeButtonAction, executeExploreFair } from '../../modules/fazendinha/exploreFair.js';
+import { User } from '../../types/discordeno.js';
 
 const FazendinhaCommand = createCommand({
   path: '',

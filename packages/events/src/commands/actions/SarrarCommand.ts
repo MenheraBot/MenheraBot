@@ -1,4 +1,3 @@
-import { User } from '@discordeno/bot';
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
@@ -13,11 +12,12 @@ import { getAssetLink } from '../../structures/cdnManager.js';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
 import { createEmbed } from '../../utils/discord/embedUtils.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { User } from '../../types/discordeno.js';
 
 const sarrada = async (ctx: ComponentInteractionContext): Promise<void> => {
   const { commandAuthor } = ctx;
 
-  if (ctx.interaction.user.toggles.bot || commandAuthor.id === ctx.user.id) {
+  if (ctx.interaction.user.bot || commandAuthor.id === ctx.user.id) {
     await ctx.respondInteraction({
       content: ctx.prettyResponse('error', 'commands:sarrar.cannot-sarrar-self'),
       flags: MessageFlags.EPHEMERAL,

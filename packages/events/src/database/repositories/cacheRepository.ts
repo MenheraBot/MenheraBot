@@ -1,4 +1,3 @@
-import { Attachment, User } from '@discordeno/bot';
 import { BigString, DiscordUser } from '@discordeno/bot';
 
 import { bot } from '../../index.js';
@@ -7,6 +6,7 @@ import { debugError } from '../../utils/debugError.js';
 
 import { MainRedisClient } from '../databases.js';
 import { registerCacheStatus } from '../../structures/initializePrometheus.js';
+import { Attachment, User } from '../../types/discordeno.js';
 
 const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promise<User | null> => {
   if (userId === null || userId === 'null') return null;

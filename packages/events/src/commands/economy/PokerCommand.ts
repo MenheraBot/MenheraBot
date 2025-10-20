@@ -128,7 +128,7 @@ const selectPlayers = async (
   const selectedUsers = ctx.interaction.data.resolved.users;
   const selectedUsersIds = ctx.interaction.data.values;
 
-  if (selectedUsers.some((a) => a.toggles.bot))
+  if (selectedUsers.some((a) => a.bot))
     return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:poker.bots-cant-play'),
       components: [],
@@ -253,7 +253,7 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
       content: ctx.prettyResponse('error', 'commands:poker.uninvited'),
     });
 
-  const oldEmbed = ctx.interaction.message?.embeds[0] as Embed;
+  const oldEmbed = ctx.interaction.message?.embeds?.[0] as Embed;
 
   if (typeof oldEmbed === 'undefined') {
     logger.error(`oldEmbed is undefined! Message:`, ctx.interaction.message);

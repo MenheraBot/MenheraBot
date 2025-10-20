@@ -5,7 +5,6 @@ import {
   DiscordEmbedField,
 } from '@discordeno/bot';
 
-import { User } from '@discordeno/bot';
 import { bot } from '../../index.js';
 import { createActionRow, createButton } from '../../utils/discord/componentUtils.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
@@ -19,6 +18,7 @@ import { getPlantationState } from '../../modules/fazendinha/plantationState.js'
 import { millisToSeconds } from '../../utils/miscUtils.js';
 import notificationRepository from '../../database/repositories/notificationRepository.js';
 import commandRepository from '../../database/repositories/commandRepository.js';
+import { User } from '../../types/discordeno.js';
 
 const canDo = (value: number): boolean => value <= 0;
 

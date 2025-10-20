@@ -1,4 +1,3 @@
-import { ToggleBitfieldBigint } from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import guildRepository from '../../database/repositories/guildRepository.js';
 import { EMOJIS } from '../../structures/constants.js';
@@ -39,11 +38,7 @@ const LanguageCommand = createCommand({
   authorDataFields: [],
   commandRelatedExecutions: [changeLanguage],
   execute: async (ctx, finishCommand) => {
-    if (
-      !new ToggleBitfieldBigint(ctx.interaction.member?.permissions as bigint).contains(
-        BigInt(1 << 5),
-      )
-    ) {
+    if (!ctx.interaction.member?.permissions?.has('MANAGE_GUILD')) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'permissions:USER_MISSING_PERMISSION', {
           perm: ctx.locale('permissions:MANAGE_GUILD'),

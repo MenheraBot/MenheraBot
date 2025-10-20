@@ -1,10 +1,11 @@
-import { Interaction } from '@discordeno/bot';
+
 import { InteractionResponseTypes } from '@discordeno/bot';
 import { findBestMatch } from 'string-similarity';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
 import { debugError } from '../../utils/debugError.js';
 import { profileBadges } from './profileBadges.js';
 import { sendInteractionResponse } from '../../utils/discord/interactionRequests.js';
+import { Interaction } from '../../types/discordeno.js';
 
 const executeGivebadgeAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<number>(interaction, 'badgeid', false, true);

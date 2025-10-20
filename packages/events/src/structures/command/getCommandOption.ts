@@ -1,8 +1,8 @@
-import { Interaction, User } from '@discordeno/bot';
 import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 import { CanResolve } from './ChatInputInteractionContext.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import { bot } from '../../index.js';
+import { Interaction, User } from '../../types/discordeno.js';
 
 function getOptionFromInteraction<T>(
   interaction: Interaction,

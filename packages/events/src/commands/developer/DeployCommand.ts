@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes, CreateSlashApplicationCommand } from '@discordeno/bot';
+import { ApplicationCommandOptionTypes, CreateApplicationCommand } from '@discordeno/bot';
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import commandRepository from '../../database/repositories/commandRepository.js';
 
@@ -51,7 +51,7 @@ const DeployCommand = createCommand({
         return finishCommand();
       }
 
-      const allCommands = bot.commands.reduce<CreateSlashApplicationCommand[]>((p, c) => {
+      const allCommands = bot.commands.reduce<CreateApplicationCommand[]>((p, c) => {
         if (c.devsOnly) return p;
 
         p.push({
@@ -84,7 +84,7 @@ const DeployCommand = createCommand({
     }
 
     if (selectedOption === 'developer') {
-      const allCommands = bot.commands.reduce<CreateSlashApplicationCommand[]>((p, c) => {
+      const allCommands = bot.commands.reduce<CreateApplicationCommand[]>((p, c) => {
         if (!c.devsOnly) return p;
         p.push({
           name: c.name,
@@ -103,7 +103,7 @@ const DeployCommand = createCommand({
       return finishCommand();
     }
 
-    const allCommands = bot.commands.reduce<CreateSlashApplicationCommand[]>((p, c) => {
+    const allCommands = bot.commands.reduce<CreateApplicationCommand[]>((p, c) => {
       p.push({
         name: c.name,
         description: c.description,
@@ -128,7 +128,7 @@ const DeployCommand = createCommand({
     );
 
     ctx.makeMessage({
-      content: `No total, ${res?.size} comandos foram adicionados neste servidor!`,
+      content: `Comandos atualizados!`,
     });
     finishCommand();
   },

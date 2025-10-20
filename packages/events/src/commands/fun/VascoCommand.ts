@@ -1,9 +1,9 @@
 import { ApplicationCommandOptionTypes } from '@discordeno/bot';
-import { User } from '@discordeno/bot';
 
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
+import { User } from '../../types/discordeno.js';
 
 const VascoCommand = createCommand({
   path: '',

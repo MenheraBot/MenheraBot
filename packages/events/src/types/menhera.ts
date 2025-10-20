@@ -1,8 +1,9 @@
-import { BigString, Bot, Collection } from '@discordeno/bot';
+import { BigString, Bot, Collection, DesiredPropertiesBehavior } from '@discordeno/bot';
 import { ChatInputInteractionCommand } from './commands.js';
 import ComponentInteractionContext from '../structures/command/ComponentInteractionContext.js';
 import ChatInputInteractionContext from '../structures/command/ChatInputInteractionContext.js';
 import GenericInteractionContext from '../structures/command/GenericInteractionContext.js';
+import { BotDesiredProperties} from '../index.js';
 
 export interface IdentifiedData<T> {
   id: number;
@@ -26,7 +27,7 @@ export type GenericContext =
   | ComponentInteractionContext
   | GenericInteractionContext;
 
-export interface MenheraClient extends Bot {
+export interface MenheraClient extends Bot<BotDesiredProperties, DesiredPropertiesBehavior.ChangeType> {
   commands: Collection<string, ChatInputInteractionCommand>;
   ownerId: bigint;
   shuttingDown: boolean;

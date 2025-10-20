@@ -6,6 +6,7 @@ import { InteractionContext } from '../../types/menhera.js';
 import { getTopUsersByUses } from '../../utils/apiRequests/statistics.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
+import { ButtonComponent } from '@discordeno/bot';
 
 const executeUsersByUsedCommandTop = async (
   ctx: InteractionContext,
@@ -75,8 +76,7 @@ const executeUsersByUsedCommandTop = async (
 
   const pagination = createPaginationButtons(ctx, 'command', `${commandName}`, embedColor, page);
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  if (embed.fields!.length < 10) pagination.components[1]!.disabled = true;
+  if (embed.fields!.length < 10) (pagination.components[1] as ButtonComponent).disabled = true;
 
   ctx.makeMessage({ embeds: [embed], components: [pagination] });
 };

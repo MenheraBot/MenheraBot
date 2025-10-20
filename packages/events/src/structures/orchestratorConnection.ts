@@ -152,8 +152,7 @@ const createIpcConnection = async (): Promise<void> => {
 
         bot.respondInteraction.set((msg.data.body as DiscordInteraction).id, ack);
 
-        bot.events.interactionCreate(
-          bot,
+        bot.events.interactionCreate?.(
           bot.transformers.interaction(bot, msg.data.body as DiscordInteraction),
         );
 

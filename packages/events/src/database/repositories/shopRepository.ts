@@ -1,5 +1,4 @@
 import { BigString } from '@discordeno/bot';
-import { User } from '@discordeno/bot';
 import { DatabaseHuntingTypes } from '../../modules/hunt/types.js';
 import { AvailableThemeTypes } from '../../modules/themes/types.js';
 import { UserColor } from '../../types/database.js';
@@ -13,6 +12,7 @@ import { postTransaction } from '../../utils/apiRequests/statistics.js';
 import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import notificationRepository from './notificationRepository.js';
+import { User } from '../../types/discordeno.js';
 
 const executeSellHunt = async (
   userId: BigString,

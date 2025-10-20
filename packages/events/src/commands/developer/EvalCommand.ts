@@ -24,7 +24,7 @@ const executeEval = async (ctx: InteractionContext, toEval: string) => {
   try {
     let evaled = await eval(toEval);
     evaled = inspect(evaled, { depth: 4 });
-    evaled = evaled.replace(new RegExp(`${bot.token}`, 'g'), undefined);
+    evaled = evaled.replace(new RegExp(`${bot.gateway.token}`, 'g'), undefined);
 
     if (evaled.length > 1800) evaled = `${evaled.slice(0, 1800)}...`;
     await ctx.makeMessage({ content: `\`\`\`js\n ${evaled}\`\`\``, components: [] });

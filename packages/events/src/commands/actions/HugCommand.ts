@@ -1,5 +1,4 @@
 import { ApplicationCommandOptionTypes } from '@discordeno/bot';
-import { User } from '@discordeno/bot';
 
 import { TODAYS_YEAR, COLORS } from '../../structures/constants.js';
 import { getAssetLink } from '../../structures/cdnManager.js';
@@ -8,6 +7,7 @@ import { createEmbed } from '../../utils/discord/embedUtils.js';
 import { capitalize } from '../../utils/miscUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { User } from '../../types/discordeno.js';
 
 const HugCommand = createCommand({
   path: '',
@@ -41,7 +41,7 @@ const HugCommand = createCommand({
     const user = ctx.getOption<User>('user', 'users', true);
     const reason = ctx.getOption<string>('motivo', false);
 
-    if (user.toggles.bot)
+    if (user.bot)
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('warn', 'commands:abracar.bot'),

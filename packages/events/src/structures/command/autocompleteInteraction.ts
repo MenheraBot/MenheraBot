@@ -1,9 +1,9 @@
-import { Interaction } from '@discordeno/bot';
 import { executeGivebadgeAutocomplete } from '../../modules/badges/givebadgeCommandAutocompleteInteraction.js';
 import { executeCommandNameAutocomplete } from '../../modules/top/commandIdAutocompleteInteraction.js';
 import { executeTituleAutocompleteInteraction } from '../../commands/util/PersonalizeCommand.js';
 import { announceAutocomplete } from '../../modules/fazendinha/announceProduct.js';
 import { listItemAutocomplete } from '../../modules/fazendinha/exploreFair.js';
+import { Interaction } from '../../types/discordeno.js';
 
 const autocompleteInteraction = (interaction: Interaction): void => {
   const commandName = interaction.data?.name;

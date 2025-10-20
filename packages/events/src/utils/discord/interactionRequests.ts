@@ -1,7 +1,6 @@
 import {
   ApplicationCommandOptionChoice,
   BigString,
-  Interaction,
   InteractionCallbackData,
   InteractionResponse,
   InteractionResponseTypes,
@@ -10,6 +9,7 @@ import {
 import { bot } from '../../index.js';
 import { debugError } from '../debugError.js';
 import { logger } from '../logger.js';
+import { Interaction } from '../../types/discordeno.js';
 
 const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise<void> =>
   new Promise((res, rej): void => {
@@ -42,22 +42,25 @@ const sendInteractionResponse = async (
   if (!respond)
     return sendRequest({
       method: 'POST',
-      url: bot.rest.routes.INTERACTION_ID_TOKEN(interactionId, token),
-      payload: bot.rest.createRequestBody(bot.rest, {
-        method: 'POST',
-        body: {
-          ...bot.transformers.interactionCallbackResponse(bot, options),
-          files: options?.data?.files,
-        },
+      route: bot.rest.routes.interactions.responses.callback(interactionId, token),
+      requestBodyOptions: {
+        body: options,
+        files: options.data?.files,
         unauthorized: true,
-      }),
+      },
+      runThroughQueue: false,
+      resolve: () => undefined,
+      reject: () => undefined,
+      retryCount: 0,
     });
 
   return new Promise((r) => {
     bot.ackInteraction.set(`${interactionId}`, r);
 
     respond({
-      discord: bot.transformers.reverse.interactionResponse(bot, options),
+      // FIXME: This is not working, but i think this entire file is not working as well
+      // @ts-expect-error
+      discord: bot.transformers.interactionCallbackResponse(bot, options),
       id: `${interactionId}`,
     });
 
@@ -71,32 +74,31 @@ const editOriginalInteractionResponse = (
 ): Promise<void> =>
   sendRequest({
     method: 'PATCH',
-    url: bot.constants.routes.INTERACTION_ORIGINAL_ID_TOKEN(bot.applicationId, token),
-    payload: bot.rest.createRequestBody(bot.rest, {
-      method: 'PATCH',
-      body: {
-        ...bot.transformers.reverse.interactionResponse(bot, {
-          type: InteractionResponseTypes.UpdateMessage,
-          data: options,
-        }).data,
-        files: options?.files,
-      },
+    route: bot.rest.routes.interactions.responses.original(bot.applicationId, token),
+    requestBodyOptions: {
+      body: options,
+      files: options.files,
       unauthorized: true,
-    }),
+    },
+    runThroughQueue: false,
+    reject: () => undefined,
+    resolve: () => undefined,
+    retryCount: 0,
   });
 
 const sendFollowupMessage = async (token: string, options: InteractionResponse): Promise<void> =>
   sendRequest({
     method: 'POST',
-    url: bot.constants.routes.WEBHOOK(bot.applicationId, token),
-    payload: bot.rest.createRequestBody(bot.rest, {
-      method: 'POST',
-      body: {
-        ...bot.transformers.reverse.interactionResponse(bot, options).data,
-        files: options?.data?.files,
-      },
+    route: bot.rest.routes.webhooks.webhook(bot.applicationId, token),
+    requestBodyOptions: {
+      body: options.data,
+      files: options.data?.files,
       unauthorized: true,
-    }),
+    },
+    runThroughQueue: false,
+    retryCount: 0,
+    reject: () => undefined,
+    resolve: () => undefined,
   });
 
 const respondWithChoices = (

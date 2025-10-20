@@ -1,6 +1,5 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 
-import { User } from '@discordeno/bot';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
 import {
@@ -17,6 +16,7 @@ import {
   userThemesModel,
   usersModel,
 } from '../../database/collections.js';
+import { User } from '../../types/discordeno.js';
 
 const executeMigrateAccount = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [oldId, newId] = ctx.sentData;

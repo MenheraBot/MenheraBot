@@ -1,5 +1,4 @@
 import { ApplicationCommandOptionTypes } from '@discordeno/bot';
-import { Member, User } from '@discordeno/bot';
 
 import userRepository from '../../database/repositories/userRepository.js';
 import { getUserAvatar } from '../../utils/discord/userUtils.js';
@@ -8,6 +7,7 @@ import { createCommand } from '../../structures/command/createCommand.js';
 import blacklistRepository from '../../database/repositories/blacklistRepository.js';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
 import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { Member, User } from '../../types/discordeno.js';
 
 const ShipCommand = createCommand({
   path: '',

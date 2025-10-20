@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField, User } from '@discordeno/bot';
+import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from '@discordeno/bot';
 import { TFunction } from 'i18next';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
@@ -31,6 +31,7 @@ import { chunkArray, millisToSeconds } from '../../utils/miscUtils.js';
 
 import { createCommand } from '../../structures/command/createCommand.js';
 import { Plants } from '../../modules/fazendinha/constants.js';
+import { User } from '../../types/discordeno.js';
 
 const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
   const user = ctx.getOption<User>('user', 'users') ?? ctx.author;

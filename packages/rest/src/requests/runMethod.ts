@@ -24,7 +24,7 @@ export default async (data: RunMethod, rest: RestManager): Promise<unknown> => {
     typeof data.body &&
     typeof (data.body as any)?.file?.length === 'undefined'
   ) {
-    (data.body as any).file.blob = new Blob([Buffer.from((data.body as any).file.blob, 'base64')], {
+    (data.body as any).file.blob = new Blob([new Uint8Array(Buffer.from((data.body as any).file.blob, 'base64'))], {
       type: 'image/png',
     });
   }

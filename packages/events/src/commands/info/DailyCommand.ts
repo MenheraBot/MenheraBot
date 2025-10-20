@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ApplicationCommandOptionTypes, ButtonComponent, ButtonStyles } from '@discordeno/bot';
-import { User } from '@discordeno/bot';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { getUserDailies } from '../../modules/dailies/getUserDailies.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
@@ -22,6 +21,7 @@ import { DatabaseUserSchema } from '../../types/database.js';
 import { getUniqueDaily } from '../../modules/dailies/calculateUserDailies.js';
 import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
+import { User } from '../../types/discordeno.js';
 
 const getDailyStatus = (daily: DatabaseDaily): 'reedem' | 'unfinished' | 'reedemed' =>
   daily.redeemed ? 'reedemed' : daily.has >= daily.need ? 'reedem' : 'unfinished';

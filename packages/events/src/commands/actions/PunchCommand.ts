@@ -1,4 +1,3 @@
-import { User } from '@discordeno/bot';
 import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
 import { createCommand } from '../../structures/command/createCommand.js';
@@ -8,6 +7,7 @@ import { getAssetLink } from '../../structures/cdnManager.js';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
 import { createEmbed } from '../../utils/discord/embedUtils.js';
 import { capitalize } from '../../utils/miscUtils.js';
+import { User } from '../../types/discordeno.js';
 
 const PunchCommand = createCommand({
   path: '',
@@ -39,7 +39,7 @@ const PunchCommand = createCommand({
     const user = ctx.getOption<User>('user', 'users', true);
     const reason = ctx.getOption<string>('motivo', false);
 
-    if (user.toggles.bot)
+    if (user.bot)
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:socar.bot'),

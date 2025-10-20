@@ -5,12 +5,11 @@ import {
   TextStyles,
 } from '@discordeno/bot';
 
-import { Embed } from '@discordeno/bot';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { bot } from '../../index.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { createEmbed, Embed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import {
   createActionRow,
   createButton,

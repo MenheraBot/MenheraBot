@@ -25,6 +25,7 @@ import { debugError } from '../../utils/debugError.js';
 import { getFullCommandUsed } from '../../structures/command/getCommandOption.js';
 import ratelimitRepository from '../../database/repositories/ratelimitRepository.js';
 import executeDailies from '../../modules/dailies/executeDailies.js';
+import { Interaction } from '../../types/discordeno.js';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -32,7 +33,7 @@ const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
 ]);
 
 const setInteractionCreateEvent = (): void => {
-  bot.events.interactionCreate = async (_, interaction) => {
+  bot.events.interactionCreate = async (interaction: Interaction) => {
     if (
       interaction.type === InteractionTypes.MessageComponent ||
       interaction.type === InteractionTypes.ModalSubmit
@@ -222,10 +223,10 @@ const setInteractionCreateEvent = (): void => {
                 value: `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guildId}\``,
               },
             ],
-            timestamp: Date.now(),
+            timestamp: `${Date.now()}`,
           });
 
-          bot.helpers.sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
+          bot.helpers.executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
             embeds: [embed],
           });
 

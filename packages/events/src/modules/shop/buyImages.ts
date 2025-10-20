@@ -3,7 +3,7 @@ import {
   ActionRow,
   ButtonComponent,
   ButtonStyles,
-  SelectMenuComponent,
+  StringSelectComponent,
   TextStyles,
 } from '@discordeno/bot';
 import { bot } from '../../index.js';
@@ -74,7 +74,7 @@ const executeBuyImagesSelectComponent = async (ctx: ComponentInteractionContext)
       ? ButtonStyles.Danger
       : ButtonStyles.Success;
 
-    (messageComponents[0].components[0] as SelectMenuComponent).customId = createCustomId(
+    (messageComponents[0].components[0] as StringSelectComponent).customId = createCustomId(
       3,
       ctx.user.id,
       ctx.originalInteractionId,

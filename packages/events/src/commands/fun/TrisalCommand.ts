@@ -1,6 +1,4 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
-import { User } from '@discordeno/bot';
-
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
@@ -16,6 +14,7 @@ import ChatInputInteractionContext from '../../structures/command/ChatInputInter
 import { createCommand } from '../../structures/command/createCommand.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { User } from '../../types/discordeno.js';
 
 const executeFinishTrisalConfirmation = async (ctx: ComponentInteractionContext): Promise<void> => {
   const authorData = await userRepository.ensureFindUser(ctx.user.id);
@@ -129,7 +128,7 @@ const executeMakeTrisal = async (
   const secondUser = ctx.getOption<User>('user_dois', 'users', true);
   const thirdUser = ctx.author;
 
-  if (firstUser.toggles.bot || secondUser.toggles.bot || thirdUser.toggles.bot)
+  if (firstUser.bot || secondUser.bot || thirdUser.bot)
     return finishCommand(
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.bot-mention'),

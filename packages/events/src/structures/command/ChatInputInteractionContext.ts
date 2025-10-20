@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/node';
 import { InteractionCallbackData, InteractionResponseTypes } from '@discordeno/bot';
-import { Interaction, User } from '@discordeno/bot';
 import i18next, { TFunction } from 'i18next';
 
 import { DatabaseUserSchema } from '../../types/database.js';
@@ -14,6 +13,7 @@ import {
   sendFollowupMessage,
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests.js';
+import { Interaction, User } from '../../types/discordeno.js';
 
 export type CanResolve = 'users' | 'members' | 'attachments' | false;
 

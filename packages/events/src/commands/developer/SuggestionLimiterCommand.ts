@@ -1,5 +1,4 @@
 import { ApplicationCommandOptionTypes, ButtonStyles, TextStyles } from '@discordeno/bot';
-import { User } from '@discordeno/bot';
 
 import { createCommand } from '../../structures/command/createCommand.js';
 import suggestionLimitRepository from '../../database/repositories/suggestionLimitRepository.js';
@@ -15,6 +14,7 @@ import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { ModalInteraction } from '../../types/interaction.js';
 import { extractFields } from '../../utils/discord/modalUtils.js';
+import { User } from '../../types/discordeno.js';
 
 const executeLimitComponents = async (
   ctx: ComponentInteractionContext<ModalInteraction>,

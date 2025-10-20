@@ -6,7 +6,6 @@ import {
   StringSelectComponent,
   SelectOption,
 } from '@discordeno/bot';
-import { User } from '@discordeno/bot';
 import { createCommand } from '../../structures/command/createCommand.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
@@ -28,6 +27,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { ApiTransactionReason, TransactionRegister } from '../../types/api.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { InteractionContext } from '../../types/menhera.js';
+import { User } from '../../types/discordeno.js';
 
 const TRANSACTION_REASONS = Object.freeze(
   Object.values(ApiTransactionReason).filter((f) => f !== ApiTransactionReason.SIMON_SAYS),

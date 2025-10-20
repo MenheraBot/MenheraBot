@@ -1,29 +1,29 @@
-import { ImageSize, User } from '@discordeno/bot';
+import { ImageSize, iconBigintToHash, avatarUrl } from '@discordeno/bot';
 
-import { bot } from '../../index.js';
 import { toWritableUtf } from '../miscUtils.js';
+import { User } from '../../types/discordeno.js';
 
 const getUserAvatar = (
   user: User,
   { size = 256, enableGif }: { size?: ImageSize; enableGif?: boolean } = {},
 ): string => {
   if (user.avatar) {
-    const hash = bot.utils.iconBigintToHash(user.avatar);
-    return bot.utils.formatImageURL(
-      routes.USER_AVATAR(user.id, hash),
+    const hash = iconBigintToHash(user.avatar);
+
+    return avatarUrl(user.id, user.discriminator, {
+      avatar: hash,
+      format: enableGif && hash.startsWith('a_') ? 'gif' : 'png',
       size,
-      enableGif && hash.startsWith('a_') ? 'gif' : 'png',
-    );
+    });
   }
 
-  return bot.utils.formatImageURL(routes.USER_DEFAULT_AVATAR(2));
+  return avatarUrl(user.id, user.discriminator, { size, avatar: undefined });
 };
 
 const mentionUser = (userId: bigint | string): string => `<@${userId}>`;
 
 const getDisplayName = (user: User, onlyUtf = false): string => {
-  // @ts-expect-error It doesnt exists yet
-  const { displayName } = user;
+  const displayName = user.globalName;
 
   if (!displayName) return user.username;
 

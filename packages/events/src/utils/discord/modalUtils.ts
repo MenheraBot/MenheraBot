@@ -1,4 +1,4 @@
-import { InputTextComponent } from '@discordeno/bot';
+import { TextInputComponent } from '@discordeno/bot';
 import { ModalInteraction } from '../../types/interaction.js';
 
 interface FieldData {
@@ -8,7 +8,7 @@ interface FieldData {
 
 const extractFields = (interaction: ModalInteraction): FieldData[] =>
   interaction.data.components.reduce<FieldData[]>((p, c) => {
-    const fieldData = (c.components as InputTextComponent[])[0];
+    const fieldData = (c.components as TextInputComponent[])[0];
     p.push({ customId: fieldData.customId, value: fieldData.value as string });
     return p;
   }, []);

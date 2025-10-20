@@ -1,4 +1,3 @@
-import { User } from '@discordeno/bot';
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
@@ -14,6 +13,7 @@ import userRepository from '../../database/repositories/userRepository.js';
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 
 import { createCommand } from '../../structures/command/createCommand.js';
+import { User } from '../../types/discordeno.js';
 
 const selectedToUseExecutor = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,

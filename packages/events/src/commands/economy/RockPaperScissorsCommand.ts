@@ -1,5 +1,4 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
-import { User } from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
@@ -18,6 +17,7 @@ import rockPaperScissorsRepository, {
 } from '../../database/repositories/rockPaperScissorsRepository.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { postRockPaperScissorsGame } from '../../utils/apiRequests/statistics.js';
+import { User } from '../../types/discordeno.js';
 
 const rockPaperScissors = (
   game: RockPaperScissorsGame,
@@ -285,7 +285,7 @@ const RockPaperScissorsCommand = createCommand({
         flags: MessageFlags.EPHEMERAL,
       });
 
-    if (user.toggles.bot)
+    if (user.bot)
       return ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:pedrapapeltesoura.bot', {
           user: mentionUser(ctx.user.id),

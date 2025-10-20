@@ -1,4 +1,3 @@
-import { User } from '@discordeno/bot';
 import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
 import blacklistRepository from '../../database/repositories/blacklistRepository.js';
@@ -11,6 +10,7 @@ import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
 import { createEmbed } from '../../utils/discord/embedUtils.js';
 import { capitalize } from '../../utils/miscUtils.js';
 import userRepository from '../../database/repositories/userRepository.js';
+import { User } from '../../types/discordeno.js';
 
 const BicudaCommand = createCommand({
   path: '',

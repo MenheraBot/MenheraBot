@@ -1,4 +1,3 @@
-import { User } from '@discordeno/bot';
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import userRepository from '../../database/repositories/userRepository.js';
@@ -16,6 +15,7 @@ import { EMOJIS } from '../../structures/constants.js';
 import { postTransaction } from '../../utils/apiRequests/statistics.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import { bot } from '../../index.js';
+import { User } from '../../types/discordeno.js';
 
 const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedButton, amount] = ctx.sentData;
@@ -126,7 +126,7 @@ const GiftCommand = createCommand({
         }),
       );
 
-    if (toSendUser.toggles.bot) {
+    if (toSendUser.bot) {
       ctx.makeMessage({
         content: ctx.prettyResponse('success', 'commands:presentear.transfered', {
           value: amount,

@@ -1,4 +1,3 @@
-import { User } from '@discordeno/bot';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { capitalize } from '../../utils/miscUtils.js';
 import { InteractionContext } from '../../types/menhera.js';
@@ -7,6 +6,7 @@ import { getDisplayName } from '../../utils/discord/userUtils.js';
 import { getTopCommandsByUses, getUserProfileInfo } from '../../utils/apiRequests/statistics.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import titlesRepository from '../../database/repositories/titlesRepository.js';
+import { User } from '../../types/discordeno.js';
 
 const executeUsedCommandsFromUserTop = async (
   ctx: InteractionContext,
@@ -58,8 +58,9 @@ const executeUsedCommandsFromUserTop = async (
 
   const pagination = createPaginationButtons(ctx, 'user', `${user.id}`, embedColor, page);
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  if (embed.fields!.length < 10) pagination.components[1]!.disabled = true;
+  if (embed.fields!.length < 10) {
+    if ('disabled' in pagination.components[1]) pagination.components[1].disabled = true;
+  }
 
   ctx.makeMessage({ embeds: [embed], components: [pagination] });
 };

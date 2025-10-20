@@ -1,4 +1,4 @@
-import type { ApplicationCommandOptionChoice, Interaction } from '@discordeno/bot';
+import type { ApplicationCommandOptionChoice } from '@discordeno/bot';
 import * as Sentry from '@sentry/node';
 import {
   ActionRow,
@@ -9,8 +9,6 @@ import {
   StringSelectComponent,
   TextStyles,
 } from '@discordeno/bot';
-
-import { User } from '@discordeno/bot';
 
 import md5 from 'md5';
 import { findBestMatch } from 'string-similarity';
@@ -58,6 +56,7 @@ import { VangoghUserprofileData } from '../info/ProfileCommand.js';
 import { logger } from '../../utils/logger.js';
 import { bot } from '../../index.js';
 import { AvailableLanguages } from '../../types/i18next.js';
+import { Interaction, User } from '../../types/discordeno.js';
 
 const executeAboutMeCommand = async (
   ctx: ChatInputInteractionContext,

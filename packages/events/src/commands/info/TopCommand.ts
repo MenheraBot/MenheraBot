@@ -1,6 +1,5 @@
 import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
-import { User } from '@discordeno/bot';
 import { executeFarmersTop } from '../../modules/top/farmersTop.js';
 import { ApiHuntingTypes, DatabaseHuntingTypes } from '../../modules/hunt/types.js';
 import { createCommand } from '../../structures/command/createCommand.js';
@@ -17,6 +16,7 @@ import { executeUsersByUsedCommandTop } from '../../modules/top/usersByUsedComma
 import { bot } from '../../index.js';
 import { AvailablePlants } from '../../modules/fazendinha/types.js';
 import { executeFarmersExperienceTop } from '../../modules/top/farmersExperienceTop.js';
+import { User } from '../../types/discordeno.js';
 
 const TopCommand = createCommand({
   path: '',

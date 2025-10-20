@@ -1,4 +1,3 @@
-import { User } from '@discordeno/bot';
 import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 import md5 from 'md5';
 
@@ -17,6 +16,7 @@ import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
 import titlesRepository from '../../database/repositories/titlesRepository.js';
+import { User } from '../../types/discordeno.js';
 
 export interface VangoghUserprofileData {
   id: string;
