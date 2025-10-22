@@ -16,6 +16,14 @@ Feel free to add a star ⭐ to the repository to promote the project!
 
 Pull requests are always welcome. If you have any ideia, want to implement a new feature, fix some bug, or even improve the code itself, you can do it openning a pull request to the `master` branch. Check the next session about running the project.
 
+### 🐋 | Docker compose 
+
+When developing, use the docker compose to setup Redis, MongoDB, Postgres, the Menhera API and Menhera Vangogh services:
+
+```
+docker compose -f ./development/docker-compose.yaml up -d
+```
+
 ## 🔥 | Running
 
 This monorepo is divided in 3 main packages. The REST takes care of making contact with Discord's API, with this, we can avoid rate limits before making the request to the API **(NOT USED AT THE MOMENT)**. The Orchestrator receives all data from the outside world. It receives the HTTP interactions from Discord, vote webhooks from top.gg and prometheus scrapes. And we got the the Events pacakge, which takes care of processing every interaction made by users. To run the bot, just follow the steps:
@@ -32,7 +40,7 @@ git clone https://github.com/MenheraBot/MenheraBot.git
 3. 🔥 Install deps and build all the packages
 
 ```bash
-yarn install && yarn build:all
+pnpm install && pnpm -r build
 ```
 
 4. 🏃‍♂️ Running all services
@@ -40,15 +48,15 @@ yarn install && yarn build:all
 > Open 2 terminals and execute each command in a different one. The EVENTS package depends on the other package in production.
 
 ```bash
-# yarn rest dev
-# yarn orchestrator dev
-yarn events dev
+# pnpm --filter @menhera-bot/rest dev
+# pnpm --filter @menhera-bot/orchestrator dev
+pnpm --filter @menhera-bot/events dev
 ```
 
 5. 🐦 Running tests
 
 ```bash
-yarn test
+pnpm test
 ```
 
 ## 🎇 | Features
