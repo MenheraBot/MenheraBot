@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from '@discordeno/bot';
+import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbed, DiscordEmbedField } from '@discordeno/bot';
 import { TFunction } from 'i18next';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
@@ -24,7 +24,7 @@ import {
   createButton,
   createCustomId,
 } from '../../utils/discord/componentUtils.js';
-import { createEmbed, Embed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
 import { chunkArray, millisToSeconds } from '../../utils/miscUtils.js';
@@ -206,7 +206,7 @@ const makeGamblingStatisticsEmbed = (
   translate: TFunction,
   type: string,
   userTag: string,
-): Embed => {
+): DiscordEmbed => {
   const totalMoney = data.winMoney - data.lostMoney;
   const isRps = 'drawGames' in data;
 

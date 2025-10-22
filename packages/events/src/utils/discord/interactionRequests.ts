@@ -10,7 +10,7 @@ import { bot } from '../../index.js';
 import { debugError } from '../debugError.js';
 import { logger } from '../logger.js';
 import { Interaction } from '../../types/discordeno.js';
-import { stringifyBigints, noop } from '../miscUtils.js';
+import { noop } from '../miscUtils.js';
 
 const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise<void> =>
   new Promise((res, rej): void => {
@@ -42,6 +42,24 @@ const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise
     }
   });
 
+const transformInteractionResponseCallbackData = ({ data, type }: InteractionResponse) => ({
+  type,
+  data: {
+    ...data,
+    allowedMentions: data?.allowedMentions
+      ? bot.transformers.reverse.allowedMentions(bot, data?.allowedMentions)
+      : undefined,
+    components: data?.components
+    // @ts-expect-error BigString conversion
+      ? data.components.map((c) => bot.transformers.reverse.component(bot, c))
+      : undefined,
+    choices: data?.choices
+    // @ts-expect-error Snakelize
+      ? data.choices.map((c) => bot.transformers.reverse.applicationCommandOptionChoice(bot, c))
+      : undefined,
+  },
+});
+
 const sendInteractionResponse = async (
   interactionId: BigString,
   token: string,
@@ -68,7 +86,7 @@ const sendInteractionResponse = async (
     bot.ackInteraction.set(`${interactionId}`, r);
 
     respond({
-      discord: stringifyBigints(options),
+      discord: transformInteractionResponseCallbackData(options),
       id: `${interactionId}`,
     });
 

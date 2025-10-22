@@ -1,11 +1,10 @@
-import type { ApplicationCommandOptionChoice } from '@discordeno/bot';
+import type { ApplicationCommandOptionChoice, DiscordEmbed } from '@discordeno/bot';
 import * as Sentry from '@sentry/node';
 import {
   ActionRow,
   ApplicationCommandOptionTypes,
   ButtonStyles,
   TextInputComponent,
-  InteractionResponseTypes,
   StringSelectComponent,
   TextStyles,
 } from '@discordeno/bot';
@@ -38,7 +37,7 @@ import {
   createSelectMenu,
   createTextInput,
 } from '../../utils/discord/componentUtils.js';
-import { createEmbed, Embed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils.js';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
 import {
@@ -50,8 +49,7 @@ import {
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
 import titlesRepository from '../../database/repositories/titlesRepository.js';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
-import { sendInteractionResponse } from '../../utils/discord/interactionRequests.js';
-import { debugError } from '../../utils/debugError.js';
+import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
 import { VangoghUserprofileData } from '../info/ProfileCommand.js';
 import { logger } from '../../utils/logger.js';
 import { bot } from '../../index.js';
@@ -81,7 +79,7 @@ const createColorComponents = (
   userColors: UserColor[],
   currentPage: number,
   toRename: boolean,
-): [Embed, ActionRow[]] => {
+): [DiscordEmbed, ActionRow[]] => {
   const embed = createEmbed({
     title: toRename
       ? ctx.prettyResponse('question', 'commands:cor.select-to-rename')
@@ -427,22 +425,14 @@ const resetTitle: ApplicationCommandOptionChoice = {
 export const executeTituleAutocompleteInteraction = async (
   interaction: Interaction,
 ): Promise<void | null> => {
-  const respondWithChoices = (choices: ApplicationCommandOptionChoice[]) =>
-    sendInteractionResponse(interaction.id, interaction.token, {
-      type: InteractionResponseTypes.ApplicationCommandAutocompleteResult,
-      data: {
-        choices,
-      },
-    }).catch(debugError);
-
   const input = getOptionFromInteraction<string>(interaction, 'título', false, true);
 
-  if (`${input}`.length < 3) return respondWithChoices([resetTitle]);
+  if (`${input}`.length < 3) return respondWithChoices(interaction, [resetTitle]);
 
   const userData = await userRepository.ensureFindUser(interaction.user.id);
 
   if (userData.titles.length === 0)
-    return respondWithChoices([
+    return respondWithChoices(interaction, [
       resetTitle,
       {
         value: 0,
@@ -464,7 +454,7 @@ export const executeTituleAutocompleteInteraction = async (
       JSON.stringify({ userTitles, fromData: userData.titles }),
     );
 
-    return respondWithChoices([resetTitle]);
+    return respondWithChoices(interaction, [resetTitle]);
   }
 
   try {
@@ -494,7 +484,7 @@ export const executeTituleAutocompleteInteraction = async (
       [resetTitle],
     );
 
-    return respondWithChoices(ratings);
+    return respondWithChoices(interaction, ratings);
   } catch (e) {
     logger.error(`Error in title autocomplete`, input, userTitles);
     logger.info(bot, 'UserTitles', userTitles, 'UserDataTitles', userData.titles);
@@ -624,7 +614,7 @@ const executeBadgesCommand = async (
   const userData =
     user.id === ctx.user.id ? ctx.authorData : await userRepository.ensureFindUser(user.id);
 
-  const toSendEmbeds: Embed[] = [
+  const toSendEmbeds: DiscordEmbed[] = [
     createEmbed({
       author: {
         name: ctx.locale('commands:badges.title', { user: getDisplayName(user) }),

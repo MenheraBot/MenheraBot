@@ -1,9 +1,7 @@
-import { Camelize, DiscordEmbed } from '@discordeno/bot';
+import { DiscordEmbed, Embed } from '@discordeno/bot';
+import { bot } from '../../index.js';
 
-export type Embed = Camelize<DiscordEmbed>;
-
-const createEmbed = (data: Omit<Embed, 'timestamp'> & { timestamp?: number }): Embed =>
-  data.timestamp ? { ...data, timestamp: new Date(data.timestamp).toISOString() } : data as unknown as Embed;
+const createEmbed = (data: Embed): DiscordEmbed => bot.transformers.reverse.embed(bot, data);
 
 const hexStringToNumber = (color: string): number => parseInt(color.replace(/^#/, ''), 16);
 

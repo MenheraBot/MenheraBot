@@ -3,6 +3,7 @@ import {
   ApplicationCommandOptionTypes,
   ButtonComponent,
   ButtonStyles,
+  DiscordEmbed,
 } from '@discordeno/bot';
 import * as Sentry from '@sentry/node';
 import { createCommand } from '../../structures/command/createCommand.js';
@@ -20,7 +21,7 @@ import {
   SelectMenuUsersInteraction,
 } from '../../types/interaction.js';
 import { mentionUser } from '../../utils/discord/userUtils.js';
-import { createEmbed, Embed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { MessageFlags, removeNonNumbers } from '../../utils/discord/messageUtils.js';
 import { closeTable, setupGame } from '../../modules/poker/matchManager.js';
 import {
@@ -99,7 +100,7 @@ const createStartMatchEmbed = (
   embedColor: number,
   alreadyInPlayers: string[],
   chips: number,
-): Embed =>
+): DiscordEmbed =>
   createEmbed({
     title: ctx.prettyResponse(
       'wink',
@@ -253,7 +254,7 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
       content: ctx.prettyResponse('error', 'commands:poker.uninvited'),
     });
 
-  const oldEmbed = ctx.interaction.message?.embeds?.[0] as Embed;
+  const oldEmbed = ctx.interaction.message?.embeds?.[0];
 
   if (typeof oldEmbed === 'undefined') {
     logger.error(`oldEmbed is undefined! Message:`, ctx.interaction.message);

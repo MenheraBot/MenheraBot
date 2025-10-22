@@ -2,6 +2,7 @@ import {
   ActionRow,
   ApplicationCommandOptionTypes,
   ButtonStyles,
+  DiscordEmbed,
   TextStyles,
 } from '@discordeno/bot';
 
@@ -9,7 +10,7 @@ import ChatInputInteractionContext from '../../structures/command/ChatInputInter
 import { MessageFlags } from '../../utils/discord/messageUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { bot } from '../../index.js';
-import { createEmbed, Embed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import {
   createActionRow,
   createButton,
@@ -69,7 +70,7 @@ const suggestionEmbedAndButton = (
   ctx: InteractionContext,
   suggestion: string,
   embedColor: string,
-): [Embed, ActionRow] => [
+): [DiscordEmbed, ActionRow] => [
   createEmbed({
     title: ctx.locale('commands:menhera.suggest.confirm-title'),
     footer: { text: ctx.locale('commands:menhera.suggest.footer') },

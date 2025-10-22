@@ -1,7 +1,7 @@
-import { ActionRow } from '@discordeno/bot';
+import { ActionRow, DiscordEmbed } from '@discordeno/bot';
 import { getUserAvatar } from '../../utils/discord/userUtils.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
-import { createEmbed, Embed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { VanGoghEndpoints, vanGoghRequest, VanGoghReturnData } from '../../utils/vanGoghRequest.js';
 import {
   AvailableCardBackgroundThemes,
@@ -69,7 +69,7 @@ const generateBlackjackEmbed = (
   dealerHandValue: number,
   embedColor: string,
   secondCopy: boolean,
-): Embed => {
+): DiscordEmbed => {
   return createEmbed({
     title: ctx.prettyResponse('estrelinhas', 'commands:blackjack.title'),
     description: ctx.locale('commands:blackjack.description', {
@@ -90,7 +90,7 @@ const generateBlackjackEmbed = (
 
 const safeImageReply = async (
   ctx: ChatInputInteractionContext | ComponentInteractionContext,
-  embed: Embed,
+  embed: DiscordEmbed,
   image: VanGoghReturnData,
   components: ActionRow[],
 ): Promise<void> => {
