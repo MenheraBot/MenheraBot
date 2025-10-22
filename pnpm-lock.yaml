@@ -109,8 +109,8 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0
       koa:
-        specifier: ^3.0.2
-        version: 3.0.2
+        specifier: ^3.0.3
+        version: 3.0.3
       koa-body:
         specifier: ^6.0.1
         version: 6.0.1
@@ -2330,8 +2330,8 @@ packages:
   koa-compose@4.1.0:
     resolution: {integrity: sha512-8ODW8TrDuMYvXRwra/Kh7/rJo9BtOfPc6qO8eAfC80CnCvSjSl0bkRM24X6/XBBEyj0v1nRUQ1LyOy3dbqOWXw==}
 
-  koa@3.0.2:
-    resolution: {integrity: sha512-dlbFxTswxHFKSkPOlt1Qt7v1WumZ7ENY5r0W77YkSMyOltQL14gbLwtZswErISGQp5D/VBXFHyFYY/17Wppj7g==}
+  koa@3.0.3:
+    resolution: {integrity: sha512-MeuwbCoN1daWS32/Ni5qkzmrOtQO2qrnfdxDHjrm6s4b59yG4nexAJ0pTEFyzjLp0pBVO80CZp0vW8Ze30Ebow==}
     engines: {node: '>= 18'}
 
   leven@3.1.0:
@@ -6436,7 +6436,7 @@ snapshots:
 
   koa-compose@4.1.0: {}
 
-  koa@3.0.2:
+  koa@3.0.3:
     dependencies:
       accepts: 1.3.8
       content-disposition: 0.5.4
