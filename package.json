@@ -1,15 +1,13 @@
 {
   "name": "menhera-bot",
-  "version": "5.0.2a",
+  "version": "6.0.0",
   "description": "A Brazilian Discord Bot foccused in Fun and RPG",
   "private": true,
   "scripts": {
-    "rest": "yarn workspace @menhera-bot/rest",
-    "orchestrator": "yarn workspace @menhera-bot/orchestrator",
-    "events": "yarn workspace @menhera-bot/events",
-    "dev": "yarn events build:dev",
+    "orchestrator": "pnpm --filter @menhera-bot/orchestrator",
+    "events": "pnpm --filter @menhera-bot/events",
+    "dev": "pnpm -r build && pnpm -r dev",
     "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "build:all": "concurrently \"yarn rest build\" \"yarn orchestrator build\" \"yarn events build\"",
     "run:lint": "eslint ."
   },
   "keywords": [],
@@ -20,25 +18,26 @@
   "bugs": {
     "url": "https://github.com/MenheraBot/MenheraBot/issues"
   },
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ],
-    "nohoist": [
-      "**/events/**",
-      "**/rest/**",
-      "**/orchestrator/**"
-    ]
-  },
   "homepage": "https://github.com/MenheraBot/MenheraBot#readme",
   "devDependencies": {
-    "@types/jest": "^29.2.1",
-    "concurrently": "^7.6.0",
-    "dotenv": "^16.0.3",
-    "jest": "^29.2.2",
-    "ts-jest": "^29.0.3",
-    "typescript": "^4.8.4"
+    "@eslint/js": "^9.38.0",
+    "@types/jest": "^29.5.14",
+    "@typescript-eslint/parser": "^8.46.2",
+    "dotenv": "^17.2.3",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "globals": "^16.4.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.5",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.2"
   },
-  "dependencies": {},
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.14.0"
+  },
+  "packageManager": "pnpm@10.14.0"
 }

@@ -1,10 +1,10 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
-import starsRepository from '../../database/repositories/starsRepository';
-import { createCommand } from '../../structures/command/createCommand';
-import { ApiTransactionReason } from '../../types/api';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { bot } from '../..';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { User } from '../../types/discordeno.js';
 
 const ReloadLocalesCommand = createCommand({
   path: '',

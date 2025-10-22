@@ -1,11 +1,11 @@
-import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
-import { EMOJIS } from '../../structures/constants';
-import userRepository from '../../database/repositories/userRepository';
-import { createCommand } from '../../structures/command/createCommand';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { getDisplayName } from '../../utils/discord/userUtils';
+import { EMOJIS } from '../../structures/constants.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
+import { User } from '../../types/discordeno.js';
 
 const WalletCommand = createCommand({
   path: '',

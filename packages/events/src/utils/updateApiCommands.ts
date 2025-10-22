@@ -1,6 +1,6 @@
-import { bot } from '..';
-import { ApiCommandInformation } from '../types/commands';
-import { postCommandsInformation } from './apiRequests/commands';
+import { bot } from '../index.js';
+import { ApiCommandInformation } from '../types/commands.js';
+import { postCommandsInformation } from './apiRequests/commands.js';
 
 const updateCommandsOnApi = async (): Promise<void> => {
   const toAPIData = new Map<string, ApiCommandInformation>();
@@ -12,7 +12,7 @@ const updateCommandsOnApi = async (): Promise<void> => {
     toAPIData.set(c.name, {
       name: c.name,
       category: c.category,
-      description: c.description,
+      description: c.description ?? '',
       options: c.options ?? [],
       descriptionLocalizations: c.descriptionLocalizations,
       nameLocalizations: c.nameLocalizations,

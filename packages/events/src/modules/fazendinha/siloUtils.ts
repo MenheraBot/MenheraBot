@@ -3,15 +3,12 @@ import {
   QuantitativeItem,
   QuantitativePlant,
   QuantitativeSeed,
-} from '../../types/database';
-import { INITIAL_LIMIT_FOR_SILO, SILO_LIMIT_INCREASE_BY_LEVEL } from './constants';
+} from '../../types/database.js';
+import { INITIAL_LIMIT_FOR_SILO, SILO_LIMIT_INCREASE_BY_LEVEL } from './constants.js';
 
 type QuantitativePlantItem = QuantitativePlant | QuantitativeSeed;
 
-const checkNeededPlants = (
-  need: Array<QuantitativePlantItem>,
-  has: Array<QuantitativePlantItem>,
-): boolean =>
+const checkNeededPlants = (need: QuantitativePlantItem[], has: QuantitativePlantItem[]): boolean =>
   need.every((needed) =>
     has.some((user) => {
       const userHas = 'weight' in user ? user.weight : user.amount;
@@ -102,7 +99,7 @@ interface SiloLimits {
 }
 
 const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
-  const countQuantitative = (items: Array<QuantitativePlantItem | QuantitativeItem>): number =>
+  const countQuantitative = (items: (QuantitativePlantItem | QuantitativeItem)[]): number =>
     items.reduce(
       (p, c) =>
         p +

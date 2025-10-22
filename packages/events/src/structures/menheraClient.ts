@@ -1,25 +1,18 @@
-import { Collection, createRestManager, handleInteractionCreate } from 'discordeno';
+import { Collection, createRestManager } from '@discordeno/bot';
 
-import { transformInteractionResponseToDiscordInteractionResponse } from '../internals/transformers/reverse/interactionResponse';
-import { initializeRedis, initializeMongo } from '../database/databases';
-import { loadLocales } from './localeStructure';
-import { initializeSentry } from './initializeSentry';
-import { getEnviroments } from '../utils/getEnviroments';
-import { MenheraClient } from '../types/menhera';
-import { logger } from '../utils/logger';
-import { updateAssets } from './cdnManager';
-import { initializePrometheus } from './initializePrometheus';
-import { transformDiscordUserToUser } from '../internals/transformers/reverse/transformDiscordUserToUser';
-import { transfromUserToDiscordUser } from '../internals/transformers/transformUserToDiscordUser';
-import { transformComponentToDiscordComponent } from '../internals/transformers/reverse/component';
-import { loadChangelog } from '../utils/changelog';
-import { freeStuckQueues } from '../utils/freeStuckQueues';
-import { loadCommands } from './command/loadCommands';
+import { initializeRedis, initializeMongo } from '../database/databases.js';
+import { loadLocales } from './localeStructure.js';
+import { initializeSentry } from './initializeSentry.js';
+import { getEnviroments } from '../utils/getEnviroments.js';
+import { MenheraClient } from '../types/menhera.js';
+import { updateAssets } from './cdnManager.js';
+import { initializePrometheus } from './initializePrometheus.js';
+import { loadChangelog } from '../utils/changelog.js';
+import { freeStuckQueues } from '../utils/freeStuckQueues.js';
+import { loadCommands } from './command/loadCommands.js';
 
 const setupMenheraClient = (client: MenheraClient): void => {
   const { OWNER_ID } = getEnviroments(['OWNER_ID']);
-
-  logger.debug('Setting up Menhera Client');
 
   client.commands = new Collection();
 
@@ -61,21 +54,9 @@ const initializeServices = async (): Promise<void> => {
 const setupInternals = (bot: MenheraClient): void => {
   const { DISCORD_TOKEN } = getEnviroments(['DISCORD_TOKEN']);
 
-  logger.debug('Setting up the custom rest manager');
-
   bot.rest = createRestManager({
     token: DISCORD_TOKEN,
   });
-
-  bot.transformers.reverse.interactionResponse =
-    transformInteractionResponseToDiscordInteractionResponse;
-
-  bot.transformers.reverse.component = transformComponentToDiscordComponent;
-
-  bot.transformers.user = transformDiscordUserToUser;
-  bot.transformers.reverse.user = transfromUserToDiscordUser;
-
-  bot.handlers.INTERACTION_CREATE = handleInteractionCreate;
 
   freeStuckQueues(bot);
 };

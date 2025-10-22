@@ -1,5 +1,11 @@
-import { hoursToMillis } from '../../utils/miscUtils';
-import { AvailableItems, AvailablePlants, ItemsFile, PlantsFile, UnlockFieldFile } from './types';
+import { hoursToMillis } from '../../utils/miscUtils.js';
+import {
+  AvailableItems,
+  AvailablePlants,
+  ItemsFile,
+  PlantsFile,
+  UnlockFieldFile,
+} from './types.js';
 
 export const INITIAL_LIMIT_FOR_SILO = 35;
 export const SILO_LIMIT_INCREASE_BY_LEVEL = 5;
@@ -28,7 +34,7 @@ export const PLANTATION_HARVEST_MODIFIERS = {
   FERTILIZER_HARVERST_BUFF: 15 / 100,
 };
 
-export const UnloadFields: { [field: number]: UnlockFieldFile } = {
+export const UnloadFields: Record<number, UnlockFieldFile> = {
   1: {
     cost: 50_000,
     neededPlants: [
@@ -50,14 +56,14 @@ export const UnloadFields: { [field: number]: UnlockFieldFile } = {
   },
 };
 
-export const Items: { [Item in AvailableItems]: ItemsFile } = {
+export const Items: Record<AvailableItems, ItemsFile> = {
   [AvailableItems.Fertilizer]: {
     duration: hoursToMillis(6),
     emoji: '<:fertilizer:1316543322139136095>',
   },
 };
 
-export const Plants: { [Plant in AvailablePlants]: PlantsFile } = {
+export const Plants: Record<AvailablePlants, PlantsFile> = {
   [AvailablePlants.Mate]: {
     minutesToHarvest: process.env.NODE_ENV === 'production' ? 15 : 0.1,
     minutesToRot: 60,

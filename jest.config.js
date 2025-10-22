@@ -7,7 +7,7 @@ module.exports = {
       testEnvironment: 'node',
       displayName: '@menherabot/events',
       setupFiles: ['./test/setupTests.ts'],
-      testMatch:['<rootDir>/**/?(*.)+(spec|test).ts?(x)'],
+      testMatch: ['<rootDir>/**/?(*.)+(spec|test).ts?(x)'],
       rootDir: './packages/events',
       modulePathIgnorePatterns: ["<rootDir>/dist/"],
       transform: {

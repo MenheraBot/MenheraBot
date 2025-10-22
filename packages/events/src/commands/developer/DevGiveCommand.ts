@@ -1,11 +1,11 @@
-import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import userRepository from '../../database/repositories/userRepository';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
+import userRepository from '../../database/repositories/userRepository.js';
 
-import { createCommand } from '../../structures/command/createCommand';
-import titlesRepository from '../../database/repositories/titlesRepository';
-import giveRepository from '../../database/repositories/giveRepository';
-import notificationRepository from '../../database/repositories/notificationRepository';
+import { createCommand } from '../../structures/command/createCommand.js';
+import titlesRepository from '../../database/repositories/titlesRepository.js';
+import giveRepository from '../../database/repositories/giveRepository.js';
+import notificationRepository from '../../database/repositories/notificationRepository.js';
+import { User } from '../../types/discordeno.js';
 
 const GiveBadgeCommand = createCommand({
   path: '',

@@ -1,20 +1,24 @@
-import { ActionRow, ButtonStyles } from 'discordeno';
-import { DatabaseFarmerSchema } from '../../types/database';
-import { InteractionContext } from '../../types/menhera';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils';
-import { FINISH_ALL_DELIVERIES_BONUS, Plants } from './constants';
-import { getUserDeliveries } from './deliveryUtils';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import farmerRepository from '../../database/repositories/farmerRepository';
-import { checkNeededPlants, removePlants } from './siloUtils';
-import starsRepository from '../../database/repositories/starsRepository';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { bot } from '../..';
-import { ApiTransactionReason } from '../../types/api';
-import executeDailies from '../dailies/executeDailies';
-import userRepository from '../../database/repositories/userRepository';
+import { ActionRow, ButtonStyles } from '@discordeno/bot';
+import { DatabaseFarmerSchema } from '../../types/database.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils.js';
+import { FINISH_ALL_DELIVERIES_BONUS, Plants } from './constants.js';
+import { getUserDeliveries } from './deliveryUtils.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import { checkNeededPlants, removePlants } from './siloUtils.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import executeDailies from '../dailies/executeDailies.js';
+import userRepository from '../../database/repositories/userRepository.js';
 
 const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<void> => {
   const farmer = await farmerRepository.getFarmer(ctx.user.id);

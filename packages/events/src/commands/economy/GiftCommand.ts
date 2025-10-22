@@ -1,17 +1,21 @@
-import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import userRepository from '../../database/repositories/userRepository';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import giveRepository from '../../database/repositories/giveRepository';
-import { mentionUser } from '../../utils/discord/userUtils';
-import blacklistRepository from '../../database/repositories/blacklistRepository';
-import { createCommand } from '../../structures/command/createCommand';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { EMOJIS } from '../../structures/constants';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { ApiTransactionReason } from '../../types/api';
-import { bot } from '../..';
+import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import giveRepository from '../../database/repositories/giveRepository.js';
+import { mentionUser } from '../../utils/discord/userUtils.js';
+import blacklistRepository from '../../database/repositories/blacklistRepository.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { EMOJIS } from '../../structures/constants.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { bot } from '../../index.js';
+import { User } from '../../types/discordeno.js';
 
 const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedButton, amount] = ctx.sentData;
@@ -122,7 +126,7 @@ const GiftCommand = createCommand({
         }),
       );
 
-    if (toSendUser.toggles.bot) {
+    if (toSendUser.bot) {
       ctx.makeMessage({
         content: ctx.prettyResponse('success', 'commands:presentear.transfered', {
           value: amount,

@@ -1,24 +1,25 @@
-import { Interaction } from 'discordeno/transformers';
-import { AllowedMentionsTypes, InteractionResponseTypes } from 'discordeno/types';
+import { AllowedMentionsTypes, InteractionResponseTypes } from '@discordeno/bot';
 import i18next from 'i18next';
 
-import { mentionUser } from '../../utils/discord/userUtils';
-import commandRepository from '../../database/repositories/commandRepository';
-import userRepository from '../../database/repositories/userRepository';
-import blacklistRepository from '../../database/repositories/blacklistRepository';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { bot } from '../../index';
-import guildRepository from '../../database/repositories/guildRepository';
-import ComponentInteractionContext from './ComponentInteractionContext';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { getEnviroments } from '../../utils/getEnviroments';
-import { ComponentInteraction } from '../../types/interaction';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import { logger } from '../../utils/logger';
+import { mentionUser } from '../../utils/discord/userUtils.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import blacklistRepository from '../../database/repositories/blacklistRepository.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { bot } from '../../index.js';
+import guildRepository from '../../database/repositories/guildRepository.js';
+import ComponentInteractionContext from './ComponentInteractionContext.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { getEnviroments } from '../../utils/getEnviroments.js';
+import { ComponentInteraction } from '../../types/interaction.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import { logger } from '../../utils/logger.js';
 import {
   sendFollowupMessage,
   sendInteractionResponse,
-} from '../../utils/discord/interactionRequests';
+} from '../../utils/discord/interactionRequests.js';
+import { Interaction } from '../../types/discordeno.js';
+import { noop } from '../../utils/miscUtils.js';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -41,7 +42,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
       data: {
         components: [],
       },
-    }).catch(() => null);
+    }).catch(noop);
 
     await sendFollowupMessage(interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
@@ -49,7 +50,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
         content: `<:negacao:759603958317711371> | ${T('permissions:COMPONENT_OUTDATED')}`,
         flags: MessageFlags.EPHEMERAL,
       },
-    }).catch(() => null);
+    }).catch(noop);
     return;
   }
 
@@ -61,7 +62,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
         flags: MessageFlags.EPHEMERAL,
         allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
       },
-    }).catch(() => null);
+    }).catch(noop);
   };
 
   const command = bot.commands.get(originalInteraction.commandName);
@@ -148,10 +149,10 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
           timestamp: Date.now(),
         });
 
-        bot.helpers.sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
+        bot.helpers.executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
           embeds: [embed],
           content: `COMPONENTE UTILIZADO! Index: ${executorIndex}\n${originalInteraction.fullCommandUsed}`,
-        });
+        }).catch(noop)
       }
     });
 

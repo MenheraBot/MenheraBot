@@ -1,8 +1,7 @@
-/* eslint-disable camelcase */
-import { calculateProbability } from '../../utils/miscUtils';
-import { Plants } from '../fazendinha/constants';
-import { StaticItemData } from '../hunt/types';
-import { Daily } from './types';
+import { calculateProbability } from '../../utils/miscUtils.js';
+import { Plants } from '../fazendinha/constants.js';
+import { StaticItemData } from '../hunt/types.js';
+import { Daily } from './types.js';
 
 export const FINISHED_DAILY_AWARD = 5_000;
 export const STARS_PRIZE = 7_000;

@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import pokerRepository from '../../database/repositories/pokerRepository';
+import pokerRepository from '../../database/repositories/pokerRepository.js';
 
-import { clearFoldTimeout, createTableMessage, finishRound, makeShowdown } from './matchManager';
-import { PokerMatch } from './types';
+import { clearFoldTimeout, createTableMessage, finishRound, makeShowdown } from './matchManager.js';
+import { PokerMatch } from './types.js';
 
-import { MAX_POKER_PLAYERS } from './constants';
-import { getPlayerBySeat } from './playerControl';
-import { mentionUser } from '../../utils/discord/userUtils';
-import { GenericContext } from '../../types/menhera';
+import { MAX_POKER_PLAYERS } from './constants.js';
+import { getPlayerBySeat } from './playerControl.js';
+import { mentionUser } from '../../utils/discord/userUtils.js';
+import { GenericContext } from '../../types/menhera.js';
 
 const getNextPlayableSeat = (gameData: PokerMatch, lastSeat: number): number => {
   const biggestPlayableSeat = gameData.players.reduce((p, c) => {
@@ -48,7 +48,7 @@ const getPreviousPlayableSeat = (gameData: PokerMatch, lastSeat: number): number
 };
 
 const changeStage = (gameData: PokerMatch): void => {
-  const stages: { [x: string]: PokerMatch['stage'] } = {
+  const stages: Record<string, PokerMatch['stage']> = {
     preflop: 'flop',
     flop: 'turn',
     turn: 'river',

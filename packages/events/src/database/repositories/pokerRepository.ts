@@ -1,6 +1,6 @@
-import { BigString } from 'discordeno/types';
-import { MainRedisClient } from '../databases';
-import { PokerMatch, PokerTimer } from '../../modules/poker/types';
+import { BigString } from '@discordeno/bot';
+import { MainRedisClient } from '../databases.js';
+import { PokerMatch, PokerTimer } from '../../modules/poker/types.js';
 
 const isUserInMatch = async (userId: BigString): Promise<boolean> =>
   MainRedisClient.sismember('poker_match', `${userId}`).then((r) => r === 1);

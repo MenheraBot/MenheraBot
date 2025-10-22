@@ -1,14 +1,14 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
-import userThemesRepository from '../../database/repositories/userThemesRepository';
-import { COLORS, EMOJIS } from '../../structures/constants';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { randomFromArray } from '../../utils/miscUtils';
-import { createCommand } from '../../structures/command/createCommand';
-import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { getDisplayName } from '../../utils/discord/userUtils';
+import userThemesRepository from '../../database/repositories/userThemesRepository.js';
+import { COLORS, EMOJIS } from '../../structures/constants.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { randomFromArray } from '../../utils/miscUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
 
-const EighballAnswers: Array<{ id: number; type: 'positive' | 'neutral' | 'negative' }> = [
+const EighballAnswers: { id: number; type: 'positive' | 'neutral' | 'negative' }[] = [
   {
     id: 0,
     type: 'positive',
@@ -206,10 +206,12 @@ const EightballCommand = createCommand({
 
     await ctx.makeMessage({
       embeds: [embed],
-      file: {
-        name: `bola-oititcho.png`,
-        blob: res.data,
-      },
+      files: [
+        {
+          name: `bola-oititcho.png`,
+          blob: res.data,
+        },
+      ],
     });
 
     finishCommand();

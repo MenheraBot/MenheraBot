@@ -1,9 +1,9 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import { createCommand } from '../../structures/command/createCommand';
-import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
+import { User } from '../../types/discordeno.js';
 
 const MacetavaCommand = createCommand({
   path: '',
@@ -41,10 +41,12 @@ const MacetavaCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      file: {
-        name: 'macetava-afu.png',
-        blob: res.data,
-      },
+      files: [
+        {
+          name: 'macetava-afu.png',
+          blob: res.data,
+        },
+      ],
     });
 
     finishCommand();

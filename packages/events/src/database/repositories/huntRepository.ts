@@ -1,7 +1,7 @@
-import { debugError } from '../../utils/debugError';
-import { DatabaseHuntingTypes } from '../../modules/hunt/types';
-import { UserIdType } from '../../types/database';
-import userRepository from './userRepository';
+import { debugError } from '../../utils/debugError.js';
+import { DatabaseHuntingTypes } from '../../modules/hunt/types.js';
+import { UserIdType } from '../../types/database.js';
+import userRepository from './userRepository.js';
 
 const executeHuntEntity = async (
   userId: UserIdType,

@@ -91,7 +91,7 @@ export const EMOJIS = {
   badge_203: '<:badge_203:1289844107996430356>',
 };
 
-export const TOP_EMOJIS: { [key: string]: string } = {
+export const TOP_EMOJIS: Record<string, string> = {
   mamou: EMOJIS.crown,
   mamado: EMOJIS.lick,
   estrelinhas: EMOJIS.estrelinhas,

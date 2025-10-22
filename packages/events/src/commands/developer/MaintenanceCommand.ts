@@ -1,9 +1,9 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { updateCommandMaintenanteStatus } from '../../utils/apiRequests/commands';
-import commandRepository from '../../database/repositories/commandRepository';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
+import { updateCommandMaintenanteStatus } from '../../utils/apiRequests/commands.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
 
-import { bot } from '../../index';
-import { createCommand } from '../../structures/command/createCommand';
+import { bot } from '../../index.js';
+import { createCommand } from '../../structures/command/createCommand.js';
 
 const MaintenanceCommand = createCommand({
   path: '',

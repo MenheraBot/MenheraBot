@@ -1,7 +1,7 @@
 import i18next from 'i18next';
-import { AvailableLanguages, Translation, availableLanguages } from '../types/i18next';
-import { DatabaseUserThemesSchema } from '../types/database';
-import { ProbabilityAmount, ProbabilityType } from '../types/menhera';
+import { AvailableLanguages, Translation, availableLanguages } from '../types/i18next.js';
+import { DatabaseUserThemesSchema } from '../types/database.js';
+import { ProbabilityAmount, ProbabilityType } from '../types/menhera.js';
 
 const capitalize = <S extends string>(str: S): Capitalize<S> =>
   (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<S>;
@@ -29,18 +29,23 @@ const getElapsedTime = (since: number, unit: 'seconds' | 'minutes'): number => {
 
 const negate = (value: number): number => value * -1;
 
+const noop = (..._args: unknown[]) => null;
+
 const localizedResources = (
   key: Translation,
   options?: Record<string, unknown>,
 ): Record<AvailableLanguages, string> => {
-  return availableLanguages.reduce((p, c) => {
-    const fixedT = i18next.getFixedT(c);
-    const result = fixedT(key, options);
+  return availableLanguages.reduce(
+    (p, c) => {
+      const fixedT = i18next.getFixedT(c);
+      const result = fixedT(key, options);
 
-    p[c] = result;
+      p[c] = result;
 
-    return p;
-  }, {} as Record<string, string>);
+      return p;
+    },
+    {} as Record<string, string>,
+  );
 };
 
 const chunkArray = <T>(arr: T[], chunkSize: number): T[][] => {
@@ -102,7 +107,6 @@ const calculateProbability = <Prob extends ProbabilityAmount | ProbabilityType>(
   let accumulator = probabilities.reduce((p, c) => p + c.probability, 0);
   const chance = Math.floor(Math.random() * accumulator);
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const data of probabilities) {
     accumulator -= data.probability;
     if (chance >= accumulator) {
@@ -113,6 +117,34 @@ const calculateProbability = <Prob extends ProbabilityAmount | ProbabilityType>(
   return 0;
 };
 
+type DeepBigIntToString<T> = T extends bigint
+  ? string
+  : T extends (infer U)[]
+    ? DeepBigIntToString<U>[]
+    : T extends null
+      ? null
+      : T extends object
+        ? { [K in keyof T]: DeepBigIntToString<T[K]> }
+        : T;
+
+const stringifyBigints = <T>(obj: T): DeepBigIntToString<T> => {
+  if (typeof obj === 'bigint') return obj.toString() as DeepBigIntToString<T>;
+
+  if (Array.isArray(obj)) return (obj as any[]).map(stringifyBigints) as DeepBigIntToString<T>;
+
+  if (obj && typeof obj === 'object') {
+    return Object.entries(obj as Record<string, unknown>).reduce(
+      (acc, [key, value]) => {
+        (acc as any)[key] = stringifyBigints(value);
+        return acc;
+      },
+      {} as Record<string, unknown>,
+    ) as DeepBigIntToString<T>;
+  }
+
+  return obj as DeepBigIntToString<T>;
+};
+
 export {
   capitalize,
   daysToMillis,
@@ -121,6 +153,7 @@ export {
   numberizeAllValues,
   getCustomThemeField,
   millisToSeconds,
+  stringifyBigints,
   localizedResources,
   calculateProbability,
   hoursToMillis,
@@ -130,5 +163,6 @@ export {
   getElapsedTime,
   millisToHours,
   negate,
+  noop,
   getMillisecondsToTheEndOfDay,
 };

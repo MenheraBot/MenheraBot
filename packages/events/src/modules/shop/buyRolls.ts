@@ -1,7 +1,7 @@
-import shopRepository from '../../database/repositories/shopRepository';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { huntValues } from './constants';
+import shopRepository from '../../database/repositories/shopRepository.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { huntValues } from './constants.js';
 
 const buyRolls = async (
   ctx: ChatInputInteractionContext,

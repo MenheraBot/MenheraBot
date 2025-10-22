@@ -1,22 +1,23 @@
 import i18next from 'i18next';
-import { ApplicationCommandOptionChoice, Interaction } from 'discordeno/transformers';
+import { ApplicationCommandOptionChoice } from '@discordeno/bot';
 import { findBestMatch } from 'string-similarity';
-import fairRepository from '../../database/repositories/fairRepository';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { DatabaseFarmerSchema } from '../../types/database';
+import fairRepository from '../../database/repositories/fairRepository.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { DatabaseFarmerSchema } from '../../types/database.js';
 import {
   MAXIMUM_PRICE_TO_SELL_IN_FAIR,
   MAX_ITEMS_IN_FAIR_PER_USER,
   MINIMUM_PRICE_TO_SELL_IN_FAIR,
   Plants,
-} from './constants';
-import { checkNeededPlants, removePlants } from './siloUtils';
-import { AvailablePlants } from './types';
-import farmerRepository from '../../database/repositories/farmerRepository';
-import { localizedResources } from '../../utils/miscUtils';
-import { respondWithChoices } from '../../utils/discord/interactionRequests';
-import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
-import executeDailies from '../dailies/executeDailies';
+} from './constants.js';
+import { checkNeededPlants, removePlants } from './siloUtils.js';
+import { AvailablePlants } from './types.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import { localizedResources } from '../../utils/miscUtils.js';
+import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
+import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
+import executeDailies from '../dailies/executeDailies.js';
+import { Interaction } from '../../types/discordeno.js';
 
 let plantNames: ApplicationCommandOptionChoice[] = [];
 
@@ -46,9 +47,9 @@ const announceAutocomplete = async (interaction: Interaction): Promise<void | nu
   if (typeof options === 'undefined') return;
 
   const focused = options.find((a) => a.focused);
-  const input = focused.value;
+  const input = focused?.value;
 
-  if (focused.name === 'produto') {
+  if (focused?.name === 'produto') {
     const searchString = plantNames.map(
       (a) => a.nameLocalizations?.[(interaction.locale as 'en-US') ?? 'pt-BR'] ?? a.name,
     );
@@ -84,7 +85,7 @@ const announceAutocomplete = async (interaction: Interaction): Promise<void | nu
     ]);
   };
 
-  if (focused.name === 'preço') {
+  if (focused?.name === 'preço') {
     const plant = getOptionFromInteraction<number>(interaction, 'produto', false);
     const amount = getOptionFromInteraction(interaction, 'quantidade', false);
 

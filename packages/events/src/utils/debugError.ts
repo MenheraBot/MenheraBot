@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 
-import { logger } from './logger';
+import { logger } from './logger.js';
 
 export const debugError = (err: Error, toSentry = true): null => {
   logger.error('Debug Error', err.message);

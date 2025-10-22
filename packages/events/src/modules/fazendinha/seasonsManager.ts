@@ -1,6 +1,6 @@
-import farmerRepository from '../../database/repositories/farmerRepository';
-import { daysToMillis } from '../../utils/miscUtils';
-import { SeasonData, Seasons } from './types';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import { daysToMillis } from '../../utils/miscUtils.js';
+import { SeasonData, Seasons } from './types.js';
 
 export const SEASONAL_HARVEST_DEBUFF = 35 / 100;
 export const SEASONAL_HARVEST_BUFF = 25 / 100;
@@ -9,7 +9,7 @@ export const SEASONAL_ROT_DEBUFF = 50 / 100;
 const MIN_DAYS = 3;
 const MAX_DAYS = 8;
 
-const SeasonsOrder: { [Season in Seasons]: Seasons } = {
+const SeasonsOrder: Record<Seasons, Seasons> = {
   autumn: 'winter',
   winter: 'spring',
   spring: 'summer',

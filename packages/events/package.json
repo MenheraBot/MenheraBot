@@ -1,9 +1,9 @@
 {
   "name": "@menhera-bot/events",
   "type": "module",
-  "version": "5.21.5",
+  "version": "6.0.0",
   "engines": {
-    "node": ">=18"
+    "node": ">=22.0.0"
   },
   "description": "The core package of Menhera. This package process all interactions that Menhera receives from users",
   "main": "dist/index.js",
@@ -17,29 +17,29 @@
     "postbuild": "mv dist/src uwu && rm -rf dist && mv uwu dist",
     "typecheck": " tsc --project tsconfig.json --noEmit",
     "print-version": "echo version=$npm_package_version",
-    "build:dev": "yarn build && yarn dev",
-    "start": "VERSION=$npm_package_version NODE_ENV=production node --es-module-specifier-resolution=node --no-warnings .",
-    "dev": "VERSION=$npm_package_version NODE_ENV=development node --es-module-specifier-resolution=node --no-warnings -r dotenv/config .",
-    "beta": "VERSION=$npm_package_version NODE_ENV=development node --es-module-specifier-resolution=node --no-warnings .",
-    "dev:nomicroservices": "VERSION=$npm_package_version NODE_ENV=development NOMICROSERVICES=true node --es-module-specifier-resolution=node --no-warnings -r dotenv/config ."
+    "build:dev": "pnpm build && pnpm dev",
+    "start": "VERSION=$npm_package_version NODE_ENV=production node .",
+    "dev": "VERSION=$npm_package_version NODE_ENV=development node -r dotenv/config .",
+    "beta": "VERSION=$npm_package_version NODE_ENV=development node .",
+    "dev:nomicroservices": "VERSION=$npm_package_version NODE_ENV=development NOMICROSERVICES=true node -r dotenv/config ."
   },
   "dependencies": {
-    "@sentry/node": "^7.77.0",
-    "axios": "^1.12.0",
-    "discordeno": "^18.0.1",
-    "i18next": "^21.8.14",
-    "i18next-fs-backend": "^1.1.4",
-    "ioredis": "^5.4.1",
+    "@discordeno/bot": "22.0.1-next.780f212",
+    "@sentry/node": "^7.120.4",
+    "axios": "^1.12.2",
+    "i18next": "^25.6.0",
+    "i18next-fs-backend": "^2.6.0",
+    "ioredis": "^5.8.1",
     "md5": "^2.3.0",
-    "mongoose": "6.13.5",
-    "net-ipc": "^2.2.0",
+    "mongoose": "8.19.1",
+    "net-ipc": "^2.2.2",
     "pokersolver": "^2.1.4",
-    "prom-client": "^14.1.1",
+    "prom-client": "^15.1.3",
     "string-similarity": "^4.0.4"
   },
   "devDependencies": {
-    "@types/i18next-fs-backend": "^1.1.2",
-    "@types/md5": "^2.3.2",
-    "@types/string-similarity": "^4.0.0"
+    "@jest/globals": "^30.2.0",
+    "@types/md5": "^2.3.6",
+    "@types/string-similarity": "^4.0.2"
   }
 }

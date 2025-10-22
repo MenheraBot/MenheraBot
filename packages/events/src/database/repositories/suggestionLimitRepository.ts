@@ -1,6 +1,6 @@
-import { BigString } from 'discordeno/types';
-import { suggestionLimitModel } from '../collections';
-import { DatabaseSuggestionLimitSchema } from '../../types/database';
+import { BigString } from '@discordeno/bot';
+import { suggestionLimitModel } from '../collections.js';
+import { DatabaseSuggestionLimitSchema } from '../../types/database.js';
 
 const getLimitData = async (userId: BigString): Promise<DatabaseSuggestionLimitSchema | null> => {
   const suggestionData = await suggestionLimitModel.findOne({ id: `${userId}` });

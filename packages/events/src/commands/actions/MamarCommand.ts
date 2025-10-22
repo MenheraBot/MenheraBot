@@ -1,16 +1,16 @@
-import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
-import blacklistRepository from '../../database/repositories/blacklistRepository';
-import relationshipRepostory from '../../database/repositories/relationshipRepostory';
-import { createCommand } from '../../structures/command/createCommand';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { TODAYS_YEAR, COLORS } from '../../structures/constants';
-import { getAssetLink } from '../../structures/cdnManager';
-import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { capitalize } from '../../utils/miscUtils';
-import userRepository from '../../database/repositories/userRepository';
+import blacklistRepository from '../../database/repositories/blacklistRepository.js';
+import relationshipRepostory from '../../database/repositories/relationshipRepostory.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { TODAYS_YEAR, COLORS } from '../../structures/constants.js';
+import { getAssetLink } from '../../structures/cdnManager.js';
+import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { capitalize } from '../../utils/miscUtils.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { User } from '../../types/discordeno.js';
 
 const BicudaCommand = createCommand({
   path: '',

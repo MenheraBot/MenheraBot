@@ -1,6 +1,6 @@
-import { BigString } from 'discordeno/types';
-import { MainRedisClient } from '../databases';
-import { getElapsedTime, numberizeAllValues } from '../../utils/miscUtils';
+import { BigString } from '@discordeno/bot';
+import { MainRedisClient } from '../databases.js';
+import { getElapsedTime, numberizeAllValues } from '../../utils/miscUtils.js';
 
 enum RateLimitType {
   NONE,
@@ -15,11 +15,11 @@ const limitLevels = ['NOT_BLOCKED', 'SOFT', 'HARD', 'EXTREME', 'BOT_DETECTED'];
 const initialWindowSeconds = 3;
 const ratelimitThresholds = [3, 4, 7, 20, 50];
 
-type RatelimitInfo<Stringed = false> = {
+export interface RatelimitInfo<Stringed = false> {
   count: Stringed extends true ? string : number;
   timestamp: Stringed extends true ? string : number;
   ratelimit: Stringed extends true ? string : RateLimitType;
-};
+}
 
 const executeRatelimit = async (
   userId: BigString,
@@ -27,7 +27,7 @@ const executeRatelimit = async (
 ): Promise<[true, RatelimitInfo] | [false, RatelimitInfo | undefined]> => {
   const rawRateInfo = (await MainRedisClient.hgetall(
     `ratelimit:${commandName}:${userId}`,
-  )) as RatelimitInfo<true>;
+  )) as unknown as RatelimitInfo<true>;
 
   if (
     !('ratelimit' in rawRateInfo) ||
@@ -48,7 +48,7 @@ const executeRatelimit = async (
     return [false, undefined];
   }
 
-  const rateInfo = numberizeAllValues(rawRateInfo);
+  const rateInfo = numberizeAllValues(rawRateInfo as unknown as Record<string, unknown>);
 
   let newCount = rateInfo.count + 1;
   let newType = rateInfo.ratelimit;

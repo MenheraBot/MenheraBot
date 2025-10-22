@@ -4,27 +4,27 @@ import {
   DiscordEmbedField,
   SelectOption,
   TextStyles,
-} from 'discordeno/types';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { DatabaseFarmerSchema } from '../../types/database';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { getDisplayName } from '../../utils/discord/userUtils';
-import { AvailablePlants } from './types';
-import { Items, Plants } from './constants';
+} from '@discordeno/bot';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { DatabaseFarmerSchema } from '../../types/database.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
+import { AvailablePlants } from './types.js';
+import { Items, Plants } from './constants.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createSelectMenu,
   createTextInput,
-} from '../../utils/discord/componentUtils';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import farmerRepository from '../../database/repositories/farmerRepository';
-import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
-import { executeSellPlant, receiveModal } from '../shop/sellPlants';
-import { InteractionContext } from '../../types/menhera';
-import { getSiloLimits } from './siloUtils';
-import cacheRepository from '../../database/repositories/cacheRepository';
+} from '../../utils/discord/componentUtils.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction.js';
+import { executeSellPlant, receiveModal } from '../shop/sellPlants.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { getSiloLimits } from './siloUtils.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
 
 const displaySilo = async (
   ctx: ChatInputInteractionContext,

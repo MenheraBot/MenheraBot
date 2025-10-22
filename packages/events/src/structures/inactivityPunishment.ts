@@ -1,10 +1,10 @@
-import { bot } from '..';
-import { usersModel } from '../database/collections';
-import { ApiTransactionReason } from '../types/api';
-import { postTransaction } from '../utils/apiRequests/statistics';
-import { debugError } from '../utils/debugError';
-import { createEmbed } from '../utils/discord/embedUtils';
-import { getMillisecondsToTheEndOfDay } from '../utils/miscUtils';
+import { bot } from '../index.js';
+import { usersModel } from '../database/collections.js';
+import { ApiTransactionReason } from '../types/api.js';
+import { postTransaction } from '../utils/apiRequests/statistics.js';
+import { debugError } from '../utils/debugError.js';
+import { createEmbed } from '../utils/discord/embedUtils.js';
+import { getMillisecondsToTheEndOfDay } from '../utils/miscUtils.js';
 
 let inactiveTimeout: NodeJS.Timeout;
 
@@ -98,7 +98,6 @@ const inactivityPunishment = async (): Promise<void> => {
               .catch((e) => debugError(e, false));
           });
         } else {
-          // @ts-expect-error This is ensured
           Object.entries(updatedData[index].$inc).map((a) =>
             a[1] !== 0
               ? postTransaction(

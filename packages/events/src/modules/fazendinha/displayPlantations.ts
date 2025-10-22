@@ -1,19 +1,19 @@
-import { ButtonComponent, ButtonStyles, DiscordEmbedField, SelectOption } from 'discordeno/types';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { getDisplayName } from '../../utils/discord/userUtils';
-import { AvailablePlants, Plantation, PlantationState, PlantedField, Seasons } from './types';
-import { DatabaseFarmerSchema } from '../../types/database';
+import { ButtonComponent, ButtonStyles, DiscordEmbedField, SelectOption } from '@discordeno/bot';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
+import { AvailablePlants, Plantation, PlantationState, PlantedField, Seasons } from './types.js';
+import { DatabaseFarmerSchema } from '../../types/database.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createSelectMenu,
-} from '../../utils/discord/componentUtils';
-import { chunkArray, millisToSeconds } from '../../utils/miscUtils';
-import { InteractionContext } from '../../types/menhera';
-import { getPlantationState } from './plantationState';
-import { Items, Plants } from './constants';
-import { getSeasonalInfo } from './seasonsManager';
+} from '../../utils/discord/componentUtils.js';
+import { chunkArray, millisToSeconds } from '../../utils/miscUtils.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { getPlantationState } from './plantationState.js';
+import { Items, Plants } from './constants.js';
+import { getSeasonalInfo } from './seasonsManager.js';
 
 const PlantStateIcon: Record<PlantationState, string> = {
   EMPTY: '🟫',
@@ -29,7 +29,7 @@ const SeasonEmojis: Record<Seasons, string> = {
   summer: '☀️',
 };
 
-const ButtonStyleForPlantState: { [State in PlantationState]: ButtonStyles } = {
+const ButtonStyleForPlantState: Record<PlantationState, ButtonStyles> = {
   EMPTY: ButtonStyles.Primary,
   GROWING: ButtonStyles.Danger,
   MATURE: ButtonStyles.Success,

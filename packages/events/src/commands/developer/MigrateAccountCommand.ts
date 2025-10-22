@@ -1,10 +1,13 @@
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 
-import { User } from 'discordeno/transformers';
-import { createCommand } from '../../structures/command/createCommand';
-import { getDisplayName } from '../../utils/discord/userUtils';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import {
   farmerModel,
   profileImagesModel,
@@ -12,7 +15,8 @@ import {
   titlesModel,
   userThemesModel,
   usersModel,
-} from '../../database/collections';
+} from '../../database/collections.js';
+import { User } from '../../types/discordeno.js';
 
 const executeMigrateAccount = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [oldId, newId] = ctx.sentData;

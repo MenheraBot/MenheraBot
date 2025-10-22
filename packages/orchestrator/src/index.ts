@@ -1,22 +1,28 @@
-/* eslint-disable no-console */
-import { DiscordInteraction } from 'discordeno/*';
+import { DiscordInteraction } from '@discordeno/types';
 import { Connection, Server } from 'net-ipc';
-import { mergeMetrics } from './prometheusWorkarround';
-import { respondInteraction } from './respondInteraction';
-import { createHttpServer, registerAllRouters } from './server/httpServer';
-import { PrometheusResponse } from './server/routes/prometheus';
-import { getEnviroments } from './getEnviroments';
+import Koa from 'koa';
+import { mergeMetrics } from './prometheusWorkarround.js';
+import { respondInteraction } from './respondInteraction.js';
+import { createHttpServer, registerAllRouters } from './server/httpServer.js';
+import { PrometheusResponse } from './server/routes/prometheus.js';
+import { getEnviroments } from './getEnviroments.js';
+
+declare module 'koa' {
+  interface Request extends Koa.BaseRequest {
+    body?: any;
+  }
+}
 
 const { ORCHESTRATOR_SOCKET_PATH } = getEnviroments(['ORCHESTRATOR_SOCKET_PATH']);
 
 const orchestratorServer = new Server({ path: ORCHESTRATOR_SOCKET_PATH });
 
-type EventClientConnection = {
+interface EventClientConnection {
   id: string;
   conn: Connection;
   isMaster: boolean;
   version: string;
-};
+}
 
 let currentVersion: string;
 let swappingVersions = false;
@@ -40,6 +46,8 @@ export enum RequestType {
   ThankSuggestion = 'THANK_SUGGESTION',
   AckInteractionResponse = 'ACK_INTERACTION_RESPONSE',
 }
+
+const getVersion = () => currentVersion;
 
 const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => {
   eventsCounter += 1;
@@ -228,6 +236,30 @@ orchestratorServer.on('ready', () => {
   console.log('[ORCHESTRATOR] The service has been started');
   createHttpServer();
   registerAllRouters();
+
+  if (process.env.DEVEL_DISCORD_TOKEN && process.env.NODE_ENV === 'development') {
+    (async () => {
+      const token = process.env.DEVEL_DISCORD_TOKEN;
+      const discordeno = await import('@discordeno/bot');
+
+      const bot = discordeno.createBot({
+        token: `${token}`,
+        desiredProperties: {},
+      });
+
+      const oldGatewayProcessing = bot.gateway.events.message;
+
+      bot.gateway.events.message = (shard, p) => {
+        if (p.op === 0 && p.t === 'INTERACTION_CREATE') {
+          console.log('[EVENT] - Interaction created!');
+          sendEvent(RequestType.InteractionCreate, { body: p.d, noAck: true });
+        }
+        oldGatewayProcessing?.(shard, p);
+      };
+
+      await bot.start();
+    })();
+  }
 });
 
 orchestratorServer.start().catch((r) => {
@@ -241,4 +273,4 @@ process.on('SIGTERM', async () => {
   process.exit(0);
 });
 
-export { sendEvent };
+export { sendEvent, getVersion };

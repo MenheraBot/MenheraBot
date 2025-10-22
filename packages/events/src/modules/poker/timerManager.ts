@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { bot } from '../..';
-import pokerRepository from '../../database/repositories/pokerRepository';
-import { getOrchestratorClient } from '../../structures/orchestratorConnection';
-import { updateGameState } from './turnManager';
-import { DeleteMatchTimer, PokerTimer, TimeoutFoldTimer, TimerActionType } from './types';
-import { closeTable } from './matchManager';
-import { getPlayerBySeat } from './playerControl';
-import { executeAction } from './playerBet';
-import GenericInteractionContext from '../../structures/command/GenericInteractionContext';
+import { bot } from '../../index.js';
+import pokerRepository from '../../database/repositories/pokerRepository.js';
+import { getOrchestratorClient } from '../../structures/orchestratorConnection.js';
+import { updateGameState } from './turnManager.js';
+import { DeleteMatchTimer, PokerTimer, TimeoutFoldTimer, TimerActionType } from './types.js';
+import { closeTable } from './matchManager.js';
+import { getPlayerBySeat } from './playerControl.js';
+import { executeAction } from './playerBet.js';
+import GenericInteractionContext from '../../structures/command/GenericInteractionContext.js';
 
 const timers = new Map<string, NodeJS.Timeout>();
 

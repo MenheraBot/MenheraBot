@@ -2,7 +2,7 @@ import {
   AvailableCardBackgroundThemes,
   AvailableCardThemes,
   AvailableTableThemes,
-} from '../themes/types';
+} from '../themes/types.js';
 
 export interface BlackjackCard {
   value: number;
@@ -18,7 +18,7 @@ export type BlackjackFinishGameReason =
   | 'draw'
   | 'biggest';
 
-export type StoredBlackjackState = {
+export interface StoredBlackjackState {
   bet: number;
   secondCopy: boolean;
   playerCards: number[];
@@ -27,4 +27,4 @@ export type StoredBlackjackState = {
   cardTheme: AvailableCardThemes;
   tableTheme: AvailableTableThemes;
   cardBackgroundTheme: AvailableCardBackgroundThemes;
-};
+}

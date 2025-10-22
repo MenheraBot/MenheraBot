@@ -1,13 +1,17 @@
-import { ActionRow, ButtonStyles } from 'discordeno/types';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import userRepository from '../../database/repositories/userRepository';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import fairRepository from '../../database/repositories/fairRepository';
-import { Plants } from './constants';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { InteractionContext } from '../../types/menhera';
-import { DatabaseUserSchema } from '../../types/database';
+import { ActionRow, ButtonStyles } from '@discordeno/bot';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
+import fairRepository from '../../database/repositories/fairRepository.js';
+import { Plants } from './constants.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { DatabaseUserSchema } from '../../types/database.js';
 
 const handleDissmissShop = async (ctx: ComponentInteractionContext): Promise<void> => {
   const products = await fairRepository.getUserProducts(ctx.user.id);

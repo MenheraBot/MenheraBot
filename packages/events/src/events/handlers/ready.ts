@@ -1,11 +1,11 @@
-import blacklistRepository from '../../database/repositories/blacklistRepository';
-import fairRepository from '../../database/repositories/fairRepository';
-import notificationRepository from '../../database/repositories/notificationRepository';
-import { bot } from '../../index';
-import { startGameLoop } from '../../modules/bicho/bichoManager';
-import { setupTimers } from '../../modules/poker/timerManager';
-import { inactivityPunishment } from '../../structures/inactivityPunishment';
-import { logger } from '../../utils/logger';
+import blacklistRepository from '../../database/repositories/blacklistRepository.js';
+import fairRepository from '../../database/repositories/fairRepository.js';
+import notificationRepository from '../../database/repositories/notificationRepository.js';
+import { bot } from '../../index.js';
+import { startGameLoop } from '../../modules/bicho/bichoManager.js';
+import { setupTimers } from '../../modules/poker/timerManager.js';
+import { inactivityPunishment } from '../../structures/inactivityPunishment.js';
+import { logger } from '../../utils/logger.js';
 
 const setReadyEvent = (): void => {
   bot.events.ready = async (reason) => {

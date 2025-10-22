@@ -1,11 +1,12 @@
-import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from '.';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import titlesRepository from '../../database/repositories/titlesRepository';
-import userRepository from '../../database/repositories/userRepository';
-import { InteractionContext } from '../../types/menhera';
-import { getTopUsersByUses } from '../../utils/apiRequests/statistics';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
+import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from './index.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import titlesRepository from '../../database/repositories/titlesRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { getTopUsersByUses } from '../../utils/apiRequests/statistics.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
+import { ButtonComponent } from '@discordeno/bot';
 
 const executeUsersByUsedCommandTop = async (
   ctx: InteractionContext,
@@ -75,8 +76,7 @@ const executeUsersByUsedCommandTop = async (
 
   const pagination = createPaginationButtons(ctx, 'command', `${commandName}`, embedColor, page);
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  if (embed.fields!.length < 10) pagination.components[1]!.disabled = true;
+  if (embed.fields!.length < 10) (pagination.components[1] as ButtonComponent).disabled = true;
 
   ctx.makeMessage({ embeds: [embed], components: [pagination] });
 };

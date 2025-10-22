@@ -1,10 +1,10 @@
-import { Interaction } from 'discordeno/transformers';
-import { InteractionResponseTypes } from 'discordeno/types';
+import { InteractionResponseTypes } from '@discordeno/bot';
 import { findBestMatch } from 'string-similarity';
-import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
-import { debugError } from '../../utils/debugError';
-import { profileBadges } from './profileBadges';
-import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
+import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
+import { debugError } from '../../utils/debugError.js';
+import { profileBadges } from './profileBadges.js';
+import { sendInteractionResponse } from '../../utils/discord/interactionRequests.js';
+import { Interaction } from '../../types/discordeno.js';
 
 const executeGivebadgeAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<number>(interaction, 'badgeid', false, true);
@@ -33,7 +33,7 @@ const executeGivebadgeAutocomplete = async (interaction: Interaction): Promise<v
       },
     }).catch(debugError);
 
-  const infoToReturn: Array<{ name: string; value: number }> = [];
+  const infoToReturn: { name: string; value: number }[] = [];
 
   for (let i = 0; i < toSendOptions.length && i < 25; i++) {
     const { target } = toSendOptions[i];

@@ -1,5 +1,5 @@
 import client, { Counter, Registry } from 'prom-client';
-import { logger } from '../utils/logger';
+import { logger } from '../utils/logger.js';
 
 let register: Registry;
 let commandsCounter: Counter;

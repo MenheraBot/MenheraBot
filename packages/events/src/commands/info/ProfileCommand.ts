@@ -1,22 +1,22 @@
-import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 import md5 from 'md5';
 
-import { bot } from '../..';
-import { VangoghRedisClient } from '../../database/databases';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import userRepository from '../../database/repositories/userRepository';
-import userThemesRepository from '../../database/repositories/userThemesRepository';
-import { getUserBadges } from '../../modules/badges/getUserBadges';
-import { getThemeById, getThemesByType } from '../../modules/themes/getThemes';
-import { ProfileTheme } from '../../modules/themes/types';
-import { getProfileImageUrl } from '../../structures/cdnManager';
-import { createCommand } from '../../structures/command/createCommand';
-import { getUserProfileInfo } from '../../utils/apiRequests/statistics';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import titlesRepository from '../../database/repositories/titlesRepository';
+import { bot } from '../../index.js';
+import { VangoghRedisClient } from '../../database/databases.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import userThemesRepository from '../../database/repositories/userThemesRepository.js';
+import { getUserBadges } from '../../modules/badges/getUserBadges.js';
+import { getThemeById, getThemesByType } from '../../modules/themes/getThemes.js';
+import { ProfileTheme } from '../../modules/themes/types.js';
+import { getProfileImageUrl } from '../../structures/cdnManager.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { getUserProfileInfo } from '../../utils/apiRequests/statistics.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
+import titlesRepository from '../../database/repositories/titlesRepository.js';
+import { User } from '../../types/discordeno.js';
 
 export interface VangoghUserprofileData {
   id: string;
@@ -25,8 +25,8 @@ export interface VangoghUserprofileData {
   avatar: string;
   votes: number;
   info: string;
-  badges: Array<number>;
-  hiddingBadges: Array<number>;
+  badges: number[];
+  hiddingBadges: number[];
   username: string;
   mamadas: number;
   mamou: number;
@@ -119,7 +119,7 @@ const ProfileCommand = createCommand({
       hiddingBadges: user.hiddingBadges,
       marryUsername: '',
       marryDate: user.marriedDate ?? '',
-      title: userTitle ? userTitle.textLocalizations?.[ctx.guildLocale] ?? userTitle.text : '',
+      title: userTitle ? (userTitle.textLocalizations?.[ctx.guildLocale] ?? userTitle.text) : '',
       married: false,
     };
 
@@ -163,12 +163,14 @@ const ProfileCommand = createCommand({
       }
 
       await ctx.makeMessage({
-        file: {
-          name: 'profile.png',
-          blob: new Blob([Buffer.from(imageFromRedis, 'base64')], {
-            type: 'image/png',
-          }),
-        },
+        files: [
+          {
+            name: 'profile.png',
+            blob: new Blob([Buffer.from(imageFromRedis, 'base64')], {
+              type: 'image/png',
+            }),
+          },
+        ],
       });
 
       finishCommand();
@@ -188,7 +190,6 @@ const ProfileCommand = createCommand({
     }
 
     if (discordUser.id === bot.applicationId)
-      // eslint-disable-next-line no-bitwise
       userData.color = `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0')}`;
 
     const res = await vanGoghRequest(VanGoghEndpoints.Profile, {
@@ -205,10 +206,12 @@ const ProfileCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      file: {
-        name: 'profile.png',
-        blob: res.data,
-      },
+      files: [
+        {
+          name: 'profile.png',
+          blob: res.data,
+        },
+      ],
     });
 
     finishCommand();

@@ -1,8 +1,8 @@
-import { usersModel } from '../collections';
-import { debugError } from '../../utils/debugError';
-import { UserIdType } from '../../types/database';
-import { MainRedisClient } from '../databases';
-import userRepository from './userRepository';
+import { usersModel } from '../collections.js';
+import { debugError } from '../../utils/debugError.js';
+import { UserIdType } from '../../types/database.js';
+import { MainRedisClient } from '../databases.js';
+import userRepository from './userRepository.js';
 
 const isUserBanned = async (userId: UserIdType): Promise<boolean> =>
   MainRedisClient.sismember('banned_users', `${userId}`)

@@ -3,28 +3,27 @@ import {
   ApplicationCommandOptionTypes,
   ButtonStyles,
   TextStyles,
-} from 'discordeno/types';
+} from '@discordeno/bot';
 
-import { Embed } from 'discordeno/transformers';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { createCommand } from '../../structures/command/createCommand';
-import { bot } from '../..';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { bot } from '../../index.js';
+import { createEmbed, Embed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createTextInput,
-} from '../../utils/discord/componentUtils';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { extractFields } from '../../utils/discord/modalUtils';
-import { ModalInteraction } from '../../types/interaction';
-import { InteractionContext } from '../../types/menhera';
-import { getUserAvatar } from '../../utils/discord/userUtils';
-import { getEnviroments } from '../../utils/getEnviroments';
-import suggestionLimitRepository from '../../database/repositories/suggestionLimitRepository';
-import { millisToSeconds } from '../../utils/miscUtils';
+} from '../../utils/discord/componentUtils.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { extractFields } from '../../utils/discord/modalUtils.js';
+import { ModalInteraction } from '../../types/interaction.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { getUserAvatar } from '../../utils/discord/userUtils.js';
+import { getEnviroments } from '../../utils/getEnviroments.js';
+import suggestionLimitRepository from '../../database/repositories/suggestionLimitRepository.js';
+import { millisToSeconds } from '../../utils/miscUtils.js';
 
 const { SUGGESTION_CHANNEL_ID } = getEnviroments(['SUGGESTION_CHANNEL_ID']);
 

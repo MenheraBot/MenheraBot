@@ -1,7 +1,7 @@
-import Router from 'koa-router';
-import { HTTPResponseCodes } from 'discordeno/types';
+import Router from '@koa/router';
 import { Context } from 'koa';
-import { RequestType, sendEvent } from '../..';
+import { getVersion, RequestType, sendEvent } from '../../index.js';
+import { HTTPResponseCodes } from '../httpServer.js';
 
 const handleRequest = async (ctx: Context): Promise<void> => {
   ctx.status = HTTPResponseCodes.Ok;
@@ -18,6 +18,7 @@ const handleRequest = async (ctx: Context): Promise<void> => {
   ctx.body = {
     orchestrator: {
       uptime: Math.floor(process.uptime() * 1000),
+      masterVersion: getVersion(),
     },
     events: pings ?? [],
   };

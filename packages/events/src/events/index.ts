@@ -1,9 +1,7 @@
-import { logger } from '../utils/logger';
-import { setInteractionCreateEvent } from './handlers/interactionCreate';
-import { setReadyEvent } from './handlers/ready';
+import { setInteractionCreateEvent } from './handlers/interactionCreate.js';
+import { setReadyEvent } from './handlers/ready.js';
 
 const setupEventHandlers = (): void => {
-  logger.debug('Setting up event handlers');
   setInteractionCreateEvent();
   setReadyEvent();
 };

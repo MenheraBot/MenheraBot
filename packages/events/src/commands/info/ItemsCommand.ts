@@ -1,19 +1,19 @@
-import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createSelectMenu,
-} from '../../utils/discord/componentUtils';
-import { SelectMenuInteraction } from '../../types/interaction';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import userRepository from '../../database/repositories/userRepository';
-import { MessageFlags } from '../../utils/discord/messageUtils';
+} from '../../utils/discord/componentUtils.js';
+import { SelectMenuInteraction } from '../../types/interaction.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
 
-import { createCommand } from '../../structures/command/createCommand';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { User } from '../../types/discordeno.js';
 
 const selectedToUseExecutor = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,

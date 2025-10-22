@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 import { hostname } from 'node:os';
-import { getEnviroments } from '../utils/getEnviroments';
+import { getEnviroments } from '../utils/getEnviroments.js';
 
 const initializeSentry = (): void => {
   const { SENTRY_DSN } = getEnviroments(['SENTRY_DSN']);

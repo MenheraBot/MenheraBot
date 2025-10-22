@@ -1,7 +1,12 @@
-import farmerRepository from '../../database/repositories/farmerRepository';
-import { DatabaseFarmerSchema } from '../../types/database';
-import { DELIVERIES_AMOUNT, MAX_DELIVERY_WEIGHT, MIN_DELIVERY_WEIGHT, Plants } from './constants';
-import { DeliveryMission } from './types';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import { DatabaseFarmerSchema } from '../../types/database.js';
+import {
+  DELIVERIES_AMOUNT,
+  MAX_DELIVERY_WEIGHT,
+  MIN_DELIVERY_WEIGHT,
+  Plants,
+} from './constants.js';
+import { DeliveryMission } from './types.js';
 
 const getRandomAmount = (): number => {
   return parseFloat(

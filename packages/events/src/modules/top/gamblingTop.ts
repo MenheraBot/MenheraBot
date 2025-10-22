@@ -1,13 +1,13 @@
-import cacheRepository from '../../database/repositories/cacheRepository';
-import titlesRepository from '../../database/repositories/titlesRepository';
-import userRepository from '../../database/repositories/userRepository';
-import { COLORS } from '../../structures/constants';
-import { ApiGamblingGameCompatible } from '../../types/api';
-import { InteractionContext } from '../../types/menhera';
-import { getTopGamblingUsers } from '../../utils/apiRequests/statistics';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from './index';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import titlesRepository from '../../database/repositories/titlesRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { COLORS } from '../../structures/constants.js';
+import { ApiGamblingGameCompatible } from '../../types/api.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { getTopGamblingUsers } from '../../utils/apiRequests/statistics.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
+import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from './index.js';
 
 const executeGamblingTop = async (
   ctx: InteractionContext,

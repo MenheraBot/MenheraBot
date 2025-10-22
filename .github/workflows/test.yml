@@ -19,27 +19,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-        
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
         with:
-          node-version: 18.4.0
-          cache: 'yarn'
+          version: 10.14.0
+          run_install: false
+        
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22.20.0
+          cache: 'pnpm'
       
       - name: Install needed dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install
 
-      - name: Run eslint 
-        run: yarn run:lint
+#      - name: Execute typecheck in REST package
+#        run: pnpm rest typecheck
 
-      - name: Execute typecheck in REST package
-        run: yarn rest typecheck
-
-      - name: Execute typecheck in EVENTS package
-        run: yarn events typecheck
-
-      - name: Execute typecheck in ORCHESTRATOR package
-        run: yarn orchestrator typecheck
+      - name: Execute typecheck 
+        run: pnpm -r typecheck
 
       - name: Execute jest in all packages
-        run: yarn test
+        run: pnpm test

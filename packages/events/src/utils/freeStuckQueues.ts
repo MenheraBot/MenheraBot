@@ -1,9 +1,9 @@
-import { logger } from './logger';
-import { MenheraClient } from '../types/menhera';
-import { createEmbed } from './discord/embedUtils';
-import { getEnviroments } from './getEnviroments';
-import { getStuckQueuesCounter } from '../structures/initializePrometheus';
-import { debugError } from './debugError';
+import { logger } from './logger.js';
+import { MenheraClient } from '../types/menhera.js';
+import { createEmbed } from './discord/embedUtils.js';
+import { getEnviroments } from './getEnviroments.js';
+import { getStuckQueuesCounter } from '../structures/initializePrometheus.js';
+import { debugError } from './debugError.js';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -12,7 +12,7 @@ const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
 
 const freeStuckQueues = (bot: MenheraClient): void => {
   setInterval(() => {
-    bot.rest.pathQueues.forEach((queue, path) => {
+    bot.rest.queues.forEach((queue, path) => {
       if (
         queue.remaining === 0 &&
         queue.waiting.length > 0 &&
@@ -34,7 +34,7 @@ const freeStuckQueues = (bot: MenheraClient): void => {
         });
 
         bot.helpers
-          .sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
+          .executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
             embeds: [embed],
             content: `<@${bot.ownerId}>`,
             allowedMentions: { users: [bot.ownerId] },

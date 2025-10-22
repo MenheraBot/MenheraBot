@@ -1,14 +1,14 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 
-import { farmerModel } from '../collections';
+import { farmerModel } from '../collections.js';
 import {
   DatabaseFarmerSchema,
   QuantitativeItem,
   QuantitativePlant,
   QuantitativeSeed,
-} from '../../types/database';
-import { MainRedisClient } from '../databases';
-import { debugError } from '../../utils/debugError';
+} from '../../types/database.js';
+import { MainRedisClient } from '../databases.js';
+import { debugError } from '../../utils/debugError.js';
 import {
   AvailablePlants,
   DeliveryMission,
@@ -16,9 +16,9 @@ import {
   PlantedField,
   SeasonData,
   Seasons,
-} from '../../modules/fazendinha/types';
-import { millisToSeconds } from '../../utils/miscUtils';
-import { registerCacheStatus } from '../../structures/initializePrometheus';
+} from '../../modules/fazendinha/types.js';
+import { millisToSeconds } from '../../utils/miscUtils.js';
+import { registerCacheStatus } from '../../structures/initializePrometheus.js';
 
 const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSchema => ({
   id: `${user.id}`,
@@ -314,7 +314,7 @@ const getTopRanking = async (
   skip: number,
   ignoreUsers: string[] = [],
   limit = 10,
-): Promise<Array<{ id: number; value: number }>> => {
+): Promise<{ id: string; value: number }[]> => {
   const res = await farmerModel.find({ id: { $nin: ignoreUsers } }, ['experience', 'id'], {
     skip,
     limit,

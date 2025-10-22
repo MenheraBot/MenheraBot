@@ -1,33 +1,37 @@
-import { Embed, User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from '@discordeno/bot';
 import { TFunction } from 'i18next';
 
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import {
   ApiGamblingGameCompatible,
   ApiGamblingGameStats,
   ApiRockPaperScissorsStats,
-} from '../../types/api';
+} from '../../types/api.js';
 import {
   getFazendinhaStatistics,
   getGamblingGameStats,
   getPokerStats,
   getRockPaperScissorsStatistics,
   getUserHuntStats,
-} from '../../utils/apiRequests/statistics';
-import { COLORS, EMOJIS } from '../../structures/constants';
-import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
-import userThemesRepository from '../../database/repositories/userThemesRepository';
-import { getThemeById } from '../../modules/themes/getThemes';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import { chunkArray, millisToSeconds } from '../../utils/miscUtils';
+} from '../../utils/apiRequests/statistics.js';
+import { COLORS, EMOJIS } from '../../structures/constants.js';
+import themeCreditsRepository from '../../database/repositories/themeCreditsRepository.js';
+import userThemesRepository from '../../database/repositories/userThemesRepository.js';
+import { getThemeById } from '../../modules/themes/getThemes.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import { createEmbed, Embed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
+import { chunkArray, millisToSeconds } from '../../utils/miscUtils.js';
 
-import { createCommand } from '../../structures/command/createCommand';
-import { Plants } from '../../modules/fazendinha/constants';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { Plants } from '../../modules/fazendinha/constants.js';
+import { User } from '../../types/discordeno.js';
 
 const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
   const user = ctx.getOption<User>('user', 'users') ?? ctx.author;

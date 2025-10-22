@@ -1,40 +1,40 @@
-import { Attachment } from 'discordeno/transformers';
+import { Attachment } from '@discordeno/bot';
 import {
   ActionRow,
   ButtonComponent,
   ButtonStyles,
-  SelectMenuComponent,
+  StringSelectComponent,
   TextStyles,
-} from 'discordeno/types';
-import { bot } from '../..';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import commandRepository from '../../database/repositories/commandRepository';
-import profileImagesRepository from '../../database/repositories/profileImagesRepository';
-import shopRepository from '../../database/repositories/shopRepository';
-import starsRepository from '../../database/repositories/starsRepository';
-import userRepository from '../../database/repositories/userRepository';
-import userThemesRepository from '../../database/repositories/userThemesRepository';
-import { getProfileImageUrl } from '../../structures/cdnManager';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { COLORS } from '../../structures/constants';
-import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
+} from '@discordeno/bot';
+import { bot } from '../../index.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
+import profileImagesRepository from '../../database/repositories/profileImagesRepository.js';
+import shopRepository from '../../database/repositories/shopRepository.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import userThemesRepository from '../../database/repositories/userThemesRepository.js';
+import { getProfileImageUrl } from '../../structures/cdnManager.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { COLORS } from '../../structures/constants.js';
+import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createSelectMenu,
   createTextInput,
-} from '../../utils/discord/componentUtils';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { extractFields } from '../../utils/discord/modalUtils';
-import { getEnviroments } from '../../utils/getEnviroments';
-import { customImagePrice } from './constants';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { ApiTransactionReason } from '../../types/api';
-import { getThemeById, getThemesByType } from '../themes/getThemes';
-import { ProfileTheme } from '../themes/types';
+} from '../../utils/discord/componentUtils.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { extractFields } from '../../utils/discord/modalUtils.js';
+import { getEnviroments } from '../../utils/getEnviroments.js';
+import { customImagePrice } from './constants.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { getThemeById, getThemesByType } from '../themes/getThemes.js';
+import { ProfileTheme } from '../themes/types.js';
 
 const { IMAGE_APPROVAL_CHANNEL_ID } = getEnviroments(['IMAGE_APPROVAL_CHANNEL_ID']);
 
@@ -74,7 +74,7 @@ const executeBuyImagesSelectComponent = async (ctx: ComponentInteractionContext)
       ? ButtonStyles.Danger
       : ButtonStyles.Success;
 
-    (messageComponents[0].components[0] as SelectMenuComponent).customId = createCustomId(
+    (messageComponents[0].components[0] as StringSelectComponent).customId = createCustomId(
       3,
       ctx.user.id,
       ctx.originalInteractionId,

@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { executeAction } from './playerBet';
-import { getPlayerBySeat } from './playerControl';
-import { getNextPlayableSeat } from './turnManager';
-import { PokerMatch } from './types';
+import { executeAction } from './playerBet.js';
+import { getPlayerBySeat } from './playerControl.js';
+import { getNextPlayableSeat } from './turnManager.js';
+import { PokerMatch } from './types.js';
 
 const executeBlinds = (gameData: PokerMatch): void => {
   const headsUp = gameData.players.length === 2;

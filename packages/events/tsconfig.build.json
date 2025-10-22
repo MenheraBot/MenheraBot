@@ -6,11 +6,7 @@
     "baseUrl": "src",
     "sourceMap": true,
     "inlineSources": true,
-    "sourceRoot": "/",
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "esModuleInterop": true
+    "sourceRoot": "/"
   },
   "exclude": [
     "src/**/*.spec.ts",

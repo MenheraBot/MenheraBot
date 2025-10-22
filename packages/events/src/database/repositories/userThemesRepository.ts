@@ -1,6 +1,6 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 
-import { getThemeById } from '../../modules/themes/getThemes';
+import { getThemeById } from '../../modules/themes/getThemes.js';
 import {
   AvailableCardBackgroundThemes,
   AvailableCardThemes,
@@ -17,12 +17,13 @@ import {
   ProfileTheme,
   TableTheme,
   ThemeFile,
-} from '../../modules/themes/types';
-import { DatabaseUserThemesSchema } from '../../types/database';
-import { debugError } from '../../utils/debugError';
-import { userThemesModel } from '../collections';
-import { MainRedisClient } from '../databases';
-import { registerCacheStatus } from '../../structures/initializePrometheus';
+} from '../../modules/themes/types.js';
+import { DatabaseUserThemesSchema } from '../../types/database.js';
+import { debugError } from '../../utils/debugError.js';
+import { userThemesModel } from '../collections.js';
+import { MainRedisClient } from '../databases.js';
+import { registerCacheStatus } from '../../structures/initializePrometheus.js';
+import { noop } from '../../utils/miscUtils.js';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserThemesSchema): DatabaseUserThemesSchema => ({
   id: `${user.id}`,
@@ -165,7 +166,7 @@ const addThemeToUserAccount = async (
       { $push: { [themeType]: { id: themeId, aquiredAt: Date.now() } } },
       { new: true },
     )
-    .catch(() => null);
+    .catch(noop);
 
   if (updatedUser) {
     await MainRedisClient.setex(

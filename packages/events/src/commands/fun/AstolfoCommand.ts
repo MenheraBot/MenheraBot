@@ -1,9 +1,9 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
-import { toWritableUtf } from '../../utils/miscUtils';
-import { createCommand } from '../../structures/command/createCommand';
-import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { getDisplayName } from '../../utils/discord/userUtils';
+import { toWritableUtf } from '../../utils/miscUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
 
 const AstolfoCommand = createCommand({
   path: '',
@@ -48,10 +48,12 @@ const AstolfoCommand = createCommand({
     }
 
     await ctx.makeMessage({
-      file: {
-        name: 'astolfo.png',
-        blob: res.data,
-      },
+      files: [
+        {
+          name: 'astolfo.png',
+          blob: res.data,
+        },
+      ],
     });
 
     finishCommand();

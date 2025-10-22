@@ -1,20 +1,20 @@
-import { BigString } from 'discordeno/types';
-import bichoRepository from '../../database/repositories/bichoRepository';
-import { postBichoResults, postTransaction } from '../../utils/apiRequests/statistics';
-import starsRepository from '../../database/repositories/starsRepository';
-import { BichoBetType, BichoGameInfo } from './types';
-import { getBetType, makePlayerResults, mapResultToAnimal } from './finishBets';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { COLORS } from '../../structures/constants';
-import { bot } from '../..';
-import { getEnviroments } from '../../utils/getEnviroments';
-import { debugError } from '../../utils/debugError';
-import { capitalize } from '../../utils/miscUtils';
-import { ApiTransactionReason } from '../../types/api';
-import { resolveSeparatedStrings } from '../../utils/discord/componentUtils';
-import notificationRepository from '../../database/repositories/notificationRepository';
-import executeDailies from '../dailies/executeDailies';
-import userRepository from '../../database/repositories/userRepository';
+import { BigString } from '@discordeno/bot';
+import bichoRepository from '../../database/repositories/bichoRepository.js';
+import { postBichoResults, postTransaction } from '../../utils/apiRequests/statistics.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import { BichoBetType, BichoGameInfo } from './types.js';
+import { getBetType, makePlayerResults, mapResultToAnimal } from './finishBets.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { COLORS } from '../../structures/constants.js';
+import { bot } from '../../index.js';
+import { getEnviroments } from '../../utils/getEnviroments.js';
+import { debugError } from '../../utils/debugError.js';
+import { capitalize } from '../../utils/miscUtils.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { resolveSeparatedStrings } from '../../utils/discord/componentUtils.js';
+import notificationRepository from '../../database/repositories/notificationRepository.js';
+import executeDailies from '../dailies/executeDailies.js';
+import userRepository from '../../database/repositories/userRepository.js';
 
 const GAME_DURATION = 1000 * 60 * 60 * 5;
 
@@ -101,7 +101,7 @@ const finishGame = async (): Promise<void> => {
   });
 
   await bot.helpers
-    .sendWebhookMessage(BigInt(BICHO_WEBHOOK_ID), BICHO_WEBHOOK_TOKEN, {
+    .executeWebhook(BigInt(BICHO_WEBHOOK_ID), BICHO_WEBHOOK_TOKEN, {
       embeds: [resultsEmbed],
     })
     .catch(debugError);

@@ -1,11 +1,11 @@
-import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from '.';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import farmerRepository from '../../database/repositories/farmerRepository';
-import titlesRepository from '../../database/repositories/titlesRepository';
-import userRepository from '../../database/repositories/userRepository';
-import { InteractionContext } from '../../types/menhera';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
+import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from './index.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import titlesRepository from '../../database/repositories/titlesRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
 
 const executeFarmersExperienceTop = async (
   ctx: InteractionContext,

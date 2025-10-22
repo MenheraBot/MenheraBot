@@ -1,16 +1,16 @@
 import { UpdateQuery } from 'mongoose';
-import { bot } from '..';
-import userRepository from '../database/repositories/userRepository';
-import { DatabaseUserSchema } from '../types/database';
-import { debugError } from './debugError';
-import { createEmbed } from './discord/embedUtils';
-import { postTransaction } from './apiRequests/statistics';
-import { ApiTransactionReason } from '../types/api';
-import { calculateProbability } from './miscUtils';
-import farmerRepository from '../database/repositories/farmerRepository';
-import { addItems, getSiloLimits } from '../modules/fazendinha/siloUtils';
-import { AvailableItems } from '../modules/fazendinha/types';
-import { Items } from '../modules/fazendinha/constants';
+import { bot } from '../index.js';
+import userRepository from '../database/repositories/userRepository.js';
+import { DatabaseUserSchema } from '../types/database.js';
+import { debugError } from './debugError.js';
+import { createEmbed } from './discord/embedUtils.js';
+import { postTransaction } from './apiRequests/statistics.js';
+import { ApiTransactionReason } from '../types/api.js';
+import { calculateProbability } from './miscUtils.js';
+import farmerRepository from '../database/repositories/farmerRepository.js';
+import { addItems, getSiloLimits } from '../modules/fazendinha/siloUtils.js';
+import { AvailableItems } from '../modules/fazendinha/types.js';
+import { Items } from '../modules/fazendinha/constants.js';
 
 const voteConstants = {
   baseRollAmount: 1,

@@ -1,11 +1,11 @@
-import { HuntMagicItems } from '../hunt/magicItems';
-import { HuntProbablyBoostItem } from '../hunt/types';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { COLORS } from '../../structures/constants';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { getUserAvatar } from '../../utils/discord/userUtils';
-import { colorPrices, huntValues } from './constants';
-import { Plants } from '../fazendinha/constants';
+import { HuntMagicItems } from '../hunt/magicItems.js';
+import { HuntProbablyBoostItem } from '../hunt/types.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { COLORS } from '../../structures/constants.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getUserAvatar } from '../../utils/discord/userUtils.js';
+import { colorPrices, huntValues } from './constants.js';
+import { Plants } from '../fazendinha/constants.js';
 
 const buyInfo = async (
   ctx: ChatInputInteractionContext,

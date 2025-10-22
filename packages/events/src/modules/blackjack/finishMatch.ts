@@ -1,20 +1,20 @@
-import blackjackRepository from '../../database/repositories/blackjackRepository';
-import starsRepository from '../../database/repositories/starsRepository';
-import { bot } from '../../index';
+import blackjackRepository from '../../database/repositories/blackjackRepository.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import { bot } from '../../index.js';
 import {
   AvailableCardBackgroundThemes,
   AvailableCardThemes,
   AvailableTableThemes,
-} from '../themes/types';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { postBlackjackGame, postTransaction } from '../../utils/apiRequests/statistics';
-import { negate } from '../../utils/miscUtils';
-import { BlackjackCard, BlackjackFinishGameReason } from './types';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { ApiTransactionReason } from '../../types/api';
-import { sendBlackjackMessage } from './sendBlackjackMessage';
-import userRepository from '../../database/repositories/userRepository';
-import executeDailies from '../dailies/executeDailies';
+} from '../themes/types.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { postBlackjackGame, postTransaction } from '../../utils/apiRequests/statistics.js';
+import { negate } from '../../utils/miscUtils.js';
+import { BlackjackCard, BlackjackFinishGameReason } from './types.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { sendBlackjackMessage } from './sendBlackjackMessage.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import executeDailies from '../dailies/executeDailies.js';
 
 const finishMatch = async (
   ctx: ChatInputInteractionContext | ComponentInteractionContext,

@@ -1,13 +1,13 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { Member, User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
-import userRepository from '../../database/repositories/userRepository';
-import { getUserAvatar } from '../../utils/discord/userUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { createCommand } from '../../structures/command/createCommand';
-import blacklistRepository from '../../database/repositories/blacklistRepository';
-import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { createEmbed } from '../../utils/discord/embedUtils';
+import userRepository from '../../database/repositories/userRepository.js';
+import { getUserAvatar } from '../../utils/discord/userUtils.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import blacklistRepository from '../../database/repositories/blacklistRepository.js';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { Member, User } from '../../types/discordeno.js';
 
 const ShipCommand = createCommand({
   path: '',
@@ -132,7 +132,7 @@ const ShipCommand = createCommand({
     await ctx.makeMessage({
       content: ctx.locale('commands:ship.message-start'),
       embeds: [embed],
-      file: shipImage.err ? undefined : { blob: shipImage.data, name: 'ship.png' },
+      files: shipImage.err ? undefined : [{ blob: shipImage.data, name: 'ship.png' }],
     });
 
     finishCommand();

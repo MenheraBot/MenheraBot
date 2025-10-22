@@ -1,10 +1,10 @@
-import { minutesToMillis } from '../../utils/miscUtils';
-import { PLANTATION_HARVEST_MODIFIERS, PLANTATION_WEIGHT_MODIFIERS, Plants } from './constants';
+import { minutesToMillis } from '../../utils/miscUtils.js';
+import { PLANTATION_HARVEST_MODIFIERS, PLANTATION_WEIGHT_MODIFIERS, Plants } from './constants.js';
 import {
   SEASONAL_HARVEST_BUFF,
   SEASONAL_HARVEST_DEBUFF,
   SEASONAL_ROT_DEBUFF,
-} from './seasonsManager';
+} from './seasonsManager.js';
 import {
   AvailableItems,
   AvailablePlants,
@@ -12,7 +12,7 @@ import {
   Plantation,
   PlantationState,
   Seasons,
-} from './types';
+} from './types.js';
 
 const isUpgradeApplied = (buff: AvailableItems, upgrades: FieldUpgrade[]): boolean =>
   upgrades.some((u) => u.id === buff && u.expiresAt > Date.now());

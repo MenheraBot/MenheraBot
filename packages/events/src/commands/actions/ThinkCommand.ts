@@ -1,12 +1,12 @@
-import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
-import { TODAYS_YEAR, COLORS } from '../../structures/constants';
-import { getAssetLink } from '../../structures/cdnManager';
-import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { capitalize } from '../../utils/miscUtils';
-import { createCommand } from '../../structures/command/createCommand';
+import { TODAYS_YEAR, COLORS } from '../../structures/constants.js';
+import { getAssetLink } from '../../structures/cdnManager.js';
+import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { capitalize } from '../../utils/miscUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { User } from '../../types/discordeno.js';
 
 const ThinkCommand = createCommand({
   path: '',
@@ -40,7 +40,7 @@ const ThinkCommand = createCommand({
     const user = ctx.getOption<User>('user', 'users', false);
     const reason = ctx.getOption<string>('motivo', false);
 
-    if (user && user.toggles.bot)
+    if (user?.toggles && user.toggles.bot)
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('success', 'commands:pensar.bot'),

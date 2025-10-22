@@ -1,18 +1,18 @@
-import { BigString } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
-import { DatabaseHuntingTypes } from '../../modules/hunt/types';
-import { AvailableThemeTypes } from '../../modules/themes/types';
-import { UserColor } from '../../types/database';
-import { negate } from '../../utils/miscUtils';
-import profileImagesRepository from './profileImagesRepository';
-import starsRepository from './starsRepository';
-import themeCreditsRepository from './themeCreditsRepository';
-import userRepository from './userRepository';
-import userThemesRepository from './userThemesRepository';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { bot } from '../..';
-import { ApiTransactionReason } from '../../types/api';
-import notificationRepository from './notificationRepository';
+import { BigString } from '@discordeno/bot';
+import { DatabaseHuntingTypes } from '../../modules/hunt/types.js';
+import { AvailableThemeTypes } from '../../modules/themes/types.js';
+import { UserColor } from '../../types/database.js';
+import { negate } from '../../utils/miscUtils.js';
+import profileImagesRepository from './profileImagesRepository.js';
+import starsRepository from './starsRepository.js';
+import themeCreditsRepository from './themeCreditsRepository.js';
+import userRepository from './userRepository.js';
+import userThemesRepository from './userThemesRepository.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import notificationRepository from './notificationRepository.js';
+import { User } from '../../types/discordeno.js';
 
 const executeSellHunt = async (
   userId: BigString,

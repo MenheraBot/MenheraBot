@@ -1,8 +1,8 @@
-import { BigString } from 'discordeno/types';
-import { guildsModel } from '../collections';
-import { MainRedisClient } from '../databases';
-import { AvailableLanguages } from '../../types/i18next';
-import { registerCacheStatus } from '../../structures/initializePrometheus';
+import { BigString } from '@discordeno/bot';
+import { guildsModel } from '../collections.js';
+import { MainRedisClient } from '../databases.js';
+import { AvailableLanguages } from '../../types/i18next.js';
+import { registerCacheStatus } from '../../structures/initializePrometheus.js';
 
 const updateGuildLanguage = async (guildId: BigString, language: string): Promise<void> => {
   MainRedisClient.hset(`guild:${guildId}`, 'language', language);

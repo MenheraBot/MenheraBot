@@ -1,20 +1,20 @@
-import { ApplicationCommandOptionTypes, ButtonStyles, TextStyles } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes, ButtonStyles, TextStyles } from '@discordeno/bot';
 
-import { createCommand } from '../../structures/command/createCommand';
-import suggestionLimitRepository from '../../database/repositories/suggestionLimitRepository';
+import { createCommand } from '../../structures/command/createCommand.js';
+import suggestionLimitRepository from '../../database/repositories/suggestionLimitRepository.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createTextInput,
-} from '../../utils/discord/componentUtils';
-import { getDisplayName } from '../../utils/discord/userUtils';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { ModalInteraction } from '../../types/interaction';
-import { extractFields } from '../../utils/discord/modalUtils';
+} from '../../utils/discord/componentUtils.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { ModalInteraction } from '../../types/interaction.js';
+import { extractFields } from '../../utils/discord/modalUtils.js';
+import { User } from '../../types/discordeno.js';
 
 const executeLimitComponents = async (
   ctx: ComponentInteractionContext<ModalInteraction>,

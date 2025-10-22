@@ -1,20 +1,20 @@
 import { Client } from 'net-ipc';
 
-import { DiscordInteraction } from 'discordeno/types';
-import { bot } from '..';
-import { closeConnections } from '../database/databases';
-import { executeVoteWebhook } from '../utils/executeVoteWebhook';
-import { getEnviroments } from '../utils/getEnviroments';
-import { logger } from '../utils/logger';
-import { updateCommandsOnApi } from '../utils/updateApiCommands';
-import { getInteractionsCounter, getRegister } from './initializePrometheus';
-import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager';
-import cacheRepository from '../database/repositories/cacheRepository';
-import { getUserAvatar } from '../utils/discord/userUtils';
-import starsRepository from '../database/repositories/starsRepository';
-import { postTransaction } from '../utils/apiRequests/statistics';
-import { ApiTransactionReason } from '../types/api';
-import notificationRepository from '../database/repositories/notificationRepository';
+import { DiscordInteraction } from '@discordeno/bot';
+import { bot } from '../index.js';
+import { closeConnections } from '../database/databases.js';
+import { executeVoteWebhook } from '../utils/executeVoteWebhook.js';
+import { getEnviroments } from '../utils/getEnviroments.js';
+import { logger } from '../utils/logger.js';
+import { updateCommandsOnApi } from '../utils/updateApiCommands.js';
+import { getInteractionsCounter, getRegister } from './initializePrometheus.js';
+import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager.js';
+import cacheRepository from '../database/repositories/cacheRepository.js';
+import { getUserAvatar } from '../utils/discord/userUtils.js';
+import starsRepository from '../database/repositories/starsRepository.js';
+import { postTransaction } from '../utils/apiRequests/statistics.js';
+import { ApiTransactionReason } from '../types/api.js';
+import notificationRepository from '../database/repositories/notificationRepository.js';
 
 const numberTypeToName = {
   1: 'PING',
@@ -34,8 +34,6 @@ let orchestratorClient: Client;
 const getOrchestratorClient = (): Client => orchestratorClient;
 
 const createIpcConnection = async (): Promise<void> => {
-  if (process.env.NODE_ENV === 'development') return;
-
   const { ORCHESTRATOR_SOCKET_PATH } = getEnviroments(['ORCHESTRATOR_SOCKET_PATH']);
 
   logger.debug(`Creating IPC connection to Orchestrator ${ORCHESTRATOR_SOCKET_PATH}`);
@@ -95,6 +93,7 @@ const createIpcConnection = async (): Promise<void> => {
       await orchestratorClient.close('REQUESTED_SHUTDOWN');
 
       logger.info("[SHUTDOWN] I'm tired... I will rest for now");
+      console.log("Process waiting to be killed.")
     }
   });
 
@@ -150,10 +149,10 @@ const createIpcConnection = async (): Promise<void> => {
             0.5,
           );
 
-        bot.respondInteraction.set((msg.data.body as DiscordInteraction).id, ack);
+        if (msg.data.noAck) ack(true);
+        else bot.respondInteraction.set((msg.data.body as DiscordInteraction).id, ack);
 
-        bot.events.interactionCreate(
-          bot,
+        bot.events.interactionCreate?.(
           bot.transformers.interaction(bot, msg.data.body as DiscordInteraction),
         );
 

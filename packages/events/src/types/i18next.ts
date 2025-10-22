@@ -8,13 +8,13 @@ import type permissions from '../../locales/pt-BR/permissions.json';
 export const availableLanguages = ['pt-BR' as const, 'en-US' as const];
 export type AvailableLanguages = (typeof availableLanguages)[number];
 
-export type Resources = {
+export interface Resources {
   commands: typeof commands;
   common: typeof common;
   data: typeof data;
   events: typeof events;
   permissions: typeof permissions;
-};
+}
 
 type TokenTranslation<Namespaces, R extends boolean = false> = Extract<
   keyof {

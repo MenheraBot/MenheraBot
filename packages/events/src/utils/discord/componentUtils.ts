@@ -1,12 +1,13 @@
-import {
+import type {
   ActionRow,
   BigString,
   ButtonComponent,
-  InputTextComponent,
-  MessageComponentTypes,
-  SelectMenuComponent,
-  SelectMenuUsersComponent,
-} from 'discordeno/types';
+  TextInputComponent,
+  StringSelectComponent,
+  UserSelectComponent,
+} from '@discordeno/bot';
+
+import { MessageComponentTypes } from '@discordeno/bot';
 
 type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
@@ -25,29 +26,24 @@ const createButton = (component: PropertyOptional<ButtonComponent, 'type'>): But
 });
 
 const createSelectMenu = (
-  component: PropertyOptional<SelectMenuComponent, 'type'>,
-): SelectMenuComponent => ({
+  component: PropertyOptional<StringSelectComponent, 'type'>,
+): StringSelectComponent => ({
   ...component,
-  type: MessageComponentTypes.SelectMenu,
+  type: MessageComponentTypes.StringSelect,
 });
 
-export type UpdatedSelectMenuUsersComponent = SelectMenuUsersComponent & {
-  // eslint-disable-next-line camelcase
-  defaultValues?: { id: BigString; type: 'user' }[];
-};
-
 const createUsersSelectMenu = (
-  component: PropertyOptional<UpdatedSelectMenuUsersComponent, 'type'>,
-): SelectMenuUsersComponent => ({
+  component: PropertyOptional<UserSelectComponent, 'type'>,
+): UserSelectComponent => ({
   ...component,
-  type: MessageComponentTypes.SelectMenuUsers,
+  type: MessageComponentTypes.UserSelect,
 });
 
 const createTextInput = (
-  component: PropertyOptional<InputTextComponent, 'type'>,
-): InputTextComponent => ({
+  component: PropertyOptional<TextInputComponent, 'type'>,
+): TextInputComponent => ({
   ...component,
-  type: MessageComponentTypes.InputText,
+  type: MessageComponentTypes.TextInput,
 });
 
 const createActionRow = (components: ActionRow['components']): ActionRow => ({

@@ -1,8 +1,8 @@
 import { Context } from 'koa';
-import Router from 'koa-router';
-import { HTTPResponseCodes } from 'discordeno/types';
-import { RequestType, sendEvent } from '../..';
-import { verifyDiscordRequests } from '../middlewares/verifyDiscordRequests';
+import Router from '@koa/router';
+import { RequestType, sendEvent } from '../../index.js';
+import { verifyDiscordRequests } from '../middlewares/verifyDiscordRequests.js';
+import { HTTPResponseCodes } from '../httpServer.js';
 
 const handleRequest = async (ctx: Context): Promise<void> => {
   if (ctx.request.body.type === 1) {

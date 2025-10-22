@@ -1,14 +1,18 @@
 import md5 from 'md5';
-import { ButtonStyles } from 'discordeno/types';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { createCommand } from '../../structures/command/createCommand';
-import notificationRepository from '../../database/repositories/notificationRepository';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { millisToSeconds } from '../../utils/miscUtils';
-import { DatabaseNotificationSchema } from '../../types/database';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import { ButtonStyles } from '@discordeno/bot';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import notificationRepository from '../../database/repositories/notificationRepository.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import { millisToSeconds } from '../../utils/miscUtils.js';
+import { DatabaseNotificationSchema } from '../../types/database.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 
 const calculateNotificationHash = (notifications: DatabaseNotificationSchema[]): string =>
   md5(notifications.reduce((p, c) => `${p}${c._id}`, ''));

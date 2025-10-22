@@ -1,4 +1,4 @@
-import { DiscordInteraction } from 'discordeno/types';
+import { DiscordInteraction } from '@discordeno/types';
 
 const respondInteraction = (data: DiscordInteraction): string | void => {
   if ([2, 3, 5].includes(data.type))

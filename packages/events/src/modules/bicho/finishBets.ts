@@ -1,5 +1,5 @@
-import { resolveSeparatedStrings } from '../../utils/discord/componentUtils';
-import { BetPlayer, BichoBetType, BichoWinner } from './types';
+import { resolveSeparatedStrings } from '../../utils/discord/componentUtils.js';
+import { BetPlayer, BichoBetType, BichoWinner } from './types.js';
 
 const BICHO_ANIMALS = [
   'avestruz',

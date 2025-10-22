@@ -13,7 +13,7 @@ import {
   DatabaseTitlesSchema,
   DatabaseUserSchema,
   DatabaseUserThemesSchema,
-} from '../types/database';
+} from '../types/database.js';
 
 const { Schema, model } = mongoose;
 

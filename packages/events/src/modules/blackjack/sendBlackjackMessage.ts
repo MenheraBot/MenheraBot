@@ -1,13 +1,17 @@
-import { ButtonStyles, DiscordEmbedField } from 'discordeno/types';
-import { InteractionContext } from '../../types/menhera';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
+import { ButtonStyles, DiscordEmbedField } from '@discordeno/bot';
+import { InteractionContext } from '../../types/menhera.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
 import {
   AvailableCardBackgroundThemes,
   AvailableCardThemes,
   AvailableTableThemes,
-} from '../themes/types';
-import { generateBlackjackEmbed, getTableImage, safeImageReply } from './blackjackMatch';
-import { BlackjackCard } from './types';
+} from '../themes/types.js';
+import { generateBlackjackEmbed, getTableImage, safeImageReply } from './blackjackMatch.js';
+import { BlackjackCard } from './types.js';
 
 const sendBlackjackMessage = async (
   ctx: InteractionContext,

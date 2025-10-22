@@ -1,4 +1,4 @@
-import { PrometheusResponse } from './server/routes/prometheus';
+import { PrometheusResponse } from './server/routes/prometheus.js';
 
 const splitResults = (metrics: string) => {
   const lineByLine = metrics.split('\n').filter((a) => !a.startsWith('#') && a.length > 2);

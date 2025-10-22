@@ -1,5 +1,5 @@
-import { UserIdType } from '../../types/database';
-import userRepository from './userRepository';
+import { UserIdType } from '../../types/database.js';
+import userRepository from './userRepository.js';
 
 const executeMamar = async (fromUserId: UserIdType, toUserId: UserIdType): Promise<void> => {
   userRepository.updateUserWithSpecialData(fromUserId, { $inc: { mamou: 1 } });

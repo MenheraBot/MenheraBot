@@ -1,19 +1,26 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
-import { createCommand } from '../../structures/command/createCommand';
+import { createCommand } from '../../structures/command/createCommand.js';
 
-import { buyColor, executeBuyColorSelectComponent } from '../../modules/shop/buyColor';
-import { buyImages, executeBuyImagesSelectComponent } from '../../modules/shop/buyImages';
-import { buyInfo } from '../../modules/shop/buyInfo';
-import { buyItems, executeSelectItem } from '../../modules/shop/buyItems';
-import { buyRolls } from '../../modules/shop/buyRolls';
-import { buyThemes, executeActivateTheme, executeClickButton } from '../../modules/shop/buyThemes';
-import { sellHunts } from '../../modules/shop/sellHunts';
-import { sellInfo } from '../../modules/shop/sellInfo';
-import { transactionableCommandOption } from '../../structures/constants';
-import { buySeeds, handleBuySeedsInteractions } from '../../modules/shop/buySeeds';
-import { buildSellPlantsMessage, handleButtonAction } from '../../modules/fazendinha/displaySilo';
-import farmerRepository from '../../database/repositories/farmerRepository';
+import { buyColor, executeBuyColorSelectComponent } from '../../modules/shop/buyColor.js';
+import { buyImages, executeBuyImagesSelectComponent } from '../../modules/shop/buyImages.js';
+import { buyInfo } from '../../modules/shop/buyInfo.js';
+import { buyItems, executeSelectItem } from '../../modules/shop/buyItems.js';
+import { buyRolls } from '../../modules/shop/buyRolls.js';
+import {
+  buyThemes,
+  executeActivateTheme,
+  executeClickButton,
+} from '../../modules/shop/buyThemes.js';
+import { sellHunts } from '../../modules/shop/sellHunts.js';
+import { sellInfo } from '../../modules/shop/sellInfo.js';
+import { transactionableCommandOption } from '../../structures/constants.js';
+import { buySeeds, handleBuySeedsInteractions } from '../../modules/shop/buySeeds.js';
+import {
+  buildSellPlantsMessage,
+  handleButtonAction,
+} from '../../modules/fazendinha/displaySilo.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
 
 const ShopCommand = createCommand({
   path: '',

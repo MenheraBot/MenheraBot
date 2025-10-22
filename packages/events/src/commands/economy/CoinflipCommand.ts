@@ -1,21 +1,21 @@
-import { User } from 'discordeno/transformers';
-import {
-  AllowedMentionsTypes,
-  ApplicationCommandOptionTypes,
-  ButtonStyles,
-} from 'discordeno/types';
+import { AllowedMentionsTypes, ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { postCoinflipMatch, postTransaction } from '../../utils/apiRequests/statistics';
-import { negate, randomFromArray } from '../../utils/miscUtils';
-import userRepository from '../../database/repositories/userRepository';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { mentionUser } from '../../utils/discord/userUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { createCommand } from '../../structures/command/createCommand';
-import { transactionableCommandOption } from '../../structures/constants';
-import { huntValues } from '../../modules/shop/constants';
-import { ApiTransactionReason } from '../../types/api';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { postCoinflipMatch, postTransaction } from '../../utils/apiRequests/statistics.js';
+import { negate, randomFromArray } from '../../utils/miscUtils.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import { mentionUser } from '../../utils/discord/userUtils.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { transactionableCommandOption } from '../../structures/constants.js';
+import { huntValues } from '../../modules/shop/constants.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { User } from '../../types/discordeno.js';
 
 const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [input, currency] = ctx.sentData as [
@@ -115,7 +115,7 @@ const CoinflipCommand = createCommand({
     const input = ctx.getOption<number>('aposta', false, true);
     const currency = 'estrelinhas';
 
-    if (user.toggles.bot)
+    if (user.bot)
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:coinflip.bot'),

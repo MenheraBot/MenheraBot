@@ -1,30 +1,31 @@
-import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
+import { InteractionResponseTypes, InteractionTypes } from '@discordeno/bot';
 import i18next from 'i18next';
 
-import blacklistRepository from '../../database/repositories/blacklistRepository';
-import commandRepository from '../../database/repositories/commandRepository';
-import guildRepository from '../../database/repositories/guildRepository';
-import userRepository from '../../database/repositories/userRepository';
-import { bot } from '../../index';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { autocompleteInteraction } from '../../structures/command/autocompleteInteraction';
-import { componentExecutor } from '../../structures/command/componentExecutor';
-import { getCommandsCounter, getRateLimitCounter } from '../../structures/initializePrometheus';
-import { UsedCommandData } from '../../types/commands';
-import { DatabaseUserSchema } from '../../types/database';
-import { postCommandExecution } from '../../utils/apiRequests/commands';
-import { getUserLastBanData } from '../../utils/apiRequests/statistics';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { getEnviroments } from '../../utils/getEnviroments';
-import { logger } from '../../utils/logger';
-import { millisToSeconds } from '../../utils/miscUtils';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import { sendInteractionResponse } from '../../utils/discord/interactionRequests';
-import { debugError } from '../../utils/debugError';
-import { getFullCommandUsed } from '../../structures/command/getCommandOption';
-import ratelimitRepository from '../../database/repositories/ratelimitRepository';
-import executeDailies from '../../modules/dailies/executeDailies';
+import blacklistRepository from '../../database/repositories/blacklistRepository.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
+import guildRepository from '../../database/repositories/guildRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { bot } from '../../index.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { autocompleteInteraction } from '../../structures/command/autocompleteInteraction.js';
+import { componentExecutor } from '../../structures/command/componentExecutor.js';
+import { getCommandsCounter, getRateLimitCounter } from '../../structures/initializePrometheus.js';
+import { UsedCommandData } from '../../types/commands.js';
+import { DatabaseUserSchema } from '../../types/database.js';
+import { postCommandExecution } from '../../utils/apiRequests/commands.js';
+import { getUserLastBanData } from '../../utils/apiRequests/statistics.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { getEnviroments } from '../../utils/getEnviroments.js';
+import { logger } from '../../utils/logger.js';
+import { millisToSeconds, noop } from '../../utils/miscUtils.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import { sendInteractionResponse } from '../../utils/discord/interactionRequests.js';
+import { debugError } from '../../utils/debugError.js';
+import { getFullCommandUsed } from '../../structures/command/getCommandOption.js';
+import ratelimitRepository from '../../database/repositories/ratelimitRepository.js';
+import executeDailies from '../../modules/dailies/executeDailies.js';
+import { Interaction } from '../../types/discordeno.js';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -32,7 +33,7 @@ const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
 ]);
 
 const setInteractionCreateEvent = (): void => {
-  bot.events.interactionCreate = async (_, interaction) => {
+  bot.events.interactionCreate = async (interaction: Interaction) => {
     if (
       interaction.type === InteractionTypes.MessageComponent ||
       interaction.type === InteractionTypes.ModalSubmit
@@ -70,7 +71,6 @@ const setInteractionCreateEvent = (): void => {
 
       const banReason = bannedInfo?.banReason ?? T('events:banned_no_reason');
 
-      // eslint-disable-next-line no-nested-ternary
       const bannedSince = bannedInfo?.bannedSince
         ? bannedInfo.bannedSince !== 'NO_DATA'
           ? `<t:${millisToSeconds(Number(bannedInfo.bannedSince))}>`
@@ -191,50 +191,46 @@ const setInteractionCreateEvent = (): void => {
         0.5,
       );
 
-    await command
-      .execute(ctx, () => null)
-      .catch((err) => {
-        errorReply(
-          T('events:error_embed.title', {
-            cmd: command.name,
-          }),
-        );
+    await command.execute(ctx, noop).catch((err) => {
+      errorReply(
+        T('events:error_embed.title', {
+          cmd: command.name,
+        }),
+      );
 
-        commandRepository.deleteOriginalInteraction(interaction.id);
+      commandRepository.deleteOriginalInteraction(interaction.id)
 
-        // eslint-disable-next-line no-param-reassign
-        if (typeof err === 'string') err = new Error(err);
+      // eslint-disable-next-line no-param-reassign
+      if (typeof err === 'string') err = new Error(err);
 
-        if (err instanceof Error && err.stack) {
-          const errorMessage =
-            err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
-          const embed = createEmbed({
-            color: 0xfd0000,
-            title: `${process.env.NODE_ENV === 'development' ? '[DEV]' : ''} ${T(
-              'events:error_embed.title',
-              {
-                cmd: command.name,
-              },
-            )}`,
-            description: `\`\`\`js\n${errorMessage}\`\`\``,
-            fields: [
-              {
-                name: '<:atencao:759603958418767922> | Quem Usou',
-                value: `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guildId}\``,
-              },
-            ],
-            timestamp: Date.now(),
-          });
+      if (err instanceof Error && err.stack) {
+        const errorMessage = err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
+        const embed = createEmbed({
+          color: 0xfd0000,
+          title: `${process.env.NODE_ENV === 'development' ? '[DEV]' : ''} ${T(
+            'events:error_embed.title',
+            {
+              cmd: command.name,
+            },
+          )}`,
+          description: `\`\`\`js\n${errorMessage}\`\`\``,
+          fields: [
+            {
+              name: '<:atencao:759603958418767922> | Quem Usou',
+              value: `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guildId}\``,
+            },
+          ],
+        });
 
-          bot.helpers.sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
-            embeds: [embed],
-          });
+        bot.helpers.executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
+          embeds: [embed],
+        }).catch(noop)
 
-          logger.error(err);
-        }
-      });
+        logger.error(err);
+      }
+    })
 
-    await executeDailies.useCommand(authorData, commandUsed.command, command.category);
+    await executeDailies.useCommand(authorData, commandUsed.command, command.category).catch(noop);
 
     bot.commandsInExecution -= 1;
 
@@ -250,7 +246,7 @@ const setInteractionCreateEvent = (): void => {
       args: interaction.data?.options ?? [],
     };
 
-    if (process.env.NODE_ENV !== 'development') postCommandExecution(data);
+    postCommandExecution(data).catch(noop);
   };
 };
 

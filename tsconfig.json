@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "CommonJS",
+    "target": "es2022",
+    "module": "node20",
     "lib": ["ESNext"],
     "resolveJsonModule": true,
 
@@ -14,10 +14,10 @@
     "strict": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
-
+    "verbatimModuleSyntax": false,
     "noUnusedLocals": true,
-
-    "moduleResolution": "node",
+    "strictNullChecks": true,
+    "moduleResolution": "nodenext",
     "esModuleInterop": true,
 
     "skipLibCheck": true,

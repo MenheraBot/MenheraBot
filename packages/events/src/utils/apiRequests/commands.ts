@@ -1,12 +1,12 @@
-import { bot } from '../..';
+import { bot } from '../../index.js';
 import {
   ApiCommandInformation,
   MaintenanceCommandData,
   UsedCommandData,
-} from '../../types/commands';
-import { debugError } from '../debugError';
-import { logger } from '../logger';
-import { dataRequest, statusRequest } from './apiRequests';
+} from '../../types/commands.js';
+import { debugError } from '../debugError.js';
+import { logger } from '../logger.js';
+import { dataRequest, statusRequest } from './apiRequests.js';
 
 // const MAX_BATCH_QUEUE_LENGTH = 10;
 let batchCommandsExecution: UsedCommandData[] = [];

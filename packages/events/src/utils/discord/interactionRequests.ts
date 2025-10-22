@@ -1,25 +1,35 @@
 import {
   ApplicationCommandOptionChoice,
   BigString,
-  Interaction,
   InteractionCallbackData,
   InteractionResponse,
   InteractionResponseTypes,
-  RestSendRequestOptions,
-} from 'discordeno';
-import { bot } from '../../index';
-import { debugError } from '../debugError';
-import { logger } from '../logger';
+  SendRequestOptions,
+} from '@discordeno/bot';
+import { bot } from '../../index.js';
+import { debugError } from '../debugError.js';
+import { logger } from '../logger.js';
+import { Interaction } from '../../types/discordeno.js';
+import { stringifyBigints, noop } from '../miscUtils.js';
 
-const sendRequest = async (options: RestSendRequestOptions, currentTry = 1): Promise<void> =>
+const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise<void> =>
   new Promise((res, rej): void => {
     try {
-      bot.rest.sendRequest(bot.rest, options).then(() => {
-        res();
+      bot.rest.sendRequest({
+        ...options,
+        resolve: () => res(),
+        reject: (err) =>
+          debugError(
+            new Error(
+              err.error ??
+                `Error sending interaction: ${err.status} ${err.statusText ?? 'Unknown error'}`,
+            ),
+            true,
+          ),
       });
     } catch (e) {
       logger.error(
-        `[SEND REQUEST] Failed to send request to ${options.url}. Current try ${currentTry}`,
+        `[SEND REQUEST] Failed to send request to ${options.route}. Current try ${currentTry}`,
       );
       if (currentTry >= 3)
         return rej(new Error('Too many failed requests when sending interaction'));
@@ -42,22 +52,23 @@ const sendInteractionResponse = async (
   if (!respond)
     return sendRequest({
       method: 'POST',
-      url: bot.constants.routes.INTERACTION_ID_TOKEN(interactionId, token),
-      payload: bot.rest.createRequestBody(bot.rest, {
-        method: 'POST',
-        body: {
-          ...bot.transformers.reverse.interactionResponse(bot, options),
-          file: options?.data?.file,
-        },
+      route: bot.rest.routes.interactions.responses.callback(interactionId, token),
+      requestBodyOptions: {
+        body: options,
+        files: options.data?.files,
         unauthorized: true,
-      }),
+      },
+      runThroughQueue: false,
+      resolve: noop,
+      reject: noop,
+      retryCount: 0,
     });
 
   return new Promise((r) => {
     bot.ackInteraction.set(`${interactionId}`, r);
 
     respond({
-      discord: bot.transformers.reverse.interactionResponse(bot, options),
+      discord: stringifyBigints(options),
       id: `${interactionId}`,
     });
 
@@ -71,32 +82,31 @@ const editOriginalInteractionResponse = (
 ): Promise<void> =>
   sendRequest({
     method: 'PATCH',
-    url: bot.constants.routes.INTERACTION_ORIGINAL_ID_TOKEN(bot.applicationId, token),
-    payload: bot.rest.createRequestBody(bot.rest, {
-      method: 'PATCH',
-      body: {
-        ...bot.transformers.reverse.interactionResponse(bot, {
-          type: InteractionResponseTypes.UpdateMessage,
-          data: options,
-        }).data,
-        file: options?.file,
-      },
+    route: bot.rest.routes.interactions.responses.original(bot.applicationId, token),
+    requestBodyOptions: {
+      body: options,
+      files: options.files,
       unauthorized: true,
-    }),
+    },
+    runThroughQueue: false,
+    reject: noop,
+    resolve: noop,
+    retryCount: 0,
   });
 
 const sendFollowupMessage = async (token: string, options: InteractionResponse): Promise<void> =>
   sendRequest({
     method: 'POST',
-    url: bot.constants.routes.WEBHOOK(bot.applicationId, token),
-    payload: bot.rest.createRequestBody(bot.rest, {
-      method: 'POST',
-      body: {
-        ...bot.transformers.reverse.interactionResponse(bot, options).data,
-        file: options?.data?.file,
-      },
+    route: bot.rest.routes.webhooks.webhook(bot.applicationId, token),
+    requestBodyOptions: {
+      body: options.data,
+      files: options.data?.files,
       unauthorized: true,
-    }),
+    },
+    runThroughQueue: false,
+    retryCount: 0,
+    reject: noop,
+    resolve: noop,
   });
 
 const respondWithChoices = (

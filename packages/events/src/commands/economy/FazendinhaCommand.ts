@@ -1,26 +1,29 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
-import farmerRepository from '../../database/repositories/farmerRepository';
-import { createCommand } from '../../structures/command/createCommand';
-import { displayPlantations } from '../../modules/fazendinha/displayPlantations';
-import { changeSelectedSeed, executeFieldAction } from '../../modules/fazendinha/fieldAction';
-import { displaySilo, handleButtonAction } from '../../modules/fazendinha/displaySilo';
-import { AvailablePlants } from '../../modules/fazendinha/types';
+import { ApplicationCommandOptionTypes } from '@discordeno/bot';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { displayPlantations } from '../../modules/fazendinha/displayPlantations.js';
+import { changeSelectedSeed, executeFieldAction } from '../../modules/fazendinha/fieldAction.js';
+import { displaySilo, handleButtonAction } from '../../modules/fazendinha/displaySilo.js';
+import { AvailablePlants } from '../../modules/fazendinha/types.js';
 import {
   executeAdministrateFields,
   handleAdministrativeComponents,
-} from '../../modules/fazendinha/administrateFields';
-import { executeButtonPressed, executeDailyDelivery } from '../../modules/fazendinha/dailyDelivery';
+} from '../../modules/fazendinha/administrateFields.js';
+import {
+  executeButtonPressed,
+  executeDailyDelivery,
+} from '../../modules/fazendinha/dailyDelivery.js';
 import {
   executeAdministrateSilo,
   handleUpgradeSilo,
-} from '../../modules/fazendinha/administrateSilo';
+} from '../../modules/fazendinha/administrateSilo.js';
 import {
   executeAdministrateFair,
   handleDissmissShop,
-} from '../../modules/fazendinha/administrateFair';
-import { executeAnnounceProduct } from '../../modules/fazendinha/announceProduct';
-import { executeButtonAction, executeExploreFair } from '../../modules/fazendinha/exploreFair';
+} from '../../modules/fazendinha/administrateFair.js';
+import { executeAnnounceProduct } from '../../modules/fazendinha/announceProduct.js';
+import { executeButtonAction, executeExploreFair } from '../../modules/fazendinha/exploreFair.js';
+import { User } from '../../types/discordeno.js';
 
 const FazendinhaCommand = createCommand({
   path: '',

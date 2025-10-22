@@ -1,8 +1,9 @@
-import { ApplicationCommandOptionChoice, Interaction } from 'discordeno/transformers';
+import { ApplicationCommandOptionChoice } from '@discordeno/bot';
 import { findBestMatch } from 'string-similarity';
-import { getOptionFromInteraction } from '../../structures/command/getCommandOption';
-import { bot } from '../..';
-import { respondWithChoices } from '../../utils/discord/interactionRequests';
+import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
+import { bot } from '../../index.js';
+import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
+import { Interaction } from '../../types/discordeno.js';
 
 const namedCommands: ApplicationCommandOptionChoice[] = [];
 
@@ -12,7 +13,11 @@ const getCommandNames = () => {
   const fromBot = bot.commands.array().reduce<ApplicationCommandOptionChoice[]>((p, c) => {
     if (c.devsOnly) return p;
 
-    p.push({ value: c.name, name: `/${c.name}`, nameLocalizations: c.nameLocalizations });
+    p.push({
+      value: c.name,
+      name: `/${c.name}`,
+      nameLocalizations: c.nameLocalizations || undefined,
+    });
 
     if (c.nameLocalizations?.['en-US'])
       p.push({

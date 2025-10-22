@@ -1,6 +1,6 @@
-import { BigString } from 'discordeno/types';
-import { BetPlayer, BichoGameInfo } from '../../modules/bicho/types';
-import { MainRedisClient } from '../databases';
+import { BigString } from '@discordeno/bot';
+import { BetPlayer, BichoGameInfo } from '../../modules/bicho/types.js';
+import { MainRedisClient } from '../databases.js';
 
 const getLastGameInfo = async (): Promise<BichoGameInfo | null> => {
   const fromRedis = await MainRedisClient.get('last_bicho');

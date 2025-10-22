@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [6.0.0] - 2025-10-22
+
+### Changed
+
+- Atualizado versão do interpretador da Menhera.
+- Atualizado a versão de bibliotecas da Menhera. Com isso, agora é possível a nova versão 2 dos componentes. Pode existir problemas em comandos existentes com essas modificações. Reportem tudo que encontrarem! 
+- Diminuido mínimo para apostas no poker de `10000` para `1000` estrelinhas.
+
+### Fixed
+
+- Corrigido erro de tradução no comando poker.
+
 ## [5.21.5] - 2025-08-08
 
 ### Fixed

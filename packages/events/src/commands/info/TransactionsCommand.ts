@@ -1,34 +1,33 @@
-/* eslint-disable no-nested-ternary */
 import {
   ActionRow,
   ApplicationCommandOptionTypes,
   ButtonComponent,
   ButtonStyles,
-  SelectMenuComponent,
+  StringSelectComponent,
   SelectOption,
-} from 'discordeno/types';
-import { User } from 'discordeno/transformers';
-import { createCommand } from '../../structures/command/createCommand';
-import userRepository from '../../database/repositories/userRepository';
-import { getDisplayName } from '../../utils/discord/userUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { getUserTransactions } from '../../utils/apiRequests/statistics';
-import { bot } from '../..';
-import { millisToSeconds } from '../../utils/miscUtils';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import { transactionableCommandOption } from '../../structures/constants';
+} from '@discordeno/bot';
+import { createCommand } from '../../structures/command/createCommand.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { getUserTransactions } from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { millisToSeconds } from '../../utils/miscUtils.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import { transactionableCommandOption } from '../../structures/constants.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createSelectMenu,
   createUsersSelectMenu,
-} from '../../utils/discord/componentUtils';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { ApiTransactionReason, TransactionRegister } from '../../types/api';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { InteractionContext } from '../../types/menhera';
+} from '../../utils/discord/componentUtils.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { ApiTransactionReason, TransactionRegister } from '../../types/api.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { User } from '../../types/discordeno.js';
 
 const TRANSACTION_REASONS = Object.freeze(
   Object.values(ApiTransactionReason).filter((f) => f !== ApiTransactionReason.SIMON_SAYS),
@@ -49,7 +48,7 @@ const resolveUser = (
 };
 
 const getSentOptions = (ctx: ComponentInteractionContext, index: number): SelectOption[] =>
-  (ctx.interaction.message?.components?.[index]?.components?.[0] as SelectMenuComponent).options;
+  (ctx.interaction.message?.components?.[index]?.components?.[0] as StringSelectComponent).options;
 
 const getTransactionComponents = (
   ctx: InteractionContext,
@@ -147,11 +146,13 @@ const getTransactionComponents = (
       'C',
     ),
     placeholder: ctx.locale('commands:transactions.select-currency'),
-    options: transactionableCommandOption.map((t) => ({
-      label: t.nameLocalizations[ctx.guildLocale as 'en-US'] ?? t.name,
-      value: t.value,
-      default: selectedCurrencies.includes(t.value),
-    })),
+    options: transactionableCommandOption.map(
+      (t: { name: string; value: string; nameLocalizations: Record<string, string> }) => ({
+        label: t.nameLocalizations[ctx.guildLocale as 'en-US'] ?? t.name,
+        value: t.value,
+        default: selectedCurrencies.includes(t.value),
+      }),
+    ),
     minValues: 0,
     maxValues: transactionableCommandOption.length,
   });
@@ -343,15 +344,15 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
       a.authorId === `${ctx.interaction.user.id}`
         ? 'you'
         : a.authorId === `${bot.id}`
-        ? 'menhera'
-        : 'user';
+          ? 'menhera'
+          : 'user';
 
     const targetType =
       a.targetId === `${ctx.interaction.user.id}`
         ? 'you'
         : a.targetId === `${bot.id}`
-        ? 'menhera'
-        : 'user';
+          ? 'menhera'
+          : 'user';
 
     const transactionType = `${authorType}_to_${targetType}` as const;
 

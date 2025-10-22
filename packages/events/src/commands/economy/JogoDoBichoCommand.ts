@@ -1,17 +1,17 @@
-import { ApplicationCommandOptionTypes, ButtonStyles, TextStyles } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles, TextStyles } from '@discordeno/bot';
 
-import userRepository from '../../database/repositories/userRepository';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import starsRepository from '../../database/repositories/starsRepository';
-import { extractFields } from '../../utils/discord/modalUtils';
-import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
+import userRepository from '../../database/repositories/userRepository.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import { extractFields } from '../../utils/discord/modalUtils.js';
+import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction.js';
 import {
   BICHO_ANIMALS,
   BICHO_BET_MULTIPLIER,
   getBetType,
   mapResultToAnimal,
-} from '../../modules/bicho/finishBets';
-import { capitalize, millisToHours, millisToSeconds } from '../../utils/miscUtils';
+} from '../../modules/bicho/finishBets.js';
+import { capitalize, millisToHours, millisToSeconds } from '../../utils/miscUtils.js';
 import {
   canRegisterBet,
   didUserAlreadyBet,
@@ -20,23 +20,23 @@ import {
   getLastGameStatus,
   optionBetToText,
   registerUserBet,
-} from '../../modules/bicho/bichoManager';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { createCommand } from '../../structures/command/createCommand';
+} from '../../modules/bicho/bichoManager.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createSelectMenu,
   createTextInput,
-} from '../../utils/discord/componentUtils';
-import { COLORS } from '../../structures/constants';
-import bichoRepository from '../../database/repositories/bichoRepository';
-import { postTransaction } from '../../utils/apiRequests/statistics';
-import { bot } from '../..';
-import { ApiTransactionReason } from '../../types/api';
-import executeDailies from '../../modules/dailies/executeDailies';
-import { DatabaseUserSchema } from '../../types/database';
+} from '../../utils/discord/componentUtils.js';
+import { COLORS } from '../../structures/constants.js';
+import bichoRepository from '../../database/repositories/bichoRepository.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import executeDailies from '../../modules/dailies/executeDailies.js';
+import { DatabaseUserSchema } from '../../types/database.js';
 
 const tabledAnimals = (() => {
   let text = '';

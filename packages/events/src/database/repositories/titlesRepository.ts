@@ -1,9 +1,9 @@
-import { BigString, Localization } from 'discordeno/types';
+import { BigString, Localization } from '@discordeno/bot';
 
-import { MainRedisClient } from '../databases';
-import { titlesModel } from '../collections';
-import { DatabaseTitlesSchema } from '../../types/database';
-import { registerCacheStatus } from '../../structures/initializePrometheus';
+import { MainRedisClient } from '../databases.js';
+import { titlesModel } from '../collections.js';
+import { DatabaseTitlesSchema } from '../../types/database.js';
+import { registerCacheStatus } from '../../structures/initializePrometheus.js';
 
 const parseMongoDataToRedis = (title: DatabaseTitlesSchema): DatabaseTitlesSchema => ({
   registeredAt: title.registeredAt,
@@ -25,7 +25,13 @@ const registerTitle = async (
   });
 };
 
-const getTitlesCount = async (): Promise<number> => titlesModel.countDocuments();
+const getLatestTitleId = async (): Promise<number> =>
+  titlesModel
+    .findOne()
+    .sort({ id: -1 })
+    .select('id')
+    .limit(1)
+    .then((a) => a?.id);
 
 const getTitleInfo = async (titleId: number): Promise<DatabaseTitlesSchema | null> => {
   if (titleId === 0) return null;
@@ -70,4 +76,4 @@ const getTitles = async (userId: BigString, titles: number[]): Promise<DatabaseT
   return allTitles;
 };
 
-export default { registerTitle, getTitleInfo, getTitlesCount, getTitles };
+export default { registerTitle, getTitleInfo, getLatestTitleId, getTitles };

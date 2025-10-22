@@ -1,18 +1,16 @@
-FROM node:18-alpine as build
+FROM node:22-alpine as build
 WORKDIR /app
 COPY . .
+RUN corepack enable
 
-RUN yarn install && \
-    yarn events build && \
-    rm -rf node_modules && \
-    yarn install --production && \
-    mv docker/.yarnclean .yarnclean && \
-    yarn autoclean --force
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm events build && pnpm deploy --filter=@menhera-bot/events --prod /prod/events --legacy
 
-FROM node:18-alpine as events
+FROM node:22-alpine as events
 WORKDIR /app
-COPY --from=build /app/packages/events/dist  ./dist/
-COPY --from=build /app/packages/events/locales  ./locales/
-COPY --from=build /app/packages/events/package.json  ./
-COPY --from=build /app/packages/events/node_modules ./node_modules 
-CMD ["yarn", "beta"]
+RUN corepack enable
+COPY --from=build /prod/events/dist  ./dist/
+COPY --from=build /prod/events/locales  ./locales/
+COPY --from=build /prod/events/package.json  ./
+COPY --from=build /prod/events/node_modules ./node_modules 
+CMD ["pnpm", "beta"]

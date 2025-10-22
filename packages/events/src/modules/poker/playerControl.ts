@@ -1,25 +1,25 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ButtonStyles, SelectMenuComponent, SelectOption } from 'discordeno/types';
+import { ButtonStyles, StringSelectComponent, SelectOption } from '@discordeno/bot';
 import PokerSolver from 'pokersolver';
-import userRepository from '../../database/repositories/userRepository';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import userRepository from '../../database/repositories/userRepository.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import {
   createActionRow,
   createButton,
   createCustomId,
   createSelectMenu,
   createUsersSelectMenu,
-} from '../../utils/discord/componentUtils';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import { VanGoghEndpoints, VanGoghReturnData, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { Action, PokerMatch, PokerPlayer } from './types';
-import { GenericContext } from '../../types/menhera';
-import { SelectMenuUsersInteraction } from '../../types/interaction';
-import pokerRepository from '../../database/repositories/pokerRepository';
-import { mentionUser } from '../../utils/discord/userUtils';
-import { getOpenedCards, getPokerCard } from './cardUtils';
-import { Translation } from '../../types/i18next';
+} from '../../utils/discord/componentUtils.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { VanGoghEndpoints, VanGoghReturnData, vanGoghRequest } from '../../utils/vanGoghRequest.js';
+import { Action, PokerMatch, PokerPlayer } from './types.js';
+import { GenericContext } from '../../types/menhera.js';
+import { SelectMenuUsersInteraction } from '../../types/interaction.js';
+import pokerRepository from '../../database/repositories/pokerRepository.js';
+import { mentionUser } from '../../utils/discord/userUtils.js';
+import { getOpenedCards, getPokerCard } from './cardUtils.js';
+import { Translation } from '../../types/i18next.js';
 
 const updatePlayerHandValue = async (
   ctx: ComponentInteractionContext,
@@ -54,7 +54,7 @@ const updatePlayerHandValue = async (
 
   await ctx.makeMessage({
     embeds: [embed],
-    file: !image || image.err ? undefined : { name: 'poker.png', blob: image.data },
+    files: !image || image.err ? undefined : [{ name: 'poker.png', blob: image.data }],
     flags: MessageFlags.EPHEMERAL,
     components: [
       createActionRow([
@@ -164,7 +164,7 @@ const localizedAction = (ctx: GenericContext, action: Action, chips?: number): S
 const getPlayerBySeat = (gameData: PokerMatch, seatId: number): PokerPlayer =>
   gameData.players.find((a) => a.seatId === seatId)!;
 
-const getAvailableActions = (ctx: GenericContext, gameData: PokerMatch): SelectMenuComponent => {
+const getAvailableActions = (ctx: GenericContext, gameData: PokerMatch): StringSelectComponent => {
   const player = gameData.players.find((p) => p.seatId === gameData.seatToPlay)!;
 
   const availableActions: SelectOption[] = [localizedAction(ctx, 'FOLD')];

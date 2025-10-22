@@ -1,6 +1,5 @@
-import { MenheraClient } from '../types/menhera';
+import { MenheraClient } from '../types/menhera.js';
 
-/* eslint-disable no-console */
 const logger = {
   debug: (...args: unknown[]): void => {
     if (process.env.NODE_ENV === 'development') console.debug(...args);

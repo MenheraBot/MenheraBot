@@ -1,0 +1,82 @@
+services:
+  postgres:
+    image: postgres:12-alpine
+    hostname: postgres
+    restart: on-failure
+
+    env_file: ./envs/postgres.env
+
+    ports:
+      - 127.0.0.1:5432:5432
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro" 
+      - ./postgres:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:6.2.5-alpine
+    hostname: redis
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    restart: on-failure
+
+    ports:
+      - 127.0.0.1:6379:6379
+
+    configs:
+      - source: redis-config
+        target: /usr/local/etc/redis/redis.conf
+    
+  mongo:
+    image: mongo:6.0.1
+    hostname: mongo
+    restart: always
+      
+    env_file: ./envs/mongodb.env
+  
+    ports:
+      - 127.0.0.1:27017:27017
+  
+    volumes:
+      - mongo-data:/data/db
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro" 
+
+  vangogh:
+    image: ghcr.io/menherabot/vangogh
+    hostname: vangogh
+    restart: on-failure
+
+    network_mode: host
+      
+    env_file: ./envs/vangogh.env
+
+    depends_on:
+      - redis
+      - api
+
+  api:
+    image: ghcr.io/menherabot/api
+    container_name: api
+    hostname: api
+    restart: always
+      
+    env_file: ./envs/api.env
+  
+    depends_on:
+      - postgres
+  
+    network_mode: host
+
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro" 
+
+volumes:
+  mongo-data:
+  postgres-data:
+
+configs:
+  redis-config:
+    file: ./redis.conf

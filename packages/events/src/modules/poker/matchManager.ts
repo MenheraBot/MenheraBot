@@ -1,26 +1,35 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ButtonStyles } from 'discordeno/types';
+import { ButtonStyles } from '@discordeno/bot';
 import PokerSolver from 'pokersolver';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import pokerRepository from '../../database/repositories/pokerRepository';
-import userThemesRepository from '../../database/repositories/userThemesRepository';
-import { GenericContext, InteractionContext } from '../../types/menhera';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { PokerApiUser, PokerMatch, PokerPlayer, PokerWinReasons, TimerActionType } from './types';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { distributeCards, getOpenedCards, getPokerCard } from './cardUtils';
-import { getAvailableActions, getPlayerBySeat } from './playerControl';
-import { getNextPlayableSeat } from './turnManager';
-import { clearPokerTimer, startPokerTimeout } from './timerManager';
-import { capitalize, millisToSeconds } from '../../utils/miscUtils';
-import { executeBlinds } from './executeBlinds';
-import { AUTO_FOLD_TIMEOUT_IN_SECONDS, DEFAULT_CHIPS } from './constants';
-import { convertChipsToStars } from './afterMatchLobby';
-import { postPokerRound } from '../../utils/apiRequests/statistics';
-import { AvailableLanguages } from '../../types/i18next';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import pokerRepository from '../../database/repositories/pokerRepository.js';
+import userThemesRepository from '../../database/repositories/userThemesRepository.js';
+import { GenericContext, InteractionContext } from '../../types/menhera.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
+import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
+import {
+  PokerApiUser,
+  PokerMatch,
+  PokerPlayer,
+  PokerWinReasons,
+  TimerActionType,
+} from './types.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { distributeCards, getOpenedCards, getPokerCard } from './cardUtils.js';
+import { getAvailableActions, getPlayerBySeat } from './playerControl.js';
+import { getNextPlayableSeat } from './turnManager.js';
+import { clearPokerTimer, startPokerTimeout } from './timerManager.js';
+import { capitalize, millisToSeconds } from '../../utils/miscUtils.js';
+import { executeBlinds } from './executeBlinds.js';
+import { AUTO_FOLD_TIMEOUT_IN_SECONDS, DEFAULT_CHIPS } from './constants.js';
+import { convertChipsToStars } from './afterMatchLobby.js';
+import { postPokerRound } from '../../utils/apiRequests/statistics.js';
+import { AvailableLanguages } from '../../types/i18next.js';
 
 const makeShowdown = async (ctx: GenericContext, gameData: PokerMatch): Promise<void> => {
   gameData.stage = 'showdown';
@@ -183,7 +192,7 @@ const finishRound = async (
   await ctx.makeMessage({
     embeds: [embed],
     attachments: [],
-    file: image.err ? undefined : { name: 'poker.png', blob: image.data },
+    files: image.err ? undefined : [{ name: 'poker.png', blob: image.data }],
     components: canHaveOtherMatch ? [createActionRow([finishTable, exitTable, nextMatch])] : [],
     allowedMentions: { users: winners.map((a) => BigInt(a.id)) },
     // @ts-expect-error This key has plural
@@ -283,7 +292,7 @@ const createTableMessage = async (
   await ctx.makeMessage({
     allowedMentions: { users: [BigInt(nextPlayer)] },
     embeds: [embed],
-    file: image.err ? undefined : { name: 'poker.png', blob: image.data },
+    files: image.err ? undefined : [{ name: 'poker.png', blob: image.data }],
     attachments: [],
     components: [
       createActionRow([getAvailableActions(ctx, gameData)]),

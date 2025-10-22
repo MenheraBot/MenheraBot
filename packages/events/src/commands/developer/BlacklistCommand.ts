@@ -1,12 +1,16 @@
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
-import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 
-import blacklistRepository from '../../database/repositories/blacklistRepository';
-import userRepository from '../../database/repositories/userRepository';
-import { createCommand } from '../../structures/command/createCommand';
-import { getAllUserBans } from '../../utils/apiRequests/statistics';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
+import blacklistRepository from '../../database/repositories/blacklistRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { createCommand } from '../../structures/command/createCommand.js';
+import { getAllUserBans } from '../../utils/apiRequests/statistics.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
+import { User } from '../../types/discordeno.js';
 
 const executeAllTimeBans = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [userId] = ctx.sentData;

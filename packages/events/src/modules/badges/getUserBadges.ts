@@ -1,8 +1,8 @@
-import { ToggleBitfield, User } from 'discordeno/transformers';
-import { UserFlags } from 'discordeno/types';
+import { UserFlags } from '@discordeno/bot';
 import mongoose from 'mongoose';
 
-import { DatabaseUserSchema, UserBadge } from '../../types/database';
+import { DatabaseUserSchema, UserBadge } from '../../types/database.js';
+import { User } from '../../types/discordeno.js';
 
 const menheraBitBadgesAccepted = [
   UserFlags.EarlyVerifiedBotDeveloper,
@@ -45,9 +45,9 @@ const getUserBadges = (user: DatabaseUserSchema, discordUser: User): UserBadge[]
       obtainAt: `${creationTime + oneYearInMillis * yearsWithMenhera}`,
     });
 
-  const userFlagsBitfield = new ToggleBitfield(discordUser.publicFlags);
+  const userFlags = discordUser.publicFlags;
 
-  if (discordUser.toggles.bot) userBadges.push({ id: 14, obtainAt: `${Date.now()}` });
+  if (discordUser.bot) userBadges.push({ id: 14, obtainAt: `${Date.now()}` });
 
   if (user.votes >= 50)
     userBadges.push({ id: getVotesBadgeId(user.votes), obtainAt: `${Date.now()}` });
@@ -59,7 +59,7 @@ const getUserBadges = (user: DatabaseUserSchema, discordUser: User): UserBadge[]
     userBadges.push({ id: 18, obtainAt: `${user.voteCooldown - 1000 * 60 * 60 * 12}` });
 
   menheraBitBadgesAccepted.forEach((bit) => {
-    if (userFlagsBitfield.contains(bit))
+    if (userFlags?.contains(bit))
       userBadges.push({
         id: discordBitFlagsToMenheraBadges[bit as 256] as 3,
         obtainAt: `${Date.now()}`,

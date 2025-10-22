@@ -1,30 +1,34 @@
-import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from '@discordeno/bot';
 
-import userRepository from '../../database/repositories/userRepository';
-import huntRepository from '../../database/repositories/huntRepository';
-import commandRepository from '../../database/repositories/commandRepository';
-import { calculateProbability, capitalize, millisToSeconds } from '../../utils/miscUtils';
-import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { COLORS, transactionableCommandOption } from '../../structures/constants';
-import { MessageFlags } from '../../utils/discord/messageUtils';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { DatabaseHuntingTypes, HuntCooldownBoostItem } from '../../modules/hunt/types';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { createCommand } from '../../structures/command/createCommand';
+import userRepository from '../../database/repositories/userRepository.js';
+import huntRepository from '../../database/repositories/huntRepository.js';
+import commandRepository from '../../database/repositories/commandRepository.js';
+import { calculateProbability, capitalize, millisToSeconds } from '../../utils/miscUtils.js';
+import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
+import { COLORS, transactionableCommandOption } from '../../structures/constants.js';
+import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
+import { DatabaseHuntingTypes, HuntCooldownBoostItem } from '../../modules/hunt/types.js';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { createCommand } from '../../structures/command/createCommand.js';
 import {
   dropHuntItem,
   getMagicItemById,
   getUserHuntCooldown,
   getUserHuntProbability,
-} from '../../modules/hunt/huntUtils';
-import { postHuntExecution, postTransaction } from '../../utils/apiRequests/statistics';
-import { bot } from '../..';
-import { ApiTransactionReason } from '../../types/api';
-import { InteractionContext, ProbabilityAmount } from '../../types/menhera';
-import executeDailies from '../../modules/dailies/executeDailies';
-import { DatabaseUserSchema } from '../../types/database';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
-import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
+} from '../../modules/hunt/huntUtils.js';
+import { postHuntExecution, postTransaction } from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import { InteractionContext, ProbabilityAmount } from '../../types/menhera.js';
+import executeDailies from '../../modules/dailies/executeDailies.js';
+import { DatabaseUserSchema } from '../../types/database.js';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import {
+  createActionRow,
+  createButton,
+  createCustomId,
+} from '../../utils/discord/componentUtils.js';
 
 const choices = [
   ...transactionableCommandOption.filter((a) => a.value !== 'estrelinhas'),
@@ -115,7 +119,7 @@ const executeHuntCommand = async (
     title: ctx.locale(`commands:cacar.${selection}`),
   });
 
-  const timesToHunt = canHunt && rollsToUse ? rollsToUse + 1 : rollsToUse ?? 1;
+  const timesToHunt = canHunt && rollsToUse ? rollsToUse + 1 : (rollsToUse ?? 1);
 
   const executeHunt = async (probability: ProbabilityAmount[]) => {
     let value = 0;

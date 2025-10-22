@@ -1,13 +1,13 @@
-import { ButtonComponent, ButtonStyles } from 'discordeno/types';
-import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from '.';
-import cacheRepository from '../../database/repositories/cacheRepository';
-import userRepository from '../../database/repositories/userRepository';
-import { DatabaseUserSchema } from '../../types/database';
-import { InteractionContext } from '../../types/menhera';
-import { createEmbed } from '../../utils/discord/embedUtils';
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils';
-import { createActionRow, createButton } from '../../utils/discord/componentUtils';
-import titlesRepository from '../../database/repositories/titlesRepository';
+import { ButtonComponent, ButtonStyles } from '@discordeno/bot';
+import { calculateSkipCount, createPaginationButtons, usersToIgnoreInTop } from './index.js';
+import cacheRepository from '../../database/repositories/cacheRepository.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import { DatabaseUserSchema } from '../../types/database.js';
+import { InteractionContext } from '../../types/menhera.js';
+import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
+import { createActionRow, createButton } from '../../utils/discord/componentUtils.js';
+import titlesRepository from '../../database/repositories/titlesRepository.js';
 
 const executeUserDataRelatedTop = async (
   ctx: InteractionContext,

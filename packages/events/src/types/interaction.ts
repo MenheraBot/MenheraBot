@@ -1,6 +1,5 @@
-import { Collection } from 'discordeno/*';
-import { Interaction, Member, User } from 'discordeno/transformers';
-import { InputTextComponent, MessageComponentTypes } from 'discordeno/types';
+import { Collection, TextInputComponent, MessageComponentTypes } from '@discordeno/bot';
+import { Interaction, Member, User } from './discordeno.js';
 
 export type ComponentInteraction = Interaction & { data: { customId: string } };
 export type SelectMenuInteraction = ComponentInteraction & { data: { values: string[] } };
@@ -10,6 +9,6 @@ export type SelectMenuUsersInteraction = SelectMenuInteraction & {
 
 export type ModalInteraction = ComponentInteraction & {
   data: {
-    components: { type: MessageComponentTypes.ActionRow; components: InputTextComponent[] }[];
+    components: { type: MessageComponentTypes.ActionRow; components: TextInputComponent[] }[];
   };
 };

@@ -1,8 +1,8 @@
-import { BigString } from 'discordeno/types';
+import { BigString } from '@discordeno/bot';
 
-import { StoredBlackjackState } from '../../modules/blackjack/types';
-import { MainRedisClient } from '../databases';
-import { debugError } from '../../utils/debugError';
+import { StoredBlackjackState } from '../../modules/blackjack/types.js';
+import { MainRedisClient } from '../databases.js';
+import { debugError } from '../../utils/debugError.js';
 
 const updateBlackjackState = async (
   userId: BigString,
