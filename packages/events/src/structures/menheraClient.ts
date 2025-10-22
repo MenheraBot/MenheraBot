@@ -31,10 +31,6 @@ const setupMenheraClient = (client: MenheraClient): void => {
   client.changelog = null;
 
   client.commandsInExecution = 0;
-
-  client.respondInteraction = new Map();
-
-  client.ackInteraction = new Map();
 };
 
 const initializeServices = async (): Promise<void> => {

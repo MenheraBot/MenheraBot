@@ -1,4 +1,4 @@
-import { BigString, Bot, Collection, DesiredPropertiesBehavior } from '@discordeno/bot';
+import { Bot, Collection, DesiredPropertiesBehavior } from '@discordeno/bot';
 import { ChatInputInteractionCommand } from './commands.js';
 import ComponentInteractionContext from '../structures/command/ComponentInteractionContext.js';
 import ChatInputInteractionContext from '../structures/command/ChatInputInteractionContext.js';
@@ -37,8 +37,6 @@ export interface MenheraClient
   username: string;
   isMaster: boolean;
   commandsInExecution: number;
-  respondInteraction: Map<BigString, (...args: unknown[]) => unknown>;
-  ackInteraction: Map<BigString, () => void>;
   changelog: {
     versionName: string;
     date: string;

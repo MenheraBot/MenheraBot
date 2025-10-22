@@ -42,57 +42,24 @@ const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise
     }
   });
 
-const transformInteractionResponseCallbackData = ({ data, type }: InteractionResponse) => ({
-  type,
-  data: {
-    ...data,
-    allowedMentions: data?.allowedMentions
-      ? bot.transformers.reverse.allowedMentions(bot, data?.allowedMentions)
-      : undefined,
-    components: data?.components
-    // @ts-expect-error BigString conversion
-      ? data.components.map((c) => bot.transformers.reverse.component(bot, c))
-      : undefined,
-    choices: data?.choices
-    // @ts-expect-error Snakelize
-      ? data.choices.map((c) => bot.transformers.reverse.applicationCommandOptionChoice(bot, c))
-      : undefined,
-  },
-});
-
 const sendInteractionResponse = async (
   interactionId: BigString,
   token: string,
   options: InteractionResponse,
-): Promise<void> => {
-  const respond = bot.respondInteraction.get(`${interactionId}`);
-
-  if (!respond)
-    return sendRequest({
-      method: 'POST',
-      route: bot.rest.routes.interactions.responses.callback(interactionId, token),
-      requestBodyOptions: {
-        body: options,
-        files: options.data?.files,
-        unauthorized: true,
-      },
-      runThroughQueue: false,
-      resolve: noop,
-      reject: noop,
-      retryCount: 0,
-    });
-
-  return new Promise((r) => {
-    bot.ackInteraction.set(`${interactionId}`, r);
-
-    respond({
-      discord: transformInteractionResponseCallbackData(options),
-      id: `${interactionId}`,
-    });
-
-    bot.respondInteraction.delete(`${interactionId}`);
+): Promise<void> =>
+  sendRequest({
+    method: 'POST',
+    route: bot.rest.routes.interactions.responses.callback(interactionId, token),
+    requestBodyOptions: {
+      body: options,
+      files: options.data?.files,
+      unauthorized: true,
+    },
+    runThroughQueue: false,
+    resolve: noop,
+    reject: noop,
+    retryCount: 0,
   });
-};
 
 const editOriginalInteractionResponse = (
   token: string,

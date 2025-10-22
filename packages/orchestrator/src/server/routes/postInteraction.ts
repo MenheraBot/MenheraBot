@@ -16,17 +16,11 @@ const handleRequest = async (ctx: Context): Promise<void> => {
     id: string;
   };
 
-  if (!response) {
-    ctx.status = 500;
-    return;
-  }
+  if (!response) ctx.throw(HTTPResponseCodes.SeriveUnavailable);
 
-  ctx.body = response.discord;
-  ctx.status = HTTPResponseCodes.Ok;
+  ctx.status = response?.discord ? HTTPResponseCodes.Ok : HTTPResponseCodes.Accepted;
 
-  ctx.res.once('finish', () => {
-    sendEvent(RequestType.AckInteractionResponse, { id: response.id });
-  });
+  if (response?.discord) ctx.body = response.discord;
 };
 
 const createPostInteractionRouter = (): Router => {

@@ -44,7 +44,6 @@ export enum RequestType {
   SimonSays = 'SIMON_SAYS',
   AreYouOk = 'ARE_YOU_OK',
   ThankSuggestion = 'THANK_SUGGESTION',
-  AckInteractionResponse = 'ACK_INTERACTION_RESPONSE',
 }
 
 const getVersion = () => currentVersion;
@@ -66,11 +65,7 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
 
   const toUseClient = clientsToUse[eventsCounter % clientsToUse.length];
 
-  if (
-    [RequestType.InteractionCreate, RequestType.TellMeUsers, RequestType.ThankSuggestion].includes(
-      type,
-    )
-  ) {
+  if ([RequestType.TellMeUsers, RequestType.ThankSuggestion].includes(type)) {
     const result = await toUseClient.conn.request({ type, data }).catch(() => null);
     return result;
   }
@@ -91,7 +86,13 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
   }
 
   if (type !== RequestType.Prometheus) {
-    toUseClient.conn.send({ type, data });
+    const success = toUseClient.conn
+      .send({ type, data })
+      .catch(() => null)
+      .then(() => true);
+
+    if (!success) return null;
+
     return [];
   }
 

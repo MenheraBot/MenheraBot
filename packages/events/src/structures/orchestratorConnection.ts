@@ -41,10 +41,18 @@ const createIpcConnection = async (): Promise<void> => {
   orchestratorClient = new Client({ path: ORCHESTRATOR_SOCKET_PATH });
 
   orchestratorClient.on('message', async (msg) => {
-    if (msg.type === 'ACK_INTERACTION_RESPONSE') {
-      bot.ackInteraction.get(msg.data.id)?.();
-      bot.ackInteraction.delete(msg.data.id);
-      return;
+    if (msg.type === 'INTERACTION_CREATE') {
+      if (!process.env.NOMICROSERVICES)
+        getInteractionsCounter().inc(
+          {
+            type: numberTypeToName[msg.data.body.type as 1],
+          },
+          0.5,
+        );
+
+      bot.events.interactionCreate?.(
+        bot.transformers.interaction(bot, msg.data.body as DiscordInteraction),
+      );
     }
 
     if (msg.type === 'VOTE_WEBHOOK') {
@@ -93,7 +101,7 @@ const createIpcConnection = async (): Promise<void> => {
       await orchestratorClient.close('REQUESTED_SHUTDOWN');
 
       logger.info("[SHUTDOWN] I'm tired... I will rest for now");
-      console.log("Process waiting to be killed.")
+      console.log('Process waiting to be killed.');
     }
   });
 
@@ -138,24 +146,6 @@ const createIpcConnection = async (): Promise<void> => {
           ),
         );
         bot.commandsInExecution -= 1;
-        break;
-      }
-      case 'INTERACTION_CREATE': {
-        if (!process.env.NOMICROSERVICES)
-          getInteractionsCounter().inc(
-            {
-              type: numberTypeToName[msg.data.body.type as 1],
-            },
-            0.5,
-          );
-
-        if (msg.data.noAck) ack(true);
-        else bot.respondInteraction.set((msg.data.body as DiscordInteraction).id, ack);
-
-        bot.events.interactionCreate?.(
-          bot.transformers.interaction(bot, msg.data.body as DiscordInteraction),
-        );
-
         break;
       }
       case 'THANK_SUGGESTION': {
