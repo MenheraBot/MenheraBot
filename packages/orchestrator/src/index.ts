@@ -47,6 +47,8 @@ export enum RequestType {
   AckInteractionResponse = 'ACK_INTERACTION_RESPONSE',
 }
 
+const getVersion = () => currentVersion;
+
 const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => {
   eventsCounter += 1;
   if (eventsCounter >= 25) eventsCounter = 0;
@@ -271,4 +273,4 @@ process.on('SIGTERM', async () => {
   process.exit(0);
 });
 
-export { sendEvent };
+export { sendEvent, getVersion };

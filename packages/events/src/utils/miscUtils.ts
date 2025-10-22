@@ -117,6 +117,34 @@ const calculateProbability = <Prob extends ProbabilityAmount | ProbabilityType>(
   return 0;
 };
 
+type DeepBigIntToString<T> = T extends bigint
+  ? string
+  : T extends (infer U)[]
+    ? DeepBigIntToString<U>[]
+    : T extends null
+      ? null
+      : T extends object
+        ? { [K in keyof T]: DeepBigIntToString<T[K]> }
+        : T;
+
+const stringifyBigints = <T>(obj: T): DeepBigIntToString<T> => {
+  if (typeof obj === 'bigint') return obj.toString() as DeepBigIntToString<T>;
+
+  if (Array.isArray(obj)) return (obj as any[]).map(stringifyBigints) as DeepBigIntToString<T>;
+
+  if (obj && typeof obj === 'object') {
+    return Object.entries(obj as Record<string, unknown>).reduce(
+      (acc, [key, value]) => {
+        (acc as any)[key] = stringifyBigints(value);
+        return acc;
+      },
+      {} as Record<string, unknown>,
+    ) as DeepBigIntToString<T>;
+  }
+
+  return obj as DeepBigIntToString<T>;
+};
+
 export {
   capitalize,
   daysToMillis,
@@ -125,6 +153,7 @@ export {
   numberizeAllValues,
   getCustomThemeField,
   millisToSeconds,
+  stringifyBigints,
   localizedResources,
   calculateProbability,
   hoursToMillis,

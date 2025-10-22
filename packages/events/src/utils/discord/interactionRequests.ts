@@ -10,7 +10,7 @@ import { bot } from '../../index.js';
 import { debugError } from '../debugError.js';
 import { logger } from '../logger.js';
 import { Interaction } from '../../types/discordeno.js';
-import { noop } from '../miscUtils.js';
+import { stringifyBigints, noop } from '../miscUtils.js';
 
 const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise<void> =>
   new Promise((res, rej): void => {
@@ -68,7 +68,7 @@ const sendInteractionResponse = async (
     bot.ackInteraction.set(`${interactionId}`, r);
 
     respond({
-      discord: options,
+      discord: stringifyBigints(options),
       id: `${interactionId}`,
     });
 

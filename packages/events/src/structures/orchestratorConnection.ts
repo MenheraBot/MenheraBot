@@ -93,6 +93,7 @@ const createIpcConnection = async (): Promise<void> => {
       await orchestratorClient.close('REQUESTED_SHUTDOWN');
 
       logger.info("[SHUTDOWN] I'm tired... I will rest for now");
+      console.log("Process waiting to be killed.")
     }
   });
 
