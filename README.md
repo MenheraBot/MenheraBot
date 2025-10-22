@@ -7,8 +7,6 @@
 [![](https://top.gg/api/widget/upvotes/708014856711962654.svg)](https://top.gg/bot/708014856711962654/vote)
 [![Build and publish Menhera images](https://github.com/MenheraBot/MenheraBot/actions/workflows/deploy.yml/badge.svg?branch=production)](https://github.com/MenheraBot/MenheraBot/actions/workflows/deploy.yml)
 
-> Menhera is animating more than 90k servers with her functionalities
-
 MenheraBot is an open source Discord bot made in TypeScript with [Discordeno](https://discordeno.mod.land/) with foccus in Fun.
 Feel free to add a star ⭐ to the repository to promote the project!
 
@@ -26,7 +24,7 @@ docker compose -f ./development/docker-compose.yaml up -d
 
 ## 🔥 | Running
 
-This monorepo is divided in 3 main packages. The REST takes care of making contact with Discord's API, with this, we can avoid rate limits before making the request to the API **(NOT USED AT THE MOMENT)**. The Orchestrator receives all data from the outside world. It receives the HTTP interactions from Discord, vote webhooks from top.gg and prometheus scrapes. And we got the the Events pacakge, which takes care of processing every interaction made by users. To run the bot, just follow the steps:
+This monorepo is divided in 2 packages. The Orchestrator receives all data from the outside world. It receives the HTTP interactions from Discord, vote webhooks from top.gg and prometheus scrapes. And we got the the Events pacakge, which takes care of processing every interaction made by users. To run the bot, just follow the steps:
 
 1. 🧹 Clone the repository
 
@@ -37,20 +35,18 @@ git clone https://github.com/MenheraBot/MenheraBot.git
 2. 💻 Populate the env files. 
 > Every package has a .env.example file with every entry needed. Just create a .env file with all the entries.
 
-3. 🔥 Install deps and build all the packages
+3. 🔥 Install dependencies
 
 ```bash
-pnpm install && pnpm -r build
+pnpm install
 ```
 
 4. 🏃‍♂️ Running all services
 
-> Open 2 terminals and execute each command in a different one. The EVENTS package depends on the other package in production.
+> Before running, ensure you started the docker compose with `docker compose -f ./development/docker-compose.yaml up -d`
 
 ```bash
-# pnpm --filter @menhera-bot/rest dev
-# pnpm --filter @menhera-bot/orchestrator dev
-pnpm --filter @menhera-bot/events dev
+pnpm dev
 ```
 
 5. 🐦 Running tests

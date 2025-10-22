@@ -15,7 +15,18 @@ import { noop } from '../miscUtils.js';
 const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise<void> =>
   new Promise((res, rej): void => {
     try {
-      bot.rest.sendRequest({ ...options, resolve: () => res() });
+      bot.rest.sendRequest({
+        ...options,
+        resolve: () => res(),
+        reject: (err) =>
+          debugError(
+            new Error(
+              err.error ??
+                `Error sending interaction: ${err.status} ${err.statusText ?? 'Unknown error'}`,
+            ),
+            true,
+          ),
+      });
     } catch (e) {
       logger.error(
         `[SEND REQUEST] Failed to send request to ${options.route}. Current try ${currentTry}`,
@@ -57,8 +68,7 @@ const sendInteractionResponse = async (
     bot.ackInteraction.set(`${interactionId}`, r);
 
     respond({
-      // @ts-expect-error
-      discord: bot.transformers.interactionCallbackResponse(bot, { interaction: options }),
+      discord: options,
       id: `${interactionId}`,
     });
 

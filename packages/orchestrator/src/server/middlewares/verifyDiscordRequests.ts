@@ -2,18 +2,24 @@ import { Context, Next } from 'koa';
 import { getEnviroments } from '../../getEnviroments.js';
 import { HTTPResponseCodes } from '../httpServer.js';
 
-import { createPublicKey, verify } from 'node:crypto';
+import { createPublicKey, KeyObject, verify } from 'node:crypto';
 
 const { DISCORD_PUBLIC_KEY } = getEnviroments(['DISCORD_PUBLIC_KEY']);
 
-const publicKey = createPublicKey({
-  key: Buffer.concat([
-    new Uint8Array(Buffer.from('MCowBQYDK2VwAyEA', 'base64')),
-    new Uint8Array(Buffer.from(DISCORD_PUBLIC_KEY, 'hex')),
-  ]),
-  format: 'der',
-  type: 'spki',
-});
+let publicKey: KeyObject;
+
+try {
+  publicKey = createPublicKey({
+    key: Buffer.concat([
+      new Uint8Array(Buffer.from('MCowBQYDK2VwAyEA', 'base64')),
+      new Uint8Array(Buffer.from(DISCORD_PUBLIC_KEY, 'hex')),
+    ]),
+    format: 'der',
+    type: 'spki',
+  });
+} catch (err) {
+  console.log(`Error creating public key: ${err}`);
+}
 
 const verifyInteractionSignature = (
   signature: string,

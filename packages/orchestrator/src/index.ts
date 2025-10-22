@@ -234,6 +234,30 @@ orchestratorServer.on('ready', () => {
   console.log('[ORCHESTRATOR] The service has been started');
   createHttpServer();
   registerAllRouters();
+
+  if (process.env.DEVEL_DISCORD_TOKEN && process.env.NODE_ENV === 'development') {
+    (async () => {
+      const token = process.env.DEVEL_DISCORD_TOKEN;
+      const discordeno = await import('@discordeno/bot');
+
+      const bot = discordeno.createBot({
+        token: `${token}`,
+        desiredProperties: {},
+      });
+
+      const oldGatewayProcessing = bot.gateway.events.message;
+
+      bot.gateway.events.message = (shard, p) => {
+        if (p.op === 0 && p.t === 'INTERACTION_CREATE') {
+          console.log('[EVENT] - Interaction created!');
+          sendEvent(RequestType.InteractionCreate, { body: p.d, noAck: true });
+        }
+        oldGatewayProcessing?.(shard, p);
+      };
+
+      await bot.start();
+    })();
+  }
 });
 
 orchestratorServer.start().catch((r) => {

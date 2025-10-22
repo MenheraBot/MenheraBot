@@ -4,10 +4,9 @@
   "description": "A Brazilian Discord Bot foccused in Fun and RPG",
   "private": true,
   "scripts": {
-    "rest": "pnpm --filter @menhera-bot/rest",
     "orchestrator": "pnpm --filter @menhera-bot/orchestrator",
     "events": "pnpm --filter @menhera-bot/events",
-    "dev": "pnpm --filter @menhera-bot/events build:dev",
+    "dev": "pnpm -r build && pnpm -r dev",
     "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
     "run:lint": "eslint ."
   },
@@ -23,7 +22,7 @@
   "devDependencies": {
     "@eslint/js": "^9.38.0",
     "@types/jest": "^29.5.14",
-    "@typescript-eslint/parser": "^8.46.1",
+    "@typescript-eslint/parser": "^8.46.2",
     "dotenv": "^17.2.3",
     "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
@@ -34,7 +33,7 @@
     "prettier": "^3.6.2",
     "ts-jest": "^29.4.5",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.1"
+    "typescript-eslint": "^8.46.2"
   },
   "engines": {
     "node": ">=22.0.0",

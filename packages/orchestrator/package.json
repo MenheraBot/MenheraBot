@@ -25,6 +25,7 @@
   "license": "AGPL-3.0-only",
   "readme": "https://github.com/MenheraBot/MenheraBot#readme",
   "devDependencies": {
+    "@discordeno/bot": "22.0.1-next.bbdd2d1",
     "@types/koa": "^3.0.0",
     "@types/koa__router": "^12.0.4",
     "@types/qs": "^6.14.0"

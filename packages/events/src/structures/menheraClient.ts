@@ -5,7 +5,6 @@ import { loadLocales } from './localeStructure.js';
 import { initializeSentry } from './initializeSentry.js';
 import { getEnviroments } from '../utils/getEnviroments.js';
 import { MenheraClient } from '../types/menhera.js';
-import { logger } from '../utils/logger.js';
 import { updateAssets } from './cdnManager.js';
 import { initializePrometheus } from './initializePrometheus.js';
 import { loadChangelog } from '../utils/changelog.js';
@@ -14,8 +13,6 @@ import { loadCommands } from './command/loadCommands.js';
 
 const setupMenheraClient = (client: MenheraClient): void => {
   const { OWNER_ID } = getEnviroments(['OWNER_ID']);
-
-  logger.debug('Setting up Menhera Client');
 
   client.commands = new Collection();
 
@@ -56,8 +53,6 @@ const initializeServices = async (): Promise<void> => {
 
 const setupInternals = (bot: MenheraClient): void => {
   const { DISCORD_TOKEN } = getEnviroments(['DISCORD_TOKEN']);
-
-  logger.debug('Setting up the custom rest manager');
 
   bot.rest = createRestManager({
     token: DISCORD_TOKEN,

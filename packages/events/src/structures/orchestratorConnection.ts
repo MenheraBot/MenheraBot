@@ -34,8 +34,6 @@ let orchestratorClient: Client;
 const getOrchestratorClient = (): Client => orchestratorClient;
 
 const createIpcConnection = async (): Promise<void> => {
-  if (process.env.NODE_ENV === 'development') return;
-
   const { ORCHESTRATOR_SOCKET_PATH } = getEnviroments(['ORCHESTRATOR_SOCKET_PATH']);
 
   logger.debug(`Creating IPC connection to Orchestrator ${ORCHESTRATOR_SOCKET_PATH}`);
@@ -150,7 +148,8 @@ const createIpcConnection = async (): Promise<void> => {
             0.5,
           );
 
-        bot.respondInteraction.set((msg.data.body as DiscordInteraction).id, ack);
+        if (msg.data.noAck) ack(true);
+        else bot.respondInteraction.set((msg.data.body as DiscordInteraction).id, ack);
 
         bot.events.interactionCreate?.(
           bot.transformers.interaction(bot, msg.data.body as DiscordInteraction),

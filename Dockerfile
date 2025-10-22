@@ -14,13 +14,6 @@ RUN apk --no-cache add curl && \
 RUN pnpm deploy --filter=@menhera-bot/events --prod /prod/events --legacy
 RUN pnpm deploy --filter=@menhera-bot/orchestrator --prod /prod/orchestrator --legacy
 
-# FROM gcr.io/distroless/nodejs22-debian12 as rest
-# WORKDIR /app
-# COPY --from=build /app/packages/rest/dist  ./
-# COPY --from=build /app/packages/rest/node_modules ./node_modules 
-# ENV NODE_ENV=production
-# CMD ["index.js"]
-
 FROM node:22-alpine AS events
 WORKDIR /app
 RUN corepack enable
