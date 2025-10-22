@@ -162,7 +162,7 @@ const selectPlayers = async (
   if (allUserData.some((a) => chips > a.estrelinhas))
     return ctx.makeMessage({
       components: [],
-      content: ctx.prettyResponse('error', 'commands:poker.someone-is-poor'),
+      content: ctx.prettyResponse('error', 'commands:poker.someone-is-poor', { stars: chips }),
     });
 
   const embed = createStartMatchEmbed(
@@ -330,7 +330,7 @@ const PokerCommand = createCommand({
       name: 'fichas',
       description: 'Quantas fichas cada jogador vai levar para partida',
       type: ApplicationCommandOptionTypes.Integer,
-      minValue: 10_000,
+      minValue: 1_000,
       nameLocalizations: {
         'en-US': 'chips',
       },

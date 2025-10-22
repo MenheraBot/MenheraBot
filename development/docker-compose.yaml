@@ -54,6 +54,7 @@ services:
 
     depends_on:
       - redis
+      - api
 
   api:
     image: ghcr.io/menherabot/api

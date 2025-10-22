@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Diminuido mínimo para apostas no poker de `10000` para `1000` estrelinhas.
+
+### Fixed
+
+- Corrigido erro de tradução no comando poker.
+
 ## [5.21.5] - 2025-08-08
 
 ### Fixed
