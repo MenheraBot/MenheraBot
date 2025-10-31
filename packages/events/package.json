@@ -8,7 +8,7 @@
   "description": "The core package of Menhera. This package process all interactions that Menhera receives from users",
   "main": "dist/index.js",
   "repository": "https://github.com/MenheraBot/MenheraBot",
-  "license": "AGPL-3.0-only",
+  "license": "MIT",
   "readme": "https://github.com/MenheraBot/MenheraBot#readme",
   "author": "Luan Caliel (ySnoopyDogy)",
   "scripts": {

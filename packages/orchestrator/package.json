@@ -22,7 +22,7 @@
     "qs": "^6.14.0"
   },
   "repository": "https://github.com/MenheraBot/MenheraBot",
-  "license": "AGPL-3.0-only",
+  "license": "MIT",
   "readme": "https://github.com/MenheraBot/MenheraBot#readme",
   "devDependencies": {
     "@discordeno/bot": "22.0.1-next.bbdd2d1",

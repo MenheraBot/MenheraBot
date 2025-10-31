@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres:12-alpine
     hostname: postgres
-    restart: on-failure
+    restart: no
 
     env_file: ./envs/postgres.env
 
@@ -19,7 +19,7 @@ services:
     image: redis:6.2.5-alpine
     hostname: redis
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-    restart: on-failure
+    restart: no
 
     ports:
       - 127.0.0.1:6379:6379
@@ -31,7 +31,7 @@ services:
   mongo:
     image: mongo:6.0.1
     hostname: mongo
-    restart: always
+    restart: no
       
     env_file: ./envs/mongodb.env
   
@@ -46,7 +46,7 @@ services:
   vangogh:
     image: ghcr.io/menherabot/vangogh
     hostname: vangogh
-    restart: on-failure
+    restart: no
 
     network_mode: host
       
@@ -60,7 +60,7 @@ services:
     image: ghcr.io/menherabot/api
     container_name: api
     hostname: api
-    restart: always
+    restart: no
       
     env_file: ./envs/api.env
   

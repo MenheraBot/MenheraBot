@@ -97,7 +97,7 @@ Email: **[contact@luancaliel.dev](mailto:contact@luancaliel.dev)**
 
 ## 📜 | Source
 
-Menhera uses the AGPL-3.0 license. See the `LICENSE` file for more information!
+Menhera uses the MIT license. See the `LICENSE` file for more information!
 
 ---
 
