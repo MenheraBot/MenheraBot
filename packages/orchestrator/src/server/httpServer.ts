@@ -17,6 +17,7 @@ export enum HTTPResponseCodes {
   Unauthorized = 401,
   Forbidden = 403,
   NotFound = 404,
+  GoAway = 444,
   SeriveUnavailable = 503,
 }
 

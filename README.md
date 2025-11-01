@@ -43,7 +43,7 @@ pnpm install
 
 4. 🏃‍♂️ Running all services
 
-> Before running, ensure you started the docker compose with `docker compose -f ./development/docker-compose.yaml up -d`
+> Before running, ensure you started the docker compose with `docker compose -f ./development/docker-compose.yaml up -d` or simply `make`
 
 ```bash
 pnpm dev

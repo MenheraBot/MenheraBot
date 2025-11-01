@@ -28,7 +28,7 @@ const handleRequest = async (ctx: Context): Promise<void> => {
   const result = await sendEvent(RequestType.TellMeUsers, { users });
 
   if (!result) {
-    ctx.status = 503;
+    ctx.status = HTTPResponseCodes.SeriveUnavailable;
     ctx.body = "Menhera can't respond right now. I think she's sleeping hehehe";
     return;
   }

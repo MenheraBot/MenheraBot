@@ -3,11 +3,12 @@ import Router from '@koa/router';
 import { RequestType, sendEvent } from '../../index.js';
 import { verifyDiscordRequests } from '../middlewares/verifyDiscordRequests.js';
 import { HTTPResponseCodes } from '../httpServer.js';
+import { InteractionResponseTypes, InteractionTypes } from '@discordeno/types';
 
 const handleRequest = async (ctx: Context): Promise<void> => {
-  if (ctx.request.body.type === 1) {
+  if (ctx.request.body.type === InteractionTypes.Ping) {
     ctx.status = HTTPResponseCodes.Ok;
-    ctx.body = { type: 1 };
+    ctx.body = { type: InteractionResponseTypes.Pong };
     return;
   }
 

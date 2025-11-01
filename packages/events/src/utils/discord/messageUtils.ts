@@ -1,6 +1,7 @@
 enum MessageFlags {
   EPHEMERAL = 64,
   SUPPRESS_EMBEDS = 4,
+  IS_COMPONENTS_V2 = 32768,
 }
 
 const extractNameAndIdFromEmoji = (

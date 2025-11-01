@@ -8,7 +8,7 @@ const handleRequest = async (ctx: Context): Promise<void> => {
 
   if (ctx.req.method === 'HEAD') {
     ctx.body = null;
-    ctx.status = 200;
+    ctx.status = HTTPResponseCodes.Ok;
     ctx.set('Content-Type', 'application/json');
     return;
   }
