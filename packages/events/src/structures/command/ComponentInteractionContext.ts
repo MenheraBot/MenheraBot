@@ -6,13 +6,14 @@ import { AvailableLanguages, Translation } from '../../types/i18next.js';
 import { ComponentInteraction } from '../../types/interaction.js';
 import { logger } from '../../utils/logger.js';
 import { EMOJIS, TOP_EMOJIS } from '../constants.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import {
   editOriginalInteractionResponse,
   sendFollowupMessage,
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests.js';
 import { User } from '../../types/discordeno.js';
+import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
 
 export type CanResolve = 'users' | 'members' | false;
 
@@ -99,7 +100,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   }
 
   async respondInteraction(
-    options: InteractionCallbackData & { attachments?: unknown[] },
+    options: InteractionCallbackData,
   ): Promise<void> {
     if (!this.replied) {
       await sendInteractionResponse(this.interaction.id, this.interaction.token, {
@@ -115,7 +116,14 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
     );
   }
 
-  async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
+  async makeLayoutMessage(
+    options: Omit<InteractionCallbackData, 'embed' | 'content' | 'stickers' | 'poll'>,
+  ) {
+    options.flags = setComponentsV2Flag(options.flags ?? 0);
+    return this.makeMessage(options);
+  }
+
+  async makeMessage(options: InteractionCallbackData): Promise<void> {
     if (!this.replied) {
       this.replied = true;
       await sendInteractionResponse(this.interaction.id, this.interaction.token, {

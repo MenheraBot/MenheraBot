@@ -8,6 +8,7 @@ import {
   editOriginalInteractionResponse,
   sendFollowupMessage,
 } from '../../utils/discord/interactionRequests.js';
+import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
 
 export default class {
   private i18n: TFunction;
@@ -40,7 +41,14 @@ export default class {
     return `${this.safeEmoji(emoji) || '🐛'} **|** ${this.locale(text, translateOptions)}`;
   }
 
-  async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
+  async makeLayoutMessage(
+    options: Omit<InteractionCallbackData, 'embed' | 'content' | 'stickers' | 'poll'>,
+  ) {
+    options.flags = setComponentsV2Flag(options.flags ?? 0);
+    return this.makeMessage(options);
+  }
+
+  async makeMessage(options: InteractionCallbackData): Promise<void> {
     await editOriginalInteractionResponse(this.interactionToken, options).catch(debugError);
   }
 }

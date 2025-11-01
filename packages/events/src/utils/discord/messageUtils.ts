@@ -22,6 +22,6 @@ const extractNameAndIdFromEmoji = (
 
 const removeNonNumbers = (str: string): string => str.replace(/\D/g, '');
 
-const setComponentsV2 = (flags: number) => flags & MessageFlags.IsComponentsV2;
+const setComponentsV2Flag = (flags: number) => flags & MessageFlags.IsComponentsV2;
 
-export { MessageFlags, extractNameAndIdFromEmoji, removeNonNumbers, setComponentsV2 };
+export { MessageFlags, extractNameAndIdFromEmoji, removeNonNumbers, setComponentsV2Flag };

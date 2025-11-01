@@ -4,7 +4,7 @@ import i18next, { TFunction } from 'i18next';
 
 import { DatabaseUserSchema } from '../../types/database.js';
 import { AvailableLanguages, Translation } from '../../types/i18next.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { logger } from '../../utils/logger.js';
 import { EMOJIS, TOP_EMOJIS } from '../constants.js';
 import { getFullCommandUsed, getOptionFromInteraction } from './getCommandOption.js';
@@ -14,6 +14,7 @@ import {
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests.js';
 import { Interaction, User } from '../../types/discordeno.js';
+import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
 
 export type CanResolve = 'users' | 'members' | 'attachments' | false;
 
@@ -71,7 +72,14 @@ export default class {
     }).catch((e) => this.captureException(e));
   }
 
-  async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
+  async makeLayoutMessage(
+    options: Omit<InteractionCallbackData, 'embed' | 'content' | 'stickers' | 'poll'>,
+  ) {
+    options.flags = setComponentsV2Flag(options.flags ?? 0);
+    return this.makeMessage(options);
+  }
+
+  async makeMessage(options: InteractionCallbackData): Promise<void> {
     if (this.replied) {
       await editOriginalInteractionResponse(this.interaction.token, options).catch((e) =>
         this.captureException(e),

@@ -60,7 +60,7 @@
     "embed_description": "{{author}} deu um abraço quentinho em {{mention}}"
   },
   "matar": {
-    "self-mention": "Não faça isso, a vida é uma montanha russa, um dia tu ta bem, no outro ta tudo horrível. Mas não se preocupa, isso vai passar, sempre passa. Minha mãe (a Lux) também passou por problemas, mas hoje em dia ta tudo bem, por que sempre vai passar. Caso tu esteja mal, converse com alguém, isso ajuda demais. Caso não tenha ninguém pra conversar, ligue para o CVV (Centro de Valorização à Vida): 188, é grátis, funciona 24/7, e sempre tem alguém a tua disposição. Viva bem neném. Beijos de Luz da Lux, e beijos meus, UwU",
+    "self-mention": "Não faça isso, a vida é uma montanha russa, um dia tu ta bem, no outro ta tudo horrível. Mas não se preocupa, isso vai passar, sempre passa. Caso tu esteja mal, converse com alguém, isso ajuda demais.",
     "bot": {
       "embed_title": "Desligar",
       "embed_description": "*Robôs não podem ser mortos, mas podem ser desligados...*\n{{author}} desligou o bot {{mention}}"
@@ -138,7 +138,7 @@
     "sarrar": "Aceitar a Sarrada"
   },
   "atirar": {
-    "self-mention": "Não faça isso, a vida é uma montanha russa, um dia tu ta bem, no outro ta tudo horrível. Mas não se preocupa, isso vai passar, sempre passa. Minha mãe (a Lux) também passou por problemas, mas hoje em dia ta tudo bem, por que sempre vai passar. Caso tu esteja mal, converse com alguém, isso ajuda demais. Caso não tenha ninguém pra conversar, ligue para o CVV (Centro de Valorização à Vida): 188, é grátis, funciona 24/7, e sempre tem alguém a tua disposição. Viva bem neném. Beijos de Luz da Lux, e beijos meus, UwU",
+    "self-mention": "Não faça isso, a vida é uma montanha russa, um dia tu ta bem, no outro ta tudo horrível. Mas não se preocupa, isso vai passar, sempre passa. Caso tu esteja mal, converse com alguém, isso ajuda demais.",
     "embed_title": "Atirar",
     "embed_description_uncensored": "{{author}} meteu bala em {{mention}}",
     "embed_description": "{{author}} deu tirinho em {{mention}}"
