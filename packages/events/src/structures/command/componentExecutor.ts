@@ -5,7 +5,7 @@ import { mentionUser } from '../../utils/discord/userUtils.js';
 import commandRepository from '../../database/repositories/commandRepository.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import blacklistRepository from '../../database/repositories/blacklistRepository.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { bot } from '../../index.js';
 import guildRepository from '../../database/repositories/guildRepository.js';
 import ComponentInteractionContext from './ComponentInteractionContext.js';
@@ -48,7 +48,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: {
         content: `<:negacao:759603958317711371> | ${T('permissions:COMPONENT_OUTDATED')}`,
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       },
     }).catch(noop);
     return;
@@ -59,7 +59,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: {
         content: `<:negacao:759603958317711371> | ${content}`,
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
         allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
       },
     }).catch(noop);

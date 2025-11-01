@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { TODAYS_YEAR, COLORS } from '../../structures/constants.js';
 import { getAssetLink } from '../../structures/cdnManager.js';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
@@ -50,7 +50,7 @@ const BiteCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:morder.self-mention'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 

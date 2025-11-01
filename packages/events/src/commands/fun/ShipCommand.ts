@@ -2,7 +2,7 @@ import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
 import userRepository from '../../database/repositories/userRepository.js';
 import { getUserAvatar } from '../../utils/discord/userUtils.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { createCommand } from '../../structures/command/createCommand.js';
 import blacklistRepository from '../../database/repositories/blacklistRepository.js';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
@@ -46,7 +46,7 @@ const ShipCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:ship.banned-user'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 

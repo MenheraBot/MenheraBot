@@ -4,7 +4,7 @@ import i18next, { TFunction } from 'i18next';
 
 import { DatabaseUserSchema } from '../../types/database.js';
 import { AvailableLanguages, Translation } from '../../types/i18next.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { logger } from '../../utils/logger.js';
 import { EMOJIS, TOP_EMOJIS } from '../constants.js';
 import { getFullCommandUsed, getOptionFromInteraction } from './getCommandOption.js';
@@ -120,7 +120,7 @@ export default class {
     await sendInteractionResponse(this.interaction.id, this.interaction.token, {
       type: InteractionResponseTypes.DeferredChannelMessageWithSource,
       data: {
-        flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
+        flags: ephemeral ? MessageFlags.Ephemeral : undefined,
       },
     }).catch((e) => this.captureException(e));
   }

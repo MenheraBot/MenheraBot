@@ -11,7 +11,7 @@ import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.j
 import { createCommand } from '../../structures/command/createCommand.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import userRepository from '../../database/repositories/userRepository.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { getDisplayName } from '../../utils/discord/userUtils.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { getPlantationState } from '../../modules/fazendinha/plantationState.js';
@@ -63,7 +63,7 @@ const CooldownsCommand = createCommand({
     if (!userData)
       return ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:cooldowns.no-user'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       });
 
     const huntCooldown = userData.huntCooldown - Date.now();

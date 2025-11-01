@@ -1,8 +1,4 @@
-enum MessageFlags {
-  EPHEMERAL = 64,
-  SUPPRESS_EMBEDS = 4,
-  IS_COMPONENTS_V2 = 32768,
-}
+import { MessageFlags } from "@discordeno/bot";
 
 const extractNameAndIdFromEmoji = (
   emoji: string,
@@ -26,4 +22,6 @@ const extractNameAndIdFromEmoji = (
 
 const removeNonNumbers = (str: string): string => str.replace(/\D/g, '');
 
-export { MessageFlags, extractNameAndIdFromEmoji, removeNonNumbers };
+const setComponentsV2 = (flags: number) => flags & MessageFlags.IsComponentsV2;
+
+export { MessageFlags, extractNameAndIdFromEmoji, removeNonNumbers, setComponentsV2 };

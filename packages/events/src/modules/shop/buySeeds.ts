@@ -20,7 +20,7 @@ import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import commandRepository from '../../database/repositories/commandRepository.js';
 import { getSiloLimits } from '../fazendinha/siloUtils.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { AvailablePlants } from '../fazendinha/types.js';
 import { SeasonEmojis } from '../fazendinha/displayPlantations.js';
 
@@ -71,7 +71,7 @@ const parseModalSumbit = async (
       content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
         limit: userLimits.limit,
       }),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
   const userData = await userRepository.ensureFindUser(ctx.user.id);

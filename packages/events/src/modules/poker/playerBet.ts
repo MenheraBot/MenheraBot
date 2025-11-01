@@ -7,7 +7,7 @@ import {
   createTextInput,
   resolveSeparatedStrings,
 } from '../../utils/discord/componentUtils.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { extractFields } from '../../utils/discord/modalUtils.js';
 import { getPreviousPlayableSeat, updateGameState } from './turnManager.js';
 import { Action, PokerMatch, PokerPlayer } from './types.js';
@@ -70,7 +70,7 @@ const validateUserBet = async (
   if (Number.isNaN(bet))
     return ctx.respondInteraction({
       content: ctx.prettyResponse('error', 'commands:poker.player.invalid-number'),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
   if (bet < minValue)
@@ -78,13 +78,13 @@ const validateUserBet = async (
       content: ctx.prettyResponse('error', 'commands:poker.player.min-bet-required', {
         chips: minValue,
       }),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
   if (bet > player.chips)
     return ctx.respondInteraction({
       content: ctx.prettyResponse('error', 'commands:poker.player.too-poor'),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
   executeAction(gameData, player, bet === player.chips ? 'ALLIN' : 'RAISE', bet);

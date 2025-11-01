@@ -20,7 +20,7 @@ import {
   createSelectMenu,
 } from '../../utils/discord/componentUtils.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
 import { getThemeById, getThemesByType, getUserActiveThemes } from '../themes/getThemes.js';
 import { ProfileTheme, ThemeFile } from '../themes/types.js';
@@ -293,7 +293,7 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
           await sendInteractionResponse(ctx.interaction.id, ctx.interaction.token, {
             type: InteractionResponseTypes.DeferredChannelMessageWithSource,
             data: {
-              flags: MessageFlags.EPHEMERAL,
+              flags: MessageFlags.Ephemeral,
             },
           });
 
@@ -347,7 +347,7 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
         await sendInteractionResponse(ctx.interaction.id, ctx.interaction.token, {
           type: InteractionResponseTypes.DeferredChannelMessageWithSource,
           data: {
-            flags: MessageFlags.EPHEMERAL,
+            flags: MessageFlags.Ephemeral,
           },
         });
 
@@ -359,7 +359,7 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
         if (res.err) {
           await ctx.followUp({
             content: ctx.prettyResponse('error', 'common:http-error'),
-            flags: MessageFlags.EPHEMERAL,
+            flags: MessageFlags.Ephemeral,
           });
           return;
         }

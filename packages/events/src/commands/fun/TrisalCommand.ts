@@ -9,7 +9,7 @@ import {
   createCustomId,
 } from '../../utils/discord/componentUtils.js';
 import relationshipRepostory from '../../database/repositories/relationshipRepostory.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import userRepository from '../../database/repositories/userRepository.js';
@@ -46,7 +46,7 @@ const executeFinishTrisal = async (
     return finishCommand(
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.not-in-trisal'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       }),
     );
 
@@ -132,7 +132,7 @@ const executeMakeTrisal = async (
     return finishCommand(
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.bot-mention'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       }),
     );
 
@@ -144,7 +144,7 @@ const executeMakeTrisal = async (
     return finishCommand(
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.mention-error'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       }),
     );
 
@@ -156,7 +156,7 @@ const executeMakeTrisal = async (
     return finishCommand(
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.same-mention'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       }),
     );
 
@@ -178,7 +178,7 @@ const executeMakeTrisal = async (
     return finishCommand(
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.banned-user'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       }),
     );
 
@@ -186,7 +186,7 @@ const executeMakeTrisal = async (
     return finishCommand(
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.comedor-de-casadas'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       }),
     );
 
@@ -223,7 +223,7 @@ const executeOrderTrisal = async (
     return finishCommand(
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.not-in-trisal'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       }),
     );
 
@@ -239,7 +239,7 @@ const executeOrderTrisal = async (
     return finishCommand(
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.some-user-not-in-trisal'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       }),
     );
 
@@ -251,7 +251,7 @@ const executeOrderTrisal = async (
     return finishCommand(
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.same-mention'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       }),
     );
 
@@ -274,7 +274,7 @@ const executeDisplayTrisal = async (
     return finishCommand(
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.user-not-in-trisal'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       }),
     );
 
@@ -285,7 +285,7 @@ const executeDisplayTrisal = async (
           'error',
           `commands:trisal.${user.id !== ctx.author.id ? 'user-' : ''}not-in-trisal`,
         ),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       }),
     );
 
@@ -302,7 +302,7 @@ const executeDisplayTrisal = async (
     return finishCommand(
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.marry-not-found'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       }),
     );
 

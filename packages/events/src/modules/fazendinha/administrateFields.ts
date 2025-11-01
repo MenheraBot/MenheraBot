@@ -315,7 +315,7 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
 
   if (!canUnlock || userData.estrelinhas < neededItems.cost)
     return ctx.respondInteraction({
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
       content: ctx.prettyResponse('error', 'commands:fazendinha.admin.needed-items', {
         star: neededItems.cost,
         plants: neededItems.neededPlants.map(

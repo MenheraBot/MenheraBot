@@ -1,5 +1,5 @@
 import shopRepository from '../../database/repositories/shopRepository.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { DatabaseHuntingTypes } from '../hunt/types.js';
 import { huntValues } from './constants.js';
@@ -17,7 +17,7 @@ const sellHunts = async (
         content: ctx.prettyResponse('error', 'commands:loja.dataVender.poor', {
           var: ctx.locale(`common:${huntType}`),
         }),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       }),
     );
 

@@ -25,7 +25,7 @@ import {
   createCustomId,
 } from '../../utils/discord/componentUtils.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
 import { chunkArray, millisToSeconds } from '../../utils/miscUtils.js';
 
@@ -49,7 +49,7 @@ const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand:
   if (!huntData.user_id) {
     await ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:status.hunt.no-data'),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
     return finishCommand();
@@ -148,7 +148,7 @@ const executeDesignerStats = async (
   if (userDesigns.length === 0) {
     ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:status.designer.no-designer'),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
     return finishCommand();

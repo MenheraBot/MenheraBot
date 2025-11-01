@@ -219,20 +219,20 @@ const executeColorComponents = async (
       if (newName.length < 2)
         return ctx.respondInteraction({
           content: ctx.prettyResponse('error', 'commands:loja.buy_colors.min-color-name'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         });
 
       if (!userColor) {
         return ctx.respondInteraction({
           content: ctx.prettyResponse('error', 'commands:cor.nonexistent'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         });
       }
 
       if (authorData.colors.some((a) => a.nome === newName)) {
         ctx.respondInteraction({
           content: ctx.prettyResponse('error', 'commands:cor.same-name'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         });
 
         break;
@@ -259,7 +259,7 @@ const executeColorComponents = async (
           color: oldColor,
           name: newName,
         }),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       });
 
       break;
@@ -350,7 +350,7 @@ const executeColorCommand = async (ctx: ChatInputInteractionContext, finishComma
   if (ctx.authorData.colors.length < 2) {
     ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:cor.min-color'),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
     return finishCommand();
@@ -388,7 +388,7 @@ const executeImageCommand = async (ctx: ChatInputInteractionContext, finishComma
   if (authorData.profileImages.length < 2) {
     ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:imagem.min-image'),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
     return finishCommand();

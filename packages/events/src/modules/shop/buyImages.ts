@@ -27,7 +27,7 @@ import {
   createTextInput,
 } from '../../utils/discord/componentUtils.js';
 import { createEmbed } from '../../utils/discord/embedUtils.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { extractFields } from '../../utils/discord/modalUtils.js';
 import { getEnviroments } from '../../utils/getEnviroments.js';
 import { customImagePrice } from './constants.js';
@@ -95,12 +95,12 @@ const executeBuyImagesSelectComponent = async (ctx: ComponentInteractionContext)
   if (toPreview) {
     if (selectedImage === -1)
       return ctx.respondInteraction({
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
         content: ctx.prettyResponse('error', 'commands:loja.buy_images.no-preview-for-custom'),
       });
 
     return ctx.respondInteraction({
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
       embeds: [
         createEmbed({
           title: ctx.locale('commands:loja.buy_images.preview-title', {

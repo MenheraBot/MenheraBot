@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { toWritableUtf } from '../../utils/miscUtils.js';
@@ -43,7 +43,7 @@ const PhiloCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'common:http-error'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 

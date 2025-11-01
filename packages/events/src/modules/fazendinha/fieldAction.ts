@@ -3,7 +3,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { DatabaseFarmerSchema } from '../../types/database.js';
 import { SelectMenuInteraction } from '../../types/interaction.js';
 import { postFazendinhaAction } from '../../utils/apiRequests/statistics.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { displayPlantations } from './displayPlantations.js';
 import { getFieldWeight, getHarvestTime, getPlantationState } from './plantationState.js';
 import { Items, Plants } from './constants.js';
@@ -27,7 +27,7 @@ const plantField = async (
       content: ctx.prettyResponse('error', 'commands:fazendinha.field-action.not-enough-seeds', {
         plant: ctx.locale(`data:plants.${userSeeds?.plant ?? 0}`),
       }),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
   const currentSeason = await getCurrentSeason();
@@ -89,7 +89,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
         plant: ctx.locale(`data:plants.${(field as PlantedField).plantType}`),
         emoji: Plants[(field as PlantedField).plantType].emoji,
       }),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
   }
 
@@ -100,7 +100,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
   if (currentLimits.used + (field.weight ?? 1) >= currentLimits.limit) {
     if (currentLimits.used === currentLimits.limit)
       return ctx.respondInteraction({
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
         content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
           limit: currentLimits.limit,
         }),

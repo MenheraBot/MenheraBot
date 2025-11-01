@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionTypes } from '@discordeno/bot';
 
 import { createCommand } from '../../structures/command/createCommand.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { TODAYS_YEAR, COLORS } from '../../structures/constants.js';
 import { getAssetLink } from '../../structures/cdnManager.js';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
@@ -43,7 +43,7 @@ const PatCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:carinho.self-mention'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 

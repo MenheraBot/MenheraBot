@@ -9,7 +9,7 @@ import {
 import { createCommand } from '../../structures/command/createCommand.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { getUserTransactions } from '../../utils/apiRequests/statistics.js';
 import { bot } from '../../index.js';
 import { millisToSeconds } from '../../utils/miscUtils.js';
@@ -437,7 +437,7 @@ const TransactionsCommand = createCommand({
             'wink',
             'commands:transactions.not-of-your-business',
           )}||`,
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 
@@ -449,7 +449,7 @@ const TransactionsCommand = createCommand({
           content: ctx.prettyResponse('error', 'commands:transactions.not-found', {
             user: getDisplayName(toFindUser),
           }),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 
@@ -459,7 +459,7 @@ const TransactionsCommand = createCommand({
           content: ctx.prettyResponse('error', 'commands:transactions.banned-user', {
             user: getDisplayName(toFindUser),
           }),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 

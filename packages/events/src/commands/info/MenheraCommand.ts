@@ -7,7 +7,7 @@ import {
 } from '@discordeno/bot';
 
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { createCommand } from '../../structures/command/createCommand.js';
 import { bot } from '../../index.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
@@ -31,14 +31,14 @@ const { SUGGESTION_CHANNEL_ID } = getEnviroments(['SUGGESTION_CHANNEL_ID']);
 const executeSupportCommand = async (ctx: ChatInputInteractionContext) => {
   ctx.makeMessage({
     content: ctx.prettyResponse('wink', 'commands:menhera.suporte.message'),
-    flags: MessageFlags.EPHEMERAL,
+    flags: MessageFlags.Ephemeral,
   });
 };
 
 const executeChangelogCommand = async (ctx: ChatInputInteractionContext) => {
   if (!bot.changelog)
     return ctx.makeMessage({
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
       content: ctx.prettyResponse('error', 'commands:menhera.changelog.no-changelog'),
     });
 
@@ -146,7 +146,7 @@ const handleSuggestionInteraction = async (
     return ctx.makeMessage({
       embeds: [embed],
       components: [buttons],
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
   }
 };
@@ -158,7 +158,7 @@ const executeSuggestCommand = async (ctx: ChatInputInteractionContext): Promise<
 
   if (isUserLimited && isUserLimited.limited)
     return ctx.makeMessage({
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
       content: ctx.prettyResponse('error', 'commands:menhera.suggest.limited', {
         unix: millisToSeconds(isUserLimited.limitedAt),
       }),
@@ -169,7 +169,7 @@ const executeSuggestCommand = async (ctx: ChatInputInteractionContext): Promise<
   ctx.makeMessage({
     embeds: [embed],
     components: [buttons],
-    flags: MessageFlags.EPHEMERAL,
+    flags: MessageFlags.Ephemeral,
   });
 };
 

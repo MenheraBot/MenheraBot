@@ -6,7 +6,7 @@ import { AvailableLanguages, Translation } from '../../types/i18next.js';
 import { ComponentInteraction } from '../../types/interaction.js';
 import { logger } from '../../utils/logger.js';
 import { EMOJIS, TOP_EMOJIS } from '../constants.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import {
   editOriginalInteractionResponse,
   sendFollowupMessage,
@@ -93,7 +93,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
     await sendInteractionResponse(this.interaction.id, this.interaction.token, {
       type: InteractionResponseTypes.DeferredChannelMessageWithSource,
       data: {
-        flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
+        flags: ephemeral ? MessageFlags.Ephemeral : undefined,
       },
     }).catch((e) => this.captureException(e));
   }

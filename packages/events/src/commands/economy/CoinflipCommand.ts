@@ -10,7 +10,7 @@ import {
   createCustomId,
 } from '../../utils/discord/componentUtils.js';
 import { mentionUser } from '../../utils/discord/userUtils.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { createCommand } from '../../structures/command/createCommand.js';
 import { transactionableCommandOption } from '../../structures/constants.js';
 import { huntValues } from '../../modules/shop/constants.js';
@@ -119,7 +119,7 @@ const CoinflipCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:coinflip.bot'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 
@@ -127,7 +127,7 @@ const CoinflipCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:coinflip.self-mention'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 
@@ -139,7 +139,7 @@ const CoinflipCommand = createCommand({
             currency: ctx.locale(`common:${currency}`),
             amount: input,
           }),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 
@@ -149,7 +149,7 @@ const CoinflipCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:coinflip.banned-user'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 
@@ -161,7 +161,7 @@ const CoinflipCommand = createCommand({
             currency: ctx.locale(`common:${currency}`),
             amount: input,
           }),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 

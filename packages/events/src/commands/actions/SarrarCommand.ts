@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import {
   createActionRow,
   createButton,
@@ -20,7 +20,7 @@ const sarrada = async (ctx: ComponentInteractionContext): Promise<void> => {
   if (ctx.interaction.user.bot || commandAuthor.id === ctx.user.id) {
     await ctx.respondInteraction({
       content: ctx.prettyResponse('error', 'commands:sarrar.cannot-sarrar-self'),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
     return;
   }

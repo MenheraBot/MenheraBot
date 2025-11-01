@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionTypes, CreateApplicationCommand } from '@discordeno/bot';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import commandRepository from '../../database/repositories/commandRepository.js';
 
 import { bot } from '../../index.js';
@@ -46,7 +46,7 @@ const DeployCommand = createCommand({
       if (!ctx.getOption('senha', false) || ctx.getOption('senha', false) !== 'UwU') {
         ctx.makeMessage({
           content: 'SENHA ERRADA ANIMAL. CASO QUERIA DAR DEPLOY GLOBAL, A SENHA É "UwU"',
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         });
         return finishCommand();
       }

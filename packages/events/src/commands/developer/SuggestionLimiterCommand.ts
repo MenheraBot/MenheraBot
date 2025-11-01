@@ -10,7 +10,7 @@ import {
 } from '../../utils/discord/componentUtils.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { ModalInteraction } from '../../types/interaction.js';
 import { extractFields } from '../../utils/discord/modalUtils.js';
@@ -108,7 +108,7 @@ const BlacklistCommand = createCommand({
         content: `${getDisplayName(user)} [${user.username} - ${
           user.id
         }] nunca foi limitado de enviar sugestões`,
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
         components: [createActionRow([limitButton])],
       });
 
@@ -137,7 +137,7 @@ const BlacklistCommand = createCommand({
 
     ctx.makeMessage({
       embeds: [embed],
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
       components: [createActionRow([limitButton, freeButton])],
     });
   },

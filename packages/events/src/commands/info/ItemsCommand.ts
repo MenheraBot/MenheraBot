@@ -10,7 +10,7 @@ import {
 import { SelectMenuInteraction } from '../../types/interaction.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import userRepository from '../../database/repositories/userRepository.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 
 import { createCommand } from '../../structures/command/createCommand.js';
 import { User } from '../../types/discordeno.js';
@@ -144,7 +144,7 @@ const ItemsCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:itens.no-user'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 
@@ -152,7 +152,7 @@ const ItemsCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:itens.banned'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 

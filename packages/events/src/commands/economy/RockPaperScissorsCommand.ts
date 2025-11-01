@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { createCommand } from '../../structures/command/createCommand.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { mentionUser } from '../../utils/discord/userUtils.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import {
@@ -52,7 +52,7 @@ const handleInteractions = async (ctx: ComponentInteractionContext): Promise<voi
 
   if (action === 'CONFIRM') {
     const message = {
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
       content: ctx.prettyResponse('question', 'commands:pedrapapeltesoura.make-your-choice'),
       components: [
         createActionRow([
@@ -282,7 +282,7 @@ const RockPaperScissorsCommand = createCommand({
     if (user.id === ctx.user.id)
       return ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:pedrapapeltesoura.self-mention'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       });
 
     if (user.bot)
@@ -291,7 +291,7 @@ const RockPaperScissorsCommand = createCommand({
           user: mentionUser(ctx.user.id),
           amount: input,
         }),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       });
 
     if (input && input > ctx.authorData.estrelinhas)
@@ -300,7 +300,7 @@ const RockPaperScissorsCommand = createCommand({
           user: mentionUser(ctx.user.id),
           amount: input,
         }),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       });
 
     const targetData = await userRepository.ensureFindUser(user.id);
@@ -308,7 +308,7 @@ const RockPaperScissorsCommand = createCommand({
     if (targetData.ban)
       return ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:pedrapapeltesoura.banned-user'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       });
 
     if (input && input > targetData.estrelinhas)
@@ -317,7 +317,7 @@ const RockPaperScissorsCommand = createCommand({
           user: mentionUser(user.id),
           amount: input,
         }),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       });
 
     const confirmButton = createButton({

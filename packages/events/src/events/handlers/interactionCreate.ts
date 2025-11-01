@@ -15,7 +15,7 @@ import { DatabaseUserSchema } from '../../types/database.js';
 import { postCommandExecution } from '../../utils/apiRequests/commands.js';
 import { getUserLastBanData } from '../../utils/apiRequests/statistics.js';
 import { createEmbed } from '../../utils/discord/embedUtils.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { getEnviroments } from '../../utils/getEnviroments.js';
 import { logger } from '../../utils/logger.js';
 import { millisToSeconds, noop } from '../../utils/miscUtils.js';
@@ -52,7 +52,7 @@ const setInteractionCreateEvent = (): void => {
         type: InteractionResponseTypes.ChannelMessageWithSource,
         data: {
           content: `<:negacao:759603958317711371> | ${content}`,
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         },
       }).catch(debugError);
     };

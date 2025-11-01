@@ -10,7 +10,7 @@ import giveRepository from '../../database/repositories/giveRepository.js';
 import { mentionUser } from '../../utils/discord/userUtils.js';
 import blacklistRepository from '../../database/repositories/blacklistRepository.js';
 import { createCommand } from '../../structures/command/createCommand.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { EMOJIS } from '../../structures/constants.js';
 import { postTransaction } from '../../utils/apiRequests/statistics.js';
 import { ApiTransactionReason } from '../../types/api.js';
@@ -122,7 +122,7 @@ const GiftCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:presentear.self-mention'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 
@@ -151,7 +151,7 @@ const GiftCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:presentear.banned-user'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 

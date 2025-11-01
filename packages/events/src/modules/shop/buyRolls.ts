@@ -1,6 +1,6 @@
 import shopRepository from '../../database/repositories/shopRepository.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { huntValues } from './constants.js';
 
 const buyRolls = async (
@@ -14,7 +14,7 @@ const buyRolls = async (
   if (totalCost > ctx.authorData.estrelinhas) {
     ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:loja.dataRolls_fields.buy_rolls.poor'),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
     return finishCommand();

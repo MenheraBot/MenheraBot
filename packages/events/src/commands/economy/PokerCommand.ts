@@ -53,14 +53,14 @@ const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void>
   if (!gameData.players.map((a) => a.id).includes(`${ctx.user.id}`))
     return ctx.respondInteraction({
       content: ctx.prettyResponse('error', 'commands:poker.not-in-match'),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
   const player = gameData.players.find((a) => a.id === `${ctx.user.id}`);
 
   if (!player)
     return ctx.respondInteraction({
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
       content: ctx.prettyResponse('error', 'commands:poker.not-in-match'),
     });
 
@@ -250,7 +250,7 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
 
   if (!allowedUsers.includes(`${ctx.user.id}`) && ctx.user.id !== ctx.commandAuthor.id)
     return ctx.respondInteraction({
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
       content: ctx.prettyResponse('error', 'commands:poker.uninvited'),
     });
 
@@ -283,7 +283,7 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
   if (alreadyInPlayers.includes(`${ctx.user.id}`))
     return ctx.respondInteraction({
       content: ctx.prettyResponse('wink', 'commands:poker.already-in'),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
   const [, stringedChips] = ctx.sentData;
@@ -295,7 +295,7 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
     if (chips > userData.estrelinhas)
       return ctx.respondInteraction({
         content: ctx.prettyResponse('error', 'commands:poker.not-enough-stars', { stars: chips }),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       });
   }
 
@@ -351,7 +351,7 @@ const PokerCommand = createCommand({
     if (fichas > ctx.authorData.estrelinhas)
       return ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:poker.not-enough-stars', { stars: fichas }),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       });
 
     const userInMatch = await pokerRepository.isUserInMatch(ctx.author.id);
@@ -359,7 +359,7 @@ const PokerCommand = createCommand({
     if (userInMatch)
       return ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:poker.you-already-in-match'),
-        flags: MessageFlags.EPHEMERAL,
+        flags: MessageFlags.Ephemeral,
       });
 
     ctx.makeMessage({

@@ -3,7 +3,7 @@ import { ButtonStyles } from '@discordeno/bot';
 import userRepository from '../../database/repositories/userRepository.js';
 import { mentionUser } from '../../utils/discord/userUtils.js';
 import relationshipRepostory from '../../database/repositories/relationshipRepostory.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { createCommand } from '../../structures/command/createCommand.js';
 import {
   createActionRow,
@@ -45,7 +45,7 @@ const DivorceCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('warn', 'commands:divorciar.author-single'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 

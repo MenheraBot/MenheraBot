@@ -4,7 +4,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import userRepository from '../../database/repositories/userRepository.js';
 import { mentionUser } from '../../utils/discord/userUtils.js';
 import relationshipRepostory from '../../database/repositories/relationshipRepostory.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { createCommand } from '../../structures/command/createCommand.js';
 import {
   createActionRow,
@@ -72,7 +72,7 @@ const MarryCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:casar.married'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 
@@ -82,7 +82,7 @@ const MarryCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:casar.bot'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 
@@ -90,7 +90,7 @@ const MarryCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:casar.self-mention'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 
@@ -100,7 +100,7 @@ const MarryCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:casar.banned-user'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 
@@ -108,7 +108,7 @@ const MarryCommand = createCommand({
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:casar.mention-married'),
-          flags: MessageFlags.EPHEMERAL,
+          flags: MessageFlags.Ephemeral,
         }),
       );
 

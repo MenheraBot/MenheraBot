@@ -6,7 +6,7 @@ import commandRepository from '../../database/repositories/commandRepository.js'
 import { calculateProbability, capitalize, millisToSeconds } from '../../utils/miscUtils.js';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
 import { COLORS, transactionableCommandOption } from '../../structures/constants.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { DatabaseHuntingTypes, HuntCooldownBoostItem } from '../../modules/hunt/types.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
@@ -83,7 +83,7 @@ const executeHuntCommand = async (
       content: ctx.prettyResponse('error', 'commands:cacar.rolls-poor'),
       embeds: [],
       components: [],
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
   const canHunt = user.huntCooldown < Date.now();
@@ -107,7 +107,7 @@ const executeHuntCommand = async (
             ]
           : undefined,
       embeds: [],
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
   const avatar = getUserAvatar(ctx.user, { enableGif: true });

@@ -11,7 +11,7 @@ import {
   createUsersSelectMenu,
 } from '../../utils/discord/componentUtils.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { MessageFlags } from '../../utils/discord/messageUtils.js';
+import { MessageFlags } from "@discordeno/bot";
 import { VanGoghEndpoints, VanGoghReturnData, vanGoghRequest } from '../../utils/vanGoghRequest.js';
 import { Action, PokerMatch, PokerPlayer } from './types.js';
 import { GenericContext } from '../../types/menhera.js';
@@ -55,7 +55,7 @@ const updatePlayerHandValue = async (
   await ctx.makeMessage({
     embeds: [embed],
     files: !image || image.err ? undefined : [{ name: 'poker.png', blob: image.data }],
-    flags: MessageFlags.EPHEMERAL,
+    flags: MessageFlags.Ephemeral,
     components: [
       createActionRow([
         createButton({
@@ -127,7 +127,7 @@ const executeMasterAction = async (
   if (!gameData.inMatch)
     return ctx.respondInteraction({
       content: ctx.prettyResponse('error', 'commands:poker.player.cant-control-off-game'),
-      flags: MessageFlags.EPHEMERAL,
+      flags: MessageFlags.Ephemeral,
     });
 
   const ingamePlayers = createUsersSelectMenu({
@@ -151,7 +151,7 @@ const executeMasterAction = async (
   ctx.respondInteraction({
     components: [createActionRow([ingamePlayers])],
     content: ctx.prettyResponse('lhama', 'commands:poker.player.remove-players-message'),
-    flags: MessageFlags.EPHEMERAL,
+    flags: MessageFlags.Ephemeral,
   });
 };
 
