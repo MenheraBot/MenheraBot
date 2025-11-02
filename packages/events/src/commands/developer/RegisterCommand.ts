@@ -73,6 +73,9 @@ const registerTitle = async (ctx: ChatInputInteractionContext): Promise<void> =>
 
   const totalTitles = await titlesRepository.getLatestTitleId();
 
+  if (typeof totalTitles !== 'number')
+    return ctx.makeMessage({ content: 'Deu pau aqui, totalTitles não é um número' });
+
   await titlesRepository.registerTitle(totalTitles + 1, ptBr, { 'en-US': enUs });
 
   await ctx.makeMessage({

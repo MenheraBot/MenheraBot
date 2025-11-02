@@ -25,13 +25,13 @@ const registerTitle = async (
   });
 };
 
-const getLatestTitleId = async (): Promise<number> =>
+const getLatestTitleId = async (): Promise<number | undefined> =>
   titlesModel
     .findOne()
-    .sort({ id: -1 })
-    .select('id')
+    .sort({ titleId: -1 })
+    .select('titleId')
     .limit(1)
-    .then((a) => a?.id);
+    .then((a) => a?.titleId);
 
 const getTitleInfo = async (titleId: number): Promise<DatabaseTitlesSchema | null> => {
   if (titleId === 0) return null;
