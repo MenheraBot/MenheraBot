@@ -25,11 +25,9 @@ const VanGoghApi = axios.create({
 
 export enum VanGoghEndpoints {
   Fluffety = 'fluffety',
-  Astolfo = 'astolfo',
   Vasco = 'vasco',
   Preview = 'preview',
   EightBall = '8ball',
-  Philo = 'philo',
   Ship = 'ship',
   Trisal = 'trisal',
   Profile = 'profile',
