@@ -11,6 +11,12 @@ import { debugError } from '../debugError.js';
 import { logger } from '../logger.js';
 import { Interaction } from '../../types/discordeno.js';
 import { noop } from '../miscUtils.js';
+import { getEnviroments } from '../getEnviroments.js';
+
+const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
+  'ERROR_WEBHOOK_ID',
+  'ERROR_WEBHOOK_TOKEN',
+]);
 
 const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise<void> =>
   new Promise((res, rej): void => {
@@ -18,20 +24,32 @@ const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise
       bot.rest.sendRequest({
         ...options,
         resolve: () => res(),
-        reject: (err) =>
+        reject: (err) => {
           debugError(
             new Error(
               err.error ??
                 `Error sending interaction: ${err.status} ${err.statusText ?? 'Unknown error'}`,
             ),
             true,
-          ),
+          );
+
+          logger.error(err.body);
+
+          if (err.status === 400 && err.body)
+            bot.helpers
+              .executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
+                content: `Erro 400, body retornado: ${
+                  typeof err.body === 'object' ? JSON.stringify(err.body) : err.body
+                }`,
+              })
+              .catch(debugError);
+        },
       });
     } catch (e) {
       logger.error(
         `[SEND REQUEST] Failed to send request to ${options.route}. Current try ${currentTry}`,
       );
-      if (currentTry >= 3)
+      if (currentTry >= 2)
         return rej(new Error('Too many failed requests when sending interaction'));
 
       setTimeout(() => {

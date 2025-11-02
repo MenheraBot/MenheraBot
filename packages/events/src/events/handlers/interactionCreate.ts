@@ -1,4 +1,4 @@
-import { InteractionResponseTypes, InteractionTypes } from '@discordeno/bot';
+import { InteractionResponseTypes, InteractionTypes, MessageFlags } from '@discordeno/bot';
 import i18next from 'i18next';
 
 import blacklistRepository from '../../database/repositories/blacklistRepository.js';
@@ -14,8 +14,7 @@ import { UsedCommandData } from '../../types/commands.js';
 import { DatabaseUserSchema } from '../../types/database.js';
 import { postCommandExecution } from '../../utils/apiRequests/commands.js';
 import { getUserLastBanData } from '../../utils/apiRequests/statistics.js';
-import { createEmbed } from '../../utils/discord/embedUtils.js';
-import { MessageFlags } from "@discordeno/bot";
+import { createErrorEmbed } from '../../utils/discord/embedUtils.js';
 import { getEnviroments } from '../../utils/getEnviroments.js';
 import { logger } from '../../utils/logger.js';
 import { millisToSeconds, noop } from '../../utils/miscUtils.js';
@@ -198,37 +197,28 @@ const setInteractionCreateEvent = (): void => {
         }),
       );
 
-      commandRepository.deleteOriginalInteraction(interaction.id)
+      commandRepository.deleteOriginalInteraction(interaction.id);
 
       // eslint-disable-next-line no-param-reassign
       if (typeof err === 'string') err = new Error(err);
 
       if (err instanceof Error && err.stack) {
-        const errorMessage = err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
-        const embed = createEmbed({
-          color: 0xfd0000,
-          title: `${process.env.NODE_ENV === 'development' ? '[DEV]' : ''} ${T(
-            'events:error_embed.title',
-            {
-              cmd: command.name,
-            },
-          )}`,
-          description: `\`\`\`js\n${errorMessage}\`\`\``,
-          fields: [
-            {
-              name: '<:atencao:759603958418767922> | Quem Usou',
-              value: `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guildId}\``,
-            },
-          ],
-        });
+        const errorEmbed = createErrorEmbed(
+          err,
+          command.name,
+          interaction.user.id,
+          interaction.guildId ?? 'None',
+        );
 
-        bot.helpers.executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
-          embeds: [embed],
-        }).catch(noop)
+        bot.helpers
+          .executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
+            embeds: [errorEmbed],
+          })
+          .catch(noop);
 
         logger.error(err);
       }
-    })
+    });
 
     await executeDailies.useCommand(authorData, commandUsed.command, command.category).catch(noop);
 
