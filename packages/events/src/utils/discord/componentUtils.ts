@@ -4,7 +4,10 @@ import type {
   ButtonComponent,
   TextInputComponent,
   StringSelectComponent,
+  ContainerComponent,
   UserSelectComponent,
+  TextDisplayComponent,
+  SeparatorComponent,
 } from '@discordeno/bot';
 
 import { MessageComponentTypes } from '@discordeno/bot';
@@ -51,12 +54,31 @@ const createActionRow = (components: ActionRow['components']): ActionRow => ({
   components,
 });
 
+const createContainer = (
+  component: PropertyOptional<ContainerComponent, 'type'>,
+): ContainerComponent => ({ ...component, type: MessageComponentTypes.Container });
+
+const createTextDisplay = (content: string): TextDisplayComponent => ({
+  type: MessageComponentTypes.TextDisplay,
+  content,
+});
+
+const createSeparator = (
+  component?: PropertyOptional<SeparatorComponent, 'type'>,
+): SeparatorComponent => ({
+  ...component,
+  type: MessageComponentTypes.Separator,
+});
+
 export {
   createButton,
   createCustomId,
   createActionRow,
+  createTextDisplay,
   createTextInput,
   createSelectMenu,
   resolveSeparatedStrings,
+  createContainer,
+  createSeparator,
   createUsersSelectMenu,
 };

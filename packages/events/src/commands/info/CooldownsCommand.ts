@@ -6,12 +6,18 @@ import {
 } from '@discordeno/bot';
 
 import { bot } from '../../index.js';
-import { createActionRow, createButton } from '../../utils/discord/componentUtils.js';
+import {
+  createActionRow,
+  createButton,
+  createContainer,
+  createSeparator,
+  createTextDisplay,
+} from '../../utils/discord/componentUtils.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import userRepository from '../../database/repositories/userRepository.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { getPlantationState } from '../../modules/fazendinha/plantationState.js';
@@ -87,6 +93,16 @@ const CooldownsCommand = createCommand({
         createField(ctx, 'vote', voteCooldown, displayName),
         createField(ctx, 'hunt', huntCooldown, displayName),
         ...farmerFields,
+      ],
+    });
+
+    const container = createContainer({
+      accentColor: hexStringToNumber(userData.selectedColor),
+      components: [
+        createTextDisplay(
+          `## ${ctx.locale('commands:cooldowns.title', { user: getDisplayName(userToUse) })}`,
+        ),
+        createSeparator({ divider: true }),
       ],
     });
 
