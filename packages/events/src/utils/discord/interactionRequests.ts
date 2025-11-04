@@ -12,6 +12,7 @@ import { logger } from '../logger.js';
 import { Interaction } from '../../types/discordeno.js';
 import { noop } from '../miscUtils.js';
 import { getEnviroments } from '../getEnviroments.js';
+import { inspect } from 'node:util';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -35,7 +36,15 @@ const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise
 
           logger.error(err.body);
 
-          if (err.status === 400 && err.body)
+          if (err.status === 400 && err.body) {
+            console.log(
+              inspect(options.requestBodyOptions?.body, {
+                showHidden: false,
+                depth: null,
+                maxArrayLength: null,
+              }),
+            );
+
             bot.helpers
               .executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
                 content: `Erro 400, body retornado: ${
@@ -43,6 +52,7 @@ const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise
                 }`,
               })
               .catch(debugError);
+          }
         },
       });
     } catch (e) {
