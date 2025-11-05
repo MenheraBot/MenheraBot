@@ -231,7 +231,7 @@ const displayFair = async (
         label: `${item.weight} Kg ${ctx.locale(`data:plants.${item.plantType}`)}${
           user ? '' : ` (${i + 1})`
         }`,
-        value: item._id,
+        value: `${item._id}`,
         description: `${item.price} ⭐`,
         emoji: { name: Plants[item.plantType].emoji },
       });
