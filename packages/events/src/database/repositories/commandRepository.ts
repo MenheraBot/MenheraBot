@@ -129,11 +129,17 @@ const getOriginalInteraction = async (
 };
 
 const deleteOriginalInteraction = (interactionId: BigString): void => {
-  MainRedisClient.del(`original_interaction:${interactionId}`).catch(noop)
+  MainRedisClient.del(`original_interaction:${interactionId}`).catch(noop);
 };
 
 const getInteractionExpiration = async (interactionId: BigString): Promise<number> =>
-  MainRedisClient.ttl(`original_interaction:${interactionId}`)
+  MainRedisClient.ttl(`original_interaction:${interactionId}`);
+
+const setCustomIdData = (customId: string, data: string) =>
+  MainRedisClient.setex(`custom_id:${customId}`, 900, data);
+
+const getCustomIdData = (customId: string): Promise<null | string> =>
+  MainRedisClient.get(`custom_id:${customId}`);
 
 export default {
   getCommandInfoById,
@@ -143,6 +149,8 @@ export default {
   deleteOriginalInteraction,
   setOriginalInteraction,
   setMaintenanceInfo,
+  setCustomIdData,
+  getCustomIdData,
   ensureCommandInfo,
   bulkUpdateCommandsIds,
   getAllCommandsInMaintenance,

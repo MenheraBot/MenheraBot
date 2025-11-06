@@ -8,6 +8,8 @@ import type {
 } from '@discordeno/bot';
 
 import { MessageComponentTypes } from '@discordeno/bot';
+import md5 from 'md5';
+import commandRepository from '../../database/repositories/commandRepository.js';
 
 type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
@@ -17,6 +19,21 @@ const createCustomId = (
   originalInteractionId: BigString,
   ...data: unknown[]
 ): string => `${executorIndex}|${target}|${originalInteractionId}|${data.join('|')}`;
+
+const createAsyncCustomId = async (
+  executorIndex: number,
+  target: BigString,
+  originalInteractionId: BigString,
+  ...data: unknown[]
+): Promise<string> => {
+  const customIdData = createCustomId(executorIndex, target, originalInteractionId, ...data);
+
+  const generatedId = md5(`${customIdData}${Date.now()}`);
+
+  await commandRepository.setCustomIdData(generatedId, customIdData);
+
+  return generatedId;
+};
 
 const resolveSeparatedStrings = (string: string): string[] => string.split('|');
 
@@ -56,6 +73,7 @@ export {
   createCustomId,
   createActionRow,
   createTextInput,
+  createAsyncCustomId,
   createSelectMenu,
   resolveSeparatedStrings,
   createUsersSelectMenu,

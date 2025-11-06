@@ -7,9 +7,10 @@ import {
   createButton,
   createActionRow,
   createCustomId,
+  createAsyncCustomId,
 } from '../../utils/discord/componentUtils.js';
 import relationshipRepostory from '../../database/repositories/relationshipRepostory.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import userRepository from '../../database/repositories/userRepository.js';
@@ -85,7 +86,9 @@ const acceptingTrisal = async (ctx: ComponentInteractionContext): Promise<void> 
         components: [],
       });
 
-    ctx.makeMessage({
+    await relationshipRepostory.executeTrisal(firstUserId, secondUserId, thirdUserId);
+
+    return ctx.makeMessage({
       content: ctx.prettyResponse('success', 'commands:trisal.done'),
       components: [
         createActionRow([
@@ -99,13 +102,10 @@ const acceptingTrisal = async (ctx: ComponentInteractionContext): Promise<void> 
         ]),
       ],
     });
-
-    await relationshipRepostory.executeTrisal(firstUserId, secondUserId, thirdUserId);
-    return;
   }
 
   const confirmButton = createButton({
-    customId: createCustomId(1, secondUserId, ctx.originalInteractionId, firstUserId, secondUserId),
+    customId: await createAsyncCustomId(1, secondUserId, ctx.originalInteractionId, firstUserId, secondUserId),
     label: ctx.locale('commands:trisal.accept-button', { name: secondUserName }),
     style: ButtonStyles.Success,
   });
@@ -191,7 +191,7 @@ const executeMakeTrisal = async (
     );
 
   const confirmButton = createButton({
-    customId: createCustomId(
+    customId: await createAsyncCustomId(
       1,
       firstUser.id,
       ctx.originalInteractionId,

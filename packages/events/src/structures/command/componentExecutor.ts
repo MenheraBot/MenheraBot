@@ -19,7 +19,7 @@ import {
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests.js';
 import { Interaction } from '../../types/discordeno.js';
-import { noop } from '../../utils/miscUtils.js';
+import { debugError } from '../../utils/debugError.js';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -30,29 +30,32 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
   cacheRepository.setDiscordUser(bot.transformers.reverse.user(bot, interaction.user));
   if (!interaction.data?.customId) return;
 
-  const [executorIndex, interactionTarget, originalInteractionId] =
-    interaction.data.customId.split('|');
-
-  const originalInteraction = await commandRepository.getOriginalInteraction(originalInteractionId);
   const T = i18next.getFixedT(interaction.user.locale ?? 'pt-BR');
 
-  if (!originalInteraction) {
-    await sendInteractionResponse(interaction.id, interaction.token, {
-      type: InteractionResponseTypes.UpdateMessage,
-      data: {
-        components: [],
-      },
-    }).catch(noop);
-
-    await sendFollowupMessage(interaction.token, {
+  const replyOutdatedCommand = () => {
+    sendFollowupMessage(interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: {
         content: `<:negacao:759603958317711371> | ${T('permissions:COMPONENT_OUTDATED')}`,
         flags: MessageFlags.Ephemeral,
       },
-    }).catch(noop);
-    return;
+    }).catch(debugError);
+  };
+
+  if (!interaction.data.customId.includes('|')) {
+    const found = await commandRepository.getCustomIdData(interaction.data.customId);
+
+    if (!found) return replyOutdatedCommand();
+
+    interaction.data.customId = found;
   }
+
+  const [executorIndex, interactionTarget, originalInteractionId] =
+    interaction.data.customId.split('|');
+
+  const originalInteraction = await commandRepository.getOriginalInteraction(originalInteractionId);
+
+  if (!originalInteraction) return replyOutdatedCommand();
 
   const errorReply = async (content: string): Promise<void> => {
     await sendInteractionResponse(interaction.id, interaction.token, {
@@ -62,7 +65,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
         flags: MessageFlags.Ephemeral,
         allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
       },
-    }).catch(noop);
+    }).catch(debugError);
   };
 
   const command = bot.commands.get(originalInteraction.commandName);
@@ -142,7 +145,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
             embeds: [errorEmbed],
             content: `COMPONENTE UTILIZADO! Index: ${executorIndex}\n${originalInteraction.fullCommandUsed}`,
           })
-          .catch(noop);
+          .catch(debugError);
       }
     });
 
