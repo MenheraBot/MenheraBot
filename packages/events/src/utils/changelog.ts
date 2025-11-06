@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { bot } from '../index.js';
 import { logger } from './logger.js';
-import { noop } from './miscUtils.js';
+import { debugError } from './debugError.js';
 
 let retryTimeout: NodeJS.Timeout;
 let retries = 0;
@@ -18,7 +18,7 @@ const loadChangelog = async (): Promise<void> => {
         '',
       )}`,
     )
-    .catch(noop);
+    .catch(debugError);
 
   if (!response) {
     retries += 1;

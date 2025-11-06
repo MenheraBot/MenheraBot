@@ -15,9 +15,11 @@ import {
   createCustomId,
 } from '../../utils/discord/componentUtils.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
-import { noop } from '../../utils/miscUtils.js';
 
-noop(userRepository, enableTcp, enableUnixSocket, usersModel, redis, farmerModel, eventModel);
+// This is odd, but its needed so the eslint dont get angry with unused imports
+() => {
+  return [userRepository, enableTcp, enableUnixSocket, usersModel, redis, farmerModel, eventModel];
+};
 
 const executeEval = async (ctx: InteractionContext, toEval: string) => {
   try {

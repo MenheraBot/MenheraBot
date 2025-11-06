@@ -1,7 +1,8 @@
 import { jest } from '@jest/globals';
 import i18next from 'i18next';
 import angryCommand from '../AngryCommand.js';
-import { noop } from '../../../utils/miscUtils.js';
+
+const noop = () => null;
 
 describe('AngryCommand tests', () => {
   const context = {

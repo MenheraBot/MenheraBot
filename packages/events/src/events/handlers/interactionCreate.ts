@@ -17,7 +17,7 @@ import { getUserLastBanData } from '../../utils/apiRequests/statistics.js';
 import { createErrorEmbed } from '../../utils/discord/embedUtils.js';
 import { getEnviroments } from '../../utils/getEnviroments.js';
 import { logger } from '../../utils/logger.js';
-import { millisToSeconds, noop } from '../../utils/miscUtils.js';
+import { millisToSeconds } from '../../utils/miscUtils.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import { sendInteractionResponse } from '../../utils/discord/interactionRequests.js';
 import { debugError } from '../../utils/debugError.js';
@@ -190,37 +190,41 @@ const setInteractionCreateEvent = (): void => {
         0.5,
       );
 
-    await command.execute(ctx, noop).catch((err) => {
-      errorReply(
-        T('events:error_embed.title', {
-          cmd: command.name,
-        }),
-      );
-
-      commandRepository.deleteOriginalInteraction(interaction.id);
-
-      // eslint-disable-next-line no-param-reassign
-      if (typeof err === 'string') err = new Error(err);
-
-      if (err instanceof Error && err.stack) {
-        const errorEmbed = createErrorEmbed(
-          err,
-          command.name,
-          interaction.user.id,
-          interaction.guildId ?? 'None',
+    await command
+      .execute(ctx, () => null)
+      .catch((err) => {
+        errorReply(
+          T('events:error_embed.title', {
+            cmd: command.name,
+          }),
         );
 
-        bot.helpers
-          .executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
-            embeds: [errorEmbed],
-          })
-          .catch(noop);
+        commandRepository.deleteOriginalInteraction(interaction.id);
 
-        logger.error(err);
-      }
-    });
+        // eslint-disable-next-line no-param-reassign
+        if (typeof err === 'string') err = new Error(err);
 
-    await executeDailies.useCommand(authorData, commandUsed.command, command.category).catch(noop);
+        if (err instanceof Error && err.stack) {
+          const errorEmbed = createErrorEmbed(
+            err,
+            command.name,
+            interaction.user.id,
+            interaction.guildId ?? 'None',
+          );
+
+          bot.helpers
+            .executeWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
+              embeds: [errorEmbed],
+            })
+            .catch(debugError);
+
+          logger.error(err);
+        }
+      });
+
+    await executeDailies
+      .useCommand(authorData, commandUsed.command, command.category)
+      .catch(debugError);
 
     bot.commandsInExecution -= 1;
 
@@ -236,7 +240,7 @@ const setInteractionCreateEvent = (): void => {
       args: interaction.data?.options ?? [],
     };
 
-    postCommandExecution(data).catch(noop);
+    postCommandExecution(data).catch(debugError);
   };
 };
 

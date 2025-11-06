@@ -66,7 +66,11 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
   const toUseClient = clientsToUse[eventsCounter % clientsToUse.length];
 
   if ([RequestType.TellMeUsers, RequestType.ThankSuggestion].includes(type)) {
-    const result = await toUseClient.conn.request({ type, data }).catch(() => null);
+    const result = await toUseClient.conn
+      .request({ type, data })
+      .catch((e) =>
+        console.error(`Error sending request to client: ${e?.message ?? 'Unknown error'}`),
+      );
     return result;
   }
 
@@ -88,7 +92,9 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
   if (type !== RequestType.Prometheus) {
     const success = toUseClient.conn
       .send({ type, data })
-      .catch(() => null)
+      .catch((e) =>
+        console.log(`Error seinding message to client: ${e?.message ?? 'Unknown error'}`),
+      )
       .then(() => true);
 
     if (!success) return null;

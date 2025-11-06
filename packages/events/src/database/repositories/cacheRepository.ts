@@ -7,7 +7,6 @@ import { debugError } from '../../utils/debugError.js';
 import { MainRedisClient } from '../databases.js';
 import { registerCacheStatus } from '../../structures/initializePrometheus.js';
 import { Attachment, User } from '../../types/discordeno.js';
-import { noop } from '../../utils/miscUtils.js';
 
 const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promise<User | null> => {
   if (userId === null || userId === 'null') return null;
@@ -21,7 +20,7 @@ const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promi
   if (!fromRedis) {
     if (!lookIntoDiscord) return null;
 
-    const fromDiscord = await bot.helpers.getUser(BigInt(userId)).catch(noop);
+    const fromDiscord = await bot.helpers.getUser(BigInt(userId)).catch(debugError);
 
     if (!fromDiscord) return null;
 

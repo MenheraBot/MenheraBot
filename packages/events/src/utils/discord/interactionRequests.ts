@@ -10,7 +10,6 @@ import { bot } from '../../index.js';
 import { debugError } from '../debugError.js';
 import { logger } from '../logger.js';
 import { Interaction } from '../../types/discordeno.js';
-import { noop } from '../miscUtils.js';
 import { getEnviroments } from '../getEnviroments.js';
 import { inspect } from 'node:util';
 
@@ -19,7 +18,10 @@ const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_TOKEN',
 ]);
 
-const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise<void> =>
+const sendRequest = async (
+  options: Omit<SendRequestOptions, 'resolve' | 'reject'>,
+  currentTry = 1,
+): Promise<void> =>
   new Promise((res, rej): void => {
     try {
       bot.rest.sendRequest({
@@ -38,6 +40,7 @@ const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise
 
           if (err.status === 400 && err.body) {
             console.log(
+              'ySnoopyDogy',
               inspect(options.requestBodyOptions?.body, {
                 showHidden: false,
                 depth: null,
@@ -53,6 +56,8 @@ const sendRequest = async (options: SendRequestOptions, currentTry = 1): Promise
               })
               .catch(debugError);
           }
+
+          return rej(err.error);
         },
       });
     } catch (e) {
@@ -84,8 +89,6 @@ const sendInteractionResponse = async (
       unauthorized: true,
     },
     runThroughQueue: false,
-    resolve: noop,
-    reject: noop,
     retryCount: 0,
   });
 
@@ -102,8 +105,6 @@ const editOriginalInteractionResponse = (
       unauthorized: true,
     },
     runThroughQueue: false,
-    reject: noop,
-    resolve: noop,
     retryCount: 0,
   });
 
@@ -118,8 +119,6 @@ const sendFollowupMessage = async (token: string, options: InteractionResponse):
     },
     runThroughQueue: false,
     retryCount: 0,
-    reject: noop,
-    resolve: noop,
   });
 
 const respondWithChoices = (
