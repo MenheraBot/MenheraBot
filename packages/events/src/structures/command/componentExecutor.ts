@@ -14,10 +14,7 @@ import { getEnviroments } from '../../utils/getEnviroments.js';
 import { ComponentInteraction } from '../../types/interaction.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import { logger } from '../../utils/logger.js';
-import {
-  sendFollowupMessage,
-  sendInteractionResponse,
-} from '../../utils/discord/interactionRequests.js';
+import { sendInteractionResponse } from '../../utils/discord/interactionRequests.js';
 import { Interaction } from '../../types/discordeno.js';
 import { debugError } from '../../utils/debugError.js';
 
@@ -33,7 +30,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
   const T = i18next.getFixedT(interaction.user.locale ?? 'pt-BR');
 
   const replyOutdatedCommand = () => {
-    sendFollowupMessage(interaction.token, {
+    sendInteractionResponse(interaction.id, interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: {
         content: `<:negacao:759603958317711371> | ${T('permissions:COMPONENT_OUTDATED')}`,
