@@ -225,6 +225,14 @@ const profileBadges = {
     description:
       'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de **quatro** anos!',
   },
+  204: {
+    name: 'Cinco anos com a Menhera',
+    availableStartAt: '------',
+    availableStopAt: '------',
+    rarityLevel: BadgeRarity.CommandBased,
+    description:
+      'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de **cinco** anos!',
+  },
   // -- Badges de Votos --
   100: {
     name: '50 Votos',

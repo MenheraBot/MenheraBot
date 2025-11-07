@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [6.1.2] - 2025-11-06
+
+### Fixed
+
+- Corrigido o comando `/personalizar badges`, que falhava com usuários que possuem a badge de 5 anos com a Menhera.
+
 ## [6.1.1] - 2025-11-05
 
 ### Fixed
