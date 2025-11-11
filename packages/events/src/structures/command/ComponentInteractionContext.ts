@@ -143,7 +143,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   }
 
   captureException(error: Error): null {
-    logger.error(this.interaction.data.customId, error.message);
+    logger.error(this.interaction.data.customId, error?.message);
 
     Sentry.withScope((scope) => {
       scope.setContext('component', {

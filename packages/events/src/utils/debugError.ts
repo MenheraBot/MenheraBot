@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/node';
 import { logger } from './logger.js';
 
 export const debugError = (err: Error, toSentry = true): null => {
-  logger.error('Debug Error', err.message);
+  logger.error('Debug Error', err?.message);
   logger.error(err);
 
   // @ts-expect-error Not every errors are http errors

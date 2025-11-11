@@ -138,7 +138,7 @@ export default class {
   }
 
   captureException(error: Error): null {
-    logger.error(this.interaction.data?.name, error.message);
+    logger.error(this.interaction.data?.name, error?.message);
 
     Sentry.withScope((scope) => {
       scope.setContext('command', {
