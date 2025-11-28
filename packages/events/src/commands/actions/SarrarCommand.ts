@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import {
   createActionRow,
   createButton,

@@ -1,4 +1,4 @@
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 
 const extractNameAndIdFromEmoji = (
   emoji: string,

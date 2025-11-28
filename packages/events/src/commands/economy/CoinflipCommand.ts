@@ -10,7 +10,7 @@ import {
   createCustomId,
 } from '../../utils/discord/componentUtils.js';
 import { mentionUser } from '../../utils/discord/userUtils.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { transactionableCommandOption } from '../../structures/constants.js';
 import { huntValues } from '../../modules/shop/constants.js';

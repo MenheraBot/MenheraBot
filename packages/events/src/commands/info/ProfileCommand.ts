@@ -12,7 +12,7 @@ import { ProfileTheme } from '../../modules/themes/types.js';
 import { getProfileImageUrl } from '../../structures/cdnManager.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { getUserProfileInfo } from '../../utils/apiRequests/statistics.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
 import titlesRepository from '../../database/repositories/titlesRepository.js';

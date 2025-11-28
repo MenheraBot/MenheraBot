@@ -25,7 +25,7 @@ import {
   createCustomId,
 } from '../../utils/discord/componentUtils.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
 import { chunkArray, millisToSeconds } from '../../utils/miscUtils.js';
 

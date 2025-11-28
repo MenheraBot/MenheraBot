@@ -7,7 +7,7 @@ import {
 } from '@discordeno/bot';
 
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { bot } from '../../index.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';

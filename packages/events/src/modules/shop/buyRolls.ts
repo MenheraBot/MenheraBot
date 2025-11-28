@@ -1,6 +1,6 @@
 import shopRepository from '../../database/repositories/shopRepository.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { huntValues } from './constants.js';
 
 const buyRolls = async (

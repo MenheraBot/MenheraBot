@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { createCommand } from '../../structures/command/createCommand.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { mentionUser } from '../../utils/discord/userUtils.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import {

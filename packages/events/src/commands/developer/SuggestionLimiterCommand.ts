@@ -10,7 +10,7 @@ import {
 } from '../../utils/discord/componentUtils.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { ModalInteraction } from '../../types/interaction.js';
 import { extractFields } from '../../utils/discord/modalUtils.js';

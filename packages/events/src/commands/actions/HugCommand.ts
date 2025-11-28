@@ -6,7 +6,7 @@ import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
 import { createEmbed } from '../../utils/discord/embedUtils.js';
 import { capitalize } from '../../utils/miscUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { User } from '../../types/discordeno.js';
 
 const HugCommand = createCommand({

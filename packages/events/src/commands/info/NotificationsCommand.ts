@@ -1,7 +1,7 @@
 import md5 from 'md5';
 import { ButtonStyles } from '@discordeno/bot';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { createCommand } from '../../structures/command/createCommand.js';
 import notificationRepository from '../../database/repositories/notificationRepository.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';

@@ -9,7 +9,7 @@ import {
 import { createCommand } from '../../structures/command/createCommand.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { getUserTransactions } from '../../utils/apiRequests/statistics.js';
 import { bot } from '../../index.js';
 import { millisToSeconds } from '../../utils/miscUtils.js';

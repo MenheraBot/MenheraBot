@@ -7,7 +7,7 @@ import {
   createTextInput,
   resolveSeparatedStrings,
 } from '../../utils/discord/componentUtils.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { extractFields } from '../../utils/discord/modalUtils.js';
 import { getPreviousPlayableSeat, updateGameState } from './turnManager.js';
 import { Action, PokerMatch, PokerPlayer } from './types.js';

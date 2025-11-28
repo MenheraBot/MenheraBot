@@ -20,7 +20,7 @@ import {
   createSelectMenu,
 } from '../../utils/discord/componentUtils.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest.js';
 import { getThemeById, getThemesByType, getUserActiveThemes } from '../themes/getThemes.js';
 import { ProfileTheme, ThemeFile } from '../themes/types.js';

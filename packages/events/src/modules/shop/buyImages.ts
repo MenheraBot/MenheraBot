@@ -27,7 +27,7 @@ import {
   createTextInput,
 } from '../../utils/discord/componentUtils.js';
 import { createEmbed } from '../../utils/discord/embedUtils.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { extractFields } from '../../utils/discord/modalUtils.js';
 import { getEnviroments } from '../../utils/getEnviroments.js';
 import { customImagePrice } from './constants.js';

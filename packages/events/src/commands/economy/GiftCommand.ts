@@ -10,7 +10,7 @@ import giveRepository from '../../database/repositories/giveRepository.js';
 import { mentionUser } from '../../utils/discord/userUtils.js';
 import blacklistRepository from '../../database/repositories/blacklistRepository.js';
 import { createCommand } from '../../structures/command/createCommand.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { EMOJIS } from '../../structures/constants.js';
 import { postTransaction } from '../../utils/apiRequests/statistics.js';
 import { ApiTransactionReason } from '../../types/api.js';

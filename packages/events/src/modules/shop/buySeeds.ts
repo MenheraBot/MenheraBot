@@ -20,7 +20,7 @@ import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import commandRepository from '../../database/repositories/commandRepository.js';
 import { getSiloLimits } from '../fazendinha/siloUtils.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { AvailablePlants } from '../fazendinha/types.js';
 import { SeasonEmojis } from '../fazendinha/displayPlantations.js';
 

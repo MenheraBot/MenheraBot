@@ -11,7 +11,7 @@ import {
   createUsersSelectMenu,
 } from '../../utils/discord/componentUtils.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { VanGoghEndpoints, VanGoghReturnData, vanGoghRequest } from '../../utils/vanGoghRequest.js';
 import { Action, PokerMatch, PokerPlayer } from './types.js';
 import { GenericContext } from '../../types/menhera.js';

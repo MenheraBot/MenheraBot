@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionTypes, CreateApplicationCommand } from '@discordeno/bot';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import commandRepository from '../../database/repositories/commandRepository.js';
 
 import { bot } from '../../index.js';

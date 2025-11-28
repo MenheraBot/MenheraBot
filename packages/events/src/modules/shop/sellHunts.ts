@@ -1,5 +1,5 @@
 import shopRepository from '../../database/repositories/shopRepository.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { DatabaseHuntingTypes } from '../hunt/types.js';
 import { huntValues } from './constants.js';
