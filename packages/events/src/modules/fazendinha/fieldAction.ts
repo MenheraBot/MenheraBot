@@ -3,7 +3,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import { DatabaseFarmerSchema } from '../../types/database.js';
 import { SelectMenuInteraction } from '../../types/interaction.js';
 import { postFazendinhaAction } from '../../utils/apiRequests/statistics.js';
-import { MessageFlags } from "@discordeno/bot";
+import { MessageFlags } from '@discordeno/bot';
 import { displayPlantations } from './displayPlantations.js';
 import { getFieldWeight, getHarvestTime, getPlantationState } from './plantationState.js';
 import { Items, Plants } from './constants.js';

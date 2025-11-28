@@ -77,6 +77,11 @@ const getFieldWeight = (
     minValue += PLANTATION_WEIGHT_MODIFIERS.FERTILIZER_MIN_BUFF;
   }
 
+  if (minValue < 0)
+    throw new Error(
+      `getFieldWeight generated a negative value. PlantData: ${JSON.stringify(plantData)}. CurrentSeason: ${currentSeason}. FieldUpgrades: ${JSON.stringify(fieldUpgrades)}. MinValue: ${minValue}. MaxValue: ${maxValue}`,
+    );
+
   const weight = parseFloat((Math.random() * (maxValue - minValue) + minValue).toFixed(1));
 
   return weight;

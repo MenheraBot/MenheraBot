@@ -85,6 +85,12 @@ const executeHarvest = async (
   success: boolean,
   weight: number,
 ): Promise<void> => {
+  // Asserts to avoid negative error in farmer
+  if (weight < 0)
+    throw new Error(
+      `Negative weight for farmer ${farmerId}. Already: ${alreadyInSilo}. FieldIndex: ${fieldIndex}. Plant: ${plant}. Weight: ${weight}. Success: ${success}`,
+    );
+
   const pushOrIncrement: Record<string, unknown> = {
     [alreadyInSilo ? '$inc' : '$push']: alreadyInSilo
       ? {
@@ -148,6 +154,11 @@ const executePlant = async (
   field: PlantedField,
   seed: AvailablePlants,
 ): Promise<void> => {
+  if (typeof field.weight === 'number' && field.weight < 0)
+    throw new Error(
+      `Negative weight for farmer ${farmerId}. FieldIndex: ${fieldIndex}. Seed: ${seed}. Field: ${JSON.stringify(field)}`,
+    );
+
   const updatedUser = await farmerModel.findOneAndUpdate(
     { id: `${farmerId}` },
     {
