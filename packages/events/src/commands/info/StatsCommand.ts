@@ -1,4 +1,9 @@
-import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbed, DiscordEmbedField } from '@discordeno/bot';
+import {
+  ApplicationCommandOptionTypes,
+  ButtonStyles,
+  DiscordEmbed,
+  DiscordEmbedField,
+} from '@discordeno/bot';
 import { TFunction } from 'i18next';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
@@ -32,6 +37,7 @@ import { chunkArray, millisToSeconds } from '../../utils/miscUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { Plants } from '../../modules/fazendinha/constants.js';
 import { User } from '../../types/discordeno.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
 
 const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
   const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
@@ -368,13 +374,18 @@ const executeFazendeiroCommand = async (
     return finishCommand();
   }
 
+  const farmer = await farmerRepository.getFarmer(user.id);
+
   const embed = createEmbed({
     title: ctx.locale('commands:status.fazendeiro.title', { user: getDisplayName(user) }),
     thumbnail: { url: getUserAvatar(user, { enableGif: true }) },
     color: hexStringToNumber(ctx.authorData.selectedColor),
+    footer: {
+      text: `${EMOJIS.four_leaf} ${ctx.locale('commands:top.fazendeiros.experience')}: ${farmer.experience}`,
+    },
     fields: farmerData.map((data) => ({
       inline: true,
-      name: `${Plants[data.plant].emoji} ${ctx.locale(`data:plants.${data.plant}`)}`,
+      name: `${Plants[data.plant].emoji} ${ctx.locale(`data:plants.${data.plant}`)} `,
       value: ctx.locale('commands:status.fazendeiro.field-data', {
         harvest: data.harvest,
         rotted: data.rotted,
