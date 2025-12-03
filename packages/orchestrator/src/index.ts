@@ -2,10 +2,11 @@ import { DiscordInteraction } from '@discordeno/types';
 import { Connection, Server } from 'net-ipc';
 import Koa from 'koa';
 import { mergeMetrics } from './prometheusWorkarround.js';
-import { respondInteraction } from './respondInteraction.js';
+import { respondDevInteraction, respondInteraction } from './respondInteraction.js';
 import { createHttpServer, registerAllRouters } from './server/httpServer.js';
 import { PrometheusResponse } from './server/routes/prometheus.js';
 import { getEnviroments } from './getEnviroments.js';
+import { Bot, logger } from '@discordeno/bot';
 
 declare module 'koa' {
   interface Request extends Koa.BaseRequest {
@@ -48,7 +49,7 @@ export enum RequestType {
 
 const getVersion = () => currentVersion;
 
-const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => {
+const sendEvent = async (type: RequestType, data: unknown, devBot?: Bot): Promise<unknown> => {
   eventsCounter += 1;
   if (eventsCounter >= 25) eventsCounter = 0;
 
@@ -57,7 +58,14 @@ const sendEvent = async (type: RequestType, data: unknown): Promise<unknown> => 
   if (clientsToUse.length === 0) {
     if (type === RequestType.InteractionCreate) {
       missedInteractions += 1;
-      return respondInteraction((data as { body: DiscordInteraction }).body);
+      logger.warn('[EVENT] Interaction lost due no clients connected');
+
+      const interaction = (data as { body: DiscordInteraction }).body;
+
+      if (process.env.NODE_ENV === 'development' && devBot)
+        return respondDevInteraction(devBot, interaction);
+
+      return respondInteraction(interaction);
     }
 
     return null;
@@ -259,7 +267,7 @@ orchestratorServer.on('ready', () => {
       bot.gateway.events.message = (shard, p) => {
         if (p.op === 0 && p.t === 'INTERACTION_CREATE') {
           console.log('[EVENT] - Interaction created!');
-          sendEvent(RequestType.InteractionCreate, { body: p.d, noAck: true });
+          sendEvent(RequestType.InteractionCreate, { body: p.d, noAck: true }, bot as Bot);
         }
         oldGatewayProcessing?.(shard, p);
       };
