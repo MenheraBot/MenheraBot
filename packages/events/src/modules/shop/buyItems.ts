@@ -58,7 +58,7 @@ const buyItems = async (
     title: ctx.locale('commands:loja.buy_item.title'),
     color: COLORS.Pinkie,
     thumbnail: { url: getUserAvatar(ctx.author, { enableGif: true }) },
-    description: ctx.locale('commands:loja.buy_item.description'),
+    description: `${ctx.locale('commands:loja.buy_item.description')}`,
   });
 
   const selectMenu = createSelectMenu({
@@ -68,22 +68,28 @@ const buyItems = async (
     options: [],
   });
 
+  let itemsText = `\n`;
+
   for (let i = 1; i <= 6; i++) {
     if (
       !ctx.authorData.inventory.some((a) => a.id === i) &&
       !ctx.authorData.inUseItems.some((a) => a.id === i)
     )
-      selectMenu.options.push({
-        label: ctx.locale(`data:magic-items.${i as 1}.name`),
-        value: `${i}`,
-        description: `${(HuntMagicItems[i] as HuntProbablyBoostItem).cost} ${EMOJIS.estrelinhas}`,
-      });
+      itemsText += `**${ctx.locale(`data:magic-items.${i as 1}.name`)}** - ${ctx.locale(`data:magic-items.${i as 1}.description`)}\n`;
+
+    selectMenu.options.push({
+      label: ctx.locale(`data:magic-items.${i as 1}.name`),
+      value: `${i}`,
+      description: `${(HuntMagicItems[i] as HuntProbablyBoostItem).cost} ${EMOJIS.estrelinhas}`,
+    });
   }
 
   if (selectMenu.options.length === 0) {
     ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:loja.buy_item.hasAll') });
     return finishCommand();
   }
+
+  embed.description = embed.description += itemsText;
 
   ctx.makeMessage({ embeds: [embed], components: [createActionRow([selectMenu])] });
   finishCommand();
