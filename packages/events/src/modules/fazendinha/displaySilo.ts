@@ -229,11 +229,12 @@ const buildSellPlantsMessage = async (
     });
   }
 
-  options.unshift({
-    label: ctx.locale('commands:fazendinha.silo.sell-all'),
-    value: 'ALL',
-    emoji: { name: '💰' },
-  });
+  if (options.length < 25)
+    options.unshift({
+      label: ctx.locale('commands:fazendinha.silo.sell-all'),
+      value: 'ALL',
+      emoji: { name: '💰' },
+    });
 
   const embed = createEmbed({
     title: ctx.locale('commands:fazendinha.silo.sell-title'),
