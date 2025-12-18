@@ -70,7 +70,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   const field = farmer.plantations[selectedField];
 
-  const state = getPlantationState(field)[0];
+  let state = getPlantationState(field)[0];
 
   const userSeeds = farmer.seeds.find((a) => a.plant === seed);
 
@@ -96,6 +96,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
   if (!field.isPlanted) return plantField(ctx, farmer, selectedField, seed, embedColor);
 
   const currentLimits = getSiloLimits(farmer);
+  let replyFullSilo = false;
 
   if (currentLimits.used + (field.weight ?? 1) >= currentLimits.limit) {
     if (currentLimits.used >= currentLimits.limit)
@@ -108,13 +109,10 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
     field.weight = parseFloat((currentLimits.limit - currentLimits.used).toFixed(1));
 
-    if (field.weight <= 0)
-      return ctx.respondInteraction({
-        flags: MessageFlags.Ephemeral,
-        content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
-          limit: currentLimits.limit,
-        }),
-      });
+    if (field.weight <= 0) {
+      replyFullSilo = true;
+      state = 'GROWING';
+    }
   }
 
   farmer.plantations[selectedField] = {
@@ -148,7 +146,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
       harvestedWeight,
     );
 
-  displayPlantations(
+  await displayPlantations(
     ctx,
     farmer,
     embedColor,
@@ -156,6 +154,14 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
     -1,
     harvestedWeight,
   );
+
+  if (replyFullSilo)
+    return ctx.followUp({
+      flags: MessageFlags.Ephemeral,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
+        limit: currentLimits.limit,
+      }),
+    });
 };
 
 const changeSelectedSeed = async (
