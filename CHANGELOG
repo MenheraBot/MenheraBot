@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## Fixed
+
+- Corrigido os itens mágicos ainda aparecerem na loja para serem comprados, mesmo já tendo eles - Reportado por @mareys.
+
 ## [6.1.5] - 2025-12-17
 
 ### Fixed
@@ -16,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - O comando `/estatísticas fazendeiro` agora mostra a experiência da fazendinha - Sugerido por @kawajplemes7. 
-- O comando `/loja comprar itens` agora mostra a descrição do que os itens fazem - Sugerido por @rafaelxd27
+- O comando `/loja comprar itens` agora mostra a descrição do que os itens fazem - Sugerido por @rafaelxd27.
 
 ### Fixed
 
