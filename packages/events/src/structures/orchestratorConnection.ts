@@ -2,7 +2,6 @@ import { Client } from 'net-ipc';
 
 import { DiscordInteraction } from '@discordeno/bot';
 import { bot } from '../index.js';
-import { closeConnections } from '../database/databases.js';
 import { executeVoteWebhook } from '../utils/executeVoteWebhook.js';
 import { getEnviroments } from '../utils/getEnviroments.js';
 import { logger } from '../utils/logger.js';
@@ -15,6 +14,7 @@ import starsRepository from '../database/repositories/starsRepository.js';
 import { postTransaction } from '../utils/apiRequests/statistics.js';
 import { ApiTransactionReason } from '../types/api.js';
 import notificationRepository from '../database/repositories/notificationRepository.js';
+import { executeGracefullShutdown } from '../internals/gracefullShutdown.js';
 
 const numberTypeToName = {
   1: 'PING',
@@ -75,33 +75,9 @@ const createIpcConnection = async (): Promise<void> => {
 
     if (msg.type === 'YOU_MAY_REST') {
       logger.info('[ORCHESTRATOR] I was told to sleep');
-      bot.shuttingDown = true;
 
-      logger.info('[SHUTDOWN] Waiting for all commands to finish');
-      await new Promise<void>((resolve) => {
-        if (bot.commandsInExecution <= 0) return resolve();
-
-        const interval = setInterval(() => {
-          if (bot.commandsInExecution <= 0) {
-            clearInterval(interval);
-            resolve();
-            return;
-          }
-          logger.info(`[SHUTDOWN] There are still ${bot.commandsInExecution} running commands`);
-        }, 1_000).unref();
-      });
-
-      /* logger.info('[SHUTDOWN] Posting the command execution queue to API');
-      await forceBatchCommandsExecutionPost(); */
-
-      logger.info('[SHUTDOWN] Closing all Database connections');
-      await closeConnections();
-
-      logger.info('[SHUTDOWN] Closing orchestrator IPC');
-      await orchestratorClient.close('REQUESTED_SHUTDOWN');
-
-      logger.info("[SHUTDOWN] I'm tired... I will rest for now");
-      console.log('Process waiting to be killed.');
+      executeGracefullShutdown(bot);
+      return;
     }
   });
 

@@ -17,6 +17,8 @@ import {
 
 const { Schema, model } = mongoose;
 
+mongoose.set('strictQuery', true);
+
 const cmdSchema = new Schema({
   _id: { type: String },
   maintenance: { type: Array, default: [] },

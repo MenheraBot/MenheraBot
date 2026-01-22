@@ -32,7 +32,8 @@ This monorepo is divided in 2 packages. The Orchestrator receives all data from 
 git clone https://github.com/MenheraBot/MenheraBot.git
 ```
 
-2. 💻 Populate the env files. 
+2. 📝 Populate the env files. 
+
 > Every package has a .env.example file with every entry needed. Just create a .env file with all the entries.
 
 3. 🔥 Install dependencies
@@ -49,7 +50,17 @@ pnpm install
 pnpm dev
 ```
 
-5. 🐦 Running tests
+6. 💻 Development Tips & Tricks 
+
+After starting the dev containers with `make`, in one terminal you can start the Orchestrator package (`pnpm orchestrator dev:build`), and in other run the Menhera Watcher. The Watcher listens to file changes, builds the project, and make it easy to switch between builded versions. Just run the watcher, and watch the magic!
+
+```bash
+./menhera-watcher.sh
+```
+
+> To force build, press 'B'. To Quit, press 'Q'. To Clear logs, press 'C'. To Restart the main process, press 'R'.
+
+7. 🐦 Running tests
 
 ```bash
 pnpm test
