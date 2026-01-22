@@ -58,7 +58,7 @@ After starting the dev containers with `make`, in one terminal you can start the
 ./menhera-watcher.sh
 ```
 
-> To force build, press 'B'. To Quit, press 'Q'. To Clear logs, press 'C'. To Restart the main process, press 'R'.
+> To force build, press 'B'. To Quit, press 'Q'. To Clear logs, press 'C'. To Restart the main process, press 'R'. To enable auto restart of the main process, run the script with "autoreload" in its first parameter: `./menhera-watcher.sh autoreload`
 
 7. 🐦 Running tests
 

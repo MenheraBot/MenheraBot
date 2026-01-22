@@ -24,6 +24,11 @@ APP_PID=""
 WATCHER_PID=""
 LAST_CHANGE_TIME=0
 BUILD_PENDING=false
+AUTO_RESTART=false
+
+if [[ $1 == "autoreload" ]]; then
+    AUTO_RESTART=true
+fi
 
 cleanup() {
     echo -e "\n${RED}[SYSTEM] Requesting shut down...${NC}"
@@ -60,15 +65,22 @@ run_build() {
     echo -e "${BLUE}[BUILD] Starting build...${NC}"
     
     pnpm --silent events build
+
+    BUILD_PENDING=false 
     
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}[BUILD] Build successful.${NC}"
-        echo -e "${YELLOW}[HINT] Press 'R' to restart the app with new build.${NC}"
+
+        if [ "$AUTO_RESTART" = true ]; then
+            echo -e "${GRAY}[SYSTEM] Auto restart is enabled${NC}"
+            start_app
+        else
+            echo -e "${YELLOW}[HINT] Press 'R' to restart the app with new build.${NC}"
+        fi
+
     else
         echo -e "${RED}[BUILD] Build failed.${NC}"
     fi
-    
-    BUILD_PENDING=false
 }
 
 start_watcher() {
@@ -90,6 +102,11 @@ echo -e "  [B] Force Build (pnpm events build)"
 echo -e "  [C] Clear Logs"
 echo -e "  [Q] Quit"
 echo -e "-----------------------------"
+echo -e
+
+if [ "$AUTO_RESTART" = true ]; then
+    echo -e "${YELLOW}[SYSTEM] Auto Reload is enabled!${NC}"          
+fi
 
 start_watcher
 start_app
@@ -108,6 +125,10 @@ while true; do
         clear
         echo -e "${GREEN}========== Logs Cleared ==========${NC}"
         echo -e "${YELLOW}[STATE] App is running (PID: $APP_PID)${NC}"
+
+        if [ "$AUTO_RESTART" = true ]; then
+            echo -e "${YELLOW}[SYSTEM] Auto Reload is enabled!${NC}"          
+        fi
     elif [[ $key == "q" || $key == "Q" ]]; then
         cleanup
     fi
