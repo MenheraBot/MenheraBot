@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ## Changed
 
 - Ajustado os pesos minimos e máximos de plantações da fazendinha.
+- A `/loja vender plantas` foi atualizada para os novos componentes V2 do Discord! Agora também é possível vender diferentes qualidades de plantas.
 
 ## Fixed
 

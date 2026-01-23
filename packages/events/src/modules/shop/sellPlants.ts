@@ -16,31 +16,41 @@ import {
   getQuality,
   getQualityEmoji,
 } from '../fazendinha/siloUtils.js';
+import { createTextDisplay } from '../../utils/discord/componentUtils.js';
 
 const receiveModal = async (
   ctx: ComponentInteractionContext<ModalInteraction>,
   farmer: DatabaseFarmerSchema,
 ): Promise<void> => {
-  const selectedPlants: QuantitativePlant[] = extractFields(ctx.interaction).map((a) => ({
-    weight: parseFloat(Number(a.value).toFixed(1)),
-    plant: Number(a.customId),
-  }));
+  const selectedPlants: QuantitativePlant[] = extractFields(ctx.interaction).map((a) => {
+    const [plant, quality] = a.customId.split('|');
+
+    return {
+      weight: parseFloat(Number(a.value).toFixed(1)),
+      plant: Number(plant),
+      quality: Number(quality),
+    };
+  });
 
   for (let i = 0; i < selectedPlants.length; i++) {
     const plant = selectedPlants[i];
 
     if (Number.isNaN(plant.weight))
-      return ctx.makeMessage({
-        components: [],
-        embeds: [],
-        content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
+      return ctx.makeLayoutMessage({
+        components: [
+          createTextDisplay(
+            ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
+          ),
+        ],
       });
 
     if (plant.weight <= 0)
-      return ctx.makeMessage({
-        components: [],
-        embeds: [],
-        content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
+      return ctx.makeLayoutMessage({
+        components: [
+          createTextDisplay(
+            ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
+          ),
+        ],
       });
   }
 
@@ -60,20 +70,24 @@ const executeSellPlant = async (
     const fromSilo = farmer.silo.find(filterPlant(currentPlant));
 
     if (!fromSilo || fromSilo.weight < currentPlant.weight)
-      return ctx.makeMessage({
-        components: [],
-        embeds: [],
-        content: ctx.prettyResponse('error', 'commands:loja.sell_plants.not-enough', {
-          amount: currentPlant.weight,
-          plant: ctx.locale(`data:plants.${currentPlant.plant}`),
-        }),
+      return ctx.makeLayoutMessage({
+        components: [
+          createTextDisplay(
+            ctx.prettyResponse('error', 'commands:loja.sell_plants.not-enough', {
+              amount: currentPlant.weight,
+              plant: ctx.locale(`data:plants.${currentPlant.plant}`),
+            }),
+          ),
+        ],
       });
 
-    if (currentPlant.weight < 0)
-      return ctx.makeMessage({
-        components: [],
-        embeds: [],
-        content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
+    if (currentPlant.weight <= 0)
+      return ctx.makeLayoutMessage({
+        components: [
+          createTextDisplay(
+            ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
+          ),
+        ],
       });
 
     const plant = Plants[currentPlant.plant];
@@ -81,17 +95,17 @@ const executeSellPlant = async (
     const plantPrice = getPlantPrice(currentPlant);
 
     totalStars += Math.floor(currentPlant.weight * plantPrice);
-    fromSilo.weight = parseFloat((fromSilo.weight - currentPlant.weight).toFixed(1));
     soldPlants.push(`${getQualityEmoji(plantQuality)}${plant.emoji} **${currentPlant.weight} kg**`);
+    fromSilo.weight = parseFloat((fromSilo.weight - currentPlant.weight).toFixed(1));
 
     if (fromSilo.weight <= 0) farmer.silo.splice(farmer.silo.findIndex(filterPlant(fromSilo)), 1);
   }
 
   if (totalStars === 0)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
+    return ctx.makeLayoutMessage({
+      components: [
+        createTextDisplay(ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount')),
+      ],
     });
 
   await Promise.all([
@@ -108,14 +122,16 @@ const executeSellPlant = async (
 
   const userData = await userRepository.ensureFindUser(ctx.user.id);
 
-  ctx.makeMessage({
-    content: ctx.prettyResponse('success', 'commands:loja.sell_plants.success', {
-      amount: totalStars,
-      stars: userData.estrelinhas,
-      plants: soldPlants.join(', '),
-    }),
-    components: [],
-    embeds: [],
+  ctx.makeLayoutMessage({
+    components: [
+      createTextDisplay(
+        ctx.prettyResponse('success', 'commands:loja.sell_plants.success', {
+          amount: totalStars,
+          stars: userData.estrelinhas,
+          plants: soldPlants.join(', '),
+        }),
+      ),
+    ],
   });
 };
 

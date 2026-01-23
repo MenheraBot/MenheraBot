@@ -15,7 +15,8 @@ import { AvailablePlants, PlantQuality } from './types.js';
 
 type QuantitativePlantItem = QuantitativePlant | QuantitativeSeed;
 
-const getQuality = (plantItem: Pick<QuantitativePlantItem, 'quality'>) => plantItem.quality ?? PlantQuality.Normal;
+const getQuality = (plantItem: Pick<QuantitativePlantItem, 'quality'>) =>
+  plantItem.quality ?? PlantQuality.Normal;
 
 const getQualityEmoji = (quality: PlantQuality) =>
   ({
@@ -154,12 +155,16 @@ const filterPlantsByQuality = (
     { [PlantQuality.Normal]: [], [PlantQuality.Best]: [], [PlantQuality.Worst]: [] },
   );
 
-const filterPlant = (data: QuantitativePlantItem) => (plant: QuantitativePlantItem) =>
-  plant.plant === data.plant && getQuality(data) === getQuality(plant);
+const filterPlant =
+  <T extends boolean = false>(data: Pick<QuantitativePlant, 'plant' | 'quality'>, checkWeight?: T) =>
+  (plant: QuantitativePlantItem) =>
+    plant.plant === data.plant &&
+    getQuality(data) === getQuality(plant) &&
+    (!checkWeight || ('weight' in plant ? plant.weight : plant.amount) > 0);
 
 const isMatePlant = (plant: AvailablePlants) => plant === AvailablePlants.Mate;
 
-const getPlantPrice = (plant: Pick<QuantitativePlant,'plant' | 'quality'>) => {
+const getPlantPrice = (plant: Pick<QuantitativePlant, 'plant' | 'quality'>) => {
   const plantQuality = getQuality(plant);
 
   const qualityPriceBonus = {

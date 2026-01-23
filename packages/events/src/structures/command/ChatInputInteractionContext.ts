@@ -20,6 +20,7 @@ export type CanResolve = 'users' | 'members' | 'attachments' | false;
 
 export default class {
   public replied = false;
+  public isComponentV2 = false;
 
   public subCommand: string | undefined;
 
@@ -75,6 +76,7 @@ export default class {
   async makeLayoutMessage(
     options: Omit<InteractionCallbackData, 'embed' | 'content' | 'stickers' | 'poll'>,
   ) {
+    this.isComponentV2 = true;
     return this.makeMessage(enableLayoutMessage(options));
   }
 

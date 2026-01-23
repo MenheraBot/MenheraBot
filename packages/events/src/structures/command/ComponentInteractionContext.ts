@@ -19,6 +19,7 @@ export type CanResolve = 'users' | 'members' | false;
 
 export default class<InteractionType extends ComponentInteraction = ComponentInteraction> {
   private replied = false;
+  public isComponentV2 = false;
 
   public i18n: TFunction;
 
@@ -117,6 +118,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   async makeLayoutMessage(
     options: Omit<InteractionCallbackData, 'embeds' | 'content' | 'stickers' | 'poll'>,
   ) {
+      this.isComponentV2 = true;
       return this.makeMessage(enableLayoutMessage(options));
   }
 
