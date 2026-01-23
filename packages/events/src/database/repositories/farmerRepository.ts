@@ -78,43 +78,19 @@ const updateItems = async (farmerId: BigString, items: QuantitativeItem[]): Prom
 
 const executeHarvest = async (
   farmerId: BigString,
-  fieldIndex: number,
-  field: Plantation,
+  plantations: DatabaseFarmerSchema['plantations'],
   plant: AvailablePlants,
-  alreadyInSilo: boolean,
   success: boolean,
+  silo: DatabaseFarmerSchema['silo'],
   weight: number,
 ): Promise<void> => {
-  // Asserts to avoid negative error in farmer
-  if (weight < 0)
-    throw new Error(
-      `Negative weight for farmer ${farmerId}. Already: ${alreadyInSilo}. FieldIndex: ${fieldIndex}. Plant: ${plant}. Weight: ${weight}. Success: ${success}`,
-    );
-
-  const pushOrIncrement: Record<string, unknown> = {
-    [alreadyInSilo ? '$inc' : '$push']: alreadyInSilo
-      ? {
-          [`silo.$[elem].weight`]: weight,
-          experience: Math.floor(weight * ((plant + 1) * 5)),
-        }
-      : {
-          silo: {
-            plant,
-            weight,
-          },
-        },
-  };
-
-  if (!alreadyInSilo) pushOrIncrement.$inc = { experience: Math.floor(weight * ((plant + 1) * 5)) };
-
   const updatedUser = await farmerModel.findOneAndUpdate(
     { id: `${farmerId}` },
     {
-      $set: { [`plantations.${fieldIndex}`]: field },
-      ...(success ? pushOrIncrement : {}),
+      $set: { plantations, silo },
+      ...(success ? { $inc: { experience: Math.floor(weight * ((plant + 1) * 5)) } } : {}),
     },
     {
-      arrayFilters: alreadyInSilo ? [{ 'elem.plant': plant }] : [],
       new: true,
     },
   );

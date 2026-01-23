@@ -1185,6 +1185,9 @@
       "sell-plant": "Vender {{plant}}",
       "sell-all": "Vender tudo",
       "use-items": "Usar itens",
+      "quality-plants-2": "Plantas Premium",
+      "quality-plants-1": "Plantas",
+      "quality-plants-0": "Plantas Precárias",
       "sell-title": "Venda suas plantas",
       "no-plants": "Tu não possui plantas para vender",
       "description": "{{text}}\n- {{emoji}} **{{amount}}{{metric}}** - {{plant}} (**{{value}}** :star:)",
@@ -1192,7 +1195,7 @@
       "silo-is-full": "O seu silo está cheio! Seu silo tem espaço máximo de **{{limit}}** itens. Libere espaço vendendo plantas >_<",
       "select": "Selecione a quantidade de {{plant}} que você quer vender",
       "display-mate": "- {{emoji}} **∞** - {{plant}}",
-      "display-other": "- {{emoji}} **{{amount}}{{metric}}** - {{plant}}"
+      "display-other": "- {{quality}}{{emoji}} **{{amount}}{{metric}}** - {{plant}}"
     },
     "field-action": {
       "not-enough-seeds": "Você não possui sementes de **{{plant}}** para plantar!",

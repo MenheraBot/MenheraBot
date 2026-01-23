@@ -5,6 +5,7 @@ import {
   AvailablePlants,
   DeliveryMission,
   Plantation,
+  PlantQuality,
 } from '../modules/fazendinha/types.js';
 import { HuntMagicItem } from '../modules/hunt/types.js';
 import { UserBuyableTheme } from '../modules/themes/types.js';
@@ -127,6 +128,8 @@ export interface DatabaseCommandSchema {
 export interface QuantitativeSeed {
   amount: number;
   plant: AvailablePlants;
+  // For now, seeds wont have quality. But we declare
+  quality?: PlantQuality
 }
 
 export interface QuantitativeItem {
@@ -138,6 +141,7 @@ export interface QuantitativePlant {
   amount?: number;
   plant: AvailablePlants;
   weight: number;
+  quality?: PlantQuality;
 }
 
 export interface DatabaseTitlesSchema {

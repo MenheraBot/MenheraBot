@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## Added
 
-- Adicionado categorias para as plantações de fazendinha: GRão, Raiz, Vegetal, Fruta, Fruta Nobre e Especial.
+- Adicionado qualidade para plantações: Plantas Precárias, Plantas e Plantas Premium. Plantas premium e precárias tem uma mudança em seu preço de 30%.
+- Adicionado categorias para as plantações de fazendinha: Grão, Raiz, Vegetal, Fruta, Fruta Nobre e Especial.
 
 ## Fixed
 

@@ -2,7 +2,7 @@
 
 WATCH_DIR="./packages/events"
 FILE_PATTERN=".*\.ts$"
-BUILD_DELAY=2
+BUILD_DELAY=4
 
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
@@ -24,6 +24,7 @@ APP_PID=""
 WATCHER_PID=""
 LAST_CHANGE_TIME=0
 BUILD_PENDING=false
+LAST_BUILD_TIME=0
 AUTO_RESTART=false
 
 if [[ $1 == "autoreload" ]]; then
@@ -71,16 +72,19 @@ run_build() {
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}[BUILD] Build successful.${NC}"
 
-        if [ "$AUTO_RESTART" = true ]; then
-            echo -e "${GRAY}[SYSTEM] Auto restart is enabled${NC}"
-            start_app
-        else
-            echo -e "${YELLOW}[HINT] Press 'R' to restart the app with new build.${NC}"
+        if [ "$LAST_BUILD_TIME" -gt 0 ]; then
+            if [ "$AUTO_RESTART" = true ]; then
+                echo -e "${GRAY}[SYSTEM] Auto restart is enabled${NC}"
+                start_app
+            else
+                echo -e "${YELLOW}[HINT] Press 'R' to restart the app with new build.${NC}"
+            fi
         fi
-
     else
         echo -e "${RED}[BUILD] Build failed.${NC}"
     fi
+
+    LAST_BUILD_TIME="$(date +%s)"
 }
 
 start_watcher() {
@@ -138,9 +142,15 @@ while true; do
     
     if [ "$CURRENT_LINES" -gt "$LAST_READ_LINE" ]; then
         LAST_CHANGE_TIME=$(date +%s)
-        BUILD_PENDING=true
         LAST_READ_LINE=$CURRENT_LINES
-        echo -e "${GRAY}[SYSTEM] Change detected!${NC}"
+
+        BUILD_DIFF=$((LAST_CHANGE_TIME - LAST_BUILD_TIME))
+        
+        if [ "$BUILD_DIFF" -ge "$BUILD_DELAY" ]; then
+            BUILD_PENDING=true
+            echo -e "${GRAY}[SYSTEM] Change detected!${NC}"
+        fi
+
     fi
 
     if [ "$BUILD_PENDING" = true ]; then

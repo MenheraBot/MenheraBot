@@ -1,3 +1,4 @@
+import { EMOJIS } from '../../structures/constants.js';
 import {
   DatabaseFarmerSchema,
   QuantitativeItem,
@@ -5,8 +6,18 @@ import {
   QuantitativeSeed,
 } from '../../types/database.js';
 import { INITIAL_LIMIT_FOR_SILO, SILO_LIMIT_INCREASE_BY_LEVEL } from './constants.js';
+import { PlantQuality } from './types.js';
 
 type QuantitativePlantItem = QuantitativePlant | QuantitativeSeed;
+
+const getQuality = (plantItem: QuantitativePlantItem) => plantItem.quality ?? PlantQuality.Normal;
+
+const getQualityEmoji = (quality: PlantQuality) =>
+  ({
+    [PlantQuality.Best]: EMOJIS.best_quality,
+    [PlantQuality.Normal]: '',
+    [PlantQuality.Worst]: EMOJIS.worst_quality,
+  })[quality];
 
 const checkNeededPlants = (need: QuantitativePlantItem[], has: QuantitativePlantItem[]): boolean =>
   need.every((needed) =>
@@ -14,7 +25,12 @@ const checkNeededPlants = (need: QuantitativePlantItem[], has: QuantitativePlant
       const userHas = 'weight' in user ? user.weight : user.amount;
       const userNeed = 'weight' in needed ? needed.weight : needed.amount;
 
-      return user.plant === needed.plant && userHas >= userNeed;
+      const userQuality = getQuality(user);
+      const neededQuality = getQuality(needed);
+
+      const isPlantEqual = user.plant === needed.plant && userQuality === neededQuality;
+
+      return isPlantEqual && userHas >= userNeed;
     }),
   );
 
@@ -54,7 +70,7 @@ const removeItems = (user: QuantitativeItem[], toRemove: QuantitativeItem[]): Qu
 
 const addPlants = <T extends QuantitativePlantItem>(user: T[], toAdd: T[]): T[] =>
   toAdd.reduce<T[]>((p, c) => {
-    const fromUser = p.find((a) => a.plant === c.plant);
+    const fromUser = p.find((a) => a.plant === c.plant && getQuality(a) === getQuality(c));
 
     if (!fromUser) {
       p.push(c);
@@ -72,7 +88,7 @@ const addPlants = <T extends QuantitativePlantItem>(user: T[], toAdd: T[]): T[] 
 
 const removePlants = <T extends QuantitativePlantItem>(user: T[], toRemove: T[]): T[] =>
   user.reduce<T[]>((p, c) => {
-    const remove = toRemove.find((a) => a.plant === c.plant);
+    const remove = toRemove.find((a) => a.plant === c.plant && getQuality(a) === getQuality(c));
 
     if (!remove) {
       p.push(c);
@@ -124,4 +140,26 @@ const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
   return { used, limit };
 };
 
-export { checkNeededPlants, removePlants, addPlants, getSiloLimits, removeItems, addItems };
+const filterPlantsByQuality = (
+  plants: QuantitativePlant[],
+): Record<PlantQuality, QuantitativePlant[]> =>
+  plants.reduce<Record<PlantQuality, QuantitativePlant[]>>(
+    (p, c) => {
+      p[getQuality(c)].push(c);
+
+      return p;
+    },
+    { [PlantQuality.Normal]: [], [PlantQuality.Best]: [], [PlantQuality.Worst]: [] },
+  );
+
+export {
+  checkNeededPlants,
+  removePlants,
+  addPlants,
+  getQualityEmoji,
+  getSiloLimits,
+  removeItems,
+  addItems,
+  filterPlantsByQuality,
+  getQuality,
+};

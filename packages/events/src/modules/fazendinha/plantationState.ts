@@ -11,6 +11,8 @@ import {
   FieldUpgrade,
   Plantation,
   PlantationState,
+  PlantedField,
+  PlantQuality,
   Seasons,
 } from './types.js';
 
@@ -87,4 +89,8 @@ const getFieldWeight = (
   return weight;
 };
 
-export { getPlantationState, getHarvestTime, getFieldWeight, isUpgradeApplied };
+const getFieldQuality = (field: PlantedField): PlantQuality => {
+  return PlantQuality.Normal;
+};
+
+export { getPlantationState, getHarvestTime, getFieldWeight, isUpgradeApplied, getFieldQuality };

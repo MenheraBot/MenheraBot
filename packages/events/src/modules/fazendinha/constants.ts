@@ -23,7 +23,7 @@ export const MAX_DELIVERY_WEIGHT = 9;
 export const MIN_DELIVERY_WEIGHT = 5;
 export const FINISH_ALL_DELIVERIES_BONUS = 30_000;
 
-// Worst = -30%, Best = +30%. Medium = base price;
+// Worst = -30%, Best = +30%. Normal = base price;
 export const QUALITY_PRICE_MULTIPLIER = 30 / 100;
 
 export const PLANTATION_WEIGHT_MODIFIERS = {

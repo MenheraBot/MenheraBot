@@ -50,7 +50,7 @@ export enum PlantCategories {
 
 export enum PlantQuality {
   Worst,
-  Medium,
+  Normal,
   Best,
 }
 

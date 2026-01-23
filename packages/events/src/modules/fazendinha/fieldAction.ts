@@ -5,7 +5,7 @@ import { SelectMenuInteraction } from '../../types/interaction.js';
 import { postFazendinhaAction } from '../../utils/apiRequests/statistics.js';
 import { MessageFlags } from '@discordeno/bot';
 import { displayPlantations } from './displayPlantations.js';
-import { getFieldWeight, getHarvestTime, getPlantationState } from './plantationState.js';
+import { getFieldQuality, getFieldWeight, getHarvestTime, getPlantationState } from './plantationState.js';
 import { Items, Plants } from './constants.js';
 import { getCurrentSeason } from './seasonsManager.js';
 import {
@@ -15,7 +15,7 @@ import {
   PlantationState,
   PlantedField,
 } from './types.js';
-import { getSiloLimits } from './siloUtils.js';
+import { addPlants, getSiloLimits } from './siloUtils.js';
 import executeDailies from '../dailies/executeDailies.js';
 import userRepository from '../../database/repositories/userRepository.js';
 
@@ -126,26 +126,28 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
     upgrades: field.upgrades ?? [],
   };
 
+  const success = state === PlantationState.Mature;
+  const harvestedWeight = success ? (field.weight ?? 1) : 0;
+
+  const newSilo = success
+    ? addPlants(farmer.silo, [
+        { plant: field.plantType, weight: harvestedWeight, quality: getFieldQuality(field) },
+      ])
+    : farmer.silo;
+
   await farmerRepository.executeHarvest(
     ctx.user.id,
-    selectedField,
-    { isPlanted: false, upgrades: field.upgrades ?? [] },
+    farmer.plantations,
     field.plantType,
-    farmer.silo.some((a) => a.plant === field.plantType),
-    state === PlantationState.Mature,
-    field.weight ?? 1,
+    success,
+    newSilo,
+    harvestedWeight,
   );
 
   if (state !== PlantationState.Growing)
-    postFazendinhaAction(
-      `${ctx.user.id}`,
-      field.plantType,
-      state === PlantationState.Mature ? 'HARVEST' : 'ROTTED',
-    );
+    postFazendinhaAction(`${ctx.user.id}`, field.plantType, success ? 'HARVEST' : 'ROTTED');
 
-  const harvestedWeight = state === PlantationState.Mature ? (field.weight ?? 1) : undefined;
-
-  if (harvestedWeight)
+  if (harvestedWeight > 0)
     executeDailies.harvestPlant(
       await userRepository.ensureFindUser(ctx.user.id),
       field.plantType,
