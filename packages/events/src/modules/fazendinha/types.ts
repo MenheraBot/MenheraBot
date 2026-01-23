@@ -48,6 +48,12 @@ export enum PlantCategories {
   Special,
 }
 
+export enum PlantQuality {
+  Worst,
+  Medium,
+  Best,
+}
+
 export interface SeasonData {
   currentSeason: Seasons;
   endsAt: number;
@@ -74,7 +80,12 @@ export interface EmptyField {
   upgrades?: FieldUpgrade[];
 }
 
-export type PlantationState = 'EMPTY' | 'GROWING' | 'MATURE' | 'ROTTEN';
+export enum PlantationState {
+  Empty = 'EMPTY',
+  Growing = 'GROWING',
+  Mature = 'MATURE',
+  Rotten = 'ROTTEN'
+}
 
 export type Plantation = PlantedField | EmptyField;
 

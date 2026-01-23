@@ -16,24 +16,24 @@ import { Items, Plants } from './constants.js';
 import { getSeasonalInfo } from './seasonsManager.js';
 
 const PlantStateIcon: Record<PlantationState, string> = {
-  EMPTY: '🟫',
-  GROWING: '🌱',
-  ROTTEN: '🍂',
-  MATURE: '',
+  [PlantationState.Empty]: '🟫',
+  [PlantationState.Growing]: '🌱',
+  [PlantationState.Rotten]: '🍂',
+  [PlantationState.Mature]: '',
 };
 
 const SeasonEmojis: Record<Seasons, string> = {
-  autumn: '🍁',
-  winter: '❄️',
-  spring: '🍃',
-  summer: '☀️',
+  [Seasons.Autumn]: '🍁',
+  [Seasons.Winter]: '❄️',
+  [Seasons.Spring]: '🍃',
+  [Seasons.Summer]: '☀️',
 };
 
 const ButtonStyleForPlantState: Record<PlantationState, ButtonStyles> = {
-  EMPTY: ButtonStyles.Primary,
-  GROWING: ButtonStyles.Danger,
-  MATURE: ButtonStyles.Success,
-  ROTTEN: ButtonStyles.Secondary,
+  [PlantationState.Empty]: ButtonStyles.Primary,
+  [PlantationState.Growing]: ButtonStyles.Danger,
+  [PlantationState.Mature]: ButtonStyles.Success,
+  [PlantationState.Rotten]: ButtonStyles.Secondary,
 };
 
 const repeatIcon = (icon: string): string =>
@@ -46,7 +46,7 @@ const getPlantationDisplay = (
   field: Plantation,
 ): string => {
   const toUseEmoji =
-    state === 'MATURE' ? Plants[(field as PlantedField).plantType].emoji : PlantStateIcon[state];
+    state === PlantationState.Mature ? Plants[(field as PlantedField).plantType].emoji : PlantStateIcon[state];
 
   const unix = millisToSeconds(timeToAction);
 
@@ -95,16 +95,16 @@ const parseUserPlantations = (
           action: ctx.locale(
             `commands:fazendinha.plantations.${
               {
-                MATURE: 'harvest' as const,
-                ROTTEN: 'collect' as const,
-                GROWING: 'discart' as const,
-                EMPTY: 'plant' as const,
+                [PlantationState.Mature]: 'harvest' as const,
+                [PlantationState.Rotten]: 'collect' as const,
+                [PlantationState.Growing]: 'discart' as const,
+                [PlantationState.Empty]: 'plant' as const,
               }[plantState]
             }`,
           ),
         }),
         emoji:
-          plantState === 'EMPTY'
+          plantState === PlantationState.Empty
             ? undefined
             : { name: Plants[(field as PlantedField).plantType].emoji },
         style: ButtonStyleForPlantState[plantState],

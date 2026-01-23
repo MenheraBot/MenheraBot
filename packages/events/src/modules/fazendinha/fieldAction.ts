@@ -8,7 +8,13 @@ import { displayPlantations } from './displayPlantations.js';
 import { getFieldWeight, getHarvestTime, getPlantationState } from './plantationState.js';
 import { Items, Plants } from './constants.js';
 import { getCurrentSeason } from './seasonsManager.js';
-import { AvailableItems, AvailablePlants, Plantation, PlantedField } from './types.js';
+import {
+  AvailableItems,
+  AvailablePlants,
+  Plantation,
+  PlantationState,
+  PlantedField,
+} from './types.js';
 import { getSiloLimits } from './siloUtils.js';
 import executeDailies from '../dailies/executeDailies.js';
 import userRepository from '../../database/repositories/userRepository.js';
@@ -74,7 +80,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   const userSeeds = farmer.seeds.find((a) => a.plant === seed);
 
-  if (state === 'GROWING' && force !== 'Y') {
+  if (state === PlantationState.Growing && force !== 'Y') {
     await displayPlantations(
       ctx,
       farmer,
@@ -111,7 +117,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
     if (field.weight <= 0) {
       replyFullSilo = true;
-      state = 'GROWING';
+      state = PlantationState.Growing;
     }
   }
 
@@ -126,18 +132,18 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
     { isPlanted: false, upgrades: field.upgrades ?? [] },
     field.plantType,
     farmer.silo.some((a) => a.plant === field.plantType),
-    state === 'MATURE',
+    state === PlantationState.Mature,
     field.weight ?? 1,
   );
 
-  if (state !== 'GROWING')
+  if (state !== PlantationState.Growing)
     postFazendinhaAction(
       `${ctx.user.id}`,
       field.plantType,
-      state === 'MATURE' ? 'HARVEST' : 'ROTTED',
+      state === PlantationState.Mature ? 'HARVEST' : 'ROTTED',
     );
 
-  const harvestedWeight = state === 'MATURE' ? (field.weight ?? 1) : undefined;
+  const harvestedWeight = state === PlantationState.Mature ? (field.weight ?? 1) : undefined;
 
   if (harvestedWeight)
     executeDailies.harvestPlant(

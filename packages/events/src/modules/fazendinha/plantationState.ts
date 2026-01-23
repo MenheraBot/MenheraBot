@@ -18,20 +18,20 @@ const isUpgradeApplied = (buff: AvailableItems, upgrades: FieldUpgrade[]): boole
   upgrades.some((u) => u.id === buff && u.expiresAt > Date.now());
 
 const getPlantationState = (field: Plantation): [PlantationState, number] => {
-  if (!field.isPlanted) return ['EMPTY', -1];
+  if (!field.isPlanted) return [PlantationState.Empty, -1];
 
   const plant = Plants[field.plantType];
 
-  if (Date.now() < field.harvestAt) return ['GROWING', field.harvestAt];
+  if (Date.now() < field.harvestAt) return [PlantationState.Growing, field.harvestAt];
 
   const timeToReduce =
     field.plantedSeason === plant.worstSeason ? plant.minutesToRot * SEASONAL_ROT_DEBUFF : 0;
 
   const timeToRot = field.harvestAt + minutesToMillis(plant.minutesToRot - timeToReduce);
 
-  if (Date.now() >= timeToRot) return ['ROTTEN', timeToRot];
+  if (Date.now() >= timeToRot) return [PlantationState.Rotten, timeToRot];
 
-  return ['MATURE', timeToRot];
+  return [PlantationState.Mature, timeToRot];
 };
 
 const getHarvestTime = (
