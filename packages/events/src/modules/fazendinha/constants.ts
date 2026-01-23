@@ -27,9 +27,9 @@ export const FINISH_ALL_DELIVERIES_BONUS = 30_000;
 export const QUALITY_PRICE_MULTIPLIER = 30 / 100;
 
 export const PLANTATION_WEIGHT_MODIFIERS = {
-  BASE_MIN_VALUE: 0.7,
-  BASE_MAX_VALUE: 1.3,
-  BEST_SEASON_BUFF: 0.2,
+  BASE_MIN_VALUE: 0.8,
+  BASE_MAX_VALUE: 1.4,
+  BEST_SEASON_BUFF: 0.3,
   WORST_SEASON_DEBUFF: 0.2,
   FERTILIZER_MAX_BUFF: 0.5,
   FERTILIZER_MIN_BUFF: 0.3,
@@ -68,9 +68,11 @@ export const Items: Record<AvailableItems, ItemsFile> = {
   },
 };
 
+const replaceDevTime = (time: number) => process.env.NODE_ENV === 'production' ? time : 0.1
+
 export const Plants: Record<AvailablePlants, PlantsFile> = {
   [AvailablePlants.Mate]: {
-    minutesToHarvest: process.env.NODE_ENV === 'production' ? 15 : 0.1,
+    minutesToHarvest: replaceDevTime(15),
     minutesToRot: 60,
     emoji: '🌿',
     sellValue: 110,
@@ -80,7 +82,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Grain,
   },
   [AvailablePlants.Rice]: {
-    minutesToHarvest: 30,
+    minutesToHarvest: replaceDevTime(30),
     minutesToRot: 60,
     emoji: '🌾',
     sellValue: 133,
@@ -90,7 +92,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Grain,
   },
   [AvailablePlants.Corn]: {
-    minutesToHarvest: 30,
+    minutesToHarvest: replaceDevTime(30),
     minutesToRot: 80,
     emoji: '🌽',
     sellValue: 150,
@@ -100,7 +102,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Grain,
   },
   [AvailablePlants.Potato]: {
-    minutesToHarvest: 45,
+    minutesToHarvest: replaceDevTime(45),
     minutesToRot: 40,
     emoji: '🥔',
     sellValue: 193,
@@ -110,7 +112,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Root,
   },
   [AvailablePlants.Garlic]: {
-    minutesToHarvest: 45,
+    minutesToHarvest: replaceDevTime(45),
     minutesToRot: 60,
     emoji: '🧄',
     sellValue: 231,
@@ -120,7 +122,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Root,
   },
   [AvailablePlants.Carrot]: {
-    minutesToHarvest: 45,
+    minutesToHarvest: replaceDevTime(45),
     minutesToRot: 30,
     emoji: '🥕',
     sellValue: 271,
@@ -130,7 +132,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Root,
   },
   [AvailablePlants.Tomato]: {
-    minutesToHarvest: 60,
+    minutesToHarvest: replaceDevTime(60),
     minutesToRot: 60,
     emoji: '🍅',
     sellValue: 357,
@@ -140,7 +142,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Vegetable,
   },
   [AvailablePlants.Cucumber]: {
-    minutesToHarvest: 60,
+    minutesToHarvest: replaceDevTime(60),
     minutesToRot: 90,
     emoji: '🥒',
     sellValue: 385,
@@ -150,7 +152,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Vegetable,
   },
   [AvailablePlants.Broccoli]: {
-    minutesToHarvest: 75,
+    minutesToHarvest: replaceDevTime(75),
     minutesToRot: 80,
     emoji: '🥦',
     sellValue: 442,
@@ -160,7 +162,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Vegetable,
   },
   [AvailablePlants.Sunflower]: {
-    minutesToHarvest: 75,
+    minutesToHarvest: replaceDevTime(75),
     minutesToRot: 120,
     emoji: '🌻',
     sellValue: 421,
@@ -170,7 +172,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Special,
   },
   [AvailablePlants.Mint]: {
-    minutesToHarvest: 80,
+    minutesToHarvest: replaceDevTime(80),
     minutesToRot: 30,
     emoji: '🍃',
     sellValue: 558,
@@ -180,7 +182,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Special,
   },
   [AvailablePlants.Watermelon]: {
-    minutesToHarvest: 100,
+    minutesToHarvest: replaceDevTime(100),
     minutesToRot: 60,
     emoji: '🍉',
     sellValue: 714,
@@ -190,7 +192,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.Strawberry]: {
-    minutesToHarvest: 100,
+    minutesToHarvest: replaceDevTime(100),
     minutesToRot: 40,
     emoji: '🍓',
     sellValue: 885,
@@ -200,7 +202,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.HotPepper]: {
-    minutesToHarvest: 100,
+    minutesToHarvest: replaceDevTime(100),
     minutesToRot: 50,
     emoji: '🌶',
     sellValue: 1071,
@@ -210,7 +212,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Vegetable,
   },
   [AvailablePlants.Eggplant]: {
-    minutesToHarvest: 80,
+    minutesToHarvest: replaceDevTime(80),
     minutesToRot: 60,
     emoji: '🍆',
     sellValue: 1571,
@@ -220,7 +222,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Vegetable,
   },
   [AvailablePlants.Avocado]: {
-    minutesToHarvest: 85,
+    minutesToHarvest: replaceDevTime(85),
     minutesToRot: 20,
     emoji: '🥑',
     sellValue: 1791,
@@ -230,7 +232,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.NobleFruit,
   },
   [AvailablePlants.Mango]: {
-    minutesToHarvest: 90,
+    minutesToHarvest: replaceDevTime(90),
     minutesToRot: 50,
     emoji: '🥭',
     sellValue: 2000,
@@ -240,7 +242,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.NobleFruit,
   },
   [AvailablePlants.Apple]: {
-    minutesToHarvest: 110,
+    minutesToHarvest: replaceDevTime(110),
     minutesToRot: 30,
     emoji: '🍎',
     sellValue: 2714,
@@ -250,7 +252,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.Lemon]: {
-    minutesToHarvest: 130,
+    minutesToHarvest: replaceDevTime(130),
     minutesToRot: 10,
     emoji: '🍋',
     sellValue: 3000,
@@ -260,7 +262,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.NobleFruit,
   },
   [AvailablePlants.Cabbage]: {
-    minutesToHarvest: 150,
+    minutesToHarvest: replaceDevTime(150),
     minutesToRot: 60,
     emoji: '🥬',
     sellValue: 3285,
@@ -270,7 +272,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.Root,
   },
   [AvailablePlants.Banana]: {
-    minutesToHarvest: 160,
+    minutesToHarvest: replaceDevTime(160),
     minutesToRot: 100,
     emoji: '🍌',
     sellValue: 3714,
@@ -280,7 +282,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.NobleFruit,
   },
   [AvailablePlants.Pineapple]: {
-    minutesToHarvest: 170,
+    minutesToHarvest: replaceDevTime(170),
     minutesToRot: 30,
     emoji: '🍍',
     sellValue: 4714,
@@ -290,7 +292,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.NobleFruit,
   },
   [AvailablePlants.Peach]: {
-    minutesToHarvest: 180,
+    minutesToHarvest: replaceDevTime(180),
     minutesToRot: 60,
     emoji: '🍑',
     sellValue: 5571,
@@ -300,7 +302,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.Cherry]: {
-    minutesToHarvest: 200,
+    minutesToHarvest: replaceDevTime(200),
     minutesToRot: 60,
     emoji: '🍒',
     sellValue: 6428,
@@ -310,7 +312,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.Mushroom]: {
-    minutesToHarvest: 220,
+    minutesToHarvest: replaceDevTime(220),
     minutesToRot: 2,
     emoji: '🍄',
     sellValue: 8175,

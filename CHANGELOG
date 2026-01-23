@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Adicionado qualidade para plantações: Plantas Precárias, Plantas e Plantas Premium. Plantas premium e precárias tem uma mudança em seu preço de 30%.
 - Adicionado categorias para as plantações de fazendinha: Grão, Raiz, Vegetal, Fruta, Fruta Nobre e Especial.
 
+## Changed
+
+- Ajustado os pesos minimos e máximos de plantações da fazendinha.
+
 ## Fixed
 
 - Corrigido os itens mágicos ainda aparecerem na loja para serem comprados, mesmo já tendo eles - Reportado por @mareys.

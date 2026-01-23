@@ -36,6 +36,7 @@ export const EMOJIS = {
   swap: '🔀',
   time: '⏲️',
   best_quality: '🔹',
+  normal_quality: '▫️',
   worst_quality: '🔻',
   sword: '⚔️',
   gay_flag: '🏳️‍🌈',

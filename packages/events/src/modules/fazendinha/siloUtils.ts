@@ -5,17 +5,22 @@ import {
   QuantitativePlant,
   QuantitativeSeed,
 } from '../../types/database.js';
-import { INITIAL_LIMIT_FOR_SILO, SILO_LIMIT_INCREASE_BY_LEVEL } from './constants.js';
+import {
+  INITIAL_LIMIT_FOR_SILO,
+  Plants,
+  QUALITY_PRICE_MULTIPLIER,
+  SILO_LIMIT_INCREASE_BY_LEVEL,
+} from './constants.js';
 import { AvailablePlants, PlantQuality } from './types.js';
 
 type QuantitativePlantItem = QuantitativePlant | QuantitativeSeed;
 
-const getQuality = (plantItem: QuantitativePlantItem) => plantItem.quality ?? PlantQuality.Normal;
+const getQuality = (plantItem: Pick<QuantitativePlantItem, 'quality'>) => plantItem.quality ?? PlantQuality.Normal;
 
 const getQualityEmoji = (quality: PlantQuality) =>
   ({
     [PlantQuality.Best]: EMOJIS.best_quality,
-    [PlantQuality.Normal]: '',
+    [PlantQuality.Normal]: EMOJIS.normal_quality,
     [PlantQuality.Worst]: EMOJIS.worst_quality,
   })[quality];
 
@@ -154,6 +159,21 @@ const filterPlant = (data: QuantitativePlantItem) => (plant: QuantitativePlantIt
 
 const isMatePlant = (plant: AvailablePlants) => plant === AvailablePlants.Mate;
 
+const getPlantPrice = (plant: Pick<QuantitativePlant,'plant' | 'quality'>) => {
+  const plantQuality = getQuality(plant);
+
+  const qualityPriceBonus = {
+    [PlantQuality.Best]: QUALITY_PRICE_MULTIPLIER,
+    [PlantQuality.Normal]: 0,
+    [PlantQuality.Worst]: -QUALITY_PRICE_MULTIPLIER,
+  }[plantQuality];
+
+  const plantData = Plants[plant.plant];
+  const plantSellValue = plantData.sellValue;
+
+  return Math.floor(plantSellValue + plantSellValue * qualityPriceBonus);
+};
+
 export {
   checkNeededPlants,
   isMatePlant,
@@ -161,6 +181,7 @@ export {
   addPlants,
   getQualityEmoji,
   getSiloLimits,
+  getPlantPrice,
   removeItems,
   addItems,
   filterPlant,

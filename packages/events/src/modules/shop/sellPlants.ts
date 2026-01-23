@@ -9,9 +9,13 @@ import { ModalInteraction } from '../../types/interaction.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { postTransaction } from '../../utils/apiRequests/statistics.js';
 import { extractFields } from '../../utils/discord/modalUtils.js';
-import { Plants, QUALITY_PRICE_MULTIPLIER } from '../fazendinha/constants.js';
-import { PlantQuality } from '../fazendinha/types.js';
-import { filterPlant, getQuality, getQualityEmoji } from '../fazendinha/siloUtils.js';
+import { Plants } from '../fazendinha/constants.js';
+import {
+  filterPlant,
+  getPlantPrice,
+  getQuality,
+  getQualityEmoji,
+} from '../fazendinha/siloUtils.js';
 
 const receiveModal = async (
   ctx: ComponentInteractionContext<ModalInteraction>,
@@ -72,18 +76,9 @@ const executeSellPlant = async (
         content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
       });
 
-    const plantQuality = getQuality(currentPlant);
-
-    const qualityPriceBonus = {
-      [PlantQuality.Best]: QUALITY_PRICE_MULTIPLIER,
-      [PlantQuality.Normal]: 0,
-      [PlantQuality.Worst]: -QUALITY_PRICE_MULTIPLIER,
-    }[plantQuality];
-
     const plant = Plants[currentPlant.plant];
-    const plantSellValue = plant.sellValue;
-
-    const plantPrice = plantSellValue + plantSellValue * qualityPriceBonus;
+    const plantQuality = getQuality(currentPlant);
+    const plantPrice = getPlantPrice(currentPlant);
 
     totalStars += Math.floor(currentPlant.weight * plantPrice);
     fromSilo.weight = parseFloat((fromSilo.weight - currentPlant.weight).toFixed(1));
