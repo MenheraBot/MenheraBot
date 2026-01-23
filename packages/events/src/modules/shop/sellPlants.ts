@@ -65,7 +65,7 @@ const executeSellPlant = async (
   let totalStars = 0;
   const soldPlants = [];
 
-  for (let i = 0; i < selectedPlants.length; i++) {
+  for (let i = selectedPlants.length - 1; i >= 0; i--) {
     const currentPlant = selectedPlants[i];
     const fromSilo = farmer.silo.find(filterPlant(currentPlant));
 

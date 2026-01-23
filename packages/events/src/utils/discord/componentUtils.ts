@@ -9,6 +9,7 @@ import type {
   TextDisplayComponent,
   ContainerComponent,
   InteractionCallbackData,
+  SectionComponent,
 } from '@discordeno/bot';
 
 import { MessageComponentTypes } from '@discordeno/bot';
@@ -89,6 +90,10 @@ const createSeparator = (
   type: MessageComponentTypes.Separator,
 });
 
+const createSection = (
+  component: PropertyOptional<SectionComponent, 'type'>,
+): SectionComponent => ({ ...component, type: MessageComponentTypes.Section });
+
 const enableLayoutMessage = (
   message: Omit<InteractionCallbackData, 'embed' | 'content' | 'stickers' | 'poll'>,
 ): InteractionCallbackData => ({
@@ -104,6 +109,7 @@ export {
   createTextDisplay,
   createSeparator,
   createCustomId,
+  createSection,
   createActionRow,
   createTextInput,
   createAsyncCustomId,

@@ -18,6 +18,7 @@ import {
   createButton,
   createContainer,
   createCustomId,
+  createSection,
   createSelectMenu,
   createSeparator,
   createTextDisplay,
@@ -167,7 +168,7 @@ const displaySilo = async (
 };
 
 const handleButtonAction = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [selectedOption, embedColor] = ctx.sentData;
+  const [selectedOption, embedColor, confirm] = ctx.sentData;
 
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
@@ -188,6 +189,14 @@ const handleButtonAction = async (ctx: ComponentInteractionContext): Promise<voi
     const byQuality = filterPlantsByQuality(farmer.silo);
 
     return executeSellPlant(ctx, farmer, byQuality[Number(quality) as PlantQuality]);
+  }
+
+  if (selectedOption === 'SELL_ALL') {
+    const confirmed = confirm === 'true';
+
+    if (confirmed) return executeSellPlant(ctx, farmer, farmer.silo);
+
+    return buildSellPlantsMessage(ctx, farmer, embedColor, true);
   }
 
   if (selectedOption === 'SELL')
@@ -254,6 +263,7 @@ const buildSellPlantsMessage = async (
   ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   embedColor: string,
+  confirm = false,
 ): Promise<void> => {
   const normalOptions: SelectOption[] = [];
   const bestOptions: SelectOption[] = [];
@@ -298,7 +308,9 @@ const buildSellPlantsMessage = async (
 
     if (options.length < 25)
       options.unshift({
-        label: ctx.locale('commands:fazendinha.silo.sell-all'),
+        label: ctx.locale('commands:fazendinha.silo.sell-all-plants', {
+          quality: ctx.locale(`commands:fazendinha.silo.quality-plants-${quality}`).toLowerCase(),
+        }),
         value: `ALL|${quality}`,
         emoji: { name: '💰' },
       });
@@ -313,6 +325,7 @@ const buildSellPlantsMessage = async (
           options,
           minValues: 1,
           maxValues: options.length >= 5 ? 5 : options.length,
+          placeholder: `${getQualityEmoji(quality)} ${ctx.locale('commands:fazendinha.silo.choose-sell')}`,
           customId: createCustomId(
             8,
             ctx.user.id,
@@ -333,9 +346,28 @@ const buildSellPlantsMessage = async (
   const container = createContainer({
     accentColor: hexStringToNumber(embedColor),
     components: [
-      createTextDisplay(
-        `## ${ctx.locale('commands:fazendinha.silo.sell-title')}\n-# ${ctx.locale('commands:fazendinha.silo.footer', { ...getSiloLimits(farmer) })}`,
-      ),
+      createSection({
+        components: [
+          createTextDisplay(
+            `## ${ctx.locale(`commands:fazendinha.silo.${confirm ? 'confirm-title' : 'sell-title'}`)}\n-# ${ctx.locale(
+              'commands:fazendinha.silo.footer',
+              { ...getSiloLimits(farmer) },
+            )}`,
+          ),
+        ],
+        accessory: createButton({
+          style: confirm ? ButtonStyles.Danger : ButtonStyles.Primary,
+          label: ctx.locale(`commands:fazendinha.silo.${confirm ? 'confirm-' : ''}sell-all`),
+          customId: createCustomId(
+            8,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            'SELL_ALL',
+            embedColor,
+            confirm,
+          ),
+        }),
+      }),
       ...selectComponents,
     ],
   });
