@@ -109,6 +109,7 @@ if [ "$AUTO_RESTART" = true ]; then
 fi
 
 start_watcher
+run_build
 start_app
 
 LAST_READ_LINE=0

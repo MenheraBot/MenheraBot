@@ -32,7 +32,12 @@ export enum AvailableItems {
   Fertilizer,
 }
 
-export type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
+export enum Seasons {
+  Summer = 'summer',
+  Winter = 'winter',
+  Autumn = 'autumn',
+  Spring = 'spring'
+}
 
 export interface SeasonData {
   currentSeason: Seasons;
