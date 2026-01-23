@@ -3,6 +3,7 @@ import {
   AvailableItems,
   AvailablePlants,
   ItemsFile,
+  PlantCategories,
   PlantsFile,
   Seasons,
   UnlockFieldFile,
@@ -73,6 +74,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 0,
     bestSeason: Seasons.Winter,
     worstSeason: Seasons.Spring,
+    category: PlantCategories.Grain,
   },
   [AvailablePlants.Rice]: {
     minutesToHarvest: 30,
@@ -82,6 +84,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 42,
     bestSeason: Seasons.Summer,
     worstSeason: Seasons.Winter,
+    category: PlantCategories.Grain,
   },
   [AvailablePlants.Corn]: {
     minutesToHarvest: 30,
@@ -91,6 +94,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 50,
     bestSeason: Seasons.Summer,
     worstSeason: Seasons.Winter,
+    category: PlantCategories.Grain,
   },
   [AvailablePlants.Potato]: {
     minutesToHarvest: 45,
@@ -100,6 +104,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 70,
     bestSeason: Seasons.Autumn,
     worstSeason: Seasons.Summer,
+    category: PlantCategories.Root,
   },
   [AvailablePlants.Garlic]: {
     minutesToHarvest: 45,
@@ -109,6 +114,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 90,
     bestSeason: Seasons.Winter,
     worstSeason: Seasons.Summer,
+    category: PlantCategories.Root,
   },
   [AvailablePlants.Carrot]: {
     minutesToHarvest: 45,
@@ -118,6 +124,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 100,
     bestSeason: Seasons.Spring,
     worstSeason: Seasons.Summer,
+    category: PlantCategories.Root,
   },
   [AvailablePlants.Tomato]: {
     minutesToHarvest: 60,
@@ -127,6 +134,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 110,
     bestSeason: Seasons.Spring,
     worstSeason: Seasons.Winter,
+    category: PlantCategories.Vegetable,
   },
   [AvailablePlants.Cucumber]: {
     minutesToHarvest: 60,
@@ -136,6 +144,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 120,
     bestSeason: Seasons.Summer,
     worstSeason: Seasons.Winter,
+    category: PlantCategories.Vegetable,
   },
   [AvailablePlants.Broccoli]: {
     minutesToHarvest: 75,
@@ -145,6 +154,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 130,
     bestSeason: Seasons.Winter,
     worstSeason: Seasons.Summer,
+    category: PlantCategories.Vegetable,
   },
   [AvailablePlants.Sunflower]: {
     minutesToHarvest: 75,
@@ -154,6 +164,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 140,
     bestSeason: Seasons.Spring,
     worstSeason: Seasons.Autumn,
+    category: PlantCategories.Special,
   },
   [AvailablePlants.Mint]: {
     minutesToHarvest: 80,
@@ -163,6 +174,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 150,
     bestSeason: Seasons.Spring,
     worstSeason: Seasons.Autumn,
+    category: PlantCategories.Special,
   },
   [AvailablePlants.Watermelon]: {
     minutesToHarvest: 100,
@@ -172,6 +184,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 170,
     bestSeason: Seasons.Summer,
     worstSeason: Seasons.Winter,
+    category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.Strawberry]: {
     minutesToHarvest: 100,
@@ -181,6 +194,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 190,
     bestSeason: Seasons.Autumn,
     worstSeason: Seasons.Winter,
+    category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.HotPepper]: {
     minutesToHarvest: 100,
@@ -190,6 +204,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 264,
     bestSeason: Seasons.Spring,
     worstSeason: Seasons.Winter,
+    category: PlantCategories.Vegetable,
   },
   [AvailablePlants.Eggplant]: {
     minutesToHarvest: 80,
@@ -199,6 +214,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 485,
     bestSeason: Seasons.Summer,
     worstSeason: Seasons.Spring,
+    category: PlantCategories.Vegetable,
   },
   [AvailablePlants.Avocado]: {
     minutesToHarvest: 85,
@@ -208,6 +224,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 604,
     bestSeason: Seasons.Summer,
     worstSeason: Seasons.Winter,
+    category: PlantCategories.NobleFruit,
   },
   [AvailablePlants.Mango]: {
     minutesToHarvest: 90,
@@ -217,6 +234,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 942,
     bestSeason: Seasons.Spring,
     worstSeason: Seasons.Winter,
+    category: PlantCategories.NobleFruit,
   },
   [AvailablePlants.Apple]: {
     minutesToHarvest: 110,
@@ -226,6 +244,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 1206,
     bestSeason: Seasons.Spring,
     worstSeason: Seasons.Winter,
+    category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.Lemon]: {
     minutesToHarvest: 130,
@@ -235,6 +254,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 1616,
     bestSeason: Seasons.Spring,
     worstSeason: Seasons.Winter,
+    category: PlantCategories.NobleFruit,
   },
   [AvailablePlants.Cabbage]: {
     minutesToHarvest: 150,
@@ -244,6 +264,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 1851,
     bestSeason: Seasons.Winter,
     worstSeason: Seasons.Spring,
+    category: PlantCategories.Root,
   },
   [AvailablePlants.Banana]: {
     minutesToHarvest: 160,
@@ -253,6 +274,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 2318,
     bestSeason: Seasons.Summer,
     worstSeason: Seasons.Autumn,
+    category: PlantCategories.NobleFruit,
   },
   [AvailablePlants.Pineapple]: {
     minutesToHarvest: 170,
@@ -262,6 +284,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 2604,
     bestSeason: Seasons.Summer,
     worstSeason: Seasons.Spring,
+    category: PlantCategories.NobleFruit,
   },
   [AvailablePlants.Peach]: {
     minutesToHarvest: 180,
@@ -271,6 +294,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 3108,
     bestSeason: Seasons.Summer,
     worstSeason: Seasons.Winter,
+    category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.Cherry]: {
     minutesToHarvest: 200,
@@ -280,6 +304,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 3318,
     bestSeason: Seasons.Autumn,
     worstSeason: Seasons.Winter,
+    category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.Mushroom]: {
     minutesToHarvest: 220,
@@ -289,5 +314,6 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 3689,
     bestSeason: Seasons.Winter,
     worstSeason: Seasons.Summer,
+    category: PlantCategories.Special,
   },
 };

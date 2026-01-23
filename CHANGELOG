@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+## Added
+
+- Adicionado categorias para as plantações de fazendinha: GRão, Raiz, Vegetal, Fruta, Fruta Nobre e Especial.
+
 ## Fixed
 
 - Corrigido os itens mágicos ainda aparecerem na loja para serem comprados, mesmo já tendo eles - Reportado por @mareys.

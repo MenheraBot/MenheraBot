@@ -39,6 +39,15 @@ export enum Seasons {
   Spring = 'spring'
 }
 
+export enum PlantCategories {
+  Grain,
+  Root,
+  Vegetable,
+  CommonFruit,
+  NobleFruit,
+  Special,
+}
+
 export interface SeasonData {
   currentSeason: Seasons;
   endsAt: number;
@@ -77,6 +86,7 @@ export interface PlantsFile {
   buyValue: number;
   bestSeason: Seasons;
   worstSeason: Seasons;
+  category: PlantCategories;
 }
 
 export interface ItemsFile {

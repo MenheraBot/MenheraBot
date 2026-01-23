@@ -282,6 +282,14 @@
     "23": "Cereja",
     "24": "Cogumelo"
   },
+  "fazendinha":{
+    "category_0": "Grão",
+    "category_1": "Raiz",
+    "category_2": "Vegetal",
+    "category_3": "Fruta",
+    "category_4": "Fruta Nobre",
+    "category_5": "Especial"
+  },
   "farm-items": {
     "0": "Fertilizantes"
   }

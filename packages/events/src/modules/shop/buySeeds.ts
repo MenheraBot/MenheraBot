@@ -175,7 +175,7 @@ const buySeeds = async (
         });
 
         return {
-          name: `${Plants[plant as '1'].emoji} ${ctx.locale(`data:plants.${plant as '1'}`)}`,
+          name: `${Plants[plant as '1'].emoji} ${ctx.locale(`data:plants.${plant as '1'}`)} [${ctx.locale(`data:fazendinha.category_${data.category}`)}]`,
           inline: true,
           value: ctx.locale('commands:loja.buy_seeds.plant-stats', {
             sellValue: data.sellValue,
