@@ -3,7 +3,6 @@ import {
   ButtonStyles,
   SelectOption,
   SeparatorComponent,
-  SeparatorSpacingSize,
   TextDisplayComponent,
   TextStyles,
 } from '@discordeno/bot';
@@ -134,6 +133,7 @@ const displaySilo = async (
                           emoji: Items[item.id].emoji,
                           amount: item.amount,
                           metric: 'x',
+                          quality: '',
                           plant: ctx.locale(`data:farm-items.${item.id}`),
                         }),
                       ]
@@ -316,7 +316,7 @@ const buildSellPlantsMessage = async (
       });
 
     selectComponents.push(
-      createSeparator({ divider: true, spacing: SeparatorSpacingSize.Large }),
+      createSeparator(true),
       createTextDisplay(
         `### ${getQualityEmoji(quality)} ${ctx.locale(`commands:fazendinha.silo.quality-plants-${quality}`)}\n${description}`,
       ),

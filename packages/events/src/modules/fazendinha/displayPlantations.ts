@@ -1,15 +1,25 @@
-import { ButtonComponent, ButtonStyles, DiscordEmbedField, SelectOption } from '@discordeno/bot';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { getDisplayName } from '../../utils/discord/userUtils.js';
+import {
+  ButtonStyles,
+  MessageComponentTypes,
+  SectionComponent,
+  SelectOption,
+  SeparatorComponent,
+} from '@discordeno/bot';
+import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
 import { AvailablePlants, Plantation, PlantationState, PlantedField, Seasons } from './types.js';
 import { DatabaseFarmerSchema } from '../../types/database.js';
 import {
   createActionRow,
   createButton,
+  createContainer,
   createCustomId,
+  createSection,
   createSelectMenu,
+  createSeparator,
+  createTextDisplay,
 } from '../../utils/discord/componentUtils.js';
-import { chunkArray, millisToSeconds } from '../../utils/miscUtils.js';
+import { millisToSeconds } from '../../utils/miscUtils.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { getPlantationState } from './plantationState.js';
 import { Items, Plants } from './constants.js';
@@ -37,8 +47,7 @@ const ButtonStyleForPlantState: Record<PlantationState, ButtonStyles> = {
   [PlantationState.Rotten]: ButtonStyles.Secondary,
 };
 
-const repeatIcon = (icon: string): string =>
-  `${icon}${icon}${icon}\n${icon}${icon}${icon}\n${icon}${icon}${icon}`;
+const repeatIcon = (icon: string): string => `\n${icon.repeat(3)}`.repeat(3);
 
 const getPlantationDisplay = (
   ctx: InteractionContext,
@@ -47,7 +56,9 @@ const getPlantationDisplay = (
   field: Plantation,
 ): string => {
   const toUseEmoji =
-    state === PlantationState.Mature ? Plants[(field as PlantedField).plantType].emoji : PlantStateIcon[state];
+    state === PlantationState.Mature
+      ? Plants[(field as PlantedField).plantType].emoji
+      : PlantStateIcon[state];
 
   const unix = millisToSeconds(timeToAction);
 
@@ -64,9 +75,8 @@ const parseUserPlantations = (
   embedColor: string,
   selectedSeed: AvailablePlants,
   forceField: number,
-): [DiscordEmbedField[], ButtonComponent[]] => {
-  const fields: DiscordEmbedField[] = [];
-  const buttons: ButtonComponent[] = [];
+): (SectionComponent | SeparatorComponent)[] => {
+  const fieldsComponents: (SectionComponent | SeparatorComponent)[] = [];
 
   plantations.forEach((field, i) => {
     const [plantState, timeToAction] = getPlantationState(field);
@@ -80,20 +90,20 @@ const parseUserPlantations = (
       return `${text}${Items[upgrade.id].emoji}`;
     }, '');
 
-    fields.push({
-      name: ctx.locale('commands:fazendinha.plantations.field', {
-        index: i + 1,
-        emojis: prependTitle,
-      }),
-      value: fieldText,
-      inline: true,
-    });
-
-    buttons.push(
-      createButton({
-        label: ctx.locale(`commands:fazendinha.plantations.field-action`, {
-          index: i + 1,
-          action: ctx.locale(
+    fieldsComponents.push(
+      createSeparator(false),
+      createSection({
+        components: [
+          createTextDisplay(
+            `**${ctx.locale('commands:fazendinha.plantations.field', {
+              index: i + 1,
+              emojis: prependTitle,
+            })}**`,
+          ),
+          createTextDisplay(fieldText),
+        ],
+        accessory: createButton({
+          label: ctx.locale(
             `commands:fazendinha.plantations.${
               {
                 [PlantationState.Mature]: 'harvest' as const,
@@ -103,26 +113,26 @@ const parseUserPlantations = (
               }[plantState]
             }`,
           ),
+          emoji:
+            plantState === PlantationState.Empty
+              ? undefined
+              : { name: Plants[(field as PlantedField).plantType].emoji },
+          style: ButtonStyleForPlantState[plantState],
+          customId: createCustomId(
+            0,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            `${i}`,
+            embedColor,
+            `${selectedSeed}`,
+            forceField === i ? 'Y' : 'N',
+          ),
         }),
-        emoji:
-          plantState === PlantationState.Empty
-            ? undefined
-            : { name: Plants[(field as PlantedField).plantType].emoji },
-        style: ButtonStyleForPlantState[plantState],
-        customId: createCustomId(
-          0,
-          ctx.user.id,
-          ctx.originalInteractionId,
-          `${i}`,
-          embedColor,
-          `${selectedSeed}`,
-          forceField === i ? 'Y' : 'N',
-        ),
       }),
     );
   });
 
-  return [fields, buttons];
+  return fieldsComponents;
 };
 
 const getAvailableSeeds = (
@@ -188,7 +198,7 @@ const displayPlantations = async (
   forceField: number,
   harvestedWeight?: number,
 ): Promise<void> => {
-  const [fields, buttons] = parseUserPlantations(
+  const fields = parseUserPlantations(
     ctx,
     farmer.plantations,
     embedColor,
@@ -198,33 +208,48 @@ const displayPlantations = async (
 
   const seasonalInfo = await getSeasonalInfo();
 
-  const embed = createEmbed({
-    title: ctx.locale('commands:fazendinha.plantations.embed-title', {
-      user: getDisplayName(ctx.user),
-    }),
-    description: ctx.locale('commands:fazendinha.plantations.description', {
-      season: ctx.locale(`commands:fazendinha.seasons.${seasonalInfo.currentSeason}`),
-      unix: millisToSeconds(seasonalInfo.endsAt),
-      emoji: SeasonEmojis[seasonalInfo.currentSeason],
-    }),
-    color: hexStringToNumber(embedColor),
-    fields,
-    footer: harvestedWeight
-      ? {
-          text: ctx.locale('commands:fazendinha.plantations.harvest-weight', {
-            weight: harvestedWeight,
-          }),
-        }
-      : undefined,
-  });
-
-  const actionRows = chunkArray(buttons, 3).map((a) => createActionRow(a as [ButtonComponent]));
-
   const seeds = getAvailableSeeds(ctx, farmer, selectedSeed, seasonalInfo.currentSeason);
 
-  await ctx.makeMessage({
-    embeds: [embed],
+  const container = createContainer({
+    accentColor: hexStringToNumber(embedColor),
     components: [
+      createSection({
+        components: [
+          createTextDisplay(
+            `### ${ctx.locale('commands:fazendinha.plantations.embed-title', {
+              user: getDisplayName(ctx.user),
+            })}`,
+          ),
+          createTextDisplay(
+            ctx.locale('commands:fazendinha.plantations.description', {
+              season: ctx.locale(`commands:fazendinha.seasons.${seasonalInfo.currentSeason}`),
+              unix: millisToSeconds(seasonalInfo.endsAt),
+              emoji: SeasonEmojis[seasonalInfo.currentSeason],
+            }),
+          ),
+        ],
+        accessory: {
+          type: MessageComponentTypes.Thumbnail,
+          media: { url: getUserAvatar(ctx.user, { enableGif: true }) },
+        },
+      }),
+      ...fields,
+    ],
+  });
+
+  if (harvestedWeight)
+    container.components.push(
+      createSeparator(true),
+      createTextDisplay(
+        `-# ${ctx.locale('commands:fazendinha.plantations.harvest-weight', {
+          weight: harvestedWeight,
+        })}`,
+      ),
+    );
+
+  const controllerContainer = createContainer({
+    components: [
+      createTextDisplay(ctx.locale('commands:fazendinha.plantations.select-seed')),
       createActionRow([
         createSelectMenu({
           customId: createCustomId(1, ctx.user.id, ctx.originalInteractionId, embedColor),
@@ -233,8 +258,27 @@ const displayPlantations = async (
           minValues: 1,
         }),
       ]),
-      ...actionRows,
+      createSeparator(false, false),
+      createActionRow([
+        createButton({
+          label: ctx.locale('commands:fazendinha.plantations.plant-all'),
+          style: ButtonStyles.Primary,
+          customId: '123',
+          disabled: true,
+        }),
+        createButton({
+          label: ctx.locale('commands:fazendinha.plantations.harvest-all'),
+          style: ButtonStyles.Primary,
+          customId: '2321',
+          disabled: true,
+        }),
+      ]),
+      createTextDisplay(`-# ${ctx.locale('commands:fazendinha.plantations.explain-all-action')}`),
     ],
+  });
+
+  await ctx.makeLayoutMessage({
+    components: [container, controllerContainer],
   });
 };
 

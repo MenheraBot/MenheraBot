@@ -12,7 +12,6 @@ import { enableLayoutMessage } from '../../utils/discord/componentUtils.js';
 
 export default class {
   private i18n: TFunction;
-  public isComponentV2 = false;
 
   constructor(
     private interactionToken: string,
@@ -45,7 +44,6 @@ export default class {
   async makeLayoutMessage(
     options: Omit<InteractionCallbackData, 'embed' | 'content' | 'stickers' | 'poll'>,
   ) {
-    this.isComponentV2 = true;
     return this.makeMessage(enableLayoutMessage(options));
   }
 

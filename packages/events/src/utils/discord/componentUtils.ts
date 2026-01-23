@@ -12,7 +12,7 @@ import type {
   SectionComponent,
 } from '@discordeno/bot';
 
-import { MessageComponentTypes } from '@discordeno/bot';
+import { MessageComponentTypes, SeparatorSpacingSize } from '@discordeno/bot';
 import md5 from 'md5';
 import commandRepository from '../../database/repositories/commandRepository.js';
 import { setComponentsV2Flag } from './messageUtils.js';
@@ -84,9 +84,13 @@ const createTextDisplay = (content: string): TextDisplayComponent => ({
 });
 
 const createSeparator = (
+  big = false,
+  divider = true,
   component?: PropertyOptional<SeparatorComponent, 'type'>,
 ): SeparatorComponent => ({
   ...component,
+  divider,
+  spacing: big ? SeparatorSpacingSize.Large : SeparatorSpacingSize.Small,
   type: MessageComponentTypes.Separator,
 });
 
