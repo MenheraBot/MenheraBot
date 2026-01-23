@@ -14,7 +14,7 @@ import {
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests.js';
 import { Interaction, User } from '../../types/discordeno.js';
-import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
+import { enableLayoutMessage } from '../../utils/discord/componentUtils.js';
 
 export type CanResolve = 'users' | 'members' | 'attachments' | false;
 
@@ -75,8 +75,7 @@ export default class {
   async makeLayoutMessage(
     options: Omit<InteractionCallbackData, 'embed' | 'content' | 'stickers' | 'poll'>,
   ) {
-    options.flags = setComponentsV2Flag(options.flags ?? 0);
-    return this.makeMessage(options);
+    return this.makeMessage(enableLayoutMessage(options));
   }
 
   async makeMessage(options: InteractionCallbackData): Promise<void> {

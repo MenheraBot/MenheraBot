@@ -1,4 +1,10 @@
-import { ActionRow, ButtonStyles, SelectOption, TextStyles } from '@discordeno/bot';
+import {
+  ActionRow,
+  ButtonStyles,
+  SelectOption,
+  SeparatorSpacingSize,
+  TextStyles,
+} from '@discordeno/bot';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { DatabaseFarmerSchema } from '../../types/database.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
@@ -8,8 +14,11 @@ import { Items, Plants } from './constants.js';
 import {
   createActionRow,
   createButton,
+  createContainer,
   createCustomId,
   createSelectMenu,
+  createSeparator,
+  createTextDisplay,
   createTextInput,
 } from '../../utils/discord/componentUtils.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
@@ -17,7 +26,14 @@ import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction.js';
 import { executeSellPlant, receiveModal } from '../shop/sellPlants.js';
 import { InteractionContext } from '../../types/menhera.js';
-import { filterPlantsByQuality, getQualityEmoji, getSiloLimits, isMatePlant } from './siloUtils.js';
+import {
+  filterPlantsByQuality,
+  getPlantPrice,
+  getQuality,
+  getQualityEmoji,
+  getSiloLimits,
+  isMatePlant,
+} from './siloUtils.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 
 const displaySilo = async (
@@ -142,6 +158,7 @@ const displaySilo = async (
 
   ctx.makeMessage({
     embeds: [embed],
+    content: 'teste',
     components:
       farmer.id === `${ctx.user.id}` ? [createActionRow([sellButton, useItemsButton])] : [],
   });
@@ -227,13 +244,14 @@ const buildSellPlantsMessage = async (
 
   const description = farmer.silo.reduce((text, plant) => {
     if (plant.weight === 0) return text;
+    if (options.length >= 25) return text;
 
     options.push({
       label: ctx.locale('commands:fazendinha.silo.sell-plant', {
         plant: ctx.locale(`data:plants.${plant.plant}`),
       }),
       emoji: { name: Plants[plant.plant].emoji },
-      value: `${plant.plant}`,
+      value: `${plant.plant}|${getQuality(plant)}`,
     });
 
     return ctx.locale('commands:fazendinha.silo.description', {
@@ -242,35 +260,20 @@ const buildSellPlantsMessage = async (
       amount: plant.weight,
       metric: ' kg',
       plant: ctx.locale(`data:plants.${plant.plant}`),
-      value: Plants[plant.plant].sellValue,
+      value: getPlantPrice(plant),
     });
   }, '');
 
-  if (options.length === 0) {
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:fazendinha.silo.no-plants'),
-    });
-  }
-
-  if (options.length < 25)
-    options.unshift({
-      label: ctx.locale('commands:fazendinha.silo.sell-all'),
-      value: 'ALL',
-      emoji: { name: '💰' },
-    });
-
-  const embed = createEmbed({
-    title: ctx.locale('commands:fazendinha.silo.sell-title'),
-    description,
-    footer: { text: ctx.locale('commands:fazendinha.silo.footer', { ...getSiloLimits(farmer) }) },
-    color: hexStringToNumber(embedColor),
-  });
-
-  ctx.makeMessage({
-    embeds: [embed],
+  const container = createContainer({
+    accentColor: hexStringToNumber(embedColor),
     components: [
+      createTextDisplay(
+        `## ${ctx.locale('commands:fazendinha.silo.sell-title')}\n\n${description}`,
+      ),
+      createSeparator({ spacing: SeparatorSpacingSize.Large }),
+      createTextDisplay(
+        `-# ${ctx.locale('commands:fazendinha.silo.footer', { ...getSiloLimits(farmer) })}`,
+      ),
       createActionRow([
         createSelectMenu({
           options,
@@ -286,6 +289,32 @@ const buildSellPlantsMessage = async (
         }),
       ]),
     ],
+  });
+
+  if (options.length === 0) {
+    return ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('error', 'commands:fazendinha.silo.no-plants'),
+    });
+  }
+
+  if (options.length < 25)
+    options.unshift({
+      label: ctx.locale('commands:fazendinha.silo.sell-all'),
+      value: 'ALL',
+      emoji: { name: '💰' },
+    });
+  /* 
+  const embed = createEmbed({
+    title: ctx.locale('commands:fazendinha.silo.sell-title'),
+    description,
+    footer: { text: ctx.locale('commands:fazendinha.silo.footer', { ...getSiloLimits(farmer) }) },
+    color: hexStringToNumber(embedColor),
+  }); */
+
+  ctx.makeLayoutMessage({
+    components: [container],
   });
 };
 

@@ -5,11 +5,16 @@ import type {
   TextInputComponent,
   StringSelectComponent,
   UserSelectComponent,
+  SeparatorComponent,
+  TextDisplayComponent,
+  ContainerComponent,
+  InteractionCallbackData,
 } from '@discordeno/bot';
 
 import { MessageComponentTypes } from '@discordeno/bot';
 import md5 from 'md5';
 import commandRepository from '../../database/repositories/commandRepository.js';
+import { setComponentsV2Flag } from './messageUtils.js';
 
 type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
@@ -68,13 +73,42 @@ const createActionRow = (components: ActionRow['components']): ActionRow => ({
   components,
 });
 
+const createContainer = (
+  component: PropertyOptional<ContainerComponent, 'type'>,
+): ContainerComponent => ({ ...component, type: MessageComponentTypes.Container });
+
+const createTextDisplay = (content: string): TextDisplayComponent => ({
+  type: MessageComponentTypes.TextDisplay,
+  content,
+});
+
+const createSeparator = (
+  component?: PropertyOptional<SeparatorComponent, 'type'>,
+): SeparatorComponent => ({
+  ...component,
+  type: MessageComponentTypes.Separator,
+});
+
+const enableLayoutMessage = (
+  message: Omit<InteractionCallbackData, 'embed' | 'content' | 'stickers' | 'poll'>,
+): InteractionCallbackData => ({
+  ...message,
+  flags: setComponentsV2Flag(message.flags ?? 0),
+  content: '',
+  embeds: [],
+});
+
 export {
   createButton,
+  createContainer,
+  createTextDisplay,
+  createSeparator,
   createCustomId,
   createActionRow,
   createTextInput,
   createAsyncCustomId,
   createSelectMenu,
+  enableLayoutMessage,
   resolveSeparatedStrings,
   createUsersSelectMenu,
 };
