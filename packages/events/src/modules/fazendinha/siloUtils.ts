@@ -6,7 +6,7 @@ import {
   QuantitativeSeed,
 } from '../../types/database.js';
 import { INITIAL_LIMIT_FOR_SILO, SILO_LIMIT_INCREASE_BY_LEVEL } from './constants.js';
-import { PlantQuality } from './types.js';
+import { AvailablePlants, PlantQuality } from './types.js';
 
 type QuantitativePlantItem = QuantitativePlant | QuantitativeSeed;
 
@@ -25,10 +25,7 @@ const checkNeededPlants = (need: QuantitativePlantItem[], has: QuantitativePlant
       const userHas = 'weight' in user ? user.weight : user.amount;
       const userNeed = 'weight' in needed ? needed.weight : needed.amount;
 
-      const userQuality = getQuality(user);
-      const neededQuality = getQuality(needed);
-
-      const isPlantEqual = user.plant === needed.plant && userQuality === neededQuality;
+      const isPlantEqual = filterPlant(user)(needed);
 
       return isPlantEqual && userHas >= userNeed;
     }),
@@ -70,7 +67,7 @@ const removeItems = (user: QuantitativeItem[], toRemove: QuantitativeItem[]): Qu
 
 const addPlants = <T extends QuantitativePlantItem>(user: T[], toAdd: T[]): T[] =>
   toAdd.reduce<T[]>((p, c) => {
-    const fromUser = p.find((a) => a.plant === c.plant && getQuality(a) === getQuality(c));
+    const fromUser = p.find(filterPlant(c));
 
     if (!fromUser) {
       p.push(c);
@@ -88,7 +85,7 @@ const addPlants = <T extends QuantitativePlantItem>(user: T[], toAdd: T[]): T[] 
 
 const removePlants = <T extends QuantitativePlantItem>(user: T[], toRemove: T[]): T[] =>
   user.reduce<T[]>((p, c) => {
-    const remove = toRemove.find((a) => a.plant === c.plant && getQuality(a) === getQuality(c));
+    const remove = toRemove.find(filterPlant(c));
 
     if (!remove) {
       p.push(c);
@@ -152,14 +149,21 @@ const filterPlantsByQuality = (
     { [PlantQuality.Normal]: [], [PlantQuality.Best]: [], [PlantQuality.Worst]: [] },
   );
 
+const filterPlant = (data: QuantitativePlantItem) => (plant: QuantitativePlantItem) =>
+  plant.plant === data.plant && getQuality(data) === getQuality(plant);
+
+const isMatePlant = (plant: AvailablePlants) => plant === AvailablePlants.Mate;
+
 export {
   checkNeededPlants,
+  isMatePlant,
   removePlants,
   addPlants,
   getQualityEmoji,
   getSiloLimits,
   removeItems,
   addItems,
+  filterPlant,
   filterPlantsByQuality,
   getQuality,
 };

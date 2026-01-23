@@ -17,7 +17,7 @@ import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction.js';
 import { executeSellPlant, receiveModal } from '../shop/sellPlants.js';
 import { InteractionContext } from '../../types/menhera.js';
-import { filterPlantsByQuality, getQualityEmoji, getSiloLimits } from './siloUtils.js';
+import { filterPlantsByQuality, getQualityEmoji, getSiloLimits, isMatePlant } from './siloUtils.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 
 const displaySilo = async (
@@ -25,17 +25,17 @@ const displaySilo = async (
   farmer: DatabaseFarmerSchema,
   embedColor: string,
 ): Promise<void> => {
-  let maySell = false;
-
   const user =
     `${ctx.user.id}` !== farmer.id ? await cacheRepository.getDiscordUser(farmer.id) : ctx.user;
 
   const items = farmer.seeds.filter((a) => a.amount > 0);
 
-  const hasMate = items.some((a) => a.plant === AvailablePlants.Mate);
-  if (!hasMate) items.push({ amount: 0, plant: AvailablePlants.Mate });
+  const hasMateSeed = items.some((i) => isMatePlant(i.plant));
+  if (!hasMateSeed) items.push({ amount: 0, plant: AvailablePlants.Mate });
 
   const byQuality = filterPlantsByQuality(farmer.silo);
+
+  let maySell = false;
 
   const embed = createEmbed({
     title: ctx.locale('commands:fazendinha.silo.embed-title', {
@@ -45,7 +45,11 @@ const displaySilo = async (
     fields: [
       ...Object.entries(byQuality).flatMap(([quality, plants]) => {
         const parsedQuality = Number(quality) as PlantQuality;
-        return plants.filter((a) => a.weight > 0).length === 0 && parsedQuality !== PlantQuality.Normal
+        const noPlants = plants.filter((a) => a.weight > 0).length === 0;
+
+        if (!noPlants) maySell = true;
+
+        return noPlants && parsedQuality !== PlantQuality.Normal
           ? []
           : [
               {
@@ -82,9 +86,7 @@ const displaySilo = async (
                   a.amount > 0
                     ? [
                         ctx.locale(
-                          `commands:fazendinha.silo.display-${
-                            a.plant === AvailablePlants.Mate ? 'mate' : 'other'
-                          }`,
+                          `commands:fazendinha.silo.display-${isMatePlant(a.plant) ? 'mate' : 'other'}`,
                           {
                             emoji: Plants[a.plant].emoji,
                             amount: a.amount,
@@ -176,6 +178,7 @@ const showModal = async (
   const selectedOptions = ctx.interaction.data.values;
 
   const modalFields = selectedOptions.reduce<ActionRow[]>((fields, plant) => {
+    // TODO: Escolher um modal por tipo, ou escolher tudo ordenado.
     const fromSilo = farmer.silo.find((a) => a.plant === Number(plant) && a.weight > 0);
 
     if (!fromSilo) return fields;

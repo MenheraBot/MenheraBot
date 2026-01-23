@@ -9,7 +9,9 @@ import { ModalInteraction } from '../../types/interaction.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { postTransaction } from '../../utils/apiRequests/statistics.js';
 import { extractFields } from '../../utils/discord/modalUtils.js';
-import { Plants } from '../fazendinha/constants.js';
+import { Plants, QUALITY_PRICE_MULTIPLIER } from '../fazendinha/constants.js';
+import { PlantQuality } from '../fazendinha/types.js';
+import { filterPlant, getQuality, getQualityEmoji } from '../fazendinha/siloUtils.js';
 
 const receiveModal = async (
   ctx: ComponentInteractionContext<ModalInteraction>,
@@ -47,9 +49,11 @@ const executeSellPlant = async (
   selectedPlants: QuantitativePlant[],
 ): Promise<void> => {
   let totalStars = 0;
+  const soldPlants = [];
+
   for (let i = 0; i < selectedPlants.length; i++) {
     const currentPlant = selectedPlants[i];
-    const fromSilo = farmer.silo.find((a) => a.plant === currentPlant.plant);
+    const fromSilo = farmer.silo.find(filterPlant(currentPlant));
 
     if (!fromSilo || fromSilo.weight < currentPlant.weight)
       return ctx.makeMessage({
@@ -68,14 +72,24 @@ const executeSellPlant = async (
         content: ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
       });
 
-    totalStars += Math.floor(currentPlant.weight * Plants[currentPlant.plant].sellValue);
-    fromSilo.weight = parseFloat((fromSilo.weight - currentPlant.weight).toFixed(1));
+    const plantQuality = getQuality(currentPlant);
 
-    if (fromSilo.weight <= 0)
-      farmer.silo.splice(
-        farmer.silo.findIndex((a) => a.plant === fromSilo.plant),
-        1,
-      );
+    const qualityPriceBonus = {
+      [PlantQuality.Best]: QUALITY_PRICE_MULTIPLIER,
+      [PlantQuality.Normal]: 0,
+      [PlantQuality.Worst]: -QUALITY_PRICE_MULTIPLIER,
+    }[plantQuality];
+
+    const plant = Plants[currentPlant.plant];
+    const plantSellValue = plant.sellValue;
+
+    const plantPrice = plantSellValue + plantSellValue * qualityPriceBonus;
+
+    totalStars += Math.floor(currentPlant.weight * plantPrice);
+    fromSilo.weight = parseFloat((fromSilo.weight - currentPlant.weight).toFixed(1));
+    soldPlants.push(`${getQualityEmoji(plantQuality)}${plant.emoji} **${currentPlant.weight} kg**`);
+
+    if (fromSilo.weight <= 0) farmer.silo.splice(farmer.silo.findIndex(filterPlant(fromSilo)), 1);
   }
 
   if (totalStars === 0)
@@ -103,6 +117,7 @@ const executeSellPlant = async (
     content: ctx.prettyResponse('success', 'commands:loja.sell_plants.success', {
       amount: totalStars,
       stars: userData.estrelinhas,
+      plants: soldPlants.join(', '),
     }),
     components: [],
     embeds: [],

@@ -14,6 +14,7 @@ import { InteractionContext } from '../../types/menhera.js';
 import { getPlantationState } from './plantationState.js';
 import { Items, Plants } from './constants.js';
 import { getSeasonalInfo } from './seasonsManager.js';
+import { isMatePlant } from './siloUtils.js';
 
 const PlantStateIcon: Record<PlantationState, string> = {
   [PlantationState.Empty]: '🟫',
@@ -132,7 +133,7 @@ const getAvailableSeeds = (
 ): SelectOption[] =>
   farmer.seeds.reduce<SelectOption[]>(
     (allSeeds, seed) => {
-      if (seed.amount <= 0 || seed.plant === AvailablePlants.Mate) return allSeeds;
+      if (seed.amount <= 0 || isMatePlant(seed.plant)) return allSeeds;
 
       const plant = Plants[seed.plant];
 

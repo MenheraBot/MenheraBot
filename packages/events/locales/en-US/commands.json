@@ -242,7 +242,7 @@
     "sell_plants": {
       "not-enough": "You don't have **{{amount}}** {{plant}} to sell",
       "invalid-amount": "You entered an invalid number of plants to sell",
-      "success": "Your plants were sold for **{{amount}}** :star: little stars\nNow you have **{{stars}}**⭐"
+      "success": "You got **{{amount}}** :star: little stars selling plants: {{plants}}\nNow you have **{{stars}}**⭐"
     },
     "buy_seeds": {
       "buy-seed-of": "Buy {{plant}} seed",
