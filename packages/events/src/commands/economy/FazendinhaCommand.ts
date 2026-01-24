@@ -18,7 +18,7 @@ import { handleDissmissShop } from '../../modules/fazendinha/administrateFair.js
 import { executeAnnounceProduct } from '../../modules/fazendinha/announceProduct.js';
 import { executeButtonAction, executeExploreFair } from '../../modules/fazendinha/exploreFair.js';
 import { User } from '../../types/discordeno.js';
-import { displayFairOrders } from '../../modules/fazendinha/fairOrders.js';
+import { displayFairOrders, handleFairOrderButton } from '../../modules/fazendinha/fairOrders.js';
 import userRepository from '../../database/repositories/userRepository.js';
 
 const FazendinhaCommand = createCommand({
@@ -127,7 +127,7 @@ const FazendinhaCommand = createCommand({
                 {
                   name: 'Planta Precária 🔻',
                   value: 0,
-                  nameLocalizations: { 'en-US': 'Low Quality Plant 🔻' },
+                  nameLocalizations: { 'en-US': 'Precarious Plant 🔻' },
                 },
               ],
             },
@@ -214,6 +214,7 @@ const FazendinhaCommand = createCommand({
     handleDissmissShop,
     executeButtonAction,
     handleButtonAction,
+    handleFairOrderButton,
   ],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {

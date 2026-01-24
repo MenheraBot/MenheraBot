@@ -148,7 +148,7 @@ const feirinhaOrderSchema = new Schema({
   plant: { type: Number },
   quality: { type: Number },
   weight: { type: Number },
-  price: { type: Number },
+  awards: { type: Array, default: [] },
   placedAt: { type: Number, default: Date.now },
 });
 

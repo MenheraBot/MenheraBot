@@ -1121,6 +1121,20 @@
       "spring": "Primavera"
     },
     "feira": {
+      "order": {
+        "user-orders": "Pedidos de {{user}}",
+        "public-orders": "Pedidos da Vizinhança",
+        "no-user-orders": "Este usuário não possui nenhum pedido no momento.",
+        "no-public-orders": "Ninguém da vizinhança está precisando de plantas no momento.",
+        "complete-order": "Aceitar troca",
+        "delete-order": "Exluir pedido",
+        "view-public-orders": "Ver todos pedidos",
+        "pagination": "Página {{page}} de {{totalPages}}",
+        "order-gone": "Este pedido não existe mais!",
+        "order-description": "**Vizinho:** {{user}}\n**Trocando por:**\n{{awards}}",
+        "order-award": "**{{amount}}{{metric}}** {{emoji}}",
+        "order-deleted": "Você removeu o pedido do ar. Se existiam, os prêmios em estrelinhas foram devolvidas para sua conta. Os prêmios de itens e plantas foram descartados."
+      },
       "announce": {
         "no-such-product": "Esse produto não existe!",
         "not-enough-products": "Tu não tem **{{amount}}** {{emoji}} para anunciar.",

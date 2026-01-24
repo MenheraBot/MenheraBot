@@ -288,7 +288,10 @@
     "category_2": "Vegetal",
     "category_3": "Fruta",
     "category_4": "Fruta Nobre",
-    "category_5": "Especial"
+    "category_5": "Especial",
+    "quality_0": "Precária",
+    "quality_1": "",
+    "quality_2": "Premium"
   },
   "farm-items": {
     "0": "Fertilizantes"

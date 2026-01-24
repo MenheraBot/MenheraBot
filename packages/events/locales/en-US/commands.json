@@ -246,7 +246,7 @@
     },
     "buy_seeds": {
       "buy-seed-of": "Buy {{plant}} seed",
-     "plant-stats": "**💰 Buy:** {{buyValue}} :star: | **Sell:** {{sellValue}} :star:\n**⏰ Grow:** {{harvestTime}} min | **🧟 Rot:** {{rotTime}} min\n**🌧️ Best:** {{bestSeason}} | **Worst:** {{worstSeason}}",
+      "plant-stats": "**💰 Buy:** {{buyValue}} :star: | **Sell:** {{sellValue}} :star:\n**⏰ Grow:** {{harvestTime}} min | **🧟 Rot:** {{rotTime}} min\n**🌧️ Best:** {{bestSeason}} | **Worst:** {{worstSeason}}",
       "seed": "{{plant}} seed",
       "select-category": "To see information about other plants, select a category below.",
       "success": "You spent **{{amount}}** :star: little stars buying seeds. Now you have **{{stars}}** ⭐.\n Time to plant them {{command}}",
@@ -1116,6 +1116,20 @@
       "spring": "Spring"
     },
     "feira": {
+      "order": {
+        "user-orders": "{{user}}'s Requests",
+        "public-orders": "Neighborhood Requests",
+        "no-user-orders": "This user does not have any requests at the moment.",
+        "no-public-orders": "No one in the vicinity of the neighborhood is requesting plants at the moment.",
+        "complete-order": "Complete order",
+        "delete-order": "Delete order",
+        "view-public-orders": "See all requests",
+        "pagination": "Page {{page}} of {{totalPages}}",
+        "order-gone": "This order doesn't exists anymore!",
+        "order-description": "**neighbor:** {{user}}\n**Exchanging for:**\n{{awards}}",
+        "order-award": "**{{amount}}{{metric}}** {{emoji}}",
+        "order-deleted": "You removed the order from the air. If any star rewards existed, they have been returned to your account. Item and plant rewards have been discarded."
+      },
       "announce": {
         "no-such-product": "This product does not exist!",
         "no-mate-announcement": "It is not possible to announce Mate {{emoji}} at the fair",
@@ -1179,7 +1193,7 @@
       "sell-title": "Sell your plants",
       "quality-plants-2": "Premium Plants",
       "quality-plants-1": "Plants",
-      "quality-plants-0": "Low Quality Plants",
+      "quality-plants-0": "Precarious Plants",
       "no-plants": "You don't have plants to sell",
       "description": "{{text}}\n- {{emoji}} **{{amount}}{{metric}}** - {{plant}} (**{{value}}** :star:)",
       "silo-is-full": "Your silo is full! Your silo has a maximum space of **{{limit}}** items. Free space selling plants >_<",

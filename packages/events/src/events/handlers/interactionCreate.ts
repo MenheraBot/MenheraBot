@@ -128,7 +128,7 @@ const setInteractionCreateEvent = (): void => {
         );
     }
 
-    if (bot.enableRatelimit) {
+    if (bot.enableRatelimit && !command.devsOnly) {
       const [isRateLimited, info] = await ratelimitRepository.executeRatelimit(
         interaction.user.id,
         commandName,

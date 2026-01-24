@@ -13,8 +13,8 @@ import { Award, DatabaseDaily } from '../../modules/dailies/types.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import { InteractionContext } from '../../types/menhera.js';
-import { Plants } from '../../modules/fazendinha/constants.js';
-import { AvailablePlants } from '../../modules/fazendinha/types.js';
+import { Items, Plants } from '../../modules/fazendinha/constants.js';
+import { AvailableItems, AvailablePlants } from '../../modules/fazendinha/types.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { addPlants } from '../../modules/fazendinha/siloUtils.js';
 import { DatabaseUserSchema } from '../../types/database.js';
@@ -26,7 +26,10 @@ import { User } from '../../types/discordeno.js';
 const getDailyStatus = (daily: DatabaseDaily): 'reedem' | 'unfinished' | 'reedemed' =>
   daily.redeemed ? 'reedemed' : daily.has >= daily.need ? 'reedem' : 'unfinished';
 
-const getAwardEmoji = (ctx: InteractionContext, award: Award<string | number>): string => {
+const getAwardEmoji = (
+  ctx: InteractionContext,
+  award: Pick<Award<string | number>, 'helper'> & { type: Award<string | number>['type'] | string },
+): string => {
   switch (award.type) {
     case 'hunt':
       return ctx.safeEmoji(award.helper as 'demons');
@@ -36,6 +39,8 @@ const getAwardEmoji = (ctx: InteractionContext, award: Award<string | number>): 
     case 'plant':
     case 'seed':
       return Plants[award.helper as AvailablePlants].emoji;
+    default:
+      return Items[AvailableItems.Fertilizer].emoji;
   }
 };
 
@@ -329,3 +334,5 @@ const DailyCommand = createCommand({
 });
 
 export default DailyCommand;
+
+export { getAwardEmoji };

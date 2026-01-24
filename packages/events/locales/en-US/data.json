@@ -282,13 +282,16 @@
     "23": "Cherry",
     "24": "Mushroom"
   },
-  "fazendinha":{
+  "fazendinha": {
     "category_0": "Grain",
     "category_1": "Root",
     "category_2": "Vegetable",
     "category_3": "Fruit",
     "category_4": "Noble Fruit",
-    "category_5": "Special"
+    "category_5": "Special",
+    "quality_0": "Precarious",
+    "quality_1": "",
+    "quality_2": "Premium"
   },
   "farm-items": {
     "0": "Fertilizers"

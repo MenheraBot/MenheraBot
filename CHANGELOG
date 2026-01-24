@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Adicionado qualidade para plantações: Plantas Precárias, Plantas e Plantas Premium. Plantas premium e precárias tem uma mudança em seu preço de 30%.
 - Adicionado categorias para as plantações de fazendinha: Grão, Raiz, Vegetal, Fruta, Fruta Nobre e Especial.
 - Criado o comando `/fazendinha administrar`, que integra gerenciar campos, silo e feira.
-- Criado o comando `/fazendinha feira pedidos`: faça pedidos de plantas na feira, e realize o de outros vizinhos por estrelinhas. 
+- Criado o comando `/fazendinha feira pedidos`: faça pedidos de plantas na feira e realize o de outros vizinhos por estrelinhas, plantas ou fertilizantes. 
 
 ## Changed
 
