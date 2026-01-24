@@ -15,7 +15,7 @@ import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import fairOrderRepository from '../../database/repositories/fairOrderRepository.js';
 import { MAX_FAIR_ORDERS_PER_PAGE, Plants } from './constants.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
-import { getQualityEmoji } from './siloUtils.js';
+import { checkNeededPlants, getQualityEmoji } from './siloUtils.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
@@ -158,6 +158,13 @@ const displayFairOrders = async (
       orders.forEach(async (order) => {
         const userIsOwner = order.userId === `${ctx.user.id}`;
 
+        const canClick =
+          userIsOwner ||
+          checkNeededPlants(
+            [{ plant: order.plant, weight: order.weight, quality: order.quality }],
+            farmer.silo,
+          );
+
         container.components.push(
           createSection({
             accessory: createButton({
@@ -169,6 +176,7 @@ const displayFairOrders = async (
                 embedColor,
                 order._id,
               ),
+              disabled: !canClick,
               style: userIsOwner ? ButtonStyles.Danger : ButtonStyles.Primary,
               label: ctx.locale(
                 `commands:fazendinha.feira.order.${userIsOwner ? 'delete-order' : 'complete-order'}`,

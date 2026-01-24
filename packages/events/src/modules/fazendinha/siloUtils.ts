@@ -144,6 +144,21 @@ const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
   return { used, limit };
 };
 
+type PlantRecord = Record<AvailablePlants, QuantitativePlant[]>;
+
+const groupPlantsByType = (plants: QuantitativePlant[]): PlantRecord =>
+  plants.reduce<PlantRecord>((p, c, i) => {
+    if (c.weight <= 0) return p;
+
+    if (!p[c.plant]) p[c.plant] = [];
+
+    p[c.plant].push(c);
+
+    p[c.plant].sort((a, b) => getQuality(b) - getQuality(a));
+
+    return p;
+  }, {} as PlantRecord);
+
 const filterPlantsByQuality = (
   plants: QuantitativePlant[],
 ): Record<PlantQuality, QuantitativePlant[]> =>
@@ -183,10 +198,43 @@ const getPlantPrice = (plant: Pick<QuantitativePlant, 'plant' | 'quality'>) => {
   return Math.floor(plantSellValue + plantSellValue * qualityPriceBonus);
 };
 
+const groupPlantsWeight = (plants: QuantitativePlant[]): [QuantitativePlant[], number] => {
+  const summedWeights = plants.reduce<Record<string, number>>((p, c) => {
+    const quality = getQuality(c);
+    const key = `${c.plant}|${quality}` as const;
+
+    if (p[key]) p[key] += c.weight;
+    else p[key] = c.weight;
+
+    return p;
+  }, {});
+
+  let totalWeight = 0;
+
+  const parsed = Object.entries(summedWeights).map<QuantitativePlant>(
+    ([plantQuality, stringedWeight]) => {
+      const [plant, quality] = plantQuality.split('|');
+
+      const weight = parseFloat(stringedWeight.toFixed(1));
+
+      totalWeight += weight;
+
+      return {
+        plant: Number(plant),
+        quality: Number(quality),
+        weight,
+      };
+    },
+  );
+
+  return [parsed, parseFloat(totalWeight.toFixed(1))];
+};
+
 export {
   checkNeededPlants,
   isMatePlant,
   removePlants,
+  groupPlantsWeight,
   addPlants,
   getQualityEmoji,
   getSiloLimits,
@@ -195,5 +243,6 @@ export {
   addItems,
   filterPlant,
   filterPlantsByQuality,
+  groupPlantsByType,
   getQuality,
 };

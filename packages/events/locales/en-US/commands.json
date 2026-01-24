@@ -1193,6 +1193,7 @@
       "sell-title": "Sell your plants",
       "quality-plants-2": "Premium Plants",
       "quality-plants-1": "Plants",
+      "quality-plants": "Plants",
       "quality-plants-0": "Precarious Plants",
       "no-plants": "You don't have plants to sell",
       "description": "{{text}}\n- {{emoji}} **{{amount}}{{metric}}** - {{plant}} (**{{value}}** :star:)",

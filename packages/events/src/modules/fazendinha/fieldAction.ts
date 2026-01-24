@@ -24,7 +24,13 @@ import {
   PlantedField,
   Seasons,
 } from './types.js';
-import { addPlants, getSiloLimits, isMatePlant, removePlants } from './siloUtils.js';
+import {
+  addPlants,
+  getSiloLimits,
+  groupPlantsWeight,
+  isMatePlant,
+  removePlants,
+} from './siloUtils.js';
 import executeDailies from '../dailies/executeDailies.js';
 import userRepository from '../../database/repositories/userRepository.js';
 
@@ -129,7 +135,7 @@ const harvestAllFields = async (
   const currentLimits = getSiloLimits(farmer);
   let replyFullSilo = false;
 
-  const added: QuantitativePlant[] = [];
+  const harvested: QuantitativePlant[] = [];
 
   const currentSeason = await getCurrentSeason();
 
@@ -163,16 +169,18 @@ const harvestAllFields = async (
       quality: getCalculatedFieldQuality(field, currentSeason),
     };
 
-    added.push(toAdd);
-
-    farmer.silo = success ? addPlants(farmer.silo, [toAdd]) : farmer.silo;
+    harvested.push(toAdd);
   });
 
-  await farmerRepository.executeHarvest(ctx.user.id, farmer.plantations, true, farmer.silo, added);
+  const [parsedFields] = groupPlantsWeight(harvested);
 
-  await postMultipleFazendinhaHarvest(`${ctx.user.id}`, added);
+  farmer.silo = addPlants(farmer.silo, parsedFields);
 
-  await executeDailies.harvestPlant(await userRepository.ensureFindUser(ctx.user.id), added);
+  await farmerRepository.executeHarvest(ctx.user.id, farmer.plantations, true, farmer.silo, parsedFields);
+
+  await postMultipleFazendinhaHarvest(`${ctx.user.id}`, parsedFields);
+
+  await executeDailies.harvestPlant(await userRepository.ensureFindUser(ctx.user.id), parsedFields);
 
   await displayPlantations(
     ctx,
@@ -180,7 +188,7 @@ const harvestAllFields = async (
     embedColor,
     !userSeeds || userSeeds.amount <= 0 ? AvailablePlants.Mate : selectedSeed,
     -1,
-    added,
+    parsedFields,
   );
 
   if (replyFullSilo)

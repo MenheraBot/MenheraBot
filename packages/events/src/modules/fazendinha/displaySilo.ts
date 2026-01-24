@@ -36,6 +36,7 @@ import {
   getQuality,
   getQualityEmoji,
   getSiloLimits,
+  groupPlantsByType,
   isMatePlant,
 } from './siloUtils.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
@@ -53,53 +54,34 @@ const displaySilo = async (
   const hasMateSeed = items.some((i) => isMatePlant(i.plant));
   if (!hasMateSeed) items.push({ amount: 0, plant: AvailablePlants.Mate });
 
-  const byQuality = filterPlantsByQuality(farmer.silo);
+  const groupedPlants = groupPlantsByType(farmer.silo);
+  const entries = Object.entries(groupedPlants);
 
-  let maySell = false;
+  const maySell = entries.length > 0;
 
   const fields: (TextDisplayComponent | SectionComponent | SeparatorComponent)[] = [];
 
-  const parsedQualities = Object.entries(byQuality).toReversed();
-
-  parsedQualities.forEach(([quality, plants]) => {
-    const parsedQuality = Number(quality) as PlantQuality;
-    const noPlants = plants.filter((a) => a.weight > 0).length === 0;
-
-    if (!noPlants) maySell = true;
-
-    if (!noPlants || parsedQuality === PlantQuality.Normal) {
-      fields.push(
-        createSeparator(),
-        createTextDisplay(
-          `### ${ctx.locale(`commands:fazendinha.silo.quality-plants-${parsedQuality}`)}\n${
-            plants.length === 0
-              ? `_${ctx.locale('commands:fazendinha.silo.nothing')}_`
-              : plants
-                  .flatMap((a) =>
-                    a.weight > 0
-                      ? [
-                          ctx.locale(`commands:fazendinha.silo.display-other`, {
-                            emoji: Plants[a.plant].emoji,
-                            amount: a.weight,
-                            metric: ' kg',
-                            plant: ctx.locale(`data:plants.${a.plant}`),
-                            quality: getQualityEmoji(parsedQuality),
-                          }),
-                        ]
-                      : [],
-                  )
-                  .join('\n')
-          }`,
-        ),
-      );
-    }
-  });
+  fields.push(
+    createSeparator(),
+    createTextDisplay(
+      `### ${ctx.locale(`commands:fazendinha.silo.quality-plants`)}\n${
+        entries.length === 0
+          ? `_${ctx.locale('commands:fazendinha.silo.nothing')}_`
+          : `- ${entries
+              .map(
+                ([plantId, plants]) =>
+                  `${Plants[Number(plantId) as 1].emoji} - ${plants.map((p) => `${getQualityEmoji(getQuality(p))} **${p.weight} Kg**`).join(', ')}`,
+              )
+              .join('\n- ')}`
+      }`,
+    ),
+  );
 
   fields.push(
     createSeparator(),
     createTextDisplay(
       `### ${ctx.locale(`commands:fazendinha.plantations.seeds`)}\n${
-        items.filter(a => a.amount > 0).length === 0
+        items.filter((a) => a.amount > 0).length === 0
           ? `_${ctx.locale('commands:fazendinha.silo.nothing')}_`
           : items
               .flatMap((a) =>

@@ -229,50 +229,20 @@ const displayPlantations = async (
     ],
   });
 
-  if (harvested && harvested.length > 0) {
-    const summedWeights = harvested.reduce<Record<string, number>>((p, c) => {
-      const quality = getQuality(c);
-      const key = `${c.plant}|${quality}` as const;
-
-      if (p[key]) p[key] += c.weight;
-      else p[key] = c.weight;
-
-      return p;
-    }, {});
-
-    let totalWeight = 0;
-
-    const plantsTransformed = Object.entries(summedWeights).map<QuantitativePlant>(
-      ([plantQuality, stringedWeight]) => {
-        const [plant, quality] = plantQuality.split('|');
-
-        const weight = parseFloat(stringedWeight.toFixed(1));
-
-        totalWeight += weight;
-
-        return {
-          plant: Number(plant),
-          quality: Number(quality),
-          weight,
-        };
-      },
+  if (harvested && harvested.some((a) => a.weight > 0))
+    container.components.push(
+      createSeparator(true),
+      createTextDisplay(
+        `${ctx.locale('commands:fazendinha.plantations.harvest-text', {
+          harvested: harvested
+            .map(
+              (plant) =>
+                `- ${getQualityEmoji(getQuality(plant))}${Plants[plant.plant].emoji} **${plant.weight} kg**`,
+            )
+            .join('\n'),
+        })}`,
+      ),
     );
-
-    if (totalWeight > 0)
-      container.components.push(
-        createSeparator(true),
-        createTextDisplay(
-          `${ctx.locale('commands:fazendinha.plantations.harvest-text', {
-            harvested: plantsTransformed
-              .map(
-                (plant) =>
-                  `- ${getQualityEmoji(getQuality(plant))}${Plants[plant.plant].emoji} **${plant.weight} kg**`,
-              )
-              .join('\n'),
-          })}`,
-        ),
-      );
-  }
 
   const canPlant = farmer.plantations.some((a) => !a.isPlanted);
   const canHarvest = farmer.plantations.some(
