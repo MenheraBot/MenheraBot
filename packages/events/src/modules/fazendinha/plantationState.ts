@@ -89,8 +89,53 @@ const getFieldWeight = (
   return weight;
 };
 
-const getFieldQuality = (field: PlantedField): PlantQuality => {
-  return PlantQuality.Normal;
+const getCalculatedFieldQuality = (field: PlantedField, currentSeason: Seasons): PlantQuality => {
+  const plantData = Plants[field.plantType];
+
+  const haveFertilizer = isUpgradeApplied(AvailableItems.Fertilizer, field.upgrades ?? []);
+
+  const plantedInGoodSeason = field.plantedSeason === plantData.bestSeason;
+  const plantedInBadSeason = field.plantedSeason === plantData.worstSeason;
+
+  const currentInGoodSeason = currentSeason === plantData.bestSeason;
+  const currentInBadSeason = currentSeason === plantData.worstSeason;
+
+  const [, timeToRot] = getPlantationState(field);
+  const now = Date.now();
+
+  const remaining = timeToRot - now;
+  const penaltyWindow = minutesToMillis(plantData.minutesToRot) * 0.4;
+  const harvestedAlmostRotted = remaining <= penaltyWindow;
+
+  const readyWindow = timeToRot - field.harvestAt;
+  const bonusWindow = readyWindow * 0.2;
+
+  const elapsedSinceReady = now - field.harvestAt;
+
+  const fastHarvested = elapsedSinceReady <= bonusWindow;
+
+  let pontuation = 1;
+
+  if (haveFertilizer) pontuation += 0.5;
+  if (plantedInGoodSeason) pontuation += 0.5;
+  if (plantedInBadSeason) pontuation -= 1;
+  if (currentInGoodSeason) pontuation += 0.5;
+  if (currentInBadSeason) pontuation -= 1;
+  if (harvestedAlmostRotted) pontuation -= 0.5;
+  if (fastHarvested) pontuation += 0.5;
+
+  const random = Math.random() * 10 + 1;
+
+  if (random >= 8 - pontuation) return PlantQuality.Best;
+  if (random >= 5 - pontuation) return PlantQuality.Normal;
+
+  return PlantQuality.Worst;
 };
 
-export { getPlantationState, getHarvestTime, getFieldWeight, isUpgradeApplied, getFieldQuality };
+export {
+  getPlantationState,
+  getHarvestTime,
+  getFieldWeight,
+  isUpgradeApplied,
+  getCalculatedFieldQuality,
+};

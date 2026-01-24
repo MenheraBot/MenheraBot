@@ -9,7 +9,7 @@ import {
 import { MessageFlags } from '@discordeno/bot';
 import { displayPlantations } from './displayPlantations.js';
 import {
-  getFieldQuality,
+  getCalculatedFieldQuality,
   getFieldWeight,
   getHarvestTime,
   getPlantationState,
@@ -131,6 +131,8 @@ const harvestAllFields = async (
 
   const added: QuantitativePlant[] = [];
 
+  const currentSeason = await getCurrentSeason();
+
   ableToHarvestIndexes.forEach((index, iteration) => {
     const field = farmer.plantations[index] as PlantedField;
     let [state] = getPlantationState(field);
@@ -158,8 +160,7 @@ const harvestAllFields = async (
     const toAdd = {
       plant: field.plantType,
       weight: harvestedWeight,
-      // TODO: Get Real Quality
-      quality: getFieldQuality(field),
+      quality: getCalculatedFieldQuality(field, currentSeason),
     };
 
     added.push(toAdd);
@@ -233,7 +234,9 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
   const currentLimits = getSiloLimits(farmer);
   let replyFullSilo = false;
 
-  if (currentLimits.used + (field.weight ?? 1) >= currentLimits.limit) {
+  const success = state === PlantationState.Mature;
+
+  if (currentLimits.used + (field.weight ?? 1) >= currentLimits.limit && success) {
     if (currentLimits.used >= currentLimits.limit)
       return ctx.respondInteraction({
         flags: MessageFlags.Ephemeral,
@@ -255,14 +258,15 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
     upgrades: field.upgrades ?? [],
   };
 
-  const success = state === PlantationState.Mature;
+  const currentSeason = await getCurrentSeason();
+
   const harvestedWeight = success ? (field.weight ?? 1) : 0;
 
   const added = [
     {
       plant: field.plantType,
       weight: harvestedWeight,
-      quality: getFieldQuality(field),
+      quality: getCalculatedFieldQuality(field, currentSeason),
     },
   ];
 
