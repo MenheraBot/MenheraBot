@@ -1,6 +1,7 @@
 import {
   ActionRow,
   ButtonStyles,
+  SectionComponent,
   SelectOption,
   SeparatorComponent,
   TextDisplayComponent,
@@ -8,7 +9,7 @@ import {
 } from '@discordeno/bot';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { DatabaseFarmerSchema, QuantitativePlant } from '../../types/database.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
 import { AvailablePlants, PlantQuality } from './types.js';
 import { Items, Plants } from './constants.js';
@@ -56,75 +57,83 @@ const displaySilo = async (
 
   let maySell = false;
 
-  const embed = createEmbed({
-    title: ctx.locale('commands:fazendinha.silo.embed-title', {
-      user: getDisplayName(user ?? ctx.user),
-    }),
-    color: hexStringToNumber(embedColor),
-    fields: [
-      ...Object.entries(byQuality).flatMap(([quality, plants]) => {
-        const parsedQuality = Number(quality) as PlantQuality;
-        const noPlants = plants.filter((a) => a.weight > 0).length === 0;
+  const fields: (TextDisplayComponent | SectionComponent | SeparatorComponent)[] = [];
 
-        if (!noPlants) maySell = true;
+  Object.entries(byQuality).forEach(([quality, plants]) => {
+    const parsedQuality = Number(quality) as PlantQuality;
+    const noPlants = plants.filter((a) => a.weight > 0).length === 0;
 
-        return noPlants && parsedQuality !== PlantQuality.Normal
-          ? []
-          : [
-              {
-                name: ctx.locale(`commands:fazendinha.silo.quality-plants-${parsedQuality}`),
-                value:
-                  plants.length === 0
-                    ? ctx.locale('commands:fazendinha.silo.nothing')
-                    : plants
-                        .flatMap((a) =>
-                          a.weight > 0
-                            ? [
-                                ctx.locale(`commands:fazendinha.silo.display-other`, {
-                                  emoji: Plants[a.plant].emoji,
-                                  amount: a.weight,
-                                  metric: ' kg',
-                                  plant: ctx.locale(`data:plants.${a.plant}`),
-                                  quality: getQualityEmoji(parsedQuality),
-                                }),
-                              ]
-                            : [],
-                        )
-                        .join('\n'),
-                inline: true,
-              },
-            ];
-      }),
-      {
-        name: ctx.locale(`commands:fazendinha.plantations.seeds`),
-        value:
-          items.length === 0
-            ? ctx.locale('commands:fazendinha.silo.nothing')
-            : items
-                .flatMap((a) =>
-                  a.amount > 0
-                    ? [
-                        ctx.locale(
-                          `commands:fazendinha.silo.display-${isMatePlant(a.plant) ? 'mate' : 'other'}`,
-                          {
+    if (!noPlants) maySell = true;
+
+    if (!noPlants || parsedQuality === PlantQuality.Normal)
+      fields.push(
+        createSeparator(),
+        createTextDisplay(
+          `### ${ctx.locale(`commands:fazendinha.silo.quality-plants-${parsedQuality}`)}\n${
+            plants.length === 0
+              ? `_${ctx.locale('commands:fazendinha.silo.nothing')}_`
+              : plants
+                  .flatMap((a) =>
+                    a.weight > 0
+                      ? [
+                          ctx.locale(`commands:fazendinha.silo.display-other`, {
                             emoji: Plants[a.plant].emoji,
-                            amount: a.amount,
-                            metric: 'x',
+                            amount: a.weight,
+                            metric: ' kg',
                             plant: ctx.locale(`data:plants.${a.plant}`),
-                            quality: '',
-                          },
-                        ),
-                      ]
-                    : [],
-                )
-                .join('\n'),
-        inline: true,
-      },
-      {
-        name: ctx.locale('commands:fazendinha.silo.items'),
-        value:
+                            quality: getQualityEmoji(parsedQuality),
+                          }),
+                        ]
+                      : [],
+                  )
+                  .join('\n')
+          }`,
+        ),
+      );
+  });
+
+  fields.push(
+    createSeparator(),
+    createTextDisplay(
+      `### ${ctx.locale(`commands:fazendinha.plantations.seeds`)}\n${
+        items.length === 0
+          ? `_${ctx.locale('commands:fazendinha.silo.nothing')}_`
+          : items
+              .flatMap((a) =>
+                a.amount > 0
+                  ? [
+                      ctx.locale(
+                        `commands:fazendinha.silo.display-${isMatePlant(a.plant) ? 'mate' : 'other'}`,
+                        {
+                          emoji: Plants[a.plant].emoji,
+                          amount: a.amount,
+                          metric: 'x',
+                          plant: ctx.locale(`data:plants.${a.plant}`),
+                          quality: '',
+                        },
+                      ),
+                    ]
+                  : [],
+              )
+              .join('\n')
+      }`,
+    ),
+    createSeparator(),
+    createSection({
+      accessory: createButton({
+        label: ctx.locale('commands:fazendinha.silo.use-items'),
+        style: ButtonStyles.Primary,
+        customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'ADMIN', 0),
+        disabled:
+          farmer.id !== `${ctx.user.id}` ||
+          farmer.items.length === 0 ||
+          farmer.items.every((i) => i.amount <= 0),
+      }),
+      components: [
+        createTextDisplay(`### ${ctx.locale('commands:fazendinha.silo.items')}`),
+        createTextDisplay(
           farmer.items.length === 0
-            ? ctx.locale('commands:fazendinha.silo.nothing')
+            ? `_${ctx.locale('commands:fazendinha.silo.nothing')}_`
             : farmer.items
                 .flatMap((item) =>
                   item.amount > 0
@@ -140,30 +149,45 @@ const displaySilo = async (
                     : [],
                 )
                 .join('\n'),
-        inline: true,
-      },
+        ),
+      ],
+    }),
+  );
+
+  const container = createContainer({
+    accentColor: hexStringToNumber(embedColor),
+    components: [
+      createSection({
+        components: [
+          createTextDisplay(
+            `## ${ctx.locale('commands:fazendinha.silo.embed-title', {
+              user: getDisplayName(user ?? ctx.user),
+            })}`,
+          ),
+        ],
+        accessory: createButton({
+          label: ctx.locale('commands:fazendinha.silo.sell-plants'),
+          style: maySell ? ButtonStyles.Success : ButtonStyles.Secondary,
+          disabled: farmer.id !== `${ctx.user.id}` || !maySell,
+          customId: createCustomId(
+            8,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            'DISPLAY',
+            embedColor,
+          ),
+        }),
+      }),
+      ...fields,
+      createSeparator(),
+      createTextDisplay(
+        `-# ${ctx.locale('commands:fazendinha.silo.footer', { ...getSiloLimits(farmer) })}`,
+      ),
     ],
-    footer: { text: ctx.locale('commands:fazendinha.silo.footer', { ...getSiloLimits(farmer) }) },
   });
 
-  const sellButton = createButton({
-    label: ctx.locale('commands:fazendinha.silo.sell-plants'),
-    style: maySell ? ButtonStyles.Success : ButtonStyles.Secondary,
-    disabled: !maySell,
-    customId: createCustomId(8, ctx.user.id, ctx.originalInteractionId, 'DISPLAY', embedColor),
-  });
-
-  const useItemsButton = createButton({
-    label: ctx.locale('commands:fazendinha.silo.use-items'),
-    style: ButtonStyles.Primary,
-    customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'ADMIN', 0),
-    disabled: farmer.items.length === 0 || farmer.items.every((i) => i.amount <= 0),
-  });
-
-  ctx.makeMessage({
-    embeds: [embed],
-    components:
-      farmer.id === `${ctx.user.id}` ? [createActionRow([sellButton, useItemsButton])] : [],
+  ctx.makeLayoutMessage({
+    components: [container],
   });
 };
 
