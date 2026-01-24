@@ -1193,9 +1193,9 @@
       "deliver": "Yayy! Delivery completed! You received **{{award}}** :star:",
       "finished-bonus": "Complete truck! You've received a **{{award}}** :star: bonus for delivering all your daily deliveries!",
       "daily-deliveries": "Daily Deliveries",
-      "deliver-button": "Deliver {{index}}",
+      "deliver-button": "Deliver",
       "deliver-embed-name": "Delivery {{index}}",
-      "deliver-embed-name-finished": "~~Delivery {{index}}~~ ✅",
+      "deliver-embed-name-finished": "✅ ~~Delivery {{index}}~~",
       "deliver-embed-field": "Stars: **{{award}}** :star:",
       "deliver-embed-field-need": "Needs: **{{amount}} kg** {{emoji}}",
       "description": "Once a day the delivery truck will appear at your farm to pick up deliveries. Completing all deliveries before the truck leaves will give you an additional **{{bonus}}** :star: stars\n\nThe truck will leave <t:{{unix}}:R>"

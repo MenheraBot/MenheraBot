@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O `/fazendinha plantações` foi atualizado para os novos componentes V2 do Discord. Agora também é possível plantar e colher todos os campos ao mesmo tempo - Sugerido por @mareys.
 - O `/fazendinha silo` foi atualizado para os novos componentes V2 do Discord.
 - O `/fazendinha administrar campos` foi atualizado para os novos componentes V2 do Discord. Agora também é possível aumentar o silo por este comando.
+- O `/fazendinha entregas` foi atualizado para os novos componentes V2 do Discord.
 
 ## Fixed
 
