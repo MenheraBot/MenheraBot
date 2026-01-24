@@ -1224,10 +1224,9 @@
         "description": "Aumente o limite de seu silo em **{{increase}}** espaços por apenas **{{cost}}** :star:\nAtualmente tu tem **{{limit}}** espaços de limite."
       },
       "fields": {
-        "apply-to-all": "Todos campos",
+        "apply-to-all": "Aplicar em todos campos",
         "title": "Administrar campos",
-        "use-item": "Usar item no campo {{field}}",
-        "use-item-all": "Usar item em todos os campos",
+        "select-item": "Escolha um item para usar nos campos",
         "footer": "Administrando o campo {{field}}",
         "footer-all": "Administrando todos campos",
         "no-upgrades": "Nenhuma melhoria aplicada no momento.",
@@ -1245,7 +1244,7 @@
       },
       "unlocked-field": "Você comprou esse terreno de seu vizinho!",
       "your-fields": "Seus Campos",
-      "admin": "Administrar {{field}}",
+      "use-item": "Usar item",
       "buy": "Comprar {{field}}",
       "needed-items": "Esse campo está no terreno de seu vizinho. Ele concordou em te vender. Ele quer **{{star}}** :star: e **{{plants, list}}** por isso."
     }

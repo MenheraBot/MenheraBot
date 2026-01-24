@@ -123,7 +123,7 @@ const displaySilo = async (
       accessory: createButton({
         label: ctx.locale('commands:fazendinha.silo.use-items'),
         style: ButtonStyles.Primary,
-        customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'ADMIN', 0),
+        customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'ADMIN'),
         disabled:
           farmer.id !== `${ctx.user.id}` ||
           farmer.items.length === 0 ||

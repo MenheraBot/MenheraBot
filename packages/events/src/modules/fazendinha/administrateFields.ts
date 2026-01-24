@@ -1,15 +1,15 @@
-import { ActionRow, ButtonComponent, ButtonStyles, SelectOption } from '@discordeno/bot';
+import { ActionRow, ButtonStyles, SelectOption } from '@discordeno/bot';
 import userRepository from '../../database/repositories/userRepository.js';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
-import { DatabaseFarmerSchema } from '../../types/database.js';
-import { InteractionContext } from '../../types/menhera.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { PlantStateIcon, repeatIcon } from './displayPlantations.js';
 import {
   createActionRow,
   createButton,
+  createContainer,
   createCustomId,
+  createSection,
   createSelectMenu,
+  createSeparator,
+  createTextDisplay,
 } from '../../utils/discord/componentUtils.js';
 import { Items, Plants, UnloadFields } from './constants.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
@@ -24,6 +24,7 @@ import { millisToSeconds } from '../../utils/miscUtils.js';
 import { AvailableItems } from './types.js';
 import { isUpgradeApplied } from './plantationState.js';
 import { applyUpgrade } from './fieldAction.js';
+import { InteractionContext } from '../../types/menhera.js';
 
 const displayItemsHelp = async (ctx: ComponentInteractionContext) => {
   const authorData = await userRepository.ensureFindUser(ctx.user.id);
@@ -43,7 +44,8 @@ const displayItemsHelp = async (ctx: ComponentInteractionContext) => {
       ]),
     );
 
-  ctx.makeMessage({
+  ctx.respondInteraction({
+    flags: MessageFlags.Ephemeral,
     components,
     embeds: [
       createEmbed({
@@ -56,73 +58,97 @@ const displayItemsHelp = async (ctx: ComponentInteractionContext) => {
 };
 
 const displayAdministrateField = async (
-  ctx: ComponentInteractionContext,
-  field: number,
+  ctx: InteractionContext,
   applyToAll: boolean,
 ): Promise<void> => {
   const user = await userRepository.ensureFindUser(ctx.user.id);
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
-
-  const embed = createEmbed({
-    title: ctx.locale('commands:fazendinha.admin.fields.title'),
-    color: hexStringToNumber(user.selectedColor),
-    fields: [],
-    footer: {
-      text: ctx.locale(
-        `commands:fazendinha.admin.fields.footer${applyToAll ? ('-all' as const) : ''}`,
-        {
-          field: field + 1,
-        },
-      ),
-    },
-  });
-
-  const buttons = farmer.plantations.map((f, i) => {
-    embed.fields?.push({
-      inline: true,
-      name: ctx.locale('commands:fazendinha.plantations.field', { index: i + 1, emojis: '' }),
-      value:
-        f.upgrades && f.upgrades.length > 0
-          ? f.upgrades
-              .map((u) =>
-                // TODO(ysnoopyDogy): Quando tiver novos tipos de upgrades, tem que mudar a forma que apresenta
-                // não ter upgrades para não ficar uma lista quebrada. Preguića de fazer agora =/
-                ctx.locale(
-                  u.expiresAt > Date.now()
-                    ? 'commands:fazendinha.admin.fields.upgrade'
-                    : 'commands:fazendinha.admin.fields.no-upgrades',
-                  {
-                    emoji: Items[u.id].emoji,
-                    upgrade: ctx.locale(`data:farm-items.${u.id}`),
-                    unix: millisToSeconds(u.expiresAt),
-                    expireLabel: ctx.locale(`commands:fazendinha.admin.fields.expires`),
-                  },
-                ),
-              )
-              .join('\n')
-          : `:x: ${ctx.locale('commands:fazendinha.admin.fields.no-upgrades')}`,
-    });
-
-    return createButton({
-      label: ctx.locale('commands:fazendinha.admin.admin', {
-        field: i + 1,
-      }),
-      style: ButtonStyles.Primary,
-      customId: createCustomId(
-        3,
-        ctx.user.id,
-        ctx.originalInteractionId,
-        'ADMIN',
-        i,
-        0,
-        0,
-        applyToAll,
-      ),
-      disabled: i === field,
-    });
-  });
+  const fertilizerItemId = AvailableItems.Fertilizer;
 
   const itemsToAllFields = farmer.items.filter((i) => i.amount >= farmer.plantations.length);
+
+  const hasItems = farmer.items.filter((i) => i.amount >= 1).length > 0;
+
+  const hasUpgrade = farmer.plantations.some((p) =>
+    isUpgradeApplied(fertilizerItemId, p.upgrades ?? []),
+  );
+
+  const container = createContainer({
+    accentColor: hexStringToNumber(user.selectedColor),
+    components: [
+      createSection({
+        accessory: createButton({
+          label: ctx.locale(
+            `commands:fazendinha.admin.fields.${applyToAll ? 'use-anyway' : 'apply-to-all'}`,
+          ),
+          style: applyToAll ? ButtonStyles.Success : ButtonStyles.Secondary,
+          customId: createCustomId(
+            3,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            'ALL_FIELDS',
+            -1,
+            fertilizerItemId,
+            applyToAll || !hasUpgrade,
+          ),
+          disabled: itemsToAllFields.length === 0 && !applyToAll,
+        }),
+        components: [
+          createTextDisplay(
+            `## ${ctx.locale('commands:fazendinha.admin.fields.title')}\n\n${applyToAll ? ctx.locale('commands:fazendinha.admin.fields.confirm-usage-all') : ''}`,
+          ),
+        ],
+      }),
+    ],
+  });
+
+  farmer.plantations.forEach((f, i) => {
+    container.components.push(
+      createSeparator(),
+      createSection({
+        components: [
+          createTextDisplay(
+            `### ${ctx.locale('commands:fazendinha.plantations.field', { index: i + 1, emojis: '' })}\n${
+              f.upgrades && f.upgrades.length > 0
+                ? f.upgrades
+                    .map((u) =>
+                      // TODO(ysnoopyDogy): Quando tiver novos tipos de upgrades, tem que mudar a forma que apresenta
+                      // não ter upgrades para não ficar uma lista quebrada. Preguića de fazer agora =/
+                      ctx.locale(
+                        u.expiresAt > Date.now()
+                          ? 'commands:fazendinha.admin.fields.upgrade'
+                          : 'commands:fazendinha.admin.fields.no-upgrades',
+                        {
+                          emoji: Items[u.id].emoji,
+                          upgrade: ctx.locale(`data:farm-items.${u.id}`),
+                          unix: millisToSeconds(u.expiresAt),
+                          expireLabel: ctx.locale(`commands:fazendinha.admin.fields.expires`),
+                        },
+                      ),
+                    )
+                    .join('\n')
+                : `:x: ${ctx.locale('commands:fazendinha.admin.fields.no-upgrades')}`
+            }`,
+          ),
+        ],
+        accessory: createButton({
+          label: ctx.locale('commands:fazendinha.admin.use-item'),
+          style: ButtonStyles.Primary,
+          emoji: extractNameAndIdFromEmoji(Items[fertilizerItemId].emoji),
+          customId: createCustomId(
+            3,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            'USE_ITEM',
+            i,
+            fertilizerItemId,
+            applyToAll,
+          ),
+          disabled: !hasItems,
+        }),
+      }),
+    );
+  });
 
   const itemsToUse = applyToAll ? itemsToAllFields : farmer.items;
 
@@ -132,19 +158,13 @@ const displayAdministrateField = async (
       ctx.user.id,
       ctx.originalInteractionId,
       'USE_ITEM',
-      field,
       -1,
       -1,
       applyToAll,
     ),
     maxValues: 1,
     minValues: 1,
-    placeholder: ctx.locale(
-      applyToAll
-        ? 'commands:fazendinha.admin.fields.use-item-all'
-        : 'commands:fazendinha.admin.fields.use-item',
-      { field: field + 1 },
-    ),
+    placeholder: ctx.locale('commands:fazendinha.admin.fields.select-item'),
     options: itemsToUse.flatMap<SelectOption>((item) =>
       item.amount <= 0
         ? []
@@ -152,50 +172,39 @@ const displayAdministrateField = async (
             {
               label: `${item.amount}x ${ctx.locale(`data:farm-items.${item.id}`)}`,
               value: `${item.id}`,
+              default: true,
               emoji: extractNameAndIdFromEmoji(Items[item.id].emoji),
             },
           ],
     ),
   });
 
-  const components: ActionRow[] = [];
+  if (selectMenu.options.length > 0) {
+    container.components.push(
+      createSeparator(true),
+      createTextDisplay(ctx.locale('commands:fazendinha.admin.fields.select-item')),
+      createActionRow([selectMenu]),
+    );
+  }
 
-  if (selectMenu.options.length > 0) components.push(createActionRow([selectMenu]));
-
-  const helpButton = createButton({
-    label: ctx.locale('commands:fazendinha.admin.fields.help-item-title'),
-    style: ButtonStyles.Secondary,
-    customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'SHOW_HELP'),
-  });
-
-  const applyToAllButton = createButton({
-    label: ctx.locale('commands:fazendinha.admin.fields.apply-to-all'),
-    style: applyToAll ? ButtonStyles.Success : ButtonStyles.Secondary,
-    customId: createCustomId(
-      3,
-      ctx.user.id,
-      ctx.originalInteractionId,
-      'ALL_FIELDS',
-      field,
-      -1,
-      -1,
-      applyToAll,
-    ),
-    disabled: itemsToAllFields.length === 0 && !applyToAll,
-  });
-
-  components.push(
-    createActionRow([...(buttons as [ButtonComponent]), helpButton, applyToAllButton]),
+  container.components.push(
+    createSection({
+      components: [createTextDisplay(`-# Dúvida sobre fertilizantes? Clique:`)],
+      accessory: createButton({
+        label: ctx.locale('commands:fazendinha.admin.fields.help-item-title'),
+        style: ButtonStyles.Secondary,
+        customId: createCustomId(3, ctx.user.id, ctx.originalInteractionId, 'SHOW_HELP'),
+      }),
+    }),
   );
 
-  ctx.makeMessage({ embeds: [embed], components });
+  ctx.makeLayoutMessage({ components: [container] });
 };
 
 const executeUseItem = async (
   ctx: ComponentInteractionContext,
   field: number,
   itemId: AvailableItems,
-  confirmed: boolean,
   applyToAll: boolean,
 ): Promise<void> => {
   const itemData = Items[itemId];
@@ -220,43 +229,6 @@ const executeUseItem = async (
       }),
     });
 
-  const upgrades = farmer.plantations[field].upgrades ?? [];
-
-  if (
-    (applyToAll
-      ? farmer.plantations.some((p) => isUpgradeApplied(itemId, p.upgrades ?? []))
-      : isUpgradeApplied(itemId, upgrades)) &&
-    !confirmed
-  )
-    return ctx.makeMessage({
-      embeds: [],
-      content: ctx.prettyResponse(
-        'question',
-        'commands:fazendinha.admin.fields.confirm-usage-all',
-        {
-          index: field + 1,
-        },
-      ),
-      components: [
-        createActionRow([
-          createButton({
-            label: ctx.locale('commands:fazendinha.admin.fields.use-anyway'),
-            style: ButtonStyles.Secondary,
-            customId: createCustomId(
-              3,
-              ctx.user.id,
-              ctx.originalInteractionId,
-              'USE_ITEM',
-              field,
-              itemId,
-              true,
-              applyToAll,
-            ),
-          }),
-        ]),
-      ],
-    });
-
   const updatedItems = removeItems(farmer.items, [
     { id: item.id, amount: applyToAll ? farmer.plantations.length : 1 },
   ]);
@@ -267,17 +239,11 @@ const executeUseItem = async (
 
   await farmerRepository.applyUpgrade(ctx.user.id, updatedItems, field, updatedFields, applyToAll);
 
-  ctx.makeMessage({
-    embeds: [],
-    components: [],
-    content: ctx.prettyResponse('success', 'commands:fazendinha.admin.fields.upgrade-applied', {
-      unix: millisToSeconds(Date.now() + itemData.duration),
-    }),
-  });
+  return displayAdministrateField(ctx, false);
 };
 
 const handleAdministrativeComponents = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [action, field, sentItemId, confirmed, applyToAll] = ctx.sentData;
+  const [action, field, sentItemId, applyToAll] = ctx.sentData;
 
   if (action === 'USE_ITEM') {
     const itemId =
@@ -287,7 +253,6 @@ const handleAdministrativeComponents = async (ctx: ComponentInteractionContext):
       ctx,
       Number(field),
       Number(itemId) as AvailableItems,
-      confirmed === 'true',
       applyToAll === 'true',
     );
   }
@@ -296,11 +261,19 @@ const handleAdministrativeComponents = async (ctx: ComponentInteractionContext):
 
   if (action === 'UNLOCK') return executeUnlockField(ctx);
 
-  if (action === 'ADMIN')
-    return displayAdministrateField(ctx, Number(field), applyToAll === 'true');
+  if (action === 'ADMIN') return displayAdministrateField(ctx, applyToAll === 'true');
 
-  if (action === 'ALL_FIELDS')
-    return displayAdministrateField(ctx, Number(field), applyToAll !== 'true');
+  if (action === 'ALL_FIELDS') {
+    const farmer = await farmerRepository.getFarmer(ctx.user.id);
+
+    const hasUpgrade = farmer.plantations.some((p) =>
+      isUpgradeApplied(AvailableItems.Fertilizer, p.upgrades ?? []),
+    );
+
+    if (hasUpgrade && applyToAll !== 'true') return displayAdministrateField(ctx, true);
+
+    return executeUseItem(ctx, Number(field), Number(sentItemId), true);
+  }
 };
 
 const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<void> => {
@@ -351,60 +324,4 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
   });
 };
 
-const executeAdministrateFields = async (
-  ctx: InteractionContext,
-  farmer: DatabaseFarmerSchema,
-): Promise<void> => {
-  const userData =
-    ctx instanceof ChatInputInteractionContext
-      ? ctx.authorData
-      : await userRepository.ensureFindUser(ctx.user.id);
-
-  const embed = createEmbed({
-    title: ctx.locale('commands:fazendinha.admin.your-fields'),
-    color: hexStringToNumber(userData.selectedColor),
-    fields: [],
-  });
-
-  const plantationsLength = farmer.plantations.length;
-  const emojis = repeatIcon(PlantStateIcon.EMPTY);
-
-  const buttonsToSend: ButtonComponent[] = [];
-
-  const aditionalFields = Object.values(UnloadFields);
-
-  for (let i = 0; i <= aditionalFields.length; i++) {
-    embed.fields?.push({
-      name: `${i < plantationsLength ? '' : ':lock:'}${ctx.locale(
-        'commands:fazendinha.plantations.field',
-        { index: i + 1, emojis: '' },
-      )}`,
-      value: i < plantationsLength ? emojis : `||${emojis}||`,
-      inline: true,
-    });
-
-    buttonsToSend.push(
-      createButton({
-        label: ctx.locale(`commands:fazendinha.admin.${i < plantationsLength ? 'admin' : 'buy'}`, {
-          field: i + 1,
-        }),
-        style: ButtonStyles.Primary,
-        customId: createCustomId(
-          3,
-          ctx.user.id,
-          ctx.originalInteractionId,
-          i < plantationsLength ? 'ADMIN' : 'UNLOCK',
-          i,
-        ),
-        disabled: i > plantationsLength,
-      }),
-    );
-  }
-
-  ctx.makeMessage({
-    embeds: [embed],
-    components: [createActionRow(buttonsToSend as [ButtonComponent])],
-  });
-};
-
-export { executeAdministrateFields, handleAdministrativeComponents };
+export { handleAdministrativeComponents, displayAdministrateField };

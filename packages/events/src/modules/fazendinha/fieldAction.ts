@@ -137,7 +137,7 @@ const harvestAllFields = async (
 
     if (currentLimits.used + Math.floor(field.weight ?? 1) >= currentLimits.limit) {
       if (currentLimits.used >= currentLimits.limit && iteration === 0)
-        return ctx.followUp({
+        return ctx.respondInteraction({
           flags: MessageFlags.Ephemeral,
           content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
             limit: currentLimits.limit,
@@ -235,7 +235,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   if (currentLimits.used + (field.weight ?? 1) >= currentLimits.limit) {
     if (currentLimits.used >= currentLimits.limit)
-      return ctx.followUp({
+      return ctx.respondInteraction({
         flags: MessageFlags.Ephemeral,
         content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
           limit: currentLimits.limit,

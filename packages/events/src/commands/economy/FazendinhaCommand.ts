@@ -6,7 +6,7 @@ import { changeSelectedSeed, executeFieldAction } from '../../modules/fazendinha
 import { displaySilo, handleButtonAction } from '../../modules/fazendinha/displaySilo.js';
 import { AvailablePlants } from '../../modules/fazendinha/types.js';
 import {
-  executeAdministrateFields,
+  displayAdministrateField,
   handleAdministrativeComponents,
 } from '../../modules/fazendinha/administrateFields.js';
 import {
@@ -206,7 +206,7 @@ const FazendinhaCommand = createCommand({
     const group = ctx.getSubCommandGroup();
 
     if (group === 'administrar') {
-      if (command === 'campos') return executeAdministrateFields(ctx, farmer);
+      if (command === 'campos') return displayAdministrateField(ctx, false);
 
       if (command === 'silo') return executeAdministrateSilo(ctx, farmer);
 

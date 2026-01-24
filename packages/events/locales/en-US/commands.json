@@ -1219,10 +1219,9 @@
         "description": "Increase your silo limit by **{{increase}}** spaces for just **{{cost}}** :star:\nCurrently you have **{{limit}}** limit spaces."
       },
       "fields": {
-        "apply-to-all": "All fields",
+        "apply-to-all": "Apply to all fields",
         "title": "Manage fields",
-        "use-item": "Use item on field {{field}}",
-        "use-item-all": "Use item on all fields",
+        "select-item": "Choose an item to use on fields",
         "footer": "Managing field {{field}}",
         "footer-all": "Managing all fields",
         "no-upgrades": "No upgrades applied at the moment.",
@@ -1240,7 +1239,7 @@
       },
       "unlocked-field": "You bought this land from your neighbor!",
       "your-fields": "Your Fields",
-      "admin": "Manage {{field}}",
+      "use-item": "Use item",
       "buy": "Buy {{field}}",
       "needed-items": "This field is not on your neighbor's land. He was paid to sell you. He is asking for **{{star}}** :star: and **{{plants, list}}** for it."
     }

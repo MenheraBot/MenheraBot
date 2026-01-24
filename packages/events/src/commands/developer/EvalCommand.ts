@@ -22,6 +22,12 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 };
 
 const executeEval = async (ctx: InteractionContext, toEval: string) => {
+  const id = { id: `${ctx.user.id}` };
+
+  () => {
+    return [id];
+  };
+
   try {
     let evaled = await eval(toEval);
     evaled = inspect(evaled, { depth: 4 });
