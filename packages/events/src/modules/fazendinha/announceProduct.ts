@@ -19,7 +19,7 @@ import {
 } from './siloUtils.js';
 import { AvailablePlants, PlantQuality } from './types.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
-import { localizedResources } from '../../utils/miscUtils.js';
+import { localizedResources, normalizeString } from '../../utils/miscUtils.js';
 import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
 import executeDailies from '../dailies/executeDailies.js';
@@ -39,8 +39,8 @@ const announceAutocomplete = async (interaction: Interaction): Promise<void | nu
       p.push({
         name: `${plant.emoji} ${names['pt-BR']}`,
         nameLocalizations: {
-          'en-US': `${plant.emoji} ${names['en-US']}`,
-          'pt-BR': `${plant.emoji} ${names['pt-BR']}`,
+          'en-US': normalizeString(`${plant.emoji} ${names['en-US']}`),
+          'pt-BR': normalizeString(`${plant.emoji} ${names['pt-BR']}`),
         },
         value: Number(c),
       });
@@ -57,10 +57,10 @@ const announceAutocomplete = async (interaction: Interaction): Promise<void | nu
 
   if (focused?.name === 'produto') {
     const searchString = plantNames.map(
-      (a) => a.nameLocalizations?.[(interaction.locale as 'en-US') ?? 'pt-BR'] ?? a.name,
+      (a) => a.nameLocalizations?.[(interaction.locale as 'en-US') ?? 'pt-BR'] ?? normalizeString(a.name),
     );
 
-    const ratings = findBestMatch(`${input}`, searchString);
+    const ratings = findBestMatch(normalizeString(`${input}`), searchString);
 
     const toSendOptions = ratings.ratings.filter((a) => a.rating >= 0.3);
 
@@ -72,7 +72,7 @@ const announceAutocomplete = async (interaction: Interaction): Promise<void | nu
       const { target } = toSendOptions[i];
 
       const plant = plantNames.find(
-        (a) => a.name === target || a.nameLocalizations?.['en-US'] === target,
+        (a) => normalizeString(a.name) === target || a.nameLocalizations?.['en-US'] === target,
       );
 
       if (plant) infoToReturn.push(plant);
@@ -199,7 +199,6 @@ const executeAnnounceProduct = async (
     ctx.user.id,
     plant,
     amount,
-    // TODO understand why this stored as 1 for every qualit
     quality,
     price,
     `[${ctx.user.username}] ${getQualityEmoji(quality)} ${amount} Kg ${i18next.getFixedT('pt-BR')(

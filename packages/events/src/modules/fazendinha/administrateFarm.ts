@@ -120,20 +120,21 @@ const displayAdministrateFarm = async (
             `### ${ctx.locale('commands:fazendinha.plantations.field', { index: i + 1, emojis: '' })}\n${
               f.upgrades && f.upgrades.length > 0
                 ? f.upgrades
-                    .map((u) =>
-                      // TODO(ysnoopyDogy): Quando tiver novos tipos de upgrades, tem que mudar a forma que apresenta
-                      // não ter upgrades para não ficar uma lista quebrada. Preguića de fazer agora =/
-                      ctx.locale(
-                        u.expiresAt > Date.now()
-                          ? 'commands:fazendinha.admin.fields.upgrade'
-                          : 'commands:fazendinha.admin.fields.no-upgrades',
-                        {
-                          emoji: Items[u.id].emoji,
-                          upgrade: ctx.locale(`data:farm-items.${u.id}`),
-                          unix: millisToSeconds(u.expiresAt),
-                          expireLabel: ctx.locale(`commands:fazendinha.admin.fields.expires`),
-                        },
-                      ),
+                    .map(
+                      (u) =>
+                        // TODO(ysnoopyDogy): Quando tiver novos tipos de upgrades, tem que mudar a forma que apresenta
+                        // não ter upgrades para não ficar uma lista quebrada. Preguića de fazer agora =/
+                        `${u.expiresAt > Date.now() ? '' : ':x:'}${ctx.locale(
+                          u.expiresAt > Date.now()
+                            ? 'commands:fazendinha.admin.fields.upgrade'
+                            : 'commands:fazendinha.admin.fields.no-upgrades',
+                          {
+                            emoji: Items[u.id].emoji,
+                            upgrade: ctx.locale(`data:farm-items.${u.id}`),
+                            unix: millisToSeconds(u.expiresAt),
+                            expireLabel: ctx.locale(`commands:fazendinha.admin.fields.expires`),
+                          },
+                        )}`,
                     )
                     .join('\n')
                 : `:x: ${ctx.locale('commands:fazendinha.admin.fields.no-upgrades')}`

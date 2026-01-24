@@ -142,6 +142,7 @@ const harvestPlant = async (
 
       return {
         plant: Number(plant),
+        // We do not care for the quality for now
         quality: Number(quality),
         weight: parseFloat(weight.toFixed(1)),
       };

@@ -17,6 +17,9 @@ import {
   getQualityEmoji,
 } from '../fazendinha/siloUtils.js';
 import { createTextDisplay } from '../../utils/discord/componentUtils.js';
+import { buildSellPlantsMessage } from '../fazendinha/displaySilo.js';
+import { MessageFlags } from '@discordeno/bot';
+import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
 
 const receiveModal = async (
   ctx: ComponentInteractionContext<ModalInteraction>,
@@ -122,7 +125,14 @@ const executeSellPlant = async (
 
   const userData = await userRepository.ensureFindUser(ctx.user.id);
 
-  ctx.makeLayoutMessage({
+  await buildSellPlantsMessage(
+    ctx,
+    await farmerRepository.getFarmer(ctx.user.id),
+    userData.selectedColor,
+  );
+
+  return ctx.followUp({
+    flags: setComponentsV2Flag(MessageFlags.Ephemeral),
     components: [
       createTextDisplay(
         ctx.prettyResponse('success', 'commands:loja.sell_plants.success', {

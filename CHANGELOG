@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - A planta `Limão` foi renomeada para `Mirtilo`. 
 - A planta `Melancia` foi renomeada para `Limão`.
 - As plantas `Morango` e `Maçã` tiveram suas posições de raridade alteradas.
+- Facilitado o uso do `/fazendinha feira anunciar`, removendo a necessidade de usar acentos para buscar por platnas.
 
 ## Fixed
 

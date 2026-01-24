@@ -46,7 +46,7 @@ const Dailies: Record<number, Daily> = {
     type: 'announce_product',
     amountLimits: [2, 3],
   },
-  22: {
+ 22: {
     type: 'success_on_hunt',
     amountLimits: [3, 6],
   },

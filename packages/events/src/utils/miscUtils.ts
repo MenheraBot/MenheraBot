@@ -117,12 +117,20 @@ const calculateProbability = <Prob extends ProbabilityAmount | ProbabilityType>(
   return 0;
 };
 
+const normalizeString = (str: string) => {
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+};
+
 export {
   capitalize,
   daysToMillis,
   randomFromArray,
   toWritableUtf,
   numberizeAllValues,
+  normalizeString,
   getCustomThemeField,
   millisToSeconds,
   localizedResources,

@@ -20,7 +20,7 @@ import {
 } from '../../utils/discord/componentUtils.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
-import { checkNeededPlants, removePlants } from './siloUtils.js';
+import { checkNeededPlants, getQuality, getQualityEmoji, removePlants } from './siloUtils.js';
 import starsRepository from '../../database/repositories/starsRepository.js';
 import { postTransaction } from '../../utils/apiRequests/statistics.js';
 import { bot } from '../../index.js';
@@ -171,7 +171,7 @@ const executeDailyDelivery = async (
             })}\n${a.needs.map((b) =>
               ctx.locale('commands:fazendinha.entregas.deliver-embed-field-need', {
                 amount: b.weight ?? b.amount,
-                emoji: Plants[b.plant].emoji,
+                emoji: `${getQualityEmoji(getQuality({ quality: b.quality }))} ${Plants[b.plant].emoji}`,
               }),
             )}`,
           ),

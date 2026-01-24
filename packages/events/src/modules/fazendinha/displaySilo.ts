@@ -59,13 +59,15 @@ const displaySilo = async (
 
   const fields: (TextDisplayComponent | SectionComponent | SeparatorComponent)[] = [];
 
-  Object.entries(byQuality).forEach(([quality, plants]) => {
+  const parsedQualities = Object.entries(byQuality).toReversed();
+
+  parsedQualities.forEach(([quality, plants]) => {
     const parsedQuality = Number(quality) as PlantQuality;
     const noPlants = plants.filter((a) => a.weight > 0).length === 0;
 
     if (!noPlants) maySell = true;
 
-    if (!noPlants || parsedQuality === PlantQuality.Normal)
+    if (!noPlants || parsedQuality === PlantQuality.Normal) {
       fields.push(
         createSeparator(),
         createTextDisplay(
@@ -90,13 +92,14 @@ const displaySilo = async (
           }`,
         ),
       );
+    }
   });
 
   fields.push(
     createSeparator(),
     createTextDisplay(
       `### ${ctx.locale(`commands:fazendinha.plantations.seeds`)}\n${
-        items.length === 0
+        items.filter(a => a.amount > 0).length === 0
           ? `_${ctx.locale('commands:fazendinha.silo.nothing')}_`
           : items
               .flatMap((a) =>

@@ -135,6 +135,7 @@ const titlesSchema = new Schema({
 const feirinhaSchema = new Schema({
   userId: { type: String },
   plantType: { type: Number },
+  plantQuality: { type: Number },
   weight: { type: Number },
   price: { type: Number },
   [`name_pt-BR`]: { type: String },

@@ -1,5 +1,5 @@
 import { findBestMatch } from 'string-similarity';
-import { ButtonStyles } from '@discordeno/bot';
+import { ButtonStyles, MessageFlags } from '@discordeno/bot';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
 import { InteractionContext } from '../../types/menhera.js';
 import fairRepository from '../../database/repositories/fairRepository.js';
@@ -31,6 +31,7 @@ import { localizedResources } from '../../utils/miscUtils.js';
 import notificationRepository from '../../database/repositories/notificationRepository.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import { Interaction, User } from '../../types/discordeno.js';
+import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
 
 const listItemAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'item', false) ?? '';
@@ -122,6 +123,10 @@ const executeBuyItem = async (
       ],
     });
 
+  const plantQuality = getQuality({ quality: announcement.plantQuality });
+  const qualityEmoji = getQualityEmoji(plantQuality);
+  const emojiText = `${qualityEmoji} ${Plants[announcement.plantType].emoji}`;
+
   await Promise.all([
     starsRepository.addStars(announcement.userId, announcement.price),
     starsRepository.removeStars(ctx.user.id, announcement.price),
@@ -132,7 +137,7 @@ const executeBuyItem = async (
         {
           weight: announcement.weight,
           plant: announcement.plantType,
-          quality: getQuality({ quality: announcement.plantQuality }),
+          quality: plantQuality,
         },
       ]),
     ),
@@ -147,7 +152,7 @@ const executeBuyItem = async (
       announcement.userId,
       'commands:notificações.notifications.user-bought-announcement',
       {
-        emoji: `${getQualityEmoji(getQuality({ quality: announcement.plantQuality }))} ${Plants[announcement.plantType].emoji}`,
+        emoji: emojiText,
         weight: announcement.weight,
         username: ctx.user.username,
         stars: announcement.price,
@@ -155,11 +160,20 @@ const executeBuyItem = async (
     ),
   ]);
 
-  ctx.makeLayoutMessage({
+  await displayFair(ctx, 0, user.selectedColor);
+
+  return ctx.followUp({
+    flags: setComponentsV2Flag(MessageFlags.Ephemeral),
     components: [
       createTextDisplay(
         ctx.prettyResponse('success', 'commands:fazendinha.feira.comprar.success', {
           author: mentionUser(ctx.user.id),
+          description: ctx.locale('commands:fazendinha.feira.comprar.description', {
+            amount: announcement.weight,
+            emoji: emojiText,
+            plant: ctx.locale(`data:plants.${announcement.plantType}`),
+            price: announcement.price,
+          }),
         }),
       ),
     ],
@@ -189,10 +203,16 @@ const displayFair = async (
       );
 
   if (announcements.length === 0)
-    return ctx.makeMessage({
-      embeds: [],
-      components: [],
-      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.no-announcements'),
+    return ctx.makeLayoutMessage({
+      flags: MessageFlags.Ephemeral,
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse(
+            'error',
+            `commands:fazendinha.feira.comprar.no-announcements${user ? '-user' : ''}`,
+          ),
+        ),
+      ],
     });
 
   const container = createContainer({
@@ -233,8 +253,6 @@ const displayFair = async (
             (await cacheRepository.getDiscordUser(item.userId, false))?.username ??
             mentionUser(item.userId)
           }`;
-
-      console.log(item);
 
       const qualityEmoji = getQualityEmoji(getQuality({ quality: item.plantQuality }));
 
