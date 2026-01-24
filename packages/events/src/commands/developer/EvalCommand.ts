@@ -1,7 +1,12 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 import { inspect } from 'node:util';
 
-import { eventModel, farmerModel, usersModel } from '../../database/collections.js';
+import {
+  eventModel,
+  farmerModel,
+  feirinhaOrderModel as ordersModel,
+  usersModel,
+} from '../../database/collections.js';
 import { MainRedisClient as redis } from '../../database/databases.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import { bot } from '../../index.js';
@@ -18,7 +23,16 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 
 // This is odd, but its needed so the eslint dont get angry with unused imports
 () => {
-  return [userRepository, enableTcp, enableUnixSocket, usersModel, redis, farmerModel, eventModel];
+  return [
+    userRepository,
+    enableTcp,
+    enableUnixSocket,
+    usersModel,
+    redis,
+    farmerModel,
+    eventModel,
+    ordersModel,
+  ];
 };
 
 const executeEval = async (ctx: InteractionContext, toEval: string) => {

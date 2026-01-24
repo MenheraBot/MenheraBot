@@ -5,6 +5,7 @@ import {
   DatabaseCreditsSchema,
   DatabaseEventSchema,
   DatabaseFarmerSchema,
+  DatabaseFeirinhaOrderSchema,
   DatabaseFeirinhaSchema,
   DatabaseGuildSchema,
   DatabaseNotificationSchema,
@@ -142,6 +143,15 @@ const feirinhaSchema = new Schema({
   [`name_en-US`]: { type: String },
 });
 
+const feirinhaOrderSchema = new Schema({
+  userId: { type: String },
+  plant: { type: Number },
+  quality: { type: Number },
+  weight: { type: Number },
+  price: { type: Number },
+  placedAt: { type: Number, default: Date.now },
+});
+
 const notificationSchema = new Schema({
   userId: { type: String },
   translationKey: { type: String },
@@ -171,6 +181,7 @@ export const profileImagesModel = model<DatabaseProfileImagesSchema>('images', p
 export const farmerModel = model<DatabaseFarmerSchema>('farmer', farmerSchema);
 export const titlesModel = model<DatabaseTitlesSchema>('titles', titlesSchema);
 export const feirinhaModel = model<DatabaseFeirinhaSchema>('feirinha', feirinhaSchema);
+export const feirinhaOrderModel = model<DatabaseFeirinhaOrderSchema>('order', feirinhaOrderSchema);
 export const notificationModel = model<DatabaseNotificationSchema>(
   'notification',
   notificationSchema,

@@ -18,6 +18,8 @@ import { handleDissmissShop } from '../../modules/fazendinha/administrateFair.js
 import { executeAnnounceProduct } from '../../modules/fazendinha/announceProduct.js';
 import { executeButtonAction, executeExploreFair } from '../../modules/fazendinha/exploreFair.js';
 import { User } from '../../types/discordeno.js';
+import { displayFairOrders } from '../../modules/fazendinha/fairOrders.js';
+import userRepository from '../../database/repositories/userRepository.js';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -77,9 +79,9 @@ const FazendinhaCommand = createCommand({
           type: ApplicationCommandOptionTypes.SubCommand,
           name: 'anunciar',
           nameLocalizations: { 'en-US': 'advertise' },
-          description: '「🏷️」・Anuncie um produto na feira da vizinhança',
+          description: '「🎰」・Anuncie um produto na feira da vizinhança',
           descriptionLocalizations: {
-            'en-US': '「🏷️」・Advertise a product at the neighborhood fair',
+            'en-US': '「🎰」・Advertise a product at the neighborhood fair',
           },
           options: [
             {
@@ -113,9 +115,9 @@ const FazendinhaCommand = createCommand({
               required: true,
               choices: [
                 {
-                  name: '🔹Planta Prêmium',
+                  name: 'Planta Prêmium 🔹',
                   value: 2,
-                  nameLocalizations: { 'en-US': '🔹Premium Plant' },
+                  nameLocalizations: { 'en-US': 'Premium Plant 🔹' },
                 },
                 {
                   name: 'Planta',
@@ -123,9 +125,9 @@ const FazendinhaCommand = createCommand({
                   nameLocalizations: { 'en-US': 'Plant' },
                 },
                 {
-                  name: '🔻Planta Precária',
+                  name: 'Planta Precária 🔻',
                   value: 0,
-                  nameLocalizations: { 'en-US': '🔻Low Quality Plant' },
+                  nameLocalizations: { 'en-US': 'Low Quality Plant 🔻' },
                 },
               ],
             },
@@ -139,6 +141,25 @@ const FazendinhaCommand = createCommand({
               type: ApplicationCommandOptionTypes.Integer,
               autocomplete: true,
               required: true,
+            },
+          ],
+        },
+        {
+          name: 'pedidos',
+          nameLocalizations: { 'en-US': 'requests' },
+          description: '「📥」・Encomende produtos pela sua vizinhança',
+          descriptionLocalizations: { 'en-US': '「📥」・ Order products on your neighborhood.' },
+          type: ApplicationCommandOptionTypes.SubCommand,
+          options: [
+            {
+              name: 'vizinho',
+              nameLocalizations: { 'en-US': 'neighbor' },
+              description: 'Vizinho para ver os pedidos',
+              descriptionLocalizations: {
+                'en-US': 'Neighbor to check the orders',
+              },
+              type: ApplicationCommandOptionTypes.User,
+              required: false,
             },
           ],
         },
@@ -175,9 +196,9 @@ const FazendinhaCommand = createCommand({
     {
       name: 'administrar',
       nameLocalizations: { 'en-US': 'manage' },
-      description: '「⚙️」・Administre toda a sua fazenda',
+      description: '「🔧」・Administre toda a sua fazenda',
       descriptionLocalizations: {
-        'en-US': '「⚙️」・Manage all of your farm',
+        'en-US': '「🔧」・Manage all of your farm',
       },
       type: ApplicationCommandOptionTypes.SubCommand,
     },
@@ -211,6 +232,26 @@ const FazendinhaCommand = createCommand({
       if (command === 'anunciar') return executeAnnounceProduct(ctx, farmer);
 
       if (command === 'comprar') return executeExploreFair(ctx, farmer);
+
+      if (command === 'pedidos') {
+        const user = ctx.getOption<User>('vizinho', 'users', false);
+
+        const isAuthorTarget = !user || ctx.user.id === user.id;
+
+        const userData = isAuthorTarget
+          ? ctx.authorData
+          : await userRepository.ensureFindUser(user.id);
+
+        const realFarmer = isAuthorTarget ? farmer : await farmerRepository.getFarmer(user.id);
+
+        return displayFairOrders(
+          ctx,
+          realFarmer,
+          userData.selectedColor,
+          0,
+          isAuthorTarget ? undefined : user,
+        );
+      }
     }
 
     if (command === 'entregas')

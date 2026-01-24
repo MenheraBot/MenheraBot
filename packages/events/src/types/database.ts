@@ -162,6 +162,17 @@ export interface DatabaseFeirinhaSchema {
   [`name_en-US`]: string;
 }
 
+
+export interface DatabaseFeirinhaOrderSchema {
+  _id: string;
+  userId: string;
+  plant: AvailablePlants;
+  quality: PlantQuality;
+  weight: number;
+  price: number;
+  placedAt: number
+}
+
 export interface DatabaseFarmerSchema {
   readonly id: string;
   plantations: Plantation[];
