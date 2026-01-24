@@ -246,7 +246,7 @@
     },
     "buy_seeds": {
       "buy-seed-of": "Buy {{plant}} seed",
-      "plant-stats": "**Buy Value**: {{buyValue}} :star:\n**Sell Value:** {{sellValue}} :star:\n**Ripens in:** {{harvestTime}} min\n**Rots in:** {{rotTime}} min\n**Better in:** {{bestSeason}}\n**Worst in:** {{worstSeason}}",
+     "plant-stats": "**💰 Buy:** {{buyValue}} :star: | **Sell:** {{sellValue}} :star:\n**⏰ Grow:** {{harvestTime}} min | **🧟 Rot:** {{rotTime}} min\n**🌧️ Best:** {{bestSeason}} | **Worst:** {{worstSeason}}",
       "seed": "{{plant}} seed",
       "select-category": "To see information about other plants, select a category below.",
       "success": "You spent **{{amount}}** :star: little stars buying seeds. Now you have **{{stars}}** ⭐.\n Time to plant them {{command}}",

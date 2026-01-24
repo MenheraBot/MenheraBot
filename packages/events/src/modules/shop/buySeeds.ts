@@ -232,16 +232,17 @@ const buySeeds = async (
     container.components.push(
       createSeparator(),
       createTextDisplay(
-        `### ${Plants[plant as '1'].emoji} ${ctx.locale(`data:plants.${plant as '1'}`)} [${ctx.locale(
-          `data:fazendinha.category_${data.category}`,
-        )}]\n${ctx.locale('commands:loja.buy_seeds.plant-stats', {
-          sellValue: data.sellValue,
-          buyValue: data.buyValue,
-          harvestTime: data.minutesToHarvest,
-          rotTime: data.minutesToRot,
-          bestSeason: SeasonEmojis[data.bestSeason],
-          worstSeason: SeasonEmojis[data.worstSeason],
-        })}`,
+        `### ${Plants[plant as '1'].emoji} ${ctx.locale(`data:plants.${plant as '1'}`)}\n${ctx.locale(
+          'commands:loja.buy_seeds.plant-stats',
+          {
+            sellValue: data.sellValue,
+            buyValue: data.buyValue,
+            harvestTime: data.minutesToHarvest,
+            rotTime: data.minutesToRot,
+            bestSeason: SeasonEmojis[data.bestSeason],
+            worstSeason: SeasonEmojis[data.worstSeason],
+          },
+        )}`,
       ),
     );
   });

@@ -251,7 +251,7 @@
     },
     "buy_seeds": {
       "buy-seed-of": "Comprar semente de {{plant}}",
-      "plant-stats": "**Preço de Compra:** {{buyValue}} :star:\n**Valor de venda:** {{sellValue}} :star:\n**Amadurece em:** {{harvestTime}} min\n**Apodrece em:** {{rotTime}} min\n**Melhor em:** {{bestSeason}}\n**Pior em:** {{worstSeason}}",
+      "plant-stats": "**💰 Compra:** {{buyValue}} :star: | **Venda:** {{sellValue}} :star:\n**⏰ Cresce:** {{harvestTime}} min | **🧟 Apodrece:** {{rotTime}} min\n**🌧️ Melhor:** {{bestSeason}} | **Pior:** {{worstSeason}}",
       "seed": "Semente de {{plant}}",
       "select-category": "Para ver informações sobre outras plantas, selecione uma categoria abaixo.",
       "success": "Você gastou **{{amount}}** :star: estrelinhas comprando sementes. Agora você tem **{{stars}}** ⭐.\nHora de plantá-las {{command}}",
