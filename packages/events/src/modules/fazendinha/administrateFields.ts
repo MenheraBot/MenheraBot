@@ -11,10 +11,16 @@ import {
   createSeparator,
   createTextDisplay,
 } from '../../utils/discord/componentUtils.js';
-import { Items, Plants, UnloadFields } from './constants.js';
+import {
+  Items,
+  MAX_SILO_UPGRADES,
+  Plants,
+  SILO_LIMIT_INCREASE_BY_LEVEL,
+  UnloadFields,
+} from './constants.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
-import { checkNeededPlants, removeItems, removePlants } from './siloUtils.js';
+import { checkNeededPlants, getSiloLimits, removeItems, removePlants } from './siloUtils.js';
 import { extractNameAndIdFromEmoji, MessageFlags } from '../../utils/discord/messageUtils.js';
 import starsRepository from '../../database/repositories/starsRepository.js';
 import { postTransaction } from '../../utils/apiRequests/statistics.js';
@@ -57,7 +63,7 @@ const displayItemsHelp = async (ctx: ComponentInteractionContext) => {
   });
 };
 
-const displayAdministrateField = async (
+const displayAdministrateFarm = async (
   ctx: InteractionContext,
   applyToAll: boolean,
 ): Promise<void> => {
@@ -198,7 +204,34 @@ const displayAdministrateField = async (
     }),
   );
 
-  ctx.makeLayoutMessage({ components: [container] });
+  const cost = 50_000 + farmer.siloUpgrades * 15_000;
+  const hasStars = user.estrelinhas >= cost;
+  const maxLevel = farmer.siloUpgrades >= MAX_SILO_UPGRADES;
+
+  const siloContainer = createContainer({
+    components: [
+      createSection({
+        accessory: createButton({
+          label: ctx.locale('commands:fazendinha.admin.silo.button'),
+          style: hasStars ? ButtonStyles.Primary : ButtonStyles.Secondary,
+          disabled: maxLevel || !hasStars,
+          customId: createCustomId(5, ctx.user.id, ctx.originalInteractionId, 'UPGRADE'),
+        }),
+        components: [
+          createTextDisplay(`## ${ctx.locale('commands:fazendinha.admin.silo.title')}`),
+          createTextDisplay(
+            ctx.locale(`commands:fazendinha.admin.silo.${maxLevel ? 'max-level-description' : 'description'}`, {
+              increase: SILO_LIMIT_INCREASE_BY_LEVEL,
+              cost,
+              limit: getSiloLimits(farmer).limit,
+            }),
+          ),
+        ],
+      }),
+    ],
+  });
+
+  ctx.makeLayoutMessage({ components: [siloContainer, container] });
 };
 
 const executeUseItem = async (
@@ -239,7 +272,7 @@ const executeUseItem = async (
 
   await farmerRepository.applyUpgrade(ctx.user.id, updatedItems, field, updatedFields, applyToAll);
 
-  return displayAdministrateField(ctx, false);
+  return displayAdministrateFarm(ctx, false);
 };
 
 const handleAdministrativeComponents = async (ctx: ComponentInteractionContext): Promise<void> => {
@@ -261,7 +294,7 @@ const handleAdministrativeComponents = async (ctx: ComponentInteractionContext):
 
   if (action === 'UNLOCK') return executeUnlockField(ctx);
 
-  if (action === 'ADMIN') return displayAdministrateField(ctx, applyToAll === 'true');
+  if (action === 'ADMIN') return displayAdministrateFarm(ctx, applyToAll === 'true');
 
   if (action === 'ALL_FIELDS') {
     const farmer = await farmerRepository.getFarmer(ctx.user.id);
@@ -270,7 +303,7 @@ const handleAdministrativeComponents = async (ctx: ComponentInteractionContext):
       isUpgradeApplied(AvailableItems.Fertilizer, p.upgrades ?? []),
     );
 
-    if (hasUpgrade && applyToAll !== 'true') return displayAdministrateField(ctx, true);
+    if (hasUpgrade && applyToAll !== 'true') return displayAdministrateFarm(ctx, true);
 
     return executeUseItem(ctx, Number(field), Number(sentItemId), true);
   }
@@ -324,4 +357,4 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
   });
 };
 
-export { handleAdministrativeComponents, displayAdministrateField };
+export { handleAdministrativeComponents, displayAdministrateFarm };

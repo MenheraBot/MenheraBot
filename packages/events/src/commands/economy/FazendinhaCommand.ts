@@ -6,7 +6,7 @@ import { changeSelectedSeed, executeFieldAction } from '../../modules/fazendinha
 import { displaySilo, handleButtonAction } from '../../modules/fazendinha/displaySilo.js';
 import { AvailablePlants } from '../../modules/fazendinha/types.js';
 import {
-  displayAdministrateField,
+  displayAdministrateFarm,
   handleAdministrativeComponents,
 } from '../../modules/fazendinha/administrateFields.js';
 import {
@@ -14,7 +14,6 @@ import {
   executeDailyDelivery,
 } from '../../modules/fazendinha/dailyDelivery.js';
 import {
-  executeAdministrateSilo,
   handleUpgradeSilo,
 } from '../../modules/fazendinha/administrateSilo.js';
 import {
@@ -167,12 +166,6 @@ const FazendinhaCommand = createCommand({
           type: ApplicationCommandOptionTypes.SubCommand,
         },
         {
-          name: 'silo',
-          description: '「🧺」・Administre o limite do seu silo',
-          descriptionLocalizations: { 'en-US': '「🧺」・Manage the limits from your silo' },
-          type: ApplicationCommandOptionTypes.SubCommand,
-        },
-        {
           name: 'feira',
           nameLocalizations: { 'en-US': 'fair' },
           description: '「🛒」・Administre a sua feirinha da vizinhança',
@@ -206,9 +199,7 @@ const FazendinhaCommand = createCommand({
     const group = ctx.getSubCommandGroup();
 
     if (group === 'administrar') {
-      if (command === 'campos') return displayAdministrateField(ctx, false);
-
-      if (command === 'silo') return executeAdministrateSilo(ctx, farmer);
+      if (command === 'campos') return displayAdministrateFarm(ctx, false);
 
       if (command === 'feira') return executeAdministrateFair(ctx, ctx.authorData);
     }
