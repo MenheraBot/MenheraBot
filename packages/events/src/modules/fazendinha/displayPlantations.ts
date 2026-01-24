@@ -252,7 +252,11 @@ const displayPlantations = async (
       ([plantQuality, weight]) => {
         const [plant, quality] = plantQuality.split('|');
 
-        return { plant: Number(plant), quality: Number(quality), weight };
+        return {
+          plant: Number(plant),
+          quality: Number(quality),
+          weight: parseFloat(weight.toFixed(1)),
+        };
       },
     );
 
