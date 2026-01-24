@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Adicionado qualidade para plantações: Plantas Precárias, Plantas e Plantas Premium. Plantas premium e precárias tem uma mudança em seu preço de 30%.
 - Adicionado categorias para as plantações de fazendinha: Grão, Raiz, Vegetal, Fruta, Fruta Nobre e Especial.
+- Criado o comando `/fazendinha administrar`, que integra gerenciar campos, silo e feira.
 
 ## Changed
 
@@ -18,7 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - A `/loja vender plantas` foi atualizada para os novos componentes V2 do Discord! Agora também é possível vender diferentes qualidades de plantas.
 - O `/fazendinha plantações` foi atualizado para os novos componentes V2 do Discord. Agora também é possível plantar e colher todos os campos ao mesmo tempo - Sugerido por @mareys.
 - O `/fazendinha silo` foi atualizado para os novos componentes V2 do Discord.
-- O `/fazendinha administrar campos` foi atualizado para os novos componentes V2 do Discord. Agora também é possível aumentar o silo por este comando.
 - O `/fazendinha entregas` foi atualizado para os novos componentes V2 do Discord.
 - O `/fazendinha feira comprar` foi atualizado para os novos componentes V2 do Discord.
 - O `/loja comprar sementes` foi atualizado para os novos componentes V2 do Discord.
@@ -35,6 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Removed
 
 - Removido o comando `/fazendinha administrar silo`.
+- Removido o comando `/fazendinha administrar campos`.
+- Removido o comando `/fazendinha administrar feira`.
 
 ## [6.1.5] - 2025-12-17
 

@@ -1,14 +1,17 @@
-import { ActionRow, ButtonStyles } from '@discordeno/bot';
+import { ButtonStyles } from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import userRepository from '../../database/repositories/userRepository.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
+import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
 import fairRepository from '../../database/repositories/fairRepository.js';
 import { Plants } from './constants.js';
 import {
-  createActionRow,
   createButton,
+  createContainer,
   createCustomId,
+  createSection,
+  createSeparator,
+  createTextDisplay,
 } from '../../utils/discord/componentUtils.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { DatabaseUserSchema } from '../../types/database.js';
@@ -40,45 +43,60 @@ const executeAdministrateFair = async (
 
   const userData = authorData ?? (await userRepository.ensureFindUser(ctx.user.id));
 
-  const embed = createEmbed({
-    author: {
-      name: getDisplayName(ctx.user),
-      iconUrl: getUserAvatar(ctx.user, { enableGif: true }),
-    },
-    color: hexStringToNumber(userData.selectedColor),
-    fields: [],
+  const container = createContainer({
+    accentColor: hexStringToNumber(userData.selectedColor),
+    components: [
+      createTextDisplay(
+        `## ${ctx.locale('commands:fazendinha.feira.comprar.user-fair', { user: getDisplayName(ctx.user) })}`,
+      ),
+    ],
+  });
+
+  const goBackContainer = createContainer({
+    components: [
+      createSection({
+        accessory: createButton({
+          label: ctx.locale('commands:fazendinha.admin.silo.goto-fields'),
+          style: ButtonStyles.Primary,
+          customId: createCustomId(5, ctx.user.id, ctx.originalInteractionId, 'ADMIN_FIELDS'),
+        }),
+        components: [
+          createTextDisplay(
+            `## ${ctx.locale('commands:fazendinha.admin.silo.goto-fields')}\n${ctx.locale('commands:fazendinha.admin.silo.manage-fields')}`,
+          ),
+        ],
+      }),
+    ],
   });
 
   if (fromUser.length === 0) {
-    embed.description = ctx.locale('commands:fazendinha.admin.feirinha.no-items-in-user-fair');
-    return ctx.makeMessage({ embeds: [embed], components: [] });
+    container.components.push(
+      createTextDisplay(ctx.locale('commands:fazendinha.admin.feirinha.no-items-in-user-fair')),
+    );
+
+    return ctx.makeLayoutMessage({ components: [goBackContainer, container] });
   }
 
-  const toSendComponents: ActionRow[] = [];
-
   fromUser.forEach((item, i) => {
-    embed.fields?.push({
-      name: `${item[`name_${ctx.guildLocale}`]} (${i + 1})`,
-      inline: true,
-      value: `${item.price} :star:\n${Plants[item.plantType].emoji} ${item.weight} kg`,
-    });
-
-    const index = Math.floor(i / 3);
-
-    const button = createButton({
-      label: ctx.locale('commands:fazendinha.admin.feirinha.remove-announcement', {
-        index: i + 1,
+    container.components.push(
+      createSeparator(),
+      createSection({
+        accessory: createButton({
+          label: ctx.locale('commands:fazendinha.admin.feirinha.remove-announcement'),
+          style: ButtonStyles.Danger,
+          customId: createCustomId(6, ctx.user.id, ctx.originalInteractionId, i),
+        }),
+        components: [
+          createTextDisplay(`### ${item[`name_${ctx.guildLocale}`]}`),
+          createTextDisplay(
+            `- ${item.price} :star:\n- ${Plants[item.plantType].emoji} ${item.weight} kg`,
+          ),
+        ],
       }),
-      style: ButtonStyles.Danger,
-      customId: createCustomId(6, ctx.user.id, ctx.originalInteractionId, i),
-    });
-
-    if (typeof toSendComponents[index] === 'undefined')
-      toSendComponents.push(createActionRow([button]));
-    else toSendComponents[index].components.push(button);
+    );
   });
 
-  ctx.makeMessage({ embeds: [embed], components: toSendComponents });
+  ctx.makeLayoutMessage({ components: [goBackContainer, container] });
 };
 
 export { executeAdministrateFair, handleDissmissShop };

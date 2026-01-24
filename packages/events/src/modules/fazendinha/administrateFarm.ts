@@ -13,10 +13,11 @@ import {
 } from '../../utils/discord/componentUtils.js';
 import {
   Items,
+  MAX_FIELDS_AVAILABLE,
   MAX_SILO_UPGRADES,
   Plants,
   SILO_LIMIT_INCREASE_BY_LEVEL,
-  UnloadFields,
+  UnlockFields,
 } from './constants.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
@@ -31,6 +32,8 @@ import { AvailableItems } from './types.js';
 import { isUpgradeApplied } from './plantationState.js';
 import { applyUpgrade } from './fieldAction.js';
 import { InteractionContext } from '../../types/menhera.js';
+import { handleUpgradeSilo } from './upgradeSilo.js';
+import { executeAdministrateFair } from './administrateFair.js';
 
 const displayItemsHelp = async (ctx: ComponentInteractionContext) => {
   const authorData = await userRepository.ensureFindUser(ctx.user.id);
@@ -156,6 +159,51 @@ const displayAdministrateFarm = async (
     );
   });
 
+  if (farmer.plantations.length < MAX_FIELDS_AVAILABLE)
+    for (let i = 0; i < MAX_FIELDS_AVAILABLE - farmer.plantations.length; i++) {
+      const farmerIndex = farmer.plantations.length + i;
+
+      const neededItems = UnlockFields[farmerIndex];
+
+      const userData = await userRepository.ensureFindUser(ctx.user.id);
+      const canUnlock =
+        checkNeededPlants(neededItems.neededPlants, farmer.silo) &&
+        userData.estrelinhas >= neededItems.cost;
+
+      container.components.push(
+        createSeparator(),
+        createSection({
+          accessory: createButton({
+            label: ctx.locale(`commands:fazendinha.admin.buy`, {
+              field: farmerIndex,
+            }),
+            style: ButtonStyles.Primary,
+            customId: createCustomId(
+              3,
+              ctx.user.id,
+              ctx.originalInteractionId,
+              'UNLOCK',
+              farmerIndex,
+            ),
+            disabled: !canUnlock || farmerIndex - 1 >= farmer.plantations.length,
+          }),
+          components: [
+            createTextDisplay(
+              `### Campo bloqueado\n${ctx.locale('commands:fazendinha.admin.needed-items', {
+                star: neededItems.cost,
+                plants: neededItems.neededPlants.map(
+                  (a) =>
+                    `${a.weight ?? a.amount} Kg ${ctx.locale(`data:plants.${a.plant}`)} ${
+                      Plants[a.plant].emoji
+                    }`,
+                ),
+              })}`,
+            ),
+          ],
+        }),
+      );
+    }
+
   const itemsToUse = applyToAll ? itemsToAllFields : farmer.items;
 
   const selectMenu = createSelectMenu({
@@ -220,11 +268,27 @@ const displayAdministrateFarm = async (
         components: [
           createTextDisplay(`## ${ctx.locale('commands:fazendinha.admin.silo.title')}`),
           createTextDisplay(
-            ctx.locale(`commands:fazendinha.admin.silo.${maxLevel ? 'max-level-description' : 'description'}`, {
-              increase: SILO_LIMIT_INCREASE_BY_LEVEL,
-              cost,
-              limit: getSiloLimits(farmer).limit,
-            }),
+            ctx.locale(
+              `commands:fazendinha.admin.silo.${maxLevel ? 'max-level-description' : 'description'}`,
+              {
+                increase: SILO_LIMIT_INCREASE_BY_LEVEL,
+                cost,
+                limit: getSiloLimits(farmer).limit,
+              },
+            ),
+          ),
+        ],
+      }),
+      createSeparator(true),
+      createSection({
+        accessory: createButton({
+          label: ctx.locale('commands:fazendinha.admin.silo.goto-fair'),
+          style: ButtonStyles.Primary,
+          customId: createCustomId(5, ctx.user.id, ctx.originalInteractionId, 'ADMIN_FAIR'),
+        }),
+        components: [
+          createTextDisplay(
+            `## ${ctx.locale('commands:fazendinha.admin.silo.goto-fair')}\n${ctx.locale('commands:fazendinha.admin.silo.manage-fair')}`,
           ),
         ],
       }),
@@ -314,7 +378,7 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
 
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
-  const neededItems = UnloadFields[Number(selectedField)];
+  const neededItems = UnlockFields[Number(selectedField)];
 
   const userData = await userRepository.ensureFindUser(ctx.user.id);
   const canUnlock = checkNeededPlants(neededItems.neededPlants, farmer.silo);
@@ -350,11 +414,21 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
     removePlants(farmer.silo, neededItems.neededPlants),
   );
 
-  ctx.makeMessage({
+  await displayAdministrateFarm(ctx, false);
+
+  await ctx.followUp({
+    flags: MessageFlags.Ephemeral,
     content: ctx.prettyResponse('success', 'commands:fazendinha.admin.unlocked-field'),
-    components: [],
-    embeds: [],
   });
 };
 
-export { handleAdministrativeComponents, displayAdministrateFarm };
+const handleManageFarm = async (ctx: ComponentInteractionContext) => {
+  const [action] = ctx.sentData;
+  if (action === 'ADMIN_FAIR') return executeAdministrateFair(ctx);
+
+  if (action === 'ADMIN_FIELDS') return displayAdministrateFarm(ctx, false);
+
+  return handleUpgradeSilo(ctx);
+};
+
+export { handleAdministrativeComponents, displayAdministrateFarm, handleManageFarm };

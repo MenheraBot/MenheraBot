@@ -1208,7 +1208,7 @@
     "admin": {
       "feirinha": {
         "no-items-in-user-fair": "You do not have items advertised at the fair!",
-        "remove-announcement": "Remove announcement {{index}}",
+        "remove-announcement": "Remove announcement",
         "dont-exists": "This announcement no longer exists!"
       },
       "silo": {
@@ -1216,6 +1216,10 @@
         "poor": "You don't have enough stars to increase your silo space",
         "title": "Upgrade your silo",
         "button": "Upgrade silo",
+        "goto-fair": "Manage fair",
+        "goto-fields": "Manage fields",
+        "manage-fair": "Manage the products announced by you on the neighbor fair",
+        "manage-fields": "Manage your fields and silo!",
         "max-level-description": "The silo is already on its max level.",
         "description": "Increase your silo limit by **{{increase}}** spaces for just **{{cost}}** :star:\nCurrently you have **{{limit}}** limit spaces."
       },
@@ -1241,8 +1245,8 @@
       "unlocked-field": "You bought this land from your neighbor!",
       "your-fields": "Your Fields",
       "use-item": "Use item",
-      "buy": "Buy {{field}}",
-      "needed-items": "This field is not on your neighbor's land. He was paid to sell you. He is asking for **{{star}}** :star: and **{{plants, list}}** for it."
+      "buy": "Buy field",
+      "needed-items": "This field is not on your neighbor's land. He is asking for **{{star}}** :star:, **{{plants, list}}** for it."
     }
   },
   "titulo": {

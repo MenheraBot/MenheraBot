@@ -7,7 +7,7 @@ import { postTransaction } from '../../utils/apiRequests/statistics.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import { bot } from '../../index.js';
 import { MessageFlags } from '@discordeno/bot';
-import { displayAdministrateFarm } from './administrateFields.js';
+import { displayAdministrateFarm } from './administrateFarm.js';
 
 const handleUpgradeSilo = async (ctx: ComponentInteractionContext): Promise<void> => {
   const farmer = await farmerRepository.getFarmer(ctx.user.id);

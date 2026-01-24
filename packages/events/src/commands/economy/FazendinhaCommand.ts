@@ -8,16 +8,13 @@ import { AvailablePlants } from '../../modules/fazendinha/types.js';
 import {
   displayAdministrateFarm,
   handleAdministrativeComponents,
-} from '../../modules/fazendinha/administrateFields.js';
+  handleManageFarm,
+} from '../../modules/fazendinha/administrateFarm.js';
 import {
   executeButtonPressed,
   executeDailyDelivery,
 } from '../../modules/fazendinha/dailyDelivery.js';
 import {
-  handleUpgradeSilo,
-} from '../../modules/fazendinha/administrateSilo.js';
-import {
-  executeAdministrateFair,
   handleDissmissShop,
 } from '../../modules/fazendinha/administrateFair.js';
 import { executeAnnounceProduct } from '../../modules/fazendinha/announceProduct.js';
@@ -156,23 +153,7 @@ const FazendinhaCommand = createCommand({
       descriptionLocalizations: {
         'en-US': '「⚙️」・Manage all of your farm',
       },
-      type: ApplicationCommandOptionTypes.SubCommandGroup,
-      options: [
-        {
-          name: 'campos',
-          nameLocalizations: { 'en-US': 'fields' },
-          description: '「🟫」・Administre os campos de sua fazenda',
-          descriptionLocalizations: { 'en-US': '「🟫」・Manage your farm fields' },
-          type: ApplicationCommandOptionTypes.SubCommand,
-        },
-        {
-          name: 'feira',
-          nameLocalizations: { 'en-US': 'fair' },
-          description: '「🛒」・Administre a sua feirinha da vizinhança',
-          descriptionLocalizations: { 'en-US': '「🛒」・Manage your neighborhood fair' },
-          type: ApplicationCommandOptionTypes.SubCommand,
-        },
-      ],
+      type: ApplicationCommandOptionTypes.SubCommand,
     },
   ],
   category: 'economy',
@@ -182,7 +163,7 @@ const FazendinhaCommand = createCommand({
     handleButtonAction,
     handleAdministrativeComponents,
     executeButtonPressed,
-    handleUpgradeSilo,
+    handleManageFarm,
     handleDissmissShop,
     executeButtonAction,
     handleButtonAction,
@@ -198,11 +179,7 @@ const FazendinhaCommand = createCommand({
 
     const group = ctx.getSubCommandGroup();
 
-    if (group === 'administrar') {
-      if (command === 'campos') return displayAdministrateFarm(ctx, false);
-
-      if (command === 'feira') return executeAdministrateFair(ctx, ctx.authorData);
-    }
+    if (command === 'administrar') return displayAdministrateFarm(ctx, false);
 
     if (group === 'feira') {
       if (command === 'anunciar') return executeAnnounceProduct(ctx, farmer);

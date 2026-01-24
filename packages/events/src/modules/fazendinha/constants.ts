@@ -12,6 +12,7 @@ import {
 export const INITIAL_LIMIT_FOR_SILO = 35;
 export const SILO_LIMIT_INCREASE_BY_LEVEL = 5;
 export const MAX_SILO_UPGRADES = 15;
+export const MAX_FIELDS_AVAILABLE = 3; 
 
 export const MAX_ITEMS_IN_FAIR_PER_USER = 6;
 export const MAXIMUM_PRICE_TO_SELL_IN_FAIR = 1.5;
@@ -39,7 +40,7 @@ export const PLANTATION_HARVEST_MODIFIERS = {
   FERTILIZER_HARVERST_BUFF: 15 / 100,
 };
 
-export const UnloadFields: Record<number, UnlockFieldFile> = {
+export const UnlockFields: Record<number, UnlockFieldFile> = {
   1: {
     cost: 50_000,
     neededPlants: [
