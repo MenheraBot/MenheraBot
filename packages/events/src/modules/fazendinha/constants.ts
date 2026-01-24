@@ -89,7 +89,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     sellValue: 133,
     buyValue: 42,
     bestSeason: Seasons.Summer,
-    worstSeason: Seasons.Winter,
+    worstSeason: Seasons.Autumn,
     category: PlantCategories.Grain,
   },
   [AvailablePlants.Corn]: {
@@ -119,7 +119,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     sellValue: 231,
     buyValue: 90,
     bestSeason: Seasons.Winter,
-    worstSeason: Seasons.Summer,
+    worstSeason: Seasons.Spring,
     category: PlantCategories.Root,
   },
   [AvailablePlants.Carrot]: {
@@ -199,7 +199,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     sellValue: 885,
     buyValue: 190,
     bestSeason: Seasons.Autumn,
-    worstSeason: Seasons.Winter,
+    worstSeason: Seasons.Spring,
     category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.HotPepper]: {
@@ -238,7 +238,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     emoji: '🥭',
     sellValue: 2000,
     buyValue: 942,
-    bestSeason: Seasons.Spring,
+    bestSeason: Seasons.Autumn,
     worstSeason: Seasons.Winter,
     category: PlantCategories.NobleFruit,
   },
@@ -249,7 +249,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     sellValue: 2714,
     buyValue: 1206,
     bestSeason: Seasons.Spring,
-    worstSeason: Seasons.Winter,
+    worstSeason: Seasons.Autumn,
     category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.Blueberries]: {
@@ -299,7 +299,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     sellValue: 5571,
     buyValue: 3108,
     bestSeason: Seasons.Summer,
-    worstSeason: Seasons.Winter,
+    worstSeason: Seasons.Autumn,
     category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.Cherry]: {

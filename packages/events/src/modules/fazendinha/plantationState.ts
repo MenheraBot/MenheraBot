@@ -114,21 +114,26 @@ const getCalculatedFieldQuality = (field: PlantedField, currentSeason: Seasons):
 
   const fastHarvested = elapsedSinceReady <= bonusWindow;
 
-  let pontuation = 1;
+  let score = 0;
 
-  if (haveFertilizer) pontuation += 0.5;
-  if (plantedInGoodSeason) pontuation += 0.5;
-  if (plantedInBadSeason) pontuation -= 1;
-  if (currentInGoodSeason) pontuation += 0.5;
-  if (currentInBadSeason) pontuation -= 1;
-  if (harvestedAlmostRotted) pontuation -= 0.5;
-  if (fastHarvested) pontuation += 0.5;
+  if (haveFertilizer) score += 25;
+  if (plantedInGoodSeason) score += 15;
+  if (plantedInBadSeason) score -= 20;
 
-  const random = Math.random() * 10 + 1;
+  if (currentInGoodSeason) score += 10;
+  if (currentInBadSeason) score -= 15;
 
-  if (random >= 8 - pontuation) return PlantQuality.Best;
-  if (random >= 5 - pontuation) return PlantQuality.Normal;
+  if (fastHarvested) score += 20;
+  if (harvestedAlmostRotted) score -= 30;
 
+  const randomNoise = (Math.random() * 2 - 1) * 12;
+
+  score += randomNoise;
+
+  score = Math.max(-100, Math.min(100, score));
+
+  if (score >= 60) return PlantQuality.Best;
+  if (score >= 20) return PlantQuality.Normal;
   return PlantQuality.Worst;
 };
 
