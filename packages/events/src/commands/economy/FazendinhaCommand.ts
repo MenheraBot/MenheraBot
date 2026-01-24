@@ -14,9 +14,7 @@ import {
   executeButtonPressed,
   executeDailyDelivery,
 } from '../../modules/fazendinha/dailyDelivery.js';
-import {
-  handleDissmissShop,
-} from '../../modules/fazendinha/administrateFair.js';
+import { handleDissmissShop } from '../../modules/fazendinha/administrateFair.js';
 import { executeAnnounceProduct } from '../../modules/fazendinha/announceProduct.js';
 import { executeButtonAction, executeExploreFair } from '../../modules/fazendinha/exploreFair.js';
 import { User } from '../../types/discordeno.js';
@@ -102,6 +100,34 @@ const FazendinhaCommand = createCommand({
               minValue: 1,
               maxValue: 10,
               required: true,
+            },
+
+            {
+              name: 'qualidade',
+              nameLocalizations: { 'en-US': 'quality' },
+              description: 'Qualidade da planta que está querendo vender',
+              descriptionLocalizations: {
+                'en-US': 'Plant quality that you want to sell',
+              },
+              type: ApplicationCommandOptionTypes.Integer,
+              required: true,
+              choices: [
+                {
+                  name: '🔹Planta Prêmium',
+                  value: 2,
+                  nameLocalizations: { 'en-US': '🔹Premium Plant' },
+                },
+                {
+                  name: 'Planta',
+                  value: 1,
+                  nameLocalizations: { 'en-US': 'Plant' },
+                },
+                {
+                  name: '🔻Planta Precária',
+                  value: 0,
+                  nameLocalizations: { 'en-US': '🔻Low Quality Plant' },
+                },
+              ],
             },
             {
               name: 'preço',

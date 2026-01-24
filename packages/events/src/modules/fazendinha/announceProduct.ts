@@ -10,8 +10,14 @@ import {
   MINIMUM_PRICE_TO_SELL_IN_FAIR,
   Plants,
 } from './constants.js';
-import { checkNeededPlants, removePlants } from './siloUtils.js';
-import { AvailablePlants } from './types.js';
+import {
+  checkNeededPlants,
+  getPlantPrice,
+  getQuality,
+  getQualityEmoji,
+  removePlants,
+} from './siloUtils.js';
+import { AvailablePlants, PlantQuality } from './types.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { localizedResources } from '../../utils/miscUtils.js';
 import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
@@ -88,14 +94,17 @@ const announceAutocomplete = async (interaction: Interaction): Promise<void | nu
   if (focused?.name === 'preço') {
     const plant = getOptionFromInteraction<number>(interaction, 'produto', false);
     const amount = getOptionFromInteraction(interaction, 'quantidade', false);
+    const quality = getOptionFromInteraction(interaction, 'qualidade', false);
 
-    if (typeof plant !== 'number' || typeof amount !== 'number') return invalidInfo();
+    if (typeof plant !== 'number' || typeof amount !== 'number' || typeof quality !== 'number')
+      return invalidInfo();
 
     const plantFile = Plants[(plant as 0) ?? 0];
 
     if (!plantFile) return invalidInfo();
 
-    const basePrice = Math.floor(plantFile.sellValue * amount);
+    const plantPrice = getPlantPrice({ plant, quality });
+    const basePrice = Math.floor(plantPrice * amount);
     const minimumPrice = Math.floor(basePrice * MINIMUM_PRICE_TO_SELL_IN_FAIR);
     const maximumPrice = Math.floor(basePrice * MAXIMUM_PRICE_TO_SELL_IN_FAIR);
 
@@ -120,6 +129,7 @@ const executeAnnounceProduct = async (
   const plant = ctx.getOption<AvailablePlants>('produto', false, true);
   const amount = parseFloat(ctx.getOption<number>('quantidade', false, true).toFixed(1));
   const price = ctx.getOption<number>('preço', false, true);
+  const quality = ctx.getOption<PlantQuality>('qualidade', false, true);
 
   const plantInfo = Plants[plant];
 
@@ -128,34 +138,37 @@ const executeAnnounceProduct = async (
       content: ctx.prettyResponse('error', 'commands:fazendinha.feira.announce.no-such-product'),
     });
 
+  const plantEmoji = `${getQualityEmoji(quality)} ${plantInfo.emoji}`;
+
   if (plant === AvailablePlants.Mate)
     return ctx.makeMessage({
       content: ctx.prettyResponse(
         'error',
         'commands:fazendinha.feira.announce.no-mate-announcement',
-        { emoji: plantInfo.emoji },
+        { emoji: plantEmoji },
       ),
     });
 
-  const userHaveItems = checkNeededPlants([{ amount, plant }], farmer.silo);
+  const userHaveItems = checkNeededPlants([{ weight: amount, plant, quality }], farmer.silo);
 
   if (!userHaveItems)
     return ctx.makeMessage({
       content: ctx.prettyResponse(
         'error',
         'commands:fazendinha.feira.announce.not-enough-products',
-        { amount, emoji: plantInfo.emoji },
+        { amount, emoji: plantEmoji },
       ),
     });
 
-  const maxValue = Math.floor(plantInfo.sellValue * amount * MAXIMUM_PRICE_TO_SELL_IN_FAIR);
-  const minValue = Math.floor(plantInfo.sellValue * amount * MINIMUM_PRICE_TO_SELL_IN_FAIR);
+  const plantPrice = getPlantPrice({ plant, quality });
+  const maxValue = Math.floor(plantPrice * amount * MAXIMUM_PRICE_TO_SELL_IN_FAIR);
+  const minValue = Math.floor(plantPrice * amount * MINIMUM_PRICE_TO_SELL_IN_FAIR);
 
   if (price < minValue || price > maxValue)
     return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:fazendinha.feira.announce.out-needed-prices', {
         amount,
-        emoji: plantInfo.emoji,
+        emoji: plantEmoji,
         price,
         min: minValue,
         max: maxValue,
@@ -164,10 +177,14 @@ const executeAnnounceProduct = async (
 
   const userAnnouncements = await fairRepository.getUserProducts(ctx.user.id);
 
-  if (userAnnouncements.some((a) => a.plantType === plant))
+  if (
+    userAnnouncements.some(
+      (a) => a.plantType === plant && getQuality({ quality: a.plantQuality }) === quality,
+    )
+  )
     return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:fazendinha.feira.announce.already-announced', {
-        emoji: plantInfo.emoji,
+        emoji: plantEmoji,
       }),
     });
 
@@ -182,18 +199,20 @@ const executeAnnounceProduct = async (
     ctx.user.id,
     plant,
     amount,
+    // TODO understand why this stored as 1 for every qualit
+    quality,
     price,
-    `[${ctx.user.username}] ${amount} Kg ${i18next.getFixedT('pt-BR')(
+    `[${ctx.user.username}] ${getQualityEmoji(quality)} ${amount} Kg ${i18next.getFixedT('pt-BR')(
       `data:plants.${plant}`,
     )} ${price}⭐`,
-    `[${ctx.user.username}] ${amount} Kg ${i18next.getFixedT('en-US')(
+    `[${ctx.user.username}] ${getQualityEmoji(quality)} ${amount} Kg ${i18next.getFixedT('en-US')(
       `data:plants.${plant}`,
     )} ${price}⭐`,
   );
 
   await farmerRepository.updateSilo(
     ctx.user.id,
-    removePlants(farmer.silo, [{ weight: amount, plant }]),
+    removePlants(farmer.silo, [{ weight: amount, plant, quality }]),
   );
 
   await executeDailies.announceProduct(ctx.authorData);

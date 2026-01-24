@@ -129,7 +129,7 @@ export interface QuantitativeSeed {
   amount: number;
   plant: AvailablePlants;
   // For now, seeds wont have quality. But we declare
-  quality?: PlantQuality
+  quality?: PlantQuality;
 }
 
 export interface QuantitativeItem {
@@ -155,6 +155,7 @@ export interface DatabaseFeirinhaSchema {
   _id: string;
   userId: string;
   plantType: AvailablePlants;
+  plantQuality?: PlantQuality;
   weight: number;
   price: number;
   [`name_pt-BR`]: string;

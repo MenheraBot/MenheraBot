@@ -106,6 +106,7 @@ const removePlants = <T extends QuantitativePlantItem>(user: T[], toRemove: T[])
     if (newAmount > 0)
       (p as QuantitativeSeed[]).push({
         plant: c.plant,
+        quality: getQuality(c),
         [('weight' in c ? 'weight' : 'amount') as 'amount']: newAmount,
       });
 
@@ -156,7 +157,10 @@ const filterPlantsByQuality = (
   );
 
 const filterPlant =
-  <T extends boolean = false>(data: Pick<QuantitativePlant, 'plant' | 'quality'>, checkWeight?: T) =>
+  <T extends boolean = false>(
+    data: Pick<QuantitativePlant, 'plant' | 'quality'>,
+    checkWeight?: T,
+  ) =>
   (plant: QuantitativePlantItem) =>
     plant.plant === data.plant &&
     getQuality(data) === getQuality(plant) &&

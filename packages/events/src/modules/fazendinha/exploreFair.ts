@@ -4,7 +4,7 @@ import { getOptionFromInteraction } from '../../structures/command/getCommandOpt
 import { InteractionContext } from '../../types/menhera.js';
 import fairRepository from '../../database/repositories/fairRepository.js';
 import { DatabaseFarmerSchema } from '../../types/database.js';
-import { addPlants, getSiloLimits } from './siloUtils.js';
+import { addPlants, getQuality, getQualityEmoji, getSiloLimits } from './siloUtils.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import starsRepository from '../../database/repositories/starsRepository.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
@@ -128,7 +128,13 @@ const executeBuyItem = async (
     fairRepository.deleteAnnouncement(announcement._id),
     farmerRepository.updateSilo(
       ctx.user.id,
-      addPlants(farmer.silo, [{ weight: announcement.weight, plant: announcement.plantType }]),
+      addPlants(farmer.silo, [
+        {
+          weight: announcement.weight,
+          plant: announcement.plantType,
+          quality: getQuality({ quality: announcement.plantQuality }),
+        },
+      ]),
     ),
     postTransaction(
       `${ctx.user.id}`,
@@ -141,7 +147,7 @@ const executeBuyItem = async (
       announcement.userId,
       'commands:notificações.notifications.user-bought-announcement',
       {
-        emoji: Plants[announcement.plantType].emoji,
+        emoji: `${getQualityEmoji(getQuality({ quality: announcement.plantQuality }))} ${Plants[announcement.plantType].emoji}`,
         weight: announcement.weight,
         username: ctx.user.username,
         stars: announcement.price,
@@ -228,9 +234,13 @@ const displayFair = async (
             mentionUser(item.userId)
           }`;
 
+      console.log(item);
+
+      const qualityEmoji = getQualityEmoji(getQuality({ quality: item.plantQuality }));
+
       description += `${ctx.locale('commands:fazendinha.feira.comprar.description', {
         amount: item.weight,
-        emoji: Plants[item.plantType].emoji,
+        emoji: `${qualityEmoji} ${Plants[item.plantType].emoji}`,
         plant: ctx.locale(`data:plants.${item.plantType}`),
         price: item.price,
       })}${
@@ -243,7 +253,7 @@ const displayFair = async (
       }`;
 
       selectMenu.options.push({
-        label: `${item.weight} Kg ${ctx.locale(`data:plants.${item.plantType}`)}${
+        label: `${item.weight} Kg ${qualityEmoji} ${ctx.locale(`data:plants.${item.plantType}`)}${
           user ? '' : ` (${i + 1})`
         }`,
         value: `${item._id}`,

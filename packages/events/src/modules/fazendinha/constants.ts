@@ -17,7 +17,7 @@ export const MAX_FIELDS_AVAILABLE = 3;
 export const MAX_ITEMS_IN_FAIR_PER_USER = 6;
 export const MAXIMUM_PRICE_TO_SELL_IN_FAIR = 1.5;
 export const MINIMUM_PRICE_TO_SELL_IN_FAIR = 0.65;
-export const MAX_ITEMS_PER_FAIR_PAGE = process.env.NODE_ENV === 'production' ? 20 : 1;
+export const MAX_ITEMS_PER_FAIR_PAGE = process.env.NODE_ENV === 'production' ? 20 : 3;
 
 export const DELIVERIES_AMOUNT = 6;
 export const MAX_DELIVERY_WEIGHT = 9;

@@ -1,9 +1,10 @@
 import { BigString } from '@discordeno/bot';
 import { DatabaseFeirinhaSchema } from '../../types/database.js';
 import { feirinhaModel } from '../collections.js';
-import { AvailablePlants } from '../../modules/fazendinha/types.js';
+import { AvailablePlants, PlantQuality } from '../../modules/fazendinha/types.js';
 import { MainRedisClient } from '../databases.js';
 import { AvailableLanguages } from '../../types/i18next.js';
+import { getQuality } from '../../modules/fazendinha/siloUtils.js';
 
 const mongoToRedis = (announcement: DatabaseFeirinhaSchema): DatabaseFeirinhaSchema => ({
   _id: announcement._id,
@@ -12,6 +13,7 @@ const mongoToRedis = (announcement: DatabaseFeirinhaSchema): DatabaseFeirinhaSch
   weight: announcement.weight,
   plantType: announcement.plantType,
   price: announcement.price,
+  plantQuality: getQuality({ quality: announcement.plantQuality }),
   userId: announcement.userId,
 });
 
@@ -68,6 +70,7 @@ const announceProduct = async (
   userId: BigString,
   plant: AvailablePlants,
   weight: number,
+  plantQuality: PlantQuality,
   price: number,
   nameBr: string,
   nameUs: string,
@@ -76,6 +79,7 @@ const announceProduct = async (
     userId: `${userId}`,
     price,
     plantType: plant,
+    plantQuality,
     weight,
     'name_pt-BR': nameBr,
     'name_en-US': nameUs,
