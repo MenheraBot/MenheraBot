@@ -1147,7 +1147,7 @@
     },
     "plantations": {
       "field": "{{emojis}}Campo ({{index}})",
-      "harvest-weight": "Quantidade colhida: {{weight}} Kg",
+      "harvest-text": "### Última colheita:\n\n{{harvested}}",
       "description": "**Estação atual**: {{emoji}} _{{season}}_\n**Termina** <t:{{unix}}:R>",
       "select-seed": "Selecione abaixo qual semente você quer plantar:",
       "explain-all-action": "Plantar e colher em todos os campos apenas executa a ação em campos que estão vazios/maduros. Campos amadurecendo ou podres não são alterados.",

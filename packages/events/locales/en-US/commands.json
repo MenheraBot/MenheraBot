@@ -1142,7 +1142,7 @@
     },
     "plantations": {
       "field": "{{emojis}}Field ({{index}})",
-      "harvest-weight": "Amount harvested: {{weight}} Kg",
+      "harvest-text": " Last harvest:\n\n{{harvested}}",
       "seeds": "Seeds",
       "description": "**Current season:** {{emoji}} _{{season}}_\n**Ends** <t:{{unix}}:R>",
       "select-seed": "_Select which seed you want to plant:_",

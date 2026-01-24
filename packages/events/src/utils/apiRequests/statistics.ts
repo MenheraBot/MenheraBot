@@ -20,6 +20,7 @@ import { debugError } from '../debugError.js';
 import { dataRequest } from './apiRequests.js';
 import { PokerApiUser } from '../../modules/poker/types.js';
 import { AvailablePlants } from '../../modules/fazendinha/types.js';
+import { QuantitativePlant } from '../../types/database.js';
 
 const postHuntExecution = async (
   userId: string,
@@ -250,6 +251,13 @@ const getUserTransactions = async (
   );
 };
 
+const postMultipleFazendinhaHarvest = async (
+  userId: string,
+  plants: QuantitativePlant[],
+) => {
+  await dataRequest.post('/statistics/fazendinha-harvest', { userId, plants }).catch(debugError);
+};
+
 const postFazendinhaAction = async (
   userId: string,
   plant: AvailablePlants,
@@ -309,6 +317,7 @@ export {
   getTopFarmers,
   postCoinflipMatch,
   getPokerStats,
+  postMultipleFazendinhaHarvest,
   getRockPaperScissorsStatistics,
   postRockPaperScissorsGame,
   getUserTransactions,

@@ -1,8 +1,7 @@
 import notificationRepository from '../../database/repositories/notificationRepository.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import { ChatInputInteractionCommand } from '../../types/commands.js';
-import { DatabaseUserSchema } from '../../types/database.js';
-import { AvailablePlants } from '../fazendinha/types.js';
+import { DatabaseUserSchema, QuantitativePlant } from '../../types/database.js';
 import { FINISHED_DAILY_AWARD, getDailyById } from './dailies.js';
 import { getUserDailies } from './getUserDailies.js';
 import { Daily, DatabaseDaily } from './types.js';
@@ -113,17 +112,14 @@ const successOnHunt = async (user: DatabaseUserSchema, times: number): Promise<v
   await executeDailies(user, shouldExecute, times);
 };
 
-const harvestPlant = async (
-  user: DatabaseUserSchema,
-  type: AvailablePlants,
-  weight: number,
-): Promise<void> => {
-  const shouldExecute = (dailyData: Daily, specification?: string) => {
-    return dailyData.type === 'harvest_plants' && `${type}` === specification;
-  };
+const harvestPlant = async (user: DatabaseUserSchema, plants: QuantitativePlant[]): Promise<void> =>
+  plants.forEach(async (p) => {
+    const shouldExecute = (dailyData: Daily, specification?: string) => {
+      return dailyData.type === 'harvest_plants' && `${p.plant}` === specification;
+    };
 
-  await executeDailies(user, shouldExecute, weight);
-};
+    await executeDailies(user, shouldExecute, p.weight);
+  });
 
 const finishDelivery = async (user: DatabaseUserSchema): Promise<void> => {
   const shouldExecute = (dailyData: Daily) => {

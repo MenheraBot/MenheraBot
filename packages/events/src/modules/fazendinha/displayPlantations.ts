@@ -8,7 +8,7 @@ import {
 import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
 import { AvailablePlants, Plantation, PlantationState, PlantedField, Seasons } from './types.js';
-import { DatabaseFarmerSchema } from '../../types/database.js';
+import { DatabaseFarmerSchema, QuantitativePlant } from '../../types/database.js';
 import {
   createActionRow,
   createButton,
@@ -24,7 +24,7 @@ import { InteractionContext } from '../../types/menhera.js';
 import { getPlantationState } from './plantationState.js';
 import { Items, Plants } from './constants.js';
 import { getSeasonalInfo } from './seasonsManager.js';
-import { isMatePlant } from './siloUtils.js';
+import { getQuality, getQualityEmoji, isMatePlant } from './siloUtils.js';
 
 const PlantStateIcon: Record<PlantationState, string> = {
   [PlantationState.Empty]: '🟫',
@@ -115,7 +115,7 @@ const parseUserPlantations = (
           ),
           emoji:
             plantState === PlantationState.Empty
-              ? undefined
+              ? { name: Plants[selectedSeed].emoji }
               : { name: Plants[(field as PlantedField).plantType].emoji },
           style: ButtonStyleForPlantState[plantState],
           customId: createCustomId(
@@ -196,7 +196,7 @@ const displayPlantations = async (
   embedColor: string,
   selectedSeed: AvailablePlants,
   forceField: number,
-  harvestedWeight?: number,
+  harvested?: QuantitativePlant[],
 ): Promise<void> => {
   const fields = parseUserPlantations(
     ctx,
@@ -237,15 +237,44 @@ const displayPlantations = async (
     ],
   });
 
-  if (harvestedWeight)
+  if (harvested && harvested.length > 0) {
+    const summedWeights = harvested.reduce<Record<string, number>>((p, c) => {
+      const quality = getQuality(c);
+      const key = `${c.plant}|${quality}` as const;
+
+      if (p[key]) p[key] += c.weight;
+      else p[key] = c.weight;
+
+      return p;
+    }, {});
+
+    const plantsTransformed = Object.entries(summedWeights).map<QuantitativePlant>(
+      ([plantQuality, weight]) => {
+        const [plant, quality] = plantQuality.split('|');
+
+        return { plant: Number(plant), quality: Number(quality), weight };
+      },
+    );
+
     container.components.push(
       createSeparator(true),
       createTextDisplay(
-        `-# ${ctx.locale('commands:fazendinha.plantations.harvest-weight', {
-          weight: harvestedWeight,
+        `${ctx.locale('commands:fazendinha.plantations.harvest-text', {
+          harvested: plantsTransformed
+            .map(
+              (plant) =>
+                `- ${getQualityEmoji(getQuality(plant))}${Plants[plant.plant].emoji} **${plant.weight} kg**`,
+            )
+            .join('\n'),
         })}`,
       ),
     );
+  }
+
+  const canPlant = farmer.plantations.some((a) => !a.isPlanted);
+  const canHarvest = farmer.plantations.some(
+    (a) => getPlantationState(a)[0] === PlantationState.Mature,
+  );
 
   const controllerContainer = createContainer({
     components: [
@@ -262,15 +291,31 @@ const displayPlantations = async (
       createActionRow([
         createButton({
           label: ctx.locale('commands:fazendinha.plantations.plant-all'),
-          style: ButtonStyles.Primary,
-          customId: '123',
-          disabled: true,
+          style: canPlant ? ButtonStyles.Primary : ButtonStyles.Secondary,
+          customId: createCustomId(
+            0,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            `PLANT_ALL`,
+            embedColor,
+            `${selectedSeed}`,
+            'N',
+          ),
+          disabled: !canPlant,
         }),
         createButton({
           label: ctx.locale('commands:fazendinha.plantations.harvest-all'),
-          style: ButtonStyles.Primary,
-          customId: '2321',
-          disabled: true,
+          style: canHarvest ? ButtonStyles.Success : ButtonStyles.Secondary,
+          customId: createCustomId(
+            0,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            `HARVEST_ALL`,
+            embedColor,
+            `${selectedSeed}`,
+            'N',
+          ),
+          disabled: !canHarvest,
         }),
       ]),
       createTextDisplay(`-# ${ctx.locale('commands:fazendinha.plantations.explain-all-action')}`),
