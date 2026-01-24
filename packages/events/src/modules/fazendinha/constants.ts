@@ -45,7 +45,7 @@ export const UnloadFields: Record<number, UnlockFieldFile> = {
     neededPlants: [
       { weight: 5, plant: AvailablePlants.Mate },
       { weight: 3, plant: AvailablePlants.Sunflower },
-      { weight: 2, plant: AvailablePlants.Tomato },
+      { weight: 2, plant: AvailablePlants.Beans },
       { weight: 10, plant: AvailablePlants.Garlic },
     ],
   },
@@ -68,7 +68,7 @@ export const Items: Record<AvailableItems, ItemsFile> = {
   },
 };
 
-const replaceDevTime = (time: number) => process.env.NODE_ENV === 'production' ? time : 0.1
+const replaceDevTime = (time: number) => (process.env.NODE_ENV === 'production' ? time : 0.1);
 
 export const Plants: Record<AvailablePlants, PlantsFile> = {
   [AvailablePlants.Mate]: {
@@ -131,15 +131,15 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     worstSeason: Seasons.Summer,
     category: PlantCategories.Root,
   },
-  [AvailablePlants.Tomato]: {
+  [AvailablePlants.Beans]: {
     minutesToHarvest: replaceDevTime(60),
     minutesToRot: 60,
-    emoji: '🍅',
+    emoji: '🫘',
     sellValue: 357,
     buyValue: 110,
     bestSeason: Seasons.Spring,
     worstSeason: Seasons.Winter,
-    category: PlantCategories.Vegetable,
+    category: PlantCategories.Grain,
   },
   [AvailablePlants.Cucumber]: {
     minutesToHarvest: replaceDevTime(60),
@@ -181,20 +181,20 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     worstSeason: Seasons.Autumn,
     category: PlantCategories.Special,
   },
-  [AvailablePlants.Watermelon]: {
+  [AvailablePlants.Lemon]: {
     minutesToHarvest: replaceDevTime(100),
     minutesToRot: 60,
-    emoji: '🍉',
+    emoji: '🍋',
     sellValue: 714,
     buyValue: 170,
     bestSeason: Seasons.Summer,
     worstSeason: Seasons.Winter,
     category: PlantCategories.CommonFruit,
   },
-  [AvailablePlants.Strawberry]: {
+  [AvailablePlants.Apple]: {
     minutesToHarvest: replaceDevTime(100),
     minutesToRot: 40,
-    emoji: '🍓',
+    emoji: '🍎',
     sellValue: 885,
     buyValue: 190,
     bestSeason: Seasons.Autumn,
@@ -229,7 +229,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 604,
     bestSeason: Seasons.Summer,
     worstSeason: Seasons.Winter,
-    category: PlantCategories.NobleFruit,
+    category: PlantCategories.CommonFruit,
   },
   [AvailablePlants.Mango]: {
     minutesToHarvest: replaceDevTime(90),
@@ -241,20 +241,20 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     worstSeason: Seasons.Winter,
     category: PlantCategories.NobleFruit,
   },
-  [AvailablePlants.Apple]: {
+  [AvailablePlants.Strawberry]: {
     minutesToHarvest: replaceDevTime(110),
     minutesToRot: 30,
-    emoji: '🍎',
+    emoji: '🍓',
     sellValue: 2714,
     buyValue: 1206,
     bestSeason: Seasons.Spring,
     worstSeason: Seasons.Winter,
     category: PlantCategories.CommonFruit,
   },
-  [AvailablePlants.Lemon]: {
+  [AvailablePlants.Blueberries]: {
     minutesToHarvest: replaceDevTime(130),
     minutesToRot: 10,
-    emoji: '🍋',
+    emoji: '🫐',
     sellValue: 3000,
     buyValue: 1616,
     bestSeason: Seasons.Spring,
@@ -269,17 +269,17 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 1851,
     bestSeason: Seasons.Winter,
     worstSeason: Seasons.Spring,
-    category: PlantCategories.Root,
+    category: PlantCategories.Vegetable,
   },
-  [AvailablePlants.Banana]: {
+  [AvailablePlants.Onion]: {
     minutesToHarvest: replaceDevTime(160),
     minutesToRot: 100,
-    emoji: '🍌',
+    emoji: '🧅',
     sellValue: 3714,
     buyValue: 2318,
     bestSeason: Seasons.Summer,
     worstSeason: Seasons.Autumn,
-    category: PlantCategories.NobleFruit,
+    category: PlantCategories.Root,
   },
   [AvailablePlants.Pineapple]: {
     minutesToHarvest: replaceDevTime(170),
@@ -309,7 +309,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 3318,
     bestSeason: Seasons.Autumn,
     worstSeason: Seasons.Winter,
-    category: PlantCategories.CommonFruit,
+    category: PlantCategories.NobleFruit,
   },
   [AvailablePlants.Mushroom]: {
     minutesToHarvest: replaceDevTime(220),
@@ -321,4 +321,13 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     worstSeason: Seasons.Summer,
     category: PlantCategories.Special,
   },
+};
+
+export const PLANT_CATEGORY_EMOJIS = {
+  [PlantCategories.Grain]: Plants[AvailablePlants.Rice].emoji,
+  [PlantCategories.Root]: Plants[AvailablePlants.Potato].emoji,
+  [PlantCategories.Vegetable]: Plants[AvailablePlants.Broccoli].emoji,
+  [PlantCategories.CommonFruit]: Plants[AvailablePlants.Strawberry].emoji,
+  [PlantCategories.NobleFruit]: Plants[AvailablePlants.Pineapple].emoji,
+  [PlantCategories.Special]: Plants[AvailablePlants.Mushroom].emoji,
 };
