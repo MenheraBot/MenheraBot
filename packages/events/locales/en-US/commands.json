@@ -248,6 +248,7 @@
       "buy-seed-of": "Buy {{plant}} seed",
       "plant-stats": "**Buy Value**: {{buyValue}} :star:\n**Sell Value:** {{sellValue}} :star:\n**Ripens in:** {{harvestTime}} min\n**Rots in:** {{rotTime}} min\n**Better in:** {{bestSeason}}\n**Worst in:** {{worstSeason}}",
       "seed": "{{plant}} seed",
+      "select-category": "To see information about other plants, select a category below.",
       "success": "You spent **{{amount}}** :star: little stars buying seeds. Now you have **{{stars}}** ⭐.\n Time to plant them {{command}}",
       "not-enough-stars": "You don't have **{{amount}}** :star: stars to buy all these seeds",
       "invalid-amount": "You entered an invalid number of seeds to purchase",

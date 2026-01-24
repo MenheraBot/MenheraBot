@@ -253,6 +253,7 @@
       "buy-seed-of": "Comprar semente de {{plant}}",
       "plant-stats": "**Preço de Compra:** {{buyValue}} :star:\n**Valor de venda:** {{sellValue}} :star:\n**Amadurece em:** {{harvestTime}} min\n**Apodrece em:** {{rotTime}} min\n**Melhor em:** {{bestSeason}}\n**Pior em:** {{worstSeason}}",
       "seed": "Semente de {{plant}}",
+      "select-category": "Para ver informações sobre outras plantas, selecione uma categoria abaixo.",
       "success": "Você gastou **{{amount}}** :star: estrelinhas comprando sementes. Agora você tem **{{stars}}** ⭐.\nHora de plantá-las {{command}}",
       "not-enough-stars": "Tu não possui **{{amount}}** :star: estrelinhas para comprar todas essas sementes",
       "invalid-amount": "Tu informou um número inválido de sementes para comprar",

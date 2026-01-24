@@ -65,6 +65,10 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
     }).catch((e) => this.captureException(e));
   }
 
+  async deleteMessage(): Promise<void> {
+    return this.interaction.bot.helpers.deleteOriginalInteractionResponse(this.interaction.token);
+  }
+
   async respondWithModal(options: InteractionCallbackData): Promise<void> {
     if (this.replied) return;
 
@@ -117,7 +121,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   async makeLayoutMessage(
     options: Omit<InteractionCallbackData, 'embeds' | 'content' | 'stickers' | 'poll'>,
   ) {
-      return this.makeMessage(enableLayoutMessage(options));
+    return this.makeMessage(enableLayoutMessage(options));
   }
 
   async makeMessage(options: InteractionCallbackData): Promise<void> {
