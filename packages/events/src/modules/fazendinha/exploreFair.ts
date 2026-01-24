@@ -14,12 +14,15 @@ import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
 import {
   createActionRow,
   createButton,
+  createContainer,
   createCustomId,
   createSelectMenu,
+  createSeparator,
+  createTextDisplay,
   resolveSeparatedStrings,
 } from '../../utils/discord/componentUtils.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
+import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getDisplayName, mentionUser } from '../../utils/discord/userUtils.js';
 import { MAX_ITEMS_PER_FAIR_PAGE, Plants } from './constants.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
@@ -69,44 +72,54 @@ const executeBuyItem = async (
   const exists = await fairRepository.doesAnnouncementExists(item);
 
   if (!exists)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:fazendinha.admin.feirinha.dont-exists'),
+    return ctx.makeLayoutMessage({
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('error', 'commands:fazendinha.admin.feirinha.dont-exists'),
+        ),
+      ],
     });
 
   const announcement = await fairRepository.getAnnouncement(item);
 
   if (!announcement)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:fazendinha.admin.feirinha.dont-exists'),
+    return ctx.makeLayoutMessage({
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('error', 'commands:fazendinha.admin.feirinha.dont-exists'),
+        ),
+      ],
     });
 
   if (announcement.userId === `${ctx.user.id}`)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.cant-buy-your-items'),
+    return ctx.makeLayoutMessage({
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.cant-buy-your-items'),
+        ),
+      ],
     });
 
   const userLimits = getSiloLimits(farmer);
 
   if (userLimits.used + announcement.weight > userLimits.limit)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.silo-limit'),
+    return ctx.makeLayoutMessage({
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.silo-limit'),
+        ),
+      ],
     });
 
   const user = await userRepository.ensureFindUser(ctx.user.id);
 
   if (user.estrelinhas < announcement.price)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.not-enough-stars'),
+    return ctx.makeLayoutMessage({
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.not-enough-stars'),
+        ),
+      ],
     });
 
   await Promise.all([
@@ -136,12 +149,14 @@ const executeBuyItem = async (
     ),
   ]);
 
-  ctx.makeMessage({
-    components: [],
-    embeds: [],
-    content: ctx.prettyResponse('success', 'commands:fazendinha.feira.comprar.success', {
-      author: mentionUser(ctx.user.id),
-    }),
+  ctx.makeLayoutMessage({
+    components: [
+      createTextDisplay(
+        ctx.prettyResponse('success', 'commands:fazendinha.feira.comprar.success', {
+          author: mentionUser(ctx.user.id),
+        }),
+      ),
+    ],
   });
 };
 
@@ -174,17 +189,15 @@ const displayFair = async (
       content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.no-announcements'),
     });
 
-  const embed = createEmbed({
-    author: {
-      name: ctx.locale(`commands:fazendinha.feira.comprar.${user ? 'user-fair' : 'fair'}`, {
-        user: user ? getDisplayName(user) : undefined,
-      }),
-      iconUrl: user ? getUserAvatar(user, { enableGif: true }) : undefined,
-    },
-    color: hexStringToNumber(embedColor),
-    description: '',
-    fields: [],
-    footer: page ? { text: ctx.locale('common:page', { page: page + 1 }) } : undefined,
+  const container = createContainer({
+    accentColor: hexStringToNumber(embedColor),
+    components: [
+      createTextDisplay(
+        `## ${ctx.locale(`commands:fazendinha.feira.comprar.${user ? 'user-' : ''}fair`, {
+          user: user ? getDisplayName(user) : undefined,
+        })}\n-# ${ctx.locale('common:page', { page: page + 1 })}`,
+      ),
+    ],
   });
 
   const selectMenu = createSelectMenu({
@@ -194,6 +207,8 @@ const displayFair = async (
     maxValues: 1,
     placeholder: ctx.locale('commands:fazendinha.feira.comprar.select-item'),
   });
+
+  let description = '';
 
   await new Promise((r) => {
     let done = 0;
@@ -213,7 +228,7 @@ const displayFair = async (
             mentionUser(item.userId)
           }`;
 
-      embed.description += `${ctx.locale('commands:fazendinha.feira.comprar.description', {
+      description += `${ctx.locale('commands:fazendinha.feira.comprar.description', {
         amount: item.weight,
         emoji: Plants[item.plantType].emoji,
         plant: ctx.locale(`data:plants.${item.plantType}`),
@@ -240,9 +255,16 @@ const displayFair = async (
     });
   });
 
-  const componentsToSend = [createActionRow([selectMenu])];
+  container.components.push(
+    createSeparator(),
+    createTextDisplay(description),
+    createSeparator(true),
+    createActionRow([selectMenu]),
+  );
 
-  if (!user) {
+  const shouldDisplayPagination = page > 0 || announcements.length >= MAX_ITEMS_PER_FAIR_PAGE;
+
+  if (!user && shouldDisplayPagination) {
     const backButton = createButton({
       customId: createCustomId(
         7,
@@ -271,12 +293,11 @@ const displayFair = async (
       disabled: page * MAX_ITEMS_PER_FAIR_PAGE + announcements.length >= totalAnnouncements,
     });
 
-    componentsToSend.push(createActionRow([backButton, nextButton]));
+    container.components.push(createActionRow([backButton, nextButton]));
   }
 
-  ctx.makeMessage({
-    embeds: [embed],
-    components: componentsToSend,
+  ctx.makeLayoutMessage({
+    components: [container],
   });
 };
 

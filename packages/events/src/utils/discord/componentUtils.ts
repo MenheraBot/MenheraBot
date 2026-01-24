@@ -10,6 +10,7 @@ import type {
   ContainerComponent,
   InteractionCallbackData,
   SectionComponent,
+  ThumbnailComponent,
 } from '@discordeno/bot';
 
 import { MessageComponentTypes, SeparatorSpacingSize } from '@discordeno/bot';
@@ -98,6 +99,11 @@ const createSection = (
   component: PropertyOptional<SectionComponent, 'type'>,
 ): SectionComponent => ({ ...component, type: MessageComponentTypes.Section });
 
+const createThumbnail = (media: ThumbnailComponent['media']): ThumbnailComponent => ({
+  media,
+  type: MessageComponentTypes.Thumbnail,
+});
+
 const enableLayoutMessage = (
   message: Omit<InteractionCallbackData, 'embed' | 'content' | 'stickers' | 'poll'>,
 ): InteractionCallbackData => ({
@@ -113,6 +119,7 @@ export {
   createTextDisplay,
   createSeparator,
   createCustomId,
+  createThumbnail,
   createSection,
   createActionRow,
   createTextInput,

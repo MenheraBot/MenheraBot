@@ -1,10 +1,4 @@
-import {
-  ButtonStyles,
-  MessageComponentTypes,
-  SectionComponent,
-  SelectOption,
-  SeparatorComponent,
-} from '@discordeno/bot';
+import { ButtonStyles, SectionComponent, SelectOption, SeparatorComponent } from '@discordeno/bot';
 import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { getDisplayName, getUserAvatar } from '../../utils/discord/userUtils.js';
 import { AvailablePlants, Plantation, PlantationState, PlantedField, Seasons } from './types.js';
@@ -18,6 +12,7 @@ import {
   createSelectMenu,
   createSeparator,
   createTextDisplay,
+  createThumbnail,
 } from '../../utils/discord/componentUtils.js';
 import { millisToSeconds } from '../../utils/miscUtils.js';
 import { InteractionContext } from '../../types/menhera.js';
@@ -228,10 +223,7 @@ const displayPlantations = async (
             }),
           ),
         ],
-        accessory: {
-          type: MessageComponentTypes.Thumbnail,
-          media: { url: getUserAvatar(ctx.user, { enableGif: true }) },
-        },
+        accessory: createThumbnail({ url: getUserAvatar(ctx.user, { enableGif: true }) }),
       }),
       ...fields,
     ],
@@ -248,31 +240,38 @@ const displayPlantations = async (
       return p;
     }, {});
 
+    let totalWeight = 0;
+
     const plantsTransformed = Object.entries(summedWeights).map<QuantitativePlant>(
-      ([plantQuality, weight]) => {
+      ([plantQuality, stringedWeight]) => {
         const [plant, quality] = plantQuality.split('|');
+
+        const weight = parseFloat(stringedWeight.toFixed(1));
+
+        totalWeight += weight;
 
         return {
           plant: Number(plant),
           quality: Number(quality),
-          weight: parseFloat(weight.toFixed(1)),
+          weight,
         };
       },
     );
 
-    container.components.push(
-      createSeparator(true),
-      createTextDisplay(
-        `${ctx.locale('commands:fazendinha.plantations.harvest-text', {
-          harvested: plantsTransformed
-            .map(
-              (plant) =>
-                `- ${getQualityEmoji(getQuality(plant))}${Plants[plant.plant].emoji} **${plant.weight} kg**`,
-            )
-            .join('\n'),
-        })}`,
-      ),
-    );
+    if (totalWeight > 0)
+      container.components.push(
+        createSeparator(true),
+        createTextDisplay(
+          `${ctx.locale('commands:fazendinha.plantations.harvest-text', {
+            harvested: plantsTransformed
+              .map(
+                (plant) =>
+                  `- ${getQualityEmoji(getQuality(plant))}${Plants[plant.plant].emoji} **${plant.weight} kg**`,
+              )
+              .join('\n'),
+          })}`,
+        ),
+      );
   }
 
   const canPlant = farmer.plantations.some((a) => !a.isPlanted);
