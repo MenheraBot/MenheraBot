@@ -35,9 +35,7 @@ const receiveModal = async (
     };
   });
 
-  for (let i = 0; i < selectedPlants.length; i++) {
-    const plant = selectedPlants[i];
-
+  for (const plant of selectedPlants) {
     if (Number.isNaN(plant.weight))
       return ctx.makeLayoutMessage({
         components: [
@@ -125,13 +123,9 @@ const executeSellPlant = async (
 
   const userData = await userRepository.ensureFindUser(ctx.user.id);
 
-  await buildSellPlantsMessage(
-    ctx,
-    await farmerRepository.getFarmer(ctx.user.id),
-    userData.selectedColor,
-  );
+  const updatedFarmer = await farmerRepository.getFarmer(ctx.user.id);
 
-  return ctx.followUp({
+  const successMessage = {
     flags: setComponentsV2Flag(MessageFlags.Ephemeral),
     components: [
       createTextDisplay(
@@ -142,7 +136,14 @@ const executeSellPlant = async (
         }),
       ),
     ],
-  });
+  };
+
+  if (updatedFarmer.silo.filter((a) => a.weight > 0).length === 0)
+    return ctx.makeLayoutMessage(successMessage);
+
+  await buildSellPlantsMessage(ctx, updatedFarmer, userData.selectedColor);
+
+  return ctx.followUp(successMessage);
 };
 
 export { executeSellPlant, receiveModal };

@@ -68,7 +68,7 @@ const plantFields = async (
   selectedFields.forEach((index) => {
     const updatedUserSeeds = farmer.seeds.find((a) => a.plant === seed);
 
-    if (!updatedUserSeeds || updatedUserSeeds.amount <= 0) return;
+    if ((!updatedUserSeeds || updatedUserSeeds.amount <= 0) && !isMatePlant(seed)) return;
 
     const newField = getPlantedField(farmer, index, seed, currentSeason);
     farmer.plantations[index] = newField;
