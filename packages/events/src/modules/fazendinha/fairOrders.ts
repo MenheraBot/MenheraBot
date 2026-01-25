@@ -31,6 +31,7 @@ import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import { getAwardEmoji } from '../../commands/info/DailyCommand.js';
+import { handleCreateFairOrder, handleRequestModal } from './createFairOrder.js';
 
 const deleteOrder = async (
   ctx: ComponentInteractionContext,
@@ -53,7 +54,7 @@ const deleteOrder = async (
       `${ctx.user.id}`,
       Number(starsAward.amount),
       'estrelinhas',
-      ApiTransactionReason.PIX_COMMAND,
+      ApiTransactionReason.BUY_FAIR,
     );
   }
 
@@ -162,10 +163,12 @@ const handleFairOrderButton = async (ctx: ComponentInteractionContext) => {
 
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
+  if (action === 'NEW_ORDER') return handleCreateFairOrder(ctx, farmer, embedColor);
   if (action === 'PUBLIC') return displayFairOrders(ctx, farmer, embedColor);
   if (action === 'DELETE') return deleteOrder(ctx, farmer, embedColor, orderId);
   if (action === 'AGREED') return handleTakeOrder(ctx, farmer, embedColor, orderId);
   if (action === 'ASK_DELETE') return displayFairOrders(ctx, farmer, embedColor, { orderId });
+  if (action === 'REQUEST') return handleRequestModal(ctx, farmer, embedColor);
   if (action === 'PAGE')
     return displayFairOrders(ctx, farmer, embedColor, { page: Number(orderId) });
 };
@@ -188,25 +191,25 @@ const displayFairOrders = async (
     })}`,
   );
 
+  const createOrder = createButton({
+    label: ctx.locale('commands:fazendinha.feira.order.create-order'),
+    customId: createCustomId(9, ctx.user.id, ctx.originalInteractionId, 'NEW_ORDER', embedColor),
+    style: ButtonStyles.Success,
+  });
+
+  const viewPublic = createButton({
+    customId: createCustomId(9, ctx.user.id, ctx.originalInteractionId, 'PUBLIC', embedColor),
+    style: ButtonStyles.Secondary,
+    label: ctx.locale('commands:fazendinha.feira.order.view-public-orders'),
+  });
+
   const container = createContainer({
     accentColor: hexStringToNumber(embedColor),
     components: [
-      user
-        ? createSection({
-            accessory: createButton({
-              customId: createCustomId(
-                9,
-                ctx.user.id,
-                ctx.originalInteractionId,
-                'PUBLIC',
-                embedColor,
-              ),
-              style: ButtonStyles.Secondary,
-              label: ctx.locale('commands:fazendinha.feira.order.view-public-orders'),
-            }),
-            components: [titleDisplay],
-          })
-        : titleDisplay,
+      createSection({
+        accessory: user ? viewPublic : createOrder,
+        components: [titleDisplay],
+      }),
       createSeparator(),
     ],
   });
@@ -311,14 +314,7 @@ const displayFairOrders = async (
       });
     });
 
-  const createOrder = createButton({
-    label: ctx.locale('commands:fazendinha.feira.order.create-order'),
-    customId: createCustomId(9, ctx.user.id, ctx.originalInteractionId, 'NEW_ORDER', embedColor),
-    style: ButtonStyles.Success,
-  });
-
-  if (!needPagination) container.components.push(createActionRow([createOrder]));
-  else
+  if (needPagination)
     container.components.push(
       createActionRow([
         createButton({
@@ -334,7 +330,6 @@ const displayFairOrders = async (
           disabled: toSearchPage <= 0,
           style: toSearchPage <= 0 ? ButtonStyles.Secondary : ButtonStyles.Primary,
         }),
-        createOrder,
         createButton({
           label: ctx.locale('common:next'),
           customId: createCustomId(

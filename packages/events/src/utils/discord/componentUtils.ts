@@ -11,6 +11,7 @@ import type {
   InteractionCallbackData,
   SectionComponent,
   ThumbnailComponent,
+  LabelComponent,
 } from '@discordeno/bot';
 
 import { MessageComponentTypes, SeparatorSpacingSize } from '@discordeno/bot';
@@ -106,6 +107,11 @@ const createThumbnail = (media: ThumbnailComponent['media']): ThumbnailComponent
   type: MessageComponentTypes.Thumbnail,
 });
 
+const createLabel = (component: PropertyOptional<LabelComponent, 'type'>): LabelComponent => ({
+  ...component,
+  type: MessageComponentTypes.Label,
+});
+
 const enableLayoutMessage = (
   message: Omit<InteractionCallbackData, 'embed' | 'content' | 'stickers' | 'poll'>,
 ): InteractionCallbackData => ({
@@ -128,6 +134,7 @@ export {
   createTextInput,
   createAsyncCustomId,
   createSelectMenu,
+  createLabel,
   enableLayoutMessage,
   resolveSeparatedStrings,
   createUsersSelectMenu,
