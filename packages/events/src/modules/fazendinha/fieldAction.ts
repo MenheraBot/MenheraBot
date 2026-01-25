@@ -68,7 +68,7 @@ const plantFields = async (
   selectedFields.forEach((index) => {
     const updatedUserSeeds = farmer.seeds.find((a) => a.plant === seed);
 
-    if (!updatedUserSeeds || updatedUserSeeds.amount <= 0) seed = AvailablePlants.Mate;
+    if (!updatedUserSeeds || updatedUserSeeds.amount <= 0) return;
 
     const newField = getPlantedField(farmer, index, seed, currentSeason);
     farmer.plantations[index] = newField;
@@ -133,7 +133,6 @@ const harvestAllFields = async (
     );
 
   const currentLimits = getSiloLimits(farmer);
-  let replyFullSilo = false;
 
   const harvested: QuantitativePlant[] = [];
 
@@ -141,7 +140,7 @@ const harvestAllFields = async (
 
   ableToHarvestIndexes.forEach((index, iteration) => {
     const field = farmer.plantations[index] as PlantedField;
-    let [state] = getPlantationState(field);
+    const [state] = getPlantationState(field);
 
     if (currentLimits.used + Math.floor(field.weight ?? 1) >= currentLimits.limit) {
       if (currentLimits.used >= currentLimits.limit && iteration === 0)
@@ -163,20 +162,33 @@ const harvestAllFields = async (
     const success = state === PlantationState.Mature;
     const harvestedWeight = success ? (field.weight ?? 1) : 0;
 
-    const toAdd = {
+    harvested.push({
       plant: field.plantType,
       weight: harvestedWeight,
       quality: getCalculatedFieldQuality(field, currentSeason),
-    };
-
-    harvested.push(toAdd);
+    });
   });
 
-  const [parsedFields] = groupPlantsWeight(harvested);
+  const [parsedFields, totalWeight] = groupPlantsWeight(harvested);
+
+  if (totalWeight === 0)
+    return displayPlantations(
+      ctx,
+      farmer,
+      embedColor,
+      !userSeeds || userSeeds.amount <= 0 ? AvailablePlants.Mate : selectedSeed,
+      -1,
+    );
 
   farmer.silo = addPlants(farmer.silo, parsedFields);
 
-  await farmerRepository.executeHarvest(ctx.user.id, farmer.plantations, true, farmer.silo, parsedFields);
+  await farmerRepository.executeHarvest(
+    ctx.user.id,
+    farmer.plantations,
+    true,
+    farmer.silo,
+    parsedFields,
+  );
 
   await postMultipleFazendinhaHarvest(`${ctx.user.id}`, parsedFields);
 
@@ -190,14 +202,6 @@ const harvestAllFields = async (
     -1,
     parsedFields,
   );
-
-  if (replyFullSilo)
-    return ctx.followUp({
-      flags: MessageFlags.Ephemeral,
-      content: ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
-        limit: currentLimits.limit,
-      }),
-    });
 };
 
 const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<void> => {

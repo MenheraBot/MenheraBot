@@ -20,6 +20,8 @@ import { setComponentsV2Flag } from './messageUtils.js';
 
 type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
+const deleteMessageCustomId = '420_INTERACTION_DELETE';
+
 const createCustomId = (
   executorIndex: number,
   target: BigString,
@@ -114,6 +116,7 @@ const enableLayoutMessage = (
 });
 
 export {
+  deleteMessageCustomId,
   createButton,
   createContainer,
   createTextDisplay,

@@ -13,6 +13,7 @@ import {
   createSeparator,
   createTextDisplay,
   createTextInput,
+  deleteMessageCustomId,
 } from '../../utils/discord/componentUtils.js';
 import { QuantitativeSeed } from '../../types/database.js';
 import { extractFields } from '../../utils/discord/modalUtils.js';
@@ -31,11 +32,6 @@ import { InteractionContext } from '../../types/menhera.js';
 
 const handleBuySeedsInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [option, embedColor] = ctx.sentData;
-
-  if (option === 'EXIT_SHOP') {
-    await ctx.ack();
-    return ctx.deleteMessage();
-  }
 
   if (option === 'SHOW_MODAL')
     return showModal(ctx as ComponentInteractionContext<SelectMenuInteraction>, embedColor);
@@ -64,9 +60,7 @@ const parseModalSumbit = async (
 
   let totalPrice = 0;
 
-  for (let i = 0; i < selectedPlants.length; i++) {
-    const plant = selectedPlants[i];
-
+  for (const plant of selectedPlants) {
     if (Number.isNaN(plant.amount) || plant.amount <= 0)
       return ctx.respondInteraction({
         flags: MessageFlags.Ephemeral,
@@ -209,7 +203,7 @@ const buySeeds = async (
         accessory: createButton({
           style: ButtonStyles.Secondary,
           label: 'Fechar',
-          customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, 'EXIT_SHOP'),
+          customId: deleteMessageCustomId,
         }),
       }),
       createActionRow([categorySelectMenu]),

@@ -1135,6 +1135,7 @@
         "order-description": "**Vizinho:** {{user}}\n**Trocando por:**\n{{awards}}",
         "order-award": "**{{amount}}{{metric}}** {{emoji}}",
         "order-accepted": "Você aceitou a troca. As plantas, itens e estrelinhas foram para sua conta.",
+        "confirm-delete": "Você tem certeza que deseja remover o pedido de troca? Você não receberá de volta as plantas e itens colocadas no anúncio. Apenas o prêmio em estrelinhas :star: será devolvido.",
         "silo-full": "Você não pode aceitar esta troca, pois seu silo está cheio.",
         "order-deleted": "Você removeu o pedido do ar. Se existiam, os prêmios em estrelinhas foram devolvidas para sua conta. Os prêmios de itens e plantas foram descartados."
       },

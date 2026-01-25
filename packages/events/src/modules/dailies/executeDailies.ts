@@ -2,7 +2,6 @@ import notificationRepository from '../../database/repositories/notificationRepo
 import userRepository from '../../database/repositories/userRepository.js';
 import { ChatInputInteractionCommand } from '../../types/commands.js';
 import { DatabaseUserSchema, QuantitativePlant } from '../../types/database.js';
-import { getQuality } from '../fazendinha/siloUtils.js';
 import { FINISHED_DAILY_AWARD, getDailyById } from './dailies.js';
 import { getUserDailies } from './getUserDailies.js';
 import { Daily, DatabaseDaily } from './types.js';
@@ -126,34 +125,11 @@ const harvestPlant = async (
     );
   };
 
-  const summedWeights = plants.reduce<Record<string, number>>((p, c) => {
-    const quality = getQuality(c);
-    const key = `${c.plant}|${quality}` as const;
-
-    if (p[key]) p[key] += c.weight;
-    else p[key] = c.weight;
-
-    return p;
-  }, {});
-
-  const plantsTransformed = Object.entries(summedWeights).map<QuantitativePlant>(
-    ([plantQuality, weight]) => {
-      const [plant, quality] = plantQuality.split('|');
-
-      return {
-        plant: Number(plant),
-        // We do not care for the quality for now
-        quality: Number(quality),
-        weight: parseFloat(weight.toFixed(1)),
-      };
-    },
-  );
-
   await executeDailies(
     user,
     shouldExecute,
     1,
-    (d) => plantsTransformed.find((a) => `${a.plant}` === d.specification)?.weight ?? 1,
+    (d) => plants.find((a) => `${a.plant}` === d.specification)?.weight ?? 1,
   );
 };
 

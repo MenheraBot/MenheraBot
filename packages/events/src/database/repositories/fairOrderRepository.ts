@@ -7,7 +7,7 @@ import { MAX_ORDER_IN_FAIR_PER_USER } from '../../modules/fazendinha/constants.j
 
 const mongoToRedis = (order: DatabaseFeirinhaOrderSchema): DatabaseFeirinhaOrderSchema =>
   ({
-    _id: order._id,
+    _id: `${order._id}`,
     weight: order.weight,
     plant: order.plant,
     awards: order.awards,

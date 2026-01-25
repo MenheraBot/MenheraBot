@@ -27,7 +27,7 @@ BUILD_PENDING=false
 LAST_BUILD_TIME=0
 AUTO_RESTART=false
 
-if [[ $1 == "autoreload" ]]; then
+if [[ ! -z $1 ]]; then
     AUTO_RESTART=true
 fi
 

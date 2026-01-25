@@ -161,6 +161,16 @@ const FazendinhaCommand = createCommand({
               type: ApplicationCommandOptionTypes.User,
               required: false,
             },
+            {
+              type: ApplicationCommandOptionTypes.Integer,
+              name: 'página',
+              nameLocalizations: { 'en-US': 'page' },
+              description: 'Página dos pedidos que tu quer ver',
+              descriptionLocalizations: { 'en-US': 'Requests page you want to see' },
+              required: false,
+              minValue: 1,
+              maxValue: 100,
+            },
           ],
         },
         {
@@ -236,6 +246,7 @@ const FazendinhaCommand = createCommand({
 
       if (command === 'pedidos') {
         const user = ctx.getOption<User>('vizinho', 'users', false);
+        const page = ctx.getOption<number>('página', false) ?? 1;
 
         const isAuthorTarget = !user || ctx.user.id === user.id;
 
@@ -245,13 +256,10 @@ const FazendinhaCommand = createCommand({
 
         const realFarmer = isAuthorTarget ? farmer : await farmerRepository.getFarmer(user.id);
 
-        return displayFairOrders(
-          ctx,
-          realFarmer,
-          userData.selectedColor,
-          0,
-          isAuthorTarget ? undefined : user,
-        );
+        return displayFairOrders(ctx, realFarmer, userData.selectedColor, {
+          user: isAuthorTarget ? undefined : user,
+          page: isAuthorTarget ? page - 1 : undefined,
+        });
       }
     }
 

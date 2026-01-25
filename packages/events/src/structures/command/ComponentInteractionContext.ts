@@ -65,10 +65,6 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
     }).catch((e) => this.captureException(e));
   }
 
-  async deleteMessage(): Promise<void> {
-    return this.interaction.bot.helpers.deleteOriginalInteractionResponse(this.interaction.token);
-  }
-
   async respondWithModal(options: InteractionCallbackData): Promise<void> {
     if (this.replied) return;
 

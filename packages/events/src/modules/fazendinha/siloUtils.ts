@@ -147,7 +147,7 @@ const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
 type PlantRecord = Record<AvailablePlants, QuantitativePlant[]>;
 
 const groupPlantsByType = (plants: QuantitativePlant[]): PlantRecord =>
-  plants.reduce<PlantRecord>((p, c, i) => {
+  plants.reduce<PlantRecord>((p, c) => {
     if (c.weight <= 0) return p;
 
     if (!p[c.plant]) p[c.plant] = [];

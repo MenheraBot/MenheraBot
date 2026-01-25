@@ -13,7 +13,7 @@ import {
 } from '../../utils/discord/componentUtils.js';
 import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import fairOrderRepository from '../../database/repositories/fairOrderRepository.js';
-import { MAX_FAIR_ORDERS_PER_PAGE, Plants } from './constants.js';
+import { MAX_FAIR_ORDERS_PER_PAGE, MAX_ORDER_IN_FAIR_PER_USER, Plants } from './constants.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
 import {
   addItems,
@@ -40,15 +40,7 @@ const deleteOrder = async (
 ) => {
   const order = await fairOrderRepository.getOrder(orderId);
 
-  if (!order)
-    return ctx.respondInteraction({
-      flags: setComponentsV2Flag(MessageFlags.Ephemeral),
-      components: [
-        createTextDisplay(
-          ctx.prettyResponse('error', 'commands:fazendinha.feira.order.order-gone'),
-        ),
-      ],
-    });
+  if (!order) return displayFairOrders(ctx, farmer, embedColor);
 
   await fairOrderRepository.deleteOrder(orderId);
 
@@ -71,7 +63,7 @@ const deleteOrder = async (
     flags: setComponentsV2Flag(MessageFlags.Ephemeral),
     components: [
       createTextDisplay(
-        ctx.prettyResponse('error', `commands:fazendinha.feira.order.order-deleted`),
+        ctx.prettyResponse('success', `commands:fazendinha.feira.order.order-deleted`),
       ),
     ],
   });
@@ -170,18 +162,25 @@ const handleFairOrderButton = async (ctx: ComponentInteractionContext) => {
 
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
-  if (action === 'PAGE') return displayFairOrders(ctx, farmer, embedColor, Number(orderId));
   if (action === 'PUBLIC') return displayFairOrders(ctx, farmer, embedColor);
   if (action === 'DELETE') return deleteOrder(ctx, farmer, embedColor, orderId);
   if (action === 'AGREED') return handleTakeOrder(ctx, farmer, embedColor, orderId);
+  if (action === 'ASK_DELETE') return displayFairOrders(ctx, farmer, embedColor, { orderId });
+  if (action === 'PAGE')
+    return displayFairOrders(ctx, farmer, embedColor, { page: Number(orderId) });
 };
+
+interface FairOrderParameters {
+  user?: User;
+  page?: number;
+  orderId?: string;
+}
 
 const displayFairOrders = async (
   ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   embedColor: string,
-  page = 0,
-  user?: User,
+  { page = 0, user, orderId }: FairOrderParameters = {},
 ) => {
   const titleDisplay = createTextDisplay(
     `# ${ctx.locale(`commands:fazendinha.feira.order.${user ? 'user-orders' : 'public-orders'}`, {
@@ -212,17 +211,23 @@ const displayFairOrders = async (
     ],
   });
 
+  const totalOrders = user
+    ? MAX_ORDER_IN_FAIR_PER_USER
+    : await fairOrderRepository.countPublicOrders();
+
+  const totalPages = Math.floor(totalOrders / MAX_FAIR_ORDERS_PER_PAGE) + 1;
+
+  const toSearchPage = page >= totalPages ? 0 : page;
+
   const orders = user
     ? await fairOrderRepository.getUserOrders(farmer.id)
     : await fairOrderRepository.listPublicOrders(
         farmer.id,
-        MAX_FAIR_ORDERS_PER_PAGE * page,
+        MAX_FAIR_ORDERS_PER_PAGE * toSearchPage,
         MAX_FAIR_ORDERS_PER_PAGE,
       );
 
-  const totalOrders = user ? orders.length : await fairOrderRepository.countPublicOrders();
   const needPagination = totalOrders > MAX_FAIR_ORDERS_PER_PAGE;
-  const totalPages = Math.floor(totalOrders / MAX_FAIR_ORDERS_PER_PAGE) + 1;
 
   if (orders.length === 0)
     container.components.push(
@@ -251,6 +256,7 @@ const displayFairOrders = async (
 
       orders.forEach(async (order) => {
         const userIsOwner = order.userId === `${ctx.user.id}`;
+        const confirmDelete = orderId === order._id;
 
         const canClick =
           userIsOwner ||
@@ -266,14 +272,16 @@ const displayFairOrders = async (
                 9,
                 ctx.user.id,
                 ctx.originalInteractionId,
-                userIsOwner ? 'DELETE' : 'AGREED',
+                userIsOwner ? (confirmDelete ? 'DELETE' : 'ASK_DELETE') : 'AGREED',
                 embedColor,
                 order._id,
               ),
               disabled: !canClick,
               style: userIsOwner ? ButtonStyles.Danger : ButtonStyles.Primary,
               label: ctx.locale(
-                `commands:fazendinha.feira.order.${userIsOwner ? 'delete-order' : 'complete-order'}`,
+                confirmDelete
+                  ? 'common:confirm'
+                  : `commands:fazendinha.feira.order.${userIsOwner ? 'delete-order' : 'complete-order'}`,
               ),
             }),
             components: [
@@ -291,7 +299,7 @@ const displayFairOrders = async (
                       }),
                     )
                     .join(`\n- `)}`,
-                })}`,
+                })}${confirmDelete ? `\n-# ${ctx.locale('commands:fazendinha.feira.order.confirm-delete')}` : ''}`,
               ),
             ],
           }),
@@ -314,10 +322,10 @@ const displayFairOrders = async (
             ctx.originalInteractionId,
             'PAGE',
             embedColor,
-            page - 1,
+            toSearchPage - 1,
           ),
-          disabled: page <= 0,
-          style: page <= 0 ? ButtonStyles.Secondary : ButtonStyles.Primary,
+          disabled: toSearchPage <= 0,
+          style: toSearchPage <= 0 ? ButtonStyles.Secondary : ButtonStyles.Primary,
         }),
         createButton({
           label: ctx.locale('common:next'),
@@ -327,14 +335,14 @@ const displayFairOrders = async (
             ctx.originalInteractionId,
             'PAGE',
             embedColor,
-            page + 1,
+            toSearchPage + 1,
           ),
-          disabled: page >= totalPages - 1,
-          style: page >= totalPages - 1 ? ButtonStyles.Secondary : ButtonStyles.Primary,
+          disabled: toSearchPage >= totalPages - 1,
+          style: toSearchPage >= totalPages - 1 ? ButtonStyles.Secondary : ButtonStyles.Primary,
         }),
       ]),
       createTextDisplay(
-        `-# ${ctx.locale('commands:fazendinha.feira.order.pagination', { page: page + 1, totalPages })}`,
+        `-# ${ctx.locale('commands:fazendinha.feira.order.pagination', { page: toSearchPage + 1, totalPages })}`,
       ),
     );
 
