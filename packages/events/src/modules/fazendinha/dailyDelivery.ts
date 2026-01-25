@@ -158,7 +158,7 @@ const executeDailyDelivery = async (
           label: ctx.locale('commands:fazendinha.entregas.deliver-button'),
           style: ButtonStyles.Primary,
           customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, i),
-          disabled: a.finished,
+          disabled: a.finished || !checkNeededPlants(a.needs, farmer.silo),
         }),
         components: [
           createTextDisplay(
