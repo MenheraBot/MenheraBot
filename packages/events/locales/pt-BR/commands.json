@@ -928,6 +928,9 @@
     "select-type": "Escolha o tipo de transação",
     "select-user": "Escolha um usuário",
     "select-currency": "Escolha a moeda",
+    "filters": "Filtrar transações",
+    "error": "Ocorreu um erro ao buscar as transações deste usuário",
+    "user-filter": "-# Busque por transações envolvendo o usuário selecionado",
     "transactions": {
       "base": "**• **[<t:{{unix}}:d><t:{{unix}}:T> - <t:{{unix}}:R>] **-** ",
       "menhera_to_you": "**Eu** **te** enviei **{{amount}}** {{currencyType}} {{emoji}} por {{reason}}",
@@ -1131,6 +1134,7 @@
         "view-public-orders": "Ver todos pedidos",
         "pagination": "Página {{page}} de {{totalPages}}",
         "order-gone": "Este pedido não existe mais!",
+        "create-order": "Criar pedido",
         "no-items": "Você não tem as plantas suficientes para aceitar esse pedido",
         "order-description": "**Vizinho:** {{user}}\n**Trocando por:**\n{{awards}}",
         "order-award": "**{{amount}}{{metric}}** {{emoji}}",

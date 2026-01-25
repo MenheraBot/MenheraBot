@@ -1,10 +1,11 @@
 import {
-  ActionRow,
   ApplicationCommandOptionTypes,
   ButtonComponent,
   ButtonStyles,
   StringSelectComponent,
   SelectOption,
+  UserSelectComponent,
+  ContainerComponent,
 } from '@discordeno/bot';
 import { createCommand } from '../../structures/command/createCommand.js';
 import userRepository from '../../database/repositories/userRepository.js';
@@ -14,20 +15,24 @@ import { getUserTransactions } from '../../utils/apiRequests/statistics.js';
 import { bot } from '../../index.js';
 import { millisToSeconds } from '../../utils/miscUtils.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
-import { transactionableCommandOption } from '../../structures/constants.js';
+import { transactionableCommandOption, TRANSACTIONS_PER_PAGE } from '../../structures/constants.js';
 import {
   createActionRow,
   createButton,
+  createContainer,
   createCustomId,
   createSelectMenu,
+  createSeparator,
+  createTextDisplay,
   createUsersSelectMenu,
 } from '../../utils/discord/componentUtils.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { ApiTransactionReason, TransactionRegister } from '../../types/api.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { User } from '../../types/discordeno.js';
+import { SelectMenuInteraction } from '../../types/interaction.js';
 
 const TRANSACTION_REASONS = Object.freeze(
   Object.values(ApiTransactionReason).filter((f) => f !== ApiTransactionReason.SIMON_SAYS),
@@ -47,52 +52,32 @@ const resolveUser = (
   if (!map.has(c[actor])) map.set(c[actor], cacheRepository.getDiscordUser(c[actor], false));
 };
 
-const getSentOptions = (ctx: ComponentInteractionContext, index: number): SelectOption[] =>
-  (ctx.interaction.message?.components?.[index]?.components?.[0] as StringSelectComponent).options;
-
 const getTransactionComponents = (
   ctx: InteractionContext,
   page: number,
   firstUserId: string,
   secondUserId: string | false,
   embedColor: string,
-  disableNext: boolean,
-  disableSearch: boolean,
-  disableBack: boolean,
-  selectedTypes: string[] = [],
-  selectedCurrencies: string[] = [],
-): ActionRow[] => {
+  hasMoreItems: boolean,
+  user: User,
+  transactionsText: string,
+  selectedTypes: string[],
+  selectedCurrencies: string[],
+): [ContainerComponent, ContainerComponent] => {
   const backButton = createButton({
     customId: createCustomId(
       0,
       ctx.interaction.user.id,
       ctx.originalInteractionId,
-      'SEARCH',
-      page === 0 ? 1 : page - 1,
+      'BACK',
+      page - 1,
       firstUserId,
       secondUserId || 'N',
       embedColor,
     ),
     style: ButtonStyles.Primary,
     label: ctx.locale('common:back'),
-    disabled: disableBack || page < 2,
-  });
-
-  const searchButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.originalInteractionId,
-      'SEARCH',
-      1,
-      firstUserId,
-      secondUserId || 'N',
-      embedColor,
-      '.',
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('common:search'),
-    disabled: disableSearch,
+    disabled: page < 2,
   });
 
   const nextButton = createButton({
@@ -100,15 +85,15 @@ const getTransactionComponents = (
       0,
       ctx.interaction.user.id,
       ctx.originalInteractionId,
-      'SEARCH',
-      page === 0 ? 2 : page + 1,
+      'NEXT',
+      page + 1,
       firstUserId,
       secondUserId || 'N',
       embedColor,
     ),
     style: ButtonStyles.Primary,
     label: ctx.locale('common:next'),
-    disabled: disableNext || page > 99,
+    disabled: !hasMoreItems || page > 99,
   });
 
   const typeSelection = createSelectMenu({
@@ -116,12 +101,11 @@ const getTransactionComponents = (
       0,
       ctx.interaction.user.id,
       ctx.originalInteractionId,
-      'U',
-      page,
+      'TYPE',
+      1,
       firstUserId,
       secondUserId || 'N',
       embedColor,
-      'T',
     ),
     placeholder: ctx.locale('commands:transactions.select-type'),
     options: TRANSACTION_REASONS.map((t) => ({
@@ -138,12 +122,11 @@ const getTransactionComponents = (
       0,
       ctx.interaction.user.id,
       ctx.originalInteractionId,
-      'U',
-      page,
+      'CURRENCY',
+      1,
       firstUserId,
       secondUserId || 'N',
       embedColor,
-      'C',
     ),
     placeholder: ctx.locale('commands:transactions.select-currency'),
     options: transactionableCommandOption.map(
@@ -162,8 +145,8 @@ const getTransactionComponents = (
       0,
       ctx.interaction.user.id,
       ctx.originalInteractionId,
-      'US',
-      page,
+      'USER',
+      1,
       firstUserId,
       secondUserId || 'N',
       embedColor,
@@ -174,92 +157,105 @@ const getTransactionComponents = (
     defaultValues: secondUserId && secondUserId !== 'N' ? [{ type: 'user', id: secondUserId }] : [],
   });
 
-  return [
-    createActionRow([typeSelection]),
-    createActionRow([currencySelection]),
-    createActionRow([userSelection]),
-    createActionRow([backButton, searchButton, nextButton]),
-  ];
+  const dataContainer = createContainer({
+    accentColor: hexStringToNumber(embedColor),
+    components: [
+      createTextDisplay(
+        `## ${ctx.prettyResponse('wink', 'commands:transactions.title', {
+          user: getDisplayName(user),
+          page,
+        })}`,
+      ),
+      createSeparator(),
+      createTextDisplay(transactionsText),
+    ],
+  });
+
+  if (page > 1 || hasMoreItems)
+    dataContainer.components.push(createSeparator(), createActionRow([backButton, nextButton]));
+
+  const filterContainer = createContainer({
+    components: [
+      createTextDisplay(`## ${ctx.locale('commands:transactions.filters')}`),
+      createSeparator(),
+      createActionRow([typeSelection]),
+      createActionRow([currencySelection]),
+      createActionRow([userSelection]),
+      createTextDisplay(ctx.locale('commands:transactions.user-filter')),
+    ],
+  });
+
+  return [dataContainer, filterContainer];
+};
+
+const getByIncludesCustomId = <
+  T extends ButtonComponent | StringSelectComponent | UserSelectComponent,
+>(
+  components: NonNullable<ComponentInteractionContext['interaction']['message']>['components'],
+  searchString: string,
+): T | undefined => {
+  for (const component of components) {
+    if (component.customId && component.customId.includes(searchString)) return component as T;
+
+    if (component.components) {
+      const foundCustomId = getByIncludesCustomId(component.components, searchString);
+      if (foundCustomId) return foundCustomId as T;
+    }
+  }
+};
+
+const disableAllComponents = (
+  components: NonNullable<ComponentInteractionContext['interaction']['message']>['components'],
+) => {
+  for (const component of components) {
+    component.disabled = true;
+
+    if ('components' in component) disableAllComponents(component.components ?? []);
+  }
 };
 
 const executeButtonClick = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [action, page, firstUserId, secondUserId, embedColor, updateAction] = ctx.sentData;
+  const [action, page, firstUserId, secondUserId, embedColor] = ctx.sentData;
 
-  const disableNext =
-    (ctx.interaction.message?.components?.[3]?.components?.[2] as ButtonComponent).disabled ??
-    false;
+  const sentComponents = ctx.interaction.message?.components ?? [];
 
-  const disablePagination =
-    (ctx.interaction.message?.components?.[3]?.components?.[1] as ButtonComponent).disabled ??
-    false;
+  let toUseSecondUserId = secondUserId;
 
-  if (action === 'U') {
-    let components: ActionRow[] = [];
-
-    if (updateAction === 'T') {
-      components = getTransactionComponents(
-        ctx,
-        Number(page),
-        firstUserId,
-        secondUserId,
-        embedColor,
-        disableNext,
-        false,
-        disablePagination,
-        ctx.interaction.data.values,
-        getSentOptions(ctx, 1).reduce<string[]>(getDefault, []),
-      );
-    }
-
-    if (updateAction === 'C') {
-      components = getTransactionComponents(
-        ctx,
-        Number(page),
-        firstUserId,
-        secondUserId,
-        embedColor,
-        disableNext,
-        false,
-        disablePagination,
-        getSentOptions(ctx, 0).reduce<string[]>(getDefault, []),
-        ctx.interaction.data.values,
-      );
-    }
-
-    return ctx.makeMessage({ components });
-  }
-
-  if (action === 'US') {
+  if (action === 'USER') {
     const userSent = ctx.interaction.data.resolved?.users?.array();
-
-    let userId = 'N';
 
     if (typeof userSent !== 'undefined' && typeof userSent[0] !== 'undefined') {
       cacheRepository.setDiscordUser(bot.transformers.reverse.user(bot, userSent[0]));
-      userId = `${userSent[0].id}`;
+      toUseSecondUserId = `${userSent[0].id}`;
+      if (toUseSecondUserId === firstUserId) toUseSecondUserId = 'N';
+    } else {
+      toUseSecondUserId = 'N';
     }
+  }
 
-    const components = getTransactionComponents(
-      ctx,
-      Number(page),
-      firstUserId,
-      userId,
-      embedColor,
-      disableNext,
-      false,
-      disablePagination,
-      getSentOptions(ctx, 0).reduce<string[]>(getDefault, []),
-      getSentOptions(ctx, 1).reduce<string[]>(getDefault, []),
-    );
+  if (action === 'TYPE' || action === 'CURRENCY') {
+    const component = getByIncludesCustomId(sentComponents, action) as StringSelectComponent;
 
-    return ctx.makeMessage({ components });
+    component.options = component.options.map((v) => ({
+      ...v,
+      default: (ctx.interaction as SelectMenuInteraction).data.values.includes(v.value),
+    }));
   }
 
   const firstUser = await cacheRepository.getDiscordUser(firstUserId, true);
 
-  await ctx.ack();
+  disableAllComponents(sentComponents);
 
-  executeTransactionsCommand(ctx, firstUser ?? ctx.user, Number(page), embedColor, false);
+  await ctx.makeLayoutMessage({ components: sentComponents as unknown as ContainerComponent[] });
+
+  return executeTransactionsCommand(
+    ctx,
+    firstUser ?? ctx.user,
+    Number(page),
+    embedColor,
+    false,
+    toUseSecondUserId,
+  );
 };
 
 const executeTransactionsCommand = async <FirstTime extends boolean>(
@@ -268,61 +264,46 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
   page: number,
   embedColor: string,
   firstTime: FirstTime,
+  secondUserId: string,
 ): Promise<void> => {
   let types = TRANSACTION_REASONS;
   let currency = transactionableCommandOption.map((a) => a.value);
-  let users = [`${toFindUser.id}`];
+  const users = [`${toFindUser.id}`, secondUserId];
 
-  if (!firstTime) {
-    const sentTypes = getSentOptions(ctx as ComponentInteractionContext, 0).reduce<
-      ApiTransactionReason[]
-    >(getDefault, []);
+  const sentComponents = ctx?.interaction?.message?.components ?? [];
 
-    const sentCurrency = getSentOptions(ctx as ComponentInteractionContext, 1).reduce<
-      typeof currency
-    >(getDefault, []);
+  const sentTypes =
+    (getByIncludesCustomId(sentComponents, 'TYPE') as StringSelectComponent)?.options?.reduce?.(
+      getDefault,
+      [],
+    ) ?? [];
 
-    const sentUserId = (ctx as ComponentInteractionContext).sentData[3];
+  const sentCurrency =
+    (getByIncludesCustomId(sentComponents, 'CURRENCY') as StringSelectComponent)?.options?.reduce?.(
+      getDefault,
+      [],
+    ) ?? [];
 
-    if (sentTypes.length > 0) types = sentTypes;
-
-    if (sentCurrency.length > 0) currency = sentCurrency;
-
-    users = [`${toFindUser.id}`, `${sentUserId}`];
-  }
+  if (sentTypes.length > 0) types = sentTypes;
+  if (sentCurrency.length > 0) currency = sentCurrency;
 
   const transactions = await getUserTransactions(users, page, types, currency);
 
-  if (!transactions || transactions.length === 0) {
-    if (firstTime)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:transactions.no-transactions', {
-          user: getDisplayName(toFindUser),
-        }),
-        embeds: [],
-      });
-
-    const components = getTransactionComponents(
-      ctx as ComponentInteractionContext,
-      page,
-      users[0],
-      users[1] ?? 'N',
-      embedColor,
-      true,
-      true,
-      true,
-      types.length === TRANSACTION_REASONS.length && !firstTime ? [] : (types as string[]),
-      currency.length === transactionableCommandOption.length && !firstTime ? [] : currency,
-    );
-
-    return ctx.makeMessage({
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:transactions.no-transactions', {
-        user: getDisplayName(toFindUser),
-      }),
-      components,
+  if (!transactions)
+    return ctx.makeLayoutMessage({
+      components: [createTextDisplay(ctx.prettyResponse('error', 'commands:transactions.error'))],
     });
-  }
+
+  if (transactions.length === 0 && firstTime)
+    return ctx.makeLayoutMessage({
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('error', 'commands:transactions.no-transactions', {
+            user: getDisplayName(toFindUser),
+          }),
+        ),
+      ],
+    });
 
   const toResolve = transactions.reduce<Map<string, Promise<User | null>>>((map, c) => {
     resolveUser(map, c, 'authorId');
@@ -368,33 +349,23 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
     })}`;
   });
 
-  const embed = createEmbed({
-    title: ctx.prettyResponse('wink', 'commands:transactions.title', {
-      user: getDisplayName(toFindUser),
-      page,
-    }),
-    color: hexStringToNumber(embedColor),
-    description: parsedData.join('\n'),
-  });
-
   const components = getTransactionComponents(
-    ctx,
+    ctx as ComponentInteractionContext,
     page,
     users[0],
-    users[1] ?? 'N',
+    users[1],
     embedColor,
-    transactions.length < 10,
-    true,
-    false,
-    firstTime
-      ? []
-      : getSentOptions(ctx as ComponentInteractionContext, 0).reduce<string[]>(getDefault, []),
-    firstTime
-      ? []
-      : getSentOptions(ctx as ComponentInteractionContext, 1).reduce<string[]>(getDefault, []),
+    parsedData.length >= TRANSACTIONS_PER_PAGE,
+    toFindUser,
+    parsedData.join('\n') ||
+      ctx.locale('commands:transactions.no-transactions', {
+        user: getDisplayName(toFindUser),
+      }),
+    types.length === TRANSACTION_REASONS.length ? [] : (types as string[]),
+    currency.length === transactionableCommandOption.length ? [] : currency,
   );
 
-  ctx.makeMessage({ embeds: [embed], components, content: '' });
+  ctx.makeLayoutMessage({ components });
 };
 
 const TransactionsCommand = createCommand({
@@ -467,7 +438,7 @@ const TransactionsCommand = createCommand({
 
     finishCommand();
 
-    executeTransactionsCommand(ctx, toFindUser, page, userExists.selectedColor, true);
+    executeTransactionsCommand(ctx, toFindUser, page, userExists.selectedColor, true, 'N');
   },
 });
 

@@ -21,6 +21,7 @@ import { dataRequest } from './apiRequests.js';
 import { PokerApiUser } from '../../modules/poker/types.js';
 import { AvailablePlants } from '../../modules/fazendinha/types.js';
 import { QuantitativePlant } from '../../types/database.js';
+import { TRANSACTIONS_PER_PAGE } from '../../structures/constants.js';
 
 const postHuntExecution = async (
   userId: string,
@@ -226,6 +227,7 @@ const getUserTransactions = async (
         users,
         types,
         currency,
+        itemsPerPage: TRANSACTIONS_PER_PAGE,
       },
     })
     .catch(debugError);
@@ -251,10 +253,7 @@ const getUserTransactions = async (
   );
 };
 
-const postMultipleFazendinhaHarvest = async (
-  userId: string,
-  plants: QuantitativePlant[],
-) => {
+const postMultipleFazendinhaHarvest = async (userId: string, plants: QuantitativePlant[]) => {
   await dataRequest.post('/statistics/fazendinha-harvest', { userId, plants }).catch(debugError);
 };
 

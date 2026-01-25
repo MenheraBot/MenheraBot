@@ -311,7 +311,14 @@ const displayFairOrders = async (
       });
     });
 
-  if (needPagination)
+  const createOrder = createButton({
+    label: ctx.locale('commands:fazendinha.feira.order.create-order'),
+    customId: createCustomId(9, ctx.user.id, ctx.originalInteractionId, 'NEW_ORDER', embedColor),
+    style: ButtonStyles.Success,
+  });
+
+  if (!needPagination) container.components.push(createActionRow([createOrder]));
+  else
     container.components.push(
       createActionRow([
         createButton({
@@ -327,6 +334,7 @@ const displayFairOrders = async (
           disabled: toSearchPage <= 0,
           style: toSearchPage <= 0 ? ButtonStyles.Secondary : ButtonStyles.Primary,
         }),
+        createOrder,
         createButton({
           label: ctx.locale('common:next'),
           customId: createCustomId(

@@ -173,3 +173,5 @@ export const transactionableCommandOption = [
     value: 'gods' as const,
   },
 ];
+
+export const TRANSACTIONS_PER_PAGE = 15;

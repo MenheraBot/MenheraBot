@@ -923,6 +923,9 @@
     "select-type": "Chose a transaction class",
     "select-user": "Choose an user",
     "select-currency": "Choose the currency",
+    "filters": "Filter transactions",
+    "user-filter": "-# Search for transactions involving the selected user",
+    "error": "There was an error searching for this user transactions",
     "transactions": {
       "base": "**• **[<t:{{unix}}:d><t:{{unix}}:T> - <t:{{unix}}:R>] **-** ",
       "menhera_to_you": "**I** sent **you** **{{amount}}** {{currencyType}} {{emoji}} for {{reason}}",
@@ -1125,6 +1128,7 @@
         "delete-order": "Delete order",
         "view-public-orders": "See all requests",
         "pagination": "Page {{page}} of {{totalPages}}",
+        "create-order": "Place order",
         "no-items": "You don't have enough plants to accept this order.",
         "order-gone": "This order doesn't exists anymore!",
         "silo-full": "You cannot accept this order because your silo is full.",
