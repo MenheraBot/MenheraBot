@@ -1125,7 +1125,10 @@
         "delete-order": "Delete order",
         "view-public-orders": "See all requests",
         "pagination": "Page {{page}} of {{totalPages}}",
+        "no-items": "You don't have enough plants to accept this order.",
         "order-gone": "This order doesn't exists anymore!",
+        "silo-full": "You cannot accept this order because your silo is full.",
+        "order-accepted": "You accepted the trade. The plants, items, and stars have been credited to your account.",
         "order-description": "**neighbor:** {{user}}\n**Exchanging for:**\n{{awards}}",
         "order-award": "**{{amount}}{{metric}}** {{emoji}}",
         "order-deleted": "You removed the order from the air. If any star rewards existed, they have been returned to your account. Item and plant rewards have been discarded."

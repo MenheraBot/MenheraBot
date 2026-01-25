@@ -15,7 +15,13 @@ import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import fairOrderRepository from '../../database/repositories/fairOrderRepository.js';
 import { MAX_FAIR_ORDERS_PER_PAGE, Plants } from './constants.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
-import { checkNeededPlants, getQualityEmoji } from './siloUtils.js';
+import {
+  addItems,
+  addPlants,
+  checkNeededPlants,
+  getQualityEmoji,
+  getSiloLimits,
+} from './siloUtils.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
@@ -71,23 +77,110 @@ const deleteOrder = async (
   });
 };
 
+const handleTakeOrder = async (
+  ctx: ComponentInteractionContext,
+  farmer: DatabaseFarmerSchema,
+  embedColor: string,
+  orderId: string,
+) => {
+  const order = await fairOrderRepository.getOrder(orderId);
+
+  if (!order)
+    return ctx.respondInteraction({
+      flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('error', 'commands:fazendinha.feira.order.order-gone'),
+        ),
+      ],
+    });
+
+  const canTakeOrder = checkNeededPlants(
+    [{ plant: order.plant, weight: order.weight, quality: order.quality }],
+    farmer.silo,
+  );
+
+  if (!canTakeOrder)
+    return ctx.respondInteraction({
+      flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+      components: [
+        createTextDisplay(ctx.prettyResponse('error', 'commands:fazendinha.feira.order.no-items')),
+      ],
+    });
+
+  const awardSiloStorage = order.awards.reduce(
+    (p, c) => p + (c.type === 'estrelinhas' ? 0 : c.type === 'plant' ? c.weight : c.amount),
+    0,
+  );
+
+  if (awardSiloStorage > 0) {
+    const limits = getSiloLimits(farmer);
+
+    if (limits.used + awardSiloStorage > limits.limit)
+      return ctx.respondInteraction({
+        flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+        components: [
+          createTextDisplay(
+            ctx.prettyResponse('error', 'commands:fazendinha.feira.order.silo-full'),
+          ),
+        ],
+      });
+  }
+
+  order.awards.forEach(async (award) => {
+    switch (award.type) {
+      case 'estrelinhas': {
+        await starsRepository.addStars(ctx.user.id, award.amount);
+        await postTransaction(
+          `${bot.id}`,
+          `${ctx.user.id}`,
+          Number(award.amount),
+          'estrelinhas',
+          ApiTransactionReason.BUY_FAIR,
+        );
+        break;
+      }
+      case 'item': {
+        farmer.items = addItems(farmer.items, [award]);
+        break;
+      }
+      case 'plant': {
+        farmer.silo = addPlants(farmer.silo, [
+          { plant: award.id, weight: award.weight, quality: award.quality },
+        ]);
+        break;
+      }
+    }
+  });
+
+  await farmerRepository.updateFarmer(farmer.id, farmer.silo, farmer.items);
+
+  await fairOrderRepository.deleteOrder(order._id);
+
+  await displayFairOrders(ctx, await farmerRepository.getFarmer(ctx.user.id), embedColor);
+
+  await ctx.followUp({
+    flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+    components: [createTextDisplay(ctx.locale('commands:fazendinha.feira.order.order-accepted'))],
+  });
+};
+
 const handleFairOrderButton = async (ctx: ComponentInteractionContext) => {
   const [action, embedColor, orderId] = ctx.sentData;
 
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
-  if (action === 'PUBLIC') return displayFairOrders(ctx, farmer, embedColor, 0);
-
-  if (action === 'PAGE') return displayFairOrders(ctx, farmer, embedColor, Number(ctx.sentData[2]));
-
+  if (action === 'PAGE') return displayFairOrders(ctx, farmer, embedColor, Number(orderId));
+  if (action === 'PUBLIC') return displayFairOrders(ctx, farmer, embedColor);
   if (action === 'DELETE') return deleteOrder(ctx, farmer, embedColor, orderId);
+  if (action === 'AGREED') return handleTakeOrder(ctx, farmer, embedColor, orderId);
 };
 
 const displayFairOrders = async (
   ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   embedColor: string,
-  page: number = 0,
+  page = 0,
   user?: User,
 ) => {
   const titleDisplay = createTextDisplay(
@@ -138,6 +231,7 @@ const displayFairOrders = async (
       ),
     );
   else
+    // eslint-disable-next-line no-async-promise-executor
     await new Promise(async (res) => {
       let finished = 0;
 
@@ -172,7 +266,7 @@ const displayFairOrders = async (
                 9,
                 ctx.user.id,
                 ctx.originalInteractionId,
-                userIsOwner ? 'DELETE' : 'BUY',
+                userIsOwner ? 'DELETE' : 'AGREED',
                 embedColor,
                 order._id,
               ),

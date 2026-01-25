@@ -312,10 +312,31 @@ const getTopRanking = async (
   return res.map((a) => ({ id: a.id, value: a.experience ?? 0 }));
 };
 
+const updateFarmer = async (
+  farmerId: string,
+  silo: QuantitativePlant[],
+  items: QuantitativeItem[],
+) => {
+  await farmerModel.updateOne({ id: `${farmerId}` }, { $set: { silo, items } });
+
+  const fromRedis = await MainRedisClient.get(`farmer:${farmerId}`);
+
+  if (fromRedis) {
+    const data = JSON.parse(fromRedis);
+
+    await MainRedisClient.setex(
+      `farmer:${farmerId}`,
+      604800,
+      JSON.stringify(parseMongoUserToRedisUser({ ...data, silo, items })),
+    ).catch(debugError);
+  }
+};
+
 export default {
   getFarmer,
   executePlant,
   getTopRanking,
+  updateFarmer,
   getCurrentSeason,
   upgradeSilo,
   getSeasonalInfo,

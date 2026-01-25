@@ -1131,8 +1131,11 @@
         "view-public-orders": "Ver todos pedidos",
         "pagination": "Página {{page}} de {{totalPages}}",
         "order-gone": "Este pedido não existe mais!",
+        "no-items": "Você não tem as plantas suficientes para aceitar esse pedido",
         "order-description": "**Vizinho:** {{user}}\n**Trocando por:**\n{{awards}}",
         "order-award": "**{{amount}}{{metric}}** {{emoji}}",
+        "order-accepted": "Você aceitou a troca. As plantas, itens e estrelinhas foram para sua conta.",
+        "silo-full": "Você não pode aceitar esta troca, pois seu silo está cheio.",
         "order-deleted": "Você removeu o pedido do ar. Se existiam, os prêmios em estrelinhas foram devolvidas para sua conta. Os prêmios de itens e plantas foram descartados."
       },
       "announce": {
