@@ -45,6 +45,7 @@ const createPaginationButtons = (
   firstInfo: string,
   secondInfo: string,
   page: number,
+  disableNext: boolean,
   thirdInfo = '',
 ): ActionRow =>
   createActionRow([
@@ -76,7 +77,7 @@ const createPaginationButtons = (
       ),
       style: ButtonStyles.Primary,
       label: ctx.locale('common:next'),
-      disabled: page === 100,
+      disabled: disableNext || page === 100,
     }),
   ]);
 

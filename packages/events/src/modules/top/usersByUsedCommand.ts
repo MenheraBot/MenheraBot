@@ -74,7 +74,7 @@ const executeUsersByUsedCommandTop = async (
     });
   }
 
-  const pagination = createPaginationButtons(ctx, 'command', `${commandName}`, embedColor, page);
+  const pagination = createPaginationButtons(ctx, 'command', `${commandName}`, embedColor, page, res.length < 10);
 
   if (embed.fields!.length < 10) (pagination.components[1] as ButtonComponent).disabled = true;
 

@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ## Fixed
 
 - Corrigido os itens mágicos ainda aparecerem na loja para serem comprados, mesmo já tendo eles - Reportado por @mareys.
+- Os `/top` agora bloqueiam o botão "próximo" se não há mais páginas disponíveis.
 
 ### Removed
 

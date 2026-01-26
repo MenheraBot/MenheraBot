@@ -33,7 +33,7 @@ const executeUsedCommandsTop = async (
       inline: false,
     });
 
-  const pagination = createPaginationButtons(ctx, 'commands', embedColor, 'NONE', page);
+  const pagination = createPaginationButtons(ctx, 'commands', embedColor, 'NONE', page, res.length < 10);
 
   if (embed.fields!.length < 10) (pagination.components[1] as ButtonComponent).disabled = true;
 

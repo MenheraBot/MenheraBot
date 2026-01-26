@@ -66,7 +66,7 @@ const executeUserDataRelatedTop = async (
     });
   }
 
-  const [next, back] = createPaginationButtons(ctx, 'economy', label, 'NONE', page).components;
+  const [next, back] = createPaginationButtons(ctx, 'economy', label, 'NONE', page, res.length < 10).components;
 
   const toSendComponents = [next];
 
