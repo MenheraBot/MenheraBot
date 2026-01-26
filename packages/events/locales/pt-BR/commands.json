@@ -1301,15 +1301,17 @@
     "cant-clear": "Você possui novas notificações. Use o comando novamente para marcar todas como lidas.",
     "all-done": "Feitoria! Suas notificações foram marcadas como lidas!",
     "notifications": {
-      "user-bought-theme": "@{{username}} comprou o seu tema **{{theme}}** em <t:{{unix}}:d> às <t:{{unix}}:T>",
-      "user-bought-image": "@{{username}} comprou sua imagem **{{image}}** em <t:{{unix}}:d> às <t:{{unix}}:T>",
-      "user-bought-announcement": "Seu anúncio de **{{weight}} Kg** {{emoji}} foi comprado por **{{stars}}** :star: na feira por @{{username}} em <t:{{unix}}:d> às <t:{{unix}}:T>",
-      "user-won-bicho": "Você ganhou **{{stars}}** :star: com sua aposta no Jogo do Bicho em <t:{{unix}}:d> às <t:{{unix}}:T>",
+      "user-bought-theme": "@{{username}} comprou o seu tema **{{theme}}** em <t:{{unix}}:d> as <t:{{unix}}:T>",
+      "user-bought-image": "@{{username}} comprou sua imagem **{{image}}** em <t:{{unix}}:d> as <t:{{unix}}:T>",
+      "user-bought-announcement": "Seu anúncio de **{{weight}} Kg** {{emoji}} foi comprado por **{{stars}}** :star: na feira por @{{username}} em <t:{{unix}}:d> as <t:{{unix}}:T>",
+      "user-won-bicho": "Você ganhou **{{stars}}** :star: com sua aposta no Jogo do Bicho em <t:{{unix}}:d> as <t:{{unix}}:T>",
+      "user-accepted-deal": "**@{{username}}** aceitou seu pedido de troca **{{name}}** na feira <t:{{unix}}:d> as <t:{{unix}}:T>",
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Acabei de te dar uma **Badge** nova! Cheque seu perfil >.<",
       "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Adicionei um título em sua conta! Da uma olhadinha em `/personalizar título` >.<",
+      "lux-message": "[<t:{{unix}}:d> <t:{{unix}}:T>] **[SYSTEM]**: {{message}}",
       "finished-daily": "",
-      "finished-daily-one": "Você completou **{{count}}** missão! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>",
-      "finished-daily-other": "Você completou **{{count}}** missões! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>"
+      "finished-daily-one": "Você completou **{{count}}** missão! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> as <t:{{unix}}:T>",
+      "finished-daily-other": "Você completou **{{count}}** missões! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> as <t:{{unix}}:T>"
     }
   },
   "daily": {

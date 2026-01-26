@@ -40,7 +40,10 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
     }).catch(debugError);
   };
 
+  let originalCustomId = '-';
+
   if (!interaction.data.customId.includes('|')) {
+    originalCustomId = interaction.data.customId;
     if (interaction.data.customId === deleteMessageCustomId) {
       await sendInteractionResponse(interaction.id, interaction.token, {
         type: InteractionResponseTypes.DeferredUpdateMessage,
@@ -158,7 +161,9 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
     res(undefined);
   });
 
-  logger.info(`[COMPONENT] ${commandInfo._id} - ${ctx.user.id} "${interaction.data.customId}"`);
+  logger.info(
+    `[COMPONENT] ${commandInfo._id} - ${ctx.user.id} "${interaction.data.customId}" (${originalCustomId})`,
+  );
 };
 
 export { componentExecutor };
