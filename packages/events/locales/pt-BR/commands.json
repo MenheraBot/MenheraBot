@@ -1149,6 +1149,7 @@
         "add-item": "Adicionar fertilizante",
         "add-plant": "Adicionar planta",
         "add-estrelinhas": "Adicionar estrelinhas",
+        "add-award": "Digite o valor que deseja trocar",
         "invalid-values": "Você inseriu informações inválidas no pedido!",
         "no-items": "Você não tem as plantas suficientes para aceitar esse pedido",
         "order-description": "**Vizinho:** {{user}}\n**Trocando por:**\n{{awards}}",

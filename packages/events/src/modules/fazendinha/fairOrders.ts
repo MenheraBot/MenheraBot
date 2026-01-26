@@ -31,7 +31,12 @@ import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import { getAwardEmoji } from '../../commands/info/DailyCommand.js';
-import { handleAddAwardModal, handleReceiveModal, handleRequestModal } from './createFairOrder.js';
+import {
+  handleAddAwardModal,
+  handleAwardModal,
+  handleReceiveModal,
+  handleRequestModal,
+} from './createFairOrder.js';
 import notificationRepository from '../../database/repositories/notificationRepository.js';
 import { ModalInteraction } from '../../types/interaction.js';
 
@@ -190,6 +195,8 @@ const handleFairOrderButton = async (ctx: ComponentInteractionContext) => {
   if (action === 'ADD_AWARD') return handleAddAwardModal(ctx, farmer, embedColor);
   if (action === 'PAGE')
     return displayFairOrders(ctx, farmer, embedColor, { page: Number(orderId) });
+  if (action === 'AWARD_MODAL')
+    return handleAwardModal(ctx as ComponentInteractionContext<ModalInteraction>, embedColor);
   if (action === 'PLANT_MODAL')
     return handleReceiveModal(
       ctx as ComponentInteractionContext<ModalInteraction>,

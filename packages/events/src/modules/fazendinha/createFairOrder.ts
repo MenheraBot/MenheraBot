@@ -1,4 +1,10 @@
-import { ButtonComponent, ButtonStyles, MessageFlags, TextStyles } from '@discordeno/bot';
+import {
+  ButtonComponent,
+  ButtonStyles,
+  LabelComponent,
+  MessageFlags,
+  TextStyles,
+} from '@discordeno/bot';
 import fairOrderRepository from '../../database/repositories/fairOrderRepository.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { DatabaseFarmerSchema, DatabaseFeirinhaOrderSchema } from '../../types/database.js';
@@ -16,7 +22,12 @@ import {
   createTextInput,
 } from '../../utils/discord/componentUtils.js';
 import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { Items, MAX_ORDER_IN_FAIR_PER_USER, Plants } from './constants.js';
+import {
+  Items,
+  MAX_ORDER_IN_FAIR_PER_USER,
+  MAX_STARS_AWARD_IN_FAIR_ORDER,
+  Plants,
+} from './constants.js';
 import { AvailableItems, AvailablePlants, PlantQuality } from './types.js';
 import { getQualityEmoji } from './siloUtils.js';
 import { ModalInteraction } from '../../types/interaction.js';
@@ -24,6 +35,13 @@ import { extractLayoutFields } from '../../utils/discord/modalUtils.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils.js';
 import userRepository from '../../database/repositories/userRepository.js';
+
+const handleAwardModal = async (
+  ctx: ComponentInteractionContext<ModalInteraction>,
+  embedColor: string,
+) => {
+  console.log(ctx.user.id, embedColor);
+};
 
 const handleRequestModal = async (ctx: ComponentInteractionContext, embedColor: string) => {
   const [, , textState] = ctx.sentData;
@@ -90,22 +108,26 @@ const handleAddAwardModal = async (
 ) => {
   const [, , stateText, type] = ctx.sentData;
 
-  console.log(farmer.id);
+  const components: LabelComponent[] = [];
+
+  if (type === 'estrelinhas')
+    components.push(
+      createLabel({
+        label: `${ctx.safeEmoji(type)} ${ctx.locale(`commands:fazendinha.feira.order.add-award`)}`,
+        component: createTextInput({
+          customId: type,
+          style: TextStyles.Short,
+          required: true,
+          minLength: 1,
+          maxLength: `${MAX_STARS_AWARD_IN_FAIR_ORDER}`.length,
+          placeholder: '5000',
+        }),
+      }),
+    );
 
   return ctx.respondWithModal({
     title: ctx.locale(`commands:fazendinha.feira.order.add-${type as 'item'}`),
-    components: [
-      createLabel({
-        label: 'Pegar',
-        component: createTextInput({
-          customId: 'input',
-          style: TextStyles.Short,
-          maxLength: 3,
-          required: true,
-          placeholder: '3,5 Kg',
-        }),
-      }),
-    ],
+    components,
     customId: await createAsyncCustomId(
       9,
       ctx.user.id,
@@ -285,4 +307,10 @@ const handleCreateFairOrder = async (
   return ctx.makeLayoutMessage({ components: [container] });
 };
 
-export { handleCreateFairOrder, handleRequestModal, handleReceiveModal, handleAddAwardModal };
+export {
+  handleCreateFairOrder,
+  handleRequestModal,
+  handleReceiveModal,
+  handleAddAwardModal,
+  handleAwardModal,
+};

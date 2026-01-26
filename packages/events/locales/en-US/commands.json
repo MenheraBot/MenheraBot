@@ -1143,6 +1143,7 @@
         "add-item": "Add fertilizer",
         "add-plant": "Add plant",
         "add-estrelinhas": "Add stars",
+        "add-award": "Enter the amount you wish to exchange.",
         "invalid-values": "You sent invalid values for the request!",
         "no-items": "You don't have enough plants to accept this trade.",
         "order-gone": "This trade request doesn't exists anymore!",
