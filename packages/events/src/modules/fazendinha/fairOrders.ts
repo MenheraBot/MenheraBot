@@ -31,8 +31,9 @@ import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import { getAwardEmoji } from '../../commands/info/DailyCommand.js';
-import { handleCreateFairOrder, handleRequestModal } from './createFairOrder.js';
+import { handleAddAwardModal, handleReceiveModal, handleRequestModal } from './createFairOrder.js';
 import notificationRepository from '../../database/repositories/notificationRepository.js';
+import { ModalInteraction } from '../../types/interaction.js';
 
 const deleteOrder = async (
   ctx: ComponentInteractionContext,
@@ -155,9 +156,12 @@ const handleTakeOrder = async (
     'commands:notificações.notifications.user-accepted-deal',
     {
       username: getDisplayName(ctx.user),
-      name: `${Plants[order.plant].emoji} ${order.weight} Kg ${ctx.locale(`data:plants.${order.plant}`)} ${getQualityEmoji(
-        order.quality,
-      )}`,
+      name: ctx.locale('commands:fazendinha.feira.order.order-name', {
+        plantEmoji: Plants[order.plant].emoji,
+        weight: order.weight,
+        qualityEmoji: getQualityEmoji(order.quality),
+        plantName: ctx.locale(`data:plants.${order.plant}`),
+      }),
     },
   );
 
@@ -178,14 +182,20 @@ const handleFairOrderButton = async (ctx: ComponentInteractionContext) => {
 
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
-  if (action === 'NEW_ORDER') return handleCreateFairOrder(ctx, farmer, embedColor);
   if (action === 'PUBLIC') return displayFairOrders(ctx, farmer, embedColor);
   if (action === 'DELETE') return deleteOrder(ctx, farmer, embedColor, orderId);
   if (action === 'AGREED') return handleTakeOrder(ctx, farmer, embedColor, orderId);
   if (action === 'ASK_DELETE') return displayFairOrders(ctx, farmer, embedColor, { orderId });
-  if (action === 'REQUEST') return handleRequestModal(ctx, farmer, embedColor);
+  if (action === 'REQUEST') return handleRequestModal(ctx, embedColor);
+  if (action === 'ADD_AWARD') return handleAddAwardModal(ctx, farmer, embedColor);
   if (action === 'PAGE')
     return displayFairOrders(ctx, farmer, embedColor, { page: Number(orderId) });
+  if (action === 'PLANT_MODAL')
+    return handleReceiveModal(
+      ctx as ComponentInteractionContext<ModalInteraction>,
+      farmer,
+      embedColor,
+    );
 };
 
 interface FairOrderParameters {
@@ -208,7 +218,14 @@ const displayFairOrders = async (
 
   const createOrder = createButton({
     label: ctx.locale('commands:fazendinha.feira.order.create-order'),
-    customId: createCustomId(9, ctx.user.id, ctx.originalInteractionId, 'NEW_ORDER', embedColor),
+    customId: createCustomId(
+      9,
+      ctx.user.id,
+      ctx.originalInteractionId,
+      'REQUEST',
+      embedColor,
+      '{}',
+    ),
     style: ButtonStyles.Success,
   });
 
@@ -304,9 +321,12 @@ const displayFairOrders = async (
             }),
             components: [
               createTextDisplay(
-                `### ${Plants[order.plant].emoji} ${order.weight} Kg ${ctx.locale(`data:plants.${order.plant}`)} ${getQualityEmoji(
-                  order.quality,
-                )}\n${ctx.locale('commands:fazendinha.feira.order.order-description', {
+                `### ${ctx.locale('commands:fazendinha.feira.order.order-name', {
+                  plantEmoji: Plants[order.plant].emoji,
+                  weight: order.weight,
+                  plantName: ctx.locale(`data:plants.${order.plant}`),
+                  qualityEmoji: getQualityEmoji(order.quality),
+                })}\n${ctx.locale('commands:fazendinha.feira.order.order-description', {
                   user: tabledUsers[order.userId] ?? order.userId,
                   awards: `- ${order.awards
                     .map((a) =>

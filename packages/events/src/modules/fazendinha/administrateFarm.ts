@@ -21,7 +21,14 @@ import {
 } from './constants.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
-import { checkNeededPlants, getSiloLimits, removeItems, removePlants } from './siloUtils.js';
+import {
+  checkNeededPlants,
+  getQuality,
+  getQualityEmoji,
+  getSiloLimits,
+  removeItems,
+  removePlants,
+} from './siloUtils.js';
 import { extractNameAndIdFromEmoji, MessageFlags } from '../../utils/discord/messageUtils.js';
 import starsRepository from '../../database/repositories/starsRepository.js';
 import { postTransaction } from '../../utils/apiRequests/statistics.js';
@@ -192,11 +199,13 @@ const displayAdministrateFarm = async (
             createTextDisplay(
               `### Campo bloqueado\n${ctx.locale('commands:fazendinha.admin.needed-items', {
                 star: neededItems.cost,
-                plants: neededItems.neededPlants.map(
-                  (a) =>
-                    `${a.weight ?? a.amount} Kg ${ctx.locale(`data:plants.${a.plant}`)} ${
-                      Plants[a.plant].emoji
-                    }`,
+                plants: neededItems.neededPlants.map((a) =>
+                  ctx.locale('commands:fazendinha.feira.order.order-name', {
+                    plantName: ctx.locale(`data:plants.${a.plant}`),
+                    plantEmoji: Plants[a.plant].emoji,
+                    weight: a.weight ?? a.amount,
+                    qualityEmoji: getQualityEmoji(getQuality(a)),
+                  }),
                 ),
               })}`,
             ),
@@ -389,11 +398,13 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
       flags: MessageFlags.Ephemeral,
       content: ctx.prettyResponse('error', 'commands:fazendinha.admin.needed-items', {
         star: neededItems.cost,
-        plants: neededItems.neededPlants.map(
-          (a) =>
-            `${a.weight ?? a.amount} Kg ${ctx.locale(`data:plants.${a.plant}`)} ${
-              Plants[a.plant].emoji
-            }`,
+        plants: neededItems.neededPlants.map((a) =>
+          ctx.locale('commands:fazendinha.feira.order.order-name', {
+            plantName: ctx.locale(`data:plants.${a.plant}`),
+            plantEmoji: Plants[a.plant].emoji,
+            quaityEmoji: getQualityEmoji(getQuality(a)),
+            weight: a.weight ?? a.amount,
+          }),
         ),
       }),
     });

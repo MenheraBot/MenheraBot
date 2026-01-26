@@ -271,9 +271,12 @@ const displayFair = async (
       }`;
 
       selectMenu.options.push({
-        label: `${item.weight} Kg ${qualityEmoji} ${ctx.locale(`data:plants.${item.plantType}`)}${
-          user ? '' : ` (${i + 1})`
-        }`,
+        label: `${ctx.locale('commands:fazendinha.feira.order.order-name', {
+          plantEmoji: '',
+          plantName: ctx.locale(`data:plants.${item.plantType}`),
+          weight: item.weight,
+          qualityEmoji,
+        })}${user ? '' : ` (${i + 1})`}`,
         value: `${item._id}`,
         description: `${item.price} ⭐`,
         emoji: { name: Plants[item.plantType].emoji },

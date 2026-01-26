@@ -8,8 +8,10 @@ interface FieldData {
 
 const extractLayoutFields = (interaction: ModalInteraction): FieldData[] =>
   interaction.data.components.reduce<FieldData[]>((p, c) => {
-    const fieldData = c.component as TextInputComponent;
-    p.push({ customId: fieldData.customId, value: fieldData.value as string });
+    p.push({
+      customId: `${c.component?.customId}`,
+      value: `${c.component?.value ?? c.component?.values?.[0]}`,
+    });
     return p;
   }, []);
 

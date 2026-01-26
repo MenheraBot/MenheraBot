@@ -145,18 +145,18 @@ const FazendinhaCommand = createCommand({
           ],
         },
         {
-          name: 'pedidos',
-          nameLocalizations: { 'en-US': 'requests' },
-          description: '「📥」・Encomende produtos pela sua vizinhança',
-          descriptionLocalizations: { 'en-US': '「📥」・ Order products on your neighborhood.' },
+          name: 'trocas',
+          nameLocalizations: { 'en-US': 'trades' },
+          description: '「📥」・Troque produtos na sua vizinhança',
+          descriptionLocalizations: { 'en-US': '「📥」・ Trade products on your neighborhood.' },
           type: ApplicationCommandOptionTypes.SubCommand,
           options: [
             {
               name: 'vizinho',
               nameLocalizations: { 'en-US': 'neighbor' },
-              description: 'Vizinho para ver os pedidos',
+              description: 'Vizinho para ver os pedidos de trocas',
               descriptionLocalizations: {
-                'en-US': 'Neighbor to check the orders',
+                'en-US': 'Neighbor to check the trade requests',
               },
               type: ApplicationCommandOptionTypes.User,
               required: false,
@@ -166,7 +166,7 @@ const FazendinhaCommand = createCommand({
               name: 'página',
               nameLocalizations: { 'en-US': 'page' },
               description: 'Página dos pedidos que tu quer ver',
-              descriptionLocalizations: { 'en-US': 'Requests page you want to see' },
+              descriptionLocalizations: { 'en-US': 'Trade requests page you want to see' },
               required: false,
               minValue: 1,
               maxValue: 100,
@@ -244,7 +244,7 @@ const FazendinhaCommand = createCommand({
 
       if (command === 'comprar') return executeExploreFair(ctx, farmer);
 
-      if (command === 'pedidos') {
+      if (command === 'trocas') {
         const user = ctx.getOption<User>('vizinho', 'users', false);
         const page = ctx.getOption<number>('página', false) ?? 1;
 
