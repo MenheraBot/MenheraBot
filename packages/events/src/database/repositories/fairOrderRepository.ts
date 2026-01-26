@@ -14,6 +14,7 @@ const mongoToRedis = (order: DatabaseFeirinhaOrderSchema): DatabaseFeirinhaOrder
     quality: order.quality,
     userId: order.userId,
     placedAt: order.placedAt,
+    completed: order.completed,
   }) satisfies DatabaseFeirinhaOrderSchema;
 
 const getUserOrders = async (farmerId: BigString): Promise<DatabaseFeirinhaOrderSchema[]> =>
@@ -25,6 +26,17 @@ const getUserOrders = async (farmerId: BigString): Promise<DatabaseFeirinhaOrder
 const deleteOrder = async (id: string): Promise<void> => {
   await feirinhaOrderModel.deleteOne({ _id: id });
   await MainRedisClient.del(`fair_order:${id}`);
+};
+
+const completeOrder = async (id: string): Promise<void> => {
+  const result = await feirinhaOrderModel.findByIdAndUpdate(id, { completed: true });
+
+  if (!result) return;
+
+  await MainRedisClient.set(
+    `fair_order:${id}`,
+    JSON.stringify(mongoToRedis({ ...result, completed: true })),
+  );
 };
 
 const getOrder = async (orderId: string): Promise<null | DatabaseFeirinhaOrderSchema> => {
@@ -43,6 +55,9 @@ const getOrder = async (orderId: string): Promise<null | DatabaseFeirinhaOrderSc
 
 const listPublicOrders = async (farmerId: string, skip: number, limit: number) => {
   const sortedItems = await feirinhaOrderModel.aggregate([
+    {
+      $match: { $or: [{ userId: farmerId }, { completed: { $ne: true } }] },
+    },
     {
       $addFields: {
         isTargetUser: {
@@ -76,6 +91,7 @@ const placeOrder = async (
     quality,
     weight,
     placedAt: Date.now(),
+    completed: false,
   } satisfies Omit<DatabaseFeirinhaOrderSchema, '_id'>);
 };
 
@@ -84,6 +100,7 @@ export default {
   countPublicOrders,
   getOrder,
   deleteOrder,
+  completeOrder,
   getUserOrders,
   listPublicOrders,
 };

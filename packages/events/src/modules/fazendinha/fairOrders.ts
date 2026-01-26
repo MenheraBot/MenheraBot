@@ -32,6 +32,7 @@ import { ApiTransactionReason } from '../../types/api.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import { getAwardEmoji } from '../../commands/info/DailyCommand.js';
 import { handleCreateFairOrder, handleRequestModal } from './createFairOrder.js';
+import notificationRepository from '../../database/repositories/notificationRepository.js';
 
 const deleteOrder = async (
   ctx: ComponentInteractionContext,
@@ -148,13 +149,27 @@ const handleTakeOrder = async (
 
   await farmerRepository.updateFarmer(farmer.id, farmer.silo, farmer.items);
 
-  await fairOrderRepository.deleteOrder(order._id);
+  await fairOrderRepository.completeOrder(order._id);
+  await notificationRepository.createNotification(
+    order.userId,
+    'commands:notificações.notifications.user-accepted-deal',
+    {
+      username: getDisplayName(ctx.user),
+      name: `${Plants[order.plant].emoji} ${order.weight} Kg ${ctx.locale(`data:plants.${order.plant}`)} ${getQualityEmoji(
+        order.quality,
+      )}`,
+    },
+  );
 
   await displayFairOrders(ctx, await farmerRepository.getFarmer(ctx.user.id), embedColor);
 
   await ctx.followUp({
     flags: setComponentsV2Flag(MessageFlags.Ephemeral),
-    components: [createTextDisplay(ctx.locale('commands:fazendinha.feira.order.order-accepted'))],
+    components: [
+      createTextDisplay(
+        ctx.prettyResponse('success', 'commands:fazendinha.feira.order.order-accepted'),
+      ),
+    ],
   });
 };
 
