@@ -3,7 +3,7 @@ import { AvailablePlants, PlantQuality } from '../../modules/fazendinha/types.js
 import { MainRedisClient } from '../databases.js';
 import { feirinhaOrderModel } from '../collections.js';
 import { DatabaseFeirinhaOrderSchema, OrderAward } from '../../types/database.js';
-import { MAX_ORDER_IN_FAIR_PER_USER } from '../../modules/fazendinha/constants.js';
+import { MAX_TRADE_REQUESTS_IN_FAIR_PER_USER } from '../../modules/fazendinha/constants.js';
 
 const mongoToRedis = (order: DatabaseFeirinhaOrderSchema): DatabaseFeirinhaOrderSchema =>
   ({
@@ -13,14 +13,14 @@ const mongoToRedis = (order: DatabaseFeirinhaOrderSchema): DatabaseFeirinhaOrder
     awards: order.awards,
     quality: order.quality,
     userId: order.userId,
-    placedAt: order.placedAt,
+    completedAt: order.completedAt,
     completed: order.completed,
   }) satisfies DatabaseFeirinhaOrderSchema;
 
 const getUserOrders = async (farmerId: BigString): Promise<DatabaseFeirinhaOrderSchema[]> =>
   feirinhaOrderModel.find({ userId: `${farmerId}` }, null, {
     sort: { weight: -1, price: 1 },
-    limit: MAX_ORDER_IN_FAIR_PER_USER,
+    limit: MAX_TRADE_REQUESTS_IN_FAIR_PER_USER,
   });
 
 const deleteOrder = async (id: string): Promise<void> => {
@@ -29,13 +29,20 @@ const deleteOrder = async (id: string): Promise<void> => {
 };
 
 const completeOrder = async (id: string): Promise<void> => {
-  const result = await feirinhaOrderModel.findByIdAndUpdate(id, { completed: true });
+  const now = Date.now();
+
+  const updatedData = {
+    completed: true,
+    completedAt: now,
+  };
+
+  const result = await feirinhaOrderModel.findByIdAndUpdate(id, updatedData);
 
   if (!result) return;
 
   await MainRedisClient.set(
     `fair_order:${id}`,
-    JSON.stringify(mongoToRedis({ ...result, completed: true })),
+    JSON.stringify(mongoToRedis({ ...result, ...updatedData })),
   );
 };
 
@@ -65,7 +72,7 @@ const listPublicOrders = async (farmerId: string, skip: number, limit: number) =
         },
       },
     },
-    { $sort: { isTargetUser: 1, placedAt: -1 } },
+    { $sort: { isTargetUser: 1, completedAt: -1 } },
     { $skip: skip },
     { $limit: limit },
   ]);
@@ -82,7 +89,7 @@ const placeOrder = async (
   plant: AvailablePlants,
   weight: number,
   quality: PlantQuality,
-  awards: OrderAward[],
+  awards: OrderAward,
 ): Promise<void> => {
   await feirinhaOrderModel.create({
     userId: `${userId}`,
@@ -90,7 +97,7 @@ const placeOrder = async (
     plant,
     quality,
     weight,
-    placedAt: Date.now(),
+    completedAt: Date.now(),
     completed: false,
   } satisfies Omit<DatabaseFeirinhaOrderSchema, '_id'>);
 };

@@ -13,15 +13,14 @@ import {
 } from '../../utils/discord/componentUtils.js';
 import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import fairOrderRepository from '../../database/repositories/fairOrderRepository.js';
-import { MAX_FAIR_ORDERS_PER_PAGE, MAX_ORDER_IN_FAIR_PER_USER, Plants } from './constants.js';
-import { getDisplayName } from '../../utils/discord/userUtils.js';
 import {
-  addItems,
-  addPlants,
-  checkNeededPlants,
-  getQualityEmoji,
-  getSiloLimits,
-} from './siloUtils.js';
+  Items,
+  MAX_FAIR_ORDERS_PER_PAGE,
+  MAX_TRADE_REQUESTS_IN_FAIR_PER_USER,
+  Plants,
+} from './constants.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
+import { addItems, checkNeededPlants, getQualityEmoji, getSiloLimits } from './siloUtils.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
@@ -30,15 +29,16 @@ import { postTransaction } from '../../utils/apiRequests/statistics.js';
 import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
-import { getAwardEmoji } from '../../commands/info/DailyCommand.js';
 import {
-  handleAddAwardModal,
-  handleAwardModal,
+  handleAddAwardButton,
+  handlePlaceOrder,
   handleReceiveModal,
-  handleRequestModal,
+  handleTradeRequestModal,
 } from './createFairOrder.js';
 import notificationRepository from '../../database/repositories/notificationRepository.js';
 import { ModalInteraction } from '../../types/interaction.js';
+import { AvailableItems } from './types.js';
+import userRepository from '../../database/repositories/userRepository.js';
 
 const deleteOrder = async (
   ctx: ComponentInteractionContext,
@@ -52,16 +52,16 @@ const deleteOrder = async (
 
   await fairOrderRepository.deleteOrder(orderId);
 
-  const starsAward = order.awards.find((a) => a.type === 'estrelinhas');
+  const starsAward = order.awards.estrelinhas;
 
   if (starsAward) {
-    await starsRepository.addStars(ctx.user.id, starsAward.amount);
+    await starsRepository.addStars(ctx.user.id, starsAward);
     await postTransaction(
       `${bot.id}`,
       `${ctx.user.id}`,
-      Number(starsAward.amount),
+      Number(starsAward),
       'estrelinhas',
-      ApiTransactionReason.BUY_FAIR,
+      ApiTransactionReason.FAIR,
     );
   }
 
@@ -108,15 +108,12 @@ const handleTakeOrder = async (
       ],
     });
 
-  const awardSiloStorage = order.awards.reduce(
-    (p, c) => p + (c.type === 'estrelinhas' ? 0 : c.type === 'plant' ? c.weight : c.amount),
-    0,
-  );
+  const itemsAmount = order.awards.fertilizers ?? 0;
 
-  if (awardSiloStorage > 0) {
+  if (itemsAmount > 0) {
     const limits = getSiloLimits(farmer);
 
-    if (limits.used + awardSiloStorage > limits.limit)
+    if (limits.used + itemsAmount > limits.limit)
       return ctx.respondInteraction({
         flags: setComponentsV2Flag(MessageFlags.Ephemeral),
         components: [
@@ -127,31 +124,21 @@ const handleTakeOrder = async (
       });
   }
 
-  order.awards.forEach(async (award) => {
-    switch (award.type) {
-      case 'estrelinhas': {
-        await starsRepository.addStars(ctx.user.id, award.amount);
-        await postTransaction(
-          `${bot.id}`,
-          `${ctx.user.id}`,
-          Number(award.amount),
-          'estrelinhas',
-          ApiTransactionReason.BUY_FAIR,
-        );
-        break;
-      }
-      case 'item': {
-        farmer.items = addItems(farmer.items, [award]);
-        break;
-      }
-      case 'plant': {
-        farmer.silo = addPlants(farmer.silo, [
-          { plant: award.id, weight: award.weight, quality: award.quality },
-        ]);
-        break;
-      }
-    }
-  });
+  if (order.awards.estrelinhas) {
+    await starsRepository.addStars(ctx.user.id, order.awards.estrelinhas);
+    await postTransaction(
+      `${bot.id}`,
+      `${ctx.user.id}`,
+      Number(order.awards.estrelinhas),
+      'estrelinhas',
+      ApiTransactionReason.FAIR,
+    );
+  }
+
+  if (order.awards.fertilizers)
+    farmer.items = addItems(farmer.items, [
+      { amount: order.awards.fertilizers, id: AvailableItems.Fertilizer },
+    ]);
 
   await farmerRepository.updateFarmer(farmer.id, farmer.silo, farmer.items);
 
@@ -191,13 +178,12 @@ const handleFairOrderButton = async (ctx: ComponentInteractionContext) => {
   if (action === 'DELETE') return deleteOrder(ctx, farmer, embedColor, orderId);
   if (action === 'AGREED') return handleTakeOrder(ctx, farmer, embedColor, orderId);
   if (action === 'ASK_DELETE') return displayFairOrders(ctx, farmer, embedColor, { orderId });
-  if (action === 'REQUEST') return handleRequestModal(ctx, embedColor);
-  if (action === 'ADD_AWARD') return handleAddAwardModal(ctx, farmer, embedColor);
+  if (action === 'REQUEST') return handleTradeRequestModal(ctx, embedColor);
+  if (action === 'EDIT_AWARD') return handleAddAwardButton(ctx, farmer, embedColor);
+  if (action === 'PLACE_ORDER') return handlePlaceOrder(ctx, farmer, embedColor);
   if (action === 'PAGE')
     return displayFairOrders(ctx, farmer, embedColor, { page: Number(orderId) });
-  if (action === 'AWARD_MODAL')
-    return handleAwardModal(ctx as ComponentInteractionContext<ModalInteraction>, embedColor);
-  if (action === 'PLANT_MODAL')
+  if (action === 'MODAL')
     return handleReceiveModal(
       ctx as ComponentInteractionContext<ModalInteraction>,
       farmer,
@@ -217,6 +203,11 @@ const displayFairOrders = async (
   embedColor: string,
   { page = 0, user, orderId }: FairOrderParameters = {},
 ) => {
+  const userData = await userRepository.ensureFindUser(farmer.id);
+  const canCreateRequest =
+    userData.estrelinhas > 0 ||
+    farmer.items.some((a) => a.id === AvailableItems.Fertilizer && a.amount > 0);
+
   const titleDisplay = createTextDisplay(
     `# ${ctx.locale(`commands:fazendinha.feira.order.${user ? 'user-orders' : 'public-orders'}`, {
       user: getDisplayName(user ?? ctx.user),
@@ -233,6 +224,7 @@ const displayFairOrders = async (
       embedColor,
       '{}',
     ),
+    disabled: !canCreateRequest,
     style: ButtonStyles.Success,
   });
 
@@ -254,7 +246,7 @@ const displayFairOrders = async (
   });
 
   const totalOrders = user
-    ? MAX_ORDER_IN_FAIR_PER_USER
+    ? MAX_TRADE_REQUESTS_IN_FAIR_PER_USER
     : await fairOrderRepository.countPublicOrders();
 
   const totalPages = Math.floor(totalOrders / MAX_FAIR_ORDERS_PER_PAGE) + 1;
@@ -335,12 +327,15 @@ const displayFairOrders = async (
                   qualityEmoji: getQualityEmoji(order.quality),
                 })}\n${ctx.locale('commands:fazendinha.feira.order.order-description', {
                   user: tabledUsers[order.userId] ?? order.userId,
-                  awards: `- ${order.awards
-                    .map((a) =>
+                  awards: `- ${Object.entries(order.awards)
+                    .map(([type, amount]) =>
                       ctx.locale('commands:fazendinha.feira.order.order-award', {
-                        amount: a.type === 'plant' ? a.weight : a.amount,
-                        metric: a.type === 'plant' ? ' Kg' : 'x',
-                        emoji: `${getAwardEmoji(ctx, { type: a.type, helper: a.id })} ${a.type === 'plant' ? getQualityEmoji(a.quality) : ''}`,
+                        amount: amount,
+                        metric: type === 'estrelinhas' ? '' : 'x',
+                        emoji:
+                          type === 'estrelinhas'
+                            ? ctx.safeEmoji(type)
+                            : Items[AvailableItems.Fertilizer].emoji,
                       }),
                     )
                     .join(`\n- `)}`,

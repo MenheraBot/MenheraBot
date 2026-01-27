@@ -146,7 +146,7 @@ const executeBuyItem = async (
       announcement.userId,
       announcement.price,
       'estrelinhas',
-      ApiTransactionReason.BUY_FAIR,
+      ApiTransactionReason.FAIR,
     ),
     notificationRepository.createNotification(
       announcement.userId,

@@ -1,16 +1,26 @@
 import { TextInputComponent } from '@discordeno/bot';
 import { ModalInteraction } from '../../types/interaction.js';
+import { isUndefined } from '../miscUtils.js';
 
 interface FieldData {
   customId: string;
   value: string;
 }
 
-const extractLayoutFields = (interaction: ModalInteraction): FieldData[] =>
-  interaction.data.components.reduce<FieldData[]>((p, c) => {
+interface LayoutFieldData {
+  customId: string;
+  value?: string;
+}
+
+const extractLayoutFields = (interaction: ModalInteraction): LayoutFieldData[] =>
+  interaction.data.components.reduce<LayoutFieldData[]>((p, c) => {
+    const component = c.component;
+
+    const noDataSent = isUndefined(component?.value) && isUndefined(component?.values);
+
     p.push({
-      customId: `${c.component?.customId}`,
-      value: `${c.component?.value ?? c.component?.values?.[0]}`,
+      customId: `${component?.customId}`,
+      value: noDataSent ? undefined : `${component?.value ?? component?.values?.[0]}`,
     });
     return p;
   }, []);

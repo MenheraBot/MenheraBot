@@ -162,26 +162,10 @@ export interface DatabaseFeirinhaSchema {
   [`name_en-US`]: string;
 }
 
-type StarsOrderAward = {
-  type: 'estrelinhas';
-  amount: number;
-  id: -1;
+export type OrderAward = {
+  estrelinhas?: number;
+  fertilizers?: number;
 };
-
-type PlantsOrderAward = {
-  type: 'plant';
-  weight: number;
-  id: AvailablePlants;
-  quality: PlantQuality;
-};
-
-type ItemsOrderAward = {
-  type: 'item';
-  amount: number;
-  id: AvailableItems;
-};
-
-export type OrderAward = StarsOrderAward | PlantsOrderAward | ItemsOrderAward 
 
 export interface DatabaseFeirinhaOrderSchema {
   _id: string;
@@ -189,8 +173,8 @@ export interface DatabaseFeirinhaOrderSchema {
   plant: AvailablePlants;
   quality: PlantQuality;
   weight: number;
-  awards: OrderAward[];
-  placedAt: number;
+  awards: OrderAward;
+  completedAt: number;
   completed: boolean;
 }
 

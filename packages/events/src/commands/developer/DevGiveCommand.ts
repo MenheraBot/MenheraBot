@@ -100,7 +100,7 @@ const executeCompontentNotification = async (ctx: ComponentInteractionContext) =
     });
 
   if (action === 'MODAL') {
-    const message = extractLayoutFields(ctx.interaction as ModalInteraction)[0].value;
+    const message = extractLayoutFields(ctx.interaction as ModalInteraction)[0].value ?? '';
 
     const user = await cacheRepository.getDiscordUser(userId, true);
 

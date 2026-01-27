@@ -15,13 +15,15 @@ export const MAX_SILO_UPGRADES = 15;
 export const MAX_FIELDS_AVAILABLE = 3;
 
 export const MAX_STARS_AWARD_IN_FAIR_ORDER = 99999;
+export const MAX_ITEMS_AWARD_IN_FAIR_ORDER = 9;
+export const MAX_WEIGHT_IN_FAIR_ORDER = 9.9;
+export const MAX_TRADE_REQUESTS_IN_FAIR_PER_USER = 3;
 
 export const MAX_ITEMS_IN_FAIR_PER_USER = 6;
-export const MAX_ORDER_IN_FAIR_PER_USER = 3;
 export const MAX_FAIR_ORDERS_PER_PAGE = 8;
 export const MAXIMUM_PRICE_TO_SELL_IN_FAIR = 1.5;
 export const MINIMUM_PRICE_TO_SELL_IN_FAIR = 0.65;
-export const MAX_ITEMS_PER_FAIR_PAGE = process.env.NODE_ENV === 'production' ? 20 : 3;
+export const MAX_ITEMS_PER_FAIR_PAGE = 20;
 
 export const DELIVERIES_AMOUNT = 6;
 export const MAX_DELIVERY_WEIGHT = 9;

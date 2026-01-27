@@ -124,6 +124,8 @@ const normalizeString = (str: string) => {
     .toLowerCase();
 };
 
+const isUndefined = (data: unknown): data is undefined => typeof data === 'undefined';
+
 export {
   capitalize,
   daysToMillis,
@@ -137,6 +139,7 @@ export {
   calculateProbability,
   hoursToMillis,
   ensureUserHaveDefaultThemes,
+  isUndefined,
   chunkArray,
   millisToMinutes,
   minutesToMillis,

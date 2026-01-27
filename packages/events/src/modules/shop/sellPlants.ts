@@ -29,7 +29,7 @@ const receiveModal = async (
     const [plant, quality] = a.customId.split('|');
 
     return {
-      weight: parseFloat(Number(a.value).toFixed(1)),
+      weight: parseFloat(Number(a.value.replace(',', '.')).toFixed(1)),
       plant: Number(plant),
       quality: Number(quality),
     };

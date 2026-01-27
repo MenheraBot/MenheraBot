@@ -1,10 +1,4 @@
-import {
-  ButtonComponent,
-  ButtonStyles,
-  LabelComponent,
-  MessageFlags,
-  TextStyles,
-} from '@discordeno/bot';
+import { ButtonStyles, LabelComponent, MessageFlags, TextStyles } from '@discordeno/bot';
 import fairOrderRepository from '../../database/repositories/fairOrderRepository.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { DatabaseFarmerSchema, DatabaseFeirinhaOrderSchema } from '../../types/database.js';
@@ -24,26 +18,26 @@ import {
 import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import {
   Items,
-  MAX_ORDER_IN_FAIR_PER_USER,
+  MAX_ITEMS_AWARD_IN_FAIR_ORDER,
+  MAX_TRADE_REQUESTS_IN_FAIR_PER_USER,
   MAX_STARS_AWARD_IN_FAIR_ORDER,
+  MAX_WEIGHT_IN_FAIR_ORDER,
   Plants,
 } from './constants.js';
-import { AvailableItems, AvailablePlants, PlantQuality } from './types.js';
-import { getQualityEmoji } from './siloUtils.js';
+import { AvailableItems, PlantQuality } from './types.js';
+import { getQualityEmoji, removeItems } from './siloUtils.js';
 import { ModalInteraction } from '../../types/interaction.js';
 import { extractLayoutFields } from '../../utils/discord/modalUtils.js';
-import { InteractionContext } from '../../types/menhera.js';
-import { extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils.js';
 import userRepository from '../../database/repositories/userRepository.js';
+import { isUndefined } from '../../utils/miscUtils.js';
+import starsRepository from '../../database/repositories/starsRepository.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
+import farmerRepository from '../../database/repositories/farmerRepository.js';
+import { displayFairOrders } from './fairOrders.js';
 
-const handleAwardModal = async (
-  ctx: ComponentInteractionContext<ModalInteraction>,
-  embedColor: string,
-) => {
-  console.log(ctx.user.id, embedColor);
-};
-
-const handleRequestModal = async (ctx: ComponentInteractionContext, embedColor: string) => {
+const handleTradeRequestModal = async (ctx: ComponentInteractionContext, embedColor: string) => {
   const [, , textState] = ctx.sentData;
 
   const currentState = JSON.parse(textState) as Partial<DatabaseFeirinhaOrderSchema>;
@@ -54,7 +48,7 @@ const handleRequestModal = async (ctx: ComponentInteractionContext, embedColor: 
       9,
       ctx.user.id,
       ctx.originalInteractionId,
-      'PLANT_MODAL',
+      'MODAL',
       embedColor,
       textState,
     ),
@@ -101,38 +95,75 @@ const handleRequestModal = async (ctx: ComponentInteractionContext, embedColor: 
   });
 };
 
-const handleAddAwardModal = async (
+const handleAddAwardButton = async (
   ctx: ComponentInteractionContext,
   farmer: DatabaseFarmerSchema,
   embedColor: string,
 ) => {
-  const [, , stateText, type] = ctx.sentData;
+  const [, , stateText] = ctx.sentData as [never, never, string];
+
+  const currentState = JSON.parse(stateText) as Partial<DatabaseFeirinhaOrderSchema>;
+
+  const user = await userRepository.ensureFindUser(farmer.id);
+
+  const addStars = user.estrelinhas > 0;
+  const addItem = farmer.items.some((a) => a.id === AvailableItems.Fertilizer && a.amount > 0);
 
   const components: LabelComponent[] = [];
 
-  if (type === 'estrelinhas')
+  if (addStars)
     components.push(
       createLabel({
-        label: `${ctx.safeEmoji(type)} ${ctx.locale(`commands:fazendinha.feira.order.add-award`)}`,
+        label: ctx.locale(`commands:fazendinha.feira.order.add-estrelinhas`),
         component: createTextInput({
-          customId: type,
+          customId: 'estrelinhas',
           style: TextStyles.Short,
-          required: true,
+          required: !addItem,
           minLength: 1,
-          maxLength: `${MAX_STARS_AWARD_IN_FAIR_ORDER}`.length,
-          placeholder: '5000',
+          maxLength: `${Math.min(MAX_STARS_AWARD_IN_FAIR_ORDER, user.estrelinhas)}`.length,
+          placeholder: '25000',
+          value: currentState.awards?.estrelinhas
+            ? `${currentState.awards?.estrelinhas}`
+            : undefined,
         }),
       }),
     );
 
+  if (addItem)
+    components.push(
+      createLabel({
+        label: ctx.locale(`commands:fazendinha.feira.order.add-item`),
+        component: createTextInput({
+          customId: 'fertilizers',
+          style: TextStyles.Short,
+          required: !addStars,
+          maxLength: `${MAX_ITEMS_AWARD_IN_FAIR_ORDER}`.length,
+          placeholder: '2',
+          value: currentState.awards?.fertilizers
+            ? `${currentState.awards?.fertilizers}`
+            : undefined,
+        }),
+        description:
+          addItem && addStars
+            ? ctx.locale('commands:fazendinha.feira.order.add-award-description')
+            : undefined,
+      }),
+    );
+
+  if (components.length === 0)
+    return ctx.respondInteraction({
+      flags: MessageFlags.Ephemeral,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.order.no-awards-available'),
+    });
+
   return ctx.respondWithModal({
-    title: ctx.locale(`commands:fazendinha.feira.order.add-${type as 'item'}`),
+    title: ctx.locale(`commands:fazendinha.feira.order.add-award`),
     components,
     customId: await createAsyncCustomId(
       9,
       ctx.user.id,
       ctx.originalInteractionId,
-      'AWARD_MODAL',
+      'MODAL',
       embedColor,
       stateText,
     ),
@@ -140,25 +171,26 @@ const handleAddAwardModal = async (
 };
 
 const getCreateFairOrderMessage = async (
-  ctx: InteractionContext,
+  ctx: ComponentInteractionContext,
   embedColor: string,
   farmer: DatabaseFarmerSchema,
   currentState: Partial<DatabaseFeirinhaOrderSchema>,
 ) => {
   const user = await userRepository.ensureFindUser(farmer.id);
 
+  const userHaveStars = user.estrelinhas > 0;
   const userHaveFertilizer = farmer.items.some(
     (a) => a.amount > 0 && a.id === AvailableItems.Fertilizer,
   );
-  const userHavePlants = farmer.silo.some((a) => a.weight >= 1);
-  const userHaveStars = user.estrelinhas > 0;
+
+  if (!userHaveFertilizer && !userHaveStars) return false;
 
   const hasRequest = 'plant' in currentState;
-  const hasAwards = currentState.awards && currentState.awards.length > 0;
+  const hasAwards = 'awards' in currentState;
 
   const textState = JSON.stringify(currentState);
 
-  const requestButton = createButton({
+  const editOrder = createButton({
     style: hasRequest ? ButtonStyles.Primary : ButtonStyles.Success,
     customId: await createAsyncCustomId(
       9,
@@ -170,27 +202,6 @@ const getCreateFairOrderMessage = async (
     ),
     label: ctx.locale(`commands:fazendinha.feira.order.${hasRequest ? 'edit' : 'create'}-order`),
   });
-
-  const createAwardButton = async (
-    type: DatabaseFeirinhaOrderSchema['awards'][number]['type'],
-    emoji: ButtonComponent['emoji'],
-    disabled?: boolean,
-  ) =>
-    createButton({
-      style: hasAwards ? ButtonStyles.Primary : ButtonStyles.Success,
-      emoji,
-      label: ctx.locale(`commands:fazendinha.feira.order.add-${type}`),
-      disabled: disabled || currentState.awards?.some?.((a) => a.type === type),
-      customId: await createAsyncCustomId(
-        9,
-        ctx.user.id,
-        ctx.originalInteractionId,
-        'ADD_AWARD',
-        embedColor,
-        textState,
-        type,
-      ),
-    });
 
   return createContainer({
     accentColor: hexStringToNumber(embedColor),
@@ -210,7 +221,7 @@ const getCreateFairOrderMessage = async (
       createSection({
         components: [
           createTextDisplay(
-            `### ${ctx.locale('commands:fazendinha.feira.order.order')}\n${
+            `### ${
               hasRequest
                 ? `**${ctx.locale('commands:fazendinha.feira.order.order-name', {
                     plantEmoji: Plants[currentState.plant ?? 0]?.emoji,
@@ -221,22 +232,41 @@ const getCreateFairOrderMessage = async (
                 : `_${ctx.locale('commands:fazendinha.feira.order.no-order')}_`
             }`,
           ),
+          createTextDisplay(
+            currentState.awards
+              ? `- ${Object.entries(currentState.awards)
+                  .map(([type, amount]) =>
+                    ctx.locale('commands:fazendinha.feira.order.order-award', {
+                      amount,
+                      metric: type === 'estrelinhas' ? '' : 'x',
+                      emoji:
+                        type === 'estrelinhas'
+                          ? ctx.safeEmoji(type)
+                          : Items[AvailableItems.Fertilizer].emoji,
+                    }),
+                  )
+                  .join(`\n- `)}`
+              : ctx.locale('commands:fazendinha.feira.order.no-awards'),
+          ),
         ],
-        accessory: requestButton,
+        accessory: createButton({
+          style: hasAwards ? ButtonStyles.Primary : ButtonStyles.Success,
+          label: ctx.locale(`commands:fazendinha.feira.order.edit-award`),
+          customId: await createAsyncCustomId(
+            9,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            'EDIT_AWARD',
+            embedColor,
+            textState,
+          ),
+        }),
       }),
       createSeparator(),
       createActionRow([
-        ...(await Promise.all([
-          createAwardButton(
-            'item',
-            extractNameAndIdFromEmoji(Items[AvailableItems.Fertilizer].emoji),
-            !userHaveFertilizer,
-          ),
-          createAwardButton('plant', { name: Plants[AvailablePlants.Mate].emoji }, !userHavePlants),
-          createAwardButton('estrelinhas', { name: ctx.safeEmoji('estrelinhas') }, !userHaveStars),
-        ])),
+        editOrder,
         createButton({
-          style: ButtonStyles.Secondary,
+          style: hasAwards ? ButtonStyles.Success : ButtonStyles.Secondary,
           label: ctx.locale('commands:fazendinha.feira.order.create-order'),
           disabled: !hasAwards,
           customId: await createAsyncCustomId(
@@ -263,24 +293,56 @@ const handleReceiveModal = async (
 
   const fields = extractLayoutFields(ctx.interaction);
 
-  let isInvalid = false;
+  let invalidReason = '';
 
   fields.forEach((f) => {
+    if (typeof f.value === 'undefined') {
+      if (currentState?.awards?.[f.customId as 'estrelinhas']) {
+        delete currentState.awards[f.customId as 'estrelinhas'];
+
+        if (Object.keys(currentState.awards).length === 0) delete currentState.awards;
+      }
+
+      return;
+    }
+
     const parsed =
-      f.customId === 'weight' ? parseFloat(parseFloat(f.value).toFixed(1)) : parseInt(f.value);
+      f.customId === 'weight'
+        ? parseFloat(parseFloat(f.value.replace(',', '.')).toFixed(1))
+        : parseInt(f.value);
 
-    if (Number.isNaN(parsed)) isInvalid = true;
+    if (f.customId === 'weight' && parsed > MAX_WEIGHT_IN_FAIR_ORDER)
+      invalidReason = ctx.prettyResponse(
+        'error',
+        'commands:fazendinha.feira.order.invalid-weight',
+        { limit: MAX_WEIGHT_IN_FAIR_ORDER },
+      );
 
-    currentState[f.customId as 'plant'] = parsed;
+    if (Number.isNaN(parsed) || parsed < 1) {
+      invalidReason = ctx.prettyResponse('error', 'commands:fazendinha.feira.order.invalid-values');
+      return;
+    }
+
+    if (['fertilizers', 'estrelinhas'].includes(f.customId)) {
+      if (!currentState.awards) currentState.awards = {};
+
+      currentState.awards[f.customId as 'estrelinhas'] = parsed;
+    } else currentState[f.customId as 'plant'] = parsed;
   });
 
-  if (isInvalid)
+  if (invalidReason)
     return ctx.respondInteraction({
       flags: MessageFlags.Ephemeral,
-      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.order.invalid-values'),
+      content: invalidReason,
     });
 
   const container = await getCreateFairOrderMessage(ctx, embedColor, farmer, currentState);
+
+  if (!container)
+    return ctx.respondInteraction({
+      flags: MessageFlags.Ephemeral,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.order.no-awards-available'),
+    });
 
   return ctx.makeLayoutMessage({ components: [container] });
 };
@@ -292,7 +354,7 @@ const handleCreateFairOrder = async (
 ) => {
   const userRequests = await fairOrderRepository.getUserOrders(farmer.id);
 
-  if (userRequests.length >= MAX_ORDER_IN_FAIR_PER_USER)
+  if (userRequests.length >= MAX_TRADE_REQUESTS_IN_FAIR_PER_USER)
     return ctx.respondInteraction({
       content: ctx.prettyResponse('error', 'commands:fazendinha.feira.order.max-orders'),
       flags: MessageFlags.Ephemeral,
@@ -304,13 +366,102 @@ const handleCreateFairOrder = async (
 
   const container = await getCreateFairOrderMessage(ctx, embedColor, farmer, currentState);
 
+  if (!container)
+    return ctx.respondInteraction({
+      flags: MessageFlags.Ephemeral,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.order.no-awards-available'),
+    });
+
   return ctx.makeLayoutMessage({ components: [container] });
+};
+
+const handlePlaceOrder = async (
+  ctx: ComponentInteractionContext,
+  farmer: DatabaseFarmerSchema,
+  embedColor: string,
+) => {
+  const [, , textState] = ctx.sentData;
+  const order = JSON.parse(textState) as Partial<DatabaseFeirinhaOrderSchema>;
+
+  if (
+    isUndefined(order.awards) ||
+    isUndefined(order.plant) ||
+    isUndefined(order.quality) ||
+    isUndefined(order.weight) ||
+    (isUndefined(order.awards.estrelinhas) && isUndefined(order.awards.fertilizers))
+  )
+    return ctx.respondInteraction({
+      flags: MessageFlags.Ephemeral,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.order.invalid-values'),
+    });
+
+  const userData = await userRepository.ensureFindUser(farmer.id);
+
+  if (order.awards.estrelinhas && order.awards.estrelinhas > userData.estrelinhas)
+    return ctx.respondInteraction({
+      flags: MessageFlags.Ephemeral,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.order.poor-stars'),
+    });
+
+  if (
+    order.awards.fertilizers &&
+    order.awards.fertilizers >
+      farmer.items.reduce(
+        (p, c) => (c.id === AvailableItems.Fertilizer && c.amount > 0 ? p + c.amount : p),
+        0,
+      )
+  )
+    return ctx.respondInteraction({
+      flags: MessageFlags.Ephemeral,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.order.poor-items'),
+    });
+
+  const userOrders = await fairOrderRepository.getUserOrders(farmer.id);
+
+  if (userOrders.length >= MAX_TRADE_REQUESTS_IN_FAIR_PER_USER)
+    return ctx.respondInteraction({
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.order.max-orders'),
+      flags: MessageFlags.Ephemeral,
+    });
+
+  await fairOrderRepository.placeOrder(
+    ctx.user.id,
+    order.plant,
+    order.weight,
+    order.quality,
+    order.awards,
+  );
+
+  if (order.awards.estrelinhas) {
+    await starsRepository.removeStars(ctx.user.id, order.awards.estrelinhas);
+    await postTransaction(
+      `${ctx.user.id}`,
+      `${bot.id}`,
+      order.awards.estrelinhas,
+      'estrelinhas',
+      ApiTransactionReason.FAIR,
+    );
+  }
+
+  if (order.awards.fertilizers) {
+    const newItems = removeItems(farmer.items, [
+      { id: AvailableItems.Fertilizer, amount: order.awards.fertilizers },
+    ]);
+    await farmerRepository.updateItems(farmer.id, newItems);
+  }
+
+  await displayFairOrders(ctx, farmer, embedColor);
+
+  return ctx.followUp({
+    flags: MessageFlags.Ephemeral,
+    content: ctx.prettyResponse('success', 'commands:fazendinha.feira.order.order-placed'),
+  });
 };
 
 export {
   handleCreateFairOrder,
-  handleRequestModal,
+  handleTradeRequestModal,
   handleReceiveModal,
-  handleAddAwardModal,
-  handleAwardModal,
+  handleAddAwardButton,
+  handlePlaceOrder,
 };
