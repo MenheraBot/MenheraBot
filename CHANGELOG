@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [6.2.0] - 2026-02-07
 
+### Hotfix
+
+- Corrigido problema para criar um pedido de troca na feira de Erva Mate.
+
 ### Added
 
 - Adicionado qualidade para plantações: Plantas Precárias, Plantas e Plantas Premium. Plantas premium e precárias tem uma mudança em seu preço de 30%.
