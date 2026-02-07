@@ -11,7 +11,7 @@ import {
   QUALITY_PRICE_MULTIPLIER,
   SILO_LIMIT_INCREASE_BY_LEVEL,
 } from './constants.js';
-import { AvailablePlants, PlantQuality } from './types.js';
+import { AvailablePlants, FieldUpgrade, Plantation, PlantQuality } from './types.js';
 
 type QuantitativePlantItem = QuantitativePlant | QuantitativeSeed;
 
@@ -230,6 +230,8 @@ const groupPlantsWeight = (plants: QuantitativePlant[]): [QuantitativePlant[], n
   return [parsed, parseFloat(totalWeight.toFixed(1))];
 };
 
+const getPlantationUpgrades = (field: Plantation): FieldUpgrade[] => field.upgrades ?? [];
+
 export {
   checkNeededPlants,
   isMatePlant,
@@ -244,5 +246,6 @@ export {
   filterPlant,
   filterPlantsByQuality,
   groupPlantsByType,
+  getPlantationUpgrades,
   getQuality,
 };

@@ -122,8 +122,8 @@ importers:
         version: 6.14.1
     devDependencies:
       '@discordeno/bot':
-        specifier: 22.0.1-next.bbdd2d1
-        version: 22.0.1-next.bbdd2d1
+        specifier: 22.0.1-next.8694f57
+        version: 22.0.1-next.8694f57
       '@types/koa':
         specifier: ^3.0.0
         version: 3.0.0
@@ -433,20 +433,20 @@ packages:
   '@discordeno/bot@22.0.1-next.780f212':
     resolution: {integrity: sha512-TVg9VS2DZdG+DIiH+TbJPG+Zv7mkSdm3pkjio6NhgBETnkOBYTUByh/Ri5SJ2mseLGCzGHtlOxktuHyHQICtkQ==}
 
-  '@discordeno/bot@22.0.1-next.bbdd2d1':
-    resolution: {integrity: sha512-gFQibZ/ljICILGenHGL1tbGDBlvrU8pNfLg0hDZL+Ei9EzrOFpL3C1Qx8eRxQJ9Lxzfh9YsBTEsBgSqhTeYPag==}
+  '@discordeno/bot@22.0.1-next.8694f57':
+    resolution: {integrity: sha512-roLYFn2eer7H55zeteEeje53OWX9tUjNmYqEhXXqXkd9HllrBdhxlCeDwTKsNPd44RolNyHA78u04JobUDmLlQ==}
 
   '@discordeno/gateway@22.0.1-next.780f212':
     resolution: {integrity: sha512-WCnZ1Olea4NJpzTtTOxFR+9kIJ83PLdyhoBRIdAGlIWM6QB1pSN50c1nHAHe7cu3yfkcOocJ/pKYcN+rjA4P7w==}
 
-  '@discordeno/gateway@22.0.1-next.bbdd2d1':
-    resolution: {integrity: sha512-IqgHnjHDptZikZlUogHJQHaMCPfP6C5ITbBo5sFdeFqnQHCbkxfYPYgqmKL0nXA92ZZ+qUM8o6ToHTYC4uq6lA==}
+  '@discordeno/gateway@22.0.1-next.8694f57':
+    resolution: {integrity: sha512-oda5WBEww2ZspSSOKA0u1TclNeOuZJlkOAD4Bog1Nw+6HtsbWBf95CwWt1aa7ohsBqJqCNorwywrj35vOFbpPA==}
 
   '@discordeno/rest@22.0.1-next.780f212':
     resolution: {integrity: sha512-MyAnbRrjv4Ect5TObqwDPhL9EDNVHaCzByHZtlBcqoi8LEmaF86X2dP6Y4pCzSE+/MCTS7MCSGWM/O38CFQk8w==}
 
-  '@discordeno/rest@22.0.1-next.bbdd2d1':
-    resolution: {integrity: sha512-T9+UuFO2ANp/93/PlULeCLvlnzB4+DPRNeWDufwI0e3h0MJ4rd8XOqgOrhomO4HRjpsmyRuFKWE6vRILcKEvQQ==}
+  '@discordeno/rest@22.0.1-next.8694f57':
+    resolution: {integrity: sha512-KxLAzqE9fzjhRPghmyEZytmVWp206EbyicZX4Qlc7xOrpBvlWxbvVGo/I00wAs34qr0tQ8t/rdnBec38g0ltew==}
 
   '@discordeno/types@22.0.0-beta.1':
     resolution: {integrity: sha512-LyEElHIj+uRnqanRMe0ave9zUsBlLBqqKQu7KQpHhWleg4KLMIn8QlfaWtCnomaykMRguBoanYRLzyz1G4cXmA==}
@@ -454,14 +454,14 @@ packages:
   '@discordeno/types@22.0.1-next.780f212':
     resolution: {integrity: sha512-lPIiqPPTSKb/2cJC4xt1xTM0kIVmhC+Toiz92F2tXlftg1WDCWiPZK5EuGZ0CU8CVA9moLgn9OBgR0duhLyTMQ==}
 
-  '@discordeno/types@22.0.1-next.bbdd2d1':
-    resolution: {integrity: sha512-m0K/+LGT9HvApkhAndMw7ctQUDJRmgCyA3uj/f0ePW/wMv9/KDbodrohVa85iPZFPKiS2BnPOYoWTenNzBQ9+w==}
+  '@discordeno/types@22.0.1-next.8694f57':
+    resolution: {integrity: sha512-HEsy5NohWDJJWHYtuwlV4ZCdVQlUDil+QLAljbYZQ503aKd8VMbStaQRj6Cd6sxaDZWODKk0MqUmTN0rLvtz4g==}
 
   '@discordeno/utils@22.0.1-next.780f212':
     resolution: {integrity: sha512-0esVFWSh1CbTULU8L06f5+uE/BaJJfD2jfmb6HlHfGFx9zzaaWIymqHugI5F6TpDnA0CE7Gvr+Oo9VSbTiz3MQ==}
 
-  '@discordeno/utils@22.0.1-next.bbdd2d1':
-    resolution: {integrity: sha512-JocHPygz9Q5GBXNywC0H5I+zIP1jlhgELnhQq8eZJCeyVcYbH+QXk8VUon46eETkMnA+mkNeVHILEa8/u2YFhg==}
+  '@discordeno/utils@22.0.1-next.8694f57':
+    resolution: {integrity: sha512-O1tRyXA9R8qwrWxhMTJm5XQqP3UezKPKM7J7pEJ6TtWaIjJOOIpaw6fHS29AHB7MKD3EWFKwG1NNhNN3MC7GVQ==}
 
   '@eslint-community/eslint-utils@4.9.0':
     resolution: {integrity: sha512-ayVFHdtZ+hsq1t2Dy24wCmGXGe4q9Gu3smhLYALJrr473ZH27MsnSL+LKUlimp4BWJqMDMLmPpx/Q9R3OAlL4g==}
@@ -3179,18 +3179,6 @@ packages:
     resolution: {integrity: sha512-+QU2zd6OTD8XWIJCbffaiQeH9U73qIqafo1x6V1snCWYGJf6cVE0cDR4D8xRzcEnfI21IFrUPzPGtcPf8AC+Rw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
 
-  ws@8.18.3:
-    resolution: {integrity: sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-
   ws@8.19.0:
     resolution: {integrity: sha512-blAT2mjOEIi0ZzruJfIhb3nps74PRWTCz1IjglWEEpQl5XS/UNama6u2/rjFkDDouqr4L67ry+1aGIALViWjDg==}
     engines: {node: '>=10.0.0'}
@@ -3855,12 +3843,12 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@discordeno/bot@22.0.1-next.bbdd2d1':
+  '@discordeno/bot@22.0.1-next.8694f57':
     dependencies:
-      '@discordeno/gateway': 22.0.1-next.bbdd2d1
-      '@discordeno/rest': 22.0.1-next.bbdd2d1
-      '@discordeno/types': 22.0.1-next.bbdd2d1
-      '@discordeno/utils': 22.0.1-next.bbdd2d1
+      '@discordeno/gateway': 22.0.1-next.8694f57
+      '@discordeno/rest': 22.0.1-next.8694f57
+      '@discordeno/types': 22.0.1-next.8694f57
+      '@discordeno/utils': 22.0.1-next.8694f57
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -3876,11 +3864,11 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@discordeno/gateway@22.0.1-next.bbdd2d1':
+  '@discordeno/gateway@22.0.1-next.8694f57':
     dependencies:
-      '@discordeno/types': 22.0.1-next.bbdd2d1
-      '@discordeno/utils': 22.0.1-next.bbdd2d1
-      ws: 8.18.3
+      '@discordeno/types': 22.0.1-next.8694f57
+      '@discordeno/utils': 22.0.1-next.8694f57
+      ws: 8.19.0
     optionalDependencies:
       fzstd: 0.1.1
     transitivePeerDependencies:
@@ -3892,24 +3880,24 @@ snapshots:
       '@discordeno/types': 22.0.1-next.780f212
       '@discordeno/utils': 22.0.1-next.780f212
 
-  '@discordeno/rest@22.0.1-next.bbdd2d1':
+  '@discordeno/rest@22.0.1-next.8694f57':
     dependencies:
-      '@discordeno/types': 22.0.1-next.bbdd2d1
-      '@discordeno/utils': 22.0.1-next.bbdd2d1
+      '@discordeno/types': 22.0.1-next.8694f57
+      '@discordeno/utils': 22.0.1-next.8694f57
 
   '@discordeno/types@22.0.0-beta.1': {}
 
   '@discordeno/types@22.0.1-next.780f212': {}
 
-  '@discordeno/types@22.0.1-next.bbdd2d1': {}
+  '@discordeno/types@22.0.1-next.8694f57': {}
 
   '@discordeno/utils@22.0.1-next.780f212':
     dependencies:
       '@discordeno/types': 22.0.1-next.780f212
 
-  '@discordeno/utils@22.0.1-next.bbdd2d1':
+  '@discordeno/utils@22.0.1-next.8694f57':
     dependencies:
-      '@discordeno/types': 22.0.1-next.bbdd2d1
+      '@discordeno/types': 22.0.1-next.8694f57
 
   '@eslint-community/eslint-utils@4.9.0(eslint@9.38.0)':
     dependencies:
@@ -7423,8 +7411,6 @@ snapshots:
     dependencies:
       imurmurhash: 0.1.4
       signal-exit: 4.1.0
-
-  ws@8.18.3: {}
 
   ws@8.19.0: {}
 

@@ -174,8 +174,7 @@ export interface DatabaseFeirinhaOrderSchema {
   quality: PlantQuality;
   weight: number;
   awards: OrderAward;
-  completedAt: number;
-  completed: boolean;
+  createdAt: number;
 }
 
 export interface DatabaseFarmerSchema {

@@ -13,8 +13,7 @@ const mongoToRedis = (order: DatabaseFeirinhaOrderSchema): DatabaseFeirinhaOrder
     awards: order.awards,
     quality: order.quality,
     userId: order.userId,
-    completedAt: order.completedAt,
-    completed: order.completed,
+    createdAt: order.createdAt,
   }) satisfies DatabaseFeirinhaOrderSchema;
 
 const getUserOrders = async (farmerId: BigString): Promise<DatabaseFeirinhaOrderSchema[]> =>
@@ -26,24 +25,6 @@ const getUserOrders = async (farmerId: BigString): Promise<DatabaseFeirinhaOrder
 const deleteOrder = async (id: string): Promise<void> => {
   await feirinhaOrderModel.deleteOne({ _id: id });
   await MainRedisClient.del(`fair_order:${id}`);
-};
-
-const completeOrder = async (id: string): Promise<void> => {
-  const now = Date.now();
-
-  const updatedData = {
-    completed: true,
-    completedAt: now,
-  };
-
-  const result = await feirinhaOrderModel.findByIdAndUpdate(id, updatedData);
-
-  if (!result) return;
-
-  await MainRedisClient.set(
-    `fair_order:${id}`,
-    JSON.stringify(mongoToRedis({ ...result, ...updatedData })),
-  );
 };
 
 const getOrder = async (orderId: string): Promise<null | DatabaseFeirinhaOrderSchema> => {
@@ -72,7 +53,7 @@ const listPublicOrders = async (farmerId: string, skip: number, limit: number) =
         },
       },
     },
-    { $sort: { isTargetUser: 1, completedAt: -1 } },
+    { $sort: { isTargetUser: 1, createdAt: -1 } },
     { $skip: skip },
     { $limit: limit },
   ]);
@@ -81,7 +62,7 @@ const listPublicOrders = async (farmerId: string, skip: number, limit: number) =
 };
 
 const countPublicOrders = async () => {
-  return feirinhaOrderModel.countDocuments({});
+  return feirinhaOrderModel.countDocuments({ completed: { $ne: true } });
 };
 
 const placeOrder = async (
@@ -97,8 +78,7 @@ const placeOrder = async (
     plant,
     quality,
     weight,
-    completedAt: Date.now(),
-    completed: false,
+    createdAt: Date.now(),
   } satisfies Omit<DatabaseFeirinhaOrderSchema, '_id'>);
 };
 
@@ -107,7 +87,6 @@ export default {
   countPublicOrders,
   getOrder,
   deleteOrder,
-  completeOrder,
   getUserOrders,
   listPublicOrders,
 };

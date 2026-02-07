@@ -5,6 +5,7 @@ import {
   SEASONAL_HARVEST_DEBUFF,
   SEASONAL_ROT_DEBUFF,
 } from './seasonsManager.js';
+import { getPlantationUpgrades } from './siloUtils.js';
 import {
   AvailableItems,
   AvailablePlants,
@@ -92,7 +93,7 @@ const getFieldWeight = (
 const getCalculatedFieldQuality = (field: PlantedField, currentSeason: Seasons): PlantQuality => {
   const plantData = Plants[field.plantType];
 
-  const haveFertilizer = isUpgradeApplied(AvailableItems.Fertilizer, field.upgrades ?? []);
+  const haveFertilizer = isUpgradeApplied(AvailableItems.Fertilizer, getPlantationUpgrades(field));
 
   const plantedInGoodSeason = field.plantedSeason === plantData.bestSeason;
   const plantedInBadSeason = field.plantedSeason === plantData.worstSeason;

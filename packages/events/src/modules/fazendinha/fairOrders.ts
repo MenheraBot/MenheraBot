@@ -142,7 +142,7 @@ const handleTakeOrder = async (
 
   await farmerRepository.updateFarmer(farmer.id, farmer.silo, farmer.items);
 
-  await fairOrderRepository.completeOrder(order._id);
+  await fairOrderRepository.deleteOrder(order._id)
   await notificationRepository.createNotification(
     order.userId,
     'commands:notificações.notifications.user-accepted-deal',

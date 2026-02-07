@@ -149,8 +149,7 @@ const feirinhaOrderSchema = new Schema({
   quality: { type: Number },
   weight: { type: Number },
   awards: { type: Object },
-  completedAt: { type: Number, default: Date.now },
-  completed: { type: Boolean },
+  createdAt: { type: Number, default: Date.now },
 });
 
 const notificationSchema = new Schema({

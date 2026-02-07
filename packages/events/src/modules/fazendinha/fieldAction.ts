@@ -26,6 +26,7 @@ import {
 } from './types.js';
 import {
   addPlants,
+  getPlantationUpgrades,
   getSiloLimits,
   groupPlantsWeight,
   isMatePlant,
@@ -40,7 +41,7 @@ const getPlantedField = (
   seed: AvailablePlants,
   currentSeason: Seasons,
 ): PlantedField => {
-  const fieldUpgrades = farmer.plantations[selectedField].upgrades ?? [];
+  const fieldUpgrades = getPlantationUpgrades(farmer.plantations[selectedField]);
 
   const harvestAt = getHarvestTime(currentSeason, seed, fieldUpgrades);
 
@@ -156,7 +157,7 @@ const harvestAllFields = async (
 
     farmer.plantations[index] = {
       isPlanted: false,
-      upgrades: field.upgrades ?? [],
+      upgrades: getPlantationUpgrades(field),
     };
 
     const success = state === PlantationState.Mature;
@@ -267,7 +268,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   farmer.plantations[selectedField] = {
     isPlanted: false,
-    upgrades: field.upgrades ?? [],
+    upgrades: getPlantationUpgrades(field),
   };
 
   const currentSeason = await getCurrentSeason();
@@ -321,7 +322,7 @@ const changeSelectedSeed = async (
 };
 
 const applyUpgrade = (buffId: AvailableItems, field: Plantation): Plantation => {
-  const upgrades = field.upgrades ?? [];
+  const upgrades = getPlantationUpgrades(field);
 
   const currentUpgrade = upgrades.find((u) => u.id === buffId);
 

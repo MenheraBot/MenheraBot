@@ -23,6 +23,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import {
   checkNeededPlants,
+  getPlantationUpgrades,
   getQuality,
   getQualityEmoji,
   getSiloLimits,
@@ -34,7 +35,7 @@ import starsRepository from '../../database/repositories/starsRepository.js';
 import { postTransaction } from '../../utils/apiRequests/statistics.js';
 import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
-import { millisToSeconds } from '../../utils/miscUtils.js';
+import { hoursToMillis, millisToSeconds } from '../../utils/miscUtils.js';
 import { AvailableItems } from './types.js';
 import { isUpgradeApplied } from './plantationState.js';
 import { applyUpgrade } from './fieldAction.js';
@@ -86,7 +87,7 @@ const displayAdministrateFarm = async (
   const hasItems = farmer.items.filter((i) => i.amount >= 1).length > 0;
 
   const hasUpgrade = farmer.plantations.some((p) =>
-    isUpgradeApplied(fertilizerItemId, p.upgrades ?? []),
+    isUpgradeApplied(fertilizerItemId, getPlantationUpgrades(p)),
   );
 
   const container = createContainer({
@@ -119,6 +120,14 @@ const displayAdministrateFarm = async (
   });
 
   farmer.plantations.forEach((f, i) => {
+    const upgrade = getPlantationUpgrades(f);
+
+    const disableUseItem =
+      upgrade[0] &&
+      upgrade[0].id === AvailableItems.Fertilizer &&
+      Date.now() + Items[AvailableItems.Fertilizer].duration - upgrade[0].expiresAt <
+        hoursToMillis(1);
+
     container.components.push(
       createSeparator(),
       createSection({
@@ -161,7 +170,7 @@ const displayAdministrateFarm = async (
             fertilizerItemId,
             applyToAll,
           ),
-          disabled: !hasItems,
+          disabled: !hasItems || disableUseItem,
         }),
       }),
     );
@@ -374,7 +383,7 @@ const handleAdministrativeComponents = async (ctx: ComponentInteractionContext):
     const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
     const hasUpgrade = farmer.plantations.some((p) =>
-      isUpgradeApplied(AvailableItems.Fertilizer, p.upgrades ?? []),
+      isUpgradeApplied(AvailableItems.Fertilizer, getPlantationUpgrades(p)),
     );
 
     if (hasUpgrade && applyToAll !== 'true') return displayAdministrateFarm(ctx, true);

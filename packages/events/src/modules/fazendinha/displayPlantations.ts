@@ -19,7 +19,7 @@ import { InteractionContext } from '../../types/menhera.js';
 import { getPlantationState } from './plantationState.js';
 import { Items, Plants } from './constants.js';
 import { getSeasonalInfo } from './seasonsManager.js';
-import { getQuality, getQualityEmoji, isMatePlant } from './siloUtils.js';
+import { getPlantationUpgrades, getQuality, getQualityEmoji, isMatePlant } from './siloUtils.js';
 
 const PlantStateIcon: Record<PlantationState, string> = {
   [PlantationState.Empty]: '🟫',
@@ -77,7 +77,7 @@ const parseUserPlantations = (
     const [plantState, timeToAction] = getPlantationState(field);
     const fieldText = getPlantationDisplay(ctx, plantState, timeToAction, field);
 
-    const upgrades = field.upgrades ?? [];
+    const upgrades = getPlantationUpgrades(field);
 
     const prependTitle = upgrades.reduce<string>((text, upgrade) => {
       if (upgrade.expiresAt <= Date.now()) return text;
