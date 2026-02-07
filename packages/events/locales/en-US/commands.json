@@ -1157,7 +1157,7 @@
         "no-items": "You don't have enough plants to accept this trade.",
         "order-gone": "This trade request doesn't exists anymore!",
         "silo-full": "You cannot accept this trade because your silo is full.",
-        "confirm-delete": "Are you really sure you wanna remove the request? You won't get any plants and items placed in the request. Only the prize in stars :star: will be returned.",
+        "confirm-delete": "Are you really sure you wanna remove the request? You won't get any tems placed in the request. Only the prize in stars :star: will be returned.",
         "order-accepted": "You accepted the trade. The plants, items, and stars have been credited to your account.",
         "order-description": "**neighbor:** {{user}}\n**Exchanging for:**\n{{awards}}",
         "order-award": "**{{amount}}{{metric}}** {{emoji}}",

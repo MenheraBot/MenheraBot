@@ -191,7 +191,7 @@ const harvestAllFields = async (
     parsedFields,
   );
 
-  await postMultipleFazendinhaHarvest(`${ctx.user.id}`, parsedFields);
+  await postMultipleFazendinhaHarvest(`${ctx.user.id}`, harvested);
 
   await executeDailies.harvestDailies(await userRepository.ensureFindUser(ctx.user.id), parsedFields);
 
