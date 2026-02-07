@@ -318,7 +318,7 @@ const handleReceiveModal = async (
         { limit: MAX_WEIGHT_IN_FAIR_ORDER },
       );
 
-    if (Number.isNaN(parsed) || parsed < 1) {
+    if (Number.isNaN(parsed) || (f.customId !== 'plant' && parsed < 1)) {
       invalidReason = ctx.prettyResponse('error', 'commands:fazendinha.feira.order.invalid-values');
       return;
     }
