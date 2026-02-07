@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Hotfix
 
 - Corrigido problema para criar um pedido de troca na feira de Erva Mate.
+- Corrigido cálculo de estatísticas da fazendinha ao colher mais de um campo ao mesmo tempo.
 
 ### Added
 
