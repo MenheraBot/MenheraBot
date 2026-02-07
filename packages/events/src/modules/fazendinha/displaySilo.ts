@@ -207,8 +207,6 @@ const handleButtonAction = async (ctx: ComponentInteractionContext): Promise<voi
 
     const byQuality = filterPlantsByQuality(farmer.silo);
 
-    console.log(byQuality[Number(quality) as PlantQuality]);
-
     return executeSellPlant(ctx, farmer, byQuality[Number(quality) as PlantQuality], sentQuality);
   }
 
