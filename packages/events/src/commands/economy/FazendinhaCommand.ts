@@ -14,7 +14,7 @@ import {
   executeButtonPressed,
   executeDailyDelivery,
 } from '../../modules/fazendinha/dailyDelivery.js';
-import { handleDissmissShop } from '../../modules/fazendinha/administrateFair.js';
+import { executeAdministrateFair, handleDissmissShop } from '../../modules/fazendinha/administrateFair.js';
 import { executeAnnounceProduct } from '../../modules/fazendinha/announceProduct.js';
 import { executeButtonAction, executeExploreFair } from '../../modules/fazendinha/exploreFair.js';
 import { User } from '../../types/discordeno.js';
@@ -201,6 +201,15 @@ const FazendinhaCommand = createCommand({
             },
           ],
         },
+        {
+          name: 'administrar',
+          nameLocalizations: { 'en-US': 'manage' },
+          description: '「🔧」・Administre os produtos anunciados na feira',
+          descriptionLocalizations: {
+            'en-US': '「🔧」・Manage the products announced at the fair',
+          },
+          type: ApplicationCommandOptionTypes.SubCommand,
+        },
       ],
     },
     {
@@ -237,12 +246,12 @@ const FazendinhaCommand = createCommand({
 
     const group = ctx.getSubCommandGroup();
 
-    if (command === 'administrar') return displayAdministrateFarm(ctx, false);
-
     if (group === 'feira') {
       if (command === 'anunciar') return executeAnnounceProduct(ctx, farmer);
 
       if (command === 'comprar') return executeExploreFair(ctx, farmer);
+
+      if (command === 'administrar') return executeAdministrateFair(ctx, 'EDIT_POST', ctx.authorData)
 
       if (command === 'trocas') {
         const user = ctx.getOption<User>('vizinho', 'users', false);
@@ -262,6 +271,8 @@ const FazendinhaCommand = createCommand({
         });
       }
     }
+
+    if (command === 'administrar') return displayAdministrateFarm(ctx, false);
 
     if (command === 'entregas')
       return executeDailyDelivery(ctx, farmer, ctx.authorData.selectedColor);

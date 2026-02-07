@@ -445,7 +445,7 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
 
 const handleManageFarm = async (ctx: ComponentInteractionContext) => {
   const [action] = ctx.sentData;
-  if (action === 'ADMIN_FAIR') return executeAdministrateFair(ctx);
+  if (action === 'ADMIN_FAIR') return executeAdministrateFair(ctx, 'EDIT_POST');
 
   if (action === 'ADMIN_FIELDS') return displayAdministrateFarm(ctx, false);
 

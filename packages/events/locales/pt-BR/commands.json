@@ -1263,7 +1263,14 @@
       "feirinha": {
         "no-items-in-user-fair": "Tu não possui itens anunciados na feira!",
         "remove-announcement": "Remover anúncio",
-        "dont-exists": "Esse anúncio não existe mais!"
+        "remove-announcements": "Remover anúncios",
+        "edit-announcements": "Atualizar anúncios",
+        "edit-announcement": "Atualizar preço",
+        "editing-price": "Atualizando preço de {{product}}",
+        "new-price": "Informe o novo preço",
+        "dont-exists": "Esse anúncio não existe mais!",
+        "edit-success": "O preço do anúncio foi atualizado com sucesso!",
+        "price-range": "O preço informado é inváldo! É necessário informar um valor maior que {{min}} :star: e menor que {{max}} :star:"
       },
       "silo": {
         "success": "Tudo feito! Tu aumentou o limite do teu silo",

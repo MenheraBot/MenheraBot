@@ -1258,7 +1258,14 @@
       "feirinha": {
         "no-items-in-user-fair": "You do not have items advertised at the fair!",
         "remove-announcement": "Remove announcement",
-        "dont-exists": "This announcement no longer exists!"
+        "dont-exists": "This announcement no longer exists!",
+        "remove-announcements": "Remove announcement",
+        "edit-announcement": "Update price",
+        "new-price": "Input the new price",
+        "editing-price": "Updating price for {{product}}",
+        "edit-announcements": "Update announcements",
+        "edit-success": "The announcement price has been successfully updated!",
+        "price-range": "The price you sent is invalid. The new price must be greater than {{min}} ⭐ and less than {{max}} ⭐"
       },
       "silo": {
         "success": "All done! You increased the limit of your silo",
