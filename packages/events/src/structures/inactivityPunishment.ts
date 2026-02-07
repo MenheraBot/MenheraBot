@@ -4,9 +4,11 @@ import { ApiTransactionReason } from '../types/api.js';
 import { postTransaction } from '../utils/apiRequests/statistics.js';
 import { debugError } from '../utils/debugError.js';
 import { createEmbed } from '../utils/discord/embedUtils.js';
-import { getMillisecondsToTheEndOfDay } from '../utils/miscUtils.js';
+import { daysToMillis, getMillisecondsToTheEndOfDay } from '../utils/miscUtils.js';
 
 let inactiveTimeout: NodeJS.Timeout;
+
+const PUNISH_AFTER = daysToMillis(60);
 
 const inactivityPunishment = async (): Promise<void> => {
   clearTimeout(inactiveTimeout);
@@ -19,7 +21,7 @@ const inactivityPunishment = async (): Promise<void> => {
           },
           {
             $or: [
-              { lastCommandAt: { $lte: Date.now() - 1_209_600_000 } },
+              { lastCommandAt: { $lte: Date.now() - PUNISH_AFTER } },
               { lastCommandAt: { $exists: false } },
             ],
           },
@@ -58,7 +60,7 @@ const inactivityPunishment = async (): Promise<void> => {
       const weeks =
         !a.lastCommandAt || a.lastCommandAt === 0
           ? 10
-          : parseFloat(((Date.now() - a.lastCommandAt) / 1_209_600_000).toFixed(1));
+          : parseFloat(((Date.now() - a.lastCommandAt) / PUNISH_AFTER).toFixed(1));
 
       const toReduceValue = (source: number, divider: number): number => {
         const toDivide = source / divider >= 4 ? 4 : 8;

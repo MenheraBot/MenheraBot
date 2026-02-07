@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Criado o comando `/fazendinha administrar`, que integra gerenciar campos, silo e feira.
 - Criado o comando `/fazendinha feira administrar`, que é um atalho para administrar a feira, disponível no `/fazendinha administrar`.
 - Criado o comando `/fazendinha feira trocas`: faça troca de plantas na feira por estrelinhas e/ou fertilizantes. 
-- Agora é possível atualizar o valor de um item anunciado na feira no `/fazendinha administrar` - Sugerido por 
+- Agora é possível atualizar o valor de um item anunciado na feira no `/fazendinha administrar` - Sugerido por @start_0
 
 ## Changed
 
@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - A planta `Melancia` foi renomeada para `Limão`.
 - As plantas `Morango` e `Maçã` tiveram suas posições de raridade alteradas.
 - Facilitado o uso do `/fazendinha feira anunciar`, removendo a necessidade de usar acentos para buscar por platnas.
+- A punição de inatividade agora começa após 60 dias, antes era 14.
 
 ## Fixed
 
