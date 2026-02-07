@@ -11,6 +11,7 @@ import {
   createCustomId,
 } from '../../utils/discord/componentUtils.js';
 import { User } from '../../types/discordeno.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
 
 const executeAllTimeBans = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [userId] = ctx.sentData;
@@ -109,8 +110,7 @@ const BlacklistCommand = createCommand({
         if (!usr) return finishCommand(ctx.makeMessage({ content: 'Nenhum user na DB' }));
 
         const msg = `== CURRENT BAN INFO ==\n\n• User :: ${user.username} [${
-          // @ts-expect-error It dont exists yet
-          user.displayName
+          getDisplayName(user)
         }] - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${usr.banReason}`;
 
         const button = createButton({

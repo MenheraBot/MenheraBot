@@ -282,10 +282,4 @@ orchestratorServer.start().catch((r) => {
   process.exit(1);
 });
 
-process.on('SIGTERM', async () => {
-  console.log('[PROCESS] Received SITGERM. Closing all conections');
-  await orchestratorServer.close(true);
-  process.exit(0);
-});
-
 export { sendEvent, getVersion };

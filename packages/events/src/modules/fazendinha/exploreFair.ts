@@ -1,10 +1,10 @@
 import { findBestMatch } from 'string-similarity';
-import { ButtonStyles } from '@discordeno/bot';
+import { ButtonStyles, MessageFlags } from '@discordeno/bot';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
 import { InteractionContext } from '../../types/menhera.js';
 import fairRepository from '../../database/repositories/fairRepository.js';
 import { DatabaseFarmerSchema } from '../../types/database.js';
-import { addPlants, getSiloLimits } from './siloUtils.js';
+import { addPlants, getQuality, getQualityEmoji, getSiloLimits } from './siloUtils.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import starsRepository from '../../database/repositories/starsRepository.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
@@ -14,12 +14,15 @@ import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
 import {
   createActionRow,
   createButton,
+  createContainer,
   createCustomId,
   createSelectMenu,
+  createSeparator,
+  createTextDisplay,
   resolveSeparatedStrings,
 } from '../../utils/discord/componentUtils.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
+import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { getDisplayName, mentionUser } from '../../utils/discord/userUtils.js';
 import { MAX_ITEMS_PER_FAIR_PAGE, Plants } from './constants.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
@@ -28,6 +31,7 @@ import { localizedResources } from '../../utils/miscUtils.js';
 import notificationRepository from '../../database/repositories/notificationRepository.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import { Interaction, User } from '../../types/discordeno.js';
+import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
 
 const listItemAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'item', false) ?? '';
@@ -69,45 +73,59 @@ const executeBuyItem = async (
   const exists = await fairRepository.doesAnnouncementExists(item);
 
   if (!exists)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:fazendinha.admin.feirinha.dont-exists'),
+    return ctx.makeLayoutMessage({
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('error', 'commands:fazendinha.admin.feirinha.dont-exists'),
+        ),
+      ],
     });
 
   const announcement = await fairRepository.getAnnouncement(item);
 
   if (!announcement)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:fazendinha.admin.feirinha.dont-exists'),
+    return ctx.makeLayoutMessage({
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('error', 'commands:fazendinha.admin.feirinha.dont-exists'),
+        ),
+      ],
     });
 
   if (announcement.userId === `${ctx.user.id}`)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.cant-buy-your-items'),
+    return ctx.makeLayoutMessage({
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.cant-buy-your-items'),
+        ),
+      ],
     });
 
   const userLimits = getSiloLimits(farmer);
 
   if (userLimits.used + announcement.weight > userLimits.limit)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.silo-limit'),
+    return ctx.makeLayoutMessage({
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.silo-limit'),
+        ),
+      ],
     });
 
   const user = await userRepository.ensureFindUser(ctx.user.id);
 
   if (user.estrelinhas < announcement.price)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.not-enough-stars'),
+    return ctx.makeLayoutMessage({
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.not-enough-stars'),
+        ),
+      ],
     });
+
+  const plantQuality = getQuality({ quality: announcement.plantQuality });
+  const qualityEmoji = getQualityEmoji(plantQuality);
+  const emojiText = `${qualityEmoji} ${Plants[announcement.plantType].emoji}`;
 
   await Promise.all([
     starsRepository.addStars(announcement.userId, announcement.price),
@@ -115,20 +133,26 @@ const executeBuyItem = async (
     fairRepository.deleteAnnouncement(announcement._id),
     farmerRepository.updateSilo(
       ctx.user.id,
-      addPlants(farmer.silo, [{ weight: announcement.weight, plant: announcement.plantType }]),
+      addPlants(farmer.silo, [
+        {
+          weight: announcement.weight,
+          plant: announcement.plantType,
+          quality: plantQuality,
+        },
+      ]),
     ),
     postTransaction(
       `${ctx.user.id}`,
       announcement.userId,
       announcement.price,
       'estrelinhas',
-      ApiTransactionReason.BUY_FAIR,
+      ApiTransactionReason.FAIR,
     ),
     notificationRepository.createNotification(
       announcement.userId,
       'commands:notificações.notifications.user-bought-announcement',
       {
-        emoji: Plants[announcement.plantType].emoji,
+        emoji: emojiText,
         weight: announcement.weight,
         username: ctx.user.username,
         stars: announcement.price,
@@ -136,12 +160,23 @@ const executeBuyItem = async (
     ),
   ]);
 
-  ctx.makeMessage({
-    components: [],
-    embeds: [],
-    content: ctx.prettyResponse('success', 'commands:fazendinha.feira.comprar.success', {
-      author: mentionUser(ctx.user.id),
-    }),
+  await displayFair(ctx, 0, user.selectedColor);
+
+  return ctx.followUp({
+    flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+    components: [
+      createTextDisplay(
+        ctx.prettyResponse('success', 'commands:fazendinha.feira.comprar.success', {
+          author: mentionUser(ctx.user.id),
+          description: ctx.locale('commands:fazendinha.feira.comprar.description', {
+            amount: announcement.weight,
+            emoji: emojiText,
+            plant: ctx.locale(`data:plants.${announcement.plantType}`),
+            price: announcement.price,
+          }),
+        }),
+      ),
+    ],
   });
 };
 
@@ -168,23 +203,27 @@ const displayFair = async (
       );
 
   if (announcements.length === 0)
-    return ctx.makeMessage({
-      embeds: [],
-      components: [],
-      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.comprar.no-announcements'),
+    return ctx.makeLayoutMessage({
+      flags: MessageFlags.Ephemeral,
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse(
+            'error',
+            `commands:fazendinha.feira.comprar.no-announcements${user ? '-user' : ''}`,
+          ),
+        ),
+      ],
     });
 
-  const embed = createEmbed({
-    author: {
-      name: ctx.locale(`commands:fazendinha.feira.comprar.${user ? 'user-fair' : 'fair'}`, {
-        user: user ? getDisplayName(user) : undefined,
-      }),
-      iconUrl: user ? getUserAvatar(user, { enableGif: true }) : undefined,
-    },
-    color: hexStringToNumber(embedColor),
-    description: '',
-    fields: [],
-    footer: page ? { text: ctx.locale('common:page', { page: page + 1 }) } : undefined,
+  const container = createContainer({
+    accentColor: hexStringToNumber(embedColor),
+    components: [
+      createTextDisplay(
+        `## ${ctx.locale(`commands:fazendinha.feira.comprar.${user ? 'user-' : ''}fair`, {
+          user: user ? getDisplayName(user) : undefined,
+        })}\n-# ${ctx.locale('common:page', { page: page + 1 })}`,
+      ),
+    ],
   });
 
   const selectMenu = createSelectMenu({
@@ -194,6 +233,8 @@ const displayFair = async (
     maxValues: 1,
     placeholder: ctx.locale('commands:fazendinha.feira.comprar.select-item'),
   });
+
+  let description = '';
 
   await new Promise((r) => {
     let done = 0;
@@ -213,9 +254,11 @@ const displayFair = async (
             mentionUser(item.userId)
           }`;
 
-      embed.description += `${ctx.locale('commands:fazendinha.feira.comprar.description', {
+      const qualityEmoji = getQualityEmoji(getQuality({ quality: item.plantQuality }));
+
+      description += `${ctx.locale('commands:fazendinha.feira.comprar.description', {
         amount: item.weight,
-        emoji: Plants[item.plantType].emoji,
+        emoji: `${qualityEmoji} ${Plants[item.plantType].emoji}`,
         plant: ctx.locale(`data:plants.${item.plantType}`),
         price: item.price,
       })}${
@@ -228,9 +271,12 @@ const displayFair = async (
       }`;
 
       selectMenu.options.push({
-        label: `${item.weight} Kg ${ctx.locale(`data:plants.${item.plantType}`)}${
-          user ? '' : ` (${i + 1})`
-        }`,
+        label: `${ctx.locale('commands:fazendinha.feira.order.order-name', {
+          plantEmoji: '',
+          plantName: ctx.locale(`data:plants.${item.plantType}`),
+          weight: item.weight,
+          qualityEmoji,
+        })}${user ? '' : ` (${i + 1})`}`,
         value: `${item._id}`,
         description: `${item.price} ⭐`,
         emoji: { name: Plants[item.plantType].emoji },
@@ -240,9 +286,16 @@ const displayFair = async (
     });
   });
 
-  const componentsToSend = [createActionRow([selectMenu])];
+  container.components.push(
+    createSeparator(),
+    createTextDisplay(description),
+    createSeparator(true),
+    createActionRow([selectMenu]),
+  );
 
-  if (!user) {
+  const shouldDisplayPagination = page > 0 || announcements.length >= MAX_ITEMS_PER_FAIR_PAGE;
+
+  if (!user && shouldDisplayPagination) {
     const backButton = createButton({
       customId: createCustomId(
         7,
@@ -271,12 +324,11 @@ const displayFair = async (
       disabled: page * MAX_ITEMS_PER_FAIR_PAGE + announcements.length >= totalAnnouncements,
     });
 
-    componentsToSend.push(createActionRow([backButton, nextButton]));
+    container.components.push(createActionRow([backButton, nextButton]));
   }
 
-  ctx.makeMessage({
-    embeds: [embed],
-    components: componentsToSend,
+  ctx.makeLayoutMessage({
+    components: [container],
   });
 };
 

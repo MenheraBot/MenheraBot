@@ -4,15 +4,19 @@ import ChatInputInteractionContext from '../../structures/command/ChatInputInter
 import { MessageFlags } from '@discordeno/bot';
 import { createCommand } from '../../structures/command/createCommand.js';
 import notificationRepository from '../../database/repositories/notificationRepository.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import {
   createActionRow,
   createButton,
+  createContainer,
   createCustomId,
+  createSeparator,
+  createTextDisplay,
 } from '../../utils/discord/componentUtils.js';
 import { millisToSeconds } from '../../utils/miscUtils.js';
 import { DatabaseNotificationSchema } from '../../types/database.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import userRepository from '../../database/repositories/userRepository.js';
 
 const calculateNotificationHash = (notifications: DatabaseNotificationSchema[]): string =>
   md5(notifications.reduce((p, c) => `${p}${c._id}`, ''));
@@ -20,26 +24,62 @@ const calculateNotificationHash = (notifications: DatabaseNotificationSchema[]):
 export const displayNotifications = async (
   ctx: ChatInputInteractionContext,
   notifications: DatabaseNotificationSchema[],
+  globalNotifications: DatabaseNotificationSchema[],
 ): Promise<void> => {
-  const notificationsMessage = notifications.map((n) =>
-    ctx.locale(
-      n.translationKey,
-      n.translationValues
-        ? { ...n.translationValues, unix: millisToSeconds(n.createdAt) }
-        : { unix: millisToSeconds(n.createdAt) },
-    ),
-  );
+  const normalNotifications = notifications.filter((n) => !n.important);
+  const importantNotifications = [
+    ...globalNotifications,
+    ...notifications.filter((a) => a.important),
+  ];
+
+  let notificationsMessage = normalNotifications
+    .map((n) =>
+      ctx.locale(
+        n.translationKey,
+        n.translationValues
+          ? { ...n.translationValues, unix: millisToSeconds(n.createdAt) }
+          : { unix: millisToSeconds(n.createdAt) },
+      ),
+    )
+    .join('\n- ');
+
+  const importantMessage = importantNotifications
+    .map((n) =>
+      ctx.locale(
+        n.translationKey,
+        n.translationValues
+          ? { ...n.translationValues, unix: millisToSeconds(n.createdAt) }
+          : { unix: millisToSeconds(n.createdAt) },
+      ),
+    )
+    .join('\n- ');
 
   const notificationHash = calculateNotificationHash(notifications);
 
-  const embed = createEmbed({
-    color: hexStringToNumber(ctx.authorData.selectedColor),
-    description: `- ${notificationsMessage.join('\n- ')}`,
-    title: ctx.locale('commands:notificações.your-notifications'),
-  });
+  const notificationsComponent = [];
 
-  if (embed.description?.length ?? 0 > 4050)
-    embed.description = `${embed.description?.slice(0, 4050)}...`;
+  if (importantMessage.length > 0) {
+    notificationsComponent.push(
+      createTextDisplay(
+        `### ${ctx.prettyResponse('warn', 'commands:notificações.important-notifications')}`,
+      ),
+      createTextDisplay(`- ${importantMessage}`),
+    );
+
+    if (notificationsMessage.length > 0) notificationsComponent.push(createSeparator());
+  }
+
+  const importantLength = importantMessage.length;
+
+  if (notificationsMessage.length > 3997 - importantLength)
+    notificationsMessage = `${notificationsMessage.slice(0, 3997 - importantLength)}...`;
+
+  if (notificationsMessage.length > 0) {
+    notificationsComponent.push(
+      createTextDisplay(`### ${ctx.locale('commands:notificações.your-notifications')}`),
+      createTextDisplay(`- ${notificationsMessage}`),
+    );
+  }
 
   const markAsRead = createButton({
     label: ctx.locale('commands:notificações.mark-as-read', { count: notifications.length }),
@@ -47,7 +87,16 @@ export const displayNotifications = async (
     customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, notificationHash),
   });
 
-  ctx.makeMessage({ components: [createActionRow([markAsRead])], embeds: [embed] });
+  notificationsComponent.push(createActionRow([markAsRead]));
+
+  const components = [
+    createContainer({
+      accentColor: hexStringToNumber(ctx.authorData.selectedColor),
+      components: notificationsComponent,
+    }),
+  ];
+
+  ctx.makeLayoutMessage({ components });
 };
 
 const executeMarkAsRead = async (ctx: ComponentInteractionContext): Promise<void> => {
@@ -68,10 +117,12 @@ const executeMarkAsRead = async (ctx: ComponentInteractionContext): Promise<void
     notifications.map((a) => a._id),
   );
 
-  ctx.makeMessage({
-    components: [],
-    embeds: [],
-    content: ctx.prettyResponse('success', 'commands:notificações.all-done'),
+  await userRepository.updateUser(ctx.user.id, { readNotificationsAt: Date.now() });
+
+  ctx.makeLayoutMessage({
+    components: [
+      createTextDisplay(ctx.prettyResponse('success', 'commands:notificações.all-done')),
+    ],
   });
 };
 
@@ -88,14 +139,21 @@ const NotificationsCommand = createCommand({
     finishCommand();
 
     const notifications = await notificationRepository.getUserUnreadNotifications(ctx.user.id);
+    const globalNotifications = await notificationRepository.getGlobalUnreadNotifications(
+      ctx.authorData.readNotificationsAt,
+    );
 
-    if (notifications.length === 0)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:notificações.no-unread-notificaions'),
+    if (notifications.length === 0 && globalNotifications.length === 0)
+      return ctx.makeLayoutMessage({
+        components: [
+          createTextDisplay(
+            ctx.prettyResponse('error', 'commands:notificações.no-unread-notificaions'),
+          ),
+        ],
         flags: MessageFlags.Ephemeral,
       });
 
-    displayNotifications(ctx, notifications);
+    displayNotifications(ctx, notifications, globalNotifications);
   },
 });
 

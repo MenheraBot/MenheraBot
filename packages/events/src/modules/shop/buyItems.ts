@@ -71,17 +71,18 @@ const buyItems = async (
   let itemsText = `\n`;
 
   for (let i = 1; i <= 6; i++) {
-    if (
-      !ctx.authorData.inventory.some((a) => a.id === i) &&
-      !ctx.authorData.inUseItems.some((a) => a.id === i)
-    )
-      itemsText += `**${ctx.locale(`data:magic-items.${i as 1}.name`)}** - ${ctx.locale(`data:magic-items.${i as 1}.description`)}\n`;
+    const haveItem =
+      ctx.authorData.inventory.some((a) => a.id === i) ||
+      ctx.authorData.inUseItems.some((a) => a.id === i);
 
-    selectMenu.options.push({
-      label: ctx.locale(`data:magic-items.${i as 1}.name`),
-      value: `${i}`,
-      description: `${(HuntMagicItems[i] as HuntProbablyBoostItem).cost} ${EMOJIS.estrelinhas}`,
-    });
+    itemsText += `${haveItem ? '~~' : ''}**${ctx.locale(`data:magic-items.${i as 1}.name`)}** - ${ctx.locale(`data:magic-items.${i as 1}.description`)}${haveItem ? '~~' : ""}\n`;
+
+    if (!haveItem)
+      selectMenu.options.push({
+        label: ctx.locale(`data:magic-items.${i as 1}.name`),
+        value: `${i}`,
+        description: `${(HuntMagicItems[i] as HuntProbablyBoostItem).cost} ${EMOJIS.estrelinhas}`,
+      });
   }
 
   if (selectMenu.options.length === 0) {

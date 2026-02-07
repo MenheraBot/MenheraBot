@@ -242,12 +242,13 @@
     "sell_plants": {
       "not-enough": "You don't have **{{amount}}** {{plant}} to sell",
       "invalid-amount": "You entered an invalid number of plants to sell",
-      "success": "Your plants were sold for **{{amount}}** :star: little stars\nNow you have **{{stars}}**⭐"
+      "success": "You got **{{amount}}** :star: little stars selling plants: {{plants}}\nNow you have **{{stars}}**⭐"
     },
     "buy_seeds": {
       "buy-seed-of": "Buy {{plant}} seed",
-      "plant-stats": "**Buy Value**: {{buyValue}} :star:\n**Sell Value:** {{sellValue}} :star:\n**Ripens in:** {{harvestTime}} min\n**Rots in:** {{rotTime}} min\n**Better in:** {{bestSeason}}\n**Worst in:** {{worstSeason}}",
+      "plant-stats": "**💰 Buy:** {{buyValue}} :star: | **Sell:** {{sellValue}} :star:\n**⏰ Grow:** {{harvestTime}} min | **🧟 Rot:** {{rotTime}} min\n**🌧️ Best:** {{bestSeason}} | **Worst:** {{worstSeason}}",
       "seed": "{{plant}} seed",
+      "select-category": "To see information about other plants, select a category below.",
       "success": "You spent **{{amount}}** :star: little stars buying seeds. Now you have **{{stars}}** ⭐.\n Time to plant them {{command}}",
       "not-enough-stars": "You don't have **{{amount}}** :star: stars to buy all these seeds",
       "invalid-amount": "You entered an invalid number of seeds to purchase",
@@ -922,6 +923,9 @@
     "select-type": "Chose a transaction class",
     "select-user": "Choose an user",
     "select-currency": "Choose the currency",
+    "filters": "Filter transactions",
+    "user-filter": "-# Search for transactions involving the selected user",
+    "error": "There was an error searching for this user transactions",
     "transactions": {
       "base": "**• **[<t:{{unix}}:d><t:{{unix}}:T> - <t:{{unix}}:R>] **-** ",
       "menhera_to_you": "**I** sent **you** **{{amount}}** {{currencyType}} {{emoji}} for {{reason}}",
@@ -989,7 +993,7 @@
       "upgrade_farm": "upgrading your farm",
       "daily_farm": "farm delivery",
       "daily_farm_title": "Daily Delivery",
-      "buy_fair": "buying in fair",
+      "buy_fair": "negotiating at the fair",
       "buy_fair_title": "Fair",
       "rps_command": "betting on rock paper scissors",
       "rps_command_title": "Rock Paper Scissors"
@@ -1115,6 +1119,50 @@
       "spring": "Spring"
     },
     "feira": {
+      "order": {
+        "user-orders": "{{user}}'s trade Requests",
+        "public-orders": "Neighborhood trade Requests",
+        "no-user-orders": "This user does not have any trade requests at the moment.",
+        "no-public-orders": "No one in the vicinity of the neighborhood is requesting trades at the moment.",
+        "complete-order": "Accept trade",
+        "trade-request": "Create trade request",
+        "edit-request": "Edit request",
+        "delete-order": "Delete request",
+        "order": "Request",
+        "no-order": "No requests yet",
+        "no-awards": "_Add something to trade_",
+        "order-name": "{{plantEmoji}} {{weight}} Kg {{plantName}} {{qualityEmoji}}",
+        "plant": "Plant",
+        "weight": "Weight",
+        "quality": "Quality",
+        "max-orders": "You cannot create a new request at the fair because you have reached the limit of published trades.",
+        "create-order-description": "Create a trade request at the fair. You can trade plants for stars and fertilizer!",
+        "view-public-orders": "See all requests",
+        "pagination": "Page {{page}} of {{totalPages}}",
+        "create-order": "Create trade request",
+        "edit-order": "Edit request",
+        "edit-award": "Edit items",
+        "no-awards-available": "You don't have any items available to add to the trade.",
+        "add-item": "Add fertilizers",
+        "add-estrelinhas": "Add stars",
+        "add-award": "Add trade items",
+        "add-award-description": "Adding both for the trade is not mandatory. If you prefer, you can add only one of the two.",
+        "invalid-weight": "You entered an invalid weight. The maximum allowed is **{{limit}} Kg**",
+        "invalid-estrelinhas": "You entered an invalid number of stars. The maximum allowed is **{{limit}} :star:**",
+        "invalid-plant": "You entered an invalid plant type !",
+        "poor-stars": "You don't have all those **stars** to add as a trade for the order!",
+        "poor-items": "You don't have all those **fertilizers** to add as a trade for the order!",
+        "Order-placed": "Your trade request has been published! If a user accepts the trade, you can return here to redeem the plants.",
+        "invalid-values": "You sent invalid values for the request!",
+        "no-items": "You don't have enough plants to accept this trade.",
+        "order-gone": "This trade request doesn't exists anymore!",
+        "silo-full": "You cannot accept this trade because your silo is full.",
+        "confirm-delete": "Are you really sure you wanna remove the request? You won't get any plants and items placed in the request. Only the prize in stars :star: will be returned.",
+        "order-accepted": "You accepted the trade. The plants, items, and stars have been credited to your account.",
+        "order-description": "**neighbor:** {{user}}\n**Exchanging for:**\n{{awards}}",
+        "order-award": "**{{amount}}{{metric}}** {{emoji}}",
+        "order-deleted": "You removed the trade request from the air. If any star rewards existed, they have been returned to your account. Item and plant rewards have been discarded."
+      },
       "announce": {
         "no-such-product": "This product does not exist!",
         "no-mate-announcement": "It is not possible to announce Mate {{emoji}} at the fair",
@@ -1129,8 +1177,9 @@
         "silo-limit": "You don't have enough silo space to buy this!",
         "not-enough-stars": "You don't have enough stars to buy this!",
         "item-locked": "You can't buy this item because you haven't unlocked it yet.",
-        "success": "All done, {{author}}. This item was purchased by you",
+        "success": "All done, {{author}}. You bought:{{description}}",
         "no-announcements": "There are currently no announcements in the neighborhood fair",
+        "no-announcements-user": "This user has no items announced in the fair.",
         "fair": "Neighborhood Fair",
         "description": "\n- {{amount}} Kg {{emoji}} **{{plant}}** for {{price}} :star:",
         "user-info": "{{user}} ({{index}})",
@@ -1142,9 +1191,13 @@
     },
     "plantations": {
       "field": "{{emojis}}Field ({{index}})",
-      "harvest-weight": "Amount harvested: {{weight}} Kg",
+      "harvest-text": " Last harvest:\n\n{{harvested}}",
       "seeds": "Seeds",
       "description": "**Current season:** {{emoji}} _{{season}}_\n**Ends** <t:{{unix}}:R>",
+      "select-seed": "_Select which seed you want to plant:_",
+      "explain-all-action": "Planting and harvesting in all fields only performs the action on fields that are empty/ripe. Ripening or rotten fields are not affected.",
+      "plant-all": "Plant all",
+      "harvest-all": "Harvest all",
       "silo": "Plants",
       "harvest": "Harvest",
       "discart": "Discart",
@@ -1164,16 +1217,24 @@
       "sell-plants": "Sell plants",
       "items": "Items",
       "sell-plant": "Sell {{plant}}",
+      "confirm-sell-all": "Sell all",
+      "confirm-title": "Do you really want to sell all plants?",
       "use-items": "Use items",
+      "sell-all-plants": "Sell every {{quality}}",
       "sell-all": "Sell Everything",
+      "choose-sell": "Choose what to sell",
       "sell-title": "Sell your plants",
+      "quality-plants-2": "Premium Plants",
+      "quality-plants-1": "Plants",
+      "quality-plants": "Plants",
+      "quality-plants-0": "Precarious Plants",
       "no-plants": "You don't have plants to sell",
       "description": "{{text}}\n- {{emoji}} **{{amount}}{{metric}}** - {{plant}} (**{{value}}** :star:)",
       "silo-is-full": "Your silo is full! Your silo has a maximum space of **{{limit}}** items. Free space selling plants >_<",
       "footer": "Silo's limit: {{used}}/{{limit}}",
       "select": "Select the quantity of {{plant}} you want to sell",
       "display-mate": "- {{emoji}} **∞** - {{plant}}",
-      "display-other": "- {{emoji}} **{{amount}}{{metric}}** - {{plant}}"
+      "display-other": "- {{quality}}{{emoji}} **{{amount}}{{metric}}** - {{plant}}"
     },
     "entregas": {
       "no-longer-available": "This delivery is no longer available",
@@ -1182,9 +1243,9 @@
       "deliver": "Yayy! Delivery completed! You received **{{award}}** :star:",
       "finished-bonus": "Complete truck! You've received a **{{award}}** :star: bonus for delivering all your daily deliveries!",
       "daily-deliveries": "Daily Deliveries",
-      "deliver-button": "Deliver {{index}}",
+      "deliver-button": "Deliver",
       "deliver-embed-name": "Delivery {{index}}",
-      "deliver-embed-name-finished": "~~Delivery {{index}}~~ ✅",
+      "deliver-embed-name-finished": "✅ ~~Delivery {{index}}~~",
       "deliver-embed-field": "Stars: **{{award}}** :star:",
       "deliver-embed-field-need": "Needs: **{{amount}} kg** {{emoji}}",
       "description": "Once a day the delivery truck will appear at your farm to pick up deliveries. Completing all deliveries before the truck leaves will give you an additional **{{bonus}}** :star: stars\n\nThe truck will leave <t:{{unix}}:R>"
@@ -1196,22 +1257,32 @@
     "admin": {
       "feirinha": {
         "no-items-in-user-fair": "You do not have items advertised at the fair!",
-        "remove-announcement": "Remove announcement {{index}}",
-        "dont-exists": "This announcement no longer exists!"
+        "remove-announcement": "Remove announcement",
+        "dont-exists": "This announcement no longer exists!",
+        "remove-announcements": "Remove announcement",
+        "edit-announcement": "Update price",
+        "new-price": "Input the new price",
+        "editing-price": "Updating price for {{product}}",
+        "edit-announcements": "Update announcements",
+        "edit-success": "The announcement price has been successfully updated!",
+        "price-range": "The price you sent is invalid. The new price must be greater than {{min}} ⭐ and less than {{max}} ⭐"
       },
       "silo": {
         "success": "All done! You increased the limit of your silo",
         "poor": "You don't have enough stars to increase your silo space",
-        "limit": "You can't upgrade your silo anymore! It is at maximum level",
         "title": "Upgrade your silo",
         "button": "Upgrade silo",
+        "goto-fair": "Manage fair",
+        "goto-fields": "Manage fields",
+        "manage-fair": "Manage the products announced by you on the neighbor fair",
+        "manage-fields": "Manage your fields and silo!",
+        "max-level-description": "The silo is already on its max level.",
         "description": "Increase your silo limit by **{{increase}}** spaces for just **{{cost}}** :star:\nCurrently you have **{{limit}}** limit spaces."
       },
       "fields": {
-        "apply-to-all": "All fields",
+        "apply-to-all": "Apply to all fields",
         "title": "Manage fields",
-        "use-item": "Use item on field {{field}}",
-        "use-item-all": "Use item on all fields",
+        "select-item": "Choose an item to use on fields",
         "footer": "Managing field {{field}}",
         "footer-all": "Managing all fields",
         "no-upgrades": "No upgrades applied at the moment.",
@@ -1229,9 +1300,9 @@
       },
       "unlocked-field": "You bought this land from your neighbor!",
       "your-fields": "Your Fields",
-      "admin": "Manage {{field}}",
-      "buy": "Buy {{field}}",
-      "needed-items": "This field is not on your neighbor's land. He was paid to sell you. He is asking for **{{star}}** :star: and **{{plants, list}}** for it."
+      "use-item": "Use item",
+      "buy": "Buy field",
+      "needed-items": "This field is not on your neighbor's land. He is asking for **{{star}}** :star:, **{{plants, list}}** for it."
     }
   },
   "titulo": {
@@ -1249,6 +1320,7 @@
     "mark-as-read": "",
     "mark-as-read-one": "Mark as read",
     "mark-as-read-other": "Mark all as read",
+    "important-notifications": "Important messages",
     "cant-clear": "You have new notifications. Use the command again to mark all as read.",
     "all-done": "There you go! Your notifications have been marked as read!",
     "notifications": {
@@ -1258,6 +1330,8 @@
       "user-won-bicho": "You won **{{stars}}** :star: with your bet in /bicho on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Heyy, Lux here! I just gave you a brand new Badge! Check your profile >.<",
       "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Hi, Lux here. I added a title to your account! Take a look at `/personalize title` >.<",
+      "user-accepted-deal": "**@{{username}}** accepted your deal request **{{name}}** at the fair on <t:{{unix}}:d> at <t:{{unix}}:T>",
+      "lux-message": "[<t:{{unix}}:d> <t:{{unix}}:T>] **[Menhera]**: {{enUs}}",
       "finished-daily": "",
       "finished-daily-one": "You have completed **{{count}}** mission! Your rewards are **{{price}}** :star: on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "finished-daily-other": "You have completed **{{count}}** missions! Your rewards are **{{price}}** :star: on <t:{{unix}}:d> at <t:{{unix}}:T>"
@@ -1284,7 +1358,8 @@
       "roll": "({{index}}) Roll",
       "seed": "({{index}}) Seed",
       "plant": "({{index}}) Plant",
-      "hunt": "({{index}}) Hunt"
+      "hunt": "({{index}}) Hunt",
+      "fertilizer": "({{index}}) Fertilizer"
     },
     "descriptions": {
       "just_bet": "{{emoji}} Bet on _{{specification}}_ **{{count}}** times. ({{has}}/{{need}})",
@@ -1301,7 +1376,9 @@
       "win_stars_in_bets": "{{emoji}} Conquer **{{need}}** :star: playing _bicho_, _blackjack_ or _roulette_. ({{has}}/{{need}})",
       "finish_delivery": "{{emoji}} Make **{{need}}** deliveries from the farm. ({{has}}/{{need}})",
       "finish_delivery-one": "{{emoji}} Make **{{need}}** delivery from the farm. ({{has}}/{{need}})",
-      "finish_delivery-other": "{{emoji}} Make **{{need}}** deliveries from the farm. ({{has}}/{{need}})"
+      "finish_delivery-other": "{{emoji}} Make **{{need}}** deliveries from the farm. ({{has}}/{{need}})",
+      "harvest_quality": "{{emoji}} Harvest **{{need}}** Kg of _{{specification}}_ plants. ({{has}}/{{need}})",
+      "harvest_category": "{{emoji}} Harvest **{{need}}** Kg of plants clasified as _{{specification}}_. ({{has}}/{{need}})"
     }
   },
   "pedrapapeltesoura": {

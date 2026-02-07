@@ -12,6 +12,7 @@ import { getEnviroments } from './utils/getEnviroments.js';
 import { logger } from './utils/logger.js';
 import { updateCommandsOnApi } from './utils/updateApiCommands.js';
 import { desiredProperties } from './desiredProperties.js';
+import { setupSignalHandlers } from './internals/gracefullShutdown.js';
 
 const { DISCORD_TOKEN, DISCORD_APPLICATION_ID } = getEnviroments([
   'DISCORD_TOKEN',
@@ -33,6 +34,8 @@ setupEventHandlers();
 
 await createIpcConnection();
 setupInternals(bot);
+
+setupSignalHandlers(bot);
 
 logger.info('[READY] I am ready to process events!');
 

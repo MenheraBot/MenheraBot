@@ -6,7 +6,8 @@ import {
   MIN_DELIVERY_WEIGHT,
   Plants,
 } from './constants.js';
-import { DeliveryMission } from './types.js';
+import { getQuality } from './siloUtils.js';
+import { DeliveryMission, PlantQuality } from './types.js';
 
 const getRandomAmount = (): number => {
   return parseFloat(
@@ -21,16 +22,35 @@ const calculateUserDailyDeliveries = (): DeliveryMission[] => {
 
   for (let i = 0; i < DELIVERIES_AMOUNT; i++) {
     const neededPlants = getRandomAmount();
-    const plantType = Math.floor(Math.random() * 25);
+    const plantType = Math.floor(Math.random() * 3);
+
+    const plantQualityRandomness = Math.floor(Math.random() * 10) + 1;
+
+    const randomQuality =
+      plantQualityRandomness >= 4
+        ? PlantQuality.Normal
+        : plantQualityRandomness >= 2
+          ? PlantQuality.Best
+          : PlantQuality.Worst;
+
     const maxAward = (plantType + 1) * neededPlants * 30 + 10 * Plants[plantType as 1].sellValue;
     const minAward = maxAward * 0.7;
 
     const award = Math.floor(Math.random() * (maxAward - minAward) + minAward);
 
+    if (
+      toReturnDailies.some(
+        (a) => a.needs[0].plant === plantType && getQuality(a.needs[0]) === randomQuality,
+      )
+    ) {
+      i -= 1;
+      continue;
+    }
+
     toReturnDailies.push({
       award,
       experience: Math.floor((plantType + 1) * 10 + neededPlants * 50),
-      needs: [{ weight: neededPlants, plant: plantType }],
+      needs: [{ weight: neededPlants, plant: plantType, quality: randomQuality }],
       finished: false,
     });
   }

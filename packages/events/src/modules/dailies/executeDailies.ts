@@ -1,8 +1,9 @@
 import notificationRepository from '../../database/repositories/notificationRepository.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import { ChatInputInteractionCommand } from '../../types/commands.js';
-import { DatabaseUserSchema } from '../../types/database.js';
-import { AvailablePlants } from '../fazendinha/types.js';
+import { DatabaseUserSchema, QuantitativePlant } from '../../types/database.js';
+import { Plants } from '../fazendinha/constants.js';
+import { getQuality } from '../fazendinha/siloUtils.js';
 import { FINISHED_DAILY_AWARD, getDailyById } from './dailies.js';
 import { getUserDailies } from './getUserDailies.js';
 import { Daily, DatabaseDaily } from './types.js';
@@ -11,6 +12,7 @@ const executeDailies = async (
   user: DatabaseUserSchema,
   shouldExecute: (dailyData: Daily, specification?: string) => boolean,
   toIncrease = 1,
+  getIncreaseFunc?: (d: DatabaseDaily) => number,
 ): Promise<void> => {
   const userDailies = await getUserDailies(user);
 
@@ -28,7 +30,9 @@ const executeDailies = async (
     if (daily.has >= daily.need) return;
 
     needUpdate = true;
-    daily.has += toIncrease;
+    const increase = getIncreaseFunc?.(daily) ?? toIncrease;
+
+    daily.has += increase;
 
     daily.has = parseFloat(daily.has.toFixed(1));
 
@@ -113,16 +117,66 @@ const successOnHunt = async (user: DatabaseUserSchema, times: number): Promise<v
   await executeDailies(user, shouldExecute, times);
 };
 
-const harvestPlant = async (
+const harvestCategory = async (
   user: DatabaseUserSchema,
-  type: AvailablePlants,
-  weight: number,
+  plants: QuantitativePlant[],
 ): Promise<void> => {
   const shouldExecute = (dailyData: Daily, specification?: string) => {
-    return dailyData.type === 'harvest_plants' && `${type}` === specification;
+    return (
+      dailyData.type === 'harvest_category' &&
+      plants.some((a) => `${Plants[a.plant].category}` === specification)
+    );
   };
 
-  await executeDailies(user, shouldExecute, weight);
+  await executeDailies(
+    user,
+    shouldExecute,
+    1,
+    (d) => plants.find((a) => `${Plants[a.plant].category}` === d.specification)?.weight ?? 1,
+  );
+};
+
+const harvestQuality = async (
+  user: DatabaseUserSchema,
+  plants: QuantitativePlant[],
+): Promise<void> => {
+  const shouldExecute = (dailyData: Daily, specification?: string) => {
+    return (
+      dailyData.type === 'harvest_quality' &&
+      plants.some((a) => `${getQuality(a)}` === specification)
+    );
+  };
+
+  await executeDailies(
+    user,
+    shouldExecute,
+    1,
+    (d) => plants.find((a) => `${getQuality(a)}` === d.specification)?.weight ?? 1,
+  );
+};
+
+const harvestPlant = async (
+  user: DatabaseUserSchema,
+  plants: QuantitativePlant[],
+): Promise<void> => {
+  const shouldExecute = (dailyData: Daily, specification?: string) => {
+    return (
+      dailyData.type === 'harvest_plants' && plants.some((a) => `${a.plant}` === specification)
+    );
+  };
+
+  await executeDailies(
+    user,
+    shouldExecute,
+    1,
+    (d) => plants.find((a) => `${a.plant}` === d.specification)?.weight ?? 1,
+  );
+};
+
+const harvestDailies = async (user: DatabaseUserSchema, plants: QuantitativePlant[]) => {
+  await harvestPlant(user, plants);
+  await harvestQuality(user, plants);
+  await harvestCategory(user, plants);
 };
 
 const finishDelivery = async (user: DatabaseUserSchema): Promise<void> => {
@@ -137,7 +191,7 @@ export default {
   useCommand,
   justBet,
   winBet,
-  harvestPlant,
+  harvestDailies,
   finishDelivery,
   winStarsInBet,
   announceProduct,

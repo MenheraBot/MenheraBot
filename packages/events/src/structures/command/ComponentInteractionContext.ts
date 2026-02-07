@@ -13,7 +13,7 @@ import {
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests.js';
 import { User } from '../../types/discordeno.js';
-import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
+import { enableLayoutMessage } from '../../utils/discord/componentUtils.js';
 
 export type CanResolve = 'users' | 'members' | false;
 
@@ -99,9 +99,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
     }).catch((e) => this.captureException(e));
   }
 
-  async respondInteraction(
-    options: InteractionCallbackData,
-  ): Promise<void> {
+  async respondInteraction(options: InteractionCallbackData): Promise<void> {
     if (!this.replied) {
       await sendInteractionResponse(this.interaction.id, this.interaction.token, {
         type: InteractionResponseTypes.ChannelMessageWithSource,
@@ -117,10 +115,9 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   }
 
   async makeLayoutMessage(
-    options: Omit<InteractionCallbackData, 'embed' | 'content' | 'stickers' | 'poll'>,
+    options: Omit<InteractionCallbackData, 'embeds' | 'content' | 'stickers' | 'poll'>,
   ) {
-    options.flags = setComponentsV2Flag(options.flags ?? 0);
-    return this.makeMessage(options);
+    return this.makeMessage(enableLayoutMessage(options));
   }
 
   async makeMessage(options: InteractionCallbackData): Promise<void> {

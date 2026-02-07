@@ -6,24 +6,20 @@ import { changeSelectedSeed, executeFieldAction } from '../../modules/fazendinha
 import { displaySilo, handleButtonAction } from '../../modules/fazendinha/displaySilo.js';
 import { AvailablePlants } from '../../modules/fazendinha/types.js';
 import {
-  executeAdministrateFields,
+  displayAdministrateFarm,
   handleAdministrativeComponents,
-} from '../../modules/fazendinha/administrateFields.js';
+  handleManageFarm,
+} from '../../modules/fazendinha/administrateFarm.js';
 import {
   executeButtonPressed,
   executeDailyDelivery,
 } from '../../modules/fazendinha/dailyDelivery.js';
-import {
-  executeAdministrateSilo,
-  handleUpgradeSilo,
-} from '../../modules/fazendinha/administrateSilo.js';
-import {
-  executeAdministrateFair,
-  handleDissmissShop,
-} from '../../modules/fazendinha/administrateFair.js';
+import { executeAdministrateFair, handleDissmissShop } from '../../modules/fazendinha/administrateFair.js';
 import { executeAnnounceProduct } from '../../modules/fazendinha/announceProduct.js';
 import { executeButtonAction, executeExploreFair } from '../../modules/fazendinha/exploreFair.js';
 import { User } from '../../types/discordeno.js';
+import { displayFairOrders, handleFairOrderButton } from '../../modules/fazendinha/fairOrders.js';
+import userRepository from '../../database/repositories/userRepository.js';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -83,9 +79,9 @@ const FazendinhaCommand = createCommand({
           type: ApplicationCommandOptionTypes.SubCommand,
           name: 'anunciar',
           nameLocalizations: { 'en-US': 'advertise' },
-          description: '「🏷️」・Anuncie um produto na feira da vizinhança',
+          description: '「🎰」・Anuncie um produto na feira da vizinhança',
           descriptionLocalizations: {
-            'en-US': '「🏷️」・Advertise a product at the neighborhood fair',
+            'en-US': '「🎰」・Advertise a product at the neighborhood fair',
           },
           options: [
             {
@@ -107,6 +103,34 @@ const FazendinhaCommand = createCommand({
               maxValue: 10,
               required: true,
             },
+
+            {
+              name: 'qualidade',
+              nameLocalizations: { 'en-US': 'quality' },
+              description: 'Qualidade da planta que está querendo vender',
+              descriptionLocalizations: {
+                'en-US': 'Plant quality that you want to sell',
+              },
+              type: ApplicationCommandOptionTypes.Integer,
+              required: true,
+              choices: [
+                {
+                  name: 'Planta Prêmium 🔹',
+                  value: 2,
+                  nameLocalizations: { 'en-US': 'Premium Plant 🔹' },
+                },
+                {
+                  name: 'Planta',
+                  value: 1,
+                  nameLocalizations: { 'en-US': 'Plant' },
+                },
+                {
+                  name: 'Planta Precária 🔻',
+                  value: 0,
+                  nameLocalizations: { 'en-US': 'Precarious Plant 🔻' },
+                },
+              ],
+            },
             {
               name: 'preço',
               nameLocalizations: { 'en-US': 'price' },
@@ -117,6 +141,35 @@ const FazendinhaCommand = createCommand({
               type: ApplicationCommandOptionTypes.Integer,
               autocomplete: true,
               required: true,
+            },
+          ],
+        },
+        {
+          name: 'trocas',
+          nameLocalizations: { 'en-US': 'trades' },
+          description: '「📥」・Troque produtos na sua vizinhança',
+          descriptionLocalizations: { 'en-US': '「📥」・ Trade products on your neighborhood.' },
+          type: ApplicationCommandOptionTypes.SubCommand,
+          options: [
+            {
+              name: 'vizinho',
+              nameLocalizations: { 'en-US': 'neighbor' },
+              description: 'Vizinho para ver os pedidos de trocas',
+              descriptionLocalizations: {
+                'en-US': 'Neighbor to check the trade requests',
+              },
+              type: ApplicationCommandOptionTypes.User,
+              required: false,
+            },
+            {
+              type: ApplicationCommandOptionTypes.Integer,
+              name: 'página',
+              nameLocalizations: { 'en-US': 'page' },
+              description: 'Página dos pedidos que tu quer ver',
+              descriptionLocalizations: { 'en-US': 'Trade requests page you want to see' },
+              required: false,
+              minValue: 1,
+              maxValue: 100,
             },
           ],
         },
@@ -148,38 +201,25 @@ const FazendinhaCommand = createCommand({
             },
           ],
         },
+        {
+          name: 'administrar',
+          nameLocalizations: { 'en-US': 'manage' },
+          description: '「🔧」・Administre os produtos anunciados na feira',
+          descriptionLocalizations: {
+            'en-US': '「🔧」・Manage the products announced at the fair',
+          },
+          type: ApplicationCommandOptionTypes.SubCommand,
+        },
       ],
     },
     {
       name: 'administrar',
       nameLocalizations: { 'en-US': 'manage' },
-      description: '「⚙️」・Administre toda a sua fazenda',
+      description: '「🔧」・Administre toda a sua fazenda',
       descriptionLocalizations: {
-        'en-US': '「⚙️」・Manage all of your farm',
+        'en-US': '「🔧」・Manage all of your farm',
       },
-      type: ApplicationCommandOptionTypes.SubCommandGroup,
-      options: [
-        {
-          name: 'campos',
-          nameLocalizations: { 'en-US': 'fields' },
-          description: '「🟫」・Administre os campos de sua fazenda',
-          descriptionLocalizations: { 'en-US': '「🟫」・Manage your farm fields' },
-          type: ApplicationCommandOptionTypes.SubCommand,
-        },
-        {
-          name: 'silo',
-          description: '「🧺」・Administre o limite do seu silo',
-          descriptionLocalizations: { 'en-US': '「🧺」・Manage the limits from your silo' },
-          type: ApplicationCommandOptionTypes.SubCommand,
-        },
-        {
-          name: 'feira',
-          nameLocalizations: { 'en-US': 'fair' },
-          description: '「🛒」・Administre a sua feirinha da vizinhança',
-          descriptionLocalizations: { 'en-US': '「🛒」・Manage your neighborhood fair' },
-          type: ApplicationCommandOptionTypes.SubCommand,
-        },
-      ],
+      type: ApplicationCommandOptionTypes.SubCommand,
     },
   ],
   category: 'economy',
@@ -189,10 +229,11 @@ const FazendinhaCommand = createCommand({
     handleButtonAction,
     handleAdministrativeComponents,
     executeButtonPressed,
-    handleUpgradeSilo,
+    handleManageFarm,
     handleDissmissShop,
     executeButtonAction,
     handleButtonAction,
+    handleFairOrderButton,
   ],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
@@ -205,19 +246,33 @@ const FazendinhaCommand = createCommand({
 
     const group = ctx.getSubCommandGroup();
 
-    if (group === 'administrar') {
-      if (command === 'campos') return executeAdministrateFields(ctx, farmer);
-
-      if (command === 'silo') return executeAdministrateSilo(ctx, farmer);
-
-      if (command === 'feira') return executeAdministrateFair(ctx, ctx.authorData);
-    }
-
     if (group === 'feira') {
       if (command === 'anunciar') return executeAnnounceProduct(ctx, farmer);
 
       if (command === 'comprar') return executeExploreFair(ctx, farmer);
+
+      if (command === 'administrar') return executeAdministrateFair(ctx, 'EDIT_POST', ctx.authorData)
+
+      if (command === 'trocas') {
+        const user = ctx.getOption<User>('vizinho', 'users', false);
+        const page = ctx.getOption<number>('página', false) ?? 1;
+
+        const isAuthorTarget = !user || ctx.user.id === user.id;
+
+        const userData = isAuthorTarget
+          ? ctx.authorData
+          : await userRepository.ensureFindUser(user.id);
+
+        const realFarmer = isAuthorTarget ? farmer : await farmerRepository.getFarmer(user.id);
+
+        return displayFairOrders(ctx, realFarmer, userData.selectedColor, {
+          user: isAuthorTarget ? undefined : user,
+          page: isAuthorTarget ? page - 1 : undefined,
+        });
+      }
     }
+
+    if (command === 'administrar') return displayAdministrateFarm(ctx, false);
 
     if (command === 'entregas')
       return executeDailyDelivery(ctx, farmer, ctx.authorData.selectedColor);

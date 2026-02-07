@@ -21,6 +21,7 @@ import {
   handleButtonAction,
 } from '../../modules/fazendinha/displaySilo.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
+import { PlantCategories } from '../../modules/fazendinha/types.js';
 
 const ShopCommand = createCommand({
   path: '',
@@ -283,7 +284,8 @@ const ShopCommand = createCommand({
 
       if (subCommand === 'temas') return buyThemes(ctx, finishCommand);
 
-      if (subCommand === 'sementes') return buySeeds(ctx, finishCommand);
+      if (subCommand === 'sementes')
+        return finishCommand(buySeeds(ctx, PlantCategories.Grain, ctx.authorData.selectedColor));
     }
 
     if (subCommandGroup === 'preços') {

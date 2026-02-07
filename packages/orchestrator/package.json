@@ -10,6 +10,7 @@
     "build": "tsc --project tsconfig.json",
     "typecheck": " tsc --project tsconfig.json --noEmit",
     "start": "NODE_ENV=production node .",
+    "build:dev": "pnpm build && pnpm dev",
     "dev": "NODE_ENV=development node --env-file=.env ."
   },
   "author": "Luxanna Crownguard (ySnoopyDogy)",
@@ -19,13 +20,13 @@
     "koa": "^3.0.3",
     "koa-body": "^6.0.1",
     "net-ipc": "^2.2.2",
-    "qs": "^6.14.0"
+    "qs": "^6.14.1"
   },
   "repository": "https://github.com/MenheraBot/MenheraBot",
   "license": "MIT",
   "readme": "https://github.com/MenheraBot/MenheraBot#readme",
   "devDependencies": {
-    "@discordeno/bot": "22.0.1-next.bbdd2d1",
+    "@discordeno/bot": "22.0.1-next.8694f57",
     "@types/koa": "^3.0.0",
     "@types/koa__router": "^12.0.4",
     "@types/qs": "^6.14.0"

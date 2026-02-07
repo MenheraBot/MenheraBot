@@ -5,6 +5,7 @@ import {
   DatabaseCreditsSchema,
   DatabaseEventSchema,
   DatabaseFarmerSchema,
+  DatabaseFeirinhaOrderSchema,
   DatabaseFeirinhaSchema,
   DatabaseGuildSchema,
   DatabaseNotificationSchema,
@@ -16,6 +17,8 @@ import {
 } from '../types/database.js';
 
 const { Schema, model } = mongoose;
+
+mongoose.set('strictQuery', true);
 
 const cmdSchema = new Schema({
   _id: { type: String },
@@ -88,6 +91,7 @@ const userSchema = new Schema({
   dailyDayId: { type: Number, default: 0 },
   allowMamar: { type: Boolean, default: true },
   completedDailies: { type: Number, default: 0 },
+  readNotificationsAt: { type: Number, default: -1 },
 });
 
 const themeCredits = new Schema({
@@ -133,10 +137,20 @@ const titlesSchema = new Schema({
 const feirinhaSchema = new Schema({
   userId: { type: String },
   plantType: { type: Number },
+  plantQuality: { type: Number },
   weight: { type: Number },
   price: { type: Number },
   [`name_pt-BR`]: { type: String },
   [`name_en-US`]: { type: String },
+});
+
+const feirinhaOrderSchema = new Schema({
+  userId: { type: String },
+  plant: { type: Number },
+  quality: { type: Number },
+  weight: { type: Number },
+  awards: { type: Object },
+  createdAt: { type: Number, default: Date.now },
 });
 
 const notificationSchema = new Schema({
@@ -145,6 +159,7 @@ const notificationSchema = new Schema({
   translationValues: { type: Object },
   createdAt: { type: Number },
   unread: { type: Boolean },
+  important: { type: Boolean },
 });
 
 const suggestionLimitSchema = new Schema({
@@ -168,6 +183,7 @@ export const profileImagesModel = model<DatabaseProfileImagesSchema>('images', p
 export const farmerModel = model<DatabaseFarmerSchema>('farmer', farmerSchema);
 export const titlesModel = model<DatabaseTitlesSchema>('titles', titlesSchema);
 export const feirinhaModel = model<DatabaseFeirinhaSchema>('feirinha', feirinhaSchema);
+export const feirinhaOrderModel = model<DatabaseFeirinhaOrderSchema>('order', feirinhaOrderSchema);
 export const notificationModel = model<DatabaseNotificationSchema>(
   'notification',
   notificationSchema,

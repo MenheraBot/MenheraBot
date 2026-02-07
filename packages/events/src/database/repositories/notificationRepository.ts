@@ -5,6 +5,7 @@ import { MainRedisClient } from '../databases.js';
 import { daysToMillis } from '../../utils/miscUtils.js';
 import { Translation } from '../../types/i18next.js';
 import { registerCacheStatus } from '../../structures/initializePrometheus.js';
+import { bot } from '../../index.js';
 
 const parseNotification = (
   notification: DatabaseNotificationSchema,
@@ -15,6 +16,7 @@ const parseNotification = (
   translationKey: notification.translationKey,
   translationValues: notification.translationValues,
   unread: notification.unread,
+  important: notification.important,
 });
 
 const purgeNotificationCache = (userId: BigString): void => {
@@ -26,6 +28,7 @@ const createNotification = async (
   userId: BigString,
   translationKey: Translation,
   translationValues: unknown = {},
+  important = false,
 ): Promise<void> => {
   purgeNotificationCache(userId);
 
@@ -35,7 +38,30 @@ const createNotification = async (
     translationKey,
     translationValues,
     unread: true,
+    important,
   });
+};
+
+const getGlobalUnreadNotifications = async (unreadSince: number) => {
+  const notifications = await notificationModel
+    .find({
+      important: true,
+      userId: bot.applicationId,
+      createdAt: { $gt: unreadSince },
+    })
+    .sort({ createdAt: -1 });
+
+  return notifications.map(parseNotification);
+};
+
+const countGlobalUnreadNotifications = async (unreadSince: number) => {
+  const notifications = await notificationModel.countDocuments({
+    important: true,
+    userId: bot.applicationId,
+    createdAt: { $gt: unreadSince },
+  });
+
+  return notifications;
 };
 
 const getUserUnreadNotifications = async (
@@ -47,7 +73,12 @@ const getUserUnreadNotifications = async (
 
   if (fromRedis) return JSON.parse(fromRedis);
 
-  const fromMongo = await notificationModel.find({ userId: `${userId}`, unread: true });
+  const fromMongo = await notificationModel
+    .find({
+      userId: `${userId}`,
+      unread: true,
+    })
+    .sort({ createdAt: -1 });
 
   MainRedisClient.setex(`notifications_count:${userId}`, 3600, fromMongo.length);
 
@@ -106,5 +137,7 @@ export default {
   getUserUnreadNotifications,
   markNotificationsAsRead,
   getUserTotalUnreadNotifications,
+  getGlobalUnreadNotifications,
+  countGlobalUnreadNotifications,
   deleteOldNotifications,
 };

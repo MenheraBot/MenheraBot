@@ -1,13 +1,20 @@
 import {
-  ActionRow,
   ApplicationCommandOptionTypes,
+  ButtonComponent,
   ButtonStyles,
-  DiscordEmbedField,
+  SectionComponent,
+  TextDisplayComponent,
 } from '@discordeno/bot';
 
 import { bot } from '../../index.js';
-import { createActionRow, createButton } from '../../utils/discord/componentUtils.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import {
+  createButton,
+  createContainer,
+  createSection,
+  createSeparator,
+  createTextDisplay,
+} from '../../utils/discord/componentUtils.js';
+import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import userRepository from '../../database/repositories/userRepository.js';
@@ -27,17 +34,22 @@ const createField = (
   type: string,
   cooldown: number,
   username: string,
-): DiscordEmbedField => ({
-  name: ctx.locale(`commands:cooldowns.${type as 'vote'}`),
-  value: ctx.locale(
-    canDo(cooldown) ? 'commands:cooldowns.no-cooldown' : 'commands:cooldowns.time',
-    {
-      unix: millisToSeconds(cooldown + Date.now()),
-      user: username,
-    },
-  ),
-  inline: false,
-});
+  button?: ButtonComponent,
+): TextDisplayComponent | SectionComponent => {
+  const text = createTextDisplay(
+    `### ${ctx.locale(`commands:cooldowns.${type as 'vote'}`)}\n${ctx.locale(
+      canDo(cooldown) ? 'commands:cooldowns.no-cooldown' : 'commands:cooldowns.time',
+      {
+        unix: millisToSeconds(cooldown + Date.now()),
+        user: username,
+      },
+    )}`,
+  );
+
+  if (!button) return text;
+
+  return createSection({ components: [text], accessory: button });
+};
 
 const CooldownsCommand = createCommand({
   path: '',
@@ -72,57 +84,69 @@ const CooldownsCommand = createCommand({
 
     const farmer = await farmerRepository.getFarmer(userToUse.id);
 
-    const farmerFields = farmer.plantations.map((p, i) => ({
-      name: ctx.locale('commands:cooldowns.field', { field: i + 1 }),
-      value: ctx.locale(`commands:cooldowns.field-states.${getPlantationState(p)[0]}`, {
-        unix: millisToSeconds(getPlantationState(p)[1]),
-      }),
-      inline: true,
-    }));
+    const farmerFields = farmer.plantations.map((p, i) => [
+      createSeparator(),
+      createTextDisplay(
+        `### ${ctx.locale('commands:cooldowns.field', { field: i + 1 })}\n${ctx.locale(
+          `commands:cooldowns.field-states.${getPlantationState(p)[0]}`,
+          {
+            unix: millisToSeconds(getPlantationState(p)[1]),
+          },
+        )}`,
+      ),
+    ]);
 
-    const embed = createEmbed({
-      title: ctx.locale('commands:cooldowns.title', { user: getDisplayName(userToUse) }),
-      color: hexStringToNumber(userData.selectedColor),
-      fields: [
-        createField(ctx, 'vote', voteCooldown, displayName),
+    const voteButton =
+      userToUse.id === ctx.user.id && voteCooldown < 0
+        ? createButton({
+            style: ButtonStyles.Link,
+            url: `https://top.gg/bot/${bot.applicationId}/vote`,
+            label: ctx.locale('commands:cooldowns.click-to-vote'),
+          })
+        : undefined;
+
+    const container = createContainer({
+      accentColor: hexStringToNumber(userData.selectedColor),
+      components: [
+        createTextDisplay(
+          `## ${ctx.locale('commands:cooldowns.title', { user: getDisplayName(userToUse) })}`,
+        ),
+        createSeparator(),
+        createField(ctx, 'vote', voteCooldown, displayName, voteButton),
+        createSeparator(),
         createField(ctx, 'hunt', huntCooldown, displayName),
-        ...farmerFields,
+        ...farmerFields.flat(),
       ],
     });
 
-    const components: ActionRow[] = [];
+    const unreadNotifications = await notificationRepository.getUserTotalUnreadNotifications(
+      ctx.user.id,
+    );
 
-    if (userToUse.id === ctx.user.id) {
-      if (voteCooldown < 0)
-        components.push(
-          createActionRow([
-            createButton({
-              style: ButtonStyles.Link,
-              url: `https://top.gg/bot/${bot.applicationId}/vote`,
-              label: ctx.locale('commands:cooldowns.click-to-vote'),
-            }),
-          ]),
-        );
+    const unreadGlobalNotifications = await notificationRepository.countGlobalUnreadNotifications(
+      ctx.authorData.readNotificationsAt,
+    );
 
-      const unreadNotifications = await notificationRepository.getUserTotalUnreadNotifications(
-        ctx.user.id,
+    const totalNotifications = unreadNotifications + unreadGlobalNotifications;
+
+    if (totalNotifications > 0) {
+      const notificationCommand = await commandRepository.getCommandInfo('notificações');
+
+      container.components.push(
+        createSeparator(),
+        createTextDisplay(
+          `### ${ctx.locale('commands:cooldowns.unread-notifications')}\n${ctx.locale(
+            'commands:cooldowns.check-your-notifications',
+            {
+              command: `</notificações:${notificationCommand?.discordId}>`,
+              count: totalNotifications,
+            },
+          )}`,
+        ),
       );
-
-      if (unreadNotifications > 0) {
-        const notificationCommand = await commandRepository.getCommandInfo('notificações');
-
-        embed.fields?.push({
-          name: ctx.locale('commands:cooldowns.unread-notifications'),
-          value: ctx.locale('commands:cooldowns.check-your-notifications', {
-            command: `</notificações:${notificationCommand?.discordId}>`,
-            count: unreadNotifications,
-          }),
-          inline: false,
-        });
-      }
     }
 
-    ctx.makeMessage({ embeds: [embed], components });
+    ctx.makeLayoutMessage({ components: [container] });
     finishCommand();
   },
 });

@@ -13,12 +13,12 @@ import {
   AvailablePlants,
   DeliveryMission,
   Plantation,
-  PlantedField,
   SeasonData,
   Seasons,
 } from '../../modules/fazendinha/types.js';
 import { millisToSeconds } from '../../utils/miscUtils.js';
 import { registerCacheStatus } from '../../structures/initializePrometheus.js';
+import { getQuality } from '../../modules/fazendinha/siloUtils.js';
 
 const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSchema => ({
   id: `${user.id}`,
@@ -78,43 +78,23 @@ const updateItems = async (farmerId: BigString, items: QuantitativeItem[]): Prom
 
 const executeHarvest = async (
   farmerId: BigString,
-  fieldIndex: number,
-  field: Plantation,
-  plant: AvailablePlants,
-  alreadyInSilo: boolean,
+  plantations: DatabaseFarmerSchema['plantations'],
   success: boolean,
-  weight: number,
+  silo: DatabaseFarmerSchema['silo'],
+  added: DatabaseFarmerSchema['silo'],
 ): Promise<void> => {
-  // Asserts to avoid negative error in farmer
-  if (weight < 0)
-    throw new Error(
-      `Negative weight for farmer ${farmerId}. Already: ${alreadyInSilo}. FieldIndex: ${fieldIndex}. Plant: ${plant}. Weight: ${weight}. Success: ${success}`,
-    );
-
-  const pushOrIncrement: Record<string, unknown> = {
-    [alreadyInSilo ? '$inc' : '$push']: alreadyInSilo
-      ? {
-          [`silo.$[elem].weight`]: weight,
-          experience: Math.floor(weight * ((plant + 1) * 5)),
-        }
-      : {
-          silo: {
-            plant,
-            weight,
-          },
-        },
-  };
-
-  if (!alreadyInSilo) pushOrIncrement.$inc = { experience: Math.floor(weight * ((plant + 1) * 5)) };
+  const experience = added.reduce(
+    (p, c) => p + Math.floor(c.weight * ((c.plant + 1) * (5 + getQuality(c)))),
+    0,
+  );
 
   const updatedUser = await farmerModel.findOneAndUpdate(
     { id: `${farmerId}` },
     {
-      $set: { [`plantations.${fieldIndex}`]: field },
-      ...(success ? pushOrIncrement : {}),
+      $set: { plantations, silo },
+      ...(success ? { $inc: { experience } } : {}),
     },
     {
-      arrayFilters: alreadyInSilo ? [{ 'elem.plant': plant }] : [],
       new: true,
     },
   );
@@ -150,25 +130,21 @@ const updateSeeds = async (farmerId: BigString, seeds: QuantitativeSeed[]): Prom
 
 const executePlant = async (
   farmerId: BigString,
-  fieldIndex: number,
-  field: PlantedField,
+  plantations: DatabaseFarmerSchema['plantations'],
   seed: AvailablePlants,
+  seeds: DatabaseFarmerSchema['seeds'],
 ): Promise<void> => {
-  if (typeof field.weight === 'number' && field.weight < 0)
+  if (plantations.some((a) => a.isPlanted && a.weight && a.weight < 0))
     throw new Error(
-      `Negative weight for farmer ${farmerId}. FieldIndex: ${fieldIndex}. Seed: ${seed}. Field: ${JSON.stringify(field)}`,
+      `Negative weight for farmer ${farmerId}. Plantations=${JSON.stringify(plantations)}. Seed: ${seed}`,
     );
 
   const updatedUser = await farmerModel.findOneAndUpdate(
     { id: `${farmerId}` },
     {
-      $set: { [`plantations.${fieldIndex}`]: field, lastPlantedSeed: seed },
-      $inc: {
-        [`seeds.$[elem].amount`]: seed === AvailablePlants.Mate ? 0 : -1,
-      },
+      $set: { plantations, lastPlantedSeed: seed, seeds },
     },
     {
-      arrayFilters: [{ 'elem.plant': seed }],
       new: true,
     },
   );
@@ -336,10 +312,31 @@ const getTopRanking = async (
   return res.map((a) => ({ id: a.id, value: a.experience ?? 0 }));
 };
 
+const updateFarmer = async (
+  farmerId: string,
+  silo: QuantitativePlant[],
+  items: QuantitativeItem[],
+) => {
+  await farmerModel.updateOne({ id: `${farmerId}` }, { $set: { silo, items } });
+
+  const fromRedis = await MainRedisClient.get(`farmer:${farmerId}`);
+
+  if (fromRedis) {
+    const data = JSON.parse(fromRedis);
+
+    await MainRedisClient.setex(
+      `farmer:${farmerId}`,
+      604800,
+      JSON.stringify(parseMongoUserToRedisUser({ ...data, silo, items })),
+    ).catch(debugError);
+  }
+};
+
 export default {
   getFarmer,
   executePlant,
   getTopRanking,
+  updateFarmer,
   getCurrentSeason,
   upgradeSilo,
   getSeasonalInfo,

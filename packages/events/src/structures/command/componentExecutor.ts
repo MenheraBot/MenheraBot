@@ -17,6 +17,7 @@ import { logger } from '../../utils/logger.js';
 import { sendInteractionResponse } from '../../utils/discord/interactionRequests.js';
 import { Interaction } from '../../types/discordeno.js';
 import { debugError } from '../../utils/debugError.js';
+import { deleteMessageCustomId } from '../../utils/discord/componentUtils.js';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -39,7 +40,18 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
     }).catch(debugError);
   };
 
+  let originalCustomId = '-';
+
   if (!interaction.data.customId.includes('|')) {
+    originalCustomId = interaction.data.customId;
+    if (interaction.data.customId === deleteMessageCustomId) {
+      await sendInteractionResponse(interaction.id, interaction.token, {
+        type: InteractionResponseTypes.DeferredUpdateMessage,
+      }).catch(debugError);
+
+      return bot.helpers.deleteOriginalInteractionResponse(interaction.token);
+    }
+
     const found = await commandRepository.getCustomIdData(interaction.data.customId);
 
     if (!found) return replyOutdatedCommand();
@@ -149,7 +161,9 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
     res(undefined);
   });
 
-  logger.info(`[COMPONENT] ${commandInfo._id} - ${ctx.user.id} "${interaction.data.customId}"`);
+  logger.info(
+    `[COMPONENT] ${commandInfo._id} - ${ctx.user.id} "${interaction.data.customId}" (${originalCustomId})`,
+  );
 };
 
 export { componentExecutor };

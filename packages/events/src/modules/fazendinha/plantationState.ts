@@ -5,12 +5,15 @@ import {
   SEASONAL_HARVEST_DEBUFF,
   SEASONAL_ROT_DEBUFF,
 } from './seasonsManager.js';
+import { getPlantationUpgrades } from './siloUtils.js';
 import {
   AvailableItems,
   AvailablePlants,
   FieldUpgrade,
   Plantation,
   PlantationState,
+  PlantedField,
+  PlantQuality,
   Seasons,
 } from './types.js';
 
@@ -18,20 +21,20 @@ const isUpgradeApplied = (buff: AvailableItems, upgrades: FieldUpgrade[]): boole
   upgrades.some((u) => u.id === buff && u.expiresAt > Date.now());
 
 const getPlantationState = (field: Plantation): [PlantationState, number] => {
-  if (!field.isPlanted) return ['EMPTY', -1];
+  if (!field.isPlanted) return [PlantationState.Empty, -1];
 
   const plant = Plants[field.plantType];
 
-  if (Date.now() < field.harvestAt) return ['GROWING', field.harvestAt];
+  if (Date.now() < field.harvestAt) return [PlantationState.Growing, field.harvestAt];
 
   const timeToReduce =
     field.plantedSeason === plant.worstSeason ? plant.minutesToRot * SEASONAL_ROT_DEBUFF : 0;
 
   const timeToRot = field.harvestAt + minutesToMillis(plant.minutesToRot - timeToReduce);
 
-  if (Date.now() >= timeToRot) return ['ROTTEN', timeToRot];
+  if (Date.now() >= timeToRot) return [PlantationState.Rotten, timeToRot];
 
-  return ['MATURE', timeToRot];
+  return [PlantationState.Mature, timeToRot];
 };
 
 const getHarvestTime = (
@@ -87,4 +90,58 @@ const getFieldWeight = (
   return weight;
 };
 
-export { getPlantationState, getHarvestTime, getFieldWeight, isUpgradeApplied };
+const getCalculatedFieldQuality = (field: PlantedField, currentSeason: Seasons): PlantQuality => {
+  const plantData = Plants[field.plantType];
+
+  const haveFertilizer = isUpgradeApplied(AvailableItems.Fertilizer, getPlantationUpgrades(field));
+
+  const plantedInGoodSeason = field.plantedSeason === plantData.bestSeason;
+  const plantedInBadSeason = field.plantedSeason === plantData.worstSeason;
+
+  const currentInGoodSeason = currentSeason === plantData.bestSeason;
+  const currentInBadSeason = currentSeason === plantData.worstSeason;
+
+  const [, timeToRot] = getPlantationState(field);
+  const now = Date.now();
+
+  const remaining = timeToRot - now;
+  const penaltyWindow = minutesToMillis(plantData.minutesToRot) * 0.4;
+  const harvestedAlmostRotted = remaining <= penaltyWindow;
+
+  const readyWindow = timeToRot - field.harvestAt;
+  const bonusWindow = readyWindow * 0.2;
+
+  const elapsedSinceReady = now - field.harvestAt;
+
+  const fastHarvested = elapsedSinceReady <= bonusWindow;
+
+  let score = 0;
+
+  if (haveFertilizer) score += 25;
+  if (plantedInGoodSeason) score += 15;
+  if (plantedInBadSeason) score -= 20;
+
+  if (currentInGoodSeason) score += 10;
+  if (currentInBadSeason) score -= 15;
+
+  if (fastHarvested) score += 20;
+  if (harvestedAlmostRotted) score -= 30;
+
+  const randomNoise = (Math.random() * 2 - 1) * 12;
+
+  score += randomNoise;
+
+  score = Math.max(-100, Math.min(100, score));
+
+  if (score >= 60) return PlantQuality.Best;
+  if (score >= 20) return PlantQuality.Normal;
+  return PlantQuality.Worst;
+};
+
+export {
+  getPlantationState,
+  getHarvestTime,
+  getFieldWeight,
+  isUpgradeApplied,
+  getCalculatedFieldQuality,
+};

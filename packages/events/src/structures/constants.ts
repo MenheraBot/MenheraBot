@@ -35,6 +35,9 @@ export const EMOJIS = {
   lick: '👅',
   swap: '🔀',
   time: '⏲️',
+  best_quality: '🔹',
+  normal_quality: '▫️',
+  worst_quality: '🔻',
   sword: '⚔️',
   gay_flag: '🏳️‍🌈',
   hourglass: '⌛',
@@ -170,3 +173,5 @@ export const transactionableCommandOption = [
     value: 'gods' as const,
   },
 ];
+
+export const TRANSACTIONS_PER_PAGE = 15;

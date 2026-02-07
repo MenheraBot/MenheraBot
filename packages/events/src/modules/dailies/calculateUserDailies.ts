@@ -1,6 +1,8 @@
 import { randomFromArray } from '../../utils/miscUtils.js';
+import { AvailableItems } from '../fazendinha/types.js';
 import {
   DAILIES_AMOUNT,
+  FERTILIZER_COUNT,
   HUNT_AMOUNT,
   PLANT_AMOUNT,
   ROLLS_COUNT,
@@ -24,6 +26,8 @@ const getDailyAwardOptions = (): [
         return { type, value: STARS_PRIZE };
       case 'roll':
         return { type, value: ROLLS_COUNT };
+      case 'fertilizer':
+        return { type, value: FERTILIZER_COUNT, helper: AvailableItems.Fertilizer };
       case 'seed': {
         const randomSeed = Math.floor(Math.random() * 24) + 1;
         return { type, value: SEED_AMOUNT, helper: randomSeed };

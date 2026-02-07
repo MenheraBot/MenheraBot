@@ -247,12 +247,13 @@
     "sell_plants": {
       "not-enough": "Tu não tem **{{amount}}** {{plant}} para vender",
       "invalid-amount": "Tu informou um número inválido de plantas para vender",
-      "success": "Suas plantas foram vendidas por **{{amount}}** :star: estrelinhas\nAgora você tem **{{stars}}**⭐"
+      "success": "Você recebeu **{{amount}}** :star: estrelinhas por vender plantas: {{plants}}\nAgora você tem **{{stars}}**⭐"
     },
     "buy_seeds": {
       "buy-seed-of": "Comprar semente de {{plant}}",
-      "plant-stats": "**Preço de Compra:** {{buyValue}} :star:\n**Valor de venda:** {{sellValue}} :star:\n**Amadurece em:** {{harvestTime}} min\n**Apodrece em:** {{rotTime}} min\n**Melhor em:** {{bestSeason}}\n**Pior em:** {{worstSeason}}",
+      "plant-stats": "**💰 Compra:** {{buyValue}} :star: | **Venda:** {{sellValue}} :star:\n**⏰ Cresce:** {{harvestTime}} min | **🧟 Apodrece:** {{rotTime}} min\n**🌧️ Melhor:** {{bestSeason}} | **Pior:** {{worstSeason}}",
       "seed": "Semente de {{plant}}",
+      "select-category": "Para ver informações sobre outras plantas, selecione uma categoria abaixo.",
       "success": "Você gastou **{{amount}}** :star: estrelinhas comprando sementes. Agora você tem **{{stars}}** ⭐.\nHora de plantá-las {{command}}",
       "not-enough-stars": "Tu não possui **{{amount}}** :star: estrelinhas para comprar todas essas sementes",
       "invalid-amount": "Tu informou um número inválido de sementes para comprar",
@@ -927,6 +928,9 @@
     "select-type": "Escolha o tipo de transação",
     "select-user": "Escolha um usuário",
     "select-currency": "Escolha a moeda",
+    "filters": "Filtrar transações",
+    "error": "Ocorreu um erro ao buscar as transações deste usuário",
+    "user-filter": "-# Busque por transações envolvendo o usuário selecionado",
     "transactions": {
       "base": "**• **[<t:{{unix}}:d><t:{{unix}}:T> - <t:{{unix}}:R>] **-** ",
       "menhera_to_you": "**Eu** **te** enviei **{{amount}}** {{currencyType}} {{emoji}} por {{reason}}",
@@ -994,7 +998,7 @@
       "upgrade_farm": "melhorar sua fazenda",
       "daily_farm": "entrega da fazendinha",
       "daily_farm_title": "Entregas Diárias",
-      "buy_fair": "comprar na feira",
+      "buy_fair": "negociar na feirinha",
       "buy_fair_title": "Feirinha",
       "rps_command": "apostar no pedra, papel e tesoura",
       "rps_command_title": "Pedra, Papel e Tesoura"
@@ -1120,6 +1124,50 @@
       "spring": "Primavera"
     },
     "feira": {
+      "order": {
+        "user-orders": "Pedidos de troca de {{user}}",
+        "public-orders": "Pedidos de troca da Vizinhança",
+        "no-user-orders": "Este usuário não possui nenhum pedido no momento.",
+        "no-public-orders": "Ninguém da vizinhança está precisando de plantas no momento.",
+        "complete-order": "Aceitar troca",
+        "delete-order": "Exluir pedido",
+        "no-order": "Nenhum pedido ainda",
+        "order-name": "{{plantEmoji}} {{weight}} Kg {{plantName}} {{qualityEmoji}}",
+        "order": "Pedido",
+        "plant": "Planta",
+        "weight": "Peso",
+        "quality": "Qualidade",
+        "trade-request": "Criar pedido de troca",
+        "edit-request": "Editar pedido",
+        "max-orders": "Você não pode criar uma nova troca na feira, pois atingiu o limite de pedidos publicados.",
+        "create-order-description": "Crie um pedido de troca na feira. É possível trocar plantas por estrelinhas e fertilizantes!",
+        "view-public-orders": "Ver todos pedidos",
+        "pagination": "Página {{page}} de {{totalPages}}",
+        "order-gone": "Este pedido não existe mais!",
+        "create-order": "Criar pedido",
+        "edit-order": "Alterar pedido",
+        "add-item": "Adicionar fertilizantes",
+        "no-awards": "_Adicione algo para trocar_",
+        "edit-award": "Editar troca",
+        "no-awards-available": "Você não possui nenhum item disponível para adicionar na troca.",
+        "add-estrelinhas": "Adicionar estrelinhas",
+        "add-award": "Adicionar valores de troca",
+        "add-award-description": "Não é obrigatório adicionar ambos para a troca. Se você preferir, pode adicionar apenas um dos dois",
+        "invalid-weight": "Você inseriu um peso inválido. O máximo permitido é **{{limit}} Kg**",
+        "invalid-estrelinhas": "Você inseriu uma quantidade inválida de estrelinhas. O máximo permitido é **{{limit}} :star:**",
+        "invalid-plant": "Você inseriu uma planta inválida!",
+        "order-placed": "Seu pedido de troca for publicado! Se algum usuário aceitar a troca, você pode voltar aqui para resgatar as plantas.",
+        "poor-stars": "Você não tem todas essas **estrelinhas** para adicionar de troca no pedido!",
+        "poor-items": "Você não tem todos esses **fertilizantes** para adicionar de troca no pedido!",
+        "invalid-values": "Você inseriu informações inválidas no pedido!",
+        "no-items": "Você não tem as plantas suficientes para aceitar esse pedido",
+        "order-description": "**Vizinho:** {{user}}\n**Trocando por:**\n{{awards}}",
+        "order-award": "**{{amount}}{{metric}}** {{emoji}}",
+        "order-accepted": "Você aceitou a troca. As plantas, itens e estrelinhas foram para sua conta.",
+        "confirm-delete": "Você tem certeza que deseja remover o pedido de troca? Você não receberá de volta as plantas e itens colocadas no anúncio. Apenas o prêmio em estrelinhas :star: será devolvido.",
+        "silo-full": "Você não pode aceitar esta troca, pois seu silo está cheio.",
+        "order-deleted": "Você removeu o pedido do ar. Se existiam, os prêmios em estrelinhas foram devolvidas para sua conta. Os prêmios de itens e plantas foram descartados."
+      },
       "announce": {
         "no-such-product": "Esse produto não existe!",
         "not-enough-products": "Tu não tem **{{amount}}** {{emoji}} para anunciar.",
@@ -1134,8 +1182,9 @@
         "silo-limit": "Tu não tem espaço suficiente no silo para comprar isso!",
         "not-enough-stars": "Tu não tem estrelinhas o suficiente para comprar isso!",
         "item-locked": "Tu não pode comprar esse item porque tu ainda não desbloqueou ele.",
-        "success": "Tudo feito, {{author}}. Esse item foi comprado por ti",
+        "success": "Tudo feito, {{author}}. Você comprou:{{description}}",
         "no-announcements": "Não há anúncios na feira da vizinhança atualmente",
+        "no-announcements-user": "Este vizinho não está anunciando nenhum produto atualmente",
         "fair": "Feirinha da Vizinhança",
         "description": "\n- {{amount}} Kg {{emoji}} **{{plant}}** por {{price}} :star:",
         "user-info": "{{user}} ({{index}})",
@@ -1147,9 +1196,13 @@
     },
     "plantations": {
       "field": "{{emojis}}Campo ({{index}})",
-      "harvest-weight": "Quantidade colhida: {{weight}} Kg",
+      "harvest-text": "### Última colheita:\n\n{{harvested}}",
       "description": "**Estação atual**: {{emoji}} _{{season}}_\n**Termina** <t:{{unix}}:R>",
+      "select-seed": "Selecione abaixo qual semente você quer plantar:",
+      "explain-all-action": "Plantar e colher em todos os campos apenas executa a ação em campos que estão vazios/maduros. Campos amadurecendo ou podres não são alterados.",
       "seeds": "Sementes",
+      "plant-all": "Plantar tudo",
+      "harvest-all": "Colher tudo",
       "silo": "Plantas",
       "harvest": "Colher",
       "plant": "Plantar",
@@ -1168,12 +1221,12 @@
       "deliver": "Yayy! Entrega finalizada! Tu recebeu **{{award}}** :star:",
       "finished-bonus": "Caminhão completo! Você recebeu um bônus de **{{award}}** :star: por conseguir entregar todas as suas entregas diárias!",
       "daily-deliveries": "Entregas Diárias",
-      "deliver-button": "Entregar {{index}}",
+      "deliver-button": "Entregar pedido",
       "deliver-embed-name": "Entrega {{index}}",
-      "deliver-embed-name-finished": "~~Entrega {{index}}~~ ✅",
+      "deliver-embed-name-finished": "✅ ~~Entrega {{index}}~~",
       "deliver-embed-field": "Estrelinhas: **{{award}}** :star:",
       "deliver-embed-field-need": "Necessário: **{{amount}} Kg** {{emoji}}",
-      "description": "Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar por entregas. Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas\n\n O caminhão partirá <t:{{unix}}:R>"
+      "description": "Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar entregas. Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas\n\n O caminhão partirá <t:{{unix}}:R>"
     },
     "silo": {
       "embed-title": "Silo de {{user}}",
@@ -1184,7 +1237,15 @@
       "sell-plants": "Vender plantas",
       "sell-plant": "Vender {{plant}}",
       "sell-all": "Vender tudo",
+      "confirm-sell-all": "Confirmar",
+      "confirm-title": "Você tem certeza que quer vender todas plantas?",
       "use-items": "Usar itens",
+      "choose-sell": "Escolha o que vender",
+      "sell-all-plants": "Vender todas {{quality}}",
+      "quality-plants-2": "Plantas Premium",
+      "quality-plants-1": "Plantas",
+      "quality-plants": "Plantas",
+      "quality-plants-0": "Plantas Precárias",
       "sell-title": "Venda suas plantas",
       "no-plants": "Tu não possui plantas para vender",
       "description": "{{text}}\n- {{emoji}} **{{amount}}{{metric}}** - {{plant}} (**{{value}}** :star:)",
@@ -1192,7 +1253,7 @@
       "silo-is-full": "O seu silo está cheio! Seu silo tem espaço máximo de **{{limit}}** itens. Libere espaço vendendo plantas >_<",
       "select": "Selecione a quantidade de {{plant}} que você quer vender",
       "display-mate": "- {{emoji}} **∞** - {{plant}}",
-      "display-other": "- {{emoji}} **{{amount}}{{metric}}** - {{plant}}"
+      "display-other": "- {{quality}}{{emoji}} **{{amount}}{{metric}}** - {{plant}}"
     },
     "field-action": {
       "not-enough-seeds": "Você não possui sementes de **{{plant}}** para plantar!",
@@ -1201,24 +1262,32 @@
     "admin": {
       "feirinha": {
         "no-items-in-user-fair": "Tu não possui itens anunciados na feira!",
-        "remove-announcement": "Remover anúncio {{index}}",
-        "dont-exists": "Esse anúncio não existe mais!"
+        "remove-announcement": "Remover anúncio",
+        "remove-announcements": "Remover anúncios",
+        "edit-announcements": "Atualizar anúncios",
+        "edit-announcement": "Atualizar preço",
+        "editing-price": "Atualizando preço de {{product}}",
+        "new-price": "Informe o novo preço",
+        "dont-exists": "Esse anúncio não existe mais!",
+        "edit-success": "O preço do anúncio foi atualizado com sucesso!",
+        "price-range": "O preço informado é inváldo! É necessário informar um valor maior que {{min}} :star: e menor que {{max}} :star:"
       },
       "silo": {
         "success": "Tudo feito! Tu aumentou o limite do teu silo",
         "poor": "Tu não tem estrelinhas o suficiente para aumentar o espaço de seu silo",
-        "limit": "Tu não pode mais melhorar o seu silo! Ele está no nível máximo",
         "title": "Melhore seu silo",
+        "goto-fair": "Administrar feira",
+        "goto-fields": "Administrar campos",
+        "manage-fair": "Gerencie os produtos anunciados por ti na feira da vizinhança!",
+        "manage-fields": "Gerencie seus campos e seu silo!",
+        "max-level-description": "O silo já está no nível máximo!",
         "button": "Melhorar silo",
         "description": "Aumente o limite de seu silo em **{{increase}}** espaços por apenas **{{cost}}** :star:\nAtualmente tu tem **{{limit}}** espaços de limite."
       },
       "fields": {
-        "apply-to-all": "Todos campos",
+        "apply-to-all": "Aplicar em todos campos",
         "title": "Administrar campos",
-        "use-item": "Usar item no campo {{field}}",
-        "use-item-all": "Usar item em todos os campos",
-        "footer": "Administrando o campo {{field}}",
-        "footer-all": "Administrando todos campos",
+        "select-item": "Escolha um item para usar nos campos",
         "no-upgrades": "Nenhuma melhoria aplicada no momento.",
         "upgrade": "{{emoji}} {{upgrade}}\n{{expireLabel}} <t:{{unix}}:R>",
         "expires": "Expira",
@@ -1234,9 +1303,9 @@
       },
       "unlocked-field": "Você comprou esse terreno de seu vizinho!",
       "your-fields": "Seus Campos",
-      "admin": "Administrar {{field}}",
-      "buy": "Comprar {{field}}",
-      "needed-items": "Esse campo está no terreno de seu vizinho. Ele concordou em te vender. Ele quer **{{star}}** :star: e **{{plants, list}}** por isso."
+      "use-item": "Usar item",
+      "buy": "Comprar campo",
+      "needed-items": "Esse campo está no terreno de seu vizinho. Para comprar, é necessário **{{star}}** :star:, **{{plants, list}}**"
     }
   },
   "titulo": {
@@ -1254,18 +1323,21 @@
     "mark-as-read": "",
     "mark-as-read-one": "Marcar como lido",
     "mark-as-read-other": "Marcar tudo como lido",
+    "important-notifications": "Mensagens importantes",
     "cant-clear": "Você possui novas notificações. Use o comando novamente para marcar todas como lidas.",
     "all-done": "Feitoria! Suas notificações foram marcadas como lidas!",
     "notifications": {
-      "user-bought-theme": "@{{username}} comprou o seu tema **{{theme}}** em <t:{{unix}}:d> às <t:{{unix}}:T>",
-      "user-bought-image": "@{{username}} comprou sua imagem **{{image}}** em <t:{{unix}}:d> às <t:{{unix}}:T>",
-      "user-bought-announcement": "Seu anúncio de **{{weight}} Kg** {{emoji}} foi comprado por **{{stars}}** :star: na feira por @{{username}} em <t:{{unix}}:d> às <t:{{unix}}:T>",
-      "user-won-bicho": "Você ganhou **{{stars}}** :star: com sua aposta no Jogo do Bicho em <t:{{unix}}:d> às <t:{{unix}}:T>",
+      "user-bought-theme": "@{{username}} comprou o seu tema **{{theme}}** em <t:{{unix}}:d> as <t:{{unix}}:T>",
+      "user-bought-image": "@{{username}} comprou sua imagem **{{image}}** em <t:{{unix}}:d> as <t:{{unix}}:T>",
+      "user-bought-announcement": "Seu anúncio de **{{weight}} Kg** {{emoji}} foi comprado por **{{stars}}** :star: na feira por @{{username}} em <t:{{unix}}:d> as <t:{{unix}}:T>",
+      "user-won-bicho": "Você ganhou **{{stars}}** :star: com sua aposta no Jogo do Bicho em <t:{{unix}}:d> as <t:{{unix}}:T>",
+      "user-accepted-deal": "**@{{username}}** aceitou seu pedido de troca **{{name}}** na feira <t:{{unix}}:d> as <t:{{unix}}:T>",
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Acabei de te dar uma **Badge** nova! Cheque seu perfil >.<",
       "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Adicionei um título em sua conta! Da uma olhadinha em `/personalizar título` >.<",
+      "lux-message": "[<t:{{unix}}:d> <t:{{unix}}:T>] **[Menhera]**: {{ptBr}}",
       "finished-daily": "",
-      "finished-daily-one": "Você completou **{{count}}** missão! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>",
-      "finished-daily-other": "Você completou **{{count}}** missões! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> às <t:{{unix}}:T>"
+      "finished-daily-one": "Você completou **{{count}}** missão! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> as <t:{{unix}}:T>",
+      "finished-daily-other": "Você completou **{{count}}** missões! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> as <t:{{unix}}:T>"
     }
   },
   "daily": {
@@ -1289,7 +1361,8 @@
       "roll": "({{index}}) Roll",
       "seed": "({{index}}) Semente",
       "plant": "({{index}}) Planta",
-      "hunt": "({{index}}) Caça"
+      "hunt": "({{index}}) Caça",
+      "fertilizer": "({{index}}) Fertilizante"
     },
     "descriptions": {
       "just_bet": "{{emoji}} Aposte no _{{specification}}_ **{{count}}** vezes. ({{has}}/{{need}})",
@@ -1306,7 +1379,9 @@
       "harvest_plants": "{{emoji}} Colha **{{need}}** Kg de _{{specification}}_. ({{has}}/{{need}})",
       "finish_delivery": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})",
       "finish_delivery-one": "{{emoji}} Realize **{{need}}** entrega da fazendinha. ({{has}}/{{need}})",
-      "finish_delivery-other": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})"
+      "finish_delivery-other": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})",
+      "harvest_quality": "{{emoji}} Colha **{{need}}** Kg de plantas _{{specification}}_. ({{has}}/{{need}})",
+      "harvest_category": "{{emoji}} Colha **{{need}}** Kg de plantas da categoria _{{specification}}_. ({{has}}/{{need}})"
     }
   },
   "pedrapapeltesoura": {

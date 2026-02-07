@@ -7,21 +7,21 @@ export enum AvailablePlants {
   Potato,
   Garlic,
   Carrot,
-  Tomato,
+  Beans,
   Cucumber,
   Broccoli,
   Sunflower,
   Mint,
-  Watermelon,
+  Lemon,
   Strawberry,
   HotPepper,
   Eggplant,
   Avocado,
   Mango,
   Apple,
-  Lemon,
+  Blueberries,
   Cabbage,
-  Banana,
+  Onion,
   Pineapple,
   Peach,
   Cherry,
@@ -32,7 +32,27 @@ export enum AvailableItems {
   Fertilizer,
 }
 
-export type Seasons = 'summer' | 'winter' | 'autumn' | 'spring';
+export enum Seasons {
+  Summer = 'summer',
+  Winter = 'winter',
+  Autumn = 'autumn',
+  Spring = 'spring'
+}
+
+export enum PlantCategories {
+  Grain,
+  Root,
+  Vegetable,
+  CommonFruit,
+  NobleFruit,
+  Special,
+}
+
+export enum PlantQuality {
+  Worst,
+  Normal,
+  Best,
+}
 
 export interface SeasonData {
   currentSeason: Seasons;
@@ -60,7 +80,12 @@ export interface EmptyField {
   upgrades?: FieldUpgrade[];
 }
 
-export type PlantationState = 'EMPTY' | 'GROWING' | 'MATURE' | 'ROTTEN';
+export enum PlantationState {
+  Empty = 'EMPTY',
+  Growing = 'GROWING',
+  Mature = 'MATURE',
+  Rotten = 'ROTTEN'
+}
 
 export type Plantation = PlantedField | EmptyField;
 
@@ -72,6 +97,7 @@ export interface PlantsFile {
   buyValue: number;
   bestSeason: Seasons;
   worstSeason: Seasons;
+  category: PlantCategories;
 }
 
 export interface ItemsFile {

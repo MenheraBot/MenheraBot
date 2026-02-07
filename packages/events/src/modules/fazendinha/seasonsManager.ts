@@ -10,10 +10,10 @@ const MIN_DAYS = 3;
 const MAX_DAYS = 8;
 
 const SeasonsOrder: Record<Seasons, Seasons> = {
-  autumn: 'winter',
-  winter: 'spring',
-  spring: 'summer',
-  summer: 'autumn',
+  [Seasons.Autumn]: Seasons.Winter,
+  [Seasons.Winter]: Seasons.Spring,
+  [Seasons.Spring]: Seasons.Summer,
+  [Seasons.Summer]: Seasons.Autumn,
 };
 
 const getNextSeason = (lastSeason: Seasons): [Seasons, number] => {
@@ -36,7 +36,7 @@ const getSeasonalInfo = async (): Promise<SeasonData> => {
   const seasonalData = await farmerRepository.getSeasonalInfo();
 
   if (!seasonalData || seasonalData.endsAt <= Date.now()) {
-    const [nextSeason, daysToExpire] = getNextSeason(seasonalData?.currentSeason ?? 'summer');
+    const [nextSeason, daysToExpire] = getNextSeason(seasonalData?.currentSeason ?? Seasons.Summer);
     const timeToExpire = Date.now() + daysToMillis(daysToExpire);
 
     await farmerRepository.updateSeason(nextSeason, timeToExpire);

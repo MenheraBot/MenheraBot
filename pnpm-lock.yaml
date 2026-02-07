@@ -118,12 +118,12 @@ importers:
         specifier: ^2.2.2
         version: 2.2.2
       qs:
-        specifier: ^6.14.0
-        version: 6.14.0
+        specifier: ^6.14.1
+        version: 6.14.1
     devDependencies:
       '@discordeno/bot':
-        specifier: 22.0.1-next.bbdd2d1
-        version: 22.0.1-next.bbdd2d1
+        specifier: 22.0.1-next.8694f57
+        version: 22.0.1-next.8694f57
       '@types/koa':
         specifier: ^3.0.0
         version: 3.0.0
@@ -433,20 +433,20 @@ packages:
   '@discordeno/bot@22.0.1-next.780f212':
     resolution: {integrity: sha512-TVg9VS2DZdG+DIiH+TbJPG+Zv7mkSdm3pkjio6NhgBETnkOBYTUByh/Ri5SJ2mseLGCzGHtlOxktuHyHQICtkQ==}
 
-  '@discordeno/bot@22.0.1-next.bbdd2d1':
-    resolution: {integrity: sha512-gFQibZ/ljICILGenHGL1tbGDBlvrU8pNfLg0hDZL+Ei9EzrOFpL3C1Qx8eRxQJ9Lxzfh9YsBTEsBgSqhTeYPag==}
+  '@discordeno/bot@22.0.1-next.8694f57':
+    resolution: {integrity: sha512-roLYFn2eer7H55zeteEeje53OWX9tUjNmYqEhXXqXkd9HllrBdhxlCeDwTKsNPd44RolNyHA78u04JobUDmLlQ==}
 
   '@discordeno/gateway@22.0.1-next.780f212':
     resolution: {integrity: sha512-WCnZ1Olea4NJpzTtTOxFR+9kIJ83PLdyhoBRIdAGlIWM6QB1pSN50c1nHAHe7cu3yfkcOocJ/pKYcN+rjA4P7w==}
 
-  '@discordeno/gateway@22.0.1-next.bbdd2d1':
-    resolution: {integrity: sha512-IqgHnjHDptZikZlUogHJQHaMCPfP6C5ITbBo5sFdeFqnQHCbkxfYPYgqmKL0nXA92ZZ+qUM8o6ToHTYC4uq6lA==}
+  '@discordeno/gateway@22.0.1-next.8694f57':
+    resolution: {integrity: sha512-oda5WBEww2ZspSSOKA0u1TclNeOuZJlkOAD4Bog1Nw+6HtsbWBf95CwWt1aa7ohsBqJqCNorwywrj35vOFbpPA==}
 
   '@discordeno/rest@22.0.1-next.780f212':
     resolution: {integrity: sha512-MyAnbRrjv4Ect5TObqwDPhL9EDNVHaCzByHZtlBcqoi8LEmaF86X2dP6Y4pCzSE+/MCTS7MCSGWM/O38CFQk8w==}
 
-  '@discordeno/rest@22.0.1-next.bbdd2d1':
-    resolution: {integrity: sha512-T9+UuFO2ANp/93/PlULeCLvlnzB4+DPRNeWDufwI0e3h0MJ4rd8XOqgOrhomO4HRjpsmyRuFKWE6vRILcKEvQQ==}
+  '@discordeno/rest@22.0.1-next.8694f57':
+    resolution: {integrity: sha512-KxLAzqE9fzjhRPghmyEZytmVWp206EbyicZX4Qlc7xOrpBvlWxbvVGo/I00wAs34qr0tQ8t/rdnBec38g0ltew==}
 
   '@discordeno/types@22.0.0-beta.1':
     resolution: {integrity: sha512-LyEElHIj+uRnqanRMe0ave9zUsBlLBqqKQu7KQpHhWleg4KLMIn8QlfaWtCnomaykMRguBoanYRLzyz1G4cXmA==}
@@ -454,14 +454,14 @@ packages:
   '@discordeno/types@22.0.1-next.780f212':
     resolution: {integrity: sha512-lPIiqPPTSKb/2cJC4xt1xTM0kIVmhC+Toiz92F2tXlftg1WDCWiPZK5EuGZ0CU8CVA9moLgn9OBgR0duhLyTMQ==}
 
-  '@discordeno/types@22.0.1-next.bbdd2d1':
-    resolution: {integrity: sha512-m0K/+LGT9HvApkhAndMw7ctQUDJRmgCyA3uj/f0ePW/wMv9/KDbodrohVa85iPZFPKiS2BnPOYoWTenNzBQ9+w==}
+  '@discordeno/types@22.0.1-next.8694f57':
+    resolution: {integrity: sha512-HEsy5NohWDJJWHYtuwlV4ZCdVQlUDil+QLAljbYZQ503aKd8VMbStaQRj6Cd6sxaDZWODKk0MqUmTN0rLvtz4g==}
 
   '@discordeno/utils@22.0.1-next.780f212':
     resolution: {integrity: sha512-0esVFWSh1CbTULU8L06f5+uE/BaJJfD2jfmb6HlHfGFx9zzaaWIymqHugI5F6TpDnA0CE7Gvr+Oo9VSbTiz3MQ==}
 
-  '@discordeno/utils@22.0.1-next.bbdd2d1':
-    resolution: {integrity: sha512-JocHPygz9Q5GBXNywC0H5I+zIP1jlhgELnhQq8eZJCeyVcYbH+QXk8VUon46eETkMnA+mkNeVHILEa8/u2YFhg==}
+  '@discordeno/utils@22.0.1-next.8694f57':
+    resolution: {integrity: sha512-O1tRyXA9R8qwrWxhMTJm5XQqP3UezKPKM7J7pEJ6TtWaIjJOOIpaw6fHS29AHB7MKD3EWFKwG1NNhNN3MC7GVQ==}
 
   '@eslint-community/eslint-utils@4.9.0':
     resolution: {integrity: sha512-ayVFHdtZ+hsq1t2Dy24wCmGXGe4q9Gu3smhLYALJrr473ZH27MsnSL+LKUlimp4BWJqMDMLmPpx/Q9R3OAlL4g==}
@@ -667,6 +667,7 @@ packages:
   '@koa/router@14.0.0':
     resolution: {integrity: sha512-LBSu5K0qAaaQcXX/0WIB9PGDevyCxxpnc1uq13vV/CgObaVxuis5hKl3Eboq/8gcb6ebnkAStW9NB/Em2eYyFA==}
     engines: {node: '>= 20'}
+    deprecated: Please upgrade to v15 or higher. All reported bugs in this version are fixed in newer releases, dependencies have been updated, and security has been improved.
 
   '@mongodb-js/saslprep@1.3.2':
     resolution: {integrity: sha512-QgA5AySqB27cGTXBFmnpifAi7HxoGUeezwo6p9dI03MuDB6Pp33zgclqVb6oVK3j6I9Vesg0+oojW2XxB59SGg==}
@@ -942,8 +943,8 @@ packages:
     resolution: {integrity: sha512-4aUIteuyxtBUhVdiQqcDhKFitwfd9hqoSDYY2KRXiWtgoWJ9Bmise+KfEPDiVHWeJepvF8xJO9/9+WDIciMFFw==}
     engines: {node: '>=18.0.0'}
 
-  '@tsconfig/node10@1.0.11':
-    resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
+  '@tsconfig/node10@1.0.12':
+    resolution: {integrity: sha512-UCYBaeFvM11aU2y3YPZ//O5Rhj+xKyzy7mvcIoAjASbigy8mHMryP5cK7dgjlz2hWxh1g5pLw084E0a/wlUSFQ==}
 
   '@tsconfig/node12@1.0.11':
     resolution: {integrity: sha512-cqefuRsh12pWyGsIoBKJA9luFu3mRxCA+ORZvA4ktLSzIuCUtWVxGIuXigEwO5/ywWFMZ2QEGKWvkZG1zDMTag==}
@@ -1522,8 +1523,8 @@ packages:
     resolution: {integrity: sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  diff@4.0.2:
-    resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
+  diff@4.0.4:
+    resolution: {integrity: sha512-X07nttJQkwkfKfvTPG/KSnE2OMdcUCao6+eXF3wmnIQRn2aPAHH3VxDbDOdegkd6JbPsXqShpvEOHfAT+nCNwQ==}
     engines: {node: '>=0.3.1'}
 
   doctrine@2.1.0:
@@ -2354,6 +2355,7 @@ packages:
   keygrip@1.1.0:
     resolution: {integrity: sha512-iYSchDJ+liQ8iwbSI2QqsQOvqv58eJCEanyJPJi+Khyu8smkcKSFUCbPwzFcL7YVtZ6eONjqRX/38caJ7QjRAQ==}
     engines: {node: '>= 0.6'}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -2701,8 +2703,8 @@ packages:
   pure-rand@6.1.0:
     resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
 
-  qs@6.14.0:
-    resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
+  qs@6.14.1:
+    resolution: {integrity: sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==}
     engines: {node: '>=0.6'}
 
   queue-microtask@1.2.3:
@@ -3177,8 +3179,8 @@ packages:
     resolution: {integrity: sha512-+QU2zd6OTD8XWIJCbffaiQeH9U73qIqafo1x6V1snCWYGJf6cVE0cDR4D8xRzcEnfI21IFrUPzPGtcPf8AC+Rw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
 
-  ws@8.18.3:
-    resolution: {integrity: sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg==}
+  ws@8.19.0:
+    resolution: {integrity: sha512-blAT2mjOEIi0ZzruJfIhb3nps74PRWTCz1IjglWEEpQl5XS/UNama6u2/rjFkDDouqr4L67ry+1aGIALViWjDg==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -3841,12 +3843,12 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@discordeno/bot@22.0.1-next.bbdd2d1':
+  '@discordeno/bot@22.0.1-next.8694f57':
     dependencies:
-      '@discordeno/gateway': 22.0.1-next.bbdd2d1
-      '@discordeno/rest': 22.0.1-next.bbdd2d1
-      '@discordeno/types': 22.0.1-next.bbdd2d1
-      '@discordeno/utils': 22.0.1-next.bbdd2d1
+      '@discordeno/gateway': 22.0.1-next.8694f57
+      '@discordeno/rest': 22.0.1-next.8694f57
+      '@discordeno/types': 22.0.1-next.8694f57
+      '@discordeno/utils': 22.0.1-next.8694f57
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -3855,18 +3857,18 @@ snapshots:
     dependencies:
       '@discordeno/types': 22.0.1-next.780f212
       '@discordeno/utils': 22.0.1-next.780f212
-      ws: 8.18.3
+      ws: 8.19.0
     optionalDependencies:
       fzstd: 0.1.1
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@discordeno/gateway@22.0.1-next.bbdd2d1':
+  '@discordeno/gateway@22.0.1-next.8694f57':
     dependencies:
-      '@discordeno/types': 22.0.1-next.bbdd2d1
-      '@discordeno/utils': 22.0.1-next.bbdd2d1
-      ws: 8.18.3
+      '@discordeno/types': 22.0.1-next.8694f57
+      '@discordeno/utils': 22.0.1-next.8694f57
+      ws: 8.19.0
     optionalDependencies:
       fzstd: 0.1.1
     transitivePeerDependencies:
@@ -3878,24 +3880,24 @@ snapshots:
       '@discordeno/types': 22.0.1-next.780f212
       '@discordeno/utils': 22.0.1-next.780f212
 
-  '@discordeno/rest@22.0.1-next.bbdd2d1':
+  '@discordeno/rest@22.0.1-next.8694f57':
     dependencies:
-      '@discordeno/types': 22.0.1-next.bbdd2d1
-      '@discordeno/utils': 22.0.1-next.bbdd2d1
+      '@discordeno/types': 22.0.1-next.8694f57
+      '@discordeno/utils': 22.0.1-next.8694f57
 
   '@discordeno/types@22.0.0-beta.1': {}
 
   '@discordeno/types@22.0.1-next.780f212': {}
 
-  '@discordeno/types@22.0.1-next.bbdd2d1': {}
+  '@discordeno/types@22.0.1-next.8694f57': {}
 
   '@discordeno/utils@22.0.1-next.780f212':
     dependencies:
       '@discordeno/types': 22.0.1-next.780f212
 
-  '@discordeno/utils@22.0.1-next.bbdd2d1':
+  '@discordeno/utils@22.0.1-next.8694f57':
     dependencies:
-      '@discordeno/types': 22.0.1-next.bbdd2d1
+      '@discordeno/types': 22.0.1-next.8694f57
 
   '@eslint-community/eslint-utils@4.9.0(eslint@9.38.0)':
     dependencies:
@@ -4662,7 +4664,7 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
-  '@tsconfig/node10@1.0.11':
+  '@tsconfig/node10@1.0.12':
     optional: true
 
   '@tsconfig/node12@1.0.11':
@@ -5230,7 +5232,7 @@ snapshots:
     dependencies:
       '@hapi/bourne': 3.0.0
       inflation: 2.1.0
-      qs: 6.14.0
+      qs: 6.14.1
       raw-body: 2.5.2
       type-is: 1.6.18
 
@@ -5359,7 +5361,7 @@ snapshots:
 
   diff-sequences@29.6.3: {}
 
-  diff@4.0.2:
+  diff@4.0.4:
     optional: true
 
   doctrine@2.1.0:
@@ -5713,7 +5715,7 @@ snapshots:
       '@paralleldrive/cuid2': 2.2.2
       dezalgo: 1.0.4
       once: 1.4.0
-      qs: 6.14.0
+      qs: 6.14.1
 
   fresh@0.5.2: {}
 
@@ -6888,7 +6890,7 @@ snapshots:
 
   pure-rand@6.1.0: {}
 
-  qs@6.14.0:
+  qs@6.14.1:
     dependencies:
       side-channel: 1.1.0
 
@@ -7200,7 +7202,7 @@ snapshots:
   ts-node@10.9.2(@types/node@24.9.1)(typescript@5.9.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
-      '@tsconfig/node10': 1.0.11
+      '@tsconfig/node10': 1.0.12
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
@@ -7209,7 +7211,7 @@ snapshots:
       acorn-walk: 8.3.4
       arg: 4.1.3
       create-require: 1.1.1
-      diff: 4.0.2
+      diff: 4.0.4
       make-error: 1.3.6
       typescript: 5.9.3
       v8-compile-cache-lib: 3.0.1
@@ -7410,7 +7412,7 @@ snapshots:
       imurmurhash: 0.1.4
       signal-exit: 4.1.0
 
-  ws@8.18.3: {}
+  ws@8.19.0: {}
 
   y18n@5.0.8: {}
 

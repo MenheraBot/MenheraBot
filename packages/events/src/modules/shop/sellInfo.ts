@@ -2,6 +2,8 @@ import { EMOJIS } from '../../structures/constants.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { Plants } from '../fazendinha/constants.js';
 import { huntValues } from './constants.js';
+import { getPlantPrice, getQualityEmoji } from '../fazendinha/siloUtils.js';
+import { PlantQuality } from '../fazendinha/types.js';
 
 const sellInfo = async (
   ctx: ChatInputInteractionContext,
@@ -47,10 +49,18 @@ const sellInfo = async (
       fields: Object.entries(Plants).map((c) => {
         return {
           name: `${Plants[c[0] as '1'].emoji} ${ctx.locale(`data:plants.${c[0] as '1'}`)}`,
-          value: `${c[1].sellValue} :star: Kg`,
+          value: `${getQualityEmoji(PlantQuality.Best)} ${getPlantPrice({ plant: Number(c[0]), quality: PlantQuality.Best })} :star: Kg\n${getQualityEmoji(
+            PlantQuality.Normal,
+          )} ${c[1].sellValue} :star: Kg\n${getQualityEmoji(PlantQuality.Worst)} ${getPlantPrice({
+            plant: Number(c[0]),
+            quality: PlantQuality.Worst,
+          })} :star: Kg`,
           inline: true,
         };
       }),
+      footer: {
+        text: `${getQualityEmoji(PlantQuality.Best)} Plantas prêmium dão 30% mais lucro, enquanto ${getQualityEmoji(PlantQuality.Worst)} plantas precárias valem 30% menos`,
+      },
     };
 
     ctx.makeMessage({ embeds: [dataVender] });

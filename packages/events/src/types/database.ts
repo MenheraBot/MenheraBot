@@ -5,6 +5,7 @@ import {
   AvailablePlants,
   DeliveryMission,
   Plantation,
+  PlantQuality,
 } from '../modules/fazendinha/types.js';
 import { HuntMagicItem } from '../modules/hunt/types.js';
 import { UserBuyableTheme } from '../modules/themes/types.js';
@@ -64,6 +65,7 @@ export interface DatabaseUserSchema {
   dailyDayId: number;
   allowMamar: boolean;
   completedDailies: number;
+  readNotificationsAt: number;
 }
 
 export interface DatabaseCreditsSchema {
@@ -127,6 +129,8 @@ export interface DatabaseCommandSchema {
 export interface QuantitativeSeed {
   amount: number;
   plant: AvailablePlants;
+  // For now, seeds wont have quality. But we declare
+  quality?: PlantQuality;
 }
 
 export interface QuantitativeItem {
@@ -138,6 +142,7 @@ export interface QuantitativePlant {
   amount?: number;
   plant: AvailablePlants;
   weight: number;
+  quality?: PlantQuality;
 }
 
 export interface DatabaseTitlesSchema {
@@ -151,10 +156,26 @@ export interface DatabaseFeirinhaSchema {
   _id: string;
   userId: string;
   plantType: AvailablePlants;
+  plantQuality?: PlantQuality;
   weight: number;
   price: number;
   [`name_pt-BR`]: string;
   [`name_en-US`]: string;
+}
+
+export type OrderAward = {
+  estrelinhas?: number;
+  fertilizers?: number;
+};
+
+export interface DatabaseFeirinhaOrderSchema {
+  _id: string;
+  userId: string;
+  plant: AvailablePlants;
+  quality: PlantQuality;
+  weight: number;
+  awards: OrderAward;
+  createdAt: number;
 }
 
 export interface DatabaseFarmerSchema {
@@ -177,6 +198,7 @@ export interface DatabaseNotificationSchema {
   translationValues?: Record<string, unknown>;
   createdAt: number;
   unread: boolean;
+  important: boolean;
 }
 
 export interface DatabaseSuggestionLimitSchema {

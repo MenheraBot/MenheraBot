@@ -1,24 +1,33 @@
-import { ActionRow, ButtonStyles } from '@discordeno/bot';
+import {
+  ButtonStyles,
+  MessageFlags,
+  SeparatorComponent,
+  TextDisplayComponent,
+} from '@discordeno/bot';
 import { DatabaseFarmerSchema } from '../../types/database.js';
 import { InteractionContext } from '../../types/menhera.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils.js';
 import { FINISH_ALL_DELIVERIES_BONUS, Plants } from './constants.js';
 import { getUserDeliveries } from './deliveryUtils.js';
 import {
-  createActionRow,
   createButton,
+  createContainer,
   createCustomId,
+  createSection,
+  createSeparator,
+  createTextDisplay,
 } from '../../utils/discord/componentUtils.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
-import { checkNeededPlants, removePlants } from './siloUtils.js';
+import { checkNeededPlants, getQuality, getQualityEmoji, removePlants } from './siloUtils.js';
 import starsRepository from '../../database/repositories/starsRepository.js';
 import { postTransaction } from '../../utils/apiRequests/statistics.js';
 import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import executeDailies from '../dailies/executeDailies.js';
 import userRepository from '../../database/repositories/userRepository.js';
+import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
 
 const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<void> => {
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
@@ -27,25 +36,22 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
   const dailyUser = farmer.dailies[Number(daily)];
 
   if (typeof dailyUser === 'undefined')
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
+    return ctx.respondInteraction({
+      flags: MessageFlags.Ephemeral,
       content: ctx.prettyResponse('error', 'commands:fazendinha.entregas.no-longer-available'),
     });
 
   if (dailyUser.finished)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
+    return ctx.respondInteraction({
+      flags: MessageFlags.Ephemeral,
       content: ctx.prettyResponse('error', 'commands:fazendinha.entregas.already-finished'),
     });
 
   const canFinishDaily = dailyUser.needs.every((e) => checkNeededPlants([e], farmer.silo));
 
   if (!canFinishDaily)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
+    return ctx.respondInteraction({
+      flags: MessageFlags.Ephemeral,
       content: ctx.prettyResponse('error', 'commands:fazendinha.entregas.no-plants'),
     });
 
@@ -68,16 +74,22 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
     ),
   ]);
 
-  await executeDailies.finishDelivery(await userRepository.ensureFindUser(ctx.user.id));
+  const user = await userRepository.ensureFindUser(ctx.user.id);
 
-  await ctx.makeMessage({
-    content: ctx.prettyResponse('wink', 'commands:fazendinha.entregas.deliver', {
-      award: dailyUser.award,
-      xp: dailyUser.experience,
-    }),
-    components: [],
-    embeds: [],
-  });
+  await executeDailies.finishDelivery(user);
+
+  const updatedFarmer = await farmerRepository.getFarmer(ctx.user.id);
+
+  await executeDailyDelivery(ctx, updatedFarmer, user.selectedColor);
+
+  const followupComponents: (TextDisplayComponent | SeparatorComponent)[] = [
+    createTextDisplay(
+      `### ${ctx.prettyResponse('wink', 'commands:fazendinha.entregas.deliver', {
+        award: dailyUser.award,
+        xp: dailyUser.experience,
+      })}`,
+    ),
+  ];
 
   if (farmer.dailies.every((a) => a.finished)) {
     const bonus = FINISH_ALL_DELIVERIES_BONUS;
@@ -93,12 +105,25 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
       starsRepository.addStars(ctx.user.id, bonus),
     ]);
 
-    ctx.followUp({
-      content: ctx.prettyResponse('smile', 'commands:fazendinha.entregas.finished-bonus', {
-        award: bonus,
-      }),
-    });
+    followupComponents.push(
+      createSeparator(true, false),
+      createTextDisplay(
+        `### ${ctx.prettyResponse('smile', 'commands:fazendinha.entregas.finished-bonus', {
+          award: bonus,
+        })}`,
+      ),
+    );
   }
+
+  await ctx.followUp({
+    components: [
+      createContainer({
+        accentColor: hexStringToNumber(user.selectedColor),
+        components: followupComponents,
+      }),
+    ],
+    flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+  });
 };
 
 const executeDailyDelivery = async (
@@ -108,53 +133,54 @@ const executeDailyDelivery = async (
 ): Promise<void> => {
   const endsIn = getMillisecondsToTheEndOfDay() + Date.now();
 
-  const userDevlieries = getUserDeliveries(farmer);
+  const userDeliveries = getUserDeliveries(farmer);
 
-  const embed = createEmbed({
-    title: ctx.locale('commands:fazendinha.entregas.daily-deliveries'),
-    color: hexStringToNumber(embedColor),
-    fields: [],
-    description: ctx.locale('commands:fazendinha.entregas.description', {
-      bonus: FINISH_ALL_DELIVERIES_BONUS,
-      unix: millisToSeconds(endsIn),
-    }),
-  });
-
-  const toSendComponents: ActionRow[] = [];
-
-  userDevlieries.forEach((a, i) => {
-    embed.fields?.push({
-      name: ctx.locale(
-        `commands:fazendinha.entregas.deliver-embed-name${a.finished ? '-finished' : ''}`,
-        { index: i + 1 },
+  const container = createContainer({
+    accentColor: hexStringToNumber(embedColor),
+    components: [
+      createTextDisplay(
+        `## ${ctx.locale('commands:fazendinha.entregas.daily-deliveries')}\n${ctx.locale(
+          'commands:fazendinha.entregas.description',
+          {
+            bonus: FINISH_ALL_DELIVERIES_BONUS,
+            unix: millisToSeconds(endsIn),
+          },
+        )}`,
       ),
-      inline: true,
-      value: `${ctx.locale('commands:fazendinha.entregas.deliver-embed-field', {
-        award: a.award,
-        xp: a.experience,
-      })}\n${a.needs.map((b) =>
-        ctx.locale('commands:fazendinha.entregas.deliver-embed-field-need', {
-          amount: b.weight ?? b.amount,
-          emoji: Plants[b.plant].emoji,
-        }),
-      )}`,
-    });
-
-    const index = Math.floor(i / 3);
-
-    const button = createButton({
-      label: ctx.locale('commands:fazendinha.entregas.deliver-button', { index: i + 1 }),
-      style: ButtonStyles.Primary,
-      customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, i),
-      disabled: a.finished,
-    });
-
-    if (typeof toSendComponents[index] === 'undefined')
-      toSendComponents.push(createActionRow([button]));
-    else toSendComponents[index].components.push(button);
+    ],
   });
 
-  ctx.makeMessage({ embeds: [embed], components: toSendComponents });
+  userDeliveries.forEach((a, i) => {
+    container.components.push(
+      createSeparator(),
+      createSection({
+        accessory: createButton({
+          label: ctx.locale('commands:fazendinha.entregas.deliver-button'),
+          style: ButtonStyles.Primary,
+          customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, i),
+          disabled: a.finished || !checkNeededPlants(a.needs, farmer.silo),
+        }),
+        components: [
+          createTextDisplay(
+            `### ${ctx.locale(
+              `commands:fazendinha.entregas.deliver-embed-name${a.finished ? '-finished' : ''}`,
+              { index: i + 1 },
+            )}\n${ctx.locale('commands:fazendinha.entregas.deliver-embed-field', {
+              award: a.award,
+              xp: a.experience,
+            })}\n${a.needs.map((b) =>
+              ctx.locale('commands:fazendinha.entregas.deliver-embed-field-need', {
+                amount: b.weight ?? b.amount,
+                emoji: `${getQualityEmoji(getQuality({ quality: b.quality }))} ${Plants[b.plant].emoji}`,
+              }),
+            )}`,
+          ),
+        ],
+      }),
+    );
+  });
+
+  ctx.makeLayoutMessage({ components: [container] });
 };
 
 export { executeDailyDelivery, executeButtonPressed };
