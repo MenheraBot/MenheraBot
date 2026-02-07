@@ -22,7 +22,7 @@ const calculateUserDailyDeliveries = (): DeliveryMission[] => {
 
   for (let i = 0; i < DELIVERIES_AMOUNT; i++) {
     const neededPlants = getRandomAmount();
-    const plantType = Math.floor(Math.random() * 3);
+    const plantType = Math.floor(Math.random() * 24);
 
     const plantQualityRandomness = Math.floor(Math.random() * 10) + 1;
 
