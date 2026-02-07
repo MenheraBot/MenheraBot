@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [6.2.0] - 2026-02-07
 
-## Added
+### Added
 
 - Adicionado qualidade para plantações: Plantas Precárias, Plantas e Plantas Premium. Plantas premium e precárias tem uma mudança em seu preço de 30%.
 - Adicionado categorias para as plantações de fazendinha: Grão, Raiz, Vegetal, Fruta, Fruta Nobre e Especial.
@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Adicionado uma nova daily para colher plantas de uma categoria específica.
 - Agora é possível receber fertilizantes de prêmios de daily.
 
-## Changed
+### Changed
 
 - Ajustado os pesos minimos e máximos de plantações da fazendinha.
 - A `/loja vender plantas` foi atualizada para os novos componentes V2 do Discord! Agora também é possível vender diferentes qualidades de plantas.
@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Facilitado o uso do `/fazendinha feira anunciar`, removendo a necessidade de usar acentos para buscar por platnas.
 - A punição de inatividade agora começa após 60 dias, antes era 14.
 
-## Fixed
+### Fixed
 
 - Corrigido os itens mágicos ainda aparecerem na loja para serem comprados, mesmo já tendo eles - Reportado por @mareys.
 - Os `/top` agora bloqueiam o botão "próximo" se não há mais páginas disponíveis.
