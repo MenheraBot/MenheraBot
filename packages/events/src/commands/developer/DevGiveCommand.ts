@@ -30,14 +30,25 @@ import { getDisplayName } from '../../utils/discord/userUtils.js';
 import { ModalInteraction } from '../../types/interaction.js';
 import { extractLayoutFields } from '../../utils/discord/modalUtils.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
+import { bot } from '../../index.js';
+import { EMOJIS } from '../../structures/constants.js';
 
-const buildNotificationContainer = async (ctx: InteractionContext, user: User, message: string) => {
-  const disableSend = !message || message.length < 1;
+const buildNotificationContainer = async (
+  ctx: InteractionContext,
+  user: User,
+  ptMessage: string,
+  enMessage: string,
+) => {
+  const disableSend = !ptMessage || ptMessage.length < 1 || !enMessage || enMessage.length < 1;
 
   return createContainer({
     components: [
       createSection({
-        components: [createTextDisplay(`## Enviar notificação à ${getDisplayName(user)}`)],
+        components: [
+          createTextDisplay(
+            `## Enviar notificação à ${user.id === bot.applicationId ? 'TODOS USUÁRIOS!!!' : getDisplayName(user)}`,
+          ),
+        ],
         accessory: createButton({
           label: 'Cancelar',
           style: ButtonStyles.Secondary,
@@ -45,7 +56,12 @@ const buildNotificationContainer = async (ctx: InteractionContext, user: User, m
         }),
       }),
       createSeparator(),
-      createTextDisplay('```\n' + (disableSend ? 'Mensagem vazia' : message) + '```'),
+      createTextDisplay(
+        `${EMOJIS.br} \`\`\`\n${ptMessage.length < 1 ? 'Mensagem vazia' : ptMessage}\`\`\``,
+      ),
+      createTextDisplay(
+        `${EMOJIS.us} \`\`\`\n${enMessage.length < 1 ? 'Empty message' : enMessage}\`\`\``,
+      ),
       createSeparator(),
       createActionRow([
         createButton({
@@ -57,7 +73,8 @@ const buildNotificationContainer = async (ctx: InteractionContext, user: User, m
             ctx.originalInteractionId,
             'EDIT',
             user.id,
-            message,
+            ptMessage,
+            enMessage,
           ),
         }),
         createButton({
@@ -70,7 +87,8 @@ const buildNotificationContainer = async (ctx: InteractionContext, user: User, m
             ctx.originalInteractionId,
             'SEND',
             user.id,
-            message,
+            ptMessage,
+            enMessage,
           ),
         }),
       ]),
@@ -78,7 +96,7 @@ const buildNotificationContainer = async (ctx: InteractionContext, user: User, m
   });
 };
 const executeCompontentNotification = async (ctx: ComponentInteractionContext) => {
-  const [action, userId, message] = ctx.sentData;
+  const [action, userId, ptMessage, enMessage] = ctx.sentData;
 
   if (action === 'EDIT')
     return ctx.respondWithModal({
@@ -86,33 +104,49 @@ const executeCompontentNotification = async (ctx: ComponentInteractionContext) =
       customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, 'MODAL', userId),
       components: [
         createLabel({
-          label: 'Mensagem',
+          label: `${EMOJIS.br} Mensagem`,
           description: 'Lembre-se de ser fofinho na mensagem',
           component: createTextInput({
-            customId: 'message',
+            customId: 'pt-BR',
             style: TextStyles.Paragraph,
             placeholder: 'Mensagem vazia',
             required: true,
-            value: message,
+            value: ptMessage,
+          }),
+        }),
+        createLabel({
+          label: `${EMOJIS.us} Message`,
+          description: 'Remember to be cute',
+          component: createTextInput({
+            customId: 'en-US',
+            style: TextStyles.Paragraph,
+            placeholder: 'Empty message',
+            required: true,
+            value: enMessage,
           }),
         }),
       ],
     });
 
   if (action === 'MODAL') {
-    const message = extractLayoutFields(ctx.interaction as ModalInteraction)[0].value ?? '';
+    const updatedPt =
+      extractLayoutFields(ctx.interaction as ModalInteraction).find((a) => a.customId === 'pt-BR')
+        ?.value ?? '';
+    const updatedEn =
+      extractLayoutFields(ctx.interaction as ModalInteraction).find((a) => a.customId === 'en-US')
+        ?.value ?? '';
 
     const user = await cacheRepository.getDiscordUser(userId, true);
 
     if (!user) throw new Error(`Sem user`);
 
-    const container = await buildNotificationContainer(ctx, user, message);
+    const container = await buildNotificationContainer(ctx, user, updatedPt, updatedEn);
 
     return ctx.makeLayoutMessage({ components: [container], flags: MessageFlags.Ephemeral });
   }
 
   if (action === 'SEND') {
-    if (!message || message.length < 3)
+    if (!ptMessage || ptMessage.length < 3 || !enMessage || enMessage.length < 3)
       return ctx.makeLayoutMessage({
         components: [createTextDisplay('Precisa de um texto valido pai')],
       });
@@ -120,7 +154,8 @@ const executeCompontentNotification = async (ctx: ComponentInteractionContext) =
     await notificationRepository.createNotification(
       userId,
       'commands:notificações.notifications.lux-message',
-      { message },
+      { ptBr: ptMessage, enUs: enMessage },
+      true,
     );
 
     ctx.makeLayoutMessage({
@@ -198,7 +233,7 @@ const GiveBadgeCommand = createCommand({
     if (subCommand === 'notificação') {
       const user = ctx.getOption<User>('user', 'users', true);
 
-      const container = await buildNotificationContainer(ctx, user, '');
+      const container = await buildNotificationContainer(ctx, user, '', '');
 
       return ctx.makeLayoutMessage({ components: [container], flags: MessageFlags.Ephemeral });
     }

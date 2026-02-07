@@ -1313,6 +1313,7 @@
     "mark-as-read": "",
     "mark-as-read-one": "Mark as read",
     "mark-as-read-other": "Mark all as read",
+    "important-notifications": "Important messages",
     "cant-clear": "You have new notifications. Use the command again to mark all as read.",
     "all-done": "There you go! Your notifications have been marked as read!",
     "notifications": {
@@ -1323,7 +1324,7 @@
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Heyy, Lux here! I just gave you a brand new Badge! Check your profile >.<",
       "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Hi, Lux here. I added a title to your account! Take a look at `/personalize title` >.<",
       "user-accepted-deal": "**@{{username}}** accepted your deal request **{{name}}** at the fair on <t:{{unix}}:d> at <t:{{unix}}:T>",
-      "lux-message": "[<t:{{unix}}:d> <t:{{unix}}:T>] **[SISTEMA]**: {{message}}",
+      "lux-message": "[<t:{{unix}}:d> <t:{{unix}}:T>] **[Menhera]**: {{enUs}}",
       "finished-daily": "",
       "finished-daily-one": "You have completed **{{count}}** mission! Your rewards are **{{price}}** :star: on <t:{{unix}}:d> at <t:{{unix}}:T>",
       "finished-daily-other": "You have completed **{{count}}** missions! Your rewards are **{{price}}** :star: on <t:{{unix}}:d> at <t:{{unix}}:T>"

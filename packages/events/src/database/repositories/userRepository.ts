@@ -46,6 +46,7 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
   dailyDayId: user.dailyDayId,
   allowMamar: user.allowMamar,
   completedDailies: user.completedDailies,
+  readNotificationsAt: user.readNotificationsAt,
 });
 
 const findUser = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {

@@ -91,6 +91,7 @@ const userSchema = new Schema({
   dailyDayId: { type: Number, default: 0 },
   allowMamar: { type: Boolean, default: true },
   completedDailies: { type: Number, default: 0 },
+  readNotificationsAt: { type: Number, default: -1 },
 });
 
 const themeCredits = new Schema({
@@ -158,6 +159,7 @@ const notificationSchema = new Schema({
   translationValues: { type: Object },
   createdAt: { type: Number },
   unread: { type: Boolean },
+  important: { type: Boolean },
 });
 
 const suggestionLimitSchema = new Schema({

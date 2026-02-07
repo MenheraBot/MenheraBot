@@ -65,6 +65,7 @@ export interface DatabaseUserSchema {
   dailyDayId: number;
   allowMamar: boolean;
   completedDailies: number;
+  readNotificationsAt: number;
 }
 
 export interface DatabaseCreditsSchema {
@@ -197,6 +198,7 @@ export interface DatabaseNotificationSchema {
   translationValues?: Record<string, unknown>;
   createdAt: number;
   unread: boolean;
+  important: boolean;
 }
 
 export interface DatabaseSuggestionLimitSchema {

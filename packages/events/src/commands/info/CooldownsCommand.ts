@@ -123,7 +123,13 @@ const CooldownsCommand = createCommand({
       ctx.user.id,
     );
 
-    if (unreadNotifications > 0) {
+    const unreadGlobalNotifications = await notificationRepository.countGlobalUnreadNotifications(
+      ctx.authorData.readNotificationsAt,
+    );
+
+    const totalNotifications = unreadNotifications + unreadGlobalNotifications;
+
+    if (totalNotifications > 0) {
       const notificationCommand = await commandRepository.getCommandInfo('notificações');
 
       container.components.push(
@@ -133,7 +139,7 @@ const CooldownsCommand = createCommand({
             'commands:cooldowns.check-your-notifications',
             {
               command: `</notificações:${notificationCommand?.discordId}>`,
-              count: unreadNotifications,
+              count: totalNotifications,
             },
           )}`,
         ),

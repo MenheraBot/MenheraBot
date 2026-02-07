@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O `/loja comprar sementes` foi atualizado para os novos componentes V2 do Discord.
 - O `/cooldowns` foi atualizado para os novos componentes V2 do Discord.
 - O `/transações` foi atualizado para os novos componentes V2 do Discord.
+- O `/notificações` foi atualizado para os novos componetnes V2 do Discord.
 - A planta `Tomate` foi renomeada para `Feijão`.
 - A planta `Banana` foi renomeada para `Cebola`.
 - A planta `Limão` foi renomeada para `Mirtilo`. 
