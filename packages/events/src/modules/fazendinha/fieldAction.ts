@@ -193,7 +193,7 @@ const harvestAllFields = async (
 
   await postMultipleFazendinhaHarvest(`${ctx.user.id}`, parsedFields);
 
-  await executeDailies.harvestPlant(await userRepository.ensureFindUser(ctx.user.id), parsedFields);
+  await executeDailies.harvestDailies(await userRepository.ensureFindUser(ctx.user.id), parsedFields);
 
   await displayPlantations(
     ctx,
@@ -291,7 +291,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
     postFazendinhaAction(`${ctx.user.id}`, field.plantType, success ? 'HARVEST' : 'ROTTED');
 
   if (harvestedWeight > 0)
-    executeDailies.harvestPlant(await userRepository.ensureFindUser(ctx.user.id), added);
+    executeDailies.harvestDailies(await userRepository.ensureFindUser(ctx.user.id), added);
 
   await displayPlantations(
     ctx,

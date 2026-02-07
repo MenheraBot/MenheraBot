@@ -1,5 +1,7 @@
 import { calculateProbability } from '../../utils/miscUtils.js';
-import { Plants } from '../fazendinha/constants.js';
+import { PLANT_CATEGORY_EMOJIS, Plants } from '../fazendinha/constants.js';
+import { getQuality, getQualityEmoji } from '../fazendinha/siloUtils.js';
+import { PlantCategories, PlantQuality } from '../fazendinha/types.js';
 import { StaticItemData } from '../hunt/types.js';
 import { Daily } from './types.js';
 
@@ -8,6 +10,7 @@ export const STARS_PRIZE = 7_000;
 export const SEED_AMOUNT = 3;
 export const PLANT_AMOUNT = 1;
 export const ROLLS_COUNT = 1;
+export const FERTILIZER_COUNT = 1;
 export const HUNT_AMOUNT = 2;
 export const DAILIES_AMOUNT = 3;
 
@@ -32,6 +35,10 @@ const AvailableAwards = [
     value: 'plant' as const,
     probability: 15,
   },
+  {
+    value: 'fertilizer' as const,
+    probability: 10,
+  },
 ];
 
 export type AwardValues = (typeof AvailableAwards)[number]['value'];
@@ -46,7 +53,7 @@ const Dailies: Record<number, Daily> = {
     type: 'announce_product',
     amountLimits: [2, 3],
   },
- 22: {
+  22: {
     type: 'success_on_hunt',
     amountLimits: [3, 6],
   },
@@ -80,6 +87,22 @@ const Dailies: Record<number, Daily> = {
   28: {
     type: 'finish_delivery',
     amountLimits: [1, 3],
+  },
+  29: {
+    type: 'harvest_quality',
+    amountLimits: [2, 4],
+    specifications: Object.keys(PlantQuality).map((_, i) => `${Math.floor(i % 3)}`),
+    specificationDisplay: (ctx, specification) =>
+      ` ${getQualityEmoji(
+        getQuality({ quality: Number(specification) as 1 }),
+      )} ${ctx.locale(`data:fazendinha.quality_${specification as '1'}`)}`,
+  },
+  30: {
+    type: 'harvest_category',
+    amountLimits: [2, 4],
+    specifications: Object.keys(PlantCategories).map((_, i) => `${Math.floor(i % 6)}`),
+    specificationDisplay: (ctx, specification) =>
+      ` ${PLANT_CATEGORY_EMOJIS[specification as '1']} **${ctx.locale(`data:fazendinha.category_${specification as '1'}`)}**`,
   },
 };
 

@@ -2,6 +2,8 @@ import notificationRepository from '../../database/repositories/notificationRepo
 import userRepository from '../../database/repositories/userRepository.js';
 import { ChatInputInteractionCommand } from '../../types/commands.js';
 import { DatabaseUserSchema, QuantitativePlant } from '../../types/database.js';
+import { Plants } from '../fazendinha/constants.js';
+import { getQuality } from '../fazendinha/siloUtils.js';
 import { FINISHED_DAILY_AWARD, getDailyById } from './dailies.js';
 import { getUserDailies } from './getUserDailies.js';
 import { Daily, DatabaseDaily } from './types.js';
@@ -115,6 +117,44 @@ const successOnHunt = async (user: DatabaseUserSchema, times: number): Promise<v
   await executeDailies(user, shouldExecute, times);
 };
 
+const harvestCategory = async (
+  user: DatabaseUserSchema,
+  plants: QuantitativePlant[],
+): Promise<void> => {
+  const shouldExecute = (dailyData: Daily, specification?: string) => {
+    return (
+      dailyData.type === 'harvest_category' &&
+      plants.some((a) => `${Plants[a.plant].category}` === specification)
+    );
+  };
+
+  await executeDailies(
+    user,
+    shouldExecute,
+    1,
+    (d) => plants.find((a) => `${Plants[a.plant].category}` === d.specification)?.weight ?? 1,
+  );
+};
+
+const harvestQuality = async (
+  user: DatabaseUserSchema,
+  plants: QuantitativePlant[],
+): Promise<void> => {
+  const shouldExecute = (dailyData: Daily, specification?: string) => {
+    return (
+      dailyData.type === 'harvest_quality' &&
+      plants.some((a) => `${getQuality(a)}` === specification)
+    );
+  };
+
+  await executeDailies(
+    user,
+    shouldExecute,
+    1,
+    (d) => plants.find((a) => `${getQuality(a)}` === d.specification)?.weight ?? 1,
+  );
+};
+
 const harvestPlant = async (
   user: DatabaseUserSchema,
   plants: QuantitativePlant[],
@@ -133,6 +173,12 @@ const harvestPlant = async (
   );
 };
 
+const harvestDailies = async (user: DatabaseUserSchema, plants: QuantitativePlant[]) => {
+  await harvestPlant(user, plants);
+  await harvestQuality(user, plants);
+  await harvestCategory(user, plants);
+};
+
 const finishDelivery = async (user: DatabaseUserSchema): Promise<void> => {
   const shouldExecute = (dailyData: Daily) => {
     return dailyData.type === 'finish_delivery';
@@ -145,7 +191,7 @@ export default {
   useCommand,
   justBet,
   winBet,
-  harvestPlant,
+  harvestDailies,
   finishDelivery,
   winStarsInBet,
   announceProduct,

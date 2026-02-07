@@ -1358,7 +1358,8 @@
       "roll": "({{index}}) Roll",
       "seed": "({{index}}) Seed",
       "plant": "({{index}}) Plant",
-      "hunt": "({{index}}) Hunt"
+      "hunt": "({{index}}) Hunt",
+      "fertilizer": "({{index}}) Fertilizer"
     },
     "descriptions": {
       "just_bet": "{{emoji}} Bet on _{{specification}}_ **{{count}}** times. ({{has}}/{{need}})",
@@ -1375,7 +1376,9 @@
       "win_stars_in_bets": "{{emoji}} Conquer **{{need}}** :star: playing _bicho_, _blackjack_ or _roulette_. ({{has}}/{{need}})",
       "finish_delivery": "{{emoji}} Make **{{need}}** deliveries from the farm. ({{has}}/{{need}})",
       "finish_delivery-one": "{{emoji}} Make **{{need}}** delivery from the farm. ({{has}}/{{need}})",
-      "finish_delivery-other": "{{emoji}} Make **{{need}}** deliveries from the farm. ({{has}}/{{need}})"
+      "finish_delivery-other": "{{emoji}} Make **{{need}}** deliveries from the farm. ({{has}}/{{need}})",
+      "harvest_quality": "{{emoji}} Harvest **{{need}}** Kg of _{{specification}}_ plants. ({{has}}/{{need}})",
+      "harvest_category": "{{emoji}} Harvest **{{need}}** Kg of plants clasified as _{{specification}}_. ({{has}}/{{need}})"
     }
   },
   "pedrapapeltesoura": {

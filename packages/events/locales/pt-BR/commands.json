@@ -1361,7 +1361,8 @@
       "roll": "({{index}}) Roll",
       "seed": "({{index}}) Semente",
       "plant": "({{index}}) Planta",
-      "hunt": "({{index}}) Caça"
+      "hunt": "({{index}}) Caça",
+      "fertilizer": "({{index}}) Fertilizante"
     },
     "descriptions": {
       "just_bet": "{{emoji}} Aposte no _{{specification}}_ **{{count}}** vezes. ({{has}}/{{need}})",
@@ -1378,7 +1379,9 @@
       "harvest_plants": "{{emoji}} Colha **{{need}}** Kg de _{{specification}}_. ({{has}}/{{need}})",
       "finish_delivery": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})",
       "finish_delivery-one": "{{emoji}} Realize **{{need}}** entrega da fazendinha. ({{has}}/{{need}})",
-      "finish_delivery-other": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})"
+      "finish_delivery-other": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})",
+      "harvest_quality": "{{emoji}} Colha **{{need}}** Kg de plantas _{{specification}}_. ({{has}}/{{need}})",
+      "harvest_category": "{{emoji}} Colha **{{need}}** Kg de plantas da categoria _{{specification}}_. ({{has}}/{{need}})"
     }
   },
   "pedrapapeltesoura": {

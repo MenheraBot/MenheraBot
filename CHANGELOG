@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Criado o comando `/fazendinha feira administrar`, que é um atalho para administrar a feira, disponível no `/fazendinha administrar`.
 - Criado o comando `/fazendinha feira trocas`: faça troca de plantas na feira por estrelinhas e/ou fertilizantes. 
 - Agora é possível atualizar o valor de um item anunciado na feira no `/fazendinha administrar` - Sugerido por @start_0
+- Adicionado uma nova daily para colher plantas de uma qualidade específica.
+- Adicionado uma nova daily para colher plantas de uma categoria específica.
+- Agora é possível receber fertilizantes de prêmios de daily.
 
 ## Changed
 
@@ -40,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Corrigido os itens mágicos ainda aparecerem na loja para serem comprados, mesmo já tendo eles - Reportado por @mareys.
 - Os `/top` agora bloqueiam o botão "próximo" se não há mais páginas disponíveis.
+- Corrigido o problema de exceder o limite do silo através de recompensas de daily.
 
 ### Removed
 

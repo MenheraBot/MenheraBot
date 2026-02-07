@@ -10,7 +10,9 @@ type DailyTypes =
   | 'success_on_hunt'
   | 'use_action_commands'
   | 'harvest_plants'
-  | 'finish_delivery';
+  | 'finish_delivery'
+  | 'harvest_quality'
+  | 'harvest_category';
 
 export interface Daily {
   type: DailyTypes;

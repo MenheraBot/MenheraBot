@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ApplicationCommandOptionTypes, ButtonComponent, ButtonStyles } from '@discordeno/bot';
+import {
+  ApplicationCommandOptionTypes,
+  ButtonComponent,
+  ButtonStyles,
+  MessageFlags,
+} from '@discordeno/bot';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { getUserDailies } from '../../modules/dailies/getUserDailies.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
@@ -8,6 +13,7 @@ import {
   createActionRow,
   createButton,
   createCustomId,
+  createTextDisplay,
 } from '../../utils/discord/componentUtils.js';
 import { Award, DatabaseDaily } from '../../modules/dailies/types.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
@@ -16,12 +22,13 @@ import { InteractionContext } from '../../types/menhera.js';
 import { Items, Plants } from '../../modules/fazendinha/constants.js';
 import { AvailableItems, AvailablePlants } from '../../modules/fazendinha/types.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
-import { addPlants } from '../../modules/fazendinha/siloUtils.js';
+import { addItems, addPlants, getSiloLimits } from '../../modules/fazendinha/siloUtils.js';
 import { DatabaseUserSchema } from '../../types/database.js';
 import { getUniqueDaily } from '../../modules/dailies/calculateUserDailies.js';
 import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
 import { User } from '../../types/discordeno.js';
+import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
 
 const getDailyStatus = (daily: DatabaseDaily): 'reedem' | 'unfinished' | 'reedemed' =>
   daily.redeemed ? 'reedemed' : daily.has >= daily.need ? 'reedem' : 'unfinished';
@@ -194,6 +201,24 @@ const handleButtonInteractions = async (ctx: ComponentInteractionContext): Promi
     let updateObject: unknown = {};
     let updateFunction: Function = userRepository.updateUserWithSpecialData;
 
+    const farmer = await farmerRepository.getFarmer(ctx.user.id);
+
+    const siloLimits = getSiloLimits(farmer);
+
+    const available = siloLimits.limit - siloLimits.used;
+
+    const cannotRedeem = () =>
+      ctx.respondInteraction({
+        flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+        components: [
+          createTextDisplay(
+            ctx.prettyResponse('error', 'commands:fazendinha.silo.silo-is-full', {
+              limit: siloLimits.limit,
+            }),
+          ),
+        ],
+      });
+
     switch (selectedAward.type) {
       case 'estrelinhas': {
         updateFunction = userRepository.updateUserWithSpecialData;
@@ -213,17 +238,40 @@ const handleButtonInteractions = async (ctx: ComponentInteractionContext): Promi
       case 'seed': {
         const farmer = await farmerRepository.getFarmer(ctx.user.id);
         updateFunction = farmerRepository.updateSeeds;
-        updateObject = addPlants(farmer.seeds, [
-          { plant: selectedAward.helper as AvailablePlants, amount: selectedAward.value },
-        ]);
+
+        const prize = {
+          plant: selectedAward.helper as AvailablePlants,
+          amount: selectedAward.value,
+        };
+
+        if (prize.amount > available) return cannotRedeem();
+
+        updateObject = addPlants(farmer.seeds, [prize]);
         break;
       }
       case 'plant': {
         const farmer = await farmerRepository.getFarmer(ctx.user.id);
         updateFunction = farmerRepository.updateSilo;
-        updateObject = addPlants(farmer.silo, [
-          { plant: selectedAward.helper as AvailablePlants, weight: selectedAward.value },
-        ]);
+
+        const prize = {
+          plant: selectedAward.helper as AvailablePlants,
+          weight: selectedAward.value,
+        };
+
+        if (prize.weight > available) return cannotRedeem();
+
+        updateObject = addPlants(farmer.silo, [prize]);
+        break;
+      }
+      case 'fertilizer': {
+        const farmer = await farmerRepository.getFarmer(ctx.user.id);
+        updateFunction = farmerRepository.updateItems;
+
+        const prize = { id: AvailableItems.Fertilizer, amount: selectedAward.value };
+
+        if (prize.amount > available) return cannotRedeem();
+
+        updateObject = addItems(farmer.items, [prize]);
         break;
       }
       default:
