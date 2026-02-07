@@ -20,10 +20,29 @@ import { createTextDisplay } from '../../utils/discord/componentUtils.js';
 import { buildSellPlantsMessage } from '../fazendinha/displaySilo.js';
 import { MessageFlags } from '@discordeno/bot';
 import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
+import { PlantQuality } from '../fazendinha/types.js';
+
+const respondInvalidAmount = async (
+  ctx: InteractionContext,
+  farmer: DatabaseFarmerSchema,
+  selectedQuality?: PlantQuality,
+) => {
+  const userData = await userRepository.ensureFindUser(farmer.id);
+
+  await buildSellPlantsMessage(ctx, farmer, userData.selectedColor, selectedQuality);
+
+  await ctx.followUp({
+    flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+    components: [
+      createTextDisplay(ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount')),
+    ],
+  });
+};
 
 const receiveModal = async (
   ctx: ComponentInteractionContext<ModalInteraction>,
   farmer: DatabaseFarmerSchema,
+  selectedQuality?: PlantQuality,
 ): Promise<void> => {
   const selectedPlants: QuantitativePlant[] = extractFields(ctx.interaction).map((a) => {
     const [plant, quality] = a.customId.split('|');
@@ -36,42 +55,36 @@ const receiveModal = async (
   });
 
   for (const plant of selectedPlants) {
-    if (Number.isNaN(plant.weight))
-      return ctx.makeLayoutMessage({
-        components: [
-          createTextDisplay(
-            ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
-          ),
-        ],
-      });
+    if (Number.isNaN(plant.weight)) return respondInvalidAmount(ctx, farmer, selectedQuality);
 
-    if (plant.weight <= 0)
-      return ctx.makeLayoutMessage({
-        components: [
-          createTextDisplay(
-            ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
-          ),
-        ],
-      });
+    if (plant.weight <= 0) return respondInvalidAmount(ctx, farmer, selectedQuality);
   }
 
-  executeSellPlant(ctx, farmer, selectedPlants);
+  executeSellPlant(ctx, farmer, selectedPlants, selectedQuality);
 };
 
 const executeSellPlant = async (
   ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   selectedPlants: QuantitativePlant[],
+  selectedQuality?: PlantQuality,
 ): Promise<void> => {
   let totalStars = 0;
   const soldPlants = [];
+
+  const { selectedColor } = await userRepository.ensureFindUser(farmer.id);
 
   for (let i = selectedPlants.length - 1; i >= 0; i--) {
     const currentPlant = selectedPlants[i];
     const fromSilo = farmer.silo.find(filterPlant(currentPlant));
 
-    if (!fromSilo || fromSilo.weight < currentPlant.weight)
-      return ctx.makeLayoutMessage({
+    if (!fromSilo || fromSilo.weight < currentPlant.weight) {
+      const updatedFarmer = await farmerRepository.getFarmer(farmer.id);
+
+      await buildSellPlantsMessage(ctx, updatedFarmer, selectedColor, selectedQuality);
+
+      return ctx.followUp({
+        flags: setComponentsV2Flag(MessageFlags.Ephemeral),
         components: [
           createTextDisplay(
             ctx.prettyResponse('error', 'commands:loja.sell_plants.not-enough', {
@@ -81,15 +94,9 @@ const executeSellPlant = async (
           ),
         ],
       });
+    }
 
-    if (currentPlant.weight <= 0)
-      return ctx.makeLayoutMessage({
-        components: [
-          createTextDisplay(
-            ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount'),
-          ),
-        ],
-      });
+    if (currentPlant.weight <= 0) return respondInvalidAmount(ctx, farmer, selectedQuality);
 
     const plant = Plants[currentPlant.plant];
     const plantQuality = getQuality(currentPlant);
@@ -102,12 +109,7 @@ const executeSellPlant = async (
     if (fromSilo.weight <= 0) farmer.silo.splice(farmer.silo.findIndex(filterPlant(fromSilo)), 1);
   }
 
-  if (totalStars === 0)
-    return ctx.makeLayoutMessage({
-      components: [
-        createTextDisplay(ctx.prettyResponse('error', 'commands:loja.sell_plants.invalid-amount')),
-      ],
-    });
+  if (totalStars === 0) return respondInvalidAmount(ctx, farmer, selectedQuality);
 
   await Promise.all([
     starsRepository.addStars(ctx.user.id, totalStars),
@@ -141,7 +143,7 @@ const executeSellPlant = async (
   if (updatedFarmer.silo.filter((a) => a.weight > 0).length === 0)
     return ctx.makeLayoutMessage(successMessage);
 
-  await buildSellPlantsMessage(ctx, updatedFarmer, userData.selectedColor);
+  await buildSellPlantsMessage(ctx, updatedFarmer, selectedColor, selectedQuality);
 
   return ctx.followUp(successMessage);
 };

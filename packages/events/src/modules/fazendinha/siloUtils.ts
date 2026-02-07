@@ -164,6 +164,8 @@ const filterPlantsByQuality = (
 ): Record<PlantQuality, QuantitativePlant[]> =>
   plants.reduce<Record<PlantQuality, QuantitativePlant[]>>(
     (p, c) => {
+      if (c.weight <= 0) return p;
+      
       p[getQuality(c)].push(c);
 
       return p;

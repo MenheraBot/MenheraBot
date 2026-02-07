@@ -1,14 +1,15 @@
 import {
   ActionRow,
   ButtonStyles,
+  MessageFlags,
   SectionComponent,
-  SelectOption,
   SeparatorComponent,
+  StringSelectComponent,
   TextDisplayComponent,
   TextStyles,
 } from '@discordeno/bot';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
-import { DatabaseFarmerSchema, QuantitativePlant } from '../../types/database.js';
+import { DatabaseFarmerSchema } from '../../types/database.js';
 import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
 import { AvailablePlants, PlantQuality } from './types.js';
@@ -32,7 +33,6 @@ import { InteractionContext } from '../../types/menhera.js';
 import {
   filterPlant,
   filterPlantsByQuality,
-  getPlantPrice,
   getQuality,
   getQualityEmoji,
   getSiloLimits,
@@ -177,27 +177,39 @@ const displaySilo = async (
 };
 
 const handleButtonAction = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [selectedOption, embedColor, confirm] = ctx.sentData;
+  const [selectedOption, embedColor, confirm, selectedQuality] = ctx.sentData;
+
+  const sentQuality = selectedQuality ? Number(selectedQuality) : undefined;
 
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
-  if (selectedOption === 'DISPLAY') return buildSellPlantsMessage(ctx, farmer, embedColor);
+  if (selectedOption === 'DISPLAY')
+    return buildSellPlantsMessage(ctx, farmer, embedColor, sentQuality);
+
+  if (selectedOption === 'SET_QUALITY') {
+    const selectedOption = Number(ctx.interaction.data.values?.[0]) || 0;
+
+    return buildSellPlantsMessage(ctx, farmer, embedColor, selectedOption);
+  }
 
   if (selectedOption === 'SHOW_MODAL') {
     const sellAll = ctx.interaction.data.values?.some((a) => a.includes('ALL'));
 
-    const [, , quality] = ctx.sentData;
+    const [, , , quality] = ctx.sentData;
 
     if (!sellAll)
       return showModal(
         ctx as ComponentInteractionContext<SelectMenuInteraction>,
         farmer,
         embedColor,
+        sentQuality,
       );
 
     const byQuality = filterPlantsByQuality(farmer.silo);
 
-    return executeSellPlant(ctx, farmer, byQuality[Number(quality) as PlantQuality]);
+    console.log(byQuality[Number(quality) as PlantQuality]);
+
+    return executeSellPlant(ctx, farmer, byQuality[Number(quality) as PlantQuality], sentQuality);
   }
 
   if (selectedOption === 'SELL_ALL') {
@@ -205,17 +217,18 @@ const handleButtonAction = async (ctx: ComponentInteractionContext): Promise<voi
 
     if (confirmed) return executeSellPlant(ctx, farmer, farmer.silo);
 
-    return buildSellPlantsMessage(ctx, farmer, embedColor, true);
+    return buildSellPlantsMessage(ctx, farmer, embedColor, sentQuality, true);
   }
 
   if (selectedOption === 'SELL')
-    return receiveModal(ctx as ComponentInteractionContext<ModalInteraction>, farmer);
+    return receiveModal(ctx as ComponentInteractionContext<ModalInteraction>, farmer, sentQuality);
 };
 
 const showModal = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
   farmer: DatabaseFarmerSchema,
   embedColor: string,
+  selectedQuality?: PlantQuality,
 ): Promise<void> => {
   const selectedOptions = ctx.interaction.data.values;
 
@@ -262,6 +275,7 @@ const showModal = async (
       'SELL',
       embedColor,
       ctx.sentData[2],
+      selectedQuality,
     ),
     title: ctx.locale('commands:fazendinha.silo.sell-plants'),
     components: modalFields,
@@ -272,85 +286,129 @@ const buildSellPlantsMessage = async (
   ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   embedColor: string,
+  selectedQuality?: PlantQuality,
   confirm = false,
 ): Promise<void> => {
-  const normalOptions: SelectOption[] = [];
-  const bestOptions: SelectOption[] = [];
-  const worstOptions: SelectOption[] = [];
+  const availableQualities = farmer.silo.reduce<Partial<Record<PlantQuality, true>>>((p, c) => {
+    if ((c.weight ?? c.amount ?? 0) < 0) return p;
 
-  const byQuality = filterPlantsByQuality(farmer.silo);
+    const quality = getQuality(c);
 
-  const reduceFunction =
-    (optionsToPush: SelectOption[]) => (text: string, plant: QuantitativePlant) => {
-      if (plant.weight === 0) return text;
-      if (optionsToPush.length >= 25) return text;
+    if (p[quality]) return p;
 
-      optionsToPush.push({
-        label: ctx.locale('commands:fazendinha.silo.sell-plant', {
-          plant: ctx.locale(`data:plants.${plant.plant}`),
+    p[quality] = true;
+
+    return p;
+  }, {});
+
+  const qualityArray = Object.keys(availableQualities).reverse();
+
+  if (qualityArray.length === 0)
+    return ctx.makeLayoutMessage({
+      flags: MessageFlags.Ephemeral,
+      components: [
+        createTextDisplay(ctx.prettyResponse('error', 'commands:fazendinha.silo.no-plants')),
+      ],
+    });
+
+  const components: [ActionRow, ...(SeparatorComponent | TextDisplayComponent)[]] = [
+    createActionRow([
+      createSelectMenu({
+        customId: createCustomId(
+          8,
+          ctx.user.id,
+          ctx.originalInteractionId,
+          'SET_QUALITY',
+          embedColor,
+        ),
+        options: qualityArray.map((q) => {
+          const quality = Number(q) as PlantQuality;
+          return {
+            label: ctx.locale(`data:fazendinha.quality_${quality}`),
+            value: q,
+            default: selectedQuality === quality,
+            emoji: { name: getQualityEmoji(quality) },
+          };
         }),
-        emoji: { name: Plants[plant.plant].emoji },
-        value: `${plant.plant}|${getQuality(plant)}|N`,
-      });
+      }),
+    ]),
+  ];
 
-      return ctx.locale('commands:fazendinha.silo.description', {
-        text,
-        emoji: Plants[plant.plant].emoji,
-        amount: plant.weight,
-        metric: ' kg',
-        plant: ctx.locale(`data:plants.${plant.plant}`),
-        value: getPlantPrice(plant),
-      });
-    };
+  if ((components[0].components[0] as StringSelectComponent).options.every((a) => !a.default)) {
+    (components[0].components[0] as StringSelectComponent).options[0].default = true;
+  }
 
-  const bestDescription = byQuality[PlantQuality.Best].reduce(reduceFunction(bestOptions), '');
-  const worstDescription = byQuality[PlantQuality.Worst].reduce(reduceFunction(worstOptions), '');
-  const normalDescription = byQuality[PlantQuality.Normal].reduce(
-    reduceFunction(normalOptions),
-    '',
+  const realStringSelectedQuality = (
+    components[0].components[0] as StringSelectComponent
+  ).options.find((a) => a.default)?.value;
+
+  const realSelectedQuality = getQuality({
+    quality: realStringSelectedQuality ? Number(realStringSelectedQuality) : undefined,
+  });
+
+  const plantOptions = farmer.silo.flatMap((p) =>
+    getQuality(p) === realSelectedQuality
+      ? [
+          {
+            label: ctx.locale('commands:fazendinha.silo.sell-plant', {
+              plant: ctx.locale(`data:plants.${p.plant}`),
+            }),
+            emoji: { name: Plants[p.plant].emoji },
+            value: `${p.plant}|${realSelectedQuality}|N`,
+          },
+        ]
+      : [],
   );
 
-  const selectComponents: (ActionRow | SeparatorComponent | TextDisplayComponent)[] = [];
+  if (plantOptions.length < 25)
+    plantOptions.unshift({
+      label: ctx.locale('commands:fazendinha.silo.sell-all-plants', {
+        quality: ctx
+          .locale(`commands:fazendinha.silo.quality-plants-${realSelectedQuality}`)
+          .toLowerCase(),
+      }),
+      value: `ALL|${realSelectedQuality}`,
+      emoji: { name: '💰' },
+    });
 
-  const pushFunction = (options: SelectOption[], quality: PlantQuality, description: string) => {
-    if (options.length === 0) return;
+  components.push(
+    createActionRow([
+      createSelectMenu({
+        options: plantOptions,
+        minValues: 1,
+        maxValues: plantOptions.length >= 5 ? 5 : plantOptions.length,
+        placeholder: `${getQualityEmoji(realSelectedQuality)} ${ctx.locale('commands:fazendinha.silo.choose-sell')}`,
+        customId: createCustomId(
+          8,
+          ctx.user.id,
+          ctx.originalInteractionId,
+          'SHOW_MODAL',
+          embedColor,
+          false,
+          realSelectedQuality,
+        ),
+      }),
+    ]),
+  );
 
-    if (options.length < 25)
-      options.unshift({
-        label: ctx.locale('commands:fazendinha.silo.sell-all-plants', {
-          quality: ctx.locale(`commands:fazendinha.silo.quality-plants-${quality}`).toLowerCase(),
-        }),
-        value: `ALL|${quality}`,
-        emoji: { name: '💰' },
-      });
+  const groupedPlants = groupPlantsByType(farmer.silo);
+  const entries = Object.entries(groupedPlants);
 
-    selectComponents.push(
-      createSeparator(true),
-      createTextDisplay(
-        `### ${getQualityEmoji(quality)} ${ctx.locale(`commands:fazendinha.silo.quality-plants-${quality}`)}\n${description}`,
-      ),
-      createActionRow([
-        createSelectMenu({
-          options,
-          minValues: 1,
-          maxValues: options.length >= 5 ? 5 : options.length,
-          placeholder: `${getQualityEmoji(quality)} ${ctx.locale('commands:fazendinha.silo.choose-sell')}`,
-          customId: createCustomId(
-            8,
-            ctx.user.id,
-            ctx.originalInteractionId,
-            'SHOW_MODAL',
-            embedColor,
-            quality,
-          ),
-        }),
-      ]),
-    );
-  };
-
-  pushFunction(normalOptions, PlantQuality.Normal, normalDescription);
-  pushFunction(bestOptions, PlantQuality.Best, bestDescription);
-  pushFunction(worstOptions, PlantQuality.Worst, worstDescription);
+  components.push(
+    createSeparator(),
+    createTextDisplay(
+      `### ${ctx.locale(`commands:fazendinha.silo.quality-plants`)}\n${
+        entries.length === 0
+          ? `_${ctx.locale('commands:fazendinha.silo.nothing')}_`
+          : `- ${entries
+              .map(
+                ([plantId, plants]) =>
+                  `${Plants[Number(plantId) as 1].emoji} - ${plants.map((p) => `${getQualityEmoji(getQuality(p))} **${p.weight} Kg**`).join(', ')}`,
+              )
+              .join('\n- ')}`
+      }`,
+    ),
+  );
 
   const container = createContainer({
     accentColor: hexStringToNumber(embedColor),
@@ -374,20 +432,13 @@ const buildSellPlantsMessage = async (
             'SELL_ALL',
             embedColor,
             confirm,
+            selectedQuality,
           ),
         }),
       }),
-      ...selectComponents,
+      ...components,
     ],
   });
-
-  if (normalOptions.length === 0 && bestOptions.length === 0 && worstDescription.length === 0) {
-    return ctx.makeLayoutMessage({
-      components: [
-        createTextDisplay(ctx.prettyResponse('error', 'commands:fazendinha.silo.no-plants')),
-      ],
-    });
-  }
 
   ctx.makeLayoutMessage({
     components: [container],
