@@ -1,4 +1,4 @@
-import { ActionRow, ButtonStyles, SelectOption } from '@discordeno/bot';
+import { ActionRow, ButtonStyles, SectionComponent, SelectOption } from '@discordeno/bot';
 import userRepository from '../../database/repositories/userRepository.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import {
@@ -119,6 +119,42 @@ const displayAdministrateFarm = async (
     ],
   });
 
+  const itemsToUse = applyToAll ? itemsToAllFields : farmer.items;
+
+  const selectMenu = createSelectMenu({
+    customId: createCustomId(
+      3,
+      ctx.user.id,
+      ctx.originalInteractionId,
+      'USE_ITEM',
+      -1,
+      -1,
+      applyToAll,
+    ),
+    maxValues: 1,
+    minValues: 1,
+    placeholder: ctx.locale('commands:fazendinha.admin.fields.select-item'),
+    options: itemsToUse.flatMap<SelectOption>((item) =>
+      item.amount <= 0
+        ? []
+        : [
+            {
+              label: `${item.amount}x ${ctx.locale(`data:farm-items.${item.id}`)}`,
+              value: `${item.id}`,
+              default: true,
+              emoji: extractNameAndIdFromEmoji(Items[item.id].emoji),
+            },
+          ],
+    ),
+  });
+
+  if (selectMenu.options.length > 0) {
+    (container.components[0] as SectionComponent).components.push(
+      createTextDisplay(ctx.locale('commands:fazendinha.admin.fields.select-item')),
+    );
+    container.components.push(createActionRow([selectMenu]));
+  }
+
   farmer.plantations.forEach((f, i) => {
     const upgrade = getPlantationUpgrades(f);
 
@@ -223,46 +259,10 @@ const displayAdministrateFarm = async (
       );
     }
 
-  const itemsToUse = applyToAll ? itemsToAllFields : farmer.items;
-
-  const selectMenu = createSelectMenu({
-    customId: createCustomId(
-      3,
-      ctx.user.id,
-      ctx.originalInteractionId,
-      'USE_ITEM',
-      -1,
-      -1,
-      applyToAll,
-    ),
-    maxValues: 1,
-    minValues: 1,
-    placeholder: ctx.locale('commands:fazendinha.admin.fields.select-item'),
-    options: itemsToUse.flatMap<SelectOption>((item) =>
-      item.amount <= 0
-        ? []
-        : [
-            {
-              label: `${item.amount}x ${ctx.locale(`data:farm-items.${item.id}`)}`,
-              value: `${item.id}`,
-              default: true,
-              emoji: extractNameAndIdFromEmoji(Items[item.id].emoji),
-            },
-          ],
-    ),
-  });
-
-  if (selectMenu.options.length > 0) {
-    container.components.push(
-      createSeparator(true),
-      createTextDisplay(ctx.locale('commands:fazendinha.admin.fields.select-item')),
-      createActionRow([selectMenu]),
-    );
-  }
-
   container.components.push(
+      createSeparator(),
     createSection({
-      components: [createTextDisplay(`-# Dúvida sobre fertilizantes? Clique:`)],
+      components: [createTextDisplay(ctx.locale('commands:fazendinha.admin.fields.help-item-text'))],
       accessory: createButton({
         label: ctx.locale('commands:fazendinha.admin.fields.help-item-title'),
         style: ButtonStyles.Secondary,

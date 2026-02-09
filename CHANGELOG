@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [6.2.2] - 2026-02-09
 
+### Hotfix
+
+- Corrigido problemas para resgatar pedidos da fazendinha.
+
 ### Changed
 
 - O modal para editar a troca de um pedido de troca na feira agora mostra o preço base de sua escolha. 

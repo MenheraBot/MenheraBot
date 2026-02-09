@@ -176,6 +176,7 @@ export interface DatabaseFeirinhaOrderSchema {
   weight: number;
   awards: OrderAward;
   createdAt: number;
+  completed: boolean;
 }
 
 export interface DatabaseFarmerSchema {
