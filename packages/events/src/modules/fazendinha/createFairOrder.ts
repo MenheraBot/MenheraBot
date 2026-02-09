@@ -36,6 +36,7 @@ import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { displayFairOrders } from './fairOrders.js';
+import executeDailies from '../dailies/executeDailies.js';
 
 const handleTradeRequestModal = async (ctx: ComponentInteractionContext, embedColor: string) => {
   const [, , textState] = ctx.sentData;
@@ -451,6 +452,8 @@ const handlePlaceOrder = async (
   }
 
   await displayFairOrders(ctx, farmer, embedColor);
+
+  await executeDailies.tradeRequest(userData);
 
   return ctx.followUp({
     flags: MessageFlags.Ephemeral,

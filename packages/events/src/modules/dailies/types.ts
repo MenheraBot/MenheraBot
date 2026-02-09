@@ -12,7 +12,8 @@ type DailyTypes =
   | 'harvest_plants'
   | 'finish_delivery'
   | 'harvest_quality'
-  | 'harvest_category';
+  | 'harvest_category'
+  | 'trade_request';
 
 export interface Daily {
   type: DailyTypes;

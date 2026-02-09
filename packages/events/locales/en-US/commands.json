@@ -1380,7 +1380,10 @@
       "finish_delivery-one": "{{emoji}} Make **{{need}}** delivery from the farm. ({{has}}/{{need}})",
       "finish_delivery-other": "{{emoji}} Make **{{need}}** deliveries from the farm. ({{has}}/{{need}})",
       "harvest_quality": "{{emoji}} Harvest **{{need}}** Kg of _{{specification}}_ plants. ({{has}}/{{need}})",
-      "harvest_category": "{{emoji}} Harvest **{{need}}** Kg of plants clasified as _{{specification}}_. ({{has}}/{{need}})"
+      "harvest_category": "{{emoji}} Harvest **{{need}}** Kg of plants clasified as _{{specification}}_. ({{has}}/{{need}})",
+      "trade_request": "{{emoji}} Place **{{need}}** trade request at the neighborhood fair. ({{has}}/{{need}})",
+      "trade_request-one": "{{emoji}} Place **{{need}}** trade request at the neighborhood fair. ({{has}}/{{need}})",
+      "trade_request-other": "{{emoji}} Place **{{need}}** trade requests at the neighborhood fair. ({{has}}/{{need}})"
     }
   },
   "pedrapapeltesoura": {

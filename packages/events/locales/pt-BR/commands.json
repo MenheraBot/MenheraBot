@@ -1383,7 +1383,10 @@
       "finish_delivery-one": "{{emoji}} Realize **{{need}}** entrega da fazendinha. ({{has}}/{{need}})",
       "finish_delivery-other": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})",
       "harvest_quality": "{{emoji}} Colha **{{need}}** Kg de plantas _{{specification}}_. ({{has}}/{{need}})",
-      "harvest_category": "{{emoji}} Colha **{{need}}** Kg de plantas da categoria _{{specification}}_. ({{has}}/{{need}})"
+      "harvest_category": "{{emoji}} Colha **{{need}}** Kg de plantas da categoria _{{specification}}_. ({{has}}/{{need}})",
+      "trade_request": "{{emoji}} Crie **{{need}}** pedido de troca na feira da vizinhança. ({{has}}/{{need}})",
+      "trade_request-one": "{{emoji}} Crie **{{need}}** pedido de troca na feira da vizinhança. ({{has}}/{{need}})",
+      "trade_request-other": "{{emoji}} Crie **{{need}}** pedidos de troca na feira da vizinhança. ({{has}}/{{need}})"
     }
   },
   "pedrapapeltesoura": {

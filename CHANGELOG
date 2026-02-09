@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [6.2.1] 
 
+### Added
+
+- Adicionado uma daily para criar um pedido de troca na `/fazendinha feira trocas`.
+
 ### Changed
 
 - As entregas não especificam mais a qualidade da planta. Realizar uma entrega usando apenas um tipo de qualidade pode retornar bônus de estrelinhas, se for qualidade Normal ou Premium.
+- Aumentada a chance de poder escolher fertilizantes como prêmio de dailies.
 
 ## [6.2.0] - 2026-02-07
 

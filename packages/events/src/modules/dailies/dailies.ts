@@ -33,11 +33,11 @@ const AvailableAwards = [
   },
   {
     value: 'plant' as const,
-    probability: 15,
+    probability: 20,
   },
   {
     value: 'fertilizer' as const,
-    probability: 10,
+    probability: 15,
   },
 ];
 
@@ -103,6 +103,10 @@ const Dailies: Record<number, Daily> = {
     specifications: Object.keys(PlantCategories).map((_, i) => `${Math.floor(i % 6)}`),
     specificationDisplay: (ctx, specification) =>
       ` ${PLANT_CATEGORY_EMOJIS[specification as '1']} **${ctx.locale(`data:fazendinha.category_${specification as '1'}`)}**`,
+  },
+  31: {
+    type: 'trade_request',
+    amountLimits: [1, 2],
   },
 };
 
