@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Changed
+
+- O modal para editar a troca de um pedido de troca na feira agora mostra o preço base de sua escolha. 
+
 ### Fixed
 
 - Corrigido erro de escrita no botão de excluir dos pedidos de troca.

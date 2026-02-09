@@ -25,7 +25,7 @@ import {
   Plants,
 } from './constants.js';
 import { AvailableItems, PlantQuality } from './types.js';
-import { getQualityEmoji, removeItems } from './siloUtils.js';
+import { getPlantPrice, getQuality, getQualityEmoji, removeItems } from './siloUtils.js';
 import { ModalInteraction } from '../../types/interaction.js';
 import { extractLayoutFields } from '../../utils/discord/modalUtils.js';
 import userRepository from '../../database/repositories/userRepository.js';
@@ -116,6 +116,21 @@ const handleAddAwardButton = async (
     components.push(
       createLabel({
         label: ctx.locale(`commands:fazendinha.feira.order.add-estrelinhas`),
+        description: ctx.locale('commands:fazendinha.feira.order.base-price', {
+          price: Math.floor(
+            getPlantPrice({
+              plant: currentState.plant ?? 0,
+              quality: getQuality(currentState),
+            }) * (currentState.weight ?? 0),
+          ),
+          emoji: ctx.safeEmoji('estrelinhas'),
+          plant: ctx.locale('commands:fazendinha.feira.order.order-name', {
+            plantEmoji: Plants[currentState.plant ?? 0]?.emoji,
+            weight: currentState.weight,
+            qualityEmoji: getQualityEmoji(currentState.quality ?? 0),
+            plantName: ctx.locale(`data:plants.${currentState.plant ?? 0}`),
+          }),
+        }),
         component: createTextInput({
           customId: 'estrelinhas',
           style: TextStyles.Short,
@@ -228,7 +243,7 @@ const getCreateFairOrderMessage = async (
                     plantEmoji: Plants[currentState.plant ?? 0]?.emoji,
                     weight: currentState.weight,
                     qualityEmoji: getQualityEmoji(currentState.quality ?? 0),
-                    plantName: ctx.locale(`data:plants.${currentState.plant ?? 1}`),
+                    plantName: ctx.locale(`data:plants.${currentState.plant ?? 0}`),
                   })}**`
                 : `_${ctx.locale('commands:fazendinha.feira.order.no-order')}_`
             }`,

@@ -1131,6 +1131,7 @@
         "no-public-orders": "Ninguém da vizinhança está precisando de plantas no momento.",
         "complete-order": "Aceitar troca",
         "delete-order": "Excluir pedido",
+        "base-price": "Para referência, {{plant}} custa em média {{price}} {{emoji}}",
         "no-order": "Nenhum pedido ainda",
         "order-name": "{{plantEmoji}} {{weight}} Kg {{plantName}} {{qualityEmoji}}",
         "order": "Pedido",

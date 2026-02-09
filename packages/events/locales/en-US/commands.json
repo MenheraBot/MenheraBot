@@ -1129,6 +1129,7 @@
         "edit-request": "Edit request",
         "delete-order": "Delete request",
         "order": "Request",
+        "base-price": "For reference, {{plant}} costs on average {{price}} {{emoji}}",
         "no-order": "No requests yet",
         "no-awards": "_Add something to trade_",
         "order-name": "{{plantEmoji}} {{weight}} Kg {{plantName}} {{qualityEmoji}}",
