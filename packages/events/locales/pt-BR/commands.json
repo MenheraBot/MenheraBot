@@ -618,6 +618,7 @@
   },
   "cooldowns": {
     "title": "⌛ | Cooldowns de {{user}}",
+    "fazendinha": "Fazendinha",
     "no-cooldown": "{{user}} já pode fazer isso!",
     "hunt": "Caçar",
     "vote": "Votar em mim",
