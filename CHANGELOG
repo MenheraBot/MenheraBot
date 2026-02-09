@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - Alterado a disposição dos campos da fazendinha no `/cooldowns` para melhor leitura.
+- O cálculo de qualidade das plantas foi alterado para beneficiar mais a colheita rápida, e a melhor estação para planta
 
 ## [6.2.2] - 2026-02-09
 
@@ -19,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Changed
 
-- O modal para editar a troca de um pedido de troca na feira agora mostra o preço base de sua escolha. 
+- O modal para editar a troca de um pedido de troca na feira agora mostra o preço base de sua escolha.
 
 ### Fixed
 
@@ -50,7 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Adicionado categorias para as plantações de fazendinha: Grão, Raiz, Vegetal, Fruta, Fruta Nobre e Especial.
 - Criado o comando `/fazendinha administrar`, que integra gerenciar campos, silo e feira.
 - Criado o comando `/fazendinha feira administrar`, que é um atalho para administrar a feira, disponível no `/fazendinha administrar`.
-- Criado o comando `/fazendinha feira trocas`: faça troca de plantas na feira por estrelinhas e/ou fertilizantes. 
+- Criado o comando `/fazendinha feira trocas`: faça troca de plantas na feira por estrelinhas e/ou fertilizantes.
 - Agora é possível atualizar o valor de um item anunciado na feira no `/fazendinha administrar` - Sugerido por @start_0
 - Adicionado uma nova daily para colher plantas de uma qualidade específica.
 - Adicionado uma nova daily para colher plantas de uma categoria específica.
@@ -70,7 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O `/notificações` foi atualizado para os novos componetnes V2 do Discord.
 - A planta `Tomate` foi renomeada para `Feijão`.
 - A planta `Banana` foi renomeada para `Cebola`.
-- A planta `Limão` foi renomeada para `Mirtilo`. 
+- A planta `Limão` foi renomeada para `Mirtilo`.
 - A planta `Melancia` foi renomeada para `Limão`.
 - As plantas `Morango` e `Maçã` tiveram suas posições de raridade alteradas.
 - Facilitado o uso do `/fazendinha feira anunciar`, removendo a necessidade de usar acentos para buscar por platnas.
@@ -98,7 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Changed
 
-- O comando `/estatísticas fazendeiro` agora mostra a experiência da fazendinha - Sugerido por @kawajplemes7. 
+- O comando `/estatísticas fazendeiro` agora mostra a experiência da fazendinha - Sugerido por @kawajplemes7.
 - O comando `/loja comprar itens` agora mostra a descrição do que os itens fazem - Sugerido por @rafaelxd27.
 
 ### Fixed
@@ -138,7 +139,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - Atualizado versão do interpretador da Menhera.
-- Atualizado a versão de bibliotecas da Menhera. Com isso, agora é possível a nova versão 2 dos componentes. Pode existir problemas em comandos existentes com essas modificações. Reportem tudo que encontrarem! 
+- Atualizado a versão de bibliotecas da Menhera. Com isso, agora é possível a nova versão 2 dos componentes. Pode existir problemas em comandos existentes com essas modificações. Reportem tudo que encontrarem!
 - Diminuido mínimo para apostas no poker de `10000` para `1000` estrelinhas.
 
 ### Fixed
@@ -173,7 +174,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - A missão `Vença apostas no bicho` foi atualizada para `Aposte no bicho`. - Sugerido por @jokzy.y
-- O prêmio para uma sugestão aprovada foi aumentada de `5000` para `30000` estrelinhas. 
+- O prêmio para uma sugestão aprovada foi aumentada de `5000` para `30000` estrelinhas.
 - Aumentado o limite de apostas do Blackjack de `50000`para `100000` estrelinhas. - Sugerido por @jokzy.y
 - Diminuído o preço da cor customizada de `50_000` para `35_000`. - Sugerido por @mareys
 
@@ -188,19 +189,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
-- **Melhorias de campos!** - Agora é possível melhorar os campos da fazendinha com os *Fertilizantes*. Os fertilizantes garantem que as plantações retornem mais plantas, e que amadureçam mais rápido. Use seus itens em `/fazendinha administrar campos`.
+- **Melhorias de campos!** - Agora é possível melhorar os campos da fazendinha com os _Fertilizantes_. Os fertilizantes garantem que as plantações retornem mais plantas, e que amadureçam mais rápido. Use seus itens em `/fazendinha administrar campos`.
 - É possível ganhar fertilizantes votando na Menhera! A chance para ganhar um fertilizante ao votar é de **40%**. Em finais de semana, a chance dobra para **80%**. Em atualizações futuras, será possível conseguir fertilizantes de outras formas.
 - Adicionado novo top de fazendeiros: `/top fazendeiros tipo: mais plantas apodrecidas`.
 - Sugestões aprovadas são notificadas com o `/notificações` - Sugerido por @tinyteca.
 
 ### Changed
 
-- Quando o seu silo não está em sua capacidade máxima e você colhe uma planta que ultrapassaria o limite, agora o peso colhido é reduzido para o que cabe em seu silo. Com isso a colheita de uma planta só será impedida se o silo estiver completamente cheio. 
+- Quando o seu silo não está em sua capacidade máxima e você colhe uma planta que ultrapassaria o limite, agora o peso colhido é reduzido para o que cabe em seu silo. Com isso a colheita de uma planta só será impedida se o silo estiver completamente cheio.
 - O `/fazendinha feira comprar` agora mostra o nome do usuário, ao invés da menção do anunciante.
 
 ### Fixed
 
-- A notificação de participação de lucros na compra de imagens foi corrigida. 
+- A notificação de participação de lucros na compra de imagens foi corrigida.
 - Removida a possibilidade da semente de erva ser um prêmio em dailies. - Reportado por @mareys.
 
 ## [5.20.7] - 2025-01-02
@@ -235,20 +236,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Changed
 
-- O `/personalizar título` agora possui bullet points para diferenciar os títulos, facilitando na visualização mobile. - Sugerido por @mareys. 
+- O `/personalizar título` agora possui bullet points para diferenciar os títulos, facilitando na visualização mobile. - Sugerido por @mareys.
 
 ## [5.20.2] - 2024-10-14
 
 ### Added
 
-- **Evento de Dia dos Mortos** - Celebre o feriado mexicano até o dia 02 de novembro. A famosa flor *Cempasúchil* está disponível para ser plantada no `/fazendinha`! Compre já na loja `/loja comprar sementes`. Troque *Cempasúchil* por estrelinhas, título ou badge com `/dia dos mortos`. O valor máximo que pode se conseguir plantando *Cempasúchil* é aumentado em 0.3Kg. - Sugerido por @mareys. 
+- **Evento de Dia dos Mortos** - Celebre o feriado mexicano até o dia 02 de novembro. A famosa flor _Cempasúchil_ está disponível para ser plantada no `/fazendinha`! Compre já na loja `/loja comprar sementes`. Troque _Cempasúchil_ por estrelinhas, título ou badge com `/dia dos mortos`. O valor máximo que pode se conseguir plantando _Cempasúchil_ é aumentado em 0.3Kg. - Sugerido por @mareys.
 
 ## [5.20.1] - 2024-10-06
 
 ### Fixed
 
 - Não é mais possível trocar missões diárias já finalizadas. - Reportado por @mareys e @0_tal_do_mabs
-
 
 ## [5.20.0] - 2024-10-01
 
@@ -265,14 +265,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
-- Criado um top de rolls no `/top diversos`. - Sugerido por @mich_solitario. 
+- Criado um top de rolls no `/top diversos`. - Sugerido por @mich_solitario.
 - Trocar missões diárias! Agora é possível mudar uma de suas missões diárias. Missões trocadas não dão prêmios em estrelinhas, mas ainda dão o bônus especial. - Sugerido por @mich_solitario.
 - Novo comando `/top fazendeiros`. Veja os fazendeiros que mais colheram um tipo de planta.
 - Criado um top de missões diárias no `/top diversos`. Apenas as dailies finalizadas após o lançamento desta versão contam.
 
 ### Changed
 
-- A Menhera não busca mais pelo nome dos usuários das 3 primeiras páginas dos `/top`. 
+- A Menhera não busca mais pelo nome dos usuários das 3 primeiras páginas dos `/top`.
 
 ## [5.18.0] - 2024-06-08
 
@@ -291,7 +291,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Corrigida a paginação infinita do comando `/fazendinha feira comprar`.
 
-### Removed 
+### Removed
 
 - O comando `/meme humor` foi deletado.
 
@@ -310,12 +310,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
-- **Bloquear mamadas**. Usuários podem escolher se querem ser mamadas ou não. 
+- **Bloquear mamadas**. Usuários podem escolher se querem ser mamadas ou não.
 - Adicionado comando `/personalizar mamadas` para escolher se você quer ou não ser mamado.
 
 ### Changed
 
-- A descrição de aceitar uma sarrada foi alterada. 
+- A descrição de aceitar uma sarrada foi alterada.
 - O comando `/casar` agora menciona usuários.
 
 ### Hotfix
@@ -327,7 +327,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - Novos tipos de missões diárias adicionados!
-- Adicionado botão para usar um roll ao tentar caçar cansado. 
+- Adicionado botão para usar um roll ao tentar caçar cansado.
 
 ### Changed
 
@@ -338,7 +338,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Fixed
 
-- Corrigido problema das missões diárias mudarem nos primeiros usos do comando `/daily`. 
+- Corrigido problema das missões diárias mudarem nos primeiros usos do comando `/daily`.
 - Corrigido erro de português no aviso de Rate Limit.
 
 ## [5.17.0] - 2024-05-26
@@ -1112,7 +1112,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - O comando `/trisal` foi dividido em 4 subcomandos:
-
   - `/trisal ver` - Veja o trisal de alguém
   - `/trisal formar` - Forme um trisal com mais 2 amigos
   - `/trisal terminar` - Termine o seu trisal atual

@@ -117,24 +117,23 @@ const getCalculatedFieldQuality = (field: PlantedField, currentSeason: Seasons):
 
   let score = 0;
 
-  if (haveFertilizer) score += 25;
-  if (plantedInGoodSeason) score += 15;
-  if (plantedInBadSeason) score -= 20;
+  if (plantedInGoodSeason) score += 20;
+  if (plantedInBadSeason) score -= 25;
 
-  if (currentInGoodSeason) score += 10;
-  if (currentInBadSeason) score -= 15;
+  if (currentInGoodSeason) score += 5;
+  if (currentInBadSeason) score -= 8;
 
-  if (fastHarvested) score += 20;
-  if (harvestedAlmostRotted) score -= 30;
+  if (haveFertilizer) score += 15;
 
-  const randomNoise = (Math.random() * 2 - 1) * 12;
+  if (fastHarvested) score += 17;
+  if (harvestedAlmostRotted) score -= 22;
 
-  score += randomNoise;
+  score += (Math.random() * 2 - 1) * 6;
 
   score = Math.max(-100, Math.min(100, score));
 
-  if (score >= 60) return PlantQuality.Best;
-  if (score >= 20) return PlantQuality.Normal;
+  if (score >= 35) return PlantQuality.Best;
+  if (score >= 5) return PlantQuality.Normal;
   return PlantQuality.Worst;
 };
 
