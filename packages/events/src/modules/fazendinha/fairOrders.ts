@@ -20,7 +20,14 @@ import {
   Plants,
 } from './constants.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
-import { addItems, checkNeededPlants, getQualityEmoji, getSiloLimits } from './siloUtils.js';
+import {
+  addItems,
+  addPlants,
+  checkNeededPlants,
+  getQualityEmoji,
+  getSiloLimits,
+  removePlants,
+} from './siloUtils.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
@@ -75,6 +82,45 @@ const deleteOrder = async (
       ),
     ],
   });
+};
+
+const handleClaimOrder = async (
+  ctx: ComponentInteractionContext,
+  farmer: DatabaseFarmerSchema,
+  embedColor: string,
+  orderId: string,
+) => {
+  const order = await fairOrderRepository.getOrder(orderId);
+
+  if (!order)
+    return ctx.respondInteraction({
+      flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('error', 'commands:fazendinha.feira.order.order-gone'),
+        ),
+      ],
+    });
+
+  const limits = getSiloLimits(farmer);
+
+  if (limits.used + order.weight > limits.limit)
+    return ctx.respondInteraction({
+      flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+      components: [
+        createTextDisplay(ctx.prettyResponse('error', 'commands:fazendinha.feira.order.silo-full')),
+      ],
+    });
+
+  farmer.silo = addPlants(farmer.silo, [
+    { plant: order.plant, weight: order.weight, quality: order.quality },
+  ]);
+
+  await farmerRepository.updateFarmer(farmer.id, farmer.silo, farmer.items);
+
+  await fairOrderRepository.deleteOrder(order._id);
+
+  await displayFairOrders(ctx, await farmerRepository.getFarmer(ctx.user.id), embedColor);
 };
 
 const handleTakeOrder = async (
@@ -140,9 +186,13 @@ const handleTakeOrder = async (
       { amount: order.awards.fertilizers, id: AvailableItems.Fertilizer },
     ]);
 
+  farmer.silo = removePlants(farmer.silo, [
+    { plant: order.plant, weight: order.weight, quality: order.quality },
+  ]);
+
   await farmerRepository.updateFarmer(farmer.id, farmer.silo, farmer.items);
 
-  await fairOrderRepository.deleteOrder(order._id)
+  await fairOrderRepository.completeOrder(order._id);
   await notificationRepository.createNotification(
     order.userId,
     'commands:notificações.notifications.user-accepted-deal',
@@ -178,6 +228,7 @@ const handleFairOrderButton = async (ctx: ComponentInteractionContext) => {
   if (action === 'DELETE') return deleteOrder(ctx, farmer, embedColor, orderId);
   if (action === 'AGREED') return handleTakeOrder(ctx, farmer, embedColor, orderId);
   if (action === 'ASK_DELETE') return displayFairOrders(ctx, farmer, embedColor, { orderId });
+  if (action === 'CLAIM') return handleClaimOrder(ctx, farmer, embedColor, orderId);
   if (action === 'REQUEST') return handleTradeRequestModal(ctx, embedColor);
   if (action === 'EDIT_AWARD') return handleAddAwardButton(ctx, farmer, embedColor);
   if (action === 'PLACE_ORDER') return handlePlaceOrder(ctx, farmer, embedColor);
@@ -291,6 +342,7 @@ const displayFairOrders = async (
       orders.forEach(async (order) => {
         const userIsOwner = order.userId === `${ctx.user.id}`;
         const confirmDelete = orderId === order._id;
+        const completed = order.completed;
 
         const canClick =
           userIsOwner ||
@@ -306,16 +358,28 @@ const displayFairOrders = async (
                 9,
                 ctx.user.id,
                 ctx.originalInteractionId,
-                userIsOwner ? (confirmDelete ? 'DELETE' : 'ASK_DELETE') : 'AGREED',
+                userIsOwner
+                  ? completed
+                    ? 'CLAIM'
+                    : confirmDelete
+                      ? 'DELETE'
+                      : 'ASK_DELETE'
+                  : 'AGREED',
                 embedColor,
                 order._id,
               ),
               disabled: !canClick,
-              style: userIsOwner ? ButtonStyles.Danger : ButtonStyles.Primary,
+              style: userIsOwner
+                ? completed
+                  ? ButtonStyles.Success
+                  : ButtonStyles.Danger
+                : ButtonStyles.Primary,
               label: ctx.locale(
                 confirmDelete
                   ? 'common:confirm'
-                  : `commands:fazendinha.feira.order.${userIsOwner ? 'delete-order' : 'complete-order'}`,
+                  : `commands:fazendinha.feira.order.${
+                      userIsOwner ? (completed ? 'claim-order' : 'delete-order') : 'complete-order'
+                    }`,
               ),
             }),
             components: [
@@ -325,21 +389,24 @@ const displayFairOrders = async (
                   weight: order.weight,
                   plantName: ctx.locale(`data:plants.${order.plant}`),
                   qualityEmoji: getQualityEmoji(order.quality),
-                })}\n${ctx.locale('commands:fazendinha.feira.order.order-description', {
-                  user: tabledUsers[order.userId] ?? order.userId,
-                  awards: `- ${Object.entries(order.awards)
-                    .map(([type, amount]) =>
-                      ctx.locale('commands:fazendinha.feira.order.order-award', {
-                        amount: amount,
-                        metric: type === 'estrelinhas' ? '' : 'x',
-                        emoji:
-                          type === 'estrelinhas'
-                            ? ctx.safeEmoji(type)
-                            : Items[AvailableItems.Fertilizer].emoji,
-                      }),
-                    )
-                    .join(`\n- `)}`,
-                })}${confirmDelete ? `\n-# ${ctx.locale('commands:fazendinha.feira.order.confirm-delete')}` : ''}`,
+                })}\n${completed ? '~~' : ''}${ctx.locale(
+                  'commands:fazendinha.feira.order.order-description',
+                  {
+                    user: tabledUsers[order.userId] ?? order.userId,
+                    awards: `- ${Object.entries(order.awards)
+                      .map(([type, amount]) =>
+                        ctx.locale('commands:fazendinha.feira.order.order-award', {
+                          amount: amount,
+                          metric: type === 'estrelinhas' ? '' : 'x',
+                          emoji:
+                            type === 'estrelinhas'
+                              ? ctx.safeEmoji(type)
+                              : Items[AvailableItems.Fertilizer].emoji,
+                        }),
+                      )
+                      .join(`\n- `)}`,
+                  },
+                )}${completed ? '~~' : ''}${confirmDelete ? `\n-# ${ctx.locale('commands:fazendinha.feira.order.confirm-delete')}` : ''}`,
               ),
             ],
           }),
