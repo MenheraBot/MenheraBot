@@ -84,17 +84,22 @@ const CooldownsCommand = createCommand({
 
     const farmer = await farmerRepository.getFarmer(userToUse.id);
 
-    const farmerFields = farmer.plantations.map((p, i) => [
+    const farmerFields = [
       createSeparator(),
       createTextDisplay(
-        `### ${ctx.locale('commands:cooldowns.field', { field: i + 1 })}\n${ctx.locale(
-          `commands:cooldowns.field-states.${getPlantationState(p)[0]}`,
-          {
-            unix: millisToSeconds(getPlantationState(p)[1]),
-          },
-        )}`,
+        `### ${ctx.locale('commands:cooldowns.fazendinha')}\n- ${farmer.plantations
+          .map(
+            (p, i) =>
+              `**${ctx.locale('commands:cooldowns.field', { field: i + 1 })}**: ${ctx.locale(
+                `commands:cooldowns.field-states.${getPlantationState(p)[0]}`,
+                {
+                  unix: millisToSeconds(getPlantationState(p)[1]),
+                },
+              )}`,
+          )
+          .join('\n- ')}`,
       ),
-    ]);
+    ];
 
     const voteButton =
       userToUse.id === ctx.user.id && voteCooldown < 0

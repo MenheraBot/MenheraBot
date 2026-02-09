@@ -613,6 +613,7 @@
   },
   "cooldowns": {
     "title": "⌛ | {{user}}'s Resources",
+    "fazendinha": "Farm",
     "no-cooldown": "{{user}} can already do that!",
     "hunt": "Hunt",
     "vote": "Vote for me",
