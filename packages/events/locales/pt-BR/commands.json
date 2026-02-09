@@ -1130,7 +1130,7 @@
         "no-user-orders": "Este usuário não possui nenhum pedido no momento.",
         "no-public-orders": "Ninguém da vizinhança está precisando de plantas no momento.",
         "complete-order": "Aceitar troca",
-        "delete-order": "Exluir pedido",
+        "delete-order": "Excluir pedido",
         "no-order": "Nenhum pedido ainda",
         "order-name": "{{plantEmoji}} {{weight}} Kg {{plantName}} {{qualityEmoji}}",
         "order": "Pedido",
