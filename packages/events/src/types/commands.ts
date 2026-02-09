@@ -12,7 +12,8 @@ type CommandCategory =
   | 'info'
   | 'dev'
   | 'util'
-  | 'event';
+  | 'event'
+  | 'fazendinha';
 
 export interface ChatInputCommandConfig extends CreateApplicationCommand {
   devsOnly?: true;

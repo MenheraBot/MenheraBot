@@ -222,7 +222,7 @@ const FazendinhaCommand = createCommand({
       type: ApplicationCommandOptionTypes.SubCommand,
     },
   ],
-  category: 'economy',
+  category: 'fazendinha',
   commandRelatedExecutions: [
     executeFieldAction,
     changeSelectedSeed,
