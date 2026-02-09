@@ -50,9 +50,7 @@ start_app() {
         kill "$APP_PID" 2>/dev/null
         wait "$APP_PID" 2>/dev/null
 
-        MAIN_PID="$(pgrep -f 'node -r dotenv/config .')"
-        kill "$MAIN_PID" 2>/dev/null
-        wait "$MAIN_PID" 2>/dev/null
+        curl -X POST localhost:3000/dev/reboot 2>/dev/null
         sleep 1
     fi
 

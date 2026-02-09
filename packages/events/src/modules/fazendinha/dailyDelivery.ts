@@ -20,7 +20,7 @@ import {
 } from '../../utils/discord/componentUtils.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
-import { checkNeededPlants, getQuality, getQualityEmoji, removePlants } from './siloUtils.js';
+import { checkNeededPlants, ignorePlantQuality, removePlantsIgnoringQuality } from './siloUtils.js';
 import starsRepository from '../../database/repositories/starsRepository.js';
 import { postTransaction } from '../../utils/apiRequests/statistics.js';
 import { bot } from '../../index.js';
@@ -28,6 +28,7 @@ import { ApiTransactionReason } from '../../types/api.js';
 import executeDailies from '../dailies/executeDailies.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
+import { PlantQuality } from './types.js';
 
 const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<void> => {
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
@@ -47,7 +48,10 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
       content: ctx.prettyResponse('error', 'commands:fazendinha.entregas.already-finished'),
     });
 
-  const canFinishDaily = dailyUser.needs.every((e) => checkNeededPlants([e], farmer.silo));
+  const totalSilo = ignorePlantQuality(farmer.silo);
+  const totalNeeded = ignorePlantQuality(dailyUser.needs);
+
+  const canFinishDaily = totalNeeded.every((e) => checkNeededPlants([e], totalSilo));
 
   if (!canFinishDaily)
     return ctx.respondInteraction({
@@ -57,19 +61,27 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
 
   dailyUser.finished = true;
 
+  const [removedPlants, mainQuality] = removePlantsIgnoringQuality(farmer.silo, dailyUser.needs);
+
+  const bonusMultiplier = mainQuality
+    ? { [PlantQuality.Best]: 0.2, [PlantQuality.Normal]: 0.1, [PlantQuality.Worst]: 0 }[mainQuality]
+    : 0;
+
+  const userAward = Math.floor(dailyUser.award + dailyUser.award * bonusMultiplier);
+
   await Promise.all([
-    starsRepository.addStars(ctx.user.id, dailyUser.award),
+    starsRepository.addStars(ctx.user.id, userAward),
     postTransaction(
       `${bot.id}`,
       `${ctx.user.id}`,
-      dailyUser.award,
+      userAward,
       'estrelinhas',
       ApiTransactionReason.DAILY_FARM,
     ),
     farmerRepository.finishDelivery(
       ctx.user.id,
       farmer.dailies,
-      removePlants(farmer.silo, dailyUser.needs),
+      removedPlants,
       dailyUser.experience,
     ),
   ]);
@@ -84,10 +96,14 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
 
   const followupComponents: (TextDisplayComponent | SeparatorComponent)[] = [
     createTextDisplay(
-      `### ${ctx.prettyResponse('wink', 'commands:fazendinha.entregas.deliver', {
-        award: dailyUser.award,
+      ctx.locale('commands:fazendinha.entregas.deliver', {
+        award: userAward,
         xp: dailyUser.experience,
-      })}`,
+        bonus:
+          bonusMultiplier > 0
+            ? ctx.locale('commands:fazendinha.entregas.bonus', { bonus: bonusMultiplier * 100 })
+            : '',
+      }),
     ),
   ];
 
@@ -150,6 +166,8 @@ const executeDailyDelivery = async (
     ],
   });
 
+  const noQualitySilo = ignorePlantQuality(farmer.silo);
+
   userDeliveries.forEach((a, i) => {
     container.components.push(
       createSeparator(),
@@ -158,7 +176,7 @@ const executeDailyDelivery = async (
           label: ctx.locale('commands:fazendinha.entregas.deliver-button'),
           style: ButtonStyles.Primary,
           customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, i),
-          disabled: a.finished || !checkNeededPlants(a.needs, farmer.silo),
+          disabled: a.finished || !checkNeededPlants(ignorePlantQuality(a.needs), noQualitySilo),
         }),
         components: [
           createTextDisplay(
@@ -171,7 +189,7 @@ const executeDailyDelivery = async (
             })}\n${a.needs.map((b) =>
               ctx.locale('commands:fazendinha.entregas.deliver-embed-field-need', {
                 amount: b.weight ?? b.amount,
-                emoji: `${getQualityEmoji(getQuality({ quality: b.quality }))} ${Plants[b.plant].emoji}`,
+                emoji: Plants[b.plant].emoji,
               }),
             )}`,
           ),
@@ -179,6 +197,11 @@ const executeDailyDelivery = async (
       }),
     );
   });
+
+  container.components.push(
+    createSeparator(),
+    createTextDisplay(`-# ${ctx.locale('commands:fazendinha.entregas.footer')}`),
+  );
 
   ctx.makeLayoutMessage({ components: [container] });
 };

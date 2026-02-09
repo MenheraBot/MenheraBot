@@ -9,6 +9,7 @@ import { createVoteWebhookRouter } from './routes/voteWebhook';
 import { createRequestUserDataRouter } from './routes/requestUserData';
 import { createPingRouter } from './routes/ping';
 import { createThankSuggestionRouter } from './routes/thankSuggestion';
+import { createRebootRoute } from './routes/devReboot.js';
 
 export enum HTTPResponseCodes {
   Ok = 200,
@@ -45,6 +46,10 @@ const registerAllRouters = (): void => {
   registerRouter(createRequestUserDataRouter());
   registerRouter(createPingRouter());
   registerRouter(createThankSuggestionRouter());
+
+  if (process.env.NODE_ENV === 'development') {
+    registerRouter(createRebootRoute());
+  }
 };
 
 export { createHttpServer, registerAllRouters };

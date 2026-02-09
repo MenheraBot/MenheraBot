@@ -25,6 +25,20 @@ const getQualityEmoji = (quality: PlantQuality) =>
     [PlantQuality.Worst]: EMOJIS.worst_quality,
   })[quality];
 
+const ignorePlantQuality = (plants: QuantitativePlant[]) =>
+  Object.values(
+    plants.reduce<Partial<Record<AvailablePlants, QuantitativePlant>>>((p, c) => {
+      if (!p[c.plant]) {
+        p[c.plant] = { ...c, quality: 0 };
+        return p;
+      }
+
+      p[c.plant]!.weight += c.weight;
+
+      return p;
+    }, {}),
+  );
+
 const checkNeededPlants = (need: QuantitativePlantItem[], has: QuantitativePlantItem[]): boolean =>
   need.every((needed) =>
     has.some((user) => {
@@ -88,6 +102,49 @@ const addPlants = <T extends QuantitativePlantItem>(user: T[], toAdd: T[]): T[] 
 
     return p;
   }, user);
+
+const removePlantsIgnoringQuality = (
+  user: QuantitativePlant[],
+  toRemove: QuantitativePlant[],
+): [QuantitativePlant[], PlantQuality | false] => {
+  const noQualityRemove = ignorePlantQuality(toRemove);
+
+  const passedQualities: Partial<Record<PlantQuality, true>> = {};
+
+  const sortedPlants = user.sort((a, b) => a.weight - b.weight);
+
+  let safeProdLoop = 0;
+
+  for (let i = 0; i < noQualityRemove.length; i++) {
+    const plant = noQualityRemove[i];
+
+    const userPlant = sortedPlants.find((a) => a.plant === plant.plant && a.weight > 0);
+
+    if (!userPlant) continue;
+
+    passedQualities[getQuality(userPlant)] = true;
+    const newWeight = parseFloat((userPlant.weight - plant.weight).toFixed(1));
+
+    userPlant.weight = newWeight;
+
+    if (newWeight === 0) sortedPlants.splice(sortedPlants.findIndex(filterPlant(userPlant)));
+
+    if (newWeight < 0) {
+      plant.weight = Math.abs(newWeight);
+      i -= 1;
+
+      safeProdLoop += 1;
+      if (safeProdLoop > 300) break;
+      continue;
+    }
+  }
+
+  const qualities = Object.keys(passedQualities);
+
+  const mainQuality = qualities.length === 1 && Number(qualities[0]);
+
+  return [sortedPlants, mainQuality];
+};
 
 const removePlants = <T extends QuantitativePlantItem>(user: T[], toRemove: T[]): T[] =>
   user.reduce<T[]>((p, c) => {
@@ -165,7 +222,7 @@ const filterPlantsByQuality = (
   plants.reduce<Record<PlantQuality, QuantitativePlant[]>>(
     (p, c) => {
       if (c.weight <= 0) return p;
-      
+
       p[getQuality(c)].push(c);
 
       return p;
@@ -250,4 +307,6 @@ export {
   groupPlantsByType,
   getPlantationUpgrades,
   getQuality,
+  ignorePlantQuality,
+  removePlantsIgnoringQuality,
 };
