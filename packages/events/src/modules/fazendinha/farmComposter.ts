@@ -10,7 +10,7 @@ import {
 } from '../../utils/discord/componentUtils.js';
 import { PlantStateIcon } from './displayPlantations.js';
 import { COMPOSTER_FERTILIZER_YIELD, Items, MAX_COMPOSTER_VALUE } from './constants.js';
-import { AvailableItems } from './types.js';
+import { AvailableItems, PlantationState, PlantedField, Seasons } from './types.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import {
   extractNameAndIdFromEmoji,
@@ -18,6 +18,7 @@ import {
 } from '../../utils/discord/messageUtils.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { addItems, getSiloLimits } from './siloUtils.js';
+import { getCalculatedFieldQuality } from './plantationState.js';
 
 const handleComposterInteractions = async (ctx: ComponentInteractionContext) => {
   const [action] = ctx.sentData;
@@ -122,4 +123,19 @@ const displayComposter = (
   });
 };
 
-export { displayComposter, handleComposterInteractions };
+const composterEquivalentForField = (
+  field: PlantedField,
+  plantState: PlantationState,
+  season: Seasons,
+): number => {
+  if (plantState === PlantationState.Growing) return 0;
+
+  const quality = getCalculatedFieldQuality(field, season);
+  const value = field.plantType + 1 + quality + 1;
+
+  if (plantState === PlantationState.Rotten) return value + 15 + (quality + 1) * 7;
+
+  return value;
+};
+
+export { displayComposter, handleComposterInteractions, composterEquivalentForField };
