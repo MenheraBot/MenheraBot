@@ -190,6 +190,7 @@ export interface DatabaseFarmerSchema {
   lastPlantedSeed: AvailablePlants;
   dailies: DeliveryMission[];
   dailyDayId: number;
+  composter: number;
 }
 
 export interface DatabaseNotificationSchema {

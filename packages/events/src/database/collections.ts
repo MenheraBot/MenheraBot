@@ -125,6 +125,7 @@ const farmerSchema = new Schema({
   lastPlantedSeed: { type: Number, default: 0 },
   dailies: { type: Array, default: [] },
   dailyDayId: { type: Number, default: 0 },
+  composter: { type: Number, default: 0 },
 });
 
 const titlesSchema = new Schema({

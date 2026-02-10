@@ -1111,6 +1111,15 @@
     }
   },
   "fazendinha": {
+    "composteira": {
+      "title": "Sua Composteira",
+      "add-plants": "Adicionar plantas",
+      "success": "Composto gerado! Você recebeu **{{amount}}x** {{emoji}}",
+      "silo-full": "Você não pode retirar o fertilizante, pois seu silo está cheio.",
+      "composter-not-full": "A composteira ainda não está completamente cheia para gerar um fertilizante. Adicione plantas, ou deixe campos apodrecerem para gerar mais insumos.",
+      "get-fertilizer": "Retirar fertilizante",
+      "description": "Adicione plantas, ou colete campos apodrecidos para encher a composteira. Quando chegar a 100%, recebe um fertilizante para melhorar os retornos de seus campos.\n### 🧱 Progresso: **{{percent}}% cheia**."
+    },
     "plant-states-message": {
       "ROTTEN": "Apodrecido",
       "MATURE": "Apodrecerá",
