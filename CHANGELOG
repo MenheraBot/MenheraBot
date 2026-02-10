@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [6.2.3] - 2026-02-10
 
 ### Added
 
@@ -14,8 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - Alterado a disposição dos campos da fazendinha no `/cooldowns` para melhor leitura.
-- O cálculo de qualidade das plantas foi alterado para beneficiar mais a colheita rápida, e a melhor estação para planta
-- Dois novos campos foram adicionados na fazendinha. Libere com `/fazendinha administrar`
+- O cálculo de qualidade das plantas foi alterado para beneficiar mais a colheita rápida, e a melhor estação para planta.
+- Dois novos campos foram adicionados na fazendinha. Libere com `/fazendinha administrar`.
+- Diminuído tempo para as plantações apodrecerem.
 
 ## [6.2.2] - 2026-02-09
 

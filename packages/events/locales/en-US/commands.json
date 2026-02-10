@@ -1108,12 +1108,19 @@
   "fazendinha": {
     "composteira": {
       "title": "Your Composter",
-      "add-plants": "Add plamnts",
+      "add-plants": "Add plants",
+      "select": "Enter the weight to compost. Ex. 0.6 kg",
+      "no-plants": "You don't have any plants to turn into compost.",
+      "transform": "Composting",
+      "transform-plant": "Transform {{plant}}",
+      "invalid-amount": "You entered an invalid number of plants to composte",
+      "not-enough": "You don't have **{{amount}}** {{plant}} to composte",
+      "choose-plant": "Choose the plants to transform into nutrients",
       "success": "Compound generated! You received **{{amount}}x** {{emoji}}",
       "silo-full": "You cannot get the fertilizer because your silo is full.",
       "get-fertilizer": "Get fertilizer",
       "composter-not-full": "The compost bin isn't quite full enough to produce fertilizer yet. Add plants, or let grass rot to generate more nutrients.",
-      "description": "Add plants, or collect decaying fields to fill the composter. When it reaches 100%, you receive fertilizer to improve the yields from your fields.\n### 🧱 Progress: **{{percent}}% filled**."
+      "description": "Add plants, or collect decaying fields to fill the composter. When it reaches 100%, you receive fertilizer to improve the yields from your fields.\n\nThe best way to generate compost is with decaying plants in your fields. It is possible to generate compost with plants from the silo, but it is less effective.\n### 🧱 Progress: **{{percent}}% filled**."
     },
     "plant-states-message": {
       "ROTTEN": "Rotted",
@@ -1225,7 +1232,7 @@
       "embed-title": "{{user}}'s Silo",
       "nothing": "**Nothing**",
       "not-enough-plants": "You no longer have these plants to sell",
-      "max": "{{plant}} (Max. {{amount}})",
+      "max": "{{emoji}} {{plant}} (Max. {{amount}})",
       "sell-plants": "Sell plants",
       "items": "Items",
       "sell-plant": "Sell {{plant}}",

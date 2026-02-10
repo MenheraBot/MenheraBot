@@ -142,7 +142,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
   },
   [AvailablePlants.Garlic]: {
     minutesToHarvest: replaceDevTime(45),
-    minutesToRot: 60,
+    minutesToRot: 30,
     emoji: '🧄',
     sellValue: 231,
     buyValue: 90,
@@ -162,7 +162,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
   },
   [AvailablePlants.Beans]: {
     minutesToHarvest: replaceDevTime(60),
-    minutesToRot: 60,
+    minutesToRot: 45,
     emoji: '🫘',
     sellValue: 357,
     buyValue: 110,
@@ -172,7 +172,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
   },
   [AvailablePlants.Cucumber]: {
     minutesToHarvest: replaceDevTime(60),
-    minutesToRot: 90,
+    minutesToRot: 45,
     emoji: '🥒',
     sellValue: 385,
     buyValue: 120,
@@ -182,7 +182,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
   },
   [AvailablePlants.Broccoli]: {
     minutesToHarvest: replaceDevTime(75),
-    minutesToRot: 80,
+    minutesToRot: 45,
     emoji: '🥦',
     sellValue: 442,
     buyValue: 130,
@@ -192,7 +192,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
   },
   [AvailablePlants.Sunflower]: {
     minutesToHarvest: replaceDevTime(75),
-    minutesToRot: 120,
+    minutesToRot: 70,
     emoji: '🌻',
     sellValue: 421,
     buyValue: 140,
@@ -212,7 +212,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
   },
   [AvailablePlants.Lemon]: {
     minutesToHarvest: replaceDevTime(100),
-    minutesToRot: 60,
+    minutesToRot: 30,
     emoji: '🍋',
     sellValue: 714,
     buyValue: 170,
@@ -302,7 +302,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
   },
   [AvailablePlants.Onion]: {
     minutesToHarvest: replaceDevTime(160),
-    minutesToRot: 100,
+    minutesToRot: 70,
     emoji: '🧅',
     sellValue: 3714,
     buyValue: 2318,
@@ -322,7 +322,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
   },
   [AvailablePlants.Peach]: {
     minutesToHarvest: replaceDevTime(180),
-    minutesToRot: 60,
+    minutesToRot: 45,
     emoji: '🍑',
     sellValue: 5571,
     buyValue: 3108,
@@ -332,7 +332,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
   },
   [AvailablePlants.Cherry]: {
     minutesToHarvest: replaceDevTime(200),
-    minutesToRot: 60,
+    minutesToRot: 45,
     emoji: '🍒',
     sellValue: 6428,
     buyValue: 3318,
