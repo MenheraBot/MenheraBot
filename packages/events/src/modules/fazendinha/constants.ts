@@ -31,6 +31,9 @@ export const MAX_DELIVERY_WEIGHT = 9;
 export const MIN_DELIVERY_WEIGHT = 5;
 export const FINISH_ALL_DELIVERIES_BONUS = 30_000;
 
+export const MAX_COMPOSTER_VALUE = 100;
+export const COMPOSTER_FERTILIZER_YIELD = 1;
+
 // Worst = -30%, Best = +30%. Normal = base price;
 export const QUALITY_PRICE_MULTIPLIER = 30 / 100;
 
@@ -60,7 +63,7 @@ export const UnlockFields: Record<number, UnlockFieldFile> = {
   2: {
     cost: 100_000,
     neededPlants: [
-      { weight: 10, plant: AvailablePlants.Mate  },
+      { weight: 10, plant: AvailablePlants.Mate },
       { weight: 5, plant: AvailablePlants.Potato },
       { weight: 3, plant: AvailablePlants.Apple },
       { weight: 4, plant: AvailablePlants.Mango },

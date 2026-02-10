@@ -1106,6 +1106,15 @@
     }
   },
   "fazendinha": {
+    "composteira": {
+      "title": "Your Composter",
+      "add-plants": "Add plamnts",
+      "success": "Compound generated! You received **{{amount}}x** {{emoji}}",
+      "silo-full": "You cannot get the fertilizer because your silo is full.",
+      "get-fertilizer": "Get fertilizer",
+      "composter-not-full": "The compost bin isn't quite full enough to produce fertilizer yet. Add plants, or let grass rot to generate more nutrients.",
+      "description": "Add plants, or collect decaying fields to fill the composter. When it reaches 100%, you receive fertilizer to improve the yields from your fields.\n### 🧱 Progress: **{{percent}}% filled**."
+    },
     "plant-states-message": {
       "ROTTEN": "Rotted",
       "MATURE": "Will rot",

@@ -14,12 +14,19 @@ import {
   executeButtonPressed,
   executeDailyDelivery,
 } from '../../modules/fazendinha/dailyDelivery.js';
-import { executeAdministrateFair, handleDissmissShop } from '../../modules/fazendinha/administrateFair.js';
+import {
+  executeAdministrateFair,
+  handleDissmissShop,
+} from '../../modules/fazendinha/administrateFair.js';
 import { executeAnnounceProduct } from '../../modules/fazendinha/announceProduct.js';
 import { executeButtonAction, executeExploreFair } from '../../modules/fazendinha/exploreFair.js';
 import { User } from '../../types/discordeno.js';
 import { displayFairOrders, handleFairOrderButton } from '../../modules/fazendinha/fairOrders.js';
 import userRepository from '../../database/repositories/userRepository.js';
+import {
+  displayComposter,
+  handleComposterInteractions,
+} from '../../modules/fazendinha/farmComposter.js';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -59,6 +66,15 @@ const FazendinhaCommand = createCommand({
           required: false,
         },
       ],
+      type: ApplicationCommandOptionTypes.SubCommand,
+    },
+    {
+      name: 'composteira',
+      nameLocalizations: { 'en-US': 'composter' },
+      description: '「🧺」・ Transforme matéria orgânica em fertilizantes para seus campos',
+      descriptionLocalizations: {
+        'en-US': '「🧺」・ Transform organic matter into fertilizer for your fields.',
+      },
       type: ApplicationCommandOptionTypes.SubCommand,
     },
     {
@@ -234,6 +250,7 @@ const FazendinhaCommand = createCommand({
     executeButtonAction,
     handleButtonAction,
     handleFairOrderButton,
+    handleComposterInteractions,
   ],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
@@ -251,7 +268,8 @@ const FazendinhaCommand = createCommand({
 
       if (command === 'comprar') return executeExploreFair(ctx, farmer);
 
-      if (command === 'administrar') return executeAdministrateFair(ctx, 'EDIT_POST', ctx.authorData)
+      if (command === 'administrar')
+        return executeAdministrateFair(ctx, 'EDIT_POST', ctx.authorData);
 
       if (command === 'trocas') {
         const user = ctx.getOption<User>('vizinho', 'users', false);
@@ -271,6 +289,9 @@ const FazendinhaCommand = createCommand({
         });
       }
     }
+
+    if (command === 'composteira')
+      return displayComposter(ctx, farmer, ctx.authorData.selectedColor);
 
     if (command === 'administrar') return displayAdministrateFarm(ctx, false);
 

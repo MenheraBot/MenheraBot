@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- Criado novo comando `/fazendinha composteira`, transforme plantas boas e podres em fertilizantes!
+
 ### Changed
 
 - Alterado a disposição dos campos da fazendinha no `/cooldowns` para melhor leitura.

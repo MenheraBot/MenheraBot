@@ -31,6 +31,7 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
   siloUpgrades: user.siloUpgrades,
   silo: user.silo.map((a) => ({ ...a, weight: parseFloat((a.weight ?? a.amount).toFixed(1)) })),
   lastPlantedSeed: user.lastPlantedSeed,
+  composter: user.composter ?? 0,
 });
 
 const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
@@ -73,6 +74,22 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
 const updateItems = async (farmerId: BigString, items: QuantitativeItem[]): Promise<void> => {
   await farmerModel.updateOne({ id: `${farmerId}` }, { items });
 
+  await MainRedisClient.del(`farmer:${farmerId}`);
+};
+
+const executeComposter = async (
+  farmerId: BigString,
+  items: QuantitativeItem[],
+  composter?: number,
+) => {
+  const payload: Partial<DatabaseFarmerSchema> = {};
+
+  if (items.length > 0) payload.items = items;
+  if (typeof composter === 'number') payload.composter = composter;
+
+  if (Object.keys(payload).length === 0) return;
+
+  await farmerModel.updateOne({ id: `${farmerId}` }, payload);
   await MainRedisClient.del(`farmer:${farmerId}`);
 };
 
@@ -341,6 +358,7 @@ export default {
   upgradeSilo,
   getSeasonalInfo,
   unlockField,
+  executeComposter,
   updateSeason,
   updateSilo,
   finishDelivery,

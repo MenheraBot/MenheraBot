@@ -14,6 +14,7 @@ export const EMOJIS = {
   demigods: '<:demigod:1289840660358238260>',
   gods: '<:god:1289840738766557206>',
   robot: ':robot:',
+  composter: '🧺',
   giants: '🦍',
   archangels: '👼',
   us: '🇺🇸',
