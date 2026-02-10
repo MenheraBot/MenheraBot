@@ -58,6 +58,19 @@ const displayItemsHelp = async (ctx: ComponentInteractionContext) => {
           url: `https://top.gg/bot/${bot.applicationId}/vote`,
           label: ctx.locale('commands:cooldowns.click-to-vote'),
         }),
+        createButton({
+          style: ButtonStyles.Success,
+          customId: createCustomId(
+            10,
+            ctx.user.id,
+            ctx.originalInteractionId,
+            'BACK',
+            authorData.selectedColor,
+            1,
+          ),
+          emoji: extractNameAndIdFromEmoji(Items[AvailableItems.Fertilizer].emoji),
+          label: ctx.locale('commands:fazendinha.admin.fields.composter'),
+        }),
       ]),
     );
 
@@ -260,9 +273,11 @@ const displayAdministrateFarm = async (
     }
 
   container.components.push(
-      createSeparator(),
+    createSeparator(),
     createSection({
-      components: [createTextDisplay(ctx.locale('commands:fazendinha.admin.fields.help-item-text'))],
+      components: [
+        createTextDisplay(ctx.locale('commands:fazendinha.admin.fields.help-item-text')),
+      ],
       accessory: createButton({
         label: ctx.locale('commands:fazendinha.admin.fields.help-item-title'),
         style: ButtonStyles.Secondary,
