@@ -106,7 +106,7 @@ const executeBuyImagesSelectComponent = async (ctx: ComponentInteractionContext)
           title: ctx.locale('commands:loja.buy_images.preview-title', {
             name: await profileImagesRepository.getImageName(selectedImage),
           }),
-          image: { url: getProfileImageUrl(selectedImage) },
+          image: { url: getProfileImageUrl(selectedImage, bot) },
           color: COLORS.Aqua,
         }),
       ],

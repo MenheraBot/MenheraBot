@@ -1,4 +1,4 @@
-<img width="150" height="150" align="left" style="float: left; margin: 0 10px 0 0;" alt="MenheraBot" src="https://i.imgur.com/jjgBki0.png">
+<img width="150" height="150" align="left" style="float: left; margin: 0 10px 0 0;" alt="MenheraBot" src="https://cdn.menherabot.xyz/images/internal/icon.png">
 
 # Menhera Bot
 
@@ -14,7 +14,7 @@ Feel free to add a star ⭐ to the repository to promote the project!
 
 Pull requests are always welcome. If you have any ideia, want to implement a new feature, fix some bug, or even improve the code itself, you can do it openning a pull request to the `master` branch. Check the next session about running the project.
 
-### 🐋 | Docker compose 
+### 🐋 | Docker compose
 
 When developing, use the docker compose to setup Redis, MongoDB, Postgres, the Menhera API and Menhera Vangogh services:
 
@@ -32,7 +32,7 @@ This monorepo is divided in 2 packages. The Orchestrator receives all data from 
 git clone https://github.com/MenheraBot/MenheraBot.git
 ```
 
-2. 📝 Populate the env files. 
+2. 📝 Populate the env files.
 
 > Every package has a .env.example file with every entry needed. Just create a .env file with all the entries.
 
@@ -50,7 +50,7 @@ pnpm install
 pnpm dev
 ```
 
-6. 💻 Development Tips & Tricks 
+6. 💻 Development Tips & Tricks
 
 After starting the dev containers with `make`, in one terminal you can start the Orchestrator package (`pnpm orchestrator dev:build`), and in other run the Menhera Watcher. The Watcher listens to file changes, builds the project, and make it easy to switch between builded versions. Just run the watcher, and watch the magic!
 
@@ -104,7 +104,6 @@ Discord: **@ysnoopydogy**
 Twitter: **[@Luxanna_Dev](https://twitter.com/Luxanna_Dev)**
 
 Email: **[contact@luancaliel.dev](mailto:contact@luancaliel.dev)**
-
 
 ## 📜 | Source
 

@@ -304,7 +304,7 @@ const executeColorComponents = async (
         description: ctx.locale('commands:cor.dataChoose.description'),
         color: hexStringToNumber(selected),
         thumbnail: {
-          url: 'https://i.imgur.com/t94XkgG.png',
+          url: `${bot.cdnUrl}/images/internal/wink.png`,
         },
       });
 
@@ -901,7 +901,7 @@ const createCustomizeMessage = async (
     user: {
       id: userData.id,
       color: userData.selectedColor,
-      image: getProfileImageUrl(userThemes.selectedImage),
+      image: getProfileImageUrl(userThemes.selectedImage, bot),
       avatar: getUserAvatar(ctx.user, { size: 512 }),
       votes: userData.votes,
       info: userData.info,

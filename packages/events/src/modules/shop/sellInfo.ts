@@ -4,6 +4,7 @@ import { Plants } from '../fazendinha/constants.js';
 import { huntValues } from './constants.js';
 import { getPlantPrice, getQualityEmoji } from '../fazendinha/siloUtils.js';
 import { PlantQuality } from '../fazendinha/types.js';
+import { bot } from '../../index.js';
 
 const sellInfo = async (
   ctx: ChatInputInteractionContext,
@@ -17,7 +18,7 @@ const sellInfo = async (
       title: ctx.locale('commands:loja.embed_title'),
       color: 0xe77fa1,
       thumbnail: {
-        url: 'https://i.imgur.com/t94XkgG.png',
+        url: `${bot.cdnUrl}/images/internal/wink.png`,
       },
       fields: [
         {
@@ -44,7 +45,7 @@ const sellInfo = async (
       title: ctx.locale('commands:loja.embed_title'),
       color: 0xe77fa1,
       thumbnail: {
-        url: 'https://i.imgur.com/t94XkgG.png',
+        url: `${bot.cdnUrl}/images/internal/wink.png`,
       },
       fields: Object.entries(Plants).map((c) => {
         return {

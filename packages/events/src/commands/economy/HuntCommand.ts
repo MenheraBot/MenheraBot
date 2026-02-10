@@ -158,7 +158,7 @@ const executeHuntCommand = async (
             count: timesToHunt,
           });
 
-    if (result.value > 0) embed.thumbnail = { url: 'https://i.imgur.com/053khaH.gif' };
+    if (result.value > 0) embed.thumbnail = { url: `${bot.cdnUrl}/images/internal/xandao.gif` };
   } else
     embed.description = ctx.locale('commands:cacar.hunt_description', {
       value: result.value,

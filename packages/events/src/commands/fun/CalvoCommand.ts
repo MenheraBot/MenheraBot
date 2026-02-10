@@ -5,6 +5,7 @@ import { randomFromArray } from '../../utils/miscUtils.js';
 import { createActionRow, createButton } from '../../utils/discord/componentUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { User } from '../../types/discordeno.js';
+import { bot } from '../../index.js';
 
 export const availableAuthors = [
   'Zinédine Zidane',
@@ -68,7 +69,7 @@ const CalvoCommand = createCommand({
     const moreButton = createButton({
       label: ctx.locale('commands:calvo.know-more'),
       style: ButtonStyles.Link,
-      url: 'https://i.imgur.com/EyOt51G.jpg',
+      url:  `${bot.cdnUrl}/images/internal/calvice.jpeg`,
     });
 
     await ctx.makeMessage({
