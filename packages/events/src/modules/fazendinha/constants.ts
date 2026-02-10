@@ -4,6 +4,7 @@ import {
   AvailablePlants,
   ItemsFile,
   PlantCategories,
+  PlantQuality,
   PlantsFile,
   Seasons,
   UnlockFieldFile,
@@ -12,7 +13,7 @@ import {
 export const INITIAL_LIMIT_FOR_SILO = 35;
 export const SILO_LIMIT_INCREASE_BY_LEVEL = 5;
 export const MAX_SILO_UPGRADES = 15;
-export const MAX_FIELDS_AVAILABLE = 3;
+export const MAX_FIELDS_AVAILABLE = 5;
 
 export const MAX_STARS_AWARD_IN_FAIR_ORDER = 99999;
 export const MAX_ITEMS_AWARD_IN_FAIR_ORDER = 9;
@@ -59,11 +60,29 @@ export const UnlockFields: Record<number, UnlockFieldFile> = {
   2: {
     cost: 100_000,
     neededPlants: [
-      { weight: 10, plant: AvailablePlants.Mate },
+      { weight: 10, plant: AvailablePlants.Mate  },
       { weight: 5, plant: AvailablePlants.Potato },
       { weight: 3, plant: AvailablePlants.Apple },
       { weight: 4, plant: AvailablePlants.Mango },
       { weight: 6, plant: AvailablePlants.Pineapple },
+    ],
+  },
+  3: {
+    cost: 250_000,
+    neededPlants: [
+      { weight: 5, plant: AvailablePlants.Broccoli, quality: PlantQuality.Normal },
+      { weight: 4, plant: AvailablePlants.Blueberries, quality: PlantQuality.Best },
+      { weight: 10, plant: AvailablePlants.Beans, quality: PlantQuality.Best },
+      { weight: 6, plant: AvailablePlants.Onion, quality: PlantQuality.Normal },
+    ],
+  },
+  4: {
+    cost: 500_000,
+    neededPlants: [
+      { weight: 6, plant: AvailablePlants.Mate, quality: PlantQuality.Best },
+      { weight: 6, plant: AvailablePlants.Mushroom, quality: PlantQuality.Best },
+      { weight: 6, plant: AvailablePlants.Mint, quality: PlantQuality.Best },
+      { weight: 6, plant: AvailablePlants.Sunflower, quality: PlantQuality.Best },
     ],
   },
 };
@@ -86,7 +105,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
     buyValue: 0,
     bestSeason: Seasons.Winter,
     worstSeason: Seasons.Spring,
-    category: PlantCategories.Grain,
+    category: PlantCategories.Special,
   },
   [AvailablePlants.Rice]: {
     minutesToHarvest: replaceDevTime(30),

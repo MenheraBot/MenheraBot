@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Alterado a disposição dos campos da fazendinha no `/cooldowns` para melhor leitura.
 - O cálculo de qualidade das plantas foi alterado para beneficiar mais a colheita rápida, e a melhor estação para planta
+- Dois novos campos foram adicionados na fazendinha. Libere com `/fazendinha administrar`
 
 ## [6.2.2] - 2026-02-09
 
