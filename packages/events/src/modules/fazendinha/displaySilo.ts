@@ -243,6 +243,7 @@ const showModal = async (
         createTextInput({
           label: ctx.locale('commands:fazendinha.silo.max', {
             plant: ctx.locale(`data:plants.${plant as '0'}`),
+            emoji: `${getQualityEmoji(Number(quality))} ${Plants[plant as '1'].emoji}`,
             amount: fromSilo.weight,
           }),
           customId: `${plant}|${quality}`,

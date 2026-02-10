@@ -1113,12 +1113,19 @@
   "fazendinha": {
     "composteira": {
       "title": "Sua Composteira",
+      "transform-plant": "Compostar {{plant}}",
+      "select": "Informe o peso para compostar. Ex. 0,6 Kg",
+      "no-plants": "Você não tem plantas para transformar em composto.",
+      "transform": "Compostagem",
+      "not-enough": "Tu não tem **{{amount}}** {{plant}} para compostar",
+      "invalid-amount": "Tu informou um número inválido de plantas para compostar",
+      "choose-plant": "Escolha as plantas para transformar em insumos",
       "add-plants": "Adicionar plantas",
       "success": "Composto gerado! Você recebeu **{{amount}}x** {{emoji}}",
       "silo-full": "Você não pode retirar o fertilizante, pois seu silo está cheio.",
       "composter-not-full": "A composteira ainda não está completamente cheia para gerar um fertilizante. Adicione plantas, ou deixe campos apodrecerem para gerar mais insumos.",
       "get-fertilizer": "Retirar fertilizante",
-      "description": "Adicione plantas, ou colete campos apodrecidos para encher a composteira. Quando chegar a 100%, recebe um fertilizante para melhorar os retornos de seus campos.\n### 🧱 Progresso: **{{percent}}% cheia**."
+      "description": "Adicione plantas, ou colete campos apodrecidos para encher a composteira. Quando chegar a 100%, recebe um fertilizante para melhorar os retornos de seus campos.\n\nA melhor forma de gerar composto é com plantas apodrecidas em seus campos. É possível gerar composto com plantas do silo, porém é menos efetivo.\n### 🧱 Progresso: **{{percent}}% cheia**."
     },
     "plant-states-message": {
       "ROTTEN": "Apodrecido",
@@ -1247,7 +1254,7 @@
       "items": "Itens",
       "nothing": "**Nada**",
       "not-enough-plants": "Tu não possui mais essas plantas pra vender",
-      "max": "{{plant}} (Max. {{amount}})",
+      "max": "{{emoji}} {{plant}} (Max. {{amount}})",
       "sell-plants": "Vender plantas",
       "sell-plant": "Vender {{plant}}",
       "sell-all": "Vender tudo",

@@ -221,11 +221,16 @@ const unlockField = async (farmerId: BigString): Promise<void> => {
 const updateSilo = async (
   farmerId: BigString,
   silo: DatabaseFarmerSchema['silo'],
+  composter?: number,
 ): Promise<void> => {
+  const set = { silo, composter };
+
+  if (typeof composter !== 'number') delete set['composter'];
+
   await farmerModel.updateOne(
     { id: `${farmerId}` },
     {
-      $set: { silo },
+      $set: set,
     },
   );
 
@@ -237,7 +242,7 @@ const updateSilo = async (
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
       604800,
-      JSON.stringify(parseMongoUserToRedisUser({ ...data, silo })),
+      JSON.stringify(parseMongoUserToRedisUser({ ...data, ...set })),
     ).catch(debugError);
   }
 };

@@ -12,6 +12,7 @@
   "name": "Name",
   "description": "Description",
   "amount": "Amount",
+  "goback": "Back",
   "next": "Next",
   "soon": "Coming Soon",
   "page": "Page {{page}}",

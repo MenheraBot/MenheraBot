@@ -290,7 +290,7 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
   const newSilo = success ? addPlants(farmer.silo, added) : farmer.silo;
 
   const toAddComposter =
-    state === PlantationState.Rotten ? composterEquivalentForField(field, state, currentSeason) : 0;
+    state === PlantationState.Rotten ? composterEquivalentForField(added[0], state) : 0;
 
   await farmerRepository.executeHarvest(
     ctx.user.id,
