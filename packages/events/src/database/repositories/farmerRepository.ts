@@ -99,16 +99,21 @@ const executeHarvest = async (
   success: boolean,
   silo: DatabaseFarmerSchema['silo'],
   added: DatabaseFarmerSchema['silo'],
+  composter?: number,
 ): Promise<void> => {
   const experience = added.reduce(
     (p, c) => p + Math.floor(c.weight * ((c.plant + 1) * (5 + getQuality(c)))),
     0,
   );
 
+  const set = { plantations, silo, composter };
+
+  if (typeof composter !== 'number') delete set['composter'];
+
   const updatedUser = await farmerModel.findOneAndUpdate(
     { id: `${farmerId}` },
     {
-      $set: { plantations, silo },
+      $set: set,
       ...(success ? { $inc: { experience } } : {}),
     },
     {

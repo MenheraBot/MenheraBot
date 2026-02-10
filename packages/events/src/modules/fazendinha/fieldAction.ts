@@ -14,7 +14,7 @@ import {
   getHarvestTime,
   getPlantationState,
 } from './plantationState.js';
-import { Items, Plants } from './constants.js';
+import { Items, MAX_COMPOSTER_VALUE, Plants } from './constants.js';
 import { getCurrentSeason } from './seasonsManager.js';
 import {
   AvailableItems,
@@ -34,6 +34,7 @@ import {
 } from './siloUtils.js';
 import executeDailies from '../dailies/executeDailies.js';
 import userRepository from '../../database/repositories/userRepository.js';
+import { composterEquivalentForField } from './farmComposter.js';
 
 const getPlantedField = (
   farmer: DatabaseFarmerSchema,
@@ -193,7 +194,10 @@ const harvestAllFields = async (
 
   await postMultipleFazendinhaHarvest(`${ctx.user.id}`, harvested);
 
-  await executeDailies.harvestDailies(await userRepository.ensureFindUser(ctx.user.id), parsedFields);
+  await executeDailies.harvestDailies(
+    await userRepository.ensureFindUser(ctx.user.id),
+    parsedFields,
+  );
 
   await displayPlantations(
     ctx,
@@ -285,7 +289,17 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   const newSilo = success ? addPlants(farmer.silo, added) : farmer.silo;
 
-  await farmerRepository.executeHarvest(ctx.user.id, farmer.plantations, success, newSilo, added);
+  const toAddComposter =
+    state === PlantationState.Rotten ? composterEquivalentForField(field, state, currentSeason) : 0;
+
+  await farmerRepository.executeHarvest(
+    ctx.user.id,
+    farmer.plantations,
+    success,
+    newSilo,
+    added,
+    Math.min(toAddComposter + farmer.composter, MAX_COMPOSTER_VALUE),
+  );
 
   if (state !== PlantationState.Growing)
     postFazendinhaAction(`${ctx.user.id}`, field.plantType, success ? 'HARVEST' : 'ROTTED');
