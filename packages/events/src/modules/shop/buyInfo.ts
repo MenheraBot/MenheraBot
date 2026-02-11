@@ -6,6 +6,7 @@ import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.j
 import { getUserAvatar } from '../../utils/discord/userUtils.js';
 import { colorPrices, huntValues } from './constants.js';
 import { Plants } from '../fazendinha/constants.js';
+import { bot } from '../../index.js';
 
 const buyInfo = async (
   ctx: ChatInputInteractionContext,
@@ -56,7 +57,7 @@ const buyInfo = async (
       title: ctx.locale('commands:loja.dataCores_fields.title'),
       color: hexStringToNumber('#6cbe50'),
       thumbnail: {
-        url: 'https://i.imgur.com/t94XkgG.png',
+        url: `${bot.cdnUrl}/images/internal/wink.png`,
       },
       fields: [
         {
@@ -83,7 +84,7 @@ const buyInfo = async (
       title: ctx.locale('commands:loja.dataRolls_fields.title'),
       color: hexStringToNumber('#b66642'),
       thumbnail: {
-        url: 'https://i.imgur.com/t94XkgG.png',
+        url: `${bot.cdnUrl}/images/internal/wink.png`,
       },
       fields: [
         {
@@ -104,7 +105,7 @@ const buyInfo = async (
       title: ctx.locale('commands:loja.embed_title'),
       color: 0xe77fa1,
       thumbnail: {
-        url: 'https://i.imgur.com/t94XkgG.png',
+        url: `${bot.cdnUrl}/images/internal/wink.png`,
       },
       fields: Object.entries(Plants)
         .filter((a) => a[0] !== '0')

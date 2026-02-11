@@ -47,7 +47,7 @@ const executeDailies = async (
 
   if (!needUpdate) return;
 
-  if (finishedDailies > 0) {
+  if (finishedDailies > 0 && availableForPrizeDailies > 0) {
     const award = availableForPrizeDailies * FINISHED_DAILY_AWARD;
     incrementer.estrelinhas = award;
     incrementer.completedDailies = finishedDailies;

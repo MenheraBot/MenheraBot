@@ -11,6 +11,8 @@ import { loadChangelog } from '../utils/changelog.js';
 import { freeStuckQueues } from '../utils/freeStuckQueues.js';
 import { loadCommands } from './command/loadCommands.js';
 
+const { CDN_URL } = getEnviroments(['CDN_URL']);
+
 const setupMenheraClient = (client: MenheraClient): void => {
   const { OWNER_ID } = getEnviroments(['OWNER_ID']);
 
@@ -21,6 +23,8 @@ const setupMenheraClient = (client: MenheraClient): void => {
   client.username = 'Menhera Bot';
 
   client.enableRatelimit = true;
+
+  client.cdnUrl = CDN_URL;
 
   client.shuttingDown = false;
 
@@ -33,7 +37,7 @@ const setupMenheraClient = (client: MenheraClient): void => {
   client.commandsInExecution = 0;
 };
 
-const initializeServices = async (): Promise<void> => {
+const initializeServices = async (bot: MenheraClient): Promise<void> => {
   await loadLocales();
   await loadChangelog();
 

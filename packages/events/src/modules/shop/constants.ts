@@ -1,5 +1,5 @@
 import { VangoghUserprofileData } from '../../commands/info/ProfileCommand.js';
-import { getProfileImageUrl } from '../../structures/cdnManager.js';
+import { getEnviroments } from '../../utils/getEnviroments.js';
 
 const huntValues = {
   roll: 15_000,
@@ -26,13 +26,15 @@ const customImagePrice = 150_000;
 const unbuyableThemes = [3, 4, 5, 6, 25, 26, 27];
 const helloKittyThemes = [31, 32, 33, 34, 35, 36, 37];
 
+const { CDN_URL } = getEnviroments(['CDN_URL']);
+
 const previewProfileData: {
   user: VangoghUserprofileData;
   usageCommands: { cmds: { count: number }; array: { name: string; count: number }[] };
 } = {
   user: {
     color: '#70c9f9' as const,
-    image: getProfileImageUrl(1),
+    image: `${CDN_URL}/images/profiles/1.png`,
     avatar: 'https://menherabot.xyz/favicon.png',
     votes: 666,
     info: 'Gostou desse perfil? E que tal comprar? Nem vai ser tao caro, eu confio que tu vai querer, boa sorte UwU',

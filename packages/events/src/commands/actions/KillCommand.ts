@@ -8,6 +8,7 @@ import { capitalize } from '../../utils/miscUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { MessageFlags } from '@discordeno/bot';
 import { User } from '../../types/discordeno.js';
+import { bot } from '../../index.js';
 
 const KillCommand = createCommand({
   path: '',
@@ -52,11 +53,7 @@ const KillCommand = createCommand({
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
 
     if (user.bot) {
-      const robotsLink = [
-        'https://i.imgur.com/tv9wQai.gif',
-        'https://i.imgur.com/X9uUyEB.gif',
-        'https://i.imgur.com/rtsjxWQ.gif',
-      ];
+      const robotsLink = [`${bot.cdnUrl}/images/internal/shutdown.gif`];
 
       const selectedImage = robotsLink[Math.floor(Math.random() * robotsLink.length)];
 

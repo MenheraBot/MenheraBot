@@ -108,7 +108,7 @@ const ProfileCommand = createCommand({
     const userData: VangoghUserprofileData = {
       id: user.id,
       color: user.selectedColor,
-      image: getProfileImageUrl(userThemes.selectedImage),
+      image: getProfileImageUrl(userThemes.selectedImage, bot),
       avatar,
       votes: user.votes,
       info: user.info,

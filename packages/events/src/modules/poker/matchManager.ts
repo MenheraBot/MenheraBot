@@ -30,6 +30,7 @@ import { AUTO_FOLD_TIMEOUT_IN_SECONDS, DEFAULT_CHIPS } from './constants.js';
 import { convertChipsToStars } from './afterMatchLobby.js';
 import { postPokerRound } from '../../utils/apiRequests/statistics.js';
 import { AvailableLanguages } from '../../types/i18next.js';
+import { bot } from '../../index.js';
 
 const makeShowdown = async (ctx: GenericContext, gameData: PokerMatch): Promise<void> => {
   gameData.stage = 'showdown';
@@ -350,7 +351,7 @@ const setupGame = async (
         name: discordUser ? getDisplayName(discordUser, true) : '???',
         avatar: discordUser
           ? getUserAvatar(discordUser, { size: 128 })
-          : 'https://cdn.menherabot.xyz/images/profiles/1.png',
+          : `${bot.cdnUrl}/images/profiles/1.png`,
         cardTheme: userThemes[0],
         backgroundTheme: userThemes[1],
         chips: chips || DEFAULT_CHIPS,

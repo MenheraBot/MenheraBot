@@ -36,6 +36,7 @@ export interface MenheraClient
   enableRatelimit: boolean;
   username: string;
   isMaster: boolean;
+  cdnUrl: string;
   commandsInExecution: number;
   changelog: {
     versionName: string;

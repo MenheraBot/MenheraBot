@@ -118,8 +118,8 @@ const executeVoteWebhook = async (userId: string, isWeekend: boolean): Promise<v
     title: embedTitle,
     description: embedDescription,
     color: 0x7e40e9,
-    image: { url: 'https://i.imgur.com/5XaGRDu.jpg' },
-    thumbnail: { url: 'https://i.imgur.com/qtM9T9C.jpg' },
+    image: { url: `${bot.cdnUrl}/images/internal/vote.jpeg` },
+    thumbnail: { url: `${bot.cdnUrl}/images/internal/glasses.jpeg` },
   });
 
   const userDM = await bot.helpers.getDmChannel(userId).catch(debugError);

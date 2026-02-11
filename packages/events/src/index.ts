@@ -29,7 +29,7 @@ const bot = createBot({
 }) as MenheraClient;
 
 setupMenheraClient(bot);
-await initializeServices();
+await initializeServices(bot);
 setupEventHandlers();
 
 await createIpcConnection();
