@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Changed
+
+- O bônus para finalizar uma daily que não foi trocada foi aumentado de 5000 para 10000 estrelinhas.
+
 ### Fixed
 
 - Corrigido gifs do comando `/matar` quando mencionava bots.
+- Corrigido notificação de bônus de daily falando que a recompensa foi 0 estrelinhas. 
+- Corrigido erros no comando `/notificações` quando o usuário tinha muitas notificações.
 
 ## [6.2.3] - 2026-02-10
 

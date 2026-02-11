@@ -5,7 +5,7 @@ import { PlantCategories, PlantQuality } from '../fazendinha/types.js';
 import { StaticItemData } from '../hunt/types.js';
 import { Daily } from './types.js';
 
-export const FINISHED_DAILY_AWARD = 5_000;
+export const FINISHED_DAILY_AWARD = 10_000;
 export const STARS_PRIZE = 7_000;
 export const SEED_AMOUNT = 3;
 export const PLANT_AMOUNT = 1;

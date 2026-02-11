@@ -1359,8 +1359,8 @@
       "lux-gave-title": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Adicionei um título em sua conta! Da uma olhadinha em `/personalizar título` >.<",
       "lux-message": "[<t:{{unix}}:d> <t:{{unix}}:T>] **[Menhera]**: {{ptBr}}",
       "finished-daily": "",
-      "finished-daily-one": "Você completou **{{count}}** missão! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> as <t:{{unix}}:T>",
-      "finished-daily-other": "Você completou **{{count}}** missões! Sua recompensa são **{{price}}** :star: em <t:{{unix}}:d> as <t:{{unix}}:T>"
+      "finished-daily-one": "Você completou **{{count}}** missão! Sua recompensa é **{{price}}** :star: em <t:{{unix}}:d> as <t:{{unix}}:T>",
+      "finished-daily-other": "Você completou **{{count}}** missões! Sua recompensa é **{{price}}** :star: em <t:{{unix}}:d> as <t:{{unix}}:T>"
     }
   },
   "daily": {

@@ -71,8 +71,8 @@ export const displayNotifications = async (
 
   const importantLength = importantMessage.length;
 
-  if (notificationsMessage.length > 3997 - importantLength)
-    notificationsMessage = `${notificationsMessage.slice(0, 3997 - importantLength)}...`;
+  if (notificationsMessage.length > 3800 - importantLength)
+    notificationsMessage = `${notificationsMessage.slice(0, 3800 - importantLength)}...`;
 
   if (notificationsMessage.length > 0) {
     notificationsComponent.push(
