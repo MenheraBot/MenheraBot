@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - O comando `/daily` agora usa os novos componentes V2 do Discord.
+- Alterado limite de itens exibidos na feira por página, de 8 para 15. 
 
 ## [6.2.5] - 2026-02-11
 
