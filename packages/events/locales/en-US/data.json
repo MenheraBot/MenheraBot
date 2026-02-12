@@ -294,6 +294,8 @@
     "quality_2": "Premium"
   },
   "farm-items": {
-    "0": "Fertilizers"
+    "0": "Fertilizers",
+    "0-one": "Fertilizer",
+    "0-other": "Fertilizers"
   }
 }

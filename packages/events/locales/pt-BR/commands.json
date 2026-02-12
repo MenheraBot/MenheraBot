@@ -1143,7 +1143,7 @@
     "feira": {
       "order": {
         "user-orders": "Pedidos de troca de {{user}}",
-        "public-orders": "Pedidos de troca da Vizinhança",
+        "public-orders": "Pedidos da Feira",
         "no-user-orders": "Este usuário não possui nenhum pedido no momento.",
         "no-public-orders": "Ninguém da vizinhança está precisando de plantas no momento.",
         "complete-order": "Aceitar troca",
@@ -1180,7 +1180,10 @@
         "poor-items": "Você não tem todos esses **fertilizantes** para adicionar de troca no pedido!",
         "invalid-values": "Você inseriu informações inválidas no pedido!",
         "no-items": "Você não tem as plantas suficientes para aceitar esse pedido",
-        "order-description": "**Vizinho:** {{user}}\n**Trocando por:**\n{{awards}}",
+        "order-description": "**Trocando por:**\n{{awards}}",
+        "order-public-description": "**{{user}}** trocando por {{awards}}",
+        "neighbor-trades": "### Trocas da Vizinhança",
+        "no-plants": "Sem trocas disponíveis",
         "order-award": "**{{amount}}{{metric}}** {{emoji}}",
         "order-accepted": "Você aceitou a troca. As plantas, itens e estrelinhas foram para sua conta.",
         "confirm-delete": "Você tem certeza que deseja remover o pedido de troca? Você não receberá de volta os itens colocadas no anúncio. Apenas o prêmio em estrelinhas :star: será devolvido.",

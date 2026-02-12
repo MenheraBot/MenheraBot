@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Atualizado `/fazendinha feira pedidos` para diminuir a poluição visual.
+
+### Fixed
+
+- Corrigido erros ao mostrar pedidos da feira quando haviam muitos pedidos.
+- Corrigido erro para criar pedido de troca de qualidade precária.
+
 ## [6.2.4] - 2026-02-11
 
 ### Changed

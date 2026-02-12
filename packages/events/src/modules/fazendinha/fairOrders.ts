@@ -3,11 +3,11 @@ import { InteractionContext } from '../../types/menhera.js';
 import { DatabaseFarmerSchema } from '../../types/database.js';
 import {
   createActionRow,
-  createAsyncCustomId,
   createButton,
   createContainer,
   createCustomId,
   createSection,
+  createSelectMenu,
   createSeparator,
   createTextDisplay,
 } from '../../utils/discord/componentUtils.js';
@@ -43,7 +43,7 @@ import {
   handleTradeRequestModal,
 } from './createFairOrder.js';
 import notificationRepository from '../../database/repositories/notificationRepository.js';
-import { ModalInteraction } from '../../types/interaction.js';
+import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction.js';
 import { AvailableItems } from './types.js';
 import userRepository from '../../database/repositories/userRepository.js';
 
@@ -124,11 +124,12 @@ const handleClaimOrder = async (
 };
 
 const handleTakeOrder = async (
-  ctx: ComponentInteractionContext,
+  ctx: ComponentInteractionContext<SelectMenuInteraction>,
   farmer: DatabaseFarmerSchema,
   embedColor: string,
-  orderId: string,
 ) => {
+  const orderId = ctx.interaction.data.values[0];
+
   const order = await fairOrderRepository.getOrder(orderId);
 
   if (!order)
@@ -226,7 +227,6 @@ const handleFairOrderButton = async (ctx: ComponentInteractionContext) => {
 
   if (action === 'PUBLIC') return displayFairOrders(ctx, farmer, embedColor);
   if (action === 'DELETE') return deleteOrder(ctx, farmer, embedColor, orderId);
-  if (action === 'AGREED') return handleTakeOrder(ctx, farmer, embedColor, orderId);
   if (action === 'ASK_DELETE') return displayFairOrders(ctx, farmer, embedColor, { orderId });
   if (action === 'CLAIM') return handleClaimOrder(ctx, farmer, embedColor, orderId);
   if (action === 'REQUEST') return handleTradeRequestModal(ctx, embedColor);
@@ -234,6 +234,12 @@ const handleFairOrderButton = async (ctx: ComponentInteractionContext) => {
   if (action === 'PLACE_ORDER') return handlePlaceOrder(ctx, farmer, embedColor);
   if (action === 'PAGE')
     return displayFairOrders(ctx, farmer, embedColor, { page: Number(orderId) });
+  if (action === 'AGREED')
+    return handleTakeOrder(
+      ctx as ComponentInteractionContext<SelectMenuInteraction>,
+      farmer,
+      embedColor,
+    );
   if (action === 'MODAL')
     return handleReceiveModal(
       ctx as ComponentInteractionContext<ModalInteraction>,
@@ -292,7 +298,6 @@ const displayFairOrders = async (
         accessory: user ? viewPublic : createOrder,
         components: [titleDisplay],
       }),
-      createSeparator(),
     ],
   });
 
@@ -316,64 +321,109 @@ const displayFairOrders = async (
 
   if (orders.length === 0)
     container.components.push(
+      createSeparator(),
       createTextDisplay(
         ctx.locale(`commands:fazendinha.feira.order.no-${user ? 'user' : 'public'}-orders`),
       ),
     );
-  else
-    // eslint-disable-next-line no-async-promise-executor
-    await new Promise(async (res) => {
-      let finished = 0;
+  else {
+    const mappedUsers = new Set(orders.map((a) => a.userId));
 
-      const mappedUsers = new Set(orders.map((a) => a.userId));
+    const foundUsers = await Promise.all(
+      [...mappedUsers].map((a) => cacheRepository.getDiscordUser(a, false)),
+    );
 
-      const foundUsers = await Promise.all(
-        [...mappedUsers].map((a) => cacheRepository.getDiscordUser(a, false)),
+    const tabledUsers = foundUsers.reduce<Record<string, string>>((p, c) => {
+      if (!c) return p;
+
+      p[`${c.id}`] = getDisplayName(c);
+
+      return p;
+    }, {});
+
+    const selectOrders = createSelectMenu({
+      customId: createCustomId(9, ctx.user.id, ctx.originalInteractionId, 'AGREED', embedColor),
+      options: [],
+      minValues: 1,
+      maxValues: 1,
+    });
+
+    let text = '';
+
+    orders.forEach((order) => {
+      const userIsOwner = order.userId === `${ctx.user.id}`;
+      const confirmDelete = orderId === order._id;
+      const completed = order.completed;
+
+      const hasPlants = checkNeededPlants(
+        [{ plant: order.plant, weight: order.weight, quality: order.quality }],
+        farmer.silo,
       );
 
-      const tabledUsers = foundUsers.reduce<Record<string, string>>((p, c) => {
-        if (!c) return p;
+      if (!userIsOwner)
+        text += `- **${ctx.locale('commands:fazendinha.feira.order.order-name', {
+          plantEmoji: Plants[order.plant].emoji,
+          weight: order.weight,
+          plantName: ctx.locale(`data:plants.${order.plant}`),
+          qualityEmoji: getQualityEmoji(order.quality),
+        })} |** ${ctx.locale('commands:fazendinha.feira.order.order-public-description', {
+          user: tabledUsers[order.userId] ?? order.userId,
+          awards: `${Object.entries(order.awards)
+            .map(([type, amount]) =>
+              ctx.locale('commands:fazendinha.feira.order.order-award', {
+                amount: amount,
+                metric: type === 'estrelinhas' ? '' : 'x',
+                emoji:
+                  type === 'estrelinhas'
+                    ? ctx.safeEmoji(type)
+                    : Items[AvailableItems.Fertilizer].emoji,
+              }),
+            )
+            .join(', ')}`,
+        })}\n`;
 
-        p[`${c.id}`] = getDisplayName(c);
+      if (hasPlants && !userIsOwner)
+        selectOrders.options.push({
+          label: ctx.locale('commands:fazendinha.feira.order.order-name', {
+            plantEmoji: Plants[order.plant].emoji,
+            weight: order.weight,
+            plantName: ctx.locale(`data:plants.${order.plant}`),
+            qualityEmoji: ctx.locale(`data:fazendinha.quality_${order.quality}`),
+          }),
+          value: order._id,
+          description: ctx
+            .locale('commands:fazendinha.feira.order.order-public-description', {
+              user: tabledUsers[order.userId] ?? order.userId,
+              awards: `${Object.entries(order.awards)
+                .map(([type, amount]) =>
+                  ctx.locale('commands:fazendinha.feira.order.order-award', {
+                    amount: amount,
+                    metric: '',
+                    emoji:
+                      type === 'estrelinhas'
+                        ? ctx.safeEmoji(type)
+                        : ctx.locale('data:farm-items.0', { count: amount }),
+                  }),
+                )
+                .join(', ')}`,
+            })
+            .replaceAll('*', ''),
+        });
 
-        return p;
-      }, {});
-
-      orders.forEach(async (order) => {
-        const userIsOwner = order.userId === `${ctx.user.id}`;
-        const confirmDelete = orderId === order._id;
-        const completed = order.completed;
-
-        const canClick =
-          userIsOwner ||
-          checkNeededPlants(
-            [{ plant: order.plant, weight: order.weight, quality: order.quality }],
-            farmer.silo,
-          );
-
+      if (userIsOwner)
         container.components.push(
+          createSeparator(),
           createSection({
             accessory: createButton({
-              customId: await createAsyncCustomId(
+              customId: createCustomId(
                 9,
                 ctx.user.id,
                 ctx.originalInteractionId,
-                userIsOwner
-                  ? completed
-                    ? 'CLAIM'
-                    : confirmDelete
-                      ? 'DELETE'
-                      : 'ASK_DELETE'
-                  : 'AGREED',
+                completed ? 'CLAIM' : confirmDelete ? 'DELETE' : 'ASK_DELETE',
                 embedColor,
                 order._id,
               ),
-              disabled: !canClick,
-              style: userIsOwner
-                ? completed
-                  ? ButtonStyles.Success
-                  : ButtonStyles.Danger
-                : ButtonStyles.Primary,
+              style: completed ? ButtonStyles.Success : ButtonStyles.Danger,
               label: ctx.locale(
                 confirmDelete
                   ? 'common:confirm'
@@ -410,16 +460,28 @@ const displayFairOrders = async (
               ),
             ],
           }),
-          createSeparator(),
         );
-
-        finished += 1;
-        if (finished >= orders.length) res(finished);
-      });
     });
+
+    if (selectOrders.options.length === 0) {
+      selectOrders.disabled = true;
+      selectOrders.placeholder = ctx.locale('commands:fazendinha.feira.order.no-plants');
+      selectOrders.options.push({ label: 'dummy', value: 'value' });
+    }
+
+    if (text.length > 0)
+      container.components.push(
+        createSeparator(true),
+        createTextDisplay(
+          `${user ? '' : ctx.locale('commands:fazendinha.feira.order.neighbor-trades')}\n${text}`,
+        ),
+        createActionRow([selectOrders]),
+      );
+  }
 
   if (needPagination)
     container.components.push(
+      createSeparator(true, false),
       createActionRow([
         createButton({
           label: ctx.locale('common:back'),
