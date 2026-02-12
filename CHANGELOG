@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - Atualizado `/fazendinha feira pedidos` para diminuir a poluição visual.
+- Mensagens importantes são destacadas no `/cooldowns` agora.
 
 ### Fixed
 

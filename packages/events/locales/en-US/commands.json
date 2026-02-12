@@ -628,10 +628,17 @@
       "ROTTEN": "Rotted in **<t:{{unix}}:T>** | **<t:{{unix}}:R>**"
     },
     "time": "**<t:{{unix}}:T>** | **<t:{{unix}}:R>**",
-    "unread-notifications": "New notification",
+    "unread-notification": "New notification",
+    "unread-message": "New important message",
+    "notification": "notification",
+    "notification-one": "notification",
+    "notification-other": "notifications",
+    "message": "important message",
+    "message-one": "**important message**",
+    "message-others": "**important messages**",
     "check-your-notifications": "",
-    "check-your-notifications-one": "You have **{{count}}** unread notification! Use {{command}} to read it",
-    "check-your-notifications-other": "You have **{{count}}** unread notifications! Use {{command}} to read them"
+    "check-your-notifications-one": "You have **{{count}}** unread {{data}}! Use {{command}} to read it",
+    "check-your-notifications-other": "You have **{{count}}** unread {{data}}! Use {{command}} to read them"
   },
   "trisal": {
     "title": "❤️ Polyamory ❤️",

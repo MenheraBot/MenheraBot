@@ -266,9 +266,13 @@ const displayFairOrders = async (
     farmer.items.some((a) => a.id === AvailableItems.Fertilizer && a.amount > 0);
 
   const titleDisplay = createTextDisplay(
-    `# ${ctx.locale(`commands:fazendinha.feira.order.${user ? 'user-orders' : 'public-orders'}`, {
-      user: getDisplayName(user ?? ctx.user),
-    })}`,
+    `# ${ctx.prettyResponse(
+      'list',
+      `commands:fazendinha.feira.order.${user ? 'user-orders' : 'public-orders'}`,
+      {
+        user: getDisplayName(user ?? ctx.user),
+      },
+    )}`,
   );
 
   const createOrder = createButton({

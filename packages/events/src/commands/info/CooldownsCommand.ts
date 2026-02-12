@@ -132,24 +132,25 @@ const CooldownsCommand = createCommand({
       ctx.authorData.readNotificationsAt,
     );
 
-    const totalNotifications = unreadNotifications + unreadGlobalNotifications;
+    const notificationCommand = await commandRepository.getCommandInfo('notificações');
 
-    if (totalNotifications > 0) {
-      const notificationCommand = await commandRepository.getCommandInfo('notificações');
-
+    const pushNotify = (data: 'notification' | 'message', notifications: number) =>
       container.components.push(
         createSeparator(),
         createTextDisplay(
-          `### ${ctx.locale('commands:cooldowns.unread-notifications')}\n${ctx.locale(
+          `### ${ctx.locale(`commands:cooldowns.unread-${data}`)}\n${ctx.locale(
             'commands:cooldowns.check-your-notifications',
             {
               command: `</notificações:${notificationCommand?.discordId}>`,
-              count: totalNotifications,
+              count: notifications,
+              data: ctx.locale(`commands:cooldowns.${data}`, { count: notifications }),
             },
           )}`,
         ),
       );
-    }
+
+    if (unreadGlobalNotifications > 0) pushNotify('message', unreadGlobalNotifications);
+    if (unreadNotifications > 0) pushNotify('notification', unreadNotifications);
 
     ctx.makeLayoutMessage({ components: [container] });
     finishCommand();

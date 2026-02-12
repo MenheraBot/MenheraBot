@@ -634,10 +634,17 @@
     },
     "no-user": "Este usuário não utiliza meus comandos :(",
     "click-to-vote": "Votar agora",
-    "unread-notifications": "Nova notificação",
+    "unread-notification": "Nova notificação",
+    "unread-message": "Nova mensagem importante",
+    "notification": "notificação",
+    "notification-one": "notificação",
+    "notification-other": "notificações",
+    "message": "**mensagem importante**",
+    "message-one": "**mensagem importante**",
+    "message-other": "**mensagens importantes**",
     "check-your-notifications": "",
-    "check-your-notifications-one": "Você possui **{{count}}** notificação não lida! Use o comando {{command}} para a ler",
-    "check-your-notifications-other": "Você possui **{{count}}** notificações não lidas! Use o comando {{command}} para as ler"
+    "check-your-notifications-one": "Você possui **{{count}}** {{data}} não lida! Use o comando {{command}} para a ler",
+    "check-your-notifications-other": "Você possui **{{count}}** {{data}} não lidas! Use o comando {{command}} para as ler"
   },
   "trisal": {
     "title": "❤️ Trisal ❤️",
