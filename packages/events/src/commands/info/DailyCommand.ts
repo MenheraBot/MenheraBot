@@ -7,12 +7,15 @@ import {
 } from '@discordeno/bot';
 import { createCommand } from '../../structures/command/createCommand.js';
 import { getUserDailies } from '../../modules/dailies/getUserDailies.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { getDailyById } from '../../modules/dailies/dailies.js';
 import {
   createActionRow,
   createButton,
+  createContainer,
   createCustomId,
+  createSection,
+  createSeparator,
   createTextDisplay,
 } from '../../utils/discord/componentUtils.js';
 import { Award, DatabaseDaily } from '../../modules/dailies/types.js';
@@ -28,10 +31,27 @@ import { getUniqueDaily } from '../../modules/dailies/calculateUserDailies.js';
 import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
 import { User } from '../../types/discordeno.js';
-import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
+import {
+  extractNameAndIdFromEmoji,
+  setComponentsV2Flag,
+} from '../../utils/discord/messageUtils.js';
 
 const getDailyStatus = (daily: DatabaseDaily): 'reedem' | 'unfinished' | 'reedemed' =>
   daily.redeemed ? 'reedemed' : daily.has >= daily.need ? 'reedem' : 'unfinished';
+
+const displayDailies = async (
+  ctx: InteractionContext,
+  userData: DatabaseUserSchema,
+  user: User,
+) => {
+  const userDailies = await getUserDailies(userData);
+
+  const components = getMissionComponents(ctx, userData, userDailies, false, getDisplayName(user));
+
+  return ctx.makeLayoutMessage({
+    components: [components],
+  });
+};
 
 const getAwardEmoji = (
   ctx: InteractionContext,
@@ -51,73 +71,109 @@ const getAwardEmoji = (
   }
 };
 
-const getMissionsEmbed = (
+const getMissionComponents = (
   ctx: InteractionContext,
   user: DatabaseUserSchema,
   userDailies: DatabaseDaily[],
   isChangeEmbed: boolean,
   username: string,
-) =>
-  createEmbed({
-    title: ctx.prettyResponse(
+) => {
+  const isFromUser = `${ctx.user.id}` === user.id;
+
+  const cannotChangeDaily = userDailies.some((a) => a.changed);
+
+  const titleDisplay = createTextDisplay(
+    `## ${ctx.prettyResponse(
       'calendar',
       isChangeEmbed ? 'commands:daily.change-title' : 'commands:daily.title',
       { username },
-    ),
-    color: hexStringToNumber(user.selectedColor),
-    footer: isChangeEmbed ? { text: ctx.locale('commands:daily.change-footer') } : undefined,
-    description: `- ${userDailies
-      .map((d) => {
-        const daily = getDailyById(d.id);
-        return ctx.locale(`commands:daily.descriptions.${daily.type}`, {
-          ...d,
-          specification: daily.specificationDisplay?.(ctx, d.specification!) ?? d.specification,
-          count: d.need,
-          emoji: isChangeEmbed
-            ? ctx.safeEmoji('swap')
-            : d.has < d.need
-              ? ctx.safeEmoji('hourglass')
-              : d.redeemed
-                ? ctx.safeEmoji('success')
-                : ctx.safeEmoji('gift'),
-        });
-      })
-      .join('\n- ')}\n\n${ctx.locale('commands:daily.reset', {
-      unix: millisToSeconds(Date.now() + getMillisecondsToTheEndOfDay()),
-    })}`,
-  });
+    )}`,
+  );
 
-const getMissionButtons = (
-  ctx: InteractionContext,
-  userDailies: DatabaseDaily[],
-  action: 'REEDEM' | 'CHANGE',
-) =>
-  userDailies.map((daily, index) =>
-    createButton({
-      label:
-        action === 'CHANGE'
-          ? ctx.locale('commands:daily.change', { index: index + 1 })
-          : ctx.locale(`commands:daily.${getDailyStatus(daily)}`, {
-              index: index + 1,
-              need: daily.need,
-              has: daily.has,
+  return createContainer({
+    accentColor: hexStringToNumber(user.selectedColor),
+    components: [
+      isFromUser
+        ? createSection({
+            accessory: createButton({
+              label: ctx.locale(isChangeEmbed ? 'common:cancel' : 'commands:daily.change-daily'),
+              style: ButtonStyles.Secondary,
+              customId: createCustomId(
+                0,
+                ctx.user.id,
+                ctx.originalInteractionId,
+                isChangeEmbed ? 'CANCEL' : 'DISPLAY_CHANGE',
+              ),
+              disabled: !isFromUser || cannotChangeDaily,
             }),
-      style:
-        action === 'CHANGE'
-          ? ButtonStyles.Danger
-          : getDailyStatus(daily) === 'reedem'
-            ? ButtonStyles.Success
-            : ButtonStyles.Secondary,
-      customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, action, index),
-      disabled:
-        action !== 'CHANGE'
-          ? getDailyStatus(daily) !== 'reedem'
-          : getDailyStatus(daily) !== 'unfinished',
-    }),
-  ) as [ButtonComponent];
+            components: [titleDisplay],
+          })
+        : titleDisplay,
+
+      createTextDisplay(
+        `- ${userDailies
+          .map((d, i) => {
+            const daily = getDailyById(d.id);
+            return `**(${i + 1})** ${ctx.locale(`commands:daily.descriptions.${daily.type}`, {
+              ...d,
+              specification: daily.specificationDisplay?.(ctx, d.specification!) ?? d.specification,
+              count: d.need,
+              emoji: isChangeEmbed
+                ? ctx.safeEmoji('swap')
+                : d.has < d.need
+                  ? ctx.safeEmoji('hourglass')
+                  : d.redeemed
+                    ? ctx.safeEmoji('success')
+                    : ctx.safeEmoji('gift'),
+            })}`;
+          })
+          .join('\n- ')}`,
+      ),
+      ...(isFromUser
+        ? [
+            createActionRow(
+              userDailies.map((daily, index) =>
+                createButton({
+                  label: isChangeEmbed
+                    ? ctx.locale('commands:daily.change', { index: index + 1 })
+                    : ctx.locale(`commands:daily.${getDailyStatus(daily)}`, {
+                        index: index + 1,
+                        need: daily.need,
+                        has: daily.has,
+                      }),
+                  style: isChangeEmbed
+                    ? ButtonStyles.Danger
+                    : getDailyStatus(daily) === 'reedem'
+                      ? ButtonStyles.Success
+                      : ButtonStyles.Secondary,
+                  customId: createCustomId(
+                    0,
+                    ctx.user.id,
+                    ctx.originalInteractionId,
+                    isChangeEmbed ? 'CHANGE' : 'REEDEM',
+                    index,
+                  ),
+                  disabled: !isChangeEmbed
+                    ? getDailyStatus(daily) !== 'reedem'
+                    : getDailyStatus(daily) !== 'unfinished',
+                }),
+              ),
+            ),
+          ]
+        : []),
+      createSeparator(false, true),
+      createTextDisplay(
+        `-# ${ctx.locale(`commands:daily.${isChangeEmbed ? 'change-footer' : 'reset'}`, {
+          unix: millisToSeconds(Date.now() + getMillisecondsToTheEndOfDay()),
+        })}`,
+      ),
+    ],
+  });
+};
 
 const changeDaily = async (
   ctx: ComponentInteractionContext,
+  userData: DatabaseUserSchema,
   userDailies: DatabaseDaily[],
   dailyIndex: number,
 ): Promise<void> => {
@@ -128,6 +184,8 @@ const changeDaily = async (
 
   const daily = getDailyById(userDaily.id);
 
+  await displayDailies(ctx, { ...userData, dailies: userDailies }, ctx.user);
+
   const newDailyDescription = ctx.locale(`commands:daily.descriptions.${daily.type}`, {
     ...userDaily,
     specification:
@@ -136,13 +194,16 @@ const changeDaily = async (
     emoji: ctx.safeEmoji('swap'),
   });
 
-  ctx.makeMessage({
-    content: ctx.prettyResponse('success', 'commands:daily.success-changed', {
-      newDaily: newDailyDescription,
-      index: dailyIndex + 1,
-    }),
-    components: [],
-    embeds: [],
+  await ctx.followUp({
+    flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+    components: [
+      createTextDisplay(
+        ctx.prettyResponse('success', 'commands:daily.success-changed', {
+          newDaily: newDailyDescription,
+          index: dailyIndex + 1,
+        }),
+      ),
+    ],
   });
 };
 
@@ -154,45 +215,44 @@ const handleButtonInteractions = async (ctx: ComponentInteractionContext): Promi
 
   const cannotChange = userDailies.some((d) => d.changed);
 
+  if (action === 'CANCEL') return displayDailies(ctx, user, ctx.user);
+
   if (action === 'DISPLAY_CHANGE') {
     if (cannotChange)
-      return ctx.makeMessage({
-        components: [],
-        embeds: [],
-        content: ctx.prettyResponse('error', 'commands:daily.already-changed'),
+      return ctx.makeLayoutMessage({
+        components: [
+          createTextDisplay(ctx.prettyResponse('error', 'commands:daily.already-changed')),
+        ],
       });
 
-    const embed = getMissionsEmbed(ctx, user, userDailies, true, ctx.user.username);
-    const buttons = getMissionButtons(ctx, userDailies, 'CHANGE');
+    const components = getMissionComponents(ctx, user, userDailies, true, ctx.user.username);
 
-    return ctx.makeMessage({ components: [createActionRow(buttons)], embeds: [embed] });
+    return ctx.makeLayoutMessage({ components: [components] });
   }
 
   if (action === 'CHANGE') {
     if (cannotChange)
-      return ctx.makeMessage({
-        components: [],
-        embeds: [],
-        content: ctx.prettyResponse('error', 'commands:daily.already-changed'),
+      return ctx.makeLayoutMessage({
+        components: [
+          createTextDisplay(ctx.prettyResponse('error', 'commands:daily.already-changed')),
+        ],
       });
 
-    return changeDaily(ctx, userDailies, Number(dailyIndex));
+    return changeDaily(ctx, user, userDailies, Number(dailyIndex));
   }
 
   const missionToReedem = userDailies[Number(dailyIndex)];
 
   if (missionToReedem.need > missionToReedem.has)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:daily.cannot-reedem'),
+    return ctx.makeLayoutMessage({
+      components: [createTextDisplay(ctx.prettyResponse('error', 'commands:daily.cannot-reedem'))],
     });
 
   if (missionToReedem.redeemed)
-    return ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:daily.already-reedemed'),
+    return ctx.makeLayoutMessage({
+      components: [
+        createTextDisplay(ctx.prettyResponse('error', 'commands:daily.already-reedemed')),
+      ],
     });
 
   if (action === 'SELECT_ITEM') {
@@ -284,49 +344,71 @@ const handleButtonInteractions = async (ctx: ComponentInteractionContext): Promi
     await updateFunction(ctx.user.id, updateObject);
     await userRepository.updateUser(ctx.user.id, { dailies: user.dailies });
 
-    return ctx.makeMessage({
-      embeds: [],
-      components: [],
-      content: ctx.prettyResponse('success', 'commands:daily.reedemed-success', {
-        emoji: getAwardEmoji(ctx, selectedAward),
-        value: selectedAward.value,
-      }),
+    await displayDailies(ctx, user, ctx.user);
+
+    return ctx.followUp({
+      flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+      components: [
+        createTextDisplay(
+          ctx.prettyResponse('success', 'commands:daily.reedemed-success', {
+            emoji: getAwardEmoji(ctx, selectedAward),
+            value: selectedAward.value,
+          }),
+        ),
+      ],
     });
   }
 
   if (action === 'REEDEM') {
     const buttons: ButtonComponent[] = [];
-    const embed = createEmbed({
-      fields: [],
-      title: ctx.locale('commands:daily.reedem-title'),
-      color: hexStringToNumber(user.selectedColor),
-    });
 
-    missionToReedem.awards.forEach((award, index) => {
-      embed.fields?.push({
-        name: ctx.locale(`commands:daily.reedem-options.${award.type}`, { index: index + 1 }),
-        value: `${award.value}x ${getAwardEmoji(ctx, award)}`,
-        inline: true,
-      });
-      buttons.push(
-        createButton({
-          label: ctx.locale(`commands:daily.reedem-options.${award.type}`, { index: index + 1 }),
-          style: ButtonStyles.Primary,
-          customId: createCustomId(
-            0,
-            ctx.user.id,
-            ctx.originalInteractionId,
-            'SELECT_ITEM',
-            dailyIndex,
-            index,
-          ),
+    const components = createContainer({
+      accentColor: hexStringToNumber(user.selectedColor),
+      components: [
+        createSection({
+          components: [
+            createTextDisplay(`## ${ctx.prettyResponse('gift', 'commands:daily.reedem-title')}`),
+          ],
+          accessory: createButton({
+            label: ctx.locale('common:cancel'),
+            style: ButtonStyles.Secondary,
+            customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, 'CANCEL'),
+          }),
         }),
-      );
+        createTextDisplay(
+          missionToReedem.awards
+            .map((award, index) => {
+              buttons.push(
+                createButton({
+                  label: ctx.locale(`commands:daily.reedem-options.${award.type}`, {
+                    index: index + 1,
+                  }),
+                  style: ButtonStyles.Primary,
+                  emoji:
+                    award.type === 'fertilizer'
+                      ? extractNameAndIdFromEmoji(getAwardEmoji(ctx, award))
+                      : { name: getAwardEmoji(ctx, award) },
+                  customId: createCustomId(
+                    0,
+                    ctx.user.id,
+                    ctx.originalInteractionId,
+                    'SELECT_ITEM',
+                    dailyIndex,
+                    index,
+                  ),
+                }),
+              );
+
+              return `- ${ctx.locale(`commands:daily.reedem-options.${award.type}`, { index: index + 1 })} ${getAwardEmoji(ctx, award)}`;
+            })
+            .join('\n'),
+        ),
+        createActionRow(buttons),
+      ],
     });
 
-    ctx.makeMessage({
-      embeds: [embed],
-      components: [createActionRow(buttons as [ButtonComponent])],
+    ctx.makeLayoutMessage({
+      components: [components],
     });
   }
 };
@@ -357,27 +439,7 @@ const DailyCommand = createCommand({
         ? ctx.authorData
         : await userRepository.ensureFindUser(userToCheck.id);
 
-    const userDailies = await getUserDailies(userData);
-
-    const embed = getMissionsEmbed(ctx, userData, userDailies, false, getDisplayName(userToCheck));
-
-    const buttons = getMissionButtons(ctx, userDailies, 'REEDEM');
-
-    const cannotChangeDaily = userDailies.some((d) => d.changed);
-
-    buttons.push(
-      createButton({
-        label: ctx.locale('commands:daily.change-daily'),
-        style: ButtonStyles.Secondary,
-        customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, 'DISPLAY_CHANGE'),
-        disabled: cannotChangeDaily,
-      }),
-    );
-
-    ctx.makeMessage({
-      embeds: [embed],
-      components: userToCheck.id === ctx.user.id ? [createActionRow(buttons)] : [],
-    });
+    return displayDailies(ctx, userData, userToCheck);
   },
 });
 

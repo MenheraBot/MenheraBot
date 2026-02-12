@@ -37,7 +37,7 @@ const setupMenheraClient = (client: MenheraClient): void => {
   client.commandsInExecution = 0;
 };
 
-const initializeServices = async (bot: MenheraClient): Promise<void> => {
+const initializeServices = async (): Promise<void> => {
   await loadLocales();
   await loadChangelog();
 

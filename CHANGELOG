@@ -5,11 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- O comando `/daily` agora usa os novos componentes V2 do Discord.
+
 ## [6.2.5] - 2026-02-11
 
 ### Changed
 
-- Atualizado `/fazendinha feira pedidos` para diminuir a poluição visual.
+- Atualizado `/fazendinha feira trocas` para diminuir a poluição visual.
 - Mensagens importantes são destacadas no `/cooldowns` agora.
 
 ### Fixed
