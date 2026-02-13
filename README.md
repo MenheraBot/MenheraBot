@@ -7,7 +7,7 @@
 [![](https://top.gg/api/widget/upvotes/708014856711962654.svg)](https://top.gg/bot/708014856711962654/vote)
 [![Build and publish Menhera images](https://github.com/MenheraBot/MenheraBot/actions/workflows/deploy.yml/badge.svg?branch=production)](https://github.com/MenheraBot/MenheraBot/actions/workflows/deploy.yml)
 
-MenheraBot is an open source Discord bot made in TypeScript with [Discordeno](https://discordeno.mod.land/) with foccus in Fun.
+MenheraBot is an open source Discord bot made in TypeScript with [Discordeno](https://github.com/discordeno/discordeno) with foccus in Fun.
 Feel free to add a star ⭐ to the repository to promote the project!
 
 ## 👨‍💻 | Contributing
