@@ -50,7 +50,13 @@ export enum RequestType {
 const getVersion = () => currentVersion;
 
 const closeConnections = () =>
-  connectedClients.map((a) => a.conn.send({ type: RequestType.YouMayRest }));
+  connectedClients.map((a) =>
+    a.conn
+      .send({ type: RequestType.YouMayRest })
+      .catch((e) =>
+        console.log(`Error sending close message to client: ${e?.message ?? 'Unknown error'}`),
+      ),
+  );
 
 const sendEvent = async (type: RequestType, data: unknown, devBot?: Bot): Promise<unknown> => {
   eventsCounter += 1;
@@ -86,7 +92,13 @@ const sendEvent = async (type: RequestType, data: unknown, devBot?: Bot): Promis
   }
 
   if (type === RequestType.AreYouOk) {
-    const pings = await orchestratorServer.survey({ type: RequestType.AreYouOk }, 1000);
+    const pings = await orchestratorServer
+      .survey({ type: RequestType.AreYouOk }, 1000)
+      .catch((e) => {
+        console.error(`Error sending ping to all clients: ${e?.message ?? 'Unknown error'}`);
+        return [];
+      });
+
     return pings.map((p) =>
       p.status === 'fulfilled'
         ? {
@@ -104,7 +116,7 @@ const sendEvent = async (type: RequestType, data: unknown, devBot?: Bot): Promis
     const success = toUseClient.conn
       .send({ type, data })
       .catch((e) =>
-        console.log(`Error seinding message to client: ${e?.message ?? 'Unknown error'}`),
+        console.log(`Error sending message to client: ${e?.message ?? 'Unknown error'}`),
       )
       .then(() => true);
 
@@ -143,9 +155,15 @@ orchestratorServer.on('message', async (msg, conn) => {
       });
 
       if (connectedClients.length === 1) {
-        await conn.request({ type: RequestType.YouAreTheMaster });
-        console.log(`[CONNECT] Master Set!`);
-        connectedClients[0].isMaster = true;
+        const success = await conn
+          .request({ type: RequestType.YouAreTheMaster })
+          .then(() => true)
+          .catch((e) => console.log(`Error setting master: ${e?.message ?? 'Unknown error'}`));
+
+        if (success) {
+          console.log(`[CONNECT] Master Set!`);
+          connectedClients[0].isMaster = true;
+        }
       }
 
       return;
@@ -201,12 +219,16 @@ orchestratorServer.on('message', async (msg, conn) => {
           replayMessage();
         }, 1000);
 
-      master.conn.send({
-        type: RequestType.SimonSays,
-        action: msg.action,
-        timerId: msg.timerId,
-        timerMetadata: msg.timerMetadata,
-      });
+      master.conn
+        .send({
+          type: RequestType.SimonSays,
+          action: msg.action,
+          timerId: msg.timerId,
+          timerMetadata: msg.timerMetadata,
+        })
+        .catch((e) => {
+          console.log(`Error sending replay message: ${e?.message ?? 'Unknown error'}`);
+        });
     };
 
     replayMessage();
@@ -285,4 +307,4 @@ orchestratorServer.start().catch((r) => {
   process.exit(1);
 });
 
-export { sendEvent, getVersion, closeConnections};
+export { sendEvent, getVersion, closeConnections };

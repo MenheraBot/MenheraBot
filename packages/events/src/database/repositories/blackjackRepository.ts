@@ -11,11 +11,9 @@ const updateBlackjackState = async (
   userId: BigString,
   blackjackState: StoredBlackjackState,
 ): Promise<void> => {
-  await MainRedisClient.setex(
-    `blackjack:${userId}`,
-    FIFTEEN_MINUTES,
-    JSON.stringify(blackjackState),
-  ).catch(debugError);
+  await MainRedisClient.set(`blackjack:${userId}`, JSON.stringify(blackjackState)).catch(
+    debugError,
+  );
 };
 
 const invalidateBlackjackState = async (userId: BigString): Promise<void> => {

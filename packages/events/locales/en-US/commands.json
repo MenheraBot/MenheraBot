@@ -694,7 +694,11 @@
     "profit": "Profit",
     "loss": "Loss",
     "new-game": "Bet again",
-    "new-game-value": "Update bet"
+    "place-bet": "Place your bet",
+    "new-game-value": "Update bet",
+    "max-min-bet": "Min value is {{min}} ⭐ and max value is {{max}} ⭐",
+    "restarting-game": "Starting a new game betting **{{bet}}** :star:. I'm shuffling the cards, just a moment...",
+    "easter-egg-restarting-game": "**Ednaldo Pereira** said: Be careful not to get addicted to gambling!!!"
   },
   "itens": {
     "no-user": "This user does't have an inventory",

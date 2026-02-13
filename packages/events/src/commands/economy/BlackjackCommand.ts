@@ -1,8 +1,13 @@
-import { ApplicationCommandOptionTypes, MessageFlags } from '@discordeno/bot';
+import { ApplicationCommandOptionTypes, MessageFlags, TextStyles } from '@discordeno/bot';
 import blackjackRepository from '../../database/repositories/blackjackRepository.js';
 import { makeDealerPlay } from '../../modules/blackjack/makeDealerPlay.js';
 import starsRepository from '../../database/repositories/starsRepository.js';
-import { createTextDisplay } from '../../utils/discord/componentUtils.js';
+import {
+  createCustomId,
+  createLabel,
+  createTextDisplay,
+  createTextInput,
+} from '../../utils/discord/componentUtils.js';
 import { continueFromBuy } from '../../modules/blackjack/continueFromBuy.js';
 import { finishMatch } from '../../modules/blackjack/finishMatch.js';
 import {
@@ -11,7 +16,12 @@ import {
   numbersToBlackjackCards,
 } from '../../modules/blackjack/blackjackMatch.js';
 import userThemesRepository from '../../database/repositories/userThemesRepository.js';
-import { BLACKJACK_PRIZE_MULTIPLIERS, shuffleCards } from '../../modules/blackjack/index.js';
+import {
+  BLACKJACK_MAX_BET,
+  BLACKJACK_MIN_BET,
+  BLACKJACK_PRIZE_MULTIPLIERS,
+  shuffleCards,
+} from '../../modules/blackjack/index.js';
 
 import { createCommand } from '../../structures/command/createCommand.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
@@ -22,6 +32,9 @@ import { sendBlackjackMessage } from '../../modules/blackjack/sendBlackjackMessa
 import userRepository from '../../database/repositories/userRepository.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { DatabaseUserSchema } from '../../types/database.js';
+import { calculateProbability } from '../../utils/miscUtils.js';
+import { extractLayoutFields } from '../../utils/discord/modalUtils.js';
+import { ModalInteraction } from '../../types/interaction.js';
 
 const initBlackjackGame = async (
   ctx: InteractionContext,
@@ -120,6 +133,25 @@ const initBlackjackGame = async (
   );
 };
 
+const sendStartingGameMessage = (ctx: InteractionContext, betAmount: number) => {
+  const randomMessage = calculateProbability([
+    {
+      probability: 99,
+      value: ctx.prettyResponse('time', 'commands:blackjack.restarting-game', {
+        bet: betAmount,
+      }),
+    },
+    {
+      probability: 1,
+      value: `> ${ctx.prettyResponse('badge_6', 'commands:blackjack.easter-egg-restarting-game')}`,
+    },
+  ]);
+
+  return ctx.makeLayoutMessage({
+    components: [createTextDisplay(randomMessage)],
+  });
+};
+
 const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [selectedButton, embedColor, bet] = ctx.sentData;
 
@@ -133,6 +165,13 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
       });
 
     const userData = await userRepository.ensureFindUser(ctx.user.id);
+
+    if (userData.estrelinhas < BLACKJACK_MIN_BET)
+      return ctx.makeLayoutMessage({
+        flags: MessageFlags.Ephemeral,
+        components: [createTextDisplay(ctx.prettyResponse('error', 'commands:blackjack.poor'))],
+      });
+
     const betAmount = Number(bet);
 
     if (selectedButton === 'NEW_GAME') {
@@ -142,10 +181,59 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
           components: [createTextDisplay(ctx.prettyResponse('error', 'commands:blackjack.poor'))],
         });
 
+      await sendStartingGameMessage(ctx, betAmount);
+
       return initBlackjackGame(ctx, betAmount, userData);
     }
 
-    return;
+    if (selectedButton === 'NEW_GAME_AMOUNT') {
+      const maxValue = Math.min(BLACKJACK_MAX_BET, userData.estrelinhas);
+
+      return ctx.respondWithModal({
+        title: ctx.locale('commands:blackjack.place-bet'),
+        customId: createCustomId(
+          0,
+          ctx.user.id,
+          ctx.originalInteractionId,
+          'NEW_GAME_MODAL',
+          embedColor,
+          betAmount,
+        ),
+        components: [
+          createLabel({
+            label: ctx.locale('commands:blackjack.place-bet'),
+            description: ctx.locale('commands:blackjack.max-min-bet', {
+              min: BLACKJACK_MIN_BET,
+              max: maxValue,
+            }),
+            component: createTextInput({
+              customId: 'estrelinhas',
+              style: TextStyles.Short,
+              placeholder: `${maxValue}`,
+              minLength: `${BLACKJACK_MIN_BET}`.length,
+              maxLength: `${maxValue}`.length,
+            }),
+          }),
+        ],
+      });
+    }
+
+    const sentValue = extractLayoutFields(ctx.interaction as ModalInteraction);
+    const numberedValue = parseInt(sentValue[0].value ?? '');
+
+    if (
+      Number.isNaN(numberedValue) ||
+      numberedValue < BLACKJACK_MIN_BET ||
+      numberedValue > userData.estrelinhas
+    )
+      return ctx.makeLayoutMessage({
+        flags: MessageFlags.Ephemeral,
+        components: [createTextDisplay(ctx.prettyResponse('error', 'commands:blackjack.poor'))],
+      });
+
+    await sendStartingGameMessage(ctx, numberedValue);
+
+    return initBlackjackGame(ctx, numberedValue, userData);
   }
 
   const currentPlayerCards = numbersToBlackjackCards(blackjackGameData.playerCards);
@@ -256,8 +344,8 @@ const BlackjackCommand = createCommand({
       descriptionLocalizations: { 'en-US': 'Bet ammount' },
       type: ApplicationCommandOptionTypes.Integer,
       required: false,
-      minValue: 10,
-      maxValue: 100000,
+      minValue: BLACKJACK_MIN_BET,
+      maxValue: BLACKJACK_MAX_BET,
     },
   ],
   category: 'economy',

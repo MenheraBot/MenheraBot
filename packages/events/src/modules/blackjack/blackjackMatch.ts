@@ -21,9 +21,11 @@ import {
   createSeparator,
   createTextDisplay,
   createThumbnail,
+  deleteMessageCustomId,
 } from '../../utils/discord/componentUtils.js';
 import { EMOJIS } from '../../structures/constants.js';
 import userRepository from '../../database/repositories/userRepository.js';
+import { BLACKJACK_MIN_BET } from './index.js';
 
 const numbersToBlackjackCards = (cards: number[]): BlackjackCard[] =>
   cards.reduce((p: BlackjackCard[], c: number) => {
@@ -81,7 +83,7 @@ const getCardNaipe = (cardId: number): string =>
     1: EMOJIS.naipe_hearts,
     2: EMOJIS.naipe_diamons,
     3: EMOJIS.naipe_clubs,
-  })[Math.floor(cardId % 14)] ?? '';
+  })[Math.floor(cardId / 14)] ?? '';
 
 const generateBlackjackComponents = async (
   ctx: InteractionContext,
@@ -120,10 +122,7 @@ const generateBlackjackComponents = async (
           ],
         }),
         ...(attachmentUrl
-          ? [
-              createSeparator(),
-              createMediaGallery([{ media: { url: `attachment://${attachmentUrl}` } }]),
-            ]
+          ? [createMediaGallery([{ media: { url: `attachment://${attachmentUrl}` } }])]
           : []),
         ...(resultText
           ? []
@@ -167,11 +166,22 @@ const generateBlackjackComponents = async (
             ]),
         createSeparator(),
         createTextDisplay(
-          resultText ||
-            `-# ${ctx.locale(`commands:blackjack.footer${secondCopy ? '-second-copy' : ''}`)}`,
+          `-# ${ctx.locale(`commands:blackjack.footer${secondCopy ? '-second-copy' : ''}`)}`,
         ),
-        ...(resultText
-          ? [
+      ],
+    }),
+    ...(resultText
+      ? [
+          createContainer({
+            components: [
+              createSection({
+                components: [createTextDisplay(resultText)],
+                accessory: createButton({
+                  style: ButtonStyles.Secondary,
+                  label: ctx.locale('common:cancel'),
+                  customId: deleteMessageCustomId,
+                }),
+              }),
               createActionRow([
                 createButton({
                   style: ButtonStyles.Success,
@@ -193,18 +203,19 @@ const generateBlackjackComponents = async (
                     0,
                     ctx.user.id,
                     ctx.originalInteractionId,
-                    embedColor,
                     'NEW_GAME_AMOUNT',
+                    embedColor,
+                    betAmount,
                   ),
                   emoji: { name: ctx.safeEmoji('estrelinhas') },
-                  disabled: userData.estrelinhas < 10,
+                  disabled: userData.estrelinhas < BLACKJACK_MIN_BET,
                   label: ctx.locale('commands:blackjack.new-game-value'),
                 }),
               ]),
-            ]
-          : []),
-      ],
-    }),
+            ],
+          }),
+        ]
+      : []),
   ];
 };
 

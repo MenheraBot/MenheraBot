@@ -700,7 +700,11 @@
     "buy": "Comprar carta",
     "stop": "Parar aposta",
     "new-game": "Apostar novamente",
-    "new-game-value": "Apostar outro valor"
+    "new-game-value": "Apostar outro valor",
+    "place-bet": "Faça sua aposta",
+    "max-min-bet": "Aposta mínima é {{min}} ⭐ e máxima {{max}} ⭐",
+    "restarting-game": "Iniciando uma nova partida apostando **{{bet}}** :star:. Estou embaralhando as cartas, só um momento...",
+    "easter-egg-restarting-game": "**Ednaldo Pereira** disse: Cuidado para não viciar em apostas!!!"
   },
   "itens": {
     "no-user": "Este usuário não possui inventário",
