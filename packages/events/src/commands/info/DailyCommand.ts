@@ -384,10 +384,7 @@ const handleButtonInteractions = async (ctx: ComponentInteractionContext): Promi
                     index: index + 1,
                   }),
                   style: ButtonStyles.Primary,
-                  emoji:
-                    award.type === 'fertilizer'
-                      ? extractNameAndIdFromEmoji(getAwardEmoji(ctx, award))
-                      : { name: getAwardEmoji(ctx, award) },
+                  emoji: extractNameAndIdFromEmoji(getAwardEmoji(ctx, award)),
                   customId: createCustomId(
                     0,
                     ctx.user.id,

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [6.2.6] - 2026-02-13
 
+### Hotfix
+
+- Corrigido resgatar daily de caças.
+
 ### Added
 
 - Sequências de partidas de Blackjack! Agora é possível apostar mais de uma vez em um mesma execução do comando Blackjack. 

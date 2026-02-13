@@ -3,8 +3,10 @@ import { MessageFlags } from '@discordeno/bot';
 const extractNameAndIdFromEmoji = (
   emoji: string,
   animated = false,
-): { name: string; id: bigint; animated: boolean } => {
+): { name: string; id?: bigint; animated?: boolean } => {
   const splitted = emoji.split(':');
+
+  if (splitted.length === 1) return { name: emoji };
 
   if (animated)
     return {
