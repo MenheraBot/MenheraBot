@@ -12,19 +12,27 @@ import { debugError } from '../../utils/debugError.js';
 import { capitalize } from '../../utils/miscUtils.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import { resolveSeparatedStrings } from '../../utils/discord/componentUtils.js';
+import { randomInt } from 'crypto';
 import notificationRepository from '../../database/repositories/notificationRepository.js';
 import executeDailies from '../dailies/executeDailies.js';
 import userRepository from '../../database/repositories/userRepository.js';
 
 const GAME_DURATION = 1000 * 60 * 60 * 5;
 
-const generateResults = (): number[] => {
-  const results = [];
+const generateResults = (): number[] =>
+  randomInt(0, 10000)
+    .toString()
+    .padStart(4, '0')
+    .split('')
+    .map((a) => Number(a));
 
-  for (let i = 0; i < 4; i++) results.push(Math.floor(Math.random() * 10));
-
-  return results;
-};
+console.log([
+  generateResults(),
+  generateResults(),
+  generateResults(),
+  generateResults(),
+  generateResults(),
+]);
 
 const { BICHO_WEBHOOK_ID, BICHO_WEBHOOK_TOKEN } = getEnviroments([
   'BICHO_WEBHOOK_ID',

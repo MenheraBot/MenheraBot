@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [6.2.6] - 2026-02-13
 
 ### Added
 
@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O comando `/daily` agora usa os novos componentes V2 do Discord.
 - Alterado limite de itens exibidos na feira por página, de 8 para 15. 
 - O comando `/blackjack` foi atualizado para os componentes V2 do Discord!
+- Alterado geração de números do sorteio do jogo do bicho
 
 ## [6.2.5] - 2026-02-11
 
