@@ -31,7 +31,7 @@ const getLatestTitleId = async (): Promise<number | undefined> =>
     .sort({ titleId: -1 })
     .select('titleId')
     .limit(1)
-    .then((a) => a?.titleId);
+    .then((a) => a?.titleId ?? 0);
 
 const getTitleInfo = async (titleId: number): Promise<DatabaseTitlesSchema | null> => {
   if (titleId === 0) return null;

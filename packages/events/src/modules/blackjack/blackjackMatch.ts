@@ -8,7 +8,7 @@ import {
   AvailableCardThemes,
   AvailableTableThemes,
 } from '../themes/types.js';
-import { BlackjackCard } from './types.js';
+import { BlackjackCard, BlackjackSession } from './types.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { InteractionContext } from '../../types/menhera.js';
 import {
@@ -97,6 +97,7 @@ const generateBlackjackComponents = async (
   resultText?: string,
   shuffling?: boolean,
   attachmentUrl?: string,
+  betSession?: BlackjackSession,
 ): Promise<ContainerComponent[]> => {
   const userData = await userRepository.ensureFindUser(ctx.user.id);
 
@@ -182,6 +183,28 @@ const generateBlackjackComponents = async (
                   customId: deleteMessageCustomId,
                 }),
               }),
+              ...(betSession && betSession.loses + betSession.wins > 1
+                ? [
+                    createSeparator(),
+                    createTextDisplay(
+                      `### ${ctx.prettyResponse(
+                        'fire',
+                        'commands:blackjack.match-sequence',
+                      )}\n\n- 🎰 **${ctx.locale('commands:status.coinflip.played')}**: ${
+                        betSession.matches
+                      }\n- **🏆 | ${ctx.locale('commands:status.coinflip.wins')}:** ${
+                        betSession.wins
+                      }\n- **${EMOJIS.error} | ${ctx.locale('commands:status.coinflip.loses')}:** ${
+                        betSession.loses
+                      }\n- **${EMOJIS.estrelinhas} | ${ctx.locale('commands:blackjack.betted')}**: ${
+                        betSession.betAmount
+                      }\n- **${betSession.profit >= 0 ? EMOJIS.yes : EMOJIS.no} | ${ctx.locale(
+                        `commands:status.coinflip.${betSession.profit >= 0 ? 'profit' : 'loss'}`,
+                      )}:**: ${Math.abs(betSession.profit)}`,
+                    ),
+                    createSeparator(false, false),
+                  ]
+                : []),
               createActionRow([
                 createButton({
                   style: ButtonStyles.Success,

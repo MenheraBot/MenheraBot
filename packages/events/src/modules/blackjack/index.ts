@@ -3,6 +3,8 @@ const BLACKJACK_CARDS = Array.from({ length: 52 }, (_, i) => i + 1);
 const BLACKJACK_MIN_BET = 10;
 const BLACKJACK_MAX_BET = 100_000;
 
+const BLACKJACKER_TITLE_ID = 25
+
 const BLACKJACK_PRIZE_MULTIPLIERS = {
   init_blackjack: 2.5,
   blackjack: 2,
@@ -28,6 +30,7 @@ const shuffleCards = (): number[] => {
 
 export {
   BLACKJACK_MAX_BET,
+  BLACKJACKER_TITLE_ID,
   BLACKJACK_MIN_BET,
   BLACKJACK_CARDS,
   BLACKJACK_PRIZE_MULTIPLIERS,

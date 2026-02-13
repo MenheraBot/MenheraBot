@@ -48,6 +48,7 @@ export const EMOJIS = {
   gay_flag: '🏳️‍🌈',
   hourglass: '⌛',
   rainbow: '🌈',
+  fire: '🔥',
   crown: '👑',
   scape: '🐥',
   lock: '🔒',

@@ -29,3 +29,11 @@ export interface StoredBlackjackState {
   cardBackgroundTheme: AvailableCardBackgroundThemes;
   lastAttachmentUrl: string;
 }
+
+export type BlackjackSession = {
+  betAmount: number;
+  profit: number;
+  wins: number;
+  matches: number;
+  loses: number;
+};

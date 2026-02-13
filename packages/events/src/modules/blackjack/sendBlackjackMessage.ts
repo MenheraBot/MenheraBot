@@ -6,7 +6,7 @@ import {
   AvailableTableThemes,
 } from '../themes/types.js';
 import { generateBlackjackComponents, getTableImage, safeImageReply } from './blackjackMatch.js';
-import { BlackjackCard } from './types.js';
+import { BlackjackCard, BlackjackSession } from './types.js';
 
 const sendBlackjackMessage = async (
   ctx: InteractionContext,
@@ -24,6 +24,7 @@ const sendBlackjackMessage = async (
   shuffling?: boolean,
   imageUrl?: string,
   updateImage?: boolean,
+  betSession?: BlackjackSession,
 ): Promise<void> => {
   const image = updateImage
     ? await getTableImage(
@@ -55,6 +56,7 @@ const sendBlackjackMessage = async (
     resultText,
     shuffling,
     toUseUrl,
+    betSession,
   );
 
   await safeImageReply(ctx, components, toUseUrl, image);

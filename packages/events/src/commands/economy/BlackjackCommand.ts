@@ -35,6 +35,7 @@ import { DatabaseUserSchema } from '../../types/database.js';
 import { calculateProbability } from '../../utils/miscUtils.js';
 import { extractLayoutFields } from '../../utils/discord/modalUtils.js';
 import { ModalInteraction } from '../../types/interaction.js';
+import { EMOJIS } from '../../structures/constants.js';
 
 const initBlackjackGame = async (
   ctx: InteractionContext,
@@ -133,10 +134,10 @@ const initBlackjackGame = async (
   );
 };
 
-const sendStartingGameMessage = (ctx: InteractionContext, betAmount: number) => {
+const sendStartingGameMessage = async (ctx: InteractionContext, betAmount: number) => {
   const randomMessage = calculateProbability([
     {
-      probability: 99,
+      probability: 120,
       value: ctx.prettyResponse('time', 'commands:blackjack.restarting-game', {
         bet: betAmount,
       }),
@@ -147,9 +148,16 @@ const sendStartingGameMessage = (ctx: InteractionContext, betAmount: number) => 
     },
   ]);
 
-  return ctx.makeLayoutMessage({
+  if (!randomMessage.includes(EMOJIS.badge_6))
+    return ctx.makeLayoutMessage({
+      components: [createTextDisplay(randomMessage)],
+    });
+
+  await ctx.makeLayoutMessage({
     components: [createTextDisplay(randomMessage)],
   });
+
+  await new Promise((r) => setTimeout(r, 2000));
 };
 
 const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise<void> => {
@@ -157,11 +165,12 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
 
   const blackjackGameData = await blackjackRepository.getBlackjackState(ctx.user.id);
 
-  if (!blackjackGameData) {
-    if (!selectedButton.startsWith('NEW_GAME'))
+  if (selectedButton.startsWith('NEW_GAME')) {
+    if (blackjackGameData)
       return ctx.makeLayoutMessage({
-        components: [createTextDisplay(ctx.prettyResponse('error', 'commands:blackjack.no-game'))],
-        attachments: [],
+        components: [
+          createTextDisplay(ctx.prettyResponse('error', 'commands:blackjack.another-message')),
+        ],
       });
 
     const userData = await userRepository.ensureFindUser(ctx.user.id);
@@ -235,6 +244,12 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
 
     return initBlackjackGame(ctx, numberedValue, userData);
   }
+
+  if (!blackjackGameData)
+    return ctx.makeLayoutMessage({
+      components: [createTextDisplay(ctx.prettyResponse('error', 'commands:blackjack.no-game'))],
+      attachments: [],
+    });
 
   const currentPlayerCards = numbersToBlackjackCards(blackjackGameData.playerCards);
   const currentDealerCards = numbersToBlackjackCards(blackjackGameData.dealerCards);
@@ -402,6 +417,8 @@ const BlackjackCommand = createCommand({
         true,
       );
     }
+
+    await blackjackRepository.destroyBetSession(ctx.user.id);
 
     return initBlackjackGame(ctx, bet, ctx.authorData);
   },

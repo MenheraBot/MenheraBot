@@ -696,6 +696,9 @@
     "new-game": "Bet again",
     "place-bet": "Place your bet",
     "new-game-value": "Update bet",
+    "another-message": "You already started a new match",
+    "match-sequence": "Match streak",
+    "betted": "Betted",
     "max-min-bet": "Min value is {{min}} ⭐ and max value is {{max}} ⭐",
     "restarting-game": "Starting a new game betting **{{bet}}** :star:. I'm shuffling the cards, just a moment...",
     "easter-egg-restarting-game": "**Ednaldo Pereira** said: Be careful not to get addicted to gambling!!!"
@@ -1444,7 +1447,7 @@
     "rock": "Rock",
     "paper": "Paper",
     "scissors": "Scissors",
-    "confirm-game-official": "{{user}} you were challenged to a **:rock: Rock, :page_facing_up: paper, :scissors: Scissors** game against {{author}} worth **{{amount}}** :star:",
-    "confirm-game-friendly": "{{user}} you were challenged to a friendly **:rock: Rock, :page_facing_up: paper, :scissors: Scissors** game against {{author}}"
+    "confirm-game-official": "{{user}} you were challenged to a **:rock: Rock, :page_facing_up: Paper, :scissors: Scissors** game against {{author}} worth **{{amount}}** :star:",
+    "confirm-game-friendly": "{{user}} you were challenged to a friendly **:rock: Rock, :page_facing_up: Paper, :scissors: Scissors** game against {{author}}"
   }
 }

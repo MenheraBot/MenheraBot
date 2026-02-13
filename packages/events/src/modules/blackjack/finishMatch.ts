@@ -14,6 +14,9 @@ import { sendBlackjackMessage } from './sendBlackjackMessage.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import executeDailies from '../dailies/executeDailies.js';
 import { InteractionContext } from '../../types/menhera.js';
+import { BLACKJACKER_TITLE_ID } from './index.js';
+import giveRepository from '../../database/repositories/giveRepository.js';
+import notificationRepository from '../../database/repositories/notificationRepository.js';
 
 const finishMatch = async (
   ctx: InteractionContext,
@@ -36,7 +39,16 @@ const finishMatch = async (
 
   const totalPrize = didUserWin ? Math.floor(bet * prizeMultiplier) : bet;
 
-  const prize = finishReason === 'draw' ? bet : totalPrize;
+  const prize =
+    finishReason === 'draw'
+      ? bet
+      : finishReason === 'init_blackjack' && didUserWin
+        ? totalPrize - bet
+        : totalPrize;
+
+  const rawGain = finishReason === 'init_blackjack' && didUserWin ? prize : prize - bet;
+
+  const user = await userRepository.ensureFindUser(ctx.user.id);
 
   if (didUserWin) {
     await starsRepository.addStars(ctx.interaction.user.id, prize);
@@ -47,12 +59,47 @@ const finishMatch = async (
       'estrelinhas',
       ApiTransactionReason.BLACKJACK_COMMAND,
     );
-    const user = await userRepository.ensureFindUser(ctx.user.id);
     await executeDailies.winBet(user, 'blackjack');
-    await executeDailies.winStarsInBet(user, prize);
+    if (rawGain > 0) await executeDailies.winStarsInBet(user, rawGain);
   }
 
-  sendBlackjackMessage(
+  let currentBetSession = await blackjackRepository.getBetSession(ctx.user.id);
+
+  if (!currentBetSession)
+    currentBetSession = {
+      betAmount: 0,
+      loses: 0,
+      wins: 0,
+      matches: 0,
+      profit: 0,
+    };
+
+  if (finishReason != 'draw') {
+    currentBetSession.betAmount += bet;
+    currentBetSession.profit += didUserWin ? rawGain : -bet;
+    currentBetSession[didUserWin ? 'wins' : 'loses'] += 1;
+  }
+
+  currentBetSession.matches += 1;
+
+  if (currentBetSession.matches >= 100 && !user.titles.some((a) => a.id === BLACKJACKER_TITLE_ID)) {
+    await giveRepository.giveTitleToUser(ctx.user.id, BLACKJACKER_TITLE_ID);
+
+    notificationRepository.createNotification(
+      ctx.user.id,
+      'commands:notificações.notifications.lux-gave-title',
+      {},
+    );
+  }
+
+  await Promise.all([
+    blackjackRepository.setBetSession(ctx.user.id, currentBetSession),
+    blackjackRepository.invalidateBlackjackState(ctx.interaction.user.id),
+  ]);
+
+  if (rawGain > 0) postBlackjackGame(`${ctx.interaction.user.id}`, didUserWin, rawGain);
+
+  return sendBlackjackMessage(
     ctx,
     bet,
     playerCards,
@@ -76,10 +123,8 @@ const finishMatch = async (
     false,
     'win.png',
     true,
+    currentBetSession,
   );
-
-  await postBlackjackGame(`${ctx.interaction.user.id}`, didUserWin, prize);
-  await blackjackRepository.invalidateBlackjackState(ctx.interaction.user.id);
 };
 
 export { finishMatch };
