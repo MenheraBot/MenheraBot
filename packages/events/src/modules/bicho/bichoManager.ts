@@ -26,14 +26,6 @@ const generateResults = (): number[] =>
     .split('')
     .map((a) => Number(a));
 
-console.log([
-  generateResults(),
-  generateResults(),
-  generateResults(),
-  generateResults(),
-  generateResults(),
-]);
-
 const { BICHO_WEBHOOK_ID, BICHO_WEBHOOK_TOKEN } = getEnviroments([
   'BICHO_WEBHOOK_ID',
   'BICHO_WEBHOOK_TOKEN',
