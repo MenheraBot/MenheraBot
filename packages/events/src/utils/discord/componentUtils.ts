@@ -12,6 +12,7 @@ import type {
   SectionComponent,
   ThumbnailComponent,
   LabelComponent,
+  MediaGalleryComponent,
 } from '@discordeno/bot';
 
 import { MessageComponentTypes, SeparatorSpacingSize } from '@discordeno/bot';
@@ -102,14 +103,19 @@ const createSection = (
   component: PropertyOptional<SectionComponent, 'type'>,
 ): SectionComponent => ({ ...component, type: MessageComponentTypes.Section });
 
-const createThumbnail = (media: ThumbnailComponent['media']): ThumbnailComponent => ({
-  media,
+const createThumbnail = (url: string): ThumbnailComponent => ({
+  media: { url },
   type: MessageComponentTypes.Thumbnail,
 });
 
 const createLabel = (component: PropertyOptional<LabelComponent, 'type'>): LabelComponent => ({
   ...component,
   type: MessageComponentTypes.Label,
+});
+
+const createMediaGallery = (items: MediaGalleryComponent['items']): MediaGalleryComponent => ({
+  type: MessageComponentTypes.MediaGallery,
+  items,
 });
 
 const enableLayoutMessage = (
@@ -130,6 +136,7 @@ export {
   createCustomId,
   createThumbnail,
   createSection,
+  createMediaGallery,
   createActionRow,
   createTextInput,
   createAsyncCustomId,

@@ -29,6 +29,8 @@ const continueFromBuy = async (
   const playerHandValue = getHandValue(bjPlayerCards);
   const dealerHandValue = getHandValue([bjDealerCards[0]]);
 
+  const attachmentUrl = `blackjack-${Date.now()}.png`;
+
   await blackjackRepository.updateBlackjackState(ctx.interaction.user.id, {
     bet,
     cardBackgroundTheme,
@@ -38,6 +40,7 @@ const continueFromBuy = async (
     matchCards,
     playerCards,
     secondCopy,
+    lastAttachmentUrl: attachmentUrl,
   });
 
   await sendBlackjackMessage(
@@ -52,6 +55,10 @@ const continueFromBuy = async (
     cardBackgroundTheme,
     embedColor,
     secondCopy,
+    '',
+    false,
+    attachmentUrl,
+    true,
   );
 };
 

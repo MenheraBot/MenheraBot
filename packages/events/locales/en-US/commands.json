@@ -30,7 +30,7 @@
     "embed_description": "{{mention}} made {{author}} cry"
   },
   "nojo": {
-    "bot": "HMMMM LOOK AT THAT GUY, HE DISGUST ROBOTS K K K K K what a meme",
+    "bot": "HMMMM LOOK AT THAT GUY, THEY DISGUST ROBOTS K K K K K what a meme",
     "no-mention": {
       "embed_title": "Yuck",
       "embed_description": "{{author}} is disgusted nheeem"
@@ -66,7 +66,7 @@
     "embed_description": "{{author}} **K I L L E D** {{mention}}"
   },
   "beijar": {
-    "bot": "You kissed a robot, and ended up touching a peeled wire. Lucky he had slippers on his feet. The connection with the Earth was cut, no circuit was closed. This time it was safe.",
+    "bot": "You kissed a robot, and ended up touching a peeled wire. Lucky they had slippers on his feet. The connection with the Earth was cut, no circuit was closed. This time it was safe.",
     "self-mention": "I know self-love is important, but please kiss someone other than yourself",
     "embed_title": "Kiss",
     "embed_description_mouth": "{{author}} kissed {{mention}}",
@@ -95,8 +95,8 @@
     "allow-true": "I want to be licked",
     "allow-false": "I don't wanna be licked",
     "embed_title": "Lick",
-    "user-banned_uncensored": "You cannot suck this user because he is banned",
-    "user-banned": "You cannot lick this user because he is banned",
+    "user-banned_uncensored": "You cannot suck this user because they are banned",
+    "user-banned": "You cannot lick this user because they are banned",
     "embed_description_uncensored": "{{author}} **suckled** {{mention}}",
     "embed_description": "{{author}} **licked** {{mention}}"
   },
@@ -456,7 +456,9 @@
     "mamado": "Licked",
     "about-me": "About Me",
     "api-down": "This user has never used my commands lol",
-    "commands-usage": "{{user}} used my commands {{usedCount}} times. His most used command was {{mostUsedCommandName}}, used {{mostUsedCommandCount}} times"
+    "commands-usage": "{{user}} used my commands {{usedCount}} times. Their most used command was {{mostUsedCommandName}}, used {{mostUsedCommandCount}} times",
+    "commands-usage-one": "{{user}} used my commands {{usedCount}} time. Their most used command was {{mostUsedCommandName}}, used {{mostUsedCommandCount}} time",
+    "commands-usage-other": "{{user}} used my commands {{usedCount}} times. Their most used command was {{mostUsedCommandName}}, used {{mostUsedCommandCount}} times"
   },
   "top": {
     "economia": {
@@ -571,7 +573,7 @@
     "fazendeiro": {
       "title": "{{user}}'s Farm Statistics",
       "field-data": "**Harvest:** {{harvest}}\n**Rotted:** {{rotted}}",
-      "error": "Oops! I didn't find this farmer's data... He may never have used the command, or I may be sick :("
+      "error": "Oops! I didn't find this farmer's data... They may never have used the command, or I may be sick :("
     },
     "coinflip": {
       "embed-title": "{{user}}'s Coinflip Statistics",
@@ -662,16 +664,17 @@
     "error": "The 3 did not react to the message in time! Try again, maybe with someone who wants to, who knows",
     "untrisal": {
       "sure": "Are you sure you want to break up with your polyamory?",
-      "done": "Your polyamory is over! There's no way. He finished....",
+      "done": "Your polyamory is over! There's no way. It finished....",
       "breakup": "Breakup"
     }
   },
   "blackjack": {
-    "title": "BlackJack",
+    "title": "Blackjack",
+    "ask-action": "What you do?",
     "no-game": "You are not playing any Blackjack games now. Use the command again betting any value to start a new match.",
-    "description": "Your Hand: **{{userHand}}** -> `{{userTotal}}`\nMenhera's Hand: **{{dealerCards}}** -> `{{dealerTotal}}`",
-    "buy": "Draw",
-    "stop": "Stop",
+    "description": "- Menhera's Hand: **{{dealerCards}}** -> `{{dealerTotal}}`\n- Your Hand: **{{userHand}}** -> `{{userTotal}}`",
+    "buy": "Draw card",
+    "stop": "Stop bet",
     "shuffling": "Handing Over the Cards",
     "available-options": "Available Options",
     "initial-options": "**[1] Start** - Start the game\n**[2] Surrender** - Surrender from the game (and losses the bet)",
@@ -689,7 +692,9 @@
     "draw": "Jeez! You tied with Menhera! As a draw is neither a win nor a loss, your **{{prize}}** :star: have been returned to your wallet",
     "biggest": "**{{winner}}** won for having more points!\n**Your {{text}}:** {{prize}} :star:",
     "profit": "Profit",
-    "loss": "Loss"
+    "loss": "Loss",
+    "new-game": "Bet again",
+    "new-game-value": "Update bet"
   },
   "itens": {
     "no-user": "This user does't have an inventory",
@@ -1055,7 +1060,7 @@
       "master-controls": "Master controls",
       "info-title": "Round information",
       "info-description": "**Dealer:** {{dealer}}\n**Round:** {{stage}}\n**Community Cards:** {{communityCards}}\n**Pot:** {{pot}}\n**Blind value:** {{blind}}\n**Game master:** {{master}}",
-      "action-description": "{{lastActionMessage}}\n\n{{user}} must take an action <t:{{unix}}:R>. After this time, he will automatically withdraw from the round."
+      "action-description": "{{lastActionMessage}}\n\n{{user}} must take an action <t:{{unix}}:R>. After this time, they will automatically withdraw from the round."
     },
     "after-lobby": {
       "waiting": "Waiting for players: {{players}} / {{maxPlayers}}",
@@ -1335,7 +1340,7 @@
       "your-fields": "Your Fields",
       "use-item": "Use item",
       "buy": "Buy field",
-      "needed-items": "This field is not on your neighbor's land. He is asking for **{{star}}** :star:, **{{plants, list}}** for it."
+      "needed-items": "This field is not on your neighbor's land. They is asking for **{{star}}** :star:, **{{plants, list}}** for it."
     }
   },
   "titulo": {

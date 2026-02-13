@@ -1,16 +1,11 @@
-import { ButtonStyles, DiscordEmbedField } from '@discordeno/bot';
+import blackjackRepository from '../../database/repositories/blackjackRepository.js';
 import { InteractionContext } from '../../types/menhera.js';
-import {
-  createActionRow,
-  createButton,
-  createCustomId,
-} from '../../utils/discord/componentUtils.js';
 import {
   AvailableCardBackgroundThemes,
   AvailableCardThemes,
   AvailableTableThemes,
 } from '../themes/types.js';
-import { generateBlackjackEmbed, getTableImage, safeImageReply } from './blackjackMatch.js';
+import { generateBlackjackComponents, getTableImage, safeImageReply } from './blackjackMatch.js';
 import { BlackjackCard } from './types.js';
 
 const sendBlackjackMessage = async (
@@ -25,21 +20,30 @@ const sendBlackjackMessage = async (
   cardBackgroundTheme: AvailableCardBackgroundThemes,
   embedColor: string,
   secondCopy: boolean,
-  resultField?: DiscordEmbedField,
+  resultText?: string,
+  shuffling?: boolean,
+  imageUrl?: string,
+  updateImage?: boolean,
 ): Promise<void> => {
-  const image = await getTableImage(
-    ctx,
-    bet,
-    playerCards,
-    dealerCards,
-    playerHandValue,
-    dealerHandValue,
-    cardTheme,
-    tableTheme,
-    cardBackgroundTheme,
-  );
+  const image = updateImage
+    ? await getTableImage(
+        ctx,
+        bet,
+        playerCards,
+        dealerCards,
+        playerHandValue,
+        dealerHandValue,
+        cardTheme,
+        tableTheme,
+        cardBackgroundTheme,
+      )
+    : undefined;
 
-  const embed = generateBlackjackEmbed(
+  const toUseUrl = image?.err ? '' : imageUrl;
+
+  if (image && !image.err && imageUrl) await blackjackRepository.setValidUrl(imageUrl);
+
+  const components = await generateBlackjackComponents(
     ctx,
     playerCards,
     dealerCards,
@@ -47,43 +51,13 @@ const sendBlackjackMessage = async (
     dealerHandValue,
     embedColor,
     secondCopy,
+    bet,
+    resultText,
+    shuffling,
+    toUseUrl,
   );
 
-  if (resultField) {
-    if (!secondCopy) embed.footer = undefined;
-    embed.fields?.push(resultField);
-  }
-
-  const buyButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.originalInteractionId,
-      'BUY',
-      embedColor,
-    ),
-    style: ButtonStyles.Primary,
-    label: ctx.locale('commands:blackjack.buy'),
-  });
-
-  const stopButton = createButton({
-    customId: createCustomId(
-      0,
-      ctx.interaction.user.id,
-      ctx.originalInteractionId,
-      'STOP',
-      embedColor,
-    ),
-    style: ButtonStyles.Danger,
-    label: ctx.locale('commands:blackjack.stop'),
-  });
-
-  await safeImageReply(
-    ctx,
-    embed,
-    image,
-    resultField ? [] : [createActionRow([buyButton, stopButton])],
-  );
+  await safeImageReply(ctx, components, toUseUrl, image);
 };
 
 export { sendBlackjackMessage };

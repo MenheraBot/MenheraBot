@@ -461,7 +461,9 @@
     "mamado": "Mamado",
     "about-me": "Sobre Mim",
     "api-down": "Esse usuário nunca usou nenhum comando meu XD",
-    "commands-usage": "{{user}} usou meus comandos {{usedCount}} vezes. Seu comando mais usado foi {{mostUsedCommandName}}, usou {{mostUsedCommandCount}} vezes"
+    "commands-usage": "{{user}} usou meus comandos {{usedCount}} vezes. Seu comando mais usado foi {{mostUsedCommandName}}, usou {{mostUsedCommandCount}} vezes",
+    "commands-usage-one": "{{user}} usou meus comandos {{usedCount}} vez. Seu comando mais usado foi {{mostUsedCommandName}}, usou {{mostUsedCommandCount}} vez",
+    "commands-usage-other": "{{user}} usou meus comandos {{usedCount}} vezes. Seu comando mais usado foi {{mostUsedCommandName}}, usou {{mostUsedCommandCount}} vezes"
   },
   "top": {
     "economia": {
@@ -674,10 +676,11 @@
   },
   "blackjack": {
     "available-options": "Opções Disponíveis",
-    "title": "BlackJack",
+    "title": "Blackjack",
+    "ask-action": "O que você faz?",
     "shuffling": "Entregando as Cartas",
     "no-game": "Você não está jogando nenhuma partida de Blackjack no momento. Use o comando novamente inserindo uma aposta para iniciar uma nova partida.",
-    "description": "Sua Mão: **{{userHand}}** -> `{{userTotal}}`\nMão da Menhera: **{{dealerCards}}** -> `{{dealerTotal}}`",
+    "description": "### - Mão da Menhera: **{{dealerCards}}** -> `{{dealerTotal}}`\n### - Sua Mão: **{{userHand}}** -> `{{userTotal}}`\n",
     "initial-options": "**[1] Começar** - Começe o jogo\n **[2] Desistir** - Desista deste jogo (e perca sua aposta)",
     "options": "**[1] Comprar** - Compre mais uma carta\n**[2] Parar** - Pare por aqui sua aposta",
     "footer": "Suas estrelinhas já foram reduzidas! Para receber algo de volta, vença a partida",
@@ -694,8 +697,10 @@
     "biggest": "**{{winner}}** ganhou por possuir mais pontos!\n**Seu {{text}}:** {{prize}} :star:",
     "profit": "Lucro",
     "loss": "Prejuízo",
-    "buy": "Comprar",
-    "stop": "Parar"
+    "buy": "Comprar carta",
+    "stop": "Parar aposta",
+    "new-game": "Apostar novamente",
+    "new-game-value": "Apostar outro valor"
   },
   "itens": {
     "no-user": "Este usuário não possui inventário",

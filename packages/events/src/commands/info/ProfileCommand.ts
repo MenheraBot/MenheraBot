@@ -184,6 +184,7 @@ const ProfileCommand = createCommand({
         i18n.usages = ctx.locale('commands:perfil.commands-usage', {
           user: getDisplayName(discordUser, true),
           usedCount: usageCommands.totalUses,
+          count: usageCommands.totalUses,
           mostUsedCommandName: usageCommands.topCommand.name,
           mostUsedCommandCount: usageCommands.topCommand.uses,
         });

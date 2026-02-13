@@ -1,7 +1,7 @@
-import { ActionRow, DiscordEmbed } from '@discordeno/bot';
+import { ButtonStyles, ContainerComponent } from '@discordeno/bot';
 import { getUserAvatar } from '../../utils/discord/userUtils.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
-import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { VanGoghEndpoints, vanGoghRequest, VanGoghReturnData } from '../../utils/vanGoghRequest.js';
 import {
   AvailableCardBackgroundThemes,
@@ -10,6 +10,20 @@ import {
 } from '../themes/types.js';
 import { BlackjackCard } from './types.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
+import { InteractionContext } from '../../types/menhera.js';
+import {
+  createActionRow,
+  createButton,
+  createContainer,
+  createCustomId,
+  createMediaGallery,
+  createSection,
+  createSeparator,
+  createTextDisplay,
+  createThumbnail,
+} from '../../utils/discord/componentUtils.js';
+import { EMOJIS } from '../../structures/constants.js';
+import userRepository from '../../database/repositories/userRepository.js';
 
 const numbersToBlackjackCards = (cards: number[]): BlackjackCard[] =>
   cards.reduce((p: BlackjackCard[], c: number) => {
@@ -61,49 +75,156 @@ const getTableImage = (
   });
 };
 
-const generateBlackjackEmbed = (
-  ctx: ChatInputInteractionContext | ComponentInteractionContext,
+const getCardNaipe = (cardId: number): string =>
+  ({
+    0: EMOJIS.naipe_spades,
+    1: EMOJIS.naipe_hearts,
+    2: EMOJIS.naipe_diamons,
+    3: EMOJIS.naipe_clubs,
+  })[Math.floor(cardId % 14)] ?? '';
+
+const generateBlackjackComponents = async (
+  ctx: InteractionContext,
   playerCards: BlackjackCard[],
   dealerCards: BlackjackCard[],
   playerHandValue: number,
   dealerHandValue: number,
   embedColor: string,
   secondCopy: boolean,
-): DiscordEmbed => {
-  return createEmbed({
-    title: ctx.prettyResponse('estrelinhas', 'commands:blackjack.title'),
-    description: ctx.locale('commands:blackjack.description', {
-      userHand: playerCards.map((a) => a.value).join(', '),
-      userTotal: playerHandValue,
-      dealerCards: dealerCards
-        .filter((a) => !a.hidden)
-        .map((a) => a.value)
-        .join(', '),
-      dealerTotal: dealerHandValue,
+  betAmount: number,
+  resultText?: string,
+  shuffling?: boolean,
+  attachmentUrl?: string,
+): Promise<ContainerComponent[]> => {
+  const userData = await userRepository.ensureFindUser(ctx.user.id);
+
+  return [
+    createContainer({
+      accentColor: hexStringToNumber(embedColor),
+      components: [
+        createSection({
+          accessory: createThumbnail(getUserAvatar(ctx.interaction.user, { enableGif: true })),
+          components: [
+            createTextDisplay(`## ${ctx.prettyResponse('blackjack', 'commands:blackjack.title')}`),
+            createTextDisplay(
+              ctx.locale('commands:blackjack.description', {
+                userHand: playerCards.map((a) => `${a.value} ${getCardNaipe(a.id)}`).join(', '),
+                userTotal: playerHandValue,
+                dealerCards: dealerCards
+                  .filter((a) => !a.hidden)
+                  .map((a) => `${a.value} ${getCardNaipe(a.id)}`)
+                  .join(', '),
+                dealerTotal: dealerHandValue,
+              }),
+            ),
+          ],
+        }),
+        ...(attachmentUrl
+          ? [
+              createSeparator(),
+              createMediaGallery([{ media: { url: `attachment://${attachmentUrl}` } }]),
+            ]
+          : []),
+        ...(resultText
+          ? []
+          : [
+              createSeparator(),
+              createTextDisplay(
+                `### ${ctx.prettyResponse('question', 'commands:blackjack.ask-action')}`,
+              ),
+              createActionRow([
+                createButton({
+                  customId: createCustomId(
+                    0,
+                    ctx.interaction.user.id,
+                    ctx.originalInteractionId,
+                    'BUY',
+                    embedColor,
+                  ),
+                  disabled: shuffling,
+                  style: ButtonStyles.Primary,
+                  label: ctx.locale(`commands:blackjack.${shuffling ? 'shuffling' : 'buy'}`),
+                  emoji: { name: ctx.safeEmoji('blackjack', true) },
+                }),
+                ...(shuffling
+                  ? []
+                  : [
+                      createButton({
+                        customId: createCustomId(
+                          0,
+                          ctx.interaction.user.id,
+                          ctx.originalInteractionId,
+                          'STOP',
+                          embedColor,
+                        ),
+                        disabled: shuffling,
+                        emoji: { name: ctx.safeEmoji('no') },
+                        style: ButtonStyles.Secondary,
+                        label: ctx.locale('commands:blackjack.stop'),
+                      }),
+                    ]),
+              ]),
+            ]),
+        createSeparator(),
+        createTextDisplay(
+          resultText ||
+            `-# ${ctx.locale(`commands:blackjack.footer${secondCopy ? '-second-copy' : ''}`)}`,
+        ),
+        ...(resultText
+          ? [
+              createActionRow([
+                createButton({
+                  style: ButtonStyles.Success,
+                  customId: createCustomId(
+                    0,
+                    ctx.user.id,
+                    ctx.originalInteractionId,
+                    'NEW_GAME',
+                    embedColor,
+                    betAmount,
+                  ),
+                  label: ctx.locale('commands:blackjack.new-game'),
+                  emoji: { name: ctx.safeEmoji('estrelinhas') },
+                  disabled: betAmount > userData.estrelinhas,
+                }),
+                createButton({
+                  style: ButtonStyles.Primary,
+                  customId: createCustomId(
+                    0,
+                    ctx.user.id,
+                    ctx.originalInteractionId,
+                    embedColor,
+                    'NEW_GAME_AMOUNT',
+                  ),
+                  emoji: { name: ctx.safeEmoji('estrelinhas') },
+                  disabled: userData.estrelinhas < 10,
+                  label: ctx.locale('commands:blackjack.new-game-value'),
+                }),
+              ]),
+            ]
+          : []),
+      ],
     }),
-    footer: { text: ctx.locale(`commands:blackjack.footer${secondCopy ? '-second-copy' : ''}`) },
-    color: hexStringToNumber(embedColor),
-    thumbnail: { url: getUserAvatar(ctx.interaction.user, { enableGif: true }) },
-    fields: [],
-  });
+  ];
 };
 
 const safeImageReply = async (
-  ctx: ChatInputInteractionContext | ComponentInteractionContext,
-  embed: DiscordEmbed,
-  image: VanGoghReturnData,
-  components: ActionRow[],
+  ctx: InteractionContext,
+  components: ContainerComponent[],
+  imageUrl?: string,
+  image?: VanGoghReturnData,
 ): Promise<void> => {
-  const timestamp = Date.now();
+  if (image && image.err) return ctx.makeLayoutMessage({ attachments: [], components });
 
-  if (image.err) return ctx.makeMessage({ embeds: [embed], attachments: [], components });
+  if (!image) {
+    return ctx.makeLayoutMessage({
+      components,
+    });
+  }
 
-  embed.image = { url: `attachment://blackjack-${timestamp}.png` };
-
-  ctx.makeMessage({
-    embeds: [embed],
+  return ctx.makeLayoutMessage({
     components,
-    files: [{ blob: image.data, name: `blackjack-${timestamp}.png` }],
+    files: [{ blob: image.data, name: imageUrl || 'NONE.png' }],
   });
 };
 
@@ -117,7 +238,7 @@ export {
   numbersToBlackjackCards,
   getHandValue,
   getTableImage,
-  generateBlackjackEmbed,
+  generateBlackjackComponents,
   safeImageReply,
   hideMenheraCard,
 };

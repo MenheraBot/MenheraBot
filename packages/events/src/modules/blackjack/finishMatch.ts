@@ -6,18 +6,17 @@ import {
   AvailableCardThemes,
   AvailableTableThemes,
 } from '../themes/types.js';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { postBlackjackGame, postTransaction } from '../../utils/apiRequests/statistics.js';
 import { negate } from '../../utils/miscUtils.js';
 import { BlackjackCard, BlackjackFinishGameReason } from './types.js';
-import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import { sendBlackjackMessage } from './sendBlackjackMessage.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import executeDailies from '../dailies/executeDailies.js';
+import { InteractionContext } from '../../types/menhera.js';
 
 const finishMatch = async (
-  ctx: ChatInputInteractionContext | ComponentInteractionContext,
+  ctx: InteractionContext,
   bet: number,
   playerCards: BlackjackCard[],
   dealerCards: BlackjackCard[],
@@ -65,15 +64,18 @@ const finishMatch = async (
     backgroundCardTheme,
     embedColor,
     secondCopy,
-    {
-      name: ctx.prettyResponse(didUserWin ? 'crown' : 'no', 'commands:blackjack.result'),
-      value: ctx.locale(`commands:blackjack.${finishReason}`, {
+    `### ${ctx.prettyResponse(didUserWin ? 'crown' : 'no', 'commands:blackjack.result')}\n${ctx.locale(
+      `commands:blackjack.${finishReason}`,
+      {
         winner,
         loser,
         prize: didUserWin ? prize : negate(prize),
         text: ctx.locale(`commands:blackjack.${didUserWin ? 'profit' : 'loss'}`),
-      }),
-    },
+      },
+    )}`,
+    false,
+    'win.png',
+    true,
   );
 
   await postBlackjackGame(`${ctx.interaction.user.id}`, didUserWin, prize);

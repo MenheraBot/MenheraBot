@@ -925,6 +925,7 @@ const createCustomizeMessage = async (
       usages: ctx.locale('commands:perfil.commands-usage', {
         user: previewProfileData.user.username,
         usedCount: previewProfileData.usageCommands.cmds.count,
+        count: previewProfileData.usageCommands.cmds.count,
         mostUsedCommandName: previewProfileData.usageCommands.array[0].name,
         mostUsedCommandCount: previewProfileData.usageCommands.array[0].count,
       }),

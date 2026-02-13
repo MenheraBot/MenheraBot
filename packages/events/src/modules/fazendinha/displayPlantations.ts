@@ -212,14 +212,14 @@ const displayPlantations = async (
           createTextDisplay(
             `### ${ctx.locale('commands:fazendinha.plantations.embed-title', {
               user: getDisplayName(ctx.user),
-            })}\n${ ctx.locale('commands:fazendinha.plantations.description', {
+            })}\n${ctx.locale('commands:fazendinha.plantations.description', {
               season: ctx.locale(`commands:fazendinha.seasons.${seasonalInfo.currentSeason}`),
               unix: millisToSeconds(seasonalInfo.endsAt),
               emoji: SeasonEmojis[seasonalInfo.currentSeason],
             })}`,
           ),
         ],
-        accessory: createThumbnail({ url: getUserAvatar(ctx.user, { enableGif: true }) }),
+        accessory: createThumbnail(getUserAvatar(ctx.user, { enableGif: true })),
       }),
       ...fields,
     ],

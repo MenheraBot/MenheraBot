@@ -27,4 +27,5 @@ export interface StoredBlackjackState {
   cardTheme: AvailableCardThemes;
   tableTheme: AvailableTableThemes;
   cardBackgroundTheme: AvailableCardBackgroundThemes;
+  lastAttachmentUrl: string;
 }
