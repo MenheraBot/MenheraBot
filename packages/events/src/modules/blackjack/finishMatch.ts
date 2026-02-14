@@ -82,7 +82,7 @@ const finishMatch = async (
 
   currentBetSession.matches += 1;
 
-  if (currentBetSession.matches >= 100 && !user.titles.some((a) => a.id === BLACKJACKER_TITLE_ID)) {
+  if (currentBetSession.matches >= 50 && !user.titles.some((a) => a.id === BLACKJACKER_TITLE_ID)) {
     await giveRepository.giveTitleToUser(ctx.user.id, BLACKJACKER_TITLE_ID);
 
     notificationRepository.createNotification(
