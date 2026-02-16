@@ -24,9 +24,9 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
 
   constructor(
     public interaction: InteractionType,
-    public guildLocale: AvailableLanguages,
+    public interactionLocale: AvailableLanguages,
   ) {
-    this.i18n = i18next.getFixedT(guildLocale);
+    this.i18n = i18next.getFixedT(interactionLocale);
   }
 
   get user(): User {
@@ -34,7 +34,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   }
 
   get commandAuthor(): User {
-    return this.interaction.message?.interaction?.user as User;
+    return this.interaction.message?.interactionMetadata?.user as User;
   }
 
   get channelId(): bigint {

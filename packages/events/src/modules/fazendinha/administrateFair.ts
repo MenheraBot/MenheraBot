@@ -242,7 +242,7 @@ const executeAdministrateFair = async (
           ),
         }),
         components: [
-          createTextDisplay(`### ${item[`name_${ctx.guildLocale}`]}`),
+          createTextDisplay(`### ${item[`name_${ctx.interactionLocale}`]}`),
           createTextDisplay(
             `- ${item.price} :star:\n- ${Plants[item.plantType].emoji} ${item.weight} kg`,
           ),

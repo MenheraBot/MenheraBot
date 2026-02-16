@@ -30,9 +30,9 @@ export default class {
   constructor(
     public interaction: Interaction,
     public authorData: DatabaseUserSchema,
-    public guildLocale: AvailableLanguages,
+    public interactionLocale: AvailableLanguages,
   ) {
-    this.i18n = i18next.getFixedT(guildLocale);
+    this.i18n = i18next.getFixedT(interactionLocale);
 
     const { subCommand, subCommandGroup } = getFullCommandUsed(interaction);
 

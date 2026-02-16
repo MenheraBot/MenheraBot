@@ -16,9 +16,9 @@ export default class {
   constructor(
     private interactionToken: string,
     public originalInteractionId: string,
-    public guildLocale: AvailableLanguages,
+    public interactionLocale: AvailableLanguages,
   ) {
-    this.i18n = i18next.getFixedT(guildLocale);
+    this.i18n = i18next.getFixedT(interactionLocale);
   }
 
   async followUp(data: InteractionCallbackData): Promise<void> {

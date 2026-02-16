@@ -131,7 +131,7 @@ const getTransactionComponents = (
     placeholder: ctx.locale('commands:transactions.select-currency'),
     options: transactionableCommandOption.map(
       (t: { name: string; value: string; nameLocalizations: Record<string, string> }) => ({
-        label: t.nameLocalizations[ctx.guildLocale as 'en-US'] ?? t.name,
+        label: t.nameLocalizations[ctx.interactionLocale] ?? t.name,
         value: t.value,
         default: selectedCurrencies.includes(t.value),
       }),

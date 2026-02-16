@@ -8,13 +8,16 @@ import {
   createSelectMenu,
 } from '../../utils/discord/componentUtils.js';
 import { createCommand } from '../../structures/command/createCommand.js';
+import { DiscordApplicationIntegrationType, DiscordInteractionContextType } from '@discordeno/bot';
 
 const changeLanguage = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
 ): Promise<void> => {
   const lang = ctx.interaction.data.values[0];
 
-  await guildRepository.updateGuildLanguage(ctx.interaction.guildId as bigint, lang);
+  if (!ctx.interaction.guildId) throw new Error(`Guild ID does not exists!`);
+
+  await guildRepository.updateGuildLanguage(ctx.interaction.guildId, lang);
 
   ctx.makeMessage({
     components: [],
@@ -36,6 +39,8 @@ const LanguageCommand = createCommand({
   category: 'util',
   options: [],
   authorDataFields: [],
+  contexts: [DiscordInteractionContextType.Guild],
+  integrationTypes: [DiscordApplicationIntegrationType.GuildInstall],
   commandRelatedExecutions: [changeLanguage],
   execute: async (ctx, finishCommand) => {
     if (!ctx.interaction.member?.permissions?.has('MANAGE_GUILD')) {

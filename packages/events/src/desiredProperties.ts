@@ -14,15 +14,11 @@ const desiredProperties = createDesiredPropertiesObject({
   attachment: {
     contentType: true,
     url: true,
-    size: false,
     description: false,
-    duration_secs: false,
     ephemeral: false,
     filename: false,
-    flags: false,
     id: true,
-    title: false,
-    waveform: false,
+    flags: false,
     width: true,
     height: true,
     proxyUrl: true,
@@ -83,11 +79,11 @@ const desiredProperties = createDesiredPropertiesObject({
   interaction: {
     applicationId: true,
     appPermissions: true,
-    attachmentSizeLimit: true,
+    attachmentSizeLimit: false,
     channel: true,
     channelId: true,
     context: true,
-    authorizingIntegrationOwners: true,
+    authorizingIntegrationOwners: false,
     data: true,
     guild: true,
     guildId: true,
@@ -99,9 +95,8 @@ const desiredProperties = createDesiredPropertiesObject({
     token: true,
     type: true,
     user: true,
-    version: true,
+    version: false,
   },
-  mediaGalleryItem: { description: true, media: true, spoiler: true },
   messageInteraction: { id: true, member: true, name: true, type: true, user: true },
   member: {
     avatar: true,
@@ -124,6 +119,7 @@ const desiredProperties = createDesiredPropertiesObject({
     guildId: true,
     channelId: true,
   },
+
 });
 
 export { desiredProperties };

@@ -63,7 +63,7 @@ const setInteractionCreateEvent = (): void => {
 
     const isUserBanned = await blacklistRepository.isUserBanned(interaction.user.id);
 
-    const T = i18next.getFixedT(interaction.user.locale ?? 'pt-BR');
+    const T = i18next.getFixedT(interaction.guildLocale ?? interaction.user.locale ?? 'pt-BR');
 
     if (isUserBanned) {
       const bannedInfo = await userRepository.getBannedUserInfo(interaction.user.id);
@@ -163,12 +163,14 @@ const setInteractionCreateEvent = (): void => {
 
     cacheRepository.setDiscordUser(bot.transformers.reverse.user(bot, interaction.user));
 
-    const guildLocale = await guildRepository.getGuildLanguage(interaction.guildId as bigint);
+    const interactionLocale = interaction.guildId
+      ? await guildRepository.getGuildLanguage(interaction.guildId)
+      : ((interaction.user.locale as 'pt-BR') ?? ('pt-BR' as const));
 
     const ctx = new ChatInputInteractionContext(
       interaction,
       authorData as DatabaseUserSchema,
-      guildLocale,
+      interactionLocale,
     );
 
     bot.commandsInExecution += 1;
@@ -178,7 +180,7 @@ const setInteractionCreateEvent = (): void => {
       originalInteractionToken: interaction.token,
       originalInteractionId: `${interaction.id}`,
       commandName,
-      locale: guildLocale,
+      locale: interactionLocale,
     });
 
     if (!process.env.NOMICROSERVICES)
@@ -234,7 +236,7 @@ const setInteractionCreateEvent = (): void => {
 
     const data: UsedCommandData = {
       authorId: `${interaction.user.id}`,
-      guildId: `${interaction.guildId}`,
+      guildId: `${interaction.guildId ?? interaction.context}`,
       commandName: command.name,
       data: Date.now(),
       args: interaction.data?.options ?? [],

@@ -50,7 +50,7 @@ const executeUserCommandsTop = async (
     );
 
     const translatedTitle =
-      ctx.guildLocale === 'en-US'
+      ctx.interactionLocale === 'en-US'
         ? rawTitle?.text?.textLocalizations?.['en-US']
         : rawTitle?.text?.text;
 

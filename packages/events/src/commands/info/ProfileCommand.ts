@@ -119,7 +119,7 @@ const ProfileCommand = createCommand({
       hiddingBadges: user.hiddingBadges,
       marryUsername: '',
       marryDate: user.marriedDate ?? '',
-      title: userTitle ? (userTitle.textLocalizations?.[ctx.guildLocale] ?? userTitle.text) : '',
+      title: userTitle ? (userTitle.textLocalizations?.[ctx.interactionLocale] ?? userTitle.text) : '',
       married: false,
     };
 
@@ -128,7 +128,7 @@ const ProfileCommand = createCommand({
       userData.marryUsername = getDisplayName(marryData, true);
 
       if (user.marriedAt && user.marriedAt > 0)
-        userData.marryDate = Intl.DateTimeFormat(ctx.guildLocale, { dateStyle: 'short' }).format(
+        userData.marryDate = Intl.DateTimeFormat(ctx.interactionLocale, { dateStyle: 'short' }).format(
           user.marriedAt,
         );
     }

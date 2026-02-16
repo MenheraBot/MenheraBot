@@ -31,7 +31,7 @@ const executeUsedCommandsFromUserTop = async (
   const rawTitle = await titlesRepository.getTitleInfo(userData.currentTitle);
 
   const translatedTitle =
-    ctx.guildLocale === 'en-US' ? rawTitle?.textLocalizations?.['en-US'] : rawTitle?.text;
+    ctx.interactionLocale === 'en-US' ? rawTitle?.textLocalizations?.['en-US'] : rawTitle?.text;
 
   const embed = createEmbed({
     title: ctx.prettyResponse('smile', 'commands:top.user', {

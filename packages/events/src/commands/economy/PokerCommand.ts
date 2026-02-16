@@ -4,6 +4,7 @@ import {
   ButtonComponent,
   ButtonStyles,
   DiscordEmbed,
+  DiscordInteractionContextType,
 } from '@discordeno/bot';
 import * as Sentry from '@sentry/node';
 import { createCommand } from '../../structures/command/createCommand.js';
@@ -110,7 +111,7 @@ const createStartMatchEmbed = (
     description: ctx.locale(
       `commands:poker.invite-description-${chips > 0 ? 'worth' : 'friendly'}`,
       {
-        user: mentionUser(ctx.interaction.message?.interaction?.user.id ?? ''),
+        user: mentionUser(ctx.interaction.message?.interactionMetadata?.targetUser?.id ?? ''),
         stars: chips,
         chips: DEFAULT_CHIPS,
       },
@@ -341,6 +342,7 @@ const PokerCommand = createCommand({
       required: false,
     },
   ],
+  contexts: [DiscordInteractionContextType.Guild, DiscordInteractionContextType.PrivateChannel],
   authorDataFields: ['estrelinhas'],
   commandRelatedExecutions: [selectPlayers, checkStartMatchInteraction, gameInteractions],
   execute: async (ctx, finishCommand) => {

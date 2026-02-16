@@ -1,4 +1,9 @@
-import { ApplicationCommandOptionTypes, CreateApplicationCommand } from '@discordeno/bot';
+import {
+  ApplicationCommandOptionTypes,
+  CreateApplicationCommand,
+  DiscordApplicationIntegrationType,
+  DiscordInteractionContextType,
+} from '@discordeno/bot';
 import { MessageFlags } from '@discordeno/bot';
 import commandRepository from '../../database/repositories/commandRepository.js';
 
@@ -54,13 +59,25 @@ const DeployCommand = createCommand({
       const allCommands = bot.commands.reduce<CreateApplicationCommand[]>((p, c) => {
         if (c.devsOnly) return p;
 
+        const defaultContexts = [
+          DiscordInteractionContextType.BotDm,
+          DiscordInteractionContextType.Guild,
+          DiscordInteractionContextType.PrivateChannel,
+        ];
+
+        const deafultIntegrations = [
+          DiscordApplicationIntegrationType.GuildInstall,
+          DiscordApplicationIntegrationType.UserInstall,
+        ];
+
         p.push({
           name: c.name,
           description: c.description,
           options: c.options,
           nameLocalizations: c.nameLocalizations,
           descriptionLocalizations: c.descriptionLocalizations,
-          dmPermission: false,
+          contexts: c.contexts ?? defaultContexts,
+          integrationTypes: c.integrationTypes ?? deafultIntegrations,
         });
         return p;
       }, []);
@@ -92,6 +109,8 @@ const DeployCommand = createCommand({
           options: c.options,
           nameLocalizations: c.nameLocalizations,
           descriptionLocalizations: c.descriptionLocalizations,
+          contexts: [DiscordInteractionContextType.Guild],
+          integrationTypes: [DiscordApplicationIntegrationType.GuildInstall],
         });
         return p;
       }, []);
