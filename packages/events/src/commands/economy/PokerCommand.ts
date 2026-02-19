@@ -111,7 +111,7 @@ const createStartMatchEmbed = (
     description: ctx.locale(
       `commands:poker.invite-description-${chips > 0 ? 'worth' : 'friendly'}`,
       {
-        user: mentionUser(ctx.interaction.message?.interactionMetadata?.targetUser?.id ?? ''),
+        user: mentionUser(ctx.interaction.message?.interactionMetadata?.user?.id ?? ''),
         stars: chips,
         chips: DEFAULT_CHIPS,
       },
