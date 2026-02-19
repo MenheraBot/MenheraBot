@@ -57,7 +57,7 @@ const DeployCommand = createCommand({
       }
 
       const allCommands = bot.commands.reduce<CreateApplicationCommand[]>((p, c) => {
-        if (c.devsOnly) return p;
+        if (process.env.NODE_ENV !== 'development' && c.devsOnly) return p;
 
         const defaultContexts = [
           DiscordInteractionContextType.BotDm,

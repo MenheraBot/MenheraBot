@@ -41,7 +41,7 @@ const executeEval = async (ctx: InteractionContext, toEval: string) => {
   const rfarm = async () => {
     await farmerModel.updateOne(id, {
       $set: {
-        items: [{id: 0, amount: 4}],
+        items: [{ id: 0, amount: 4 }],
         silo: [
           { plant: 1, weight: 3 },
           { plant: 2, weight: 1.7 },
@@ -158,7 +158,7 @@ const executeEval = async (ctx: InteractionContext, toEval: string) => {
   try {
     let evaled = await eval(toEval);
     evaled = inspect(evaled, { depth: 4 });
-    evaled = evaled.replace(new RegExp(`${bot.gateway.token}`, 'g'), undefined);
+    evaled = evaled.replace(new RegExp(`${bot.rest.token}`, 'g'), undefined);
 
     if (evaled.length > 1800) evaled = `${evaled.slice(0, 1800)}...`;
     await ctx.makeMessage({ content: `\`\`\`js\n ${evaled}\`\`\``, components: [] });
@@ -215,8 +215,10 @@ const EvalCommand = createCommand({
 
     await redis.setex(`eval:${ctx.originalInteractionId}`, 900, toEval);
 
+    const messageEval = toEval.length > 1800 ? `${toEval.slice(0, 1800)}...` : toEval;
+
     return ctx.makeMessage({
-      content: `\`\`\`js\n${toEval}\n\`\`\``,
+      content: `\`\`\`js\n${messageEval}\n\`\`\``,
       components: [
         createActionRow([
           createButton({
