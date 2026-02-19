@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Melhorada a descrição do `/fazendinha entregas`. 
+
+### Fixed
+
+- Corrigido menção de usuário para iniciar uma partida de Poker.
+- Corrigido plantas negativas aparecerem nos comandos da fazendinha. 
+- Corrigido impedimento de realizar entregas, mesmo tendo o peso suficiente da planta.
+
 ## [6.3.0] - 2026-02-16
 
 ### Added

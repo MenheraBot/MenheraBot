@@ -1269,7 +1269,7 @@
       "deliver-embed-name-finished": "✅ ~~Entrega {{index}}~~",
       "deliver-embed-field": "Estrelinhas base: **{{award}}** :star:",
       "deliver-embed-field-need": "Necessário: **{{amount}} Kg** {{emoji}}",
-      "description": "Uma vez por dia o caminhão de entregas aparecerá em sua fazendinha para buscar entregas. Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas\n\n O caminhão partirá <t:{{unix}}:R>"
+      "description": "Uma vez por dia um caminhão aparecerá em sua fazendinha para buscar entregas. Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas.\n\n**Qualquer qualidade de planta pode ser entregue**. A entrega é sempre realizada ordenando as plantas por peso, a mais pesada será a entregue. Se não for o peso suficiente, a segunda qualidade com mais peso será usada, assim até a entrega ser concluída.\n\nSe a entrega for realizada inteiramente com plantas de qualidade Normal ou Prêmium, um bônus de estrelinhas é entregue.\n### O caminhão partirá <t:{{unix}}:R>\n"
     },
     "silo": {
       "embed-title": "Silo de {{user}}",

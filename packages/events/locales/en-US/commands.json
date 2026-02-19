@@ -1291,7 +1291,7 @@
       "deliver-embed-name-finished": "✅ ~~Delivery {{index}}~~",
       "deliver-embed-field": "Base stars: **{{award}}** :star:",
       "deliver-embed-field-need": "Needs: **{{amount}} kg** {{emoji}}",
-      "description": "Once a day the delivery truck will appear at your farm to pick up deliveries. Completing all deliveries before the truck leaves will give you an additional **{{bonus}}** :star: stars\n\nThe truck will leave <t:{{unix}}:R>"
+      "description": "Once a day the delivery truck will appear at your farm to pick up deliveries. Completing all deliveries before the truck leaves will give you an additional **{{bonus}}** :star: stars.\n\n**Any plant quality can be delivered.** Delivery is always done by ordering plants by weight; the heaviest will be delivered. If that's not the heaviest weight, the second heaviest quality will be used, and so on until the delivery is complete.\n\nIf the delivery is made entirely with Normal or Premium quality plants, a bonus of stars is awarded.\n### The truck will leave <t:{{unix}}:R>"
     },
     "field-action": {
       "not-enough-seeds": "You don't have **{{plant}}** seeds to plant!",
