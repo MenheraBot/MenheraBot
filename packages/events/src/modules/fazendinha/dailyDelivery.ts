@@ -188,7 +188,7 @@ const executeDailyDelivery = async (
               xp: a.experience,
             })}\n${a.needs.map((b) =>
               ctx.locale('commands:fazendinha.entregas.deliver-embed-field-need', {
-                amount: b.weight ?? b.amount,
+                amount: b.weight,
                 emoji: Plants[b.plant].emoji,
               }),
             )}`,

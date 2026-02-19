@@ -139,7 +139,6 @@ export interface QuantitativeItem {
 }
 
 export interface QuantitativePlant {
-  amount?: number;
   plant: AvailablePlants;
   weight: number;
   quality?: PlantQuality;

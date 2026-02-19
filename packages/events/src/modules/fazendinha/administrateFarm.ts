@@ -261,7 +261,7 @@ const displayAdministrateFarm = async (
                   ctx.locale('commands:fazendinha.feira.order.order-name', {
                     plantName: ctx.locale(`data:plants.${a.plant}`),
                     plantEmoji: Plants[a.plant].emoji,
-                    weight: a.weight ?? a.amount,
+                    weight: a.weight,
                     qualityEmoji: getQualityEmoji(getQuality(a)),
                   }),
                 ),
@@ -427,7 +427,7 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
             plantName: ctx.locale(`data:plants.${a.plant}`),
             plantEmoji: Plants[a.plant].emoji,
             quaityEmoji: getQualityEmoji(getQuality(a)),
-            weight: a.weight ?? a.amount,
+            weight: a.weight,
           }),
         ),
       }),

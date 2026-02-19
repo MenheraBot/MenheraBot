@@ -49,7 +49,7 @@ const displaySelectComposterPlants = async (
   selectedQuality?: PlantQuality,
 ) => {
   const availableQualities = farmer.silo.reduce<Partial<Record<PlantQuality, true>>>((p, c) => {
-    if ((c.weight ?? c.amount ?? 0) < 0) return p;
+    if ((c.weight ?? 0) <= 0) return p;
 
     const quality = getQuality(c);
 
