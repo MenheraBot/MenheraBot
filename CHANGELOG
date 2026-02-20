@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [6.3.1] - 2026-02-19
 
+## Hotfix
+
+- Corrigido estatísticas do BlackJack não salvarem derroas. 
+
 ### Changed
 
 - Melhorada a descrição do `/fazendinha entregas`. 

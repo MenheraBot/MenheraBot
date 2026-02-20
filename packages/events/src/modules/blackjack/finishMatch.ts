@@ -97,7 +97,7 @@ const finishMatch = async (
     blackjackRepository.invalidateBlackjackState(ctx.interaction.user.id),
   ]);
 
-  if (rawGain > 0) postBlackjackGame(`${ctx.interaction.user.id}`, didUserWin, rawGain);
+  if (!didUserWin || rawGain > 0) postBlackjackGame(`${ctx.interaction.user.id}`, didUserWin, rawGain || bet);
 
   return sendBlackjackMessage(
     ctx,
