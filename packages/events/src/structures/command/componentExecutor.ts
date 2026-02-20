@@ -17,7 +17,7 @@ import { logger } from '../../utils/logger.js';
 import { sendInteractionResponse } from '../../utils/discord/interactionRequests.js';
 import { Interaction } from '../../types/discordeno.js';
 import { debugError } from '../../utils/debugError.js';
-import { deleteMessageCustomId } from '../../utils/discord/componentUtils.js';
+import { DELETE_CUSTOM_ID } from '../../utils/discord/componentUtils.js';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -40,11 +40,30 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
     }).catch(debugError);
   };
 
+  const errorReply = async (content: string): Promise<void> => {
+    await sendInteractionResponse(interaction.id, interaction.token, {
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: {
+        content: `<:negacao:759603958317711371> | ${content}`,
+        flags: MessageFlags.Ephemeral,
+        allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
+      },
+    }).catch(debugError);
+  };
+
   let originalCustomId = '-';
+
+  console.log(interaction.data.customId)
 
   if (!interaction.data.customId.includes('|')) {
     originalCustomId = interaction.data.customId;
-    if (interaction.data.customId === deleteMessageCustomId) {
+    if (interaction.data.customId.startsWith(DELETE_CUSTOM_ID)) {
+      const user = originalCustomId.split('-')[1];
+
+      console.log(user, originalCustomId)
+      if (`${interaction.user.id}` !== user)
+        return errorReply(T('permissions:NOT_INTERACTION_OWNER', { owner: mentionUser(user) }));
+
       await sendInteractionResponse(interaction.id, interaction.token, {
         type: InteractionResponseTypes.DeferredUpdateMessage,
       }).catch(debugError);
@@ -65,17 +84,6 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
   const originalInteraction = await commandRepository.getOriginalInteraction(originalInteractionId);
 
   if (!originalInteraction) return replyOutdatedCommand();
-
-  const errorReply = async (content: string): Promise<void> => {
-    await sendInteractionResponse(interaction.id, interaction.token, {
-      type: InteractionResponseTypes.ChannelMessageWithSource,
-      data: {
-        content: `<:negacao:759603958317711371> | ${content}`,
-        flags: MessageFlags.Ephemeral,
-        allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
-      },
-    }).catch(debugError);
-  };
 
   const command = bot.commands.get(originalInteraction.commandName);
 

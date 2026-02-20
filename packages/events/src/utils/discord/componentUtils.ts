@@ -19,10 +19,13 @@ import { MessageComponentTypes, SeparatorSpacingSize } from '@discordeno/bot';
 import md5 from 'md5';
 import commandRepository from '../../database/repositories/commandRepository.js';
 import { setComponentsV2Flag } from './messageUtils.js';
+import { InteractionContext } from '../../types/menhera.js';
+
+const DELETE_CUSTOM_ID = '420_INTERACTION_DELETE';
 
 type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-const deleteMessageCustomId = '420_INTERACTION_DELETE';
+const deleteMessageCustomId = (ctx: InteractionContext) => `${DELETE_CUSTOM_ID}-${ctx.user.id}`;
 
 const createCustomId = (
   executorIndex: number,
@@ -136,6 +139,7 @@ export {
   createCustomId,
   createThumbnail,
   createSection,
+  DELETE_CUSTOM_ID,
   createMediaGallery,
   createActionRow,
   createTextInput,

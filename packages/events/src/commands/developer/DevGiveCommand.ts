@@ -52,7 +52,7 @@ const buildNotificationContainer = async (
         accessory: createButton({
           label: 'Cancelar',
           style: ButtonStyles.Secondary,
-          customId: deleteMessageCustomId,
+          customId: deleteMessageCustomId(ctx),
         }),
       }),
       createSeparator(),

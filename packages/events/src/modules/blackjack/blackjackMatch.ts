@@ -180,7 +180,7 @@ const generateBlackjackComponents = async (
                 accessory: createButton({
                   style: ButtonStyles.Secondary,
                   label: ctx.locale('common:cancel'),
-                  customId: deleteMessageCustomId,
+                  customId: deleteMessageCustomId(ctx),
                 }),
               }),
               ...(betSession && betSession.loses + betSession.wins > 1

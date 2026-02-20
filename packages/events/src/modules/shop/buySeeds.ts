@@ -203,7 +203,7 @@ const buySeeds = async (
         accessory: createButton({
           style: ButtonStyles.Secondary,
           label: 'Fechar',
-          customId: deleteMessageCustomId,
+          customId: deleteMessageCustomId(ctx),
         }),
       }),
       createActionRow([categorySelectMenu]),
