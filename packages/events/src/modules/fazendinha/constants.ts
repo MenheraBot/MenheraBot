@@ -12,7 +12,7 @@ import {
 
 export const INITIAL_LIMIT_FOR_SILO = 35;
 export const SILO_LIMIT_INCREASE_BY_LEVEL = 5;
-export const MAX_SILO_UPGRADES = 15;
+export const MAX_SILO_UPGRADES = 20;
 export const MAX_FIELDS_AVAILABLE = 5;
 
 export const MAX_STARS_AWARD_IN_FAIR_ORDER = 99999;

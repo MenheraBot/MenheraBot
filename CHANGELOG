@@ -5,15 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [6.3.2] - 2026-02-27
 
-## Fixed
+### Changed
+
+- O limite máximo do silo foi aumentado para `135` (máximo de 20 upgrades). 
+
+### Fixed
 
 - Corrigido o Blackjack permitir apostar mais do que 100k no botão de "apostar outro valor".
 
 ## [6.3.1] - 2026-02-19
 
-## Hotfix
+### Hotfix
 
 - Corrigido estatísticas do BlackJack não salvarem derrotas. 
 
