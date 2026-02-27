@@ -26,7 +26,7 @@ describe('AngryCommand tests', () => {
   });
 
   it('should return a message saying that cannot mention bots', () => {
-    context.getOption.mockReturnValueOnce({ toggles: { bot: true } });
+    context.getOption.mockReturnValueOnce({ bot: true });
 
     // @ts-expect-error Mocking UwU
     angryCommand.execute(context, noop);
