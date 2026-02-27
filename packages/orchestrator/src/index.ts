@@ -6,7 +6,7 @@ import { respondDevInteraction, respondInteraction } from './respondInteraction.
 import { createHttpServer, registerAllRouters } from './server/httpServer.js';
 import { PrometheusResponse } from './server/routes/prometheus.js';
 import { getEnviroments } from './getEnviroments.js';
-import { Bot, logger } from '@discordeno/bot';
+import type { Bot } from '@discordeno/bot';
 
 declare module 'koa' {
   interface Request extends Koa.BaseRequest {
@@ -67,7 +67,7 @@ const sendEvent = async (type: RequestType, data: unknown, devBot?: Bot): Promis
   if (clientsToUse.length === 0) {
     if (type === RequestType.InteractionCreate) {
       missedInteractions += 1;
-      logger.warn('[EVENT] Interaction lost due no clients connected');
+      console.warn('[EVENT] Interaction lost due no clients connected');
 
       const interaction = (data as { body: DiscordInteraction }).body;
 

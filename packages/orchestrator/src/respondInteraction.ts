@@ -1,5 +1,5 @@
-import { Bot, InteractionResponseTypes, logger } from '@discordeno/bot';
-import { DiscordInteraction } from '@discordeno/types';
+import type { DiscordInteraction } from '@discordeno/types';
+import type { Bot } from '@discordeno/bot';
 
 const respondInteraction = (data: DiscordInteraction): string | void => {
   if ([2, 3, 5].includes(data.type))
@@ -9,7 +9,7 @@ const respondInteraction = (data: DiscordInteraction): string | void => {
 const respondDevInteraction = (bot: Bot, data: DiscordInteraction): void => {
   bot.helpers
     .sendInteractionResponse(data.id, data.token, {
-      type: InteractionResponseTypes.ChannelMessageWithSource,
+      type: 4,
       data: {
         flags: 64,
         content:
@@ -18,7 +18,7 @@ const respondDevInteraction = (bot: Bot, data: DiscordInteraction): void => {
       },
     })
     .catch((err) => {
-      logger.error(`Error sending discord interaction: ${err?.message ?? 'Unknown error'}`, err);
+      console.error(`Error sending discord interaction: ${err?.message ?? 'Unknown error'}`, err);
     });
 };
 
