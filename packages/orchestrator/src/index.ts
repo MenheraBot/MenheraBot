@@ -50,17 +50,13 @@ export enum RequestType {
 const getVersion = () => currentVersion;
 
 const closeConnections = () =>
-  setTimeout(
-    () =>
-      connectedClients.map((a) =>
-        a.conn
-          .send({ type: RequestType.YouMayRest })
-          .catch((e) =>
-            console.log(`Error sending close message to client: ${e?.message ?? 'Unknown error'}`),
-          ),
+  connectedClients.map((a) =>
+    a.conn
+      .send({ type: RequestType.YouMayRest })
+      .catch((e) =>
+        console.log(`Error sending close message to client: ${e?.message ?? 'Unknown error'}`),
       ),
-    100,
-  ).unref();
+  );
 
 const sendEvent = async (type: RequestType, data: unknown, devBot?: Bot): Promise<unknown> => {
   eventsCounter += 1;
@@ -187,12 +183,10 @@ orchestratorServer.on('message', async (msg, conn) => {
     );
 
     if (connectedClients.length > 0)
-      await Promise.all([
-        new Promise((resolve) => {
-          finishSwap = resolve;
-        }),
-        closeConnections(),
-      ]);
+      await new Promise((resolve) => {
+        finishSwap = resolve;
+        closeConnections();
+      });
 
     console.log(`[SWAP VERSION] All old clients shut down`);
 
