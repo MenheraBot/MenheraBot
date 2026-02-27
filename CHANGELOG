@@ -5,11 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## Fixed
+
+- Corrigido o Blackjack permitir apostar mais do que 100k no botão de "apostar outro valor".
+
 ## [6.3.1] - 2026-02-19
 
 ## Hotfix
 
-- Corrigido estatísticas do BlackJack não salvarem derroas. 
+- Corrigido estatísticas do BlackJack não salvarem derrotas. 
 
 ### Changed
 

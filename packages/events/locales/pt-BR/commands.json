@@ -678,6 +678,7 @@
     "available-options": "Opções Disponíveis",
     "title": "Blackjack",
     "ask-action": "O que você faz?",
+    "max-bet": "Você não pode apostar mais do que **{{max}}** :star:",
     "shuffling": "Entregando as Cartas",
     "no-game": "Você não está jogando nenhuma partida de Blackjack no momento. Use o comando novamente inserindo uma aposta para iniciar uma nova partida.",
     "description": "### - Mão da Menhera: **{{dealerCards}}** -> `{{dealerTotal}}`\n### - Sua Mão: **{{userHand}}** -> `{{userTotal}}`\n",

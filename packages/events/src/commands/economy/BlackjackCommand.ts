@@ -36,6 +36,7 @@ import { calculateProbability } from '../../utils/miscUtils.js';
 import { extractLayoutFields } from '../../utils/discord/modalUtils.js';
 import { ModalInteraction } from '../../types/interaction.js';
 import { EMOJIS } from '../../structures/constants.js';
+import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
 
 const initBlackjackGame = async (
   ctx: InteractionContext,
@@ -235,9 +236,19 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
       numberedValue < BLACKJACK_MIN_BET ||
       numberedValue > userData.estrelinhas
     )
-      return ctx.makeLayoutMessage({
-        flags: MessageFlags.Ephemeral,
+      return ctx.respondInteraction({
+        flags: setComponentsV2Flag(MessageFlags.Ephemeral),
         components: [createTextDisplay(ctx.prettyResponse('error', 'commands:blackjack.poor'))],
+      });
+
+    if (numberedValue > BLACKJACK_MAX_BET)
+      return ctx.respondInteraction({
+        flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+        components: [
+          createTextDisplay(
+            ctx.prettyResponse('error', 'commands:blackjack.max-bet', { max: BLACKJACK_MAX_BET }),
+          ),
+        ],
       });
 
     await sendStartingGameMessage(ctx, numberedValue);
