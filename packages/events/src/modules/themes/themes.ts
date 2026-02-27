@@ -285,6 +285,14 @@ const Themes: Record<number, ThemeFile> & object = {
     imageCompatible: false,
     needApiData: false,
   },
+  47: {
+    price: 95_000,
+    type: 'profile',
+    theme: 'notes',
+    needApiData: false,
+    colorCompatible: false,
+    imageCompatible: false,
+  },
 };
 
 export default Themes;

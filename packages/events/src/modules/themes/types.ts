@@ -38,6 +38,7 @@ export type AvailableProfilesThemes =
   | 'mural'
   | 'website'
   | 'memories'
+  | 'notes'
   | 'frozen';
 
 export type AvailableThemeTypes =

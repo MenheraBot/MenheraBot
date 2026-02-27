@@ -58,7 +58,6 @@ services:
 
   api:
     image: ghcr.io/menherabot/api
-    container_name: api
     hostname: api
     restart: no
       
