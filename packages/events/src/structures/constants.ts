@@ -24,6 +24,7 @@ export const EMOJIS = {
   yes: '✅',
   rock: ':rock:',
   paper: ':page_facing_up:',
+  ribbon: '🎀',
   scissors: ':scissors:',
   gift: '🎁',
   calendar: '📅',

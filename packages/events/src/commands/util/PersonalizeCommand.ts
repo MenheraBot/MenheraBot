@@ -1,4 +1,8 @@
-import type { ApplicationCommandOptionChoice, DiscordEmbed } from '@discordeno/bot';
+import type {
+  ApplicationCommandOptionChoice,
+  ContainerComponent,
+  DiscordEmbed,
+} from '@discordeno/bot';
 import * as Sentry from '@sentry/node';
 import {
   ActionRow,
@@ -33,12 +37,21 @@ import { IdentifiedData, InteractionContext } from '../../types/menhera.js';
 import {
   createActionRow,
   createButton,
+  createContainer,
   createCustomId,
+  createMediaGallery,
+  createSection,
   createSelectMenu,
+  createSeparator,
+  createTextDisplay,
   createTextInput,
 } from '../../utils/discord/componentUtils.js';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import { MessageFlags, extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils.js';
+import {
+  MessageFlags,
+  extractNameAndIdFromEmoji,
+  setComponentsV2Flag,
+} from '../../utils/discord/messageUtils.js';
 import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/userUtils.js';
 import {
   ensureUserHaveDefaultThemes,
@@ -685,12 +698,17 @@ const executeBadgesCommand = async (
   finishCommand();
 };
 
-const selectedThemeToUse = async (ctx: ComponentInteractionContext<SelectMenuInteraction>) => {
-  const themeId = Number(ctx.interaction.data.values[0]);
+const personalizeThemeComponents = async (
+  ctx: ComponentInteractionContext<SelectMenuInteraction>,
+) => {
+  const selected = ctx.interaction.data.values[0];
+  const themeId = Number(selected);
+  const [action, themeType, embedColor] = ctx.sentData;
+
+  if (action === 'CHANGE')
+    return executeThemesCommand(ctx, selected as AvailableThemeTypes, embedColor);
 
   const componentsToSend = [];
-
-  const [themeType] = ctx.sentData;
 
   switch (themeType) {
     case 'profile': {
@@ -736,35 +754,98 @@ const selectedThemeToUse = async (ctx: ComponentInteractionContext<SelectMenuInt
       break;
   }
 
-  ctx.makeMessage({
-    components: componentsToSend,
-    embeds: [],
-    content: ctx.prettyResponse('success', 'commands:temas.selected'),
+  await executeThemesCommand(ctx, themeType as AvailableThemeTypes, embedColor);
+
+  await ctx.followUp({
+    flags: setComponentsV2Flag(MessageFlags.Ephemeral),
+    components: [createTextDisplay(ctx.prettyResponse('success', 'commands:temas.selected'))],
   });
 };
 
 const executeThemesCommand = async (
-  ctx: ChatInputInteractionContext,
-  finishCommand: () => void,
+  ctx: InteractionContext,
+  themeType: AvailableThemeTypes,
+  embedColor: string,
 ) => {
-  const themeType = ctx.getOption<AvailableThemeTypes>('tipo', false, true);
+  const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.user.id);
 
-  const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.author.id);
+  const availableTypes = [
+    'profile',
+    'cards',
+    'table',
+    'card_background',
+    'eb_background',
+    'eb_text_box',
+    'eb_menhera',
+  ] as const;
 
-  const embed = createEmbed({
-    color: hexStringToNumber(ctx.authorData.selectedColor),
-    title: ctx.locale(`commands:temas.${themeType}`),
-    fields: [],
+  const themeTypeSelectMenu = createSelectMenu({
+    customId: createCustomId(
+      1,
+      ctx.user.id,
+      ctx.originalInteractionId,
+      'CHANGE',
+      themeType,
+      embedColor,
+    ),
+    options: availableTypes.map((a) => ({
+      label: ctx.locale(`commands:temas.${a}`),
+      value: a,
+      default: a === themeType,
+    })),
+    maxValues: 1,
+    minValues: 1,
   });
 
+  const container = createContainer({
+    accentColor: hexStringToNumber(embedColor),
+    components: [],
+  });
+
+  const titleComponent = createTextDisplay(
+    `## ${ctx.prettyResponse('ribbon', 'commands:temas.title')}`,
+  );
+
+  let componentToPush: (typeof container)['components'][number] = titleComponent;
+
+  if (themeType === 'profile') {
+    const themeData = getThemeById<ProfileTheme>(userThemes.selectedProfileTheme);
+
+    if (themeData.data.customEdits && themeData.data.customEdits.length > 0)
+      componentToPush = createSection({
+        components: [titleComponent],
+        accessory: createButton({
+          label: ctx.locale('commands:temas.edit-profile.customize'),
+          style: ButtonStyles.Primary,
+          customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, 'CUSTOM'),
+        }),
+      });
+  }
+
+  container.components.push(
+    componentToPush,
+    createActionRow([themeTypeSelectMenu]),
+    createSeparator(),
+  );
+
   const selectMenu = createSelectMenu({
-    customId: createCustomId(1, ctx.author.id, ctx.originalInteractionId, themeType),
+    customId: createCustomId(
+      1,
+      ctx.user.id,
+      ctx.originalInteractionId,
+      'SELECT',
+      themeType,
+      embedColor,
+    ),
+    placeholder: ctx.locale('commands:temas.choose'),
     minValues: 1,
     maxValues: 1,
     options: [],
   });
 
   ensureUserHaveDefaultThemes(userThemes);
+
+  let text = '';
 
   const availableThemes = getUserActiveThemes(userThemes).reduce<IdentifiedData<ThemeFile>[]>(
     (p, c) => {
@@ -782,14 +863,10 @@ const executeThemesCommand = async (
         description: ctx.locale(`data:themes.${c.id as 1}.description`).substring(0, 100),
       });
 
-      embed.fields?.push({
-        name: ctx.locale(`data:themes.${c.id as 1}.name`),
-        value: `${ctx.locale(`data:themes.${c.id as 1}.description`)}\n${ctx.locale(
-          'commands:temas.aquired-at',
-          { unix: millisToSeconds(c.aquiredAt) },
-        )}`,
-        inline: true,
-      });
+      text += `\n- **${ctx.locale(`data:themes.${c.id as 1}.name`)}** [${ctx.locale(
+        'commands:temas.aquired-at',
+        { unix: millisToSeconds(c.aquiredAt) },
+      )}]\n_${ctx.locale(`data:themes.${c.id as 1}.description`)}_`;
 
       return p;
     },
@@ -797,31 +874,14 @@ const executeThemesCommand = async (
   );
 
   if (availableThemes.length === 0) {
-    embed.description = ctx.locale('commands:temas.no-themes');
-    ctx.makeMessage({ embeds: [embed] });
-
-    return finishCommand();
+    text = `_${ctx.locale('commands:temas.no-themes')}_`;
+    container.components.push(createTextDisplay(text));
+    return ctx.makeLayoutMessage({ components: [container] });
   }
 
-  const componentsToSend = [createActionRow([selectMenu])];
+  container.components.push(createTextDisplay(text), createActionRow([selectMenu]));
 
-  if (themeType === 'profile') {
-    const themeData = getThemeById<ProfileTheme>(userThemes.selectedProfileTheme);
-
-    if (themeData.data.customEdits && themeData.data.customEdits.length > 0)
-      componentsToSend.push(
-        createActionRow([
-          createButton({
-            label: ctx.locale('commands:temas.edit-profile.customize'),
-            style: ButtonStyles.Primary,
-            customId: createCustomId(4, ctx.author.id, ctx.originalInteractionId, 'CUSTOM'),
-          }),
-        ]),
-      );
-  }
-
-  ctx.makeMessage({ embeds: [embed], components: componentsToSend });
-  finishCommand();
+  return ctx.makeLayoutMessage({ components: [container] });
 };
 
 const createCustomizeMessage = async (
@@ -832,7 +892,8 @@ const createCustomizeMessage = async (
   const currentTheme = getThemeById<ProfileTheme>(userThemes.selectedProfileTheme);
 
   if (!currentTheme.data.customEdits || currentTheme.data.customEdits.length === 0)
-    return ctx.makeMessage({
+    return ctx.respondInteraction({
+      flags: MessageFlags.Ephemeral,
       components: [],
       embeds: [],
       content: ctx.prettyResponse('error', 'commands:temas.edit-profile.not-customizable'),
@@ -852,20 +913,34 @@ const createCustomizeMessage = async (
         })
         .flat();
 
-  const embed = createEmbed({
-    title: ctx.prettyResponse('wink', 'commands:temas.edit-profile.title', {
-      theme: ctx.locale(`data:themes.${userThemes.selectedProfileTheme as 1}.name`),
-    }),
-    color: hexStringToNumber((await userRepository.ensureFindUser(ctx.user.id)).selectedColor),
-    footer: { text: ctx.locale('commands:temas.edit-profile.footer') },
-    description: currentTheme.data.customEdits
-      .map(
-        (field) =>
-          `${ctx.locale(
-            `data:themes.${currentTheme.id as 30}.customFields.${field as 'upperTextBoxFilled'}`,
-          )}: ${ctx.locale(`common:${getCustomThemeField(field, fieldToUse)}`)}`,
-      )
-      .join('\n'),
+  const container = createContainer({
+    accentColor: hexStringToNumber(
+      (await userRepository.ensureFindUser(ctx.user.id)).selectedColor,
+    ),
+    components: [
+      createSection({
+        accessory: createButton({
+          customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, 'SAVE'),
+          label: ctx.locale('commands:temas.edit-profile.save'),
+          style: ButtonStyles.Primary,
+        }),
+        components: [
+          createTextDisplay(
+            `## ${ctx.prettyResponse('wink', 'commands:temas.edit-profile.title', {
+              theme: ctx.locale(`data:themes.${userThemes.selectedProfileTheme as 1}.name`),
+            })}\n${currentTheme.data.customEdits
+              .map(
+                (field) =>
+                  `${ctx.locale(
+                    `data:themes.${currentTheme.id as 30}.customFields.${field as 'upperTextBoxFilled'}`,
+                  )}: ${ctx.locale(`common:${getCustomThemeField(field, fieldToUse)}`)}`,
+              )
+              .join('\n')}`,
+          ),
+        ],
+      }),
+      createSeparator(),
+    ],
   });
 
   const selectMenu = createSelectMenu({
@@ -882,12 +957,6 @@ const createCustomizeMessage = async (
       },
       default: getCustomThemeField(field, fieldToUse),
     })),
-  });
-
-  const saveButton = createButton({
-    customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, 'SAVE'),
-    label: ctx.locale('commands:temas.edit-profile.save'),
-    style: ButtonStyles.Primary,
   });
 
   await ctx.ack();
@@ -942,7 +1011,8 @@ const createCustomizeMessage = async (
   let toSendFile;
 
   if (!res.err) {
-    embed.image = { url: 'attachment://profile.png' };
+    container.components.push(createMediaGallery([{ media: { url: 'attachment://profile.png' } }]));
+
     toSendFile = [
       {
         name: 'profile.png',
@@ -951,12 +1021,12 @@ const createCustomizeMessage = async (
     ];
   }
 
-  await ctx.makeMessage({
-    components: [createActionRow([selectMenu]), createActionRow([saveButton])],
-    content: '',
+  container.components.push(createActionRow([selectMenu]));
+
+  await ctx.makeLayoutMessage({
+    components: [container],
     files: toSendFile,
     attachments: typeof toSendFile === 'undefined' ? [] : undefined,
-    embeds: [embed],
   });
 };
 
@@ -969,8 +1039,11 @@ const customizeProfileTheme = async (ctx: ComponentInteractionContext): Promise<
 
   if (type === 'SAVE') {
     const data = (
-      (ctx.interaction.message?.components as ActionRow[])[0]
-        ?.components[0] as StringSelectComponent
+      (
+        (ctx.interaction.message?.components[0].components as ContainerComponent['components']).at(
+          -1,
+        ) as ActionRow
+      ).components[0] as StringSelectComponent
     ).options
       .map((a) => {
         const splitted = a.value.split('|');
@@ -981,11 +1054,11 @@ const customizeProfileTheme = async (ctx: ComponentInteractionContext): Promise<
 
     await userThemesRepository.setCustomizedProfile(ctx.user.id, data);
 
-    ctx.makeMessage({
-      components: [],
-      embeds: [],
+    return ctx.makeLayoutMessage({
       attachments: [],
-      content: ctx.prettyResponse('success', 'commands:temas.edit-profile.success'),
+      components: [
+        createTextDisplay(ctx.prettyResponse('success', 'commands:temas.edit-profile.success')),
+      ],
     });
   }
 };
@@ -1074,8 +1147,8 @@ const PersonalizeCommand = createCommand({
     {
       name: 'imagem',
       nameLocalizations: { 'en-US': 'image' },
-      description: '「🏞️」・Muda a imagem do seu perfil',
-      descriptionLocalizations: { 'en-US': '「🏞️」・Change your profile image' },
+      description: '「🌌」・Muda a imagem do seu perfil',
+      descriptionLocalizations: { 'en-US': '「🌌」・Change your profile image' },
       type: ApplicationCommandOptionTypes.SubCommand,
     },
     {
@@ -1084,53 +1157,7 @@ const PersonalizeCommand = createCommand({
       description: '「🎊」・Personalize os temas da sua conta!',
       descriptionLocalizations: { 'en-US': '「🎊」・Customize your account themes!' },
       type: ApplicationCommandOptionTypes.SubCommand,
-      options: [
-        {
-          name: 'tipo',
-          nameLocalizations: { 'en-US': 'type' },
-          description: 'O tipo de tema que você quer alterar',
-          descriptionLocalizations: { 'en-US': 'The type of theme you want to change' },
-          type: ApplicationCommandOptionTypes.String,
-          required: true,
-          choices: [
-            {
-              name: '✨ | Perfil',
-              nameLocalizations: { 'en-US': '✨ | Profile' },
-              value: 'profile',
-            },
-            {
-              name: '🃏 | Estilo de Carta',
-              nameLocalizations: { 'en-US': '🃏 | Card Style' },
-              value: 'cards',
-            },
-            {
-              name: '🖼️ | Mesa de Cartas',
-              nameLocalizations: { 'en-US': '🖼️ | Table Cards' },
-              value: 'table',
-            },
-            {
-              name: '🎴 | Fundo de Carta',
-              nameLocalizations: { 'en-US': '🎴 | Card Background' },
-              value: 'card_background',
-            },
-            {
-              name: '🏞️ | Fundo do 8ball',
-              nameLocalizations: { 'en-US': '🏞️ | 8ball Background' },
-              value: 'eb_background',
-            },
-            {
-              name: '❓ | Caixa de Pergunta do 8ball',
-              nameLocalizations: { 'en-US': '❓ | 8ball Question Box' },
-              value: 'eb_text_box',
-            },
-            {
-              name: '🤖 | Menhera do 8ball',
-              nameLocalizations: { 'en-US': '🤖 | 8ball Menhera' },
-              value: 'eb_menhera',
-            },
-          ],
-        },
-      ],
+      options: [],
     },
     {
       name: 'badges',
@@ -1152,9 +1179,9 @@ const PersonalizeCommand = createCommand({
     },
     {
       name: 'título',
-      description: '「🎟️」・Escolha o título que aparece em seu perfil',
+      description: '「🧧」・Escolha o título que aparece em seu perfil',
       descriptionLocalizations: {
-        'en-US': '「🎟️」・Choose the title that appears on your profile',
+        'en-US': '「🧧」・Choose the title that appears on your profile',
       },
       type: ApplicationCommandOptionTypes.SubCommand,
       options: [
@@ -1190,7 +1217,7 @@ const PersonalizeCommand = createCommand({
   ],
   commandRelatedExecutions: [
     executeBadgesSelected,
-    selectedThemeToUse,
+    personalizeThemeComponents,
     executeColorComponents,
     executeSelectedImageComponent,
     customizeProfileTheme,
@@ -1205,7 +1232,8 @@ const PersonalizeCommand = createCommand({
 
     if (command === 'imagem') return executeImageCommand(ctx, finishCommand);
 
-    if (command === 'temas') return executeThemesCommand(ctx, finishCommand);
+    if (command === 'temas')
+      return executeThemesCommand(ctx, 'profile', ctx.authorData.selectedColor);
 
     if (command === 'badges') return executeBadgesCommand(ctx, finishCommand);
 

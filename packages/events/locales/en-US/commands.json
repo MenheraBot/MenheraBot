@@ -761,8 +761,9 @@
     "eb_text_box": "8ball Question Box",
     "no-themes": "You don't have any such themes to change!",
     "selected": "Your theme was successfully changed!",
-    "choose": "Choose down bellow your new theme!",
-    "aquired-at": "Aquired on <t:{{unix}}>",
+    "choose": "Choose your new theme!",
+    "aquired-at": "<t:{{unix}}>",
+    "title": "Update your theme",
     "edit-profile": {
       "customize": "Customize Theme",
       "not-customizable": "Your current profile theme is not customizable",
