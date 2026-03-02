@@ -218,7 +218,7 @@ const getUserTransactions = async (
   users: string[],
   page: number,
   types: readonly ApiTransactionReason[],
-  currency: string[],
+  currency: TransactionRegister['currencyType'][],
 ): Promise<TransactionRegister[] | null> => {
   const result = await dataRequest
     .get(`/statistics/transaction`, {

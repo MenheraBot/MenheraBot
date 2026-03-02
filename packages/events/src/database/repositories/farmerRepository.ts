@@ -32,7 +32,12 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
   lastPlantedSeed: user.lastPlantedSeed,
   composter: user.composter ?? 0,
   silo: user.silo.flatMap((a) =>
-    a.weight <= 0 ? [] : [{ ...a, weight: parseFloat((a.weight ?? 1).toFixed(1)) }],
+    a.weight <= 0
+      ? (console.log(
+          `ySnoopyDogy Negative or zero silo weight for user ${user.id}. Silo: ${JSON.stringify(user.silo)}`,
+        ),
+        [])
+      : [{ ...a, weight: parseFloat((a.weight ?? 1).toFixed(1)) }],
   ),
 });
 

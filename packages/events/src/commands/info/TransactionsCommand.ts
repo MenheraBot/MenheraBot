@@ -33,6 +33,9 @@ import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { User } from '../../types/discordeno.js';
 import { SelectMenuInteraction } from '../../types/interaction.js';
+import { Plants } from '../../modules/fazendinha/constants.js';
+import { AvailablePlants } from '../../modules/fazendinha/types.js';
+import { extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils.js';
 
 const TRANSACTION_FILTERS_REPLACEMENT = {
   [ApiTransactionReason.BLACKJACK_LOST_DATA]: ApiTransactionReason.BLACKJACK_COMMAND,
@@ -60,8 +63,8 @@ const createAppendedTransactionReasons = (
     {} as Record<ApiTransactionReason, ApiTransactionReason>,
   );
 
-
-  for (let i = cloned.length; i >= 0; i--) if (inverted[cloned[i]]) cloned.push(inverted[cloned[i]]);
+  for (let i = cloned.length; i >= 0; i--)
+    if (inverted[cloned[i]]) cloned.push(inverted[cloned[i]]);
 
   return cloned;
 };
@@ -157,15 +160,24 @@ const getTransactionComponents = (
       embedColor,
     ),
     placeholder: ctx.locale('commands:transactions.select-currency'),
-    options: transactionableCommandOption.map(
-      (t: { name: string; value: string; nameLocalizations: Record<string, string> }) => ({
-        label: t.nameLocalizations[ctx.interactionLocale] ?? t.name,
-        value: t.value,
-        default: selectedCurrencies.includes(t.value),
-      }),
-    ),
+    options: [
+      {
+        label: ctx.locale('commands:fazendinha.plantations.silo'),
+        value: 'plant',
+        emoji: extractNameAndIdFromEmoji(Plants[AvailablePlants.Mate].emoji),
+        default: selectedCurrencies.includes('plant'),
+      },
+      ...transactionableCommandOption.map(
+        (t: { name: string; value: string; nameLocalizations: Record<string, string> }) => ({
+          label: (t.nameLocalizations[ctx.interactionLocale] ?? t.name).split('|')[1].trim(),
+          value: t.value,
+          default: selectedCurrencies.includes(t.value),
+          emoji: extractNameAndIdFromEmoji(t.name.split('|')[0].trim()),
+        }),
+      ),
+    ],
     minValues: 0,
-    maxValues: transactionableCommandOption.length,
+    maxValues: transactionableCommandOption.length + 1,
   });
 
   const userSelection = createUsersSelectMenu({
@@ -370,14 +382,20 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
 
     const transactionType = `${authorType}_to_${targetType}` as const;
 
+    const plant = a.currencyType.startsWith('plant')
+      ? (a.currencyType.replace('plant-', '') as '1')
+      : undefined;
+
     return `${ctx.locale('commands:transactions.transactions.base', {
       unix: millisToSeconds(a.date),
     })}${ctx.locale(`commands:transactions.transactions.${transactionType}`, {
       author,
       target,
-      emoji: ctx.safeEmoji(a.currencyType),
+      emoji: plant ? Plants[plant].emoji : ctx.safeEmoji(a.currencyType as 'gods'),
       amount: a.amount,
-      currencyType: ctx.locale(`common:${a.currencyType}`),
+      currencyType: plant
+        ? ctx.locale(`data:plants.${plant}`)
+        : ctx.locale(`common:${a.currencyType as 'gods'}`),
       reason: ctx.locale(`commands:transactions.reasons.${a.reason}`),
     })}`;
   });

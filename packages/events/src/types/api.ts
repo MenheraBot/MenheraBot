@@ -1,3 +1,4 @@
+import { AvailablePlants } from '../modules/fazendinha/types.js';
 import { ApiHuntingTypes, DatabaseHuntingTypes } from '../modules/hunt/types.js';
 import { PokerWinReasons } from '../modules/poker/types.js';
 
@@ -106,7 +107,7 @@ export enum ApiTransactionReason {
   ROCK_PAPER_SCISSORS_COMMAND = 'rps_command',
 }
 
-type TransactionType = DatabaseHuntingTypes | 'estrelinhas';
+type TransactionType = DatabaseHuntingTypes | 'estrelinhas' | `plant-${AvailablePlants}`;
 
 export interface TransactionRegister {
   authorId: string;

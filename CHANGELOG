@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Created
+
+- Criada novo tipo de moeda no `/transações`: **Plantas**.
+
 ### Changed
 
 - Mesclado alguns filtros do `/transações`.
