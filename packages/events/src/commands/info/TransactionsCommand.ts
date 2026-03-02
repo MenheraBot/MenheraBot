@@ -48,6 +48,7 @@ const TRANSACTION_FILTERS_REPLACEMENT = {
   [ApiTransactionReason.BUY_IMAGE_ROYALTY]: ApiTransactionReason.BUY_THEME_ROYALTY,
   [ApiTransactionReason.HARVEST_FARM]: ApiTransactionReason.FARMING,
   [ApiTransactionReason.UPGRADE_FARM]: ApiTransactionReason.FARMING,
+  [ApiTransactionReason.FARM_COMPOSTER]: ApiTransactionReason.FARMING,
 };
 
 const TRANSACTION_REASONS = Object.values(ApiTransactionReason).filter(
