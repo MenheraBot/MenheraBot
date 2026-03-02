@@ -28,7 +28,11 @@ import {
 } from '../../utils/discord/componentUtils.js';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
-import { ApiTransactionReason, TransactionRegister } from '../../types/api.js';
+import {
+  ApiTransactionReason,
+  FilterTransactionCurrency,
+  TransactionRegister,
+} from '../../types/api.js';
 import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { User } from '../../types/discordeno.js';
@@ -69,6 +73,24 @@ const createAppendedTransactionReasons = (
   return cloned;
 };
 
+const getCurrencies = (
+  ctx: InteractionContext,
+  selectedCurrencies: FilterTransactionCurrency[],
+) => [
+  {
+    label: ctx.locale('commands:fazendinha.plantations.silo'),
+    value: 'plant' as const,
+    emoji: extractNameAndIdFromEmoji(Plants[AvailablePlants.Mate].emoji),
+    default: selectedCurrencies.includes('plant'),
+  },
+  ...transactionableCommandOption.map((t) => ({
+    label: (t.nameLocalizations[ctx.interactionLocale as 'en-US'] ?? t.name).split('|')[1].trim(),
+    value: t.value,
+    default: selectedCurrencies.includes(t.value),
+    emoji: extractNameAndIdFromEmoji(t.name.split('|')[0].trim()),
+  })),
+];
+
 const getDefault = <T>(p: T[], c: SelectOption): T[] => {
   if (!c.default) return p;
   p.push(c.value as T);
@@ -93,7 +115,7 @@ const getTransactionComponents = (
   user: User,
   transactionsText: string,
   selectedTypes: string[],
-  selectedCurrencies: string[],
+  selectedCurrencies: FilterTransactionCurrency[],
 ): [ContainerComponent, ContainerComponent] => {
   const backButton = createButton({
     customId: createCustomId(
@@ -160,22 +182,7 @@ const getTransactionComponents = (
       embedColor,
     ),
     placeholder: ctx.locale('commands:transactions.select-currency'),
-    options: [
-      {
-        label: ctx.locale('commands:fazendinha.plantations.silo'),
-        value: 'plant',
-        emoji: extractNameAndIdFromEmoji(Plants[AvailablePlants.Mate].emoji),
-        default: selectedCurrencies.includes('plant'),
-      },
-      ...transactionableCommandOption.map(
-        (t: { name: string; value: string; nameLocalizations: Record<string, string> }) => ({
-          label: (t.nameLocalizations[ctx.interactionLocale] ?? t.name).split('|')[1].trim(),
-          value: t.value,
-          default: selectedCurrencies.includes(t.value),
-          emoji: extractNameAndIdFromEmoji(t.name.split('|')[0].trim()),
-        }),
-      ),
-    ],
+    options: getCurrencies(ctx, selectedCurrencies),
     minValues: 0,
     maxValues: transactionableCommandOption.length + 1,
   });
@@ -307,7 +314,6 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
   secondUserId: string,
 ): Promise<void> => {
   let types = TRANSACTION_REASONS;
-  let currency = transactionableCommandOption.map((a) => a.value);
   const users = [`${toFindUser.id}`, secondUserId];
 
   const sentComponents = ctx?.interaction?.message?.components ?? [];
@@ -323,6 +329,11 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
       getDefault,
       [],
     ) ?? [];
+
+
+    const allCurrencies = getCurrencies(ctx, sentCurrency).map((a) => a.value) as FilterTransactionCurrency[];
+
+  let currency = allCurrencies
 
   if (sentTypes.length > 0) types = sentTypes;
   if (sentCurrency.length > 0) currency = sentCurrency;
@@ -413,7 +424,7 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
         user: getDisplayName(toFindUser),
       }),
     types.length === TRANSACTION_REASONS.length ? [] : types,
-    currency.length === transactionableCommandOption.length ? [] : currency,
+    currency.length === allCurrencies.length ? [] : currency,
   );
 
   ctx.makeLayoutMessage({ components });

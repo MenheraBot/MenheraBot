@@ -9,6 +9,7 @@ import {
   ApiTransactionReason,
   ApiUserProfileStats,
   BanInfo,
+  FilterTransactionCurrency,
   MayReturnError,
   TopGamblingUser,
   TopHunters,
@@ -218,7 +219,7 @@ const getUserTransactions = async (
   users: string[],
   page: number,
   types: readonly ApiTransactionReason[],
-  currency: TransactionRegister['currencyType'][],
+  currency: FilterTransactionCurrency[],
 ): Promise<TransactionRegister[] | null> => {
   const result = await dataRequest
     .get(`/statistics/transaction`, {

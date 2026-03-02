@@ -1,6 +1,7 @@
 import { AvailablePlants } from '../modules/fazendinha/types.js';
 import { ApiHuntingTypes, DatabaseHuntingTypes } from '../modules/hunt/types.js';
 import { PokerWinReasons } from '../modules/poker/types.js';
+import { transactionableCommandOption } from '../structures/constants.js';
 
 export interface ApiHuntStats {
   user_id: string;
@@ -108,6 +109,8 @@ export enum ApiTransactionReason {
 }
 
 type TransactionType = DatabaseHuntingTypes | 'estrelinhas' | `plant-${AvailablePlants}`;
+
+export type FilterTransactionCurrency = (typeof transactionableCommandOption)[number]['value'] | 'plant';
 
 export interface TransactionRegister {
   authorId: string;
