@@ -1,4 +1,9 @@
-import { InteractionResponseTypes, InteractionTypes, MessageFlags } from '@discordeno/bot';
+import {
+  InteractionDataOption,
+  InteractionResponseTypes,
+  InteractionTypes,
+  MessageFlags,
+} from '@discordeno/bot';
 import i18next from 'i18next';
 
 import blacklistRepository from '../../database/repositories/blacklistRepository.js';
@@ -230,7 +235,16 @@ const setInteractionCreateEvent = (): void => {
 
     bot.commandsInExecution -= 1;
 
-    logger.info(`[COMMAND] ${commandUsed.fullCommand} - ${interaction.user.id}`);
+    const getFullUsage = () => {
+      const returnValue = (opt: InteractionDataOption): string => {
+        if (opt.value) return `${opt.name}:${opt.value}`;
+        if (opt.options) return opt.options.map((a) => returnValue(a)).join(' ');
+        return '';
+      };
+      return interaction.data?.options?.map?.((opt) => returnValue(opt)).join(' ');
+    };
+
+    logger.info(`[COMMAND] ${commandUsed.fullCommand} ${getFullUsage()} - ${interaction.user.id}`);
 
     if (!interaction.guildId) return;
 

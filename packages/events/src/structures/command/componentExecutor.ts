@@ -171,7 +171,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
   });
 
   logger.info(
-    `[COMPONENT] ${commandInfo._id} - ${ctx.user.id} "${interaction.data.customId}" (${originalCustomId})`,
+    `[COMPONENT] ${originalInteraction.fullCommandUsed} - ${ctx.user.id} "${interaction.data.customId}" (${originalCustomId})`,
   );
 };
 
