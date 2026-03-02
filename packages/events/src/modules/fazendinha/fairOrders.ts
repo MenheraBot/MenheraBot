@@ -32,7 +32,11 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
 import starsRepository from '../../database/repositories/starsRepository.js';
-import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import {
+  postMultipleTransactions,
+  postTransaction,
+  RegisterTransaction,
+} from '../../utils/apiRequests/statistics.js';
 import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import cacheRepository from '../../database/repositories/cacheRepository.js';
@@ -171,15 +175,26 @@ const handleTakeOrder = async (
       });
   }
 
+  const transactions: RegisterTransaction[] = [
+    {
+      amount: order.weight,
+      authorId: `${ctx.user.id}`,
+      targetId: order.userId,
+      currencyType: `plant-${order.plant}-${order.quality}`,
+      reason: ApiTransactionReason.FAIR,
+    },
+  ];
+
   if (order.awards.estrelinhas) {
     await starsRepository.addStars(ctx.user.id, order.awards.estrelinhas);
-    await postTransaction(
-      `${bot.id}`,
-      `${ctx.user.id}`,
-      Number(order.awards.estrelinhas),
-      'estrelinhas',
-      ApiTransactionReason.FAIR,
-    );
+
+    transactions.push({
+      authorId: `${bot.id}`,
+      targetId: `${ctx.user.id}`,
+      amount: Number(order.awards.estrelinhas),
+      currencyType: 'estrelinhas',
+      reason: ApiTransactionReason.FAIR,
+    });
   }
 
   if (order.awards.fertilizers)
@@ -193,7 +208,9 @@ const handleTakeOrder = async (
 
   await farmerRepository.updateFarmer(farmer.id, farmer.silo, farmer.items);
 
+  await postMultipleTransactions(transactions);
   await fairOrderRepository.completeOrder(order._id);
+
   await notificationRepository.createNotification(
     order.userId,
     'commands:notificações.notifications.user-accepted-deal',
