@@ -39,6 +39,7 @@ cleanup() {
 
     MAIN_PID="$(pgrep -f 'node -r dotenv/config .')"
     kill "$MAIN_PID" 2>/dev/null
+    stty echo
     exit
 }
 
@@ -50,8 +51,7 @@ start_app() {
         kill "$APP_PID" 2>/dev/null
         wait "$APP_PID" 2>/dev/null
 
-        curl -X POST localhost:3000/dev/reboot 2>/dev/null
-        sleep 1
+        curl -s -X POST localhost:3000/dev/reboot 2>/dev/null > /dev/null
     fi
 
     echo -e "${GREEN}[SYSTEM] Starting application (pnpm events dev)...${NC}"
@@ -96,18 +96,34 @@ start_watcher() {
     WATCHER_PID=$!
 }
 
+toggle_autoreload() {
+    if [ $AUTO_RESTART = true ]; then
+        AUTO_RESTART=false
+        echo -e "${YELLOW}[SYSTEM] Auto Reload is ${RED}disabled!${NC}"
+    else
+        AUTO_RESTART=true
+        echo -e "${YELLOW}[SYSTEM] Auto Reload is ${GREEN}enabled!${NC}"
+    fi
+}
+
+print_help() {
+    echo -e "${GREEN}=== Menhera Watcher ===${NC}"
+    echo -e "Controls:"
+    echo -e "  [A] Toggle Auto Reload"
+    echo -e "  [B] Force Build (pnpm events build)"
+    echo -e "  [C] Clear Logs"
+    echo -e "  [R] Restart App (pnpm events dev)"
+    echo -e "  [Q] Quit"
+    echo -e "-----------------------------"
+    echo -e
+}
+
 clear
-echo -e "${GREEN}=== Menhera Watcher ===${NC}"
-echo -e "Controls:"
-echo -e "  [R] Restart App (pnpm events dev)"
-echo -e "  [B] Force Build (pnpm events build)"
-echo -e "  [C] Clear Logs"
-echo -e "  [Q] Quit"
-echo -e "-----------------------------"
-echo -e
+
+print_help
 
 if [ "$AUTO_RESTART" = true ]; then
-    echo -e "${YELLOW}[SYSTEM] Auto Reload is enabled!${NC}"          
+    echo -e "${YELLOW}[SYSTEM] Auto Reload is ${GREEN}enabled!${NC}"          
 fi
 
 start_watcher
@@ -118,24 +134,24 @@ LAST_READ_LINE=0
 
 while true; do
     read -t 0.1 -n 1 -s key
+
+    case $key in
+        [rR]) start_app ;;
+        [aA]) toggle_autoreload ;;
+        [bB])
+            echo -e "${BLUE}[SYSTEM] Force build triggered.${NC}"
+            run_build
+            ;;
+        [cC])
+            clear
+            print_help
+            echo -e "${GREEN}========== Logs Cleared ==========${NC}"
+            echo -e "${YELLOW}[STATE] App is running (PID: $APP_PID)${NC}"
+            [ "$AUTO_RESTART" = true ] && echo -e "${YELLOW}[SYSTEM] Auto Reload is ${GREEN}enabled!${NC}"
+            ;;
+        [qQ]) cleanup ;;
+    esac
     
-    if [[ $key == "r" || $key == "R" ]]; then
-        start_app
-    elif [[ $key == "b" || $key == "B" ]]; then
-        echo -e "${BLUE}[SYSTEM] Force build triggered.${NC}"
-        run_build
-    elif [[ $key == "c" || $key == "C" ]]; then
-        clear
-        echo -e "${GREEN}========== Logs Cleared ==========${NC}"
-        echo -e "${YELLOW}[STATE] App is running (PID: $APP_PID)${NC}"
-
-        if [ "$AUTO_RESTART" = true ]; then
-            echo -e "${YELLOW}[SYSTEM] Auto Reload is enabled!${NC}"          
-        fi
-    elif [[ $key == "q" || $key == "Q" ]]; then
-        cleanup
-    fi
-
     CURRENT_LINES=$(wc -l < .watch_trigger 2>/dev/null || echo 0)
     
     if [ "$CURRENT_LINES" -gt "$LAST_READ_LINE" ]; then

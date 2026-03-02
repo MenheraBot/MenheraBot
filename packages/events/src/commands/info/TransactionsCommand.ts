@@ -34,9 +34,37 @@ import { InteractionContext } from '../../types/menhera.js';
 import { User } from '../../types/discordeno.js';
 import { SelectMenuInteraction } from '../../types/interaction.js';
 
-const TRANSACTION_REASONS = Object.freeze(
-  Object.values(ApiTransactionReason).filter((f) => f !== ApiTransactionReason.SIMON_SAYS),
-) as ApiTransactionReason[];
+const TRANSACTION_FILTERS_REPLACEMENT = {
+  [ApiTransactionReason.BLACKJACK_LOST_DATA]: ApiTransactionReason.BLACKJACK_COMMAND,
+  [ApiTransactionReason.WIN_BICHO]: ApiTransactionReason.BICHO_COMMAND,
+  [ApiTransactionReason.BUY_IMAGE_ROYALTY]: ApiTransactionReason.BUY_THEME_ROYALTY,
+};
+
+const TRANSACTION_REASONS = Object.values(ApiTransactionReason).filter(
+  (f) => f !== ApiTransactionReason.SIMON_SAYS && !(f in TRANSACTION_FILTERS_REPLACEMENT),
+);
+
+const createAppendedTransactionReasons = (
+  types: ApiTransactionReason[],
+): ApiTransactionReason[] => {
+  const cloned = JSON.parse(JSON.stringify(types)) as ApiTransactionReason[];
+
+  const inverted = Object.entries(TRANSACTION_FILTERS_REPLACEMENT).reduce<
+    Record<ApiTransactionReason, ApiTransactionReason>
+  >(
+    (p, [k, v]) => {
+      p[v] = k as ApiTransactionReason;
+
+      return p;
+    },
+    {} as Record<ApiTransactionReason, ApiTransactionReason>,
+  );
+
+
+  for (let i = cloned.length; i >= 0; i--) if (inverted[cloned[i]]) cloned.push(inverted[cloned[i]]);
+
+  return cloned;
+};
 
 const getDefault = <T>(p: T[], c: SelectOption): T[] => {
   if (!c.default) return p;
@@ -287,7 +315,12 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
   if (sentTypes.length > 0) types = sentTypes;
   if (sentCurrency.length > 0) currency = sentCurrency;
 
-  const transactions = await getUserTransactions(users, page, types, currency);
+  const transactions = await getUserTransactions(
+    users,
+    page,
+    createAppendedTransactionReasons(types),
+    currency,
+  );
 
   if (!transactions)
     return ctx.makeLayoutMessage({
@@ -361,7 +394,7 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
       ctx.locale('commands:transactions.no-transactions', {
         user: getDisplayName(toFindUser),
       }),
-    types.length === TRANSACTION_REASONS.length ? [] : (types as string[]),
+    types.length === TRANSACTION_REASONS.length ? [] : types,
     currency.length === transactionableCommandOption.length ? [] : currency,
   );
 

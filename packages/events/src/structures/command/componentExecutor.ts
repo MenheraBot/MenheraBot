@@ -53,14 +53,10 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
 
   let originalCustomId = '-';
 
-  console.log(interaction.data.customId)
-
   if (!interaction.data.customId.includes('|')) {
     originalCustomId = interaction.data.customId;
     if (interaction.data.customId.startsWith(DELETE_CUSTOM_ID)) {
       const user = originalCustomId.split('-')[1];
-
-      console.log(user, originalCustomId)
       if (`${interaction.user.id}` !== user)
         return errorReply(T('permissions:NOT_INTERACTION_OWNER', { owner: mentionUser(user) }));
 
