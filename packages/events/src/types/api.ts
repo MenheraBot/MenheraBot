@@ -1,4 +1,4 @@
-import { AvailablePlants } from '../modules/fazendinha/types.js';
+import { AvailablePlants, PlantQuality } from '../modules/fazendinha/types.js';
 import { ApiHuntingTypes, DatabaseHuntingTypes } from '../modules/hunt/types.js';
 import { PokerWinReasons } from '../modules/poker/types.js';
 import { transactionableCommandOption } from '../structures/constants.js';
@@ -108,7 +108,7 @@ export enum ApiTransactionReason {
   ROCK_PAPER_SCISSORS_COMMAND = 'rps_command',
 }
 
-type TransactionType = DatabaseHuntingTypes | 'estrelinhas' | `plant-${AvailablePlants}`;
+type TransactionType = DatabaseHuntingTypes | 'estrelinhas' | `plant-${AvailablePlants}-${PlantQuality}`;
 
 export type FilterTransactionCurrency = (typeof transactionableCommandOption)[number]['value'] | 'plant';
 

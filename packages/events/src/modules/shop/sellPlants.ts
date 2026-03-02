@@ -7,7 +7,10 @@ import { ApiTransactionReason } from '../../types/api.js';
 import { DatabaseFarmerSchema, QuantitativePlant } from '../../types/database.js';
 import { ModalInteraction } from '../../types/interaction.js';
 import { InteractionContext } from '../../types/menhera.js';
-import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import {
+  postMultipleTransactions,
+  RegisterTransaction,
+} from '../../utils/apiRequests/statistics.js';
 import { extractFields } from '../../utils/discord/modalUtils.js';
 import { Plants } from '../fazendinha/constants.js';
 import {
@@ -74,6 +77,8 @@ const executeSellPlant = async (
 
   const { selectedColor } = await userRepository.ensureFindUser(farmer.id);
 
+  const transactions: RegisterTransaction[] = [];
+
   for (let i = selectedPlants.length - 1; i >= 0; i--) {
     const currentPlant = selectedPlants[i];
     const fromSilo = farmer.silo.find(filterPlant(currentPlant));
@@ -104,6 +109,15 @@ const executeSellPlant = async (
 
     totalStars += Math.floor(currentPlant.weight * plantPrice);
     soldPlants.push(`${getQualityEmoji(plantQuality)}${plant.emoji} **${currentPlant.weight} kg**`);
+
+    transactions.push({
+      amount: currentPlant.weight,
+      authorId: `${ctx.user.id}`,
+      targetId: `${bot.id}`,
+      currencyType: `plant-${currentPlant.plant}-${plantQuality}`,
+      reason: ApiTransactionReason.SELL_PLANT,
+    });
+
     fromSilo.weight = parseFloat((fromSilo.weight - currentPlant.weight).toFixed(1));
 
     if (fromSilo.weight <= 0) farmer.silo.splice(farmer.silo.findIndex(filterPlant(fromSilo)), 1);
@@ -113,13 +127,16 @@ const executeSellPlant = async (
 
   await Promise.all([
     starsRepository.addStars(ctx.user.id, totalStars),
-    postTransaction(
-      `${bot.id}`,
-      `${ctx.user.id}`,
-      totalStars,
-      'estrelinhas',
-      ApiTransactionReason.SELL_PLANT,
-    ),
+    postMultipleTransactions([
+      ...transactions,
+      {
+        amount: totalStars,
+        currencyType: 'estrelinhas',
+        authorId: `${bot.id}`,
+        targetId: `${ctx.user.id}`,
+        reason: ApiTransactionReason.SELL_PLANT,
+      },
+    ]),
     farmerRepository.updateSilo(ctx.user.id, farmer.silo),
   ]);
 

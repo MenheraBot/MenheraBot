@@ -40,6 +40,7 @@ import { SelectMenuInteraction } from '../../types/interaction.js';
 import { Plants } from '../../modules/fazendinha/constants.js';
 import { AvailablePlants } from '../../modules/fazendinha/types.js';
 import { extractNameAndIdFromEmoji } from '../../utils/discord/messageUtils.js';
+import { getQualityEmoji } from '../../modules/fazendinha/siloUtils.js';
 
 const TRANSACTION_FILTERS_REPLACEMENT = {
   [ApiTransactionReason.BLACKJACK_LOST_DATA]: ApiTransactionReason.BLACKJACK_COMMAND,
@@ -330,10 +331,11 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
       [],
     ) ?? [];
 
+  const allCurrencies = getCurrencies(ctx, sentCurrency).map(
+    (a) => a.value,
+  ) as FilterTransactionCurrency[];
 
-    const allCurrencies = getCurrencies(ctx, sentCurrency).map((a) => a.value) as FilterTransactionCurrency[];
-
-  let currency = allCurrencies
+  let currency = allCurrencies;
 
   if (sentTypes.length > 0) types = sentTypes;
   if (sentCurrency.length > 0) currency = sentCurrency;
@@ -393,19 +395,19 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
 
     const transactionType = `${authorType}_to_${targetType}` as const;
 
-    const plant = a.currencyType.startsWith('plant')
-      ? (a.currencyType.replace('plant-', '') as '1')
-      : undefined;
+    const [, plant, quality] = a.currencyType.startsWith('plant') ? a.currencyType.split('-') : [];
 
     return `${ctx.locale('commands:transactions.transactions.base', {
       unix: millisToSeconds(a.date),
     })}${ctx.locale(`commands:transactions.transactions.${transactionType}`, {
       author,
       target,
-      emoji: plant ? Plants[plant].emoji : ctx.safeEmoji(a.currencyType as 'gods'),
+      emoji: plant
+        ? `${Plants[plant as '1'].emoji} ${getQualityEmoji(Number(quality))}`
+        : ctx.safeEmoji(a.currencyType as 'gods'),
       amount: a.amount,
       currencyType: plant
-        ? ctx.locale(`data:plants.${plant}`)
+        ? ctx.locale(`data:plants.${plant as '1'}`)
         : ctx.locale(`common:${a.currencyType as 'gods'}`),
       reason: ctx.locale(`commands:transactions.reasons.${a.reason}`),
     })}`;

@@ -215,6 +215,18 @@ const postTransaction = async (
     .catch(debugError);
 };
 
+export type RegisterTransaction = {
+  authorId: TransactionRegister['authorId'];
+  targetId: TransactionRegister['targetId'];
+  amount: TransactionRegister['amount'];
+  currencyType: TransactionRegister['currencyType'];
+  reason: ApiTransactionReason;
+};
+
+const postMultipleTransactions = async (transactions: RegisterTransaction[]): Promise<void> => {
+  await dataRequest.post('/statistics/transaction/bulk', { transactions }).catch(debugError);
+};
+
 const getUserTransactions = async (
   users: string[],
   page: number,
@@ -333,6 +345,7 @@ export {
   getTopGamblingUsers,
   getUserLastBanData,
   getAllUserBans,
+  postMultipleTransactions,
   postTransaction,
   getTopHunters,
 };
