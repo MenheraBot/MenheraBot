@@ -24,6 +24,9 @@ import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
 import executeDailies from '../dailies/executeDailies.js';
 import { Interaction } from '../../types/discordeno.js';
+import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
 
 let plantNames: ApplicationCommandOptionChoice[] = [];
 
@@ -57,7 +60,9 @@ const announceAutocomplete = async (interaction: Interaction): Promise<void | nu
 
   if (focused?.name === 'produto') {
     const searchString = plantNames.map(
-      (a) => a.nameLocalizations?.[(interaction.locale as 'en-US') ?? 'pt-BR'] ?? normalizeString(a.name),
+      (a) =>
+        a.nameLocalizations?.[(interaction.locale as 'en-US') ?? 'pt-BR'] ??
+        normalizeString(a.name),
     );
 
     const ratings = findBestMatch(normalizeString(`${input}`), searchString);
@@ -212,6 +217,14 @@ const executeAnnounceProduct = async (
   await farmerRepository.updateSilo(
     ctx.user.id,
     removePlants(farmer.silo, [{ weight: amount, plant, quality }]),
+  );
+
+  await postTransaction(
+    `${ctx.user.id}`,
+    `${bot.id}`,
+    amount,
+    `plant-${plant}-${quality}`,
+    ApiTransactionReason.FAIR,
   );
 
   await executeDailies.announceProduct(ctx.authorData);

@@ -8,7 +8,7 @@ import { addPlants, getQuality, getQualityEmoji, getSiloLimits } from './siloUti
 import userRepository from '../../database/repositories/userRepository.js';
 import starsRepository from '../../database/repositories/starsRepository.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
-import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { postMultipleTransactions } from '../../utils/apiRequests/statistics.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
 import {
@@ -32,6 +32,7 @@ import notificationRepository from '../../database/repositories/notificationRepo
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 import { Interaction, User } from '../../types/discordeno.js';
 import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
+import { bot } from '../../index.js';
 
 const listItemAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'item', false) ?? '';
@@ -141,13 +142,22 @@ const executeBuyItem = async (
         },
       ]),
     ),
-    postTransaction(
-      `${ctx.user.id}`,
-      announcement.userId,
-      announcement.price,
-      'estrelinhas',
-      ApiTransactionReason.FAIR,
-    ),
+    postMultipleTransactions([
+      {
+        authorId: `${ctx.user.id}`,
+        targetId: announcement.userId,
+        amount: announcement.price,
+        currencyType: 'estrelinhas',
+        reason: ApiTransactionReason.FAIR,
+      },
+      {
+        authorId: `${bot.id}`,
+        targetId: `${ctx.user.id}`,
+        amount: announcement.weight,
+        currencyType: `plant-${announcement.plantType}-${getQuality({ quality: announcement.plantQuality })}`,
+        reason: ApiTransactionReason.FAIR,
+      },
+    ]),
     notificationRepository.createNotification(
       announcement.userId,
       'commands:notificações.notifications.user-bought-announcement',

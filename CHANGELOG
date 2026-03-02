@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Criado transações de plantas ao entregar no `/fazendinha entregas`.
 - Criado transações de plantas ao colher no `/fazendinha plantações`.
 - Criado transações de plantas ao trocar na `/fazendinha feira trocas`.
+- Criado transações de plantas ao comprar e anunciar na `/fazendinha feira comprar` e `/fazendinha feira anunciar`.
 
 ### Changed
 
