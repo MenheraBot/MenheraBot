@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Criado transações de plantas ao colher no `/fazendinha plantações`.
 - Criado transações de plantas ao trocar na `/fazendinha feira trocas`.
 - Criado transações de plantas ao comprar e anunciar na `/fazendinha feira comprar` e `/fazendinha feira anunciar`.
-- Criado transações de plantas ao desbloquear campo no `/fazendinha administrar`
+- Criado transações de plantas ao desbloquear campo no `/fazendinha administrar`.
+- Criado transações de plantas na `/fazendinha composteira`.
 
 ### Changed
 

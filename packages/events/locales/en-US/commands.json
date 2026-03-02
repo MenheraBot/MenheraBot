@@ -1017,6 +1017,8 @@
       "farming": "farming",
       "harvest_farm_title": "Harvest",
       "harvest_farm": "harvesting plants",
+      "farm_composter_title": "Composter",
+      "farm_composter": "compost plants",
       "daily_farm": "farm delivery",
       "daily_farm_title": "Daily Delivery",
       "buy_fair": "negotiating at the fair",

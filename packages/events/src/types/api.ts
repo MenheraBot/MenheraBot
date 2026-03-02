@@ -105,14 +105,20 @@ export enum ApiTransactionReason {
   UPGRADE_FARM = 'upgrade_farm',
   DAILY_FARM = 'daily_farm',
   HARVEST_FARM = 'harvest_farm',
+  FARM_COMPOSTER = 'farm_composter',
   FARMING = 'farming',
   FAIR = 'buy_fair',
   ROCK_PAPER_SCISSORS_COMMAND = 'rps_command',
 }
 
-type TransactionType = DatabaseHuntingTypes | 'estrelinhas' | `plant-${AvailablePlants}-${PlantQuality}`;
+type TransactionType =
+  | DatabaseHuntingTypes
+  | 'estrelinhas'
+  | `plant-${AvailablePlants}-${PlantQuality}`;
 
-export type FilterTransactionCurrency = (typeof transactionableCommandOption)[number]['value'] | 'plant';
+export type FilterTransactionCurrency =
+  | (typeof transactionableCommandOption)[number]['value']
+  | 'plant';
 
 export interface TransactionRegister {
   authorId: string;

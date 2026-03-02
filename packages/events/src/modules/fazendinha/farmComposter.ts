@@ -41,6 +41,12 @@ import {
 } from './siloUtils.js';
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction.js';
 import { extractFields } from '../../utils/discord/modalUtils.js';
+import {
+  postMultipleTransactions,
+  RegisterTransaction,
+} from '../../utils/apiRequests/statistics.js';
+import { bot } from '../../index.js';
+import { ApiTransactionReason } from '../../types/api.js';
 
 const displaySelectComposterPlants = async (
   ctx: ComponentInteractionContext,
@@ -217,6 +223,8 @@ const receiveModal = async (
     };
   });
 
+  const transactions: RegisterTransaction[] = [];
+
   for (let i = selectedPlants.length - 1; i >= 0; i--) {
     const currentPlant = selectedPlants[i];
 
@@ -249,6 +257,14 @@ const receiveModal = async (
     fromSilo.weight = parseFloat((fromSilo.weight - currentPlant.weight).toFixed(1));
     if (fromSilo.weight <= 0) farmer.silo.splice(farmer.silo.findIndex(filterPlant(fromSilo)), 1);
 
+    transactions.push({
+      authorId: `${ctx.user.id}`,
+      targetId: `${bot.id}`,
+      amount: currentPlant.weight,
+      currencyType: `plant-${currentPlant.plant}-${getQuality(currentPlant)}`,
+      reason: ApiTransactionReason.FARM_COMPOSTER,
+    });
+
     const toComposte = composterEquivalentForField(currentPlant, PlantationState.Mature);
     farmer.composter += toComposte;
   }
@@ -256,6 +272,8 @@ const receiveModal = async (
   farmer.composter = Math.min(farmer.composter, MAX_COMPOSTER_VALUE);
 
   await farmerRepository.updateSilo(ctx.user.id, farmer.silo, farmer.composter);
+
+  await postMultipleTransactions(transactions);
 
   await displayComposter(ctx, farmer, selectedColor);
 };
