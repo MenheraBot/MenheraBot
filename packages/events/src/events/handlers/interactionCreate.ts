@@ -237,11 +237,11 @@ const setInteractionCreateEvent = (): void => {
 
     const getFullUsage = () => {
       const returnValue = (opt: InteractionDataOption): string => {
-        if (opt.value) return `${opt.name}:${opt.value}`;
-        if (opt.options) return opt.options.map((a) => returnValue(a)).join(' ');
+        if (opt?.value) return `${opt.name}:${opt.value}`;
+        if (opt?.options) return opt.options.map((a) => returnValue(a)).join(' ');
         return '';
       };
-      return interaction.data?.options?.map?.((opt) => returnValue(opt)).join(' ');
+      return interaction.data?.options?.map?.((opt) => returnValue(opt)).join(' ') || '';
     };
 
     logger.info(`[COMMAND] ${commandUsed.fullCommand} ${getFullUsage()} - ${interaction.user.id}`);
