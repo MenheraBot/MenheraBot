@@ -32,7 +32,7 @@ import {
 } from './siloUtils.js';
 import { extractNameAndIdFromEmoji, MessageFlags } from '../../utils/discord/messageUtils.js';
 import starsRepository from '../../database/repositories/starsRepository.js';
-import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { postMultipleTransactions } from '../../utils/apiRequests/statistics.js';
 import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import { hoursToMillis, millisToSeconds } from '../../utils/miscUtils.js';
@@ -436,13 +436,22 @@ const executeUnlockField = async (ctx: ComponentInteractionContext): Promise<voi
   await Promise.all([
     starsRepository.removeStars(ctx.user.id, neededItems.cost),
     farmerRepository.unlockField(ctx.user.id),
-    postTransaction(
-      `${ctx.user.id}`,
-      `${bot.id}`,
-      neededItems.cost,
-      'estrelinhas',
-      ApiTransactionReason.UPGRADE_FARM,
-    ),
+    postMultipleTransactions([
+      {
+        authorId: `${ctx.user.id}`,
+        targetId: `${bot.id}`,
+        amount: neededItems.cost,
+        currencyType: 'estrelinhas',
+        reason: ApiTransactionReason.UPGRADE_FARM,
+      },
+      ...neededItems.neededPlants.map((a) => ({
+        authorId: `${ctx.user.id}`,
+        targetId: `${bot.id}`,
+        amount: a.weight,
+        currencyType: `plant-${a.plant}-${getQuality(a)}` as const,
+        reason: ApiTransactionReason.UPGRADE_FARM,
+      })),
+    ]),
   ]);
 
   await farmerRepository.updateSilo(
