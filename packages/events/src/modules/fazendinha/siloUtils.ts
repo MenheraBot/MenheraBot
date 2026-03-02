@@ -5,6 +5,8 @@ import {
   QuantitativePlant,
   QuantitativeSeed,
 } from '../../types/database.js';
+import { RegisterTransaction } from '../../utils/apiRequests/statistics.js';
+import { logger } from '../../utils/logger.js';
 import {
   INITIAL_LIMIT_FOR_SILO,
   Plants,
@@ -106,14 +108,20 @@ const addPlants = <T extends QuantitativePlantItem>(user: T[], toAdd: T[]): T[] 
 const removePlantsIgnoringQuality = (
   user: QuantitativePlant[],
   toRemove: QuantitativePlant[],
-): [QuantitativePlant[], PlantQuality | false] => {
+): [
+  QuantitativePlant[],
+  PlantQuality | false,
+  Pick<RegisterTransaction, 'amount' | 'currencyType'>[],
+] => {
   const noQualityRemove = ignorePlantQuality(toRemove);
 
   const passedQualities: Partial<Record<PlantQuality, true>> = {};
 
-  const sortedPlants = user.sort((a, b) => a.weight - b.weight);
+  const sortedPlants = user.sort((a, b) => b.weight - a.weight);
 
   let safeProdLoop = 0;
+
+  const transactions: Pick<RegisterTransaction, 'amount' | 'currencyType'>[] = [];
 
   for (let i = 0; i < noQualityRemove.length; i++) {
     const plant = noQualityRemove[i];
@@ -125,17 +133,24 @@ const removePlantsIgnoringQuality = (
     passedQualities[getQuality(userPlant)] = true;
     const newWeight = parseFloat((userPlant.weight - plant.weight).toFixed(1));
 
+    transactions.push({
+      amount: userPlant.weight > plant.weight ? plant.weight : userPlant.weight,
+      currencyType: `plant-${plant.plant}-${getQuality(userPlant)}`,
+    });
+
     userPlant.weight = newWeight;
 
-    if (newWeight === 0) sortedPlants.splice(sortedPlants.findIndex(filterPlant(userPlant)));
+    if (newWeight <= 0) sortedPlants.splice(sortedPlants.findIndex(filterPlant(userPlant)), 1);
 
     if (newWeight < 0) {
       plant.weight = Math.abs(newWeight);
       i -= 1;
 
       safeProdLoop += 1;
-      if (safeProdLoop > 300) break;
-      continue;
+      if (safeProdLoop > 500) {
+        logger.error(`Reached limit for looping user plants: ${JSON.stringify([user, toRemove])}`);
+        break;
+      }
     }
   }
 
@@ -143,7 +158,7 @@ const removePlantsIgnoringQuality = (
 
   const mainQuality = qualities.length === 1 && Number(qualities[0]);
 
-  return [sortedPlants, mainQuality];
+  return [sortedPlants, mainQuality, transactions];
 };
 
 const removePlants = <T extends QuantitativePlantItem>(user: T[], toRemove: T[]): T[] =>

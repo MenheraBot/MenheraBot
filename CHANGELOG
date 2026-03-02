@@ -10,11 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Created
 
 - Criada novo tipo de moeda no `/transações`: **Plantas**.
-- Criada transações de plantas ao vender plantas na /loja.
+- Criada transações de plantas ao vender plantas na `/loja vender plantas`.
+- Criado transações de plantas ao entregar no `/fazendinha entregas`.
 
 ### Changed
 
 - Mesclado alguns filtros do `/transações`.
+
+### Fixed
+
+- Corrigido problema de plantas sumirem do silo ao realizar uma entrega no `/fazendinha entregas`.
 
 ## [6.3.3] - 2026-02-28
 

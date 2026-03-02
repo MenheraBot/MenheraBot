@@ -405,7 +405,7 @@ const executeTransactionsCommand = async <FirstTime extends boolean>(
       emoji: plant
         ? `${Plants[plant as '1'].emoji} ${getQualityEmoji(Number(quality))}`
         : ctx.safeEmoji(a.currencyType as 'gods'),
-      amount: a.amount,
+      amount: `${a.amount}${plant ? ' Kg' : ''}`,
       currencyType: plant
         ? ctx.locale(`data:plants.${plant as '1'}`)
         : ctx.locale(`common:${a.currencyType as 'gods'}`),

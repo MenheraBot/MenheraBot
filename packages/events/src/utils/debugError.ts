@@ -7,7 +7,7 @@ export const debugError = (err: Error, toSentry = true): null => {
   if (toSentry && err?.response?.status !== 404)
     try {
       logger.error('Debug Error', err?.message);
-      logger.error(err);
+      logger.info(err);
       Sentry.captureException(err);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {

@@ -22,7 +22,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 import farmerRepository from '../../database/repositories/farmerRepository.js';
 import { checkNeededPlants, ignorePlantQuality, removePlantsIgnoringQuality } from './siloUtils.js';
 import starsRepository from '../../database/repositories/starsRepository.js';
-import { postTransaction } from '../../utils/apiRequests/statistics.js';
+import { postMultipleTransactions, postTransaction } from '../../utils/apiRequests/statistics.js';
 import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import executeDailies from '../dailies/executeDailies.js';
@@ -61,7 +61,10 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
 
   dailyUser.finished = true;
 
-  const [removedPlants, mainQuality] = removePlantsIgnoringQuality(farmer.silo, dailyUser.needs);
+  const [removedPlants, mainQuality, partialTransactions] = removePlantsIgnoringQuality(
+    farmer.silo,
+    dailyUser.needs,
+  );
 
   const bonusMultiplier = mainQuality
     ? { [PlantQuality.Best]: 0.2, [PlantQuality.Normal]: 0.1, [PlantQuality.Worst]: 0 }[mainQuality]
@@ -71,13 +74,21 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
 
   await Promise.all([
     starsRepository.addStars(ctx.user.id, userAward),
-    postTransaction(
-      `${bot.id}`,
-      `${ctx.user.id}`,
-      userAward,
-      'estrelinhas',
-      ApiTransactionReason.DAILY_FARM,
-    ),
+    postMultipleTransactions([
+      ...partialTransactions.map((a) => ({
+        ...a,
+        authorId: `${ctx.user.id}`,
+        targetId: `${bot.id}`,
+        reason: ApiTransactionReason.DAILY_FARM,
+      })),
+      {
+        authorId: `${bot.id}`,
+        targetId: `${ctx.user.id}`,
+        amount: userAward,
+        currencyType: 'estrelinhas',
+        reason: ApiTransactionReason.DAILY_FARM,
+      },
+    ]),
     farmerRepository.finishDelivery(
       ctx.user.id,
       farmer.dailies,
