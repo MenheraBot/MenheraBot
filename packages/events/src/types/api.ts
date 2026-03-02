@@ -104,6 +104,8 @@ export enum ApiTransactionReason {
   BUY_SEED = 'buy_seed',
   UPGRADE_FARM = 'upgrade_farm',
   DAILY_FARM = 'daily_farm',
+  HARVEST_FARM = 'harvest_farm',
+  FARMING = 'farming',
   FAIR = 'buy_fair',
   ROCK_PAPER_SCISSORS_COMMAND = 'rps_command',
 }

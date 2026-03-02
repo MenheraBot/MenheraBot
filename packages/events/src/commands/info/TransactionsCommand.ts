@@ -46,6 +46,8 @@ const TRANSACTION_FILTERS_REPLACEMENT = {
   [ApiTransactionReason.BLACKJACK_LOST_DATA]: ApiTransactionReason.BLACKJACK_COMMAND,
   [ApiTransactionReason.WIN_BICHO]: ApiTransactionReason.BICHO_COMMAND,
   [ApiTransactionReason.BUY_IMAGE_ROYALTY]: ApiTransactionReason.BUY_THEME_ROYALTY,
+  [ApiTransactionReason.HARVEST_FARM]: ApiTransactionReason.FARMING,
+  [ApiTransactionReason.UPGRADE_FARM]: ApiTransactionReason.FARMING,
 };
 
 const TRANSACTION_REASONS = Object.values(ApiTransactionReason).filter(
@@ -58,18 +60,20 @@ const createAppendedTransactionReasons = (
   const cloned = JSON.parse(JSON.stringify(types)) as ApiTransactionReason[];
 
   const inverted = Object.entries(TRANSACTION_FILTERS_REPLACEMENT).reduce<
-    Record<ApiTransactionReason, ApiTransactionReason>
+    Record<ApiTransactionReason, ApiTransactionReason[]>
   >(
     (p, [k, v]) => {
-      p[v] = k as ApiTransactionReason;
+      if (!p[v]) p[v] = [];
+
+      p[v].push(k as ApiTransactionReason);
 
       return p;
     },
-    {} as Record<ApiTransactionReason, ApiTransactionReason>,
+    {} as Record<ApiTransactionReason, ApiTransactionReason[]>,
   );
 
   for (let i = cloned.length; i >= 0; i--)
-    if (inverted[cloned[i]]) cloned.push(inverted[cloned[i]]);
+    if (inverted[cloned[i]]) cloned.push(...inverted[cloned[i]]);
 
   return cloned;
 };

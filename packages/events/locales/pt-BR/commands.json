@@ -962,8 +962,8 @@
       "user_to_user": "`{{author}}` enviou **{{amount}}** {{currencyType}} {{emoji}} para `{{target}}` por {{reason}}",
       "menhera_to_user": "**Eu** enviei **{{amount}}** {{currencyType}} {{emoji}} para `{{target}}` por {{reason}}",
       "user_to_menhera": "`{{author}}` **me** enviou **{{amount}}** {{currencyType}} {{emoji}} por {{reason}}",
-      "menhera_to_menhera": "c2V4bw==",
-      "you_to_you": "c2V4bwo="
+      "you_to_you": "**Você gerou {{amount}}** {{currencyType}} {{emoji}} por {{reason}}",
+      "menhera_to_menhera": "**Eu gerei {{amount}}** {{currencyType}} {{emoji}} por {{reason}}"
     },
     "reasons": {
       "simon_says": "que o mestre mandou",
@@ -1006,6 +1006,8 @@
       "buy_theme_title": "Comprar Temas",
       "buy_theme_royalty": "participação de lucros em tema",
       "buy_theme_royalty_title": "Bônus de Designer",
+      "harvest_farm_title": "Colher",
+      "harvest_farm": "colher plantas",
       "vote_thank": "votar em mim >,<",
       "vote_thank_title": "Votar no top.gg",
       "inactivity_punishment": "ficar inativo na Menhera",
@@ -1018,6 +1020,8 @@
       "buy_seed_title": "Comprar Sementes",
       "upgrade_farm_title": "Melhorar a Fazenda",
       "upgrade_farm": "melhorar sua fazenda",
+      "farming_title": "Fazenda",
+      "farming": "viver na fazenda",
       "daily_farm": "entrega da fazendinha",
       "daily_farm_title": "Entregas Diárias",
       "buy_fair": "negociar na feirinha",

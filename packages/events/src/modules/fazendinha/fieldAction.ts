@@ -5,6 +5,8 @@ import { SelectMenuInteraction } from '../../types/interaction.js';
 import {
   postFazendinhaAction,
   postMultipleFazendinhaHarvest,
+  postMultipleTransactions,
+  postTransaction,
 } from '../../utils/apiRequests/statistics.js';
 import { MessageFlags } from '@discordeno/bot';
 import { displayPlantations } from './displayPlantations.js';
@@ -27,6 +29,7 @@ import {
 import {
   addPlants,
   getPlantationUpgrades,
+  getQuality,
   getSiloLimits,
   groupPlantsWeight,
   isMatePlant,
@@ -35,6 +38,7 @@ import {
 import executeDailies from '../dailies/executeDailies.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import { composterEquivalentForField } from './farmComposter.js';
+import { ApiTransactionReason } from '../../types/api.js';
 
 const getPlantedField = (
   farmer: DatabaseFarmerSchema,
@@ -193,6 +197,15 @@ const harvestAllFields = async (
   );
 
   await postMultipleFazendinhaHarvest(`${ctx.user.id}`, harvested);
+  await postMultipleTransactions(
+    parsedFields.map((a) => ({
+      amount: a.weight,
+      authorId: `${ctx.user.id}`,
+      targetId: `${ctx.user.id}`,
+      currencyType: `plant-${a.plant}-${getQuality(a)}`,
+      reason: ApiTransactionReason.HARVEST_FARM,
+    })),
+  );
 
   await executeDailies.harvestDailies(
     await userRepository.ensureFindUser(ctx.user.id),
@@ -291,6 +304,15 @@ const executeFieldAction = async (ctx: ComponentInteractionContext): Promise<voi
 
   const toAddComposter =
     state === PlantationState.Rotten ? composterEquivalentForField(added[0], state) : 0;
+
+  if (harvestedWeight > 0)
+    await postTransaction(
+      `${ctx.user.id}`,
+      `${ctx.user.id}`,
+      harvestedWeight,
+      `plant-${field.plantType}-${added[0].quality}`,
+      ApiTransactionReason.HARVEST_FARM,
+    );
 
   await farmerRepository.executeHarvest(
     ctx.user.id,

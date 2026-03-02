@@ -957,8 +957,8 @@
       "user_to_user": "`{{author}}` sent **{{amount}}** {{currencyType}} {{emoji}} to `{{target}}` for {{reason}}",
       "menhera_to_user": "**I** sent **{{amount}}** {{currencyType}} {{emoji}} to `{{target}}` for {{reason}}",
       "user_to_menhera": "`{{author}}` sent **me**  **{{amount}}** {{currencyType}} {{emoji}} for {{reason}}",
-      "menhera_to_menhera": "c2V4bw==",
-      "you_to_you": "c2V4bwo="
+      "menhera_to_menhera": "**You generated {{amount}}** {{currencyType}} {{emoji}} for {{reason}}",
+      "you_to_you": "**I generated {{amount}}** {{currencyType}} {{emoji}} for {{reason}}"
     },
     "reasons": {
       "simon_says_add": "simon says",
@@ -1013,6 +1013,10 @@
       "buy_seed_title": "Buy Seeds",
       "upgrade_farm_title": "Upgrade Farm",
       "upgrade_farm": "upgrading your farm",
+      "farming_title": "Farming",
+      "farming": "farming",
+      "harvest_farm_title": "Harvest",
+      "harvest_farm": "harvesting plants",
       "daily_farm": "farm delivery",
       "daily_farm_title": "Daily Delivery",
       "buy_fair": "negotiating at the fair",
