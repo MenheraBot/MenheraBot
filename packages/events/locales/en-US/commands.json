@@ -1265,6 +1265,8 @@
       "not-enough-seeds": "You no longer have these seeds to discard",
       "max": "{{emoji}} {{plant}} (Max. {{amount}})",
       "discarded": "You discarded **{{total}}** seeds!",
+      "discarded-one": "You discarded **{{total}}** seed!",
+      "discarded-other": "You discarded **{{total}}** seeds!",
       "sell-plants": "Sell plants",
       "items": "Items",
       "sell-plant": "Sell {{plant}}",

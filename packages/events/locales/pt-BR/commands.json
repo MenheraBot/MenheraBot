@@ -1287,6 +1287,8 @@
       "not-enough-seeds": "Tu não possui mais essas sementes pra descartar",
       "max": "{{emoji}} {{plant}} (Max. {{amount}})",
       "discarded": "Você descartou **{{total}}** sementes!",
+      "discarded-one": "Você descartou **{{total}}** semente!",
+      "discarded-other": "Você descartou **{{total}}** sementes!",
       "sell-plants": "Vender plantas",
       "sell-plant": "Vender {{plant}}",
       "discard-seed": "Descartar {{plant}}",
