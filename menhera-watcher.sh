@@ -64,10 +64,11 @@ run_build() {
     echo -e "${BLUE}[BUILD] Starting build...${NC}"
     
     pnpm --silent events build
+    errCode=$?
 
     BUILD_PENDING=false 
     
-    if [ $? -eq 0 ]; then
+    if [ $errCode -eq 0 ]; then
         echo -e "${GREEN}[BUILD] Build successful.${NC}"
 
         if [ "$LAST_BUILD_TIME" -gt 0 ]; then

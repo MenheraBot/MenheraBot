@@ -27,6 +27,7 @@ import {
   displayComposter,
   handleComposterInteractions,
 } from '../../modules/fazendinha/farmComposter.js';
+import { handleDiscardSeeds } from '../../modules/fazendinha/manageSilo.js';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -251,6 +252,7 @@ const FazendinhaCommand = createCommand({
     handleButtonAction,
     handleFairOrderButton,
     handleComposterInteractions,
+    handleDiscardSeeds,
   ],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {

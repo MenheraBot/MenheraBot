@@ -40,7 +40,7 @@ import { AvailableItems } from './types.js';
 import { isUpgradeApplied } from './plantationState.js';
 import { applyUpgrade } from './fieldAction.js';
 import { InteractionContext } from '../../types/menhera.js';
-import { handleUpgradeSilo } from './upgradeSilo.js';
+import { handleUpgradeSilo } from './manageSilo.js';
 import { executeAdministrateFair } from './administrateFair.js';
 
 const displayItemsHelp = async (ctx: ComponentInteractionContext) => {

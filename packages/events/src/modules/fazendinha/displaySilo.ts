@@ -8,7 +8,6 @@ import {
   TextDisplayComponent,
   TextStyles,
 } from '@discordeno/bot';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext.js';
 import { DatabaseFarmerSchema } from '../../types/database.js';
 import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { getDisplayName } from '../../utils/discord/userUtils.js';
@@ -42,7 +41,7 @@ import {
 import cacheRepository from '../../database/repositories/cacheRepository.js';
 
 const displaySilo = async (
-  ctx: ChatInputInteractionContext,
+  ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   embedColor: string,
 ): Promise<void> => {
@@ -79,30 +78,40 @@ const displaySilo = async (
 
   fields.push(
     createSeparator(),
-    createTextDisplay(
-      `### ${ctx.locale(`commands:fazendinha.plantations.seeds`)}\n${
-        items.filter((a) => a.amount > 0).length === 0
-          ? `_${ctx.locale('commands:fazendinha.silo.nothing')}_`
-          : items
-              .flatMap((a) =>
-                a.amount > 0
-                  ? [
-                      ctx.locale(
-                        `commands:fazendinha.silo.display-${isMatePlant(a.plant) ? 'mate' : 'other'}`,
-                        {
-                          emoji: Plants[a.plant].emoji,
-                          amount: a.amount,
-                          metric: 'x',
-                          plant: ctx.locale(`data:plants.${a.plant}`),
-                          quality: '',
-                        },
-                      ),
-                    ]
-                  : [],
-              )
-              .join('\n')
-      }`,
-    ),
+    createSection({
+      accessory: createButton({
+        customId: createCustomId(11, ctx.user.id, ctx.originalInteractionId, 'DISCARD', embedColor),
+        style: ButtonStyles.Secondary,
+        disabled: farmer.seeds.length === 0,
+        label: ctx.locale('commands:fazendinha.silo.discard-seeds'),
+      }),
+      components: [
+        createTextDisplay(
+          `### ${ctx.locale(`commands:fazendinha.plantations.seeds`)}\n${
+            items.filter((a) => a.amount > 0).length === 0
+              ? `_${ctx.locale('commands:fazendinha.silo.nothing')}_`
+              : items
+                  .flatMap((a) =>
+                    a.amount > 0
+                      ? [
+                          ctx.locale(
+                            `commands:fazendinha.silo.display-${isMatePlant(a.plant) ? 'mate' : 'other'}`,
+                            {
+                              emoji: Plants[a.plant].emoji,
+                              amount: a.amount,
+                              metric: 'x',
+                              plant: ctx.locale(`data:plants.${a.plant}`),
+                              quality: '',
+                            },
+                          ),
+                        ]
+                      : [],
+                  )
+                  .join('\n')
+          }`,
+        ),
+      ],
+    }),
     createSeparator(),
     createSection({
       accessory: createButton({
@@ -171,7 +180,7 @@ const displaySilo = async (
     ],
   });
 
-  ctx.makeLayoutMessage({
+  return ctx.makeLayoutMessage({
     components: [container],
   });
 };
@@ -439,7 +448,7 @@ const buildSellPlantsMessage = async (
     ],
   });
 
-  ctx.makeLayoutMessage({
+  return ctx.makeLayoutMessage({
     components: [container],
   });
 };
