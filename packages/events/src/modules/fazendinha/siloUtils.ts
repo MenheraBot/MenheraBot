@@ -35,7 +35,7 @@ const ignorePlantQuality = (plants: QuantitativePlant[]) =>
         return p;
       }
 
-      p[c.plant]!.weight += c.weight;
+      p[c.plant]!.weight = parseFloat((p[c.plant]!.weight + c.weight).toFixed(1));
 
       return p;
     }, {}),
