@@ -1,4 +1,4 @@
-FROM node:22-alpine AS build
+FROM node:24-alpine AS build
 WORKDIR /app
 COPY . .
 RUN corepack enable
@@ -14,7 +14,7 @@ RUN apk --no-cache add curl && \
 RUN pnpm deploy --filter=@menhera-bot/events --prod /prod/events --legacy
 RUN pnpm deploy --filter=@menhera-bot/orchestrator --prod /prod/orchestrator --legacy
 
-FROM node:22-alpine AS events
+FROM node:24-alpine AS events
 WORKDIR /app
 RUN corepack enable
 COPY --from=build /prod/events/dist  ./dist/
@@ -23,7 +23,7 @@ COPY --from=build /prod/events/package.json  ./
 COPY --from=build /prod/events/node_modules ./node_modules 
 CMD ["pnpm", "start"]
 
-FROM gcr.io/distroless/nodejs22-debian12 AS orchestrator
+FROM gcr.io/distroless/nodejs24-debian13 AS orchestrator
 WORKDIR /app
 COPY --from=build /prod/orchestrator/dist ./
 COPY --from=build /prod/orchestrator/node_modules ./node_modules 
