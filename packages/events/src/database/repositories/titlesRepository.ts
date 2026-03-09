@@ -4,6 +4,7 @@ import { MainRedisClient } from '../databases.js';
 import { titlesModel } from '../collections.js';
 import { DatabaseTitlesSchema } from '../../types/database.js';
 import { registerCacheStatus } from '../../structures/initializePrometheus.js';
+import { SEVEN_DAYS_IN_SECONDS } from '../../structures/constants.js';
 
 const parseMongoDataToRedis = (title: DatabaseTitlesSchema): DatabaseTitlesSchema => ({
   registeredAt: title.registeredAt,
@@ -69,7 +70,7 @@ const getTitles = async (userId: BigString, titles: number[]): Promise<DatabaseT
 
   MainRedisClient.setex(
     `titles:${userId}`,
-    604800,
+    SEVEN_DAYS_IN_SECONDS,
     JSON.stringify(allTitles.map(parseMongoDataToRedis)),
   );
 

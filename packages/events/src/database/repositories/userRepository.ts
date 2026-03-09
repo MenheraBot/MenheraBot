@@ -6,6 +6,7 @@ import { DatabaseUserSchema, UserIdType } from '../../types/database.js';
 import { MainRedisClient } from '../databases.js';
 import { debugError } from '../../utils/debugError.js';
 import { registerCacheStatus } from '../../structures/initializePrometheus.js';
+import { SEVEN_DAYS_IN_SECONDS } from '../../structures/constants.js';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema => ({
   _id: `${user._id}`,
@@ -61,7 +62,7 @@ const findUser = async (userId: UserIdType): Promise<DatabaseUserSchema | null> 
   if (fromMongo) {
     await MainRedisClient.setex(
       `user:${userId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
     ).catch(debugError);
 
@@ -86,7 +87,7 @@ const updateUser = async (
 
     await MainRedisClient.setex(
       `user:${userId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(
         parseMongoUserToRedisUser({ ...data, ...query, lastCommandAt: Date.now(), id: userId }),
       ),
@@ -105,7 +106,7 @@ const updateUserWithSpecialData = async (
   if (updatedUser) {
     await MainRedisClient.setex(
       `user:${userId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
     ).catch(debugError);
   }
@@ -127,7 +128,7 @@ const multiUpdateUsers = async (
 
       await MainRedisClient.setex(
         `user:${id}`,
-        604800,
+        SEVEN_DAYS_IN_SECONDS,
         JSON.stringify(
           parseMongoUserToRedisUser({ ...data, ...query, lastCommandAt: Date.now(), id }),
         ),
@@ -150,7 +151,7 @@ const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> =
 
     await MainRedisClient.setex(
       `user:${userId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser(newUser)),
     ).catch(debugError);
 
@@ -159,7 +160,7 @@ const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> =
 
   await MainRedisClient.setex(
     `user:${userId}`,
-    604800,
+    SEVEN_DAYS_IN_SECONDS,
     JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
   ).catch(debugError);
 

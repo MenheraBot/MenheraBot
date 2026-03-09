@@ -5,6 +5,7 @@ import { MainRedisClient } from '../databases.js';
 import { debugError } from '../../utils/debugError.js';
 import { registerCacheStatus } from '../../structures/initializePrometheus.js';
 import { eventModel } from '../collections.js';
+import { SEVEN_DAYS_IN_SECONDS } from '../../structures/constants.js';
 
 const parseMongoUserToRedisUser = (user: DatabaseEventSchema): DatabaseEventSchema => ({
   userId: user.userId,
@@ -25,7 +26,7 @@ const getUser = async (userId: BigString): Promise<DatabaseEventSchema> => {
 
     await MainRedisClient.setex(
       `event_user:${userId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser(newUser)),
     ).catch(debugError);
 
@@ -34,7 +35,7 @@ const getUser = async (userId: BigString): Promise<DatabaseEventSchema> => {
 
   await MainRedisClient.setex(
     `event_user:${userId}`,
-    604800,
+    SEVEN_DAYS_IN_SECONDS,
     JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
   ).catch(debugError);
 

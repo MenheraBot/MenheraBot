@@ -4,6 +4,7 @@ import { MainRedisClient } from '../databases.js';
 import { feirinhaOrderModel } from '../collections.js';
 import { DatabaseFeirinhaOrderSchema, OrderAward } from '../../types/database.js';
 import { MAX_TRADE_REQUESTS_IN_FAIR_PER_USER } from '../../modules/fazendinha/constants.js';
+import { SEVEN_DAYS_IN_SECONDS } from '../../structures/constants.js';
 
 const mongoToRedis = (order: DatabaseFeirinhaOrderSchema): DatabaseFeirinhaOrderSchema =>
   ({
@@ -42,7 +43,7 @@ const getOrder = async (orderId: string): Promise<null | DatabaseFeirinhaOrderSc
 
   if (!fromMongo) return null;
 
-  MainRedisClient.setex(`fair_order:${orderId}`, 604800, JSON.stringify(mongoToRedis(fromMongo)));
+  MainRedisClient.setex(`fair_order:${orderId}`, SEVEN_DAYS_IN_SECONDS, JSON.stringify(mongoToRedis(fromMongo)));
 
   return fromMongo;
 };

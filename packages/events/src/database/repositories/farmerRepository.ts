@@ -19,6 +19,7 @@ import {
 import { millisToSeconds } from '../../utils/miscUtils.js';
 import { registerCacheStatus } from '../../structures/initializePrometheus.js';
 import { getQuality } from '../../modules/fazendinha/siloUtils.js';
+import { SEVEN_DAYS_IN_SECONDS } from '../../structures/constants.js';
 
 const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSchema => ({
   id: `${user.id}`,
@@ -55,7 +56,7 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
 
     await MainRedisClient.setex(
       `farmer:${userId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser(newUser)),
     ).catch(debugError);
 
@@ -64,7 +65,7 @@ const getFarmer = async (userId: BigString): Promise<DatabaseFarmerSchema> => {
 
   await MainRedisClient.setex(
     `farmer:${userId}`,
-    604800,
+    SEVEN_DAYS_IN_SECONDS,
     JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
   ).catch(debugError);
 
@@ -124,7 +125,7 @@ const executeHarvest = async (
   if (updatedUser)
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
     ).catch(debugError);
 };
@@ -144,7 +145,7 @@ const updateSeeds = async (farmerId: BigString, seeds: QuantitativeSeed[]): Prom
 
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser({ ...data, seeds })),
     ).catch(debugError);
   }
@@ -174,7 +175,7 @@ const executePlant = async (
   if (updatedUser)
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
     ).catch(debugError);
 };
@@ -241,7 +242,7 @@ const updateSilo = async (
 
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser({ ...data, ...set })),
     ).catch(debugError);
   }
@@ -257,7 +258,7 @@ const upgradeSilo = async (farmerId: BigString): Promise<void> => {
 
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser({ ...data, siloUpgrades: data.siloUpgrades + 1 })),
     ).catch(debugError);
   }
@@ -276,7 +277,7 @@ const updateDeliveries = async (farmerId: BigString, dailies: DeliveryMission[])
 
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(
         parseMongoUserToRedisUser({ ...data, dailies, dailyDayId: new Date().getDate() }),
       ),
@@ -353,7 +354,7 @@ const updateFarmer = async (
 
     await MainRedisClient.setex(
       `farmer:${farmerId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser({ ...data, silo, items })),
     ).catch(debugError);
   }

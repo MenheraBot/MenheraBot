@@ -5,6 +5,7 @@ import { AvailablePlants, PlantQuality } from '../../modules/fazendinha/types.js
 import { MainRedisClient } from '../databases.js';
 import { AvailableLanguages } from '../../types/i18next.js';
 import { getQuality } from '../../modules/fazendinha/siloUtils.js';
+import { SEVEN_DAYS_IN_SECONDS } from '../../structures/constants.js';
 
 const mongoToRedis = (announcement: DatabaseFeirinhaSchema): DatabaseFeirinhaSchema => ({
   _id: announcement._id,
@@ -59,7 +60,7 @@ const getAnnouncement = async (announcementId: string): Promise<null | DatabaseF
 
   MainRedisClient.setex(
     `fair_announcement:${announcementId}`,
-    604800,
+    SEVEN_DAYS_IN_SECONDS,
     JSON.stringify(mongoToRedis(fromMongo)),
   );
 

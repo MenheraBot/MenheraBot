@@ -6,6 +6,7 @@ import { daysToMillis } from '../../utils/miscUtils.js';
 import { Translation } from '../../types/i18next.js';
 import { registerCacheStatus } from '../../structures/initializePrometheus.js';
 import { bot } from '../../index.js';
+import { SEVEN_DAYS_IN_SECONDS } from '../../structures/constants.js';
 
 const parseNotification = (
   notification: DatabaseNotificationSchema,
@@ -84,7 +85,7 @@ const getUserUnreadNotifications = async (
 
   await MainRedisClient.setex(
     `notifications:${userId}`,
-    604800,
+    SEVEN_DAYS_IN_SECONDS,
     JSON.stringify(fromMongo.map(parseNotification)),
   );
 

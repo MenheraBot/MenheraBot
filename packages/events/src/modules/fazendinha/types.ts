@@ -36,7 +36,7 @@ export enum Seasons {
   Summer = 'summer',
   Winter = 'winter',
   Autumn = 'autumn',
-  Spring = 'spring'
+  Spring = 'spring',
 }
 
 export enum PlantCategories {
@@ -84,7 +84,7 @@ export enum PlantationState {
   Empty = 'EMPTY',
   Growing = 'GROWING',
   Mature = 'MATURE',
-  Rotten = 'ROTTEN'
+  Rotten = 'ROTTEN',
 }
 
 export type Plantation = PlantedField | EmptyField;
@@ -115,4 +115,63 @@ export interface DeliveryMission {
 export interface UnlockFieldFile {
   neededPlants: QuantitativePlant[];
   cost: number;
+}
+
+export enum AvailableNpcs {
+  SeuZe,
+}
+
+type PlantContract = {
+  type: 'plant';
+  weight: number;
+  quality?: PlantQuality;
+  plant: AvailablePlants;
+};
+
+type QualityContract = {
+  type: 'quality';
+  weight: number;
+  quality: PlantQuality;
+  plant?: AvailablePlants;
+};
+
+type CategoryContract = {
+  type: 'category';
+  weight: number;
+  quality?: PlantQuality;
+  category: PlantCategories;
+};
+
+type SeasonalContract = {
+  type: 'season';
+  weight: number;
+  season: Seasons;
+};
+
+export type ContractRequirement =
+  | PlantContract
+  | QualityContract
+  | CategoryContract
+  | SeasonalContract;
+
+export type NeighborNpc = {
+  name: string;
+  contractTypes: ContractRequirement['type'][];
+  baseDifficulty: number;
+  preferences: {
+    categories: PlantCategories[];
+    seasons: Seasons[];
+    qualityPreference: PlantQuality[];
+    plants: AvailablePlants[];
+  };
+};
+
+export enum ContractStatus {
+  OFFERED,
+  REJECTED,
+  EXPIRED,
+  ACCEPTED,
+  DELAYED,
+  COMPLETED,
+  FAILED,
 }

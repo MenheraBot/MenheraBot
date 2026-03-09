@@ -145,11 +145,11 @@ const sendStartingGameMessage = async (ctx: InteractionContext, betAmount: numbe
     },
     {
       probability: 1,
-      value: `> ${ctx.prettyResponse('badge_6', 'commands:blackjack.easter-egg-restarting-game')}`,
+      value: `> ${ctx.prettyResponse('badge_18', 'commands:blackjack.easter-egg-restarting-game')}`,
     },
   ]);
 
-  if (!randomMessage.includes(EMOJIS.badge_6))
+  if (!randomMessage.includes(EMOJIS.badge_18))
     return ctx.makeLayoutMessage({
       components: [createTextDisplay(randomMessage)],
     });

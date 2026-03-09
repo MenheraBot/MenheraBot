@@ -23,6 +23,7 @@ import { debugError } from '../../utils/debugError.js';
 import { userThemesModel } from '../collections.js';
 import { MainRedisClient } from '../databases.js';
 import { registerCacheStatus } from '../../structures/initializePrometheus.js';
+import { SEVEN_DAYS_IN_SECONDS } from '../../structures/constants.js';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserThemesSchema): DatabaseUserThemesSchema => ({
   id: `${user.id}`,
@@ -84,7 +85,7 @@ const findEnsuredUserThemes = async (userId: BigString): Promise<DatabaseUserThe
 
     await MainRedisClient.setex(
       `user_themes:${userId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser(newUser)),
     ).catch(debugError);
 
@@ -93,7 +94,7 @@ const findEnsuredUserThemes = async (userId: BigString): Promise<DatabaseUserThe
 
   await MainRedisClient.setex(
     `user_themes:${userId}`,
-    604800,
+    SEVEN_DAYS_IN_SECONDS,
     JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
   ).catch(debugError);
 
@@ -170,7 +171,7 @@ const addThemeToUserAccount = async (
   if (updatedUser) {
     await MainRedisClient.setex(
       `user_themes:${userId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
     ).catch(debugError);
   }
@@ -256,7 +257,7 @@ const setThemeToUserAccount = async (
 
     await MainRedisClient.setex(
       `user_themes:${userId}`,
-      604800,
+      SEVEN_DAYS_IN_SECONDS,
       JSON.stringify(parseMongoUserToRedisUser({ ...data, [themeType]: themeId })),
     );
   }

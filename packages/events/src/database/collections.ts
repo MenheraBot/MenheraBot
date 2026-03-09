@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 import {
   DatabaseCommandSchema,
+  DatabaseContractSchema,
   DatabaseCreditsSchema,
   DatabaseEventSchema,
   DatabaseFarmerSchema,
@@ -10,6 +11,7 @@ import {
   DatabaseGuildSchema,
   DatabaseNotificationSchema,
   DatabaseProfileImagesSchema,
+  DatabaseRelationshipSchema,
   DatabaseSuggestionLimitSchema,
   DatabaseTitlesSchema,
   DatabaseUserSchema,
@@ -128,6 +130,25 @@ const farmerSchema = new Schema({
   composter: { type: Number, default: 0 },
 });
 
+const contractsSchema = new Schema({
+  farmerId: { type: String, index: true },
+  npcId: { type: Number },
+  requirements: { type: Array },
+  status: { type: Number },
+  createdAt: { type: Number },
+  duration: { type: Number },
+  reward: { type: Number },
+});
+
+const relationshipSchema = new Schema({
+  farmerId: { type: String, index: true },
+  npcId: { type: Number },
+  relationship: { type: Number },
+  lastInteractionAt: { type: Number },
+  completedSequence: { type: Number },
+  lastContracts: { type: Array },
+});
+
 const titlesSchema = new Schema({
   titleId: { type: Number, unique: true, index: true },
   text: { type: String },
@@ -195,3 +216,8 @@ export const suggestionLimitModel = model<DatabaseSuggestionLimitSchema>(
   suggestionLimitSchema,
 );
 export const eventModel = model<DatabaseEventSchema>('eventData', eventSchema);
+export const contractsModel = model<DatabaseContractSchema>('contract', contractsSchema);
+export const relationshipModel = model<DatabaseRelationshipSchema>(
+  'relationship',
+  relationshipSchema,
+);

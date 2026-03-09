@@ -7,11 +7,12 @@ import { debugError } from '../../utils/debugError.js';
 import { MainRedisClient } from '../databases.js';
 import { registerCacheStatus } from '../../structures/initializePrometheus.js';
 import { Attachment, User } from '../../types/discordeno.js';
+import { SEVEN_DAYS_IN_SECONDS } from '../../structures/constants.js';
 
 const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promise<User | null> => {
   if (userId === null || userId === 'null') return null;
 
-  const fromRedis = await MainRedisClient.getex(`discord_user:${userId}`, 'EX', 604800).catch(
+  const fromRedis = await MainRedisClient.getex(`discord_user:${userId}`, 'EX', SEVEN_DAYS_IN_SECONDS).catch(
     debugError,
   );
 
@@ -35,7 +36,7 @@ const getDiscordUser = async (userId: UserIdType, lookIntoDiscord = true): Promi
 };
 
 const setDiscordUser = async (payload: DiscordUser): Promise<void> => {
-  await MainRedisClient.setex(`discord_user:${payload.id}`, 604800, JSON.stringify(payload)).catch(
+  await MainRedisClient.setex(`discord_user:${payload.id}`, SEVEN_DAYS_IN_SECONDS, JSON.stringify(payload)).catch(
     debugError,
   );
 };

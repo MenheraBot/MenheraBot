@@ -183,3 +183,5 @@ export const transactionableCommandOption = [
 ];
 
 export const TRANSACTIONS_PER_PAGE = 15;
+
+export const SEVEN_DAYS_IN_SECONDS = 604800;

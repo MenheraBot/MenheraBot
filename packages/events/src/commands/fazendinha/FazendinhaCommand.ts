@@ -28,6 +28,7 @@ import {
   handleComposterInteractions,
 } from '../../modules/fazendinha/farmComposter.js';
 import { handleDiscardSeeds } from '../../modules/fazendinha/manageSilo.js';
+import { displayContracts } from '../../modules/fazendinha/farmContracts.js';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -48,6 +49,17 @@ const FazendinhaCommand = createCommand({
       description: '「🥬」・Cuide das plantações de sua fazendinha',
       descriptionLocalizations: {
         'en-US': '「🥬」・Take care of your farm fields',
+      },
+      type: ApplicationCommandOptionTypes.SubCommand,
+    },
+    {
+      name: 'contratos',
+      nameLocalizations: {
+        'en-US': 'contracts',
+      },
+      description: '「📜」・Veja os contratos que seus vizinhos estão oferecendo para você',
+      descriptionLocalizations: {
+        'en-US': 'See what contracts your neighbors are offering you.',
       },
       type: ApplicationCommandOptionTypes.SubCommand,
     },
@@ -321,6 +333,8 @@ const FazendinhaCommand = createCommand({
 
       return displaySilo(ctx, farmer, ctx.authorData.selectedColor);
     }
+
+    if (command === 'contratos') return displayContracts(ctx, farmer, ctx.authorData.selectedColor);
   },
 });
 

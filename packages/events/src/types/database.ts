@@ -2,7 +2,10 @@ import { Localization } from '@discordeno/bot';
 import { profileBadges } from '../modules/badges/profileBadges.js';
 import {
   AvailableItems,
+  AvailableNpcs,
   AvailablePlants,
+  ContractRequirement,
+  ContractStatus,
   DeliveryMission,
   Plantation,
   PlantQuality,
@@ -213,3 +216,26 @@ export interface DatabaseEventSchema {
   userId: string;
   currency: number;
 }
+
+export type DatabaseContractSchema = {
+  farmerId: string;
+  npcId: AvailableNpcs;
+  requirements: ContractRequirement[];
+  status: ContractStatus;
+  createdAt: number;
+  duration: number;
+  reward: number;
+};
+
+export type DatabaseRelationshipSchema = {
+  farmerId: string;
+  npcId: AvailableNpcs;
+  relationship: number;
+  lastInteractionAt: number;
+  completedSequence: number;
+  lastContracts: Array<{
+    status: ContractStatus;
+    requirements: Pick<DatabaseContractSchema, 'requirements'>;
+  }>;
+};
+
