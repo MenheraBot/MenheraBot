@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
+import { ApplicationCommandOptionTypes, BigString, ButtonStyles } from '@discordeno/bot';
 import { inspect } from 'node:util';
 
 import {
@@ -22,6 +22,12 @@ import {
 } from '../../utils/discord/componentUtils.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 
+const resetUser = (userId: BigString) => {
+  userRepository.updateUser(`${userId}`, { mamou: 0, mamado: 0 });
+  redis.del(`user:${userId}`);
+  return true;
+};
+
 // This is odd, but its needed so the eslint dont get angry with unused imports
 () => {
   return [
@@ -34,6 +40,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
     farmerModel,
     eventModel,
     ordersModel,
+    resetUser,
   ];
 };
 
