@@ -5,6 +5,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "moduleResolution": "node16",
+    "ignoreDeprecations": "6.0",
     "sourceRoot": "/"
   },
   "exclude": [
