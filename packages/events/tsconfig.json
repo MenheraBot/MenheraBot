@@ -3,6 +3,7 @@
 
   "compilerOptions": {
     "outDir": "./dist",
+    "ignoreDeprecations": "6.0",
     "baseUrl": "src",
   },
   "include": [
