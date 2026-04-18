@@ -3,7 +3,7 @@
 
   "compilerOptions": {
     "outDir": "./dist",
-    "baseUrl": "src",
+    "rootDir": "./src",
     "moduleResolution": "node16",
     "sourceRoot": "/"
   },
