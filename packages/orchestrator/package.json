@@ -17,18 +17,18 @@
   "dependencies": {
     "@discordeno/types": "22.0.0-beta.1",
     "@koa/router": "^14.0.0",
-    "koa": "^3.1.2",
+    "koa": "^3.2.0",
     "koa-body": "^6.0.1",
     "net-ipc": "^2.2.2",
-    "qs": "^6.14.2"
+    "qs": "^6.15.1"
   },
   "repository": "https://github.com/MenheraBot/MenheraBot",
   "license": "MIT",
   "readme": "https://github.com/MenheraBot/MenheraBot#readme",
   "devDependencies": {
     "@discordeno/bot": "22.0.1-next.8694f57",
-    "@types/koa": "^3.0.0",
-    "@types/koa__router": "^12.0.4",
-    "@types/qs": "^6.14.0"
+    "@types/koa": "^3.0.2",
+    "@types/koa__router": "^12.0.5",
+    "@types/qs": "^6.15.0"
   }
 }
