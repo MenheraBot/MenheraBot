@@ -197,7 +197,7 @@ orchestratorServer.on('message', async (msg, conn) => {
     connectedClients = waitingForSwap;
     waitingForSwap = [];
 
-    if (typeof conn?.connection?.closed === 'undefined' || conn.connection.closed)
+    if (isUndefined(conn?.connection?.closed) || conn.connection.closed)
       return console.log('[CLIENT] The first version in swap is not connected anymore');
 
     await conn.request({ type: RequestType.YouAreTheMaster });

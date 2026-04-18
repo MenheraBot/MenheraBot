@@ -8,6 +8,7 @@ import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import pokerRepository from '../../database/repositories/pokerRepository.js';
 import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { isUndefined } from '../../utils/miscUtils.js';
 
 const convertChipsToStars = async (gameData: PokerMatch, player: PokerPlayer): Promise<void> => {
   if (!gameData.worthGame) return;
@@ -55,7 +56,7 @@ const afterLobbyAction = async (
     ];
   }
 
-  if (typeof oldEmbed.fields === 'undefined') throw new Error(`The old embed fields is undefined`);
+  if (isUndefined(oldEmbed.fields)) throw new Error(`The old embed fields is undefined`);
 
   const fieldValue = oldEmbed.fields[0].value;
 

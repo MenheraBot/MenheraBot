@@ -124,7 +124,7 @@ const normalizeString = (str: string) => {
     .toLowerCase();
 };
 
-const isUndefined = (data: unknown): data is undefined => typeof data === 'undefined';
+const isUndefined = (data: unknown): data is undefined => isUndefined(data);
 
 export {
   capitalize,

@@ -1209,6 +1209,8 @@
         "order-accepted": "You accepted the trade. The plants, items, and stars have been credited to your account.",
         "order-description": "**Exchanging for:**\n{{awards}}",
         "no-plants": "No trades available",
+        "show-troll": "Show bad trades",
+        "hide-troll": "Ignore bad trades",
         "order-award": "**{{amount}}{{metric}}** {{emoji}}",
         "order-deleted": "You removed the trade request from the air. If any star rewards existed, they have been returned to your account. Item and plant rewards have been discarded."
       },

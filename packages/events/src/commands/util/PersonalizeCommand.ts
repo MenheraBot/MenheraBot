@@ -56,6 +56,7 @@ import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/
 import {
   ensureUserHaveDefaultThemes,
   getCustomThemeField,
+  isUndefined,
   millisToSeconds,
   toWritableUtf,
 } from '../../utils/miscUtils.js';
@@ -118,7 +119,7 @@ const createColorComponents = (
   });
 
   for (let i = 9 * currentPage; selector.options.length < 9; i++) {
-    if (i > userColors.length || typeof userColors[i] === 'undefined') break;
+    if (i > userColors.length || isUndefined(userColors[i])) break;
     embed.fields?.push({
       name: userColors[i].nome,
       value: userColors[i].cor,
@@ -548,7 +549,7 @@ const executeTitleCommand = async (ctx: ChatInputInteractionContext): Promise<vo
   const user = ctx.getOption<User>('usuário', 'users', false) ?? ctx.author;
   const titleId = ctx.getOption<number>('título', false, false);
 
-  if (typeof titleId === 'undefined') {
+  if (isUndefined(titleId)) {
     const userData =
       user.id === ctx.user.id ? ctx.authorData : await userRepository.ensureFindUser(user.id);
 
@@ -1026,7 +1027,7 @@ const createCustomizeMessage = async (
   await ctx.makeLayoutMessage({
     components: [container],
     files: toSendFile,
-    attachments: typeof toSendFile === 'undefined' ? [] : undefined,
+    attachments: isUndefined(toSendFile) ? [] : undefined,
   });
 };
 

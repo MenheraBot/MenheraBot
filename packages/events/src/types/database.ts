@@ -165,7 +165,7 @@ export interface DatabaseFeirinhaSchema {
 export interface OrderAward {
   estrelinhas?: number;
   fertilizers?: number;
-  plant?: { weight: number; plant: AvailablePlants };
+  plants?: { weight: number; plant: AvailablePlants };
 }
 
 export interface DatabaseFeirinhaOrderSchema {
@@ -177,6 +177,7 @@ export interface DatabaseFeirinhaOrderSchema {
   awards: OrderAward;
   createdAt: number;
   completed: boolean;
+  trollAward?: boolean;
 }
 
 export interface DatabaseFarmerSchema {

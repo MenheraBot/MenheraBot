@@ -96,6 +96,27 @@ const handleTradeRequestModal = async (ctx: ComponentInteractionContext, embedCo
   });
 };
 
+const isTradeTroll = (order: Partial<DatabaseFeirinhaOrderSchema>): boolean => {
+  if (isUndefined(order.awards) || isUndefined(order.weight) || isUndefined(order.plant))
+    return true;
+
+  const isTrollFertilizer = isUndefined(order.awards.fertilizers) || order.awards.fertilizers <= 2;
+
+  const isTrollPlant =
+    isUndefined(order.awards.plants) ||
+    (order.awards.plants.weight < order.weight && order.awards.plants.plant < order.plant - 3);
+
+  const isTrollEstrelinhas =
+    isUndefined(order.awards.estrelinhas) ||
+    order.awards.estrelinhas <
+      getPlantPrice({ plant: order.plant, quality: order.quality }) * order.weight;
+
+  return (
+    [isTrollEstrelinhas, isTrollFertilizer, isTrollPlant].filter((a) => a).length > 1 &&
+    isTrollEstrelinhas
+  );
+};
+
 const handleAddAwardButton = async (
   ctx: ComponentInteractionContext,
   farmer: DatabaseFarmerSchema,
@@ -253,12 +274,13 @@ const getCreateFairOrderMessage = async (
               ? `- ${Object.entries(currentState.awards)
                   .map(([type, amount]) =>
                     ctx.locale('commands:fazendinha.feira.order.order-award', {
-                      amount,
-                      metric: type === 'estrelinhas' ? '' : 'x',
-                      emoji:
-                        type === 'estrelinhas'
-                          ? ctx.safeEmoji(type)
-                          : Items[AvailableItems.Fertilizer].emoji,
+                      amount: type === 'plants' ? amount.weight : amount,
+                      metric: { estrelinhas: '', plant: ' Kg', fertilizer: 'x' }[type],
+                      emoji: {
+                        estrelinhas: ctx.safeEmoji('estrelinhas'),
+                        fertilizers: Items[AvailableItems.Fertilizer].emoji,
+                        plants: `${Plants[amount.plant as 1]?.emoji} ${getQualityEmoji(amount?.quality)}`,
+                      }[type],
                     }),
                   )
                   .join(`\n- `)}`
@@ -312,7 +334,7 @@ const handleReceiveModal = async (
   let invalidReason = '';
 
   fields.forEach((f) => {
-    if (typeof f.value === 'undefined') {
+    if (isUndefined(f.value)) {
       if (currentState?.awards?.[f.customId as 'estrelinhas']) {
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete currentState.awards[f.customId as 'estrelinhas'];
@@ -441,12 +463,15 @@ const handlePlaceOrder = async (
       flags: MessageFlags.Ephemeral,
     });
 
+  const isTrollAward = isTradeTroll(order);
+
   await fairOrderRepository.placeOrder(
     ctx.user.id,
     order.plant,
     order.weight,
     order.quality,
     order.awards,
+    isTrollAward,
   );
 
   if (order.awards.estrelinhas) {

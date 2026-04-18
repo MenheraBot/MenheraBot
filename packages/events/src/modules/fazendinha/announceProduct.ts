@@ -19,7 +19,7 @@ import {
 } from './siloUtils.js';
 import { AvailablePlants, PlantQuality } from './types.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
-import { localizedResources, normalizeString } from '../../utils/miscUtils.js';
+import { isUndefined, localizedResources, normalizeString } from '../../utils/miscUtils.js';
 import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
 import executeDailies from '../dailies/executeDailies.js';
@@ -53,7 +53,7 @@ const announceAutocomplete = async (interaction: Interaction): Promise<undefined
 
   const options = interaction.data?.options?.[0].options?.[0].options;
 
-  if (typeof options === 'undefined') return;
+  if (isUndefined(options)) return;
 
   const focused = options.find((a) => a.focused);
   const input = focused?.value;
@@ -138,7 +138,7 @@ const executeAnnounceProduct = async (
 
   const plantInfo = Plants[plant];
 
-  if (typeof plantInfo === 'undefined')
+  if (isUndefined(plantInfo))
     return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:fazendinha.feira.announce.no-such-product'),
     });

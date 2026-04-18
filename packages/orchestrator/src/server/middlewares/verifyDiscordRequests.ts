@@ -33,7 +33,7 @@ const verifyInteractionSignature = (
 };
 
 const verifyDiscordRequests = async (ctx: Context, next: Next): Promise<unknown> => {
-  if (typeof ctx.request.body === 'undefined') {
+  if (isUndefined(ctx.request.body)) {
     ctx.body = null;
     ctx.status = HTTPResponseCodes.GoAway;
     ctx.message = 'GoAway';

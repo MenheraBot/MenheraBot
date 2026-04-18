@@ -238,19 +238,25 @@ const handleTakeOrder = async (
 };
 
 const handleFairOrderButton = async (ctx: ComponentInteractionContext) => {
-  const [action, embedColor, orderId] = ctx.sentData;
+  const [action, embedColor, orderId, shouldIgnoreTroll] = ctx.sentData;
+
+  const ignoreTroll = shouldIgnoreTroll === 'true';
 
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
-  if (action === 'PUBLIC') return displayFairOrders(ctx, farmer, embedColor);
+  if (action === 'PUBLIC') return displayFairOrders(ctx, farmer, embedColor, { ignoreTroll });
   if (action === 'DELETE') return deleteOrder(ctx, farmer, embedColor, orderId);
-  if (action === 'ASK_DELETE') return displayFairOrders(ctx, farmer, embedColor, { orderId });
+  if (action === 'ASK_DELETE')
+    return displayFairOrders(ctx, farmer, embedColor, { orderId, ignoreTroll });
   if (action === 'CLAIM') return handleClaimOrder(ctx, farmer, embedColor, orderId);
   if (action === 'REQUEST') return handleTradeRequestModal(ctx, embedColor);
   if (action === 'EDIT_AWARD') return handleAddAwardButton(ctx, farmer, embedColor);
   if (action === 'PLACE_ORDER') return handlePlaceOrder(ctx, farmer, embedColor);
   if (action === 'PAGE')
-    return displayFairOrders(ctx, farmer, embedColor, { page: Number(orderId) });
+    return displayFairOrders(ctx, farmer, embedColor, {
+      page: Number(orderId),
+      ignoreTroll,
+    });
   if (action === 'AGREED')
     return handleTakeOrder(
       ctx as ComponentInteractionContext<SelectMenuInteraction>,
@@ -269,13 +275,14 @@ interface FairOrderParameters {
   user?: User;
   page?: number;
   orderId?: string;
+  ignoreTroll?: boolean;
 }
 
 const displayFairOrders = async (
   ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   embedColor: string,
-  { page = 0, user, orderId }: FairOrderParameters = {},
+  { page = 0, user, orderId, ignoreTroll = false }: FairOrderParameters = {},
 ) => {
   const userData = await userRepository.ensureFindUser(farmer.id);
   const canCreateRequest =
@@ -301,13 +308,22 @@ const displayFairOrders = async (
       'REQUEST',
       embedColor,
       '{}',
+      ignoreTroll,
     ),
     disabled: !canCreateRequest,
     style: ButtonStyles.Success,
   });
 
   const viewPublic = createButton({
-    customId: createCustomId(9, ctx.user.id, ctx.originalInteractionId, 'PUBLIC', embedColor),
+    customId: createCustomId(
+      9,
+      ctx.user.id,
+      ctx.originalInteractionId,
+      'PUBLIC',
+      embedColor,
+      null,
+      ignoreTroll,
+    ),
     style: ButtonStyles.Secondary,
     label: ctx.locale('commands:fazendinha.feira.order.view-public-orders'),
   });
@@ -324,7 +340,7 @@ const displayFairOrders = async (
 
   const totalOrders = user
     ? MAX_TRADE_REQUESTS_IN_FAIR_PER_USER
-    : await fairOrderRepository.countPublicOrders();
+    : await fairOrderRepository.countPublicOrders(ignoreTroll);
 
   const totalPages = Math.floor(totalOrders / MAX_FAIR_ORDERS_PER_PAGE) + 1;
 
@@ -336,6 +352,7 @@ const displayFairOrders = async (
         farmer.id,
         MAX_FAIR_ORDERS_PER_PAGE * toSearchPage,
         MAX_FAIR_ORDERS_PER_PAGE,
+        ignoreTroll,
       );
 
   const needPagination = totalOrders > MAX_FAIR_ORDERS_PER_PAGE;
@@ -363,7 +380,15 @@ const displayFairOrders = async (
     }, {});
 
     const selectOrders = createSelectMenu({
-      customId: createCustomId(9, ctx.user.id, ctx.originalInteractionId, 'AGREED', embedColor),
+      customId: createCustomId(
+        9,
+        ctx.user.id,
+        ctx.originalInteractionId,
+        'AGREED',
+        embedColor,
+        null,
+        ignoreTroll,
+      ),
       options: [],
       minValues: 1,
       maxValues: 1,
@@ -392,12 +417,13 @@ const displayFairOrders = async (
           awards: `${Object.entries(order.awards)
             .map(([type, amount]) =>
               ctx.locale('commands:fazendinha.feira.order.order-award', {
-                amount: amount,
-                metric: type === 'estrelinhas' ? '' : 'x',
-                emoji:
-                  type === 'estrelinhas'
-                    ? ctx.safeEmoji(type)
-                    : Items[AvailableItems.Fertilizer].emoji,
+                amount: type === 'plants' ? amount.weight : amount,
+                metric: { estrelinhas: '', plant: ' Kg', fertilizer: 'x' }[type],
+                emoji: {
+                  estrelinhas: ctx.safeEmoji('estrelinhas'),
+                  fertilizers: Items[AvailableItems.Fertilizer].emoji,
+                  plants: `${Plants[amount.plant as 1]?.emoji} ${getQualityEmoji(amount?.quality)}`,
+                }[type],
               }),
             )
             .join(', ')}`,
@@ -418,12 +444,13 @@ const displayFairOrders = async (
               awards: `${Object.entries(order.awards)
                 .map(([type, amount]) =>
                   ctx.locale('commands:fazendinha.feira.order.order-award', {
-                    amount: amount,
-                    metric: '',
-                    emoji:
-                      type === 'estrelinhas'
-                        ? ctx.safeEmoji(type)
-                        : ctx.locale('data:farm-items.0', { count: amount }),
+                    amount: type === 'plants' ? amount.weight : amount,
+                    metric: { estrelinhas: '', plant: ' Kg', fertilizer: 'x' }[type],
+                    emoji: {
+                      estrelinhas: ctx.safeEmoji('estrelinhas'),
+                      fertilizers: Items[AvailableItems.Fertilizer].emoji,
+                      plants: `${Plants[amount.plant as 1]?.emoji} ${getQualityEmoji(amount?.quality)}`,
+                    }[type],
                   }),
                 )
                 .join(', ')}`,
@@ -443,6 +470,7 @@ const displayFairOrders = async (
                 completed ? 'CLAIM' : confirmDelete ? 'DELETE' : 'ASK_DELETE',
                 embedColor,
                 order._id,
+                ignoreTroll,
               ),
               style: completed ? ButtonStyles.Success : ButtonStyles.Danger,
               label: ctx.locale(
@@ -467,12 +495,13 @@ const displayFairOrders = async (
                     awards: `- ${Object.entries(order.awards)
                       .map(([type, amount]) =>
                         ctx.locale('commands:fazendinha.feira.order.order-award', {
-                          amount: amount,
-                          metric: type === 'estrelinhas' ? '' : 'x',
-                          emoji:
-                            type === 'estrelinhas'
-                              ? ctx.safeEmoji(type)
-                              : Items[AvailableItems.Fertilizer].emoji,
+                          amount: type === 'plants' ? amount.weight : amount,
+                          metric: { estrelinhas: '', plant: ' Kg', fertilizer: 'x' }[type],
+                          emoji: {
+                            estrelinhas: ctx.safeEmoji('estrelinhas'),
+                            fertilizers: Items[AvailableItems.Fertilizer].emoji,
+                            plants: `${Plants[amount.plant as 1]?.emoji} ${getQualityEmoji(amount?.quality)}`,
+                          }[type],
                         }),
                       )
                       .join(`\n- `)}`,
@@ -500,41 +529,55 @@ const displayFairOrders = async (
       );
   }
 
-  if (needPagination)
-    container.components.push(
-      createSeparator(true, false),
-      createActionRow([
-        createButton({
-          label: ctx.locale('common:back'),
-          customId: createCustomId(
-            9,
-            ctx.user.id,
-            ctx.originalInteractionId,
-            'PAGE',
-            embedColor,
-            toSearchPage - 1,
-          ),
-          disabled: toSearchPage <= 0,
-          style: toSearchPage <= 0 ? ButtonStyles.Secondary : ButtonStyles.Primary,
-        }),
-        createButton({
-          label: ctx.locale('common:next'),
-          customId: createCustomId(
-            9,
-            ctx.user.id,
-            ctx.originalInteractionId,
-            'PAGE',
-            embedColor,
-            toSearchPage + 1,
-          ),
-          disabled: toSearchPage >= totalPages - 1,
-          style: toSearchPage >= totalPages - 1 ? ButtonStyles.Secondary : ButtonStyles.Primary,
-        }),
-      ]),
-      createTextDisplay(
-        `-# ${ctx.locale('commands:fazendinha.feira.order.pagination', { page: toSearchPage + 1, totalPages })}`,
-      ),
-    );
+  container.components.push(
+    createSeparator(true, false),
+    createActionRow([
+      createButton({
+        label: ctx.locale('common:back'),
+        customId: createCustomId(
+          9,
+          ctx.user.id,
+          ctx.originalInteractionId,
+          'PAGE',
+          embedColor,
+          toSearchPage - 1,
+          ignoreTroll,
+        ),
+        disabled: !needPagination || toSearchPage <= 0,
+        style: toSearchPage <= 0 ? ButtonStyles.Secondary : ButtonStyles.Primary,
+      }),
+      createButton({
+        label: ctx.locale(`commands:fazendinha.feira.order.${ignoreTroll ? 'hide' : 'show'}-troll`),
+        customId: createCustomId(
+          9,
+          ctx.user.id,
+          ctx.originalInteractionId,
+          'PAGE',
+          embedColor,
+          toSearchPage,
+          !ignoreTroll,
+        ),
+        style: ignoreTroll ? ButtonStyles.Primary : ButtonStyles.Secondary,
+      }),
+      createButton({
+        label: ctx.locale('common:next'),
+        customId: createCustomId(
+          9,
+          ctx.user.id,
+          ctx.originalInteractionId,
+          'PAGE',
+          embedColor,
+          toSearchPage + 1,
+          ignoreTroll,
+        ),
+        disabled: !needPagination || toSearchPage >= totalPages - 1,
+        style: toSearchPage >= totalPages - 1 ? ButtonStyles.Secondary : ButtonStyles.Primary,
+      }),
+    ]),
+    createTextDisplay(
+      `-# ${ctx.locale('commands:fazendinha.feira.order.pagination', { page: toSearchPage + 1, totalPages })}`,
+    ),
+  );
 
   ctx.makeLayoutMessage({ components: [container] });
 };

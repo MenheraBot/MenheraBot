@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- Agora é possível trocar plantas por plantas no `/fazendinha feira trocas` - Sugerido por @shhhhbr.
+
+### Changed
+
+- Agora os pedidos da feira filtram pedidos com trocas de baixo valor. Para mostrar todas as trocas, basta clicar no novo botão no `/fazendinha feira trocas`. As trocas de baixo valor são trocas com um valor muito abaixo do mínimo que a planta pode ser vendida na feira, ou não tem trocas de fertilizantes e de plantas - Sugestão adaptada de @kinzitoos. 
+
 ### Fixed
 
 - Corrigido erro intermitente para exibir trocas no `/fazendinha feira trocas`. 

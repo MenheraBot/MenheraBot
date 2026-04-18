@@ -15,6 +15,7 @@ const mongoToRedis = (order: DatabaseFeirinhaOrderSchema): DatabaseFeirinhaOrder
     userId: order.userId,
     createdAt: order.createdAt,
     completed: order.completed,
+    trollAward: order.trollAward,
   }) satisfies DatabaseFeirinhaOrderSchema;
 
 const getUserOrders = async (farmerId: BigString): Promise<DatabaseFeirinhaOrderSchema[]> =>
@@ -47,10 +48,20 @@ const getOrder = async (orderId: string): Promise<null | DatabaseFeirinhaOrderSc
   return fromMongo;
 };
 
-const listPublicOrders = async (farmerId: string, skip: number, limit: number) => {
+const listPublicOrders = async (
+  farmerId: string,
+  skip: number,
+  limit: number,
+  ignoreTroll: boolean,
+) => {
   const sortedItems = await feirinhaOrderModel.aggregate([
     {
-      $match: { $or: [{ userId: farmerId }, { completed: { $ne: true } }] },
+      $match: {
+        $and: [
+          { $or: [{ userId: farmerId }, { completed: { $ne: true } }] },
+          { $or: [{ trollAward: !ignoreTroll }, { trollAward: { $exists: false } }] },
+        ],
+      },
     },
     {
       $addFields: {
@@ -67,8 +78,13 @@ const listPublicOrders = async (farmerId: string, skip: number, limit: number) =
   return sortedItems.map(mongoToRedis);
 };
 
-const countPublicOrders = async () => {
-  return feirinhaOrderModel.countDocuments({ completed: { $ne: true } });
+const countPublicOrders = async (ignoreTroll: boolean) => {
+  return feirinhaOrderModel.countDocuments({
+    $and: [
+      { completed: { $ne: true } },
+      { $or: [{ trollAward: !ignoreTroll }, { trollAward: { $exists: false } }] },
+    ],
+  });
 };
 
 const placeOrder = async (
@@ -77,6 +93,7 @@ const placeOrder = async (
   weight: number,
   quality: PlantQuality,
   awards: OrderAward,
+  trollAward: boolean,
 ): Promise<void> => {
   await feirinhaOrderModel.create({
     userId: `${userId}`,
@@ -86,6 +103,7 @@ const placeOrder = async (
     weight,
     createdAt: Date.now(),
     completed: false,
+    trollAward,
   } satisfies Omit<DatabaseFeirinhaOrderSchema, '_id'>);
 };
 

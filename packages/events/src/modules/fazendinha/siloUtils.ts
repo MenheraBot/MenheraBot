@@ -7,6 +7,7 @@ import {
 } from '../../types/database.js';
 import { RegisterTransaction } from '../../utils/apiRequests/statistics.js';
 import { logger } from '../../utils/logger.js';
+import { isUndefined } from '../../utils/miscUtils.js';
 import {
   INITIAL_LIMIT_FOR_SILO,
   Plants,
@@ -32,7 +33,7 @@ const ignorePlantQuality = (plants: QuantitativePlant[]) =>
     plants.reduce<Partial<Record<AvailablePlants, QuantitativePlant>>>((p, c) => {
       const obj = p[c.plant];
 
-      if (typeof obj === 'undefined') {
+      if (isUndefined(obj)) {
         p[c.plant] = { ...c, quality: 0 };
         return p;
       }

@@ -37,6 +37,7 @@ import starsRepository from '../../database/repositories/starsRepository.js';
 import { handleUserSelection, validateUserBet } from '../../modules/poker/playerBet.js';
 import { DEFAULT_CHIPS, MAX_POKER_PLAYERS } from '../../modules/poker/constants.js';
 import { logger } from '../../utils/logger.js';
+import { isUndefined } from '../../utils/miscUtils.js';
 
 const gameInteractions = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [matchId, action, lobbyAction] = ctx.sentData;
@@ -257,7 +258,7 @@ const enterMatch = async (ctx: ComponentInteractionContext): Promise<void> => {
 
   const oldEmbed = ctx.interaction.message?.embeds?.[0];
 
-  if (typeof oldEmbed === 'undefined') {
+  if (isUndefined(oldEmbed)) {
     logger.error(`oldEmbed is undefined! Message:`, ctx.interaction.message);
 
     Sentry.captureMessage('oldEmbed is undefined in Poker!', {
