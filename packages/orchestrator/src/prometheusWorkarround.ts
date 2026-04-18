@@ -47,7 +47,7 @@ const mergeMetrics = (
     results.forEach((metric) => {
       const [key, value] = metric;
 
-      if (isUndefined(p[key])) p[key] = 0;
+      if (typeof p[key] === 'undefined') p[key] = 0;
 
       p[key] += Number(value);
     });
