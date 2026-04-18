@@ -128,6 +128,7 @@ const farmerSchema = new Schema({
   dailies: { type: Array, default: [] },
   dailyDayId: { type: Number, default: 0 },
   composter: { type: Number, default: 0 },
+  lastNpcInteraction: { type: Object },
 });
 
 const contractsSchema = new Schema({

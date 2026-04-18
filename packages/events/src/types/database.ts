@@ -193,6 +193,10 @@ export interface DatabaseFarmerSchema {
   dailies: DeliveryMission[];
   dailyDayId: number;
   composter: number;
+  lastNpcInteraction?: {
+    interactedAt: number;
+    npcId: AvailableNpcs;
+  };
 }
 
 export interface DatabaseNotificationSchema {
@@ -238,4 +242,3 @@ export type DatabaseRelationshipSchema = {
     requirements: Pick<DatabaseContractSchema, 'requirements'>;
   }>;
 };
-

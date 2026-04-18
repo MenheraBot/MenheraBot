@@ -31,6 +31,7 @@ const parseMongoUserToRedisUser = (user: DatabaseFarmerSchema): DatabaseFarmerSc
   items: user.items ?? [],
   siloUpgrades: user.siloUpgrades,
   lastPlantedSeed: user.lastPlantedSeed,
+  lastNpcInteraction: user.lastNpcInteraction,
   composter: user.composter ?? 0,
   silo: user.silo.flatMap((a) =>
     a.weight <= 0

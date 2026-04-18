@@ -1,4 +1,4 @@
-import { hoursToMillis } from '../../utils/miscUtils.js';
+import { daysToMillis, hoursToMillis } from '../../utils/miscUtils.js';
 import {
   AvailableItems,
   AvailablePlants,
@@ -30,6 +30,9 @@ export const DELIVERIES_AMOUNT = 6;
 export const MAX_DELIVERY_WEIGHT = 9;
 export const MIN_DELIVERY_WEIGHT = 5;
 export const FINISH_ALL_DELIVERIES_BONUS = 30_000;
+
+export const MAX_CONTRACTS_PER_NPC = 1;
+export const NPC_BASE_CONTRACT_DURATION_IN_MILLIS = daysToMillis(2);
 
 export const MAX_COMPOSTER_VALUE = 100;
 export const COMPOSTER_FERTILIZER_YIELD = 1;

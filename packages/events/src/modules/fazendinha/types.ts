@@ -161,7 +161,7 @@ export type NeighborNpc = {
   preferences: {
     categories: PlantCategories[];
     seasons: Seasons[];
-    qualityPreference: PlantQuality[];
+    quality: PlantQuality[];
     plants: AvailablePlants[];
   };
 };
