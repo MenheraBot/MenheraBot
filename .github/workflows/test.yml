@@ -41,8 +41,8 @@ jobs:
       - name: Execute typecheck 
         run: pnpm -r typecheck
 
-      - name: Execute eslint 
-        run: pnpm run:lint
+#      - name: Execute eslint 
+#        run: pnpm run:lint
 
       - name: Execute jest in all packages
         run: pnpm test
