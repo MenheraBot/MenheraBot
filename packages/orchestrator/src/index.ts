@@ -10,7 +10,8 @@ import type { Bot } from '@discordeno/bot';
 
 declare module 'koa' {
   interface Request extends Koa.BaseRequest {
-    body?: unknown;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    body?: any;
   }
 }
 
