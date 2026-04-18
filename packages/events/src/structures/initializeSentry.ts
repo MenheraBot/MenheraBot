@@ -7,22 +7,19 @@ const initializeSentry = (): void => {
 
   if (process.env.NOMICROSERVICES) return;
 
-  Sentry.init({
-    dsn: SENTRY_DSN,
-    environment: process.env.NODE_ENV ?? 'Unknown',
-    release: process.env.VERSION,
-    serverName: hostname(),
-    tracesSampleRate: 1.0,
-    enableTracing: true,
-    integrations: [
-      new Sentry.Integrations.Console(),
-      new Sentry.Integrations.Http({ tracing: true }),
-      new Sentry.Integrations.Modules(),
-      new Sentry.Integrations.RequestData({ include: { data: true } }),
-      new Sentry.Integrations.OnUncaughtException(),
-      new Sentry.Integrations.OnUnhandledRejection(),
-    ],
-  });
+Sentry.init({
+  dsn: SENTRY_DSN,
+  environment: process.env.NODE_ENV ?? 'Unknown',
+  release: process.env.VERSION,
+  serverName: hostname(),
+  sendDefaultPii: true,
+  tracesSampleRate: 1.0,
+
+  integrations: [
+    ...Sentry.getDefaultIntegrations({}),
+    Sentry.requestDataIntegration({ include: { data: true } }),
+  ],
+});
 };
 
 export { initializeSentry };
