@@ -30,10 +30,10 @@ export interface StoredBlackjackState {
   lastAttachmentUrl: string;
 }
 
-export type BlackjackSession = {
+export interface BlackjackSession {
   betAmount: number;
   profit: number;
   wins: number;
   matches: number;
   loses: number;
-};
+}

@@ -30,12 +30,14 @@ const getQualityEmoji = (quality: PlantQuality) =>
 const ignorePlantQuality = (plants: QuantitativePlant[]) =>
   Object.values(
     plants.reduce<Partial<Record<AvailablePlants, QuantitativePlant>>>((p, c) => {
-      if (!p[c.plant]) {
+      const obj = p[c.plant];
+
+      if (typeof obj === 'undefined') {
         p[c.plant] = { ...c, quality: 0 };
         return p;
       }
 
-      p[c.plant]!.weight = parseFloat((p[c.plant]!.weight + c.weight).toFixed(1));
+      obj.weight = parseFloat((obj.weight + c.weight).toFixed(1));
 
       return p;
     }, {}),

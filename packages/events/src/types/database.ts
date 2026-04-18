@@ -162,10 +162,11 @@ export interface DatabaseFeirinhaSchema {
   [`name_en-US`]: string;
 }
 
-export type OrderAward = {
+export interface OrderAward {
   estrelinhas?: number;
   fertilizers?: number;
-};
+  plant?: { weight: number; plant: AvailablePlants };
+}
 
 export interface DatabaseFeirinhaOrderSchema {
   _id: string;

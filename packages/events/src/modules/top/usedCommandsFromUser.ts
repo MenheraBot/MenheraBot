@@ -56,9 +56,16 @@ const executeUsedCommandsFromUserTop = async (
       inline: false,
     });
 
-  const pagination = createPaginationButtons(ctx, 'user', `${user.id}`, embedColor, page, res.length < 10);
+  const pagination = createPaginationButtons(
+    ctx,
+    'user',
+    `${user.id}`,
+    embedColor,
+    page,
+    res.length < 10,
+  );
 
-  if (embed.fields!.length < 10) {
+  if ((embed.fields?.length ?? 0) < 10) {
     if ('disabled' in pagination.components[1]) pagination.components[1].disabled = true;
   }
 

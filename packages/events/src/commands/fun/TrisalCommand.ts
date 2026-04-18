@@ -105,7 +105,13 @@ const acceptingTrisal = async (ctx: ComponentInteractionContext): Promise<void> 
   }
 
   const confirmButton = createButton({
-    customId: await createAsyncCustomId(1, secondUserId, ctx.originalInteractionId, firstUserId, secondUserId),
+    customId: await createAsyncCustomId(
+      1,
+      secondUserId,
+      ctx.originalInteractionId,
+      firstUserId,
+      secondUserId,
+    ),
     label: ctx.locale('commands:trisal.accept-button', { name: secondUserName }),
     style: ButtonStyles.Success,
   });

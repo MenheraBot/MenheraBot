@@ -30,7 +30,7 @@ import { ApiTransactionReason } from '../../types/api.js';
 
 let plantNames: ApplicationCommandOptionChoice[] = [];
 
-const announceAutocomplete = async (interaction: Interaction): Promise<void | null> => {
+const announceAutocomplete = async (interaction: Interaction): Promise<undefined | null> => {
   if (plantNames.length === 0)
     plantNames = Object.keys(Plants).reduce<ApplicationCommandOptionChoice[]>((p, c) => {
       if (c === `${AvailablePlants.Mate}`) return p;

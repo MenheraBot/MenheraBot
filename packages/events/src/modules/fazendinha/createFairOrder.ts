@@ -314,6 +314,7 @@ const handleReceiveModal = async (
   fields.forEach((f) => {
     if (typeof f.value === 'undefined') {
       if (currentState?.awards?.[f.customId as 'estrelinhas']) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete currentState.awards[f.customId as 'estrelinhas'];
 
         if (Object.keys(currentState.awards).length === 0) delete currentState.awards;

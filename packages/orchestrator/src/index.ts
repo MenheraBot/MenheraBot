@@ -10,7 +10,7 @@ import type { Bot } from '@discordeno/bot';
 
 declare module 'koa' {
   interface Request extends Koa.BaseRequest {
-    body?: any;
+    body?: unknown;
   }
 }
 

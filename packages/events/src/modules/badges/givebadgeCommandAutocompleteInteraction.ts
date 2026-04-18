@@ -6,7 +6,9 @@ import { profileBadges } from './profileBadges.js';
 import { sendInteractionResponse } from '../../utils/discord/interactionRequests.js';
 import { Interaction } from '../../types/discordeno.js';
 
-const executeGivebadgeAutocomplete = async (interaction: Interaction): Promise<void | null> => {
+const executeGivebadgeAutocomplete = async (
+  interaction: Interaction,
+): Promise<undefined | null> => {
   const input = getOptionFromInteraction<number>(interaction, 'badgeid', false, true);
 
   const allBadges = Object.entries(profileBadges);

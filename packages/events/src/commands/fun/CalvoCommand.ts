@@ -69,7 +69,7 @@ const CalvoCommand = createCommand({
     const moreButton = createButton({
       label: ctx.locale('commands:calvo.know-more'),
       style: ButtonStyles.Link,
-      url:  `${bot.cdnUrl}/images/internal/calvice.jpeg`,
+      url: `${bot.cdnUrl}/images/internal/calvice.jpeg`,
     });
 
     await ctx.makeMessage({

@@ -437,7 +437,7 @@ const resetTitle: ApplicationCommandOptionChoice = {
 
 export const executeTituleAutocompleteInteraction = async (
   interaction: Interaction,
-): Promise<void | null> => {
+): Promise<undefined | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'título', false, true);
 
   if (`${input}`.length < 3) return respondWithChoices(interaction, [resetTitle]);
