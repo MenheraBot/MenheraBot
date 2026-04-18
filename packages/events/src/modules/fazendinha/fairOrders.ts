@@ -411,7 +411,7 @@ const displayFairOrders = async (
             plantName: ctx.locale(`data:plants.${order.plant}`),
             qualityEmoji: ctx.locale(`data:fazendinha.quality_${order.quality}`),
           }),
-          value: order._id,
+          value: `${order._id}`,
           description: ctx
             .locale('commands:fazendinha.feira.order.order-public-description', {
               user: tabledUsers[order.userId] ?? order.userId,
