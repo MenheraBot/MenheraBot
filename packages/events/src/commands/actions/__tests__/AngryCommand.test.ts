@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import i18next from 'i18next';
 import angryCommand from '../AngryCommand.js';
 

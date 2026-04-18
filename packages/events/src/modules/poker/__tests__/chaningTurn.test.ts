@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals';
 import { updatePlayerTurn } from '../turnManager.js'
 import { mockGame, mockPlayer } from './playerSeats.test.js';
 
