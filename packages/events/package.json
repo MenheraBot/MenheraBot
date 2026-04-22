@@ -28,7 +28,7 @@
     "@sentry/node": "^10.49.0",
     "axios": "^1.15.0",
     "i18next": "^26.0.5",
-    "i18next-fs-backend": "^2.6.3",
+    "i18next-fs-backend": "^2.6.4",
     "ioredis": "^5.10.1",
     "md5": "^2.3.0",
     "mongoose": "6.13.6",
