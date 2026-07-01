@@ -16,7 +16,7 @@
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
     "@discordeno/types": "22.0.0-beta.1",
-    "@koa/router": "^14.0.0",
+    "@koa/router": "^15.0.0",
     "koa": "^3.2.0",
     "koa-body": "^6.0.1",
     "net-ipc": "^2.2.2",
