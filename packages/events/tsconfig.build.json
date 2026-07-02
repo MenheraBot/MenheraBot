@@ -6,6 +6,7 @@
     "baseUrl": "src",
     "sourceMap": true,
     "inlineSources": true,
+    "ignoreDeprecations": "6.0",
     "sourceRoot": "/"
   },
   "exclude": [

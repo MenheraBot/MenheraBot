@@ -102,7 +102,7 @@ const replaceDevTime = (time: number) => (process.env.NODE_ENV === 'production' 
 export const Plants: Record<AvailablePlants, PlantsFile> = {
   [AvailablePlants.Mate]: {
     minutesToHarvest: replaceDevTime(15),
-    minutesToRot: 60,
+    minutesToRot: replaceDevTime(60),
     emoji: '🌿',
     sellValue: 110,
     buyValue: 0,
