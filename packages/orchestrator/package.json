@@ -2,7 +2,7 @@
   "name": "@menhera-bot/orchestrator",
   "version": "2.0.0",
   "engines": {
-    "node": "^22"
+    "node": "^24"
   },
   "description": "Menhera's bridge from the outside world to internal stack. Receive external webhooks and provide metrics",
   "main": "dist/index.js",

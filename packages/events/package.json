@@ -3,7 +3,7 @@
   "type": "module",
   "version": "6.4.2",
   "engines": {
-    "node": "^22"
+    "node": "^24"
   },
   "description": "The core package of Menhera. This package process all interactions that Menhera receives from users",
   "main": "dist/index.js",
