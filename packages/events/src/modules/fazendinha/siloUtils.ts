@@ -120,7 +120,11 @@ const removePlantsIgnoringQuality = (
 
   const passedQualities: Partial<Record<PlantQuality, true>> = {};
 
-  const sortedPlants = user.sort((a, b) => b.weight - a.weight);
+  const sortedPlants = user.sort((a, b) => {
+    const qualityDiff = getQuality(b) - getQuality(a);
+
+    return qualityDiff !== 0 ? qualityDiff : b.weight - a.weight;
+  });
 
   let safeProdLoop = 0;
 
