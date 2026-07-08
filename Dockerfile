@@ -17,12 +17,11 @@ RUN pnpm deploy --filter=@menhera-bot/orchestrator --prod /prod/orchestrator --l
 
 FROM node:24-alpine AS events
 WORKDIR /app
-RUN corepack enable
 COPY --from=build /prod/events/dist  ./dist/
 COPY --from=build /prod/events/locales  ./locales/
 COPY --from=build /prod/events/package.json  ./
 COPY --from=build /prod/events/node_modules ./node_modules 
-CMD ["pnpm", "start"]
+CMD ["node", "run", "start"]
 
 FROM gcr.io/distroless/nodejs24-debian13 AS orchestrator
 WORKDIR /app
