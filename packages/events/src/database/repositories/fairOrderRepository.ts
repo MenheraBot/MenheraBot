@@ -59,7 +59,7 @@ const listPublicOrders = async (
       $match: {
         $and: [
           { $or: [{ userId: farmerId }, { completed: { $ne: true } }] },
-          { $or: [{ trollAward: !ignoreTroll }, { trollAward: { $exists: false } }] },
+          { $or: [{ trollAward: { $ne: ignoreTroll } }, { trollAward: { $exists: false } }] },
         ],
       },
     },
@@ -82,7 +82,7 @@ const countPublicOrders = async (ignoreTroll: boolean) => {
   return feirinhaOrderModel.countDocuments({
     $and: [
       { completed: { $ne: true } },
-      { $or: [{ trollAward: !ignoreTroll }, { trollAward: { $exists: false } }] },
+      { $or: [{ trollAward: { $ne: ignoreTroll } }, { trollAward: { $exists: false } }] },
     ],
   });
 };

@@ -547,7 +547,7 @@ const displayFairOrders = async (
         style: toSearchPage <= 0 ? ButtonStyles.Secondary : ButtonStyles.Primary,
       }),
       createButton({
-        label: ctx.locale(`commands:fazendinha.feira.order.${ignoreTroll ? 'hide' : 'show'}-troll`),
+        label: ctx.locale(`commands:fazendinha.feira.order.${ignoreTroll ? 'show' : 'hide'}-troll`),
         customId: createCustomId(
           9,
           ctx.user.id,
@@ -557,7 +557,7 @@ const displayFairOrders = async (
           toSearchPage,
           !ignoreTroll,
         ),
-        style: ignoreTroll ? ButtonStyles.Primary : ButtonStyles.Secondary,
+        style: ignoreTroll ? ButtonStyles.Secondary : ButtonStyles.Primary,
       }),
       createButton({
         label: ctx.locale('common:next'),

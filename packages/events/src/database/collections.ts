@@ -153,6 +153,7 @@ const feirinhaOrderSchema = new Schema({
   awards: { type: Object },
   createdAt: { type: Number, default: Date.now },
   completed: { type: Boolean },
+  trollAward: { type: Boolean },
 });
 
 const notificationSchema = new Schema({

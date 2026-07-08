@@ -289,6 +289,7 @@ const FazendinhaCommand = createCommand({
         return displayFairOrders(ctx, realFarmer, userData.selectedColor, {
           user: isAuthorTarget ? undefined : user,
           page: isAuthorTarget ? page - 1 : undefined,
+          ignoreTroll: true,
         });
       }
     }
