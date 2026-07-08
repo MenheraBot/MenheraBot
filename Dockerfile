@@ -21,7 +21,7 @@ COPY --from=build /prod/events/dist  ./dist/
 COPY --from=build /prod/events/locales  ./locales/
 COPY --from=build /prod/events/package.json  ./
 COPY --from=build /prod/events/node_modules ./node_modules 
-CMD ["node", "run", "start"]
+CMD ["npm", "run", "start"]
 
 FROM gcr.io/distroless/nodejs24-debian13 AS orchestrator
 WORKDIR /app
