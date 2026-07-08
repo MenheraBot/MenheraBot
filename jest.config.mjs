@@ -26,7 +26,7 @@ export default {
               module: 'ESNext',
               moduleResolution: 'NodeNext',
               esModuleInterop: true,
-              allowJs: true
+              allowJs: true,
             },
           },
         ],

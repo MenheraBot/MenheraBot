@@ -109,9 +109,9 @@ const BlacklistCommand = createCommand({
 
         if (!usr) return finishCommand(ctx.makeMessage({ content: 'Nenhum user na DB' }));
 
-        const msg = `== CURRENT BAN INFO ==\n\n• User :: ${user.username} [${
-          getDisplayName(user)
-        }] - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${usr.banReason}`;
+        const msg = `== CURRENT BAN INFO ==\n\n• User :: ${user.username} [${getDisplayName(
+          user,
+        )}] - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${usr.banReason}`;
 
         const button = createButton({
           customId: createCustomId(0, ctx.user.id, ctx.originalInteractionId, user.id),

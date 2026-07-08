@@ -8,6 +8,7 @@ import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import pokerRepository from '../../database/repositories/pokerRepository.js';
 import { createEmbed } from '../../utils/discord/embedUtils.js';
+import { isUndefined } from '../../utils/miscUtils.js';
 
 const convertChipsToStars = async (gameData: PokerMatch, player: PokerPlayer): Promise<void> => {
   if (!gameData.worthGame) return;
@@ -42,7 +43,7 @@ const afterLobbyAction = async (
 
   const oldEmbed = ctx.interaction.message?.embeds?.[0];
   const hasNextMatchPlayers = typeof oldEmbed?.fields?.[0] !== 'undefined';
-  const totalPlayers = Number(oldEmbed?.footer!.text.split(' ').pop());
+  const totalPlayers = Number(oldEmbed?.footer?.text?.split?.(' ')?.pop?.());
 
   if (!oldEmbed) throw new Error(`oldEmbed does not exists in afterLobbyAction`);
 
@@ -55,7 +56,9 @@ const afterLobbyAction = async (
     ];
   }
 
-  const fieldValue = oldEmbed.fields![0].value;
+  if (isUndefined(oldEmbed.fields)) throw new Error(`The old embed fields is undefined`);
+
+  const fieldValue = oldEmbed.fields[0].value;
 
   if (fieldValue.includes(`${ctx.user.id}`)) {
     const splitted = fieldValue.split('\n');
@@ -68,16 +71,16 @@ const afterLobbyAction = async (
       ctx.user.id,
     )}`;
 
-    oldEmbed.fields![0].value = fieldValue.replace(
+    oldEmbed.fields[0].value = fieldValue.replace(
       `${repleceable} ${mentionUser(ctx.user.id)}`,
       toReplace,
     );
   } else
-    oldEmbed.fields![0].value += `\n${
+    oldEmbed.fields[0].value += `\n${
       lobbyAction === 'ENTER' ? ':white_check_mark:' : ':x:'
     } ${mentionUser(ctx.user.id)}`;
 
-  const alreadyVottedPlayers = oldEmbed.fields![0].value.split('\n');
+  const alreadyVottedPlayers = oldEmbed.fields[0].value.split('\n');
   const numberAlreadyVottedPlayers = hasNextMatchPlayers
     ? alreadyVottedPlayers.length
     : alreadyVottedPlayers.length - 1;

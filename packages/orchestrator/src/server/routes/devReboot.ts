@@ -6,7 +6,7 @@ import { closeConnections } from '../../index.js';
 const handleRequest = async (ctx: Context): Promise<void> => {
   ctx.status = HTTPResponseCodes.Accepted;
 
-  closeConnections()
+  closeConnections();
 };
 
 const createRebootRoute = (): Router => {

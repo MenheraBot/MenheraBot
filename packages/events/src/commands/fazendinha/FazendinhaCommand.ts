@@ -28,6 +28,7 @@ import {
   handleComposterInteractions,
 } from '../../modules/fazendinha/farmComposter.js';
 import { handleDiscardSeeds } from '../../modules/fazendinha/manageSilo.js';
+import { isUndefined } from '../../utils/miscUtils.js';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -288,6 +289,7 @@ const FazendinhaCommand = createCommand({
         return displayFairOrders(ctx, realFarmer, userData.selectedColor, {
           user: isAuthorTarget ? undefined : user,
           page: isAuthorTarget ? page - 1 : undefined,
+          ignoreTroll: true,
         });
       }
     }
@@ -305,7 +307,7 @@ const FazendinhaCommand = createCommand({
         ctx,
         farmer,
         ctx.authorData.selectedColor,
-        typeof lastPlantedSeedFromSilo === 'undefined' || lastPlantedSeedFromSilo.amount <= 0
+        isUndefined(lastPlantedSeedFromSilo) || lastPlantedSeedFromSilo.amount <= 0
           ? AvailablePlants.Mate
           : lastPlantedSeedFromSilo.plant,
         -1,

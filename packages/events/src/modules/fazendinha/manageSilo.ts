@@ -187,7 +187,7 @@ const executeDiscardPlant = async (
   embedColor: string,
   selectedSeeds: QuantitativeSeed[],
 ) => {
-  let total = 0;
+  let count = 0;
 
   for (let i = selectedSeeds.length - 1; i >= 0; i--) {
     const currentSeed = selectedSeeds[i];
@@ -211,7 +211,7 @@ const executeDiscardPlant = async (
     if (currentSeed.amount <= 0) return respondInvalidAmount(ctx, farmer, embedColor);
 
     fromSilo.amount = fromSilo.amount - currentSeed.amount;
-    total += currentSeed.amount;
+    count += currentSeed.amount;
 
     if (fromSilo.amount <= 0) farmer.seeds.splice(farmer.seeds.findIndex(filterPlant(fromSilo)), 1);
   }
@@ -224,7 +224,7 @@ const executeDiscardPlant = async (
     flags: setComponentsV2Flag(MessageFlags.Ephemeral),
     components: [
       createTextDisplay(
-        ctx.prettyResponse('success', 'commands:fazendinha.silo.discarded', { total }),
+        ctx.prettyResponse('success', 'commands:fazendinha.silo.discarded', { count }),
       ),
     ],
   };

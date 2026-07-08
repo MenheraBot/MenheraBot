@@ -1,9 +1,9 @@
 {
   "name": "@menhera-bot/events",
   "type": "module",
-  "version": "6.4.1",
+  "version": "6.4.2",
   "engines": {
-    "node": ">=22.0.0"
+    "node": "^22"
   },
   "description": "The core package of Menhera. This package process all interactions that Menhera receives from users",
   "main": "dist/index.js",
@@ -15,7 +15,7 @@
     "prebuild": "rm -rf dist",
     "build": "tsc --project tsconfig.build.json",
     "postbuild": "mv dist/src uwu && rm -rf dist && mv uwu dist",
-    "typecheck": " tsc --project tsconfig.json --noEmit",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
     "print-version": "echo version=$npm_package_version",
     "build:dev": "pnpm build && pnpm dev",
     "start": "VERSION=$npm_package_version NODE_ENV=production node .",
@@ -25,21 +25,22 @@
   },
   "dependencies": {
     "@discordeno/bot": "22.0.1-next.780f212",
-    "@sentry/node": "^7.120.4",
-    "axios": "^1.13.5",
-    "i18next": "^25.6.0",
-    "i18next-fs-backend": "^2.6.0",
-    "ioredis": "^5.8.1",
+    "@sentry/node": "^10.49.0",
+    "axios": "^1.16.0",
+    "i18next": "^26.0.5",
+    "i18next-fs-backend": "^2.6.6",
+    "ioredis": "^5.10.1",
     "md5": "^2.3.0",
-    "mongoose": "6.13.6",
+    "mongoose": "6.13.9",
     "net-ipc": "^2.2.2",
     "pokersolver": "^2.1.4",
     "prom-client": "^15.1.3",
     "string-similarity": "^4.0.4"
   },
   "devDependencies": {
-    "@jest/globals": "^30.2.0",
+    "@jest/globals": "^30.3.0",
     "@types/md5": "^2.3.6",
-    "@types/string-similarity": "^4.0.2"
+    "@types/string-similarity": "^4.0.2",
+    "typescript": "6.0.3"
   }
 }

@@ -1,3 +1,4 @@
+import { describe, expect, test } from '@jest/globals';
 import { BICHO_ANIMALS, didUserWin } from './finishBets.js';
 import { BichoBetType } from './types.js';
 

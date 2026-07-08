@@ -25,7 +25,14 @@ import {
   Plants,
 } from './constants.js';
 import { AvailableItems, PlantQuality } from './types.js';
-import { getPlantPrice, getQuality, getQualityEmoji, removeItems } from './siloUtils.js';
+import {
+  checkNeededPlants,
+  getPlantPrice,
+  getQuality,
+  getQualityEmoji,
+  removeItems,
+  removePlants,
+} from './siloUtils.js';
 import { ModalInteraction } from '../../types/interaction.js';
 import { extractLayoutFields } from '../../utils/discord/modalUtils.js';
 import userRepository from '../../database/repositories/userRepository.js';
@@ -94,6 +101,27 @@ const handleTradeRequestModal = async (ctx: ComponentInteractionContext, embedCo
       }),
     ],
   });
+};
+
+const isTradeTroll = (order: Partial<DatabaseFeirinhaOrderSchema>): boolean => {
+  if (isUndefined(order.awards) || isUndefined(order.weight) || isUndefined(order.plant))
+    return true;
+
+  const isTrollFertilizer = isUndefined(order.awards.fertilizers) || order.awards.fertilizers <= 2;
+
+  const isTrollPlant =
+    isUndefined(order.awards.plants) ||
+    (order.awards.plants.weight < order.weight && order.awards.plants.plant < order.plant - 3);
+
+  const isTrollEstrelinhas =
+    isUndefined(order.awards.estrelinhas) ||
+    order.awards.estrelinhas <
+      getPlantPrice({ plant: order.plant, quality: order.quality }) * order.weight;
+
+  return (
+    [isTrollEstrelinhas, isTrollFertilizer, isTrollPlant].filter((a) => a).length > 1 &&
+    isTrollEstrelinhas
+  );
 };
 
 const handleAddAwardButton = async (
@@ -253,12 +281,13 @@ const getCreateFairOrderMessage = async (
               ? `- ${Object.entries(currentState.awards)
                   .map(([type, amount]) =>
                     ctx.locale('commands:fazendinha.feira.order.order-award', {
-                      amount,
-                      metric: type === 'estrelinhas' ? '' : 'x',
-                      emoji:
-                        type === 'estrelinhas'
-                          ? ctx.safeEmoji(type)
-                          : Items[AvailableItems.Fertilizer].emoji,
+                      amount: type === 'plants' ? amount.weight : amount,
+                      metric: { estrelinhas: '', plant: ' Kg', fertilizer: 'x' }[type],
+                      emoji: {
+                        estrelinhas: ctx.safeEmoji('estrelinhas'),
+                        fertilizers: Items[AvailableItems.Fertilizer].emoji,
+                        plants: `${Plants[amount.plant as 1]?.emoji} ${getQualityEmoji(amount?.quality)}`,
+                      }[type],
                     }),
                   )
                   .join(`\n- `)}`
@@ -312,8 +341,9 @@ const handleReceiveModal = async (
   let invalidReason = '';
 
   fields.forEach((f) => {
-    if (typeof f.value === 'undefined') {
+    if (isUndefined(f.value)) {
       if (currentState?.awards?.[f.customId as 'estrelinhas']) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete currentState.awards[f.customId as 'estrelinhas'];
 
         if (Object.keys(currentState.awards).length === 0) delete currentState.awards;
@@ -404,7 +434,9 @@ const handlePlaceOrder = async (
     isUndefined(order.plant) ||
     isUndefined(order.quality) ||
     isUndefined(order.weight) ||
-    (isUndefined(order.awards.estrelinhas) && isUndefined(order.awards.fertilizers))
+    (isUndefined(order.awards.estrelinhas) &&
+      isUndefined(order.awards.fertilizers) &&
+      isUndefined(order.awards.plants))
   )
     return ctx.respondInteraction({
       flags: MessageFlags.Ephemeral,
@@ -432,6 +464,15 @@ const handlePlaceOrder = async (
       content: ctx.prettyResponse('error', 'commands:fazendinha.feira.order.poor-items'),
     });
 
+  if (order.awards.plants && !checkNeededPlants([order.awards.plants], farmer.silo))
+    return ctx.respondInteraction({
+      flags: MessageFlags.Ephemeral,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.order.poor-plants', {
+        weight: order.awards.plants.weight,
+        emoji: getQualityEmoji(getQuality(order.awards.plants)),
+      }),
+    });
+
   const userOrders = await fairOrderRepository.getUserOrders(farmer.id);
 
   if (userOrders.length >= MAX_TRADE_REQUESTS_IN_FAIR_PER_USER)
@@ -440,12 +481,15 @@ const handlePlaceOrder = async (
       flags: MessageFlags.Ephemeral,
     });
 
+  const isTrollAward = isTradeTroll(order);
+
   await fairOrderRepository.placeOrder(
     ctx.user.id,
     order.plant,
     order.weight,
     order.quality,
     order.awards,
+    isTrollAward,
   );
 
   if (order.awards.estrelinhas) {
@@ -464,6 +508,12 @@ const handlePlaceOrder = async (
       { id: AvailableItems.Fertilizer, amount: order.awards.fertilizers },
     ]);
     await farmerRepository.updateItems(farmer.id, newItems);
+  }
+
+  if (order.awards.plants) {
+    const newSilo = removePlants(farmer.silo, [order.awards.plants]);
+
+    await farmerRepository.updateSilo(ctx.user.id, newSilo);
   }
 
   await displayFairOrders(ctx, farmer, embedColor);

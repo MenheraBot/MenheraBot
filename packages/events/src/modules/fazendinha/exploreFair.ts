@@ -34,7 +34,7 @@ import { Interaction, User } from '../../types/discordeno.js';
 import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
 import { bot } from '../../index.js';
 
-const listItemAutocomplete = async (interaction: Interaction): Promise<void | null> => {
+const listItemAutocomplete = async (interaction: Interaction): Promise<undefined | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'item', false) ?? '';
 
   const availableItems = await fairRepository.getAnnoucementNames(

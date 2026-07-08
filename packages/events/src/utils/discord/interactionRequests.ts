@@ -21,12 +21,12 @@ const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
 const sendRequest = async (
   options: Omit<SendRequestOptions, 'resolve' | 'reject'>,
   currentTry = 1,
-): Promise<void> =>
+): Promise<undefined> =>
   new Promise((res, rej): void => {
     try {
       bot.rest.sendRequest({
         ...options,
-        resolve: () => res(),
+        resolve: () => res(undefined),
         reject: (err) => {
           debugError(
             new Error(
@@ -63,6 +63,7 @@ const sendRequest = async (
     } catch (e) {
       logger.error(
         `[SEND REQUEST] Failed to send request to ${options.route}. Current try ${currentTry}`,
+        e,
       );
       if (currentTry >= 2)
         return rej(new Error('Too many failed requests when sending interaction'));
@@ -79,7 +80,7 @@ const sendInteractionResponse = async (
   interactionId: BigString,
   token: string,
   options: InteractionResponse,
-): Promise<void> =>
+): Promise<undefined> =>
   sendRequest({
     method: 'POST',
     route: bot.rest.routes.interactions.responses.callback(interactionId, token),
@@ -124,7 +125,7 @@ const sendFollowupMessage = async (token: string, options: InteractionResponse):
 const respondWithChoices = (
   interaction: Interaction,
   choices: ApplicationCommandOptionChoice[],
-): Promise<void | null> =>
+): Promise<undefined | null> =>
   sendInteractionResponse(interaction.id, interaction.token, {
     type: InteractionResponseTypes.ApplicationCommandAutocompleteResult,
     data: {

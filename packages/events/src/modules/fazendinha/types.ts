@@ -36,7 +36,7 @@ export enum Seasons {
   Summer = 'summer',
   Winter = 'winter',
   Autumn = 'autumn',
-  Spring = 'spring'
+  Spring = 'spring',
 }
 
 export enum PlantCategories {
@@ -84,7 +84,7 @@ export enum PlantationState {
   Empty = 'EMPTY',
   Growing = 'GROWING',
   Mature = 'MATURE',
-  Rotten = 'ROTTEN'
+  Rotten = 'ROTTEN',
 }
 
 export type Plantation = PlantedField | EmptyField;

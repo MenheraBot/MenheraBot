@@ -75,7 +75,7 @@ const buyItems = async (
       ctx.authorData.inventory.some((a) => a.id === i) ||
       ctx.authorData.inUseItems.some((a) => a.id === i);
 
-    itemsText += `${haveItem ? '~~' : ''}**${ctx.locale(`data:magic-items.${i as 1}.name`)}** - ${ctx.locale(`data:magic-items.${i as 1}.description`)}${haveItem ? '~~' : ""}\n`;
+    itemsText += `${haveItem ? '~~' : ''}**${ctx.locale(`data:magic-items.${i as 1}.name`)}** - ${ctx.locale(`data:magic-items.${i as 1}.description`)}${haveItem ? '~~' : ''}\n`;
 
     if (!haveItem)
       selectMenu.options.push({

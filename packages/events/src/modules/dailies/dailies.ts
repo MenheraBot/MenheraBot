@@ -1,4 +1,4 @@
-import { calculateProbability } from '../../utils/miscUtils.js';
+import { calculateProbability, isUndefined } from '../../utils/miscUtils.js';
 import { PLANT_CATEGORY_EMOJIS, Plants } from '../fazendinha/constants.js';
 import { getQuality, getQualityEmoji } from '../fazendinha/siloUtils.js';
 import { PlantCategories, PlantQuality } from '../fazendinha/types.js';
@@ -115,7 +115,7 @@ const populateCommand = (command: string): void => {
 };
 
 const getDailyById = <D extends Daily>(id: number): D => {
-  if (typeof Dailies[id] === 'undefined') throw new Error(`There is no daily with ID ${id}`);
+  if (isUndefined(Dailies[id])) throw new Error(`There is no daily with ID ${id}`);
 
   return Dailies[id] as D;
 };

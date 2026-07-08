@@ -69,9 +69,17 @@ const executeUserCommandsTop = async (
     });
   }
 
-  const pagination = createPaginationButtons(ctx, 'users', embedColor, 'NONE', page, res.length < 10);
+  const pagination = createPaginationButtons(
+    ctx,
+    'users',
+    embedColor,
+    'NONE',
+    page,
+    res.length < 10,
+  );
 
-  if (embed.fields!.length < 10) (pagination.components[1] as ButtonComponent).disabled = true;
+  if ((embed.fields?.length ?? 0) < 10)
+    (pagination.components[1] as ButtonComponent).disabled = true;
 
   ctx.makeMessage({ embeds: [embed], components: [pagination] });
 };

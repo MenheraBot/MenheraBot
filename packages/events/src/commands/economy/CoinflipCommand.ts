@@ -1,4 +1,9 @@
-import { AllowedMentionsTypes, ApplicationCommandOptionTypes, ButtonStyles, DiscordInteractionContextType } from '@discordeno/bot';
+import {
+  AllowedMentionsTypes,
+  ApplicationCommandOptionTypes,
+  ButtonStyles,
+  DiscordInteractionContextType,
+} from '@discordeno/bot';
 
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { postCoinflipMatch, postTransaction } from '../../utils/apiRequests/statistics.js';
@@ -108,7 +113,7 @@ const CoinflipCommand = createCommand({
     },
   ],
   category: 'economy',
-    contexts: [DiscordInteractionContextType.Guild, DiscordInteractionContextType.PrivateChannel],
+  contexts: [DiscordInteractionContextType.Guild, DiscordInteractionContextType.PrivateChannel],
   authorDataFields: ['estrelinhas', 'demons', 'giants', 'angels', 'archangels', 'demigods', 'gods'],
   commandRelatedExecutions: [confirmCoinflip],
   execute: async (ctx, finishCommand) => {

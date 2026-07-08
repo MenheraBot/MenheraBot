@@ -196,9 +196,9 @@ const handleButtonAction = async (ctx: ComponentInteractionContext): Promise<voi
     return buildSellPlantsMessage(ctx, farmer, embedColor, sentQuality);
 
   if (selectedOption === 'SET_QUALITY') {
-    const selectedOption = Number(ctx.interaction.data.values?.[0]) || 0;
+    const selected = Number(ctx.interaction.data.values?.[0]) || 0;
 
-    return buildSellPlantsMessage(ctx, farmer, embedColor, selectedOption);
+    return buildSellPlantsMessage(ctx, farmer, embedColor, selected);
   }
 
   if (selectedOption === 'SHOW_MODAL') {

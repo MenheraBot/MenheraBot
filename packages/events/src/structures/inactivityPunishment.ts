@@ -4,7 +4,7 @@ import { ApiTransactionReason } from '../types/api.js';
 import { postTransaction } from '../utils/apiRequests/statistics.js';
 import { debugError } from '../utils/debugError.js';
 import { createEmbed } from '../utils/discord/embedUtils.js';
-import { daysToMillis, getMillisecondsToTheEndOfDay } from '../utils/miscUtils.js';
+import { daysToMillis, getMillisecondsToTheEndOfDay, isUndefined } from '../utils/miscUtils.js';
 
 let inactiveTimeout: NodeJS.Timeout;
 
@@ -83,7 +83,7 @@ const inactivityPunishment = async (): Promise<void> => {
       const bulkUpdate = usersModel.collection.initializeUnorderedBulkOp();
 
       ids.forEach(async (id, index) => {
-        if (typeof updatedData[index].$inc === 'undefined') {
+        if (isUndefined(updatedData[index].$inc)) {
           const embed = createEmbed({
             title: `⚠️ Alerta de inatividade`,
             description:
