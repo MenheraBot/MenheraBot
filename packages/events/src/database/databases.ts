@@ -9,7 +9,7 @@ const { REDIS_PATH } = getEnviroments(['REDIS_PATH']);
 const MainRedisClient = new Redis({
   db: process.env.NODE_ENV === 'development' ? 1 : 0,
   lazyConnect: true,
-  maxRetriesPerRequest: 2,
+  maxRetriesPerRequest: 3,
   connectTimeout: 5_000,
   commandTimeout: 3_000,
   path: process.env.NODE_ENV === 'production' ? REDIS_PATH : undefined,
@@ -19,7 +19,7 @@ const MainRedisClient = new Redis({
 const VangoghRedisClient = new Redis({
   db: process.env.NODE_ENV === 'development' ? 2 : 6,
   lazyConnect: true,
-  maxRetriesPerRequest: 2,
+  maxRetriesPerRequest: 3,
   connectTimeout: 5_000,
   commandTimeout: 3_000,
   path: process.env.NODE_ENV === 'production' ? REDIS_PATH : undefined,

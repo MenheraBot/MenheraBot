@@ -200,10 +200,18 @@ orchestratorServer.on('message', async (msg, conn) => {
     if (typeof conn?.connection?.closed === 'undefined' || conn.connection.closed)
       return console.log('[CLIENT] The first version in swap is not connected anymore');
 
-    await conn.request({ type: RequestType.YouAreTheMaster });
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    connectedClients.find((a) => a.id === a.conn.id)!.isMaster = true;
-    console.log(`[CLIENT] Master Set!`);
+    try {
+      await conn.request({ type: RequestType.YouAreTheMaster });
+
+      const foundClient = connectedClients.find((a) => a.id === a.conn.id);
+
+      if (foundClient) {
+        foundClient.isMaster = true;
+        console.log(`[CLIENT] Master Set!`);
+      }
+    } catch (err) {
+      console.error(`[CLIENT] Error setting the current master!`, err);
+    }
   }
 
   if (msg.type === 'BE_MERCURY') {

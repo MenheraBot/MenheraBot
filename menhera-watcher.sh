@@ -21,6 +21,7 @@ if ! command -v inotifywait &> /dev/null; then
 fi
 
 APP_PID=""
+APP_RUNNING=false
 WATCHER_PID=""
 LAST_CHANGE_TIME=0
 BUILD_PENDING=false
@@ -32,13 +33,13 @@ if [[ ! -z $1 ]]; then
 fi
 
 cleanup() {
-    echo -e "\n${RED}[SYSTEM] Requesting shut down...${NC}"
+    echo -e "\n${RED}[SYSTEM] Shutdown...${NC}"
     if [[ -n "$APP_PID" ]]; then kill "$APP_PID" 2>/dev/null; fi
     if [[ -n "$WATCHER_PID" ]]; then kill "$WATCHER_PID" 2>/dev/null; fi
     rm -f .watch_trigger 2>/dev/null
 
-    MAIN_PID="$(pgrep -f 'node -r dotenv/config .')"
-    kill "$MAIN_PID" 2>/dev/null
+    wait $APP_PID $WATCHER_PID
+
     stty echo
     exit
 }
@@ -46,18 +47,25 @@ cleanup() {
 trap cleanup SIGINT SIGTERM
 
 start_app() {
-    if [[ -n "$APP_PID" ]]; then
+    if [ "$APP_RUNNING" = true ]; then
         echo -e "${YELLOW}[SYSTEM] Shutting down...${NC}"
         kill "$APP_PID" 2>/dev/null
         wait "$APP_PID" 2>/dev/null
 
-        curl -s -X POST localhost:3000/dev/reboot 2>/dev/null > /dev/null
+     #   curl -s -X POST localhost:3000/dev/reboot 2>/dev/null > /dev/null
     fi
 
     echo -e "${GREEN}[SYSTEM] Starting application (pnpm events dev)...${NC}"
-    npm --prefix packages/events run dev --silent &
+
+    (
+        cd packages/events || exit 1
+        VERSION="$(node -p 'require("./package.json").version')" \
+            NODE_ENV=development \
+            exec node -r dotenv/config .
+    ) &
 
     APP_PID=$!
+    APP_RUNNING=true
 }
 
 run_build() {
@@ -152,7 +160,13 @@ while true; do
             ;;
         [qQ]) cleanup ;;
     esac
-    
+
+    if [ "$APP_RUNNING" = true ] && [[ -n "$APP_PID" ]] && ! kill -0 "$APP_PID" 2>/dev/null; then
+        APP_RUNNING=false
+        wait "$APP_PID" 2>/dev/null
+        echo -e "${RED}[SYSTEM] Application process (PID: $APP_PID) has died!${NC}"
+    fi
+
     CURRENT_LINES=$(wc -l < .watch_trigger 2>/dev/null || echo 0)
     
     if [ "$CURRENT_LINES" -gt "$LAST_READ_LINE" ]; then

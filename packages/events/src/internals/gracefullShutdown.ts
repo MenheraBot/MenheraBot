@@ -43,8 +43,8 @@ const executeGracefullShutdown = async (bot: MenheraClient) => {
 const setupSignalHandlers = (bot: MenheraClient) => {
   ['SIGTERM', 'SIGINT', 'SIGQUIT'].forEach((sig) =>
     process.on(sig, () => {
-      logger.info('[SHUTDOWN] Received shutdown signal');
-      executeGracefullShutdown(bot);
+      logger.info(`[SHUTDOWN] Received shutdown signal: ${sig}`);
+      return executeGracefullShutdown(bot);
     }),
   );
 };
