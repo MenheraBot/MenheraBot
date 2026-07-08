@@ -119,6 +119,7 @@ const desiredProperties = createDesiredPropertiesObject({
     guildId: true,
     channelId: true,
   },
+
 });
 
 export { desiredProperties };

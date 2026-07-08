@@ -1,4 +1,3 @@
-import { describe, expect, test } from '@jest/globals';
 import ComponentInteractionContext from '../../../structures/command/ComponentInteractionContext.js';
 import { getAvailableActions } from '../playerControl.js';
 import { mockGame, mockPlayer } from './playerSeats.test.js';

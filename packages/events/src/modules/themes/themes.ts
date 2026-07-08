@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { ThemeFile } from './types.js';
 
 const Themes: Record<number, ThemeFile> & object = {

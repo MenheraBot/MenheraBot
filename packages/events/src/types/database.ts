@@ -162,11 +162,10 @@ export interface DatabaseFeirinhaSchema {
   [`name_en-US`]: string;
 }
 
-export interface OrderAward {
+export type OrderAward = {
   estrelinhas?: number;
   fertilizers?: number;
-  plants?: { weight: number; plant: AvailablePlants; quality: PlantQuality };
-}
+};
 
 export interface DatabaseFeirinhaOrderSchema {
   _id: string;
@@ -177,7 +176,6 @@ export interface DatabaseFeirinhaOrderSchema {
   awards: OrderAward;
   createdAt: number;
   completed: boolean;
-  trollAward?: boolean;
 }
 
 export interface DatabaseFarmerSchema {

@@ -64,14 +64,7 @@ const executeFarmersExperienceTop = async (
     });
   }
 
-  const actionRows = createPaginationButtons(
-    ctx,
-    'farmers',
-    embedColor,
-    'EXPERIENCE',
-    page,
-    res.length < 10,
-  );
+  const actionRows = createPaginationButtons(ctx, 'farmers', embedColor, 'EXPERIENCE', page, res.length < 10);
 
   ctx.makeMessage({
     embeds: [embed],

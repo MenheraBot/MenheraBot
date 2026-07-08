@@ -82,14 +82,8 @@ const executeTopHuntStatistics = async (
     });
   }
 
-  const [back, next] = createPaginationButtons(
-    ctx,
-    'hunt',
-    type,
-    topMode,
-    page,
-    results.length < 10,
-  ).components as ButtonComponent[];
+  const [back, next] = createPaginationButtons(ctx, 'hunt', type, topMode, page, results.length < 10)
+    .components as ButtonComponent[];
 
   const weeklyRank = createButton({
     style: ButtonStyles.Link,

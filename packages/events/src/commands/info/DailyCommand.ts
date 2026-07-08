@@ -258,9 +258,8 @@ const handleButtonInteractions = async (ctx: ComponentInteractionContext): Promi
   if (action === 'SELECT_ITEM') {
     const selectedAward = missionToReedem.awards[Number(itemIndex)];
 
-    let updateObject: unknown;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let updateFunction: (...args: any[]) => Promise<void>;
+    let updateObject: unknown = {};
+    let updateFunction: Function = userRepository.updateUserWithSpecialData;
 
     const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
@@ -297,6 +296,7 @@ const handleButtonInteractions = async (ctx: ComponentInteractionContext): Promi
         break;
       }
       case 'seed': {
+        const farmer = await farmerRepository.getFarmer(ctx.user.id);
         updateFunction = farmerRepository.updateSeeds;
 
         const prize = {
@@ -310,6 +310,7 @@ const handleButtonInteractions = async (ctx: ComponentInteractionContext): Promi
         break;
       }
       case 'plant': {
+        const farmer = await farmerRepository.getFarmer(ctx.user.id);
         updateFunction = farmerRepository.updateSilo;
 
         const prize = {
@@ -323,6 +324,7 @@ const handleButtonInteractions = async (ctx: ComponentInteractionContext): Promi
         break;
       }
       case 'fertilizer': {
+        const farmer = await farmerRepository.getFarmer(ctx.user.id);
         updateFunction = farmerRepository.updateItems;
 
         const prize = { id: AvailableItems.Fertilizer, amount: selectedAward.value };

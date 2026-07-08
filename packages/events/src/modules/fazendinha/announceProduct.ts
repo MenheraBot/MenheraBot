@@ -19,7 +19,7 @@ import {
 } from './siloUtils.js';
 import { AvailablePlants, PlantQuality } from './types.js';
 import farmerRepository from '../../database/repositories/farmerRepository.js';
-import { isUndefined, localizedResources, normalizeString } from '../../utils/miscUtils.js';
+import { localizedResources, normalizeString } from '../../utils/miscUtils.js';
 import { respondWithChoices } from '../../utils/discord/interactionRequests.js';
 import { getOptionFromInteraction } from '../../structures/command/getCommandOption.js';
 import executeDailies from '../dailies/executeDailies.js';
@@ -30,7 +30,7 @@ import { ApiTransactionReason } from '../../types/api.js';
 
 let plantNames: ApplicationCommandOptionChoice[] = [];
 
-const announceAutocomplete = async (interaction: Interaction): Promise<undefined | null> => {
+const announceAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   if (plantNames.length === 0)
     plantNames = Object.keys(Plants).reduce<ApplicationCommandOptionChoice[]>((p, c) => {
       if (c === `${AvailablePlants.Mate}`) return p;
@@ -53,7 +53,7 @@ const announceAutocomplete = async (interaction: Interaction): Promise<undefined
 
   const options = interaction.data?.options?.[0].options?.[0].options;
 
-  if (isUndefined(options)) return;
+  if (typeof options === 'undefined') return;
 
   const focused = options.find((a) => a.focused);
   const input = focused?.value;
@@ -138,7 +138,7 @@ const executeAnnounceProduct = async (
 
   const plantInfo = Plants[plant];
 
-  if (isUndefined(plantInfo))
+  if (typeof plantInfo === 'undefined')
     return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:fazendinha.feira.announce.no-such-product'),
     });

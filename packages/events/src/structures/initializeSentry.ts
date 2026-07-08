@@ -12,12 +12,15 @@ const initializeSentry = (): void => {
     environment: process.env.NODE_ENV ?? 'Unknown',
     release: process.env.VERSION,
     serverName: hostname(),
-    sendDefaultPii: true,
     tracesSampleRate: 1.0,
-
+    enableTracing: true,
     integrations: [
-      ...Sentry.getDefaultIntegrations({}),
-      Sentry.requestDataIntegration({ include: { data: true } }),
+      new Sentry.Integrations.Console(),
+      new Sentry.Integrations.Http({ tracing: true }),
+      new Sentry.Integrations.Modules(),
+      new Sentry.Integrations.RequestData({ include: { data: true } }),
+      new Sentry.Integrations.OnUncaughtException(),
+      new Sentry.Integrations.OnUnhandledRejection(),
     ],
   });
 };

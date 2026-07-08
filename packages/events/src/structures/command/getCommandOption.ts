@@ -15,7 +15,14 @@ function getOptionFromInteraction<T>(
   interaction: Interaction,
   name: string,
   shouldResolve: CanResolve,
-  required?: false | boolean,
+  required?: false,
+): T | undefined;
+
+function getOptionFromInteraction<T>(
+  interaction: Interaction,
+  name: string,
+  shouldResolve: CanResolve,
+  required?: boolean,
 ): T | undefined;
 
 function getOptionFromInteraction<T>(

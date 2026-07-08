@@ -19,7 +19,7 @@ const { DISCORD_TOKEN, DISCORD_APPLICATION_ID } = getEnviroments([
   'DISCORD_APPLICATION_ID',
 ]);
 
-export type BotDesiredProperties = Required<typeof desiredProperties>;
+export interface BotDesiredProperties extends Required<typeof desiredProperties> {}
 
 const bot = createBot({
   token: DISCORD_TOKEN,

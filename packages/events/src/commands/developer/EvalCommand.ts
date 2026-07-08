@@ -23,7 +23,6 @@ import {
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 
 // This is odd, but its needed so the eslint dont get angry with unused imports
-// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 () => {
   return [
     userRepository,
@@ -40,7 +39,6 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 
 const executeEval = async (ctx: InteractionContext, toEval: string) => {
   const id = { id: `${ctx.user.id}` };
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   () => {
     return [id];
   };

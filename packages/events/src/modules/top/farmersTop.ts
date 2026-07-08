@@ -91,8 +91,7 @@ const executeFarmersTop = async (
     'farmers',
     embedColor,
     `${plantType}`,
-    page,
-    res.length < 10,
+    page,res.length < 10,
     orderBy,
   );
 

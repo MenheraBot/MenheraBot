@@ -56,7 +56,6 @@ import { getDisplayName, getUserAvatar, mentionUser } from '../../utils/discord/
 import {
   ensureUserHaveDefaultThemes,
   getCustomThemeField,
-  isUndefined,
   millisToSeconds,
   toWritableUtf,
 } from '../../utils/miscUtils.js';
@@ -119,7 +118,7 @@ const createColorComponents = (
   });
 
   for (let i = 9 * currentPage; selector.options.length < 9; i++) {
-    if (i > userColors.length || isUndefined(userColors[i])) break;
+    if (i > userColors.length || typeof userColors[i] === 'undefined') break;
     embed.fields?.push({
       name: userColors[i].nome,
       value: userColors[i].cor,
@@ -438,7 +437,7 @@ const resetTitle: ApplicationCommandOptionChoice = {
 
 export const executeTituleAutocompleteInteraction = async (
   interaction: Interaction,
-): Promise<undefined | null> => {
+): Promise<void | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'título', false, true);
 
   if (`${input}`.length < 3) return respondWithChoices(interaction, [resetTitle]);
@@ -549,7 +548,7 @@ const executeTitleCommand = async (ctx: ChatInputInteractionContext): Promise<vo
   const user = ctx.getOption<User>('usuário', 'users', false) ?? ctx.author;
   const titleId = ctx.getOption<number>('título', false, false);
 
-  if (isUndefined(titleId)) {
+  if (typeof titleId === 'undefined') {
     const userData =
       user.id === ctx.user.id ? ctx.authorData : await userRepository.ensureFindUser(user.id);
 
@@ -1027,7 +1026,7 @@ const createCustomizeMessage = async (
   await ctx.makeLayoutMessage({
     components: [container],
     files: toSendFile,
-    attachments: isUndefined(toSendFile) ? [] : undefined,
+    attachments: typeof toSendFile === 'undefined' ? [] : undefined,
   });
 };
 

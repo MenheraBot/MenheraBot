@@ -15,7 +15,6 @@ const mongoToRedis = (order: DatabaseFeirinhaOrderSchema): DatabaseFeirinhaOrder
     userId: order.userId,
     createdAt: order.createdAt,
     completed: order.completed,
-    trollAward: order.trollAward,
   }) satisfies DatabaseFeirinhaOrderSchema;
 
 const getUserOrders = async (farmerId: BigString): Promise<DatabaseFeirinhaOrderSchema[]> =>
@@ -48,20 +47,10 @@ const getOrder = async (orderId: string): Promise<null | DatabaseFeirinhaOrderSc
   return fromMongo;
 };
 
-const listPublicOrders = async (
-  farmerId: string,
-  skip: number,
-  limit: number,
-  ignoreTroll: boolean,
-) => {
+const listPublicOrders = async (farmerId: string, skip: number, limit: number) => {
   const sortedItems = await feirinhaOrderModel.aggregate([
     {
-      $match: {
-        $and: [
-          { $or: [{ userId: farmerId }, { completed: { $ne: true } }] },
-          { $or: [{ trollAward: { $ne: ignoreTroll } }, { trollAward: { $exists: false } }] },
-        ],
-      },
+      $match: { $or: [{ userId: farmerId }, { completed: { $ne: true } }] },
     },
     {
       $addFields: {
@@ -78,13 +67,8 @@ const listPublicOrders = async (
   return sortedItems.map(mongoToRedis);
 };
 
-const countPublicOrders = async (ignoreTroll: boolean) => {
-  return feirinhaOrderModel.countDocuments({
-    $and: [
-      { completed: { $ne: true } },
-      { $or: [{ trollAward: { $ne: ignoreTroll } }, { trollAward: { $exists: false } }] },
-    ],
-  });
+const countPublicOrders = async () => {
+  return feirinhaOrderModel.countDocuments({ completed: { $ne: true } });
 };
 
 const placeOrder = async (
@@ -93,7 +77,6 @@ const placeOrder = async (
   weight: number,
   quality: PlantQuality,
   awards: OrderAward,
-  trollAward: boolean,
 ): Promise<void> => {
   await feirinhaOrderModel.create({
     userId: `${userId}`,
@@ -103,7 +86,6 @@ const placeOrder = async (
     weight,
     createdAt: Date.now(),
     completed: false,
-    trollAward,
   } satisfies Omit<DatabaseFeirinhaOrderSchema, '_id'>);
 };
 

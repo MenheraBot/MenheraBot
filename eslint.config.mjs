@@ -16,7 +16,7 @@ export default defineConfig(
     plugins: {
       import: importPlugin,
     },
-    files: ['**/*.ts'],
+    files: ['packages/**/*.ts'],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {

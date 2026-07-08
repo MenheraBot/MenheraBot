@@ -34,9 +34,7 @@ const getCommandNames = () => {
   return namedCommands;
 };
 
-const executeCommandNameAutocomplete = async (
-  interaction: Interaction,
-): Promise<undefined | null> => {
+const executeCommandNameAutocomplete = async (interaction: Interaction): Promise<void | null> => {
   const input = getOptionFromInteraction<string>(interaction, 'comando', false, true);
 
   if (`${input}`.length < 3) return respondWithChoices(interaction, []);

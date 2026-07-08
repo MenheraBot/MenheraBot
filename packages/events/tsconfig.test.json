@@ -3,9 +3,8 @@
 
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
+    "baseUrl": "src",
     "moduleResolution": "node16",
-    "ignoreDeprecations": "6.0",
     "sourceRoot": "/"
   },
   "exclude": [

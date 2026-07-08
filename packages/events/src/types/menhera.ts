@@ -27,10 +27,8 @@ export type GenericContext =
   | ComponentInteractionContext
   | GenericInteractionContext;
 
-export interface MenheraClient extends Bot<
-  BotDesiredProperties,
-  DesiredPropertiesBehavior.RemoveKey
-> {
+export interface MenheraClient
+  extends Bot<BotDesiredProperties, DesiredPropertiesBehavior.RemoveKey> {
   commands: Collection<string, ChatInputInteractionCommand>;
   ownerId: bigint;
   shuttingDown: boolean;

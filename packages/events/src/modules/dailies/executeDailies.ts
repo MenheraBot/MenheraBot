@@ -117,6 +117,7 @@ const tradeRequest = async (user: DatabaseUserSchema): Promise<void> => {
   await executeDailies(user, shouldExecute);
 };
 
+
 const successOnHunt = async (user: DatabaseUserSchema, times: number): Promise<void> => {
   const shouldExecute = (dailyData: Daily) => {
     return dailyData.type === 'success_on_hunt';

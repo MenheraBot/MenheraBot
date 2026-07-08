@@ -26,7 +26,6 @@ import { ModalInteraction } from '../../types/interaction.js';
 import { extractLayoutFields } from '../../utils/discord/modalUtils.js';
 import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
 import i18next from 'i18next';
-import { isUndefined } from '../../utils/miscUtils.js';
 
 const handleModal = async (
   ctx: ComponentInteractionContext<ModalInteraction>,
@@ -149,7 +148,7 @@ const handleDissmissShop = async (ctx: ComponentInteractionContext): Promise<voi
   }
 
   if (action === 'DELETE_POST') {
-    if (isUndefined(announcement))
+    if (typeof announcement === 'undefined')
       return ctx.makeLayoutMessage({
         components: [
           createTextDisplay(

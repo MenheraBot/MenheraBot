@@ -91,14 +91,7 @@ const executeGamblingTop = async (
     });
   }
 
-  const pagination = createPaginationButtons(
-    ctx,
-    'gambling',
-    gameMode,
-    topMode,
-    page,
-    results.length < 10,
-  );
+  const pagination = createPaginationButtons(ctx, 'gambling', gameMode, topMode, page, results.length < 10);
 
   ctx.makeMessage({ embeds: [embed], components: [pagination] });
 };

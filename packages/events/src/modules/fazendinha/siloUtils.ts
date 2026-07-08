@@ -7,7 +7,6 @@ import {
 } from '../../types/database.js';
 import { RegisterTransaction } from '../../utils/apiRequests/statistics.js';
 import { logger } from '../../utils/logger.js';
-import { isUndefined } from '../../utils/miscUtils.js';
 import {
   INITIAL_LIMIT_FOR_SILO,
   Plants,
@@ -31,14 +30,12 @@ const getQualityEmoji = (quality: PlantQuality) =>
 const ignorePlantQuality = (plants: QuantitativePlant[]) =>
   Object.values(
     plants.reduce<Partial<Record<AvailablePlants, QuantitativePlant>>>((p, c) => {
-      const obj = p[c.plant];
-
-      if (isUndefined(obj)) {
+      if (!p[c.plant]) {
         p[c.plant] = { ...c, quality: 0 };
         return p;
       }
 
-      obj.weight = parseFloat((obj.weight + c.weight).toFixed(1));
+      p[c.plant]!.weight = parseFloat((p[c.plant]!.weight + c.weight).toFixed(1));
 
       return p;
     }, {}),
@@ -120,11 +117,7 @@ const removePlantsIgnoringQuality = (
 
   const passedQualities: Partial<Record<PlantQuality, true>> = {};
 
-  const sortedPlants = user.sort((a, b) => {
-    const qualityDiff = getQuality(b) - getQuality(a);
-
-    return qualityDiff !== 0 ? qualityDiff : b.weight - a.weight;
-  });
+  const sortedPlants = user.sort((a, b) => b.weight - a.weight);
 
   let safeProdLoop = 0;
 

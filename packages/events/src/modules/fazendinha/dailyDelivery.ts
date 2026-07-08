@@ -7,11 +7,7 @@ import {
 import { DatabaseFarmerSchema } from '../../types/database.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
-import {
-  getMillisecondsToTheEndOfDay,
-  isUndefined,
-  millisToSeconds,
-} from '../../utils/miscUtils.js';
+import { getMillisecondsToTheEndOfDay, millisToSeconds } from '../../utils/miscUtils.js';
 import { FINISH_ALL_DELIVERIES_BONUS, Plants } from './constants.js';
 import { getUserDeliveries } from './deliveryUtils.js';
 import {
@@ -40,7 +36,7 @@ const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<v
 
   const dailyUser = farmer.dailies[Number(daily)];
 
-  if (isUndefined(dailyUser))
+  if (typeof dailyUser === 'undefined')
     return ctx.respondInteraction({
       flags: MessageFlags.Ephemeral,
       content: ctx.prettyResponse('error', 'commands:fazendinha.entregas.no-longer-available'),
