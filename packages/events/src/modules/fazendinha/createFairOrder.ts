@@ -25,7 +25,14 @@ import {
   Plants,
 } from './constants.js';
 import { AvailableItems, PlantQuality } from './types.js';
-import { getPlantPrice, getQuality, getQualityEmoji, removeItems } from './siloUtils.js';
+import {
+  checkNeededPlants,
+  getPlantPrice,
+  getQuality,
+  getQualityEmoji,
+  removeItems,
+  removePlants,
+} from './siloUtils.js';
 import { ModalInteraction } from '../../types/interaction.js';
 import { extractLayoutFields } from '../../utils/discord/modalUtils.js';
 import userRepository from '../../database/repositories/userRepository.js';
@@ -427,7 +434,9 @@ const handlePlaceOrder = async (
     isUndefined(order.plant) ||
     isUndefined(order.quality) ||
     isUndefined(order.weight) ||
-    (isUndefined(order.awards.estrelinhas) && isUndefined(order.awards.fertilizers))
+    (isUndefined(order.awards.estrelinhas) &&
+      isUndefined(order.awards.fertilizers) &&
+      isUndefined(order.awards.plants))
   )
     return ctx.respondInteraction({
       flags: MessageFlags.Ephemeral,
@@ -453,6 +462,15 @@ const handlePlaceOrder = async (
     return ctx.respondInteraction({
       flags: MessageFlags.Ephemeral,
       content: ctx.prettyResponse('error', 'commands:fazendinha.feira.order.poor-items'),
+    });
+
+  if (order.awards.plants && !checkNeededPlants([order.awards.plants], farmer.silo))
+    return ctx.respondInteraction({
+      flags: MessageFlags.Ephemeral,
+      content: ctx.prettyResponse('error', 'commands:fazendinha.feira.order.poor-plants', {
+        weight: order.awards.plants.weight,
+        emoji: getQualityEmoji(getQuality(order.awards.plants)),
+      }),
     });
 
   const userOrders = await fairOrderRepository.getUserOrders(farmer.id);
@@ -490,6 +508,12 @@ const handlePlaceOrder = async (
       { id: AvailableItems.Fertilizer, amount: order.awards.fertilizers },
     ]);
     await farmerRepository.updateItems(farmer.id, newItems);
+  }
+
+  if (order.awards.plants) {
+    const newSilo = removePlants(farmer.silo, [order.awards.plants]);
+
+    await farmerRepository.updateSilo(ctx.user.id, newSilo);
   }
 
   await displayFairOrders(ctx, farmer, embedColor);

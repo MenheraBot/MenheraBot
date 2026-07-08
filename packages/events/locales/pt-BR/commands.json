@@ -1205,6 +1205,7 @@
         "order-placed": "Seu pedido de troca for publicado! Se algum usuário aceitar a troca, você pode voltar aqui para resgatar as plantas.",
         "poor-stars": "Você não tem todas essas **estrelinhas** para adicionar de troca no pedido!",
         "poor-items": "Você não tem todos esses **fertilizantes** para adicionar de troca no pedido!",
+        "poor-plants": "Você não possui ****{{weight}} Kg** {{emoji}} para adicionar de troca no pedido!",
         "invalid-values": "Você inseriu informações inválidas no pedido!",
         "no-items": "Você não tem as plantas suficientes para aceitar esse pedido",
         "order-description": "**Trocando por:**\n{{awards}}",

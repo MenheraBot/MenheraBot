@@ -165,7 +165,7 @@ export interface DatabaseFeirinhaSchema {
 export interface OrderAward {
   estrelinhas?: number;
   fertilizers?: number;
-  plants?: { weight: number; plant: AvailablePlants };
+  plants?: { weight: number; plant: AvailablePlants; quality: PlantQuality };
 }
 
 export interface DatabaseFeirinhaOrderSchema {
