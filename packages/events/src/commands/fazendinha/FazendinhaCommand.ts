@@ -85,6 +85,15 @@ const FazendinhaCommand = createCommand({
       nameLocalizations: { 'en-US': 'deliveries' },
       descriptionLocalizations: { 'en-US': '「🚚」・ View and manage your daily deliveries' },
       type: ApplicationCommandOptionTypes.SubCommand,
+      options: [
+        {
+          name: 'user',
+          description: 'Usuário para ver as entregas',
+          descriptionLocalizations: { 'en-US': 'User to check the deliveries' },
+          type: ApplicationCommandOptionTypes.User,
+          required: false,
+        },
+      ],
     },
     {
       name: 'feira',
@@ -299,8 +308,10 @@ const FazendinhaCommand = createCommand({
 
     if (command === 'administrar') return displayAdministrateFarm(ctx, false);
 
-    if (command === 'entregas')
-      return executeDailyDelivery(ctx, farmer, ctx.authorData.selectedColor);
+    if (command === 'entregas') {
+      const user = ctx.getOption<User>('user', 'users', false);
+      return executeDailyDelivery(ctx, farmer, ctx.authorData.selectedColor, user);
+    }
 
     if (command === 'plantações')
       return displayPlantations(

@@ -33,6 +33,8 @@ import executeDailies from '../dailies/executeDailies.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import { setComponentsV2Flag } from '../../utils/discord/messageUtils.js';
 import { PlantQuality } from './types.js';
+import { User } from '../../types/discordeno.js';
+import { getDisplayName } from '../../utils/discord/userUtils.js';
 
 const executeButtonPressed = async (ctx: ComponentInteractionContext): Promise<void> => {
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
@@ -161,62 +163,72 @@ const executeDailyDelivery = async (
   ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   embedColor: string,
+  user?: User,
 ): Promise<void> => {
   const endsIn = getMillisecondsToTheEndOfDay() + Date.now();
 
-  const userDeliveries = getUserDeliveries(farmer);
+  const isOtherUser = user && user.id !== ctx.user.id;
+
+  const farmerToUse = isOtherUser ? await farmerRepository.getFarmer(user.id) : farmer;
+
+  const userDeliveries = getUserDeliveries(farmerToUse);
 
   const container = createContainer({
     accentColor: hexStringToNumber(embedColor),
     components: [
       createTextDisplay(
-        `## ${ctx.locale('commands:fazendinha.entregas.daily-deliveries')}\n${ctx.locale(
-          'commands:fazendinha.entregas.description',
-          {
-            bonus: FINISH_ALL_DELIVERIES_BONUS,
-            unix: millisToSeconds(endsIn),
-          },
-        )}`,
+        `## ${ctx.locale(`commands:fazendinha.entregas.daily-deliveries${isOtherUser ? '-user' : ''}`, { user: getDisplayName(user ?? ctx.user) })}\n${
+          isOtherUser
+            ? ''
+            : ctx.locale('commands:fazendinha.entregas.description', {
+                bonus: FINISH_ALL_DELIVERIES_BONUS,
+                unix: millisToSeconds(endsIn),
+              })
+        }`,
       ),
     ],
   });
 
-  const noQualitySilo = ignorePlantQuality(farmer.silo);
+  const noQualitySilo = ignorePlantQuality(farmerToUse.silo);
 
   userDeliveries.forEach((a, i) => {
+    const textDisplay = createTextDisplay(
+      `### ${ctx.locale(
+        `commands:fazendinha.entregas.deliver-embed-name${a.finished ? '-finished' : ''}`,
+        { index: i + 1 },
+      )}\n${ctx.locale('commands:fazendinha.entregas.deliver-embed-field', {
+        award: a.award,
+        xp: a.experience,
+      })}\n${a.needs.map((b) =>
+        ctx.locale('commands:fazendinha.entregas.deliver-embed-field-need', {
+          amount: b.weight,
+          emoji: Plants[b.plant].emoji,
+        }),
+      )}`,
+    );
+
     container.components.push(
       createSeparator(),
-      createSection({
-        accessory: createButton({
-          label: ctx.locale('commands:fazendinha.entregas.deliver-button'),
-          style: ButtonStyles.Primary,
-          customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, i),
-          disabled: a.finished || !checkNeededPlants(ignorePlantQuality(a.needs), noQualitySilo),
-        }),
-        components: [
-          createTextDisplay(
-            `### ${ctx.locale(
-              `commands:fazendinha.entregas.deliver-embed-name${a.finished ? '-finished' : ''}`,
-              { index: i + 1 },
-            )}\n${ctx.locale('commands:fazendinha.entregas.deliver-embed-field', {
-              award: a.award,
-              xp: a.experience,
-            })}\n${a.needs.map((b) =>
-              ctx.locale('commands:fazendinha.entregas.deliver-embed-field-need', {
-                amount: b.weight,
-                emoji: Plants[b.plant].emoji,
-              }),
-            )}`,
-          ),
-        ],
-      }),
+      isOtherUser
+        ? textDisplay
+        : createSection({
+            accessory: createButton({
+              label: ctx.locale('commands:fazendinha.entregas.deliver-button'),
+              style: ButtonStyles.Primary,
+              customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, i),
+              disabled:
+                a.finished || !checkNeededPlants(ignorePlantQuality(a.needs), noQualitySilo),
+            }),
+            components: [textDisplay],
+          }),
     );
   });
 
-  container.components.push(
-    createSeparator(),
-    createTextDisplay(`-# ${ctx.locale('commands:fazendinha.entregas.footer')}`),
-  );
+  if (!isOtherUser)
+    container.components.push(
+      createSeparator(),
+      createTextDisplay(`-# ${ctx.locale('commands:fazendinha.entregas.footer')}`),
+    );
 
   ctx.makeLayoutMessage({ components: [container] });
 };
