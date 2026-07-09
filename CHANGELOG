@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Corrigido erro de escrita de "Coninflip" no `/top estatísticas coinflip` - Reportado por @miihzuzi
 - Corrigido erro das dailies que não contabilizava corretamente o peso de plantas quando havia diferentes qualidades colhidas. 
 - Temas podem ser comprados mesmo sem donos.
+- Corrigido inconsistência entre o valor que aparece no autocompetar no `/fazendinha feira anunciar` e o verdadeiro valor minimo e máximo.
 
 ## [6.4.2] - 2026-07-07
 

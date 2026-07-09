@@ -109,9 +109,8 @@ const announceAutocomplete = async (interaction: Interaction): Promise<undefined
     if (!plantFile) return invalidInfo();
 
     const plantPrice = getPlantPrice({ plant, quality });
-    const basePrice = Math.floor(plantPrice * amount);
-    const minimumPrice = Math.floor(basePrice * MINIMUM_PRICE_TO_SELL_IN_FAIR);
-    const maximumPrice = Math.floor(basePrice * MAXIMUM_PRICE_TO_SELL_IN_FAIR);
+    const minimumPrice = Math.floor(plantPrice * amount * MINIMUM_PRICE_TO_SELL_IN_FAIR);
+    const maximumPrice = Math.floor(plantPrice * amount * MAXIMUM_PRICE_TO_SELL_IN_FAIR);
 
     const choiceText = localizedResources('commands:fazendinha.feira.select-between', {
       min: minimumPrice,
@@ -119,9 +118,9 @@ const announceAutocomplete = async (interaction: Interaction): Promise<undefined
     });
 
     return respondWithChoices(interaction, [
-      { name: choiceText['pt-BR'], nameLocalizations: choiceText, value: basePrice },
+      { name: choiceText['pt-BR'], nameLocalizations: choiceText, value: plantPrice },
       { name: `⭐ | ${maximumPrice}`, value: maximumPrice },
-      { name: `⭐ | ${basePrice}`, value: basePrice },
+      { name: `⭐ | ${plantPrice}`, value: Math.floor(plantPrice * amount) },
       { name: `⭐ | ${minimumPrice}`, value: minimumPrice },
     ]);
   }
