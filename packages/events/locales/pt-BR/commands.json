@@ -181,10 +181,12 @@
     "self-mention": "você não pode apostar contra si mesmo",
     "poor": "{{user}} não possui **{{amount}}** {{currency}} para apostar!",
     "confirm": "{{author}} te desafiou para uma aposta de Cara ou Coroa valendo **{{value}}** {{emoji}}. Caso caia Cara, {{author}} vence, caso caia coroa, {{mention}} vence.\nVocê aceita?",
+    "confirm-free": "{{author}} te desafiou para uma aposta de Cara ou Coroa apenas por diversão. Caso caia Cara, {{author}} vence, caso caia coroa, {{mention}} vence.\nVocê aceita?",
     "cara": "CARA",
     "coroa": "COROA",
     "banned-user": "Este usuário não pode apostar pois está banido da Menhera!",
-    "text": ":coin: | **{{choice}}**\n\n{{winner}} ganhou a aposta valendo **{{value}}** {{emoji}} contra {{loser}}"
+    "text": ":coin: | **{{choice}}**\n\n{{winner}} ganhou a aposta valendo **{{value}}** {{emoji}} contra {{loser}}",
+    "text-free": ":coin: | **{{choice}}**\n\n{{winner}} ganhou de {{loser}}"
   },
   "presentear": {
     "confirm": "**PIX**\n\nSeguinte {{user}}, {{author}} quer te enviar **{{count}}** {{emoji}}, você aceita?",

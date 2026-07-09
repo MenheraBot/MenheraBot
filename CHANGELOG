@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Changed
+
+- Agora é possível jogar Coinflip sem apostar estrelinhas. - Sugerido por @made.by_mabs.
+
 ### Fixed
 
 - Corrigido erro de escrita de "Coninflip" no `/top estatísticas coinflip` - Reportado por @miihzuzi

@@ -33,9 +33,9 @@ const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> 
     userRepository.ensureFindUser(ctx.commandAuthor.id),
   ]);
 
-  const inputAsNumber = Number(input);
+  const inputAsNumber = Number(input) || false;
 
-  if (inputAsNumber > userData[currency])
+  if (inputAsNumber && inputAsNumber > userData[currency])
     return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
         user: mentionUser(ctx.user.id),
@@ -45,7 +45,7 @@ const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> 
       components: [],
     });
 
-  if (inputAsNumber > authorData[currency])
+  if (inputAsNumber && inputAsNumber > authorData[currency])
     return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
         user: mentionUser(ctx.commandAuthor.id),
@@ -62,7 +62,7 @@ const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> 
   const loser = choice === 'coroa' ? ctx.commandAuthor.id : ctx.user.id;
 
   await ctx.makeMessage({
-    content: ctx.locale('commands:coinflip.text', {
+    content: ctx.locale(`commands:coinflip.text${inputAsNumber ? '' : '-free'}`, {
       choice: ctx.locale(`commands:coinflip.${choice as 'cara'}`),
       value: input,
       winner: mentionUser(winner),
@@ -72,19 +72,25 @@ const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> 
     components: [],
   });
 
-  userRepository.updateUserWithSpecialData(winner, { $inc: { [currency]: inputAsNumber } });
-  userRepository.updateUserWithSpecialData(loser, { $inc: { [currency]: negate(inputAsNumber) } });
+  if (inputAsNumber) {
+    userRepository.updateUserWithSpecialData(winner, { $inc: { [currency]: inputAsNumber } });
+    userRepository.updateUserWithSpecialData(loser, {
+      $inc: { [currency]: negate(inputAsNumber) },
+    });
 
-  await postTransaction(
-    `${loser}`,
-    `${winner}`,
-    inputAsNumber,
-    'estrelinhas',
-    ApiTransactionReason.COINFLIP_COMMAND,
-  );
-
-  const parsedValue =
-    currency === 'estrelinhas' ? inputAsNumber : huntValues[currency] * inputAsNumber;
+    await postTransaction(
+      `${loser}`,
+      `${winner}`,
+      inputAsNumber,
+      'estrelinhas',
+      ApiTransactionReason.COINFLIP_COMMAND,
+    );
+  }
+  const parsedValue = inputAsNumber
+    ? currency === 'estrelinhas'
+      ? inputAsNumber
+      : huntValues[currency] * inputAsNumber
+    : 0;
 
   postCoinflipMatch(`${winner}`, `${loser}`, parsedValue);
 };
@@ -108,7 +114,7 @@ const CoinflipCommand = createCommand({
       description: 'Valor da aposta',
       descriptionLocalizations: { 'en-US': 'Bet ammount' },
       type: ApplicationCommandOptionTypes.Integer,
-      required: true,
+      required: false,
       minValue: 1,
     },
   ],
@@ -118,7 +124,7 @@ const CoinflipCommand = createCommand({
   commandRelatedExecutions: [confirmCoinflip],
   execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', true);
-    const input = ctx.getOption<number>('aposta', false, true);
+    const input = ctx.getOption<number>('aposta', false);
     const currency = 'estrelinhas';
 
     if (user.bot)
@@ -137,7 +143,7 @@ const CoinflipCommand = createCommand({
         }),
       );
 
-    if (input > ctx.authorData[currency])
+    if (input && input > ctx.authorData[currency])
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
@@ -159,7 +165,7 @@ const CoinflipCommand = createCommand({
         }),
       );
 
-    if (input > targetData[currency])
+    if (input && input > targetData[currency])
       return finishCommand(
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
@@ -172,13 +178,13 @@ const CoinflipCommand = createCommand({
       );
 
     const confirmButton = createButton({
-      customId: createCustomId(0, user.id, ctx.originalInteractionId, input, currency),
+      customId: createCustomId(0, user.id, ctx.originalInteractionId, input || false, currency),
       label: ctx.locale('commands:coinflip.bet'),
       style: ButtonStyles.Success,
     });
 
     ctx.makeMessage({
-      content: ctx.locale('commands:coinflip.confirm', {
+      content: ctx.locale(`commands:coinflip.confirm${input ? '' : '-free'}`, {
         value: input,
         author: mentionUser(ctx.author.id),
         mention: mentionUser(user.id),

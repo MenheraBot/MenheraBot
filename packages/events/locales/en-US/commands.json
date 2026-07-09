@@ -176,11 +176,13 @@
     "self-mention": "you cannot bet against yourself",
     "no-dbuser": "this user does not have a Menhera's Bank account!",
     "poor": "{{user}} don't have **{{amount}}** {{currency}} to bet on!",
-    "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** {{emoji}}. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept?",
+    "confirm": "{{author}} challenged you to a coinflip bet worth **{{value}}** {{emoji}}. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept?",
+    "confirm-free": "{{author}} challenged you to a coinflip, just for fun. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept?",
     "cara": "HEADS",
     "coroa": "TAILS",
     "banned-user": "This user cannot bet because they're banned from Menhera!",
-    "text": ":coin: | **{{choice}}**\n\n{{winner}} won **{{value}}** {{emoji}} betting against {{loser}}"
+    "text": ":coin: | **{{choice}}**\n\n{{winner}} won **{{value}}** {{emoji}} betting against {{loser}}",
+    "text-free": ":coin: | **{{choice}}**\n\n{{winner}} won against {{loser}}"
   },
   "presentear": {
     "self-mention": "You cannot mention yourself!",
