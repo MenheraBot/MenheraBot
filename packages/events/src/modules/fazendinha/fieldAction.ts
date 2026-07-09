@@ -190,6 +190,8 @@ const harvestAllFields = async (
 
   const [parsedFields, totalWeight] = groupPlantsWeight(harvested);
 
+  await postMultipleFazendinhaHarvest(`${ctx.user.id}`, harvested);
+
   if (totalWeight === 0) {
     await farmerRepository.executeHarvest(
       ctx.user.id,
@@ -220,7 +222,6 @@ const harvestAllFields = async (
     farmer.composter,
   );
 
-  await postMultipleFazendinhaHarvest(`${ctx.user.id}`, harvested);
   const filtered = parsedFields.filter((a) => a.weight > 0);
 
   if (filtered.length > 0)
