@@ -1,4 +1,4 @@
-import { DiscordInteraction } from '@discordeno/types';
+import { ActivityTypes, DiscordInteraction } from '@discordeno/types';
 import { Connection, Server } from 'net-ipc';
 import Koa from 'koa';
 import { mergeMetrics } from './prometheusWorkarround.js';
@@ -6,7 +6,9 @@ import { respondDevInteraction, respondInteraction } from './respondInteraction.
 import { createHttpServer, registerAllRouters } from './server/httpServer.js';
 import { PrometheusResponse } from './server/routes/prometheus.js';
 import { getEnviroments } from './getEnviroments.js';
-import type { Bot } from '@discordeno/bot';
+import { Bot, DesiredPropertiesBehavior } from '@discordeno/bot';
+
+const DEV_GATEWAY_STATUS = 'Marcha na boneca 🚗💥🔥';
 
 declare module 'koa' {
   interface Request extends Koa.BaseRequest {
@@ -294,6 +296,20 @@ orchestratorServer.on('ready', () => {
       const bot = discordeno.createBot({
         token: `${token}`,
         desiredProperties: {},
+        desiredPropertiesBehavior: DesiredPropertiesBehavior.RemoveKey,
+        gateway: {
+          makePresence: async () => ({
+            status: 'idle',
+            afk: false,
+            since: null,
+            activities: [
+              {
+                name: DEV_GATEWAY_STATUS,
+                type: ActivityTypes.Playing,
+              },
+            ],
+          }),
+        },
       });
 
       const oldGatewayProcessing = bot.gateway.events.message;
