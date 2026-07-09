@@ -136,12 +136,12 @@ const harvestCategory = async (
     );
   };
 
-  await executeDailies(
-    user,
-    shouldExecute,
-    1,
-    (d) => plants.find((a) => `${Plants[a.plant].category}` === d.specification)?.weight ?? 1,
-  );
+  const increaseFunc = (d: DatabaseDaily) =>
+    plants
+      .filter((a) => `${Plants[a.plant].category}` === d.specification)
+      .reduce((p, c) => p + c.weight, 0);
+
+  await executeDailies(user, shouldExecute, 1, increaseFunc);
 };
 
 const harvestQuality = async (
@@ -155,12 +155,10 @@ const harvestQuality = async (
     );
   };
 
-  await executeDailies(
-    user,
-    shouldExecute,
-    1,
-    (d) => plants.find((a) => `${getQuality(a)}` === d.specification)?.weight ?? 1,
-  );
+  const increaseFunc = (d: DatabaseDaily) =>
+    plants.filter((a) => `${getQuality(a)}` === d.specification).reduce((p, c) => p + c.weight, 0);
+
+  await executeDailies(user, shouldExecute, 1, increaseFunc);
 };
 
 const harvestPlant = async (
@@ -173,12 +171,10 @@ const harvestPlant = async (
     );
   };
 
-  await executeDailies(
-    user,
-    shouldExecute,
-    1,
-    (d) => plants.find((a) => `${a.plant}` === d.specification)?.weight ?? 1,
-  );
+  const increaseFunc = (d: DatabaseDaily) =>
+    plants.filter((a) => `${a.plant}` === d.specification).reduce((p, c) => p + c.weight, 0);
+
+  await executeDailies(user, shouldExecute, 1, increaseFunc);
 };
 
 const harvestDailies = async (user: DatabaseUserSchema, plants: QuantitativePlant[]) => {
