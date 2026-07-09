@@ -78,6 +78,7 @@ const DeployCommand = createCommand({
           descriptionLocalizations: c.descriptionLocalizations,
           contexts: c.contexts ?? defaultContexts,
           integrationTypes: c.integrationTypes ?? deafultIntegrations,
+          defaultMemberPermissions: c.defaultMemberPermissions,
         });
         return p;
       }, []);
@@ -111,6 +112,7 @@ const DeployCommand = createCommand({
           descriptionLocalizations: c.descriptionLocalizations,
           contexts: [DiscordInteractionContextType.Guild],
           integrationTypes: [DiscordApplicationIntegrationType.GuildInstall],
+          defaultMemberPermissions: ['ADMINISTRATOR'],
         });
         return p;
       }, []);

@@ -113,6 +113,7 @@ export interface DatabaseUserThemesSchema {
 export interface DatabaseGuildSchema {
   readonly id: string;
   lang: AvailableLanguages;
+  disabledCommands: string[];
 }
 
 interface MaintenanceInfo {

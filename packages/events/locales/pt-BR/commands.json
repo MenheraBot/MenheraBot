@@ -1480,5 +1480,13 @@
     "make-your-choice": "Faça sua escolha",
     "confirm-game-official": "{{user}} você foi desafiado para um jogo de **:rock: Pedra, :page_facing_up: Papel e :scissors: Tesoura** contra {{author}} valendo **{{amount}}** :star:",
     "confirm-game-friendly": "{{user}} voce foi desafiado para um jogo amistoso de **:rock: Pedra, :page_facing_up: Papel e :scissors: Tesoura** contra {{author}}"
+  },
+  "desabilitar_comando": {
+    "no-disabled": "Nenhum comando desabilitado!",
+    "disabled-commands": "Comandos desabilitados",
+    "select-disabled": "Selecione comandos para reabilitar.",
+    "unknown-command": "Comando desconhecido.",
+    "success": "O comando foi desabilitado com sucesso!",
+    "enabled_success": "O comando foi reabilitado neste servidor."
   }
 }

@@ -29,6 +29,7 @@ const cmdSchema = new Schema({
 const guildSchema = new Schema({
   id: { type: String, unique: true, index: true },
   lang: { type: String, default: 'pt-BR' },
+  disabledCommands: { type: Array, default: [] },
 });
 
 const userThemes = new Schema({

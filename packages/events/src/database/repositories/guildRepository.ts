@@ -10,24 +10,51 @@ const updateGuildLanguage = async (guildId: BigString, language: string): Promis
   await guildsModel.updateOne({ id: `${guildId}` }, { lang: language });
 };
 
-const getGuildLanguage = async (guildId: BigString): Promise<AvailableLanguages> => {
-  const fromRedis = await MainRedisClient.hget(`guild:${guildId}`, 'language');
+const getGuildInfo = async (
+  guildId: BigString,
+): Promise<{ language: AvailableLanguages; disabledCommands: string[] }> => {
+  const fromRedis = await MainRedisClient.hmget(
+    `guild:${guildId}`,
+    'language',
+    'disabled_commands',
+  );
 
   registerCacheStatus(fromRedis, 'guild');
 
-  if (fromRedis) return fromRedis as AvailableLanguages;
+  if (fromRedis.length > 0) {
+    const language = (fromRedis[0] as AvailableLanguages) || 'pt-BR';
+    const commands = fromRedis[1] || '[]';
+
+    return { language, disabledCommands: JSON.parse(commands) };
+  }
 
   const fromMongo = await guildsModel.findOne({ id: `${guildId}` });
 
   if (fromMongo) {
-    await MainRedisClient.hset(`guild:${guildId}`, 'language', fromMongo.lang);
+    await MainRedisClient.hmset(
+      `guild:${guildId}`,
+      'language',
+      fromMongo.lang,
+      'disabled_commands',
+      JSON.stringify(fromMongo.disabledCommands ?? []),
+    );
 
-    return fromMongo.lang;
+    return { disabledCommands: fromMongo.disabledCommands, language: fromMongo.lang };
   }
 
-  await guildsModel.create({ id: `${guildId}`, lang: 'pt-BR' });
+  await guildsModel.create({ id: `${guildId}`, lang: 'pt-BR', disabledCommands: [] });
 
-  return 'pt-BR';
+  return { disabledCommands: [], language: 'pt-BR' };
 };
 
-export default { updateGuildLanguage, getGuildLanguage };
+const updateDisabledCommands = async (guildId: BigString, disabledCommands: string[]) => {
+  await guildsModel.updateOne({ id: `${guildId}` }, { disabledCommands });
+
+  await MainRedisClient.hset(
+    `guild:${guildId}`,
+    'disabled_commands',
+    JSON.stringify(disabledCommands),
+  );
+};
+
+export default { updateGuildLanguage, updateDisabledCommands, getGuildInfo };

@@ -130,9 +130,13 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
 
   if (!execute) return errorReply(T('permissions:UNKNOWN_SLASH'));
 
-  const interactionLocale = interaction.guildId
-    ? await guildRepository.getGuildLanguage(interaction.guildId)
-    : ((interaction.user.locale as 'pt-BR') ?? ('pt-BR' as const));
+  const guildInfo = interaction.guildId
+    ? await guildRepository.getGuildInfo(interaction.guildId)
+    : null;
+
+  const interactionLocale = guildInfo
+    ? guildInfo.language
+    : ((interaction.user.locale as 'pt-BR') ?? 'pt-BR');
 
   const ctx = new ComponentInteractionContext(
     interaction as ComponentInteraction,

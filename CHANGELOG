@@ -7,12 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- Adicionado comando `/configurar desabilitar_comando`, para desligar comandos da Menhera em um servidor. 
+
 ### Changed
 
 - Agora é possível jogar Coinflip sem apostar estrelinhas. - Sugerido por @made.by_mabs.
 - Agora é possível ver as entregas diárias de outros fazendeiros. 
 - O limite da composteira foi aumentado para até 500%. Agora não é mais necessário retirar o composto enquanto coleta as plantações apodrecidas.
 - Agora é possível coletar todos os campos apodrecidos de uma só vez.
+- O comando `/idioma` foi movido para `/configurar idioma`. 
 
 ### Fixed
 

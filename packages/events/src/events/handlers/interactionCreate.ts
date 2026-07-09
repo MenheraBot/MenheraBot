@@ -168,8 +168,20 @@ const setInteractionCreateEvent = (): void => {
 
     cacheRepository.setDiscordUser(bot.transformers.reverse.user(bot, interaction.user));
 
-    const interactionLocale = interaction.guildId
-      ? await guildRepository.getGuildLanguage(interaction.guildId)
+    const guildInfo = interaction.guildId
+      ? await guildRepository.getGuildInfo(interaction.guildId)
+      : null;
+
+    if (guildInfo && guildInfo.disabledCommands.length > 0) {
+      const isDisabled = guildInfo.disabledCommands.find((a) =>
+        commandUsed.fullCommand.includes(a),
+      );
+
+      if (isDisabled) return errorReply(T('permissions:DISABLED_COMMAND'));
+    }
+
+    const interactionLocale = guildInfo
+      ? guildInfo.language
       : ((interaction.user.locale as 'pt-BR') ?? ('pt-BR' as const));
 
     const ctx = new ChatInputInteractionContext(

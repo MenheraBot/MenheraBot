@@ -1476,5 +1476,13 @@
     "scissors": "Scissors",
     "confirm-game-official": "{{user}} you were challenged to a **:rock: Rock, :page_facing_up: Paper, :scissors: Scissors** game against {{author}} worth **{{amount}}** :star:",
     "confirm-game-friendly": "{{user}} you were challenged to a friendly **:rock: Rock, :page_facing_up: Paper, :scissors: Scissors** game against {{author}}"
+  },
+  "desabilitar_comando": {
+    "no-disabled": "Not a single command disabled!",
+    "disabled-commands": "Disabled commands",
+    "select-disabled": "Select commands to re-enable",
+    "unknown-command": "Unknown command.",
+    "success": "The command is now disabled in this server!",
+    "enabled_success": "The command was re-enabled in this server!."
   }
 }

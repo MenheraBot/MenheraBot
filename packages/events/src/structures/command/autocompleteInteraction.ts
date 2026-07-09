@@ -1,5 +1,8 @@
 import { executeGivebadgeAutocomplete } from '../../modules/badges/givebadgeCommandAutocompleteInteraction.js';
-import { executeCommandNameAutocomplete } from '../../modules/top/commandIdAutocompleteInteraction.js';
+import {
+  executeCommandNameAutocomplete,
+  executeFullCommandNameAutocomplete,
+} from '../../modules/top/commandIdAutocompleteInteraction.js';
 import { executeTituleAutocompleteInteraction } from '../../commands/util/PersonalizeCommand.js';
 import { announceAutocomplete } from '../../modules/fazendinha/announceProduct.js';
 import { listItemAutocomplete } from '../../modules/fazendinha/exploreFair.js';
@@ -14,6 +17,9 @@ const autocompleteInteraction = (interaction: Interaction): void => {
       break;
     case 'personalizar':
       executeTituleAutocompleteInteraction(interaction);
+      break;
+    case 'configurar':
+      executeFullCommandNameAutocomplete(interaction);
       break;
     case 'top':
       executeCommandNameAutocomplete(interaction);

@@ -37,5 +37,6 @@
   "BANNED_INFO": "You are banned from using Menhera since {{bannedSince}}!\n\n📢 **| Reason:** {{banReason}}\n\nUnjustly banned? Join my support server https://discord.com/invite/fZMdQbA",
   "NOT_INTERACTION_OWNER": "Hey! Don't you know how to wait your turn?!! This interaction is just for {{owner}} to click. If you want to click buttons too, use a command!",
   "COMPONENT_OUTDATED": "This command was used a long time ago... Please use a new command.",
-  "IN_COMMAND_EXECUTION": "You cannot use this command as you are still using another command! Finish running that command and try again\n\n**THINKING IT'S A BUG?** Come to Menhera's support server {{command}} and ask for help"
+  "IN_COMMAND_EXECUTION": "You cannot use this command as you are still using another command! Finish running that command and try again\n\n**THINKING IT'S A BUG?** Come to Menhera's support server {{command}} and ask for help",
+  "DISABLED_COMMAND": "This command is disabled in this server!"
 }
