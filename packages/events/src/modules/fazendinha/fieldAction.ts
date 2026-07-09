@@ -123,9 +123,10 @@ const harvestAllFields = async (
   farmer: DatabaseFarmerSchema,
   selectedSeed: AvailablePlants,
 ) => {
-  const ableToHarvestIndexes = farmer.plantations.flatMap((p, i) =>
-    getPlantationState(p)[0] === PlantationState.Mature ? [i] : [],
-  );
+  const ableToHarvestIndexes = farmer.plantations.flatMap((p, i) => {
+    const state = getPlantationState(p)[0];
+    return state === PlantationState.Mature || state === PlantationState.Rotten ? [i] : [];
+  });
 
   const userSeeds = farmer.seeds.find((a) => a.plant === selectedSeed);
 
@@ -165,19 +166,40 @@ const harvestAllFields = async (
       upgrades: getPlantationUpgrades(field),
     };
 
+    const fieldQuality = getCalculatedFieldQuality(field, currentSeason);
+
     const success = state === PlantationState.Mature;
     const harvestedWeight = success ? (field.weight ?? 1) : 0;
+
+    const toAddComposter =
+      state === PlantationState.Rotten
+        ? composterEquivalentForField(
+            { plant: field.plantType, weight: field.weight ?? 1, quality: fieldQuality },
+            state,
+          )
+        : 0;
+
+    farmer.composter = Math.min(toAddComposter + farmer.composter, MAX_COMPOSTER_VALUE);
 
     harvested.push({
       plant: field.plantType,
       weight: harvestedWeight,
-      quality: getCalculatedFieldQuality(field, currentSeason),
+      quality: fieldQuality,
     });
   });
 
   const [parsedFields, totalWeight] = groupPlantsWeight(harvested);
 
-  if (totalWeight === 0)
+  if (totalWeight === 0) {
+    await farmerRepository.executeHarvest(
+      ctx.user.id,
+      farmer.plantations,
+      false,
+      farmer.silo,
+      parsedFields,
+      farmer.composter,
+    );
+
     return displayPlantations(
       ctx,
       farmer,
@@ -185,6 +207,7 @@ const harvestAllFields = async (
       !userSeeds || userSeeds.amount <= 0 ? AvailablePlants.Mate : selectedSeed,
       -1,
     );
+  }
 
   farmer.silo = addPlants(farmer.silo, parsedFields);
 
@@ -194,18 +217,22 @@ const harvestAllFields = async (
     true,
     farmer.silo,
     parsedFields,
+    farmer.composter,
   );
 
   await postMultipleFazendinhaHarvest(`${ctx.user.id}`, harvested);
-  await postMultipleTransactions(
-    parsedFields.map((a) => ({
-      amount: a.weight,
-      authorId: `${ctx.user.id}`,
-      targetId: `${ctx.user.id}`,
-      currencyType: `plant-${a.plant}-${getQuality(a)}`,
-      reason: ApiTransactionReason.HARVEST_FARM,
-    })),
-  );
+  const filtered = parsedFields.filter((a) => a.weight > 0);
+
+  if (filtered.length > 0)
+    await postMultipleTransactions(
+      filtered.map((a) => ({
+        amount: a.weight,
+        authorId: `${ctx.user.id}`,
+        targetId: `${ctx.user.id}`,
+        currencyType: `plant-${a.plant}-${getQuality(a)}`,
+        reason: ApiTransactionReason.HARVEST_FARM,
+      })),
+    );
 
   await executeDailies.harvestDailies(
     await userRepository.ensureFindUser(ctx.user.id),

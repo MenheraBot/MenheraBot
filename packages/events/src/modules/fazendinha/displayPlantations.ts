@@ -231,9 +231,12 @@ const displayPlantations = async (
       createTextDisplay(
         `${ctx.locale('commands:fazendinha.plantations.harvest-text', {
           harvested: harvested
-            .map(
-              (plant) =>
-                `- ${getQualityEmoji(getQuality(plant))}${Plants[plant.plant].emoji} **${plant.weight} kg**`,
+            .flatMap((plant) =>
+              plant.weight >= 0
+                ? [
+                    `- ${getQualityEmoji(getQuality(plant))}${Plants[plant.plant].emoji} **${plant.weight} kg**`,
+                  ]
+                : [],
             )
             .join('\n'),
         })}`,
@@ -241,9 +244,11 @@ const displayPlantations = async (
     );
 
   const canPlant = farmer.plantations.some((a) => !a.isPlanted);
-  const canHarvest = farmer.plantations.some(
-    (a) => getPlantationState(a)[0] === PlantationState.Mature,
-  );
+  const canHarvestAll = farmer.plantations.some((a) => {
+    const state = getPlantationState(a)[0];
+
+    return state === PlantationState.Mature || state === PlantationState.Rotten;
+  });
 
   const controllerContainer = createContainer({
     components: [
@@ -274,7 +279,7 @@ const displayPlantations = async (
         }),
         createButton({
           label: ctx.locale('commands:fazendinha.plantations.harvest-all'),
-          style: canHarvest ? ButtonStyles.Success : ButtonStyles.Secondary,
+          style: canHarvestAll ? ButtonStyles.Success : ButtonStyles.Secondary,
           customId: createCustomId(
             0,
             ctx.user.id,
@@ -284,7 +289,7 @@ const displayPlantations = async (
             `${selectedSeed}`,
             'N',
           ),
-          disabled: !canHarvest,
+          disabled: !canHarvestAll,
         }),
       ]),
       createTextDisplay(`-# ${ctx.locale('commands:fazendinha.plantations.explain-all-action')}`),

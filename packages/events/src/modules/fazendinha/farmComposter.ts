@@ -23,7 +23,7 @@ import {
   createTextInput,
 } from '../../utils/discord/componentUtils.js';
 import { PlantStateIcon } from './displayPlantations.js';
-import { COMPOSTER_FERTILIZER_YIELD, Items, MAX_COMPOSTER_VALUE, Plants } from './constants.js';
+import { COMPOSTER_MULTIPLIER, Items, MAX_COMPOSTER_VALUE, Plants } from './constants.js';
 import { AvailableItems, PlantationState, PlantQuality } from './types.js';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import {
@@ -269,8 +269,6 @@ const receiveModal = async (
     farmer.composter += toComposte;
   }
 
-  farmer.composter = Math.min(farmer.composter, MAX_COMPOSTER_VALUE);
-
   await farmerRepository.updateSilo(ctx.user.id, farmer.silo, farmer.composter);
 
   await postMultipleTransactions(transactions);
@@ -371,7 +369,7 @@ const handleComposterInteractions = async (ctx: ComponentInteractionContext) => 
     );
 
   if (action === 'GET_FERTILIZER') {
-    if (farmer.composter < MAX_COMPOSTER_VALUE)
+    if (farmer.composter < COMPOSTER_MULTIPLIER)
       return ctx.respondInteraction({
         flags: setComponentsV2Flag(MessageFlags.Ephemeral),
         components: [
@@ -383,7 +381,7 @@ const handleComposterInteractions = async (ctx: ComponentInteractionContext) => 
 
     const siloLimits = getSiloLimits(farmer);
 
-    if (siloLimits.used + COMPOSTER_FERTILIZER_YIELD > siloLimits.limit)
+    if (siloLimits.used + 1 >= siloLimits.limit)
       return ctx.respondInteraction({
         flags: setComponentsV2Flag(MessageFlags.Ephemeral),
         components: [
@@ -393,12 +391,15 @@ const handleComposterInteractions = async (ctx: ComponentInteractionContext) => 
         ],
       });
 
+    const maxFertilizers = Math.floor(farmer.composter / COMPOSTER_MULTIPLIER);
+    const availableToGet = Math.floor(siloLimits.limit - siloLimits.used);
+
+    const composerYield = Math.min(availableToGet, maxFertilizers);
+
     await farmerRepository.executeComposter(
       ctx.user.id,
-      addItems(farmer.items, [
-        { amount: COMPOSTER_FERTILIZER_YIELD, id: AvailableItems.Fertilizer },
-      ]),
-      0,
+      addItems(farmer.items, [{ amount: composerYield, id: AvailableItems.Fertilizer }]),
+      Math.max(Math.floor(farmer.composter - composerYield * COMPOSTER_MULTIPLIER), 0),
     );
 
     return ctx.makeLayoutMessage({
@@ -406,7 +407,7 @@ const handleComposterInteractions = async (ctx: ComponentInteractionContext) => 
         createTextDisplay(
           ctx.prettyResponse('success', 'commands:fazendinha.composteira.success', {
             emoji: Items[AvailableItems.Fertilizer].emoji,
-            amount: COMPOSTER_FERTILIZER_YIELD,
+            amount: composerYield,
           }),
         ),
       ],
@@ -420,11 +421,22 @@ const displayComposter = async (
   embedColor: string,
 ) => {
   const total = 23;
-  const percent = farmer.composter / MAX_COMPOSTER_VALUE;
+  const percent = Math.min(farmer.composter, COMPOSTER_MULTIPLIER) / COMPOSTER_MULTIPLIER;
   const filled = Math.round(total * percent);
   const progressBar = `[${'█'.repeat(filled) + '░'.repeat(total - filled)}]`;
 
   const havePlants = farmer.silo.some((a) => a.weight > 0);
+
+  const siloLimits = getSiloLimits(farmer);
+
+  const maxFertilizers = Math.min(
+    Math.floor(farmer.composter / COMPOSTER_MULTIPLIER),
+    MAX_COMPOSTER_VALUE / COMPOSTER_MULTIPLIER,
+  );
+
+  const availableToGet = Math.floor(siloLimits.limit - siloLimits.used);
+
+  const willRetrieve = Math.min(availableToGet, maxFertilizers);
 
   await ctx.makeLayoutMessage({
     components: [
@@ -463,8 +475,10 @@ const displayComposter = async (
                 embedColor,
               ),
               emoji: extractNameAndIdFromEmoji(Items[AvailableItems.Fertilizer].emoji),
-              disabled: percent < 1,
-              label: ctx.locale('commands:fazendinha.composteira.get-fertilizer'),
+              disabled: willRetrieve < 1,
+              label: ctx.locale('commands:fazendinha.composteira.get-fertilizer', {
+                count: willRetrieve,
+              }),
             }),
           ]),
         ],

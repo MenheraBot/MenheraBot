@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Agora é possível jogar Coinflip sem apostar estrelinhas. - Sugerido por @made.by_mabs.
 - Agora é possível ver as entregas diárias de outros fazendeiros. 
+- O limite da composteira foi aumentado para até 500%. Agora não é mais necessário retirar o composto enquanto coleta as plantações apodrecidas.
+- Agora é possível coletar todos os campos apodrecidos de uma só vez.
 
 ### Fixed
 

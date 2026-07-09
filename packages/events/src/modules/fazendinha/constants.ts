@@ -31,8 +31,8 @@ export const MAX_DELIVERY_WEIGHT = 9;
 export const MIN_DELIVERY_WEIGHT = 5;
 export const FINISH_ALL_DELIVERIES_BONUS = 30_000;
 
-export const MAX_COMPOSTER_VALUE = 100;
-export const COMPOSTER_FERTILIZER_YIELD = 1;
+export const COMPOSTER_MULTIPLIER = 100;
+export const MAX_COMPOSTER_VALUE = 500;
 
 // Worst = -30%, Best = +30%. Normal = base price;
 export const QUALITY_PRICE_MULTIPLIER = 30 / 100;
@@ -342,7 +342,7 @@ export const Plants: Record<AvailablePlants, PlantsFile> = {
   },
   [AvailablePlants.Mushroom]: {
     minutesToHarvest: replaceDevTime(220),
-    minutesToRot: 2,
+    minutesToRot: replaceDevTime(2),
     emoji: '🍄',
     sellValue: 8175,
     buyValue: 3689,

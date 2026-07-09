@@ -1153,7 +1153,9 @@
       "success": "Composto gerado! Você recebeu **{{amount}}x** {{emoji}}",
       "silo-full": "Você não pode retirar o fertilizante, pois seu silo está cheio.",
       "composter-not-full": "A composteira ainda não está completamente cheia para gerar um fertilizante. Adicione plantas, ou deixe campos apodrecerem para gerar mais insumos.",
-      "get-fertilizer": "Retirar fertilizante",
+      "get-fertilizer": "Retirar fertilizante ({{count}})",
+      "get-fertilizer-one": "Retirar fertilizante ({{count}})",
+      "get-fertilizer-other": "Retirar fertilizantes ({{count}})",
       "description": "Adicione plantas, ou colete campos apodrecidos para encher a composteira. Quando chegar a 100%, recebe um fertilizante para melhorar os retornos de seus campos.\n\nA melhor forma de gerar composto é com plantas apodrecidas em seus campos. É possível gerar composto com plantas do silo, porém é menos efetivo.\n### 🧱 Progresso: **{{percent}}% cheia**."
     },
     "plant-states-message": {
