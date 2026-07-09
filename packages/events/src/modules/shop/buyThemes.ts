@@ -30,6 +30,7 @@ import {
   sendInteractionResponse,
 } from '../../utils/discord/interactionRequests.js';
 import giveRepository from '../../database/repositories/giveRepository.js';
+import { logger } from '../../utils/logger.js';
 
 const themeByIndex = {
   0: 'profile',
@@ -387,16 +388,19 @@ const executeClickButton = async (ctx: ComponentInteractionContext): Promise<voi
         return;
       }
 
-      const credits = await themeCreditsRepository.getThemeInfo(selectedItem.id);
+      let credits = await themeCreditsRepository.getThemeInfo(selectedItem.id);
 
       if (!credits) {
-        ctx.makeMessage({
-          components: [],
-          embeds: [],
-          content: ctx.prettyResponse('error', 'commands:loja.buy_themes.not-registered'),
-        });
+        logger.error(`Credits not found for Item ID ${selectedItem.id}`);
 
-        return;
+        credits = {
+          themeId: selectedItem.id,
+          ownerId: `${bot.ownerId}`,
+          royalty: 1,
+          totalEarned: -1,
+          registeredAt: -1,
+          timesSold: -1,
+        };
       }
 
       await shopRepository.executeBuyTheme(
