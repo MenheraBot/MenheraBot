@@ -180,7 +180,7 @@ const SettingsCommand = createCommand({
         components: [createActionRow([selector])],
       });
 
-      finishCommand();
+      return finishCommand();
     }
 
     const guildInfo = await guildRepository.getGuildInfo(ctx.interaction.guildId);
