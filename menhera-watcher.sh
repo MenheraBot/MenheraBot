@@ -1,8 +1,7 @@
 #!/bin/bash
 
-WATCH_DIR="./packages/events"
-FILE_PATTERN=".*\.ts$"
-BUILD_DELAY=3
+BUILD_LOG=".watch_build.log"
+RESTART_DELAY=1
 
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
@@ -11,22 +10,15 @@ RED='\033[0;31m'
 GRAY='\e[1;30m'
 NC='\033[0m'
 
-if ! command -v inotifywait &> /dev/null; then
-    echo -e "${RED}[ERROR] 'inotifywait' is not installed.${NC}"
-    echo -e "This tool is required to watch for file changes."
-    echo -e "${YELLOW}To install:${NC}"
-    echo -e "  - Ubuntu/Debian: sudo apt-get install inotify-tools"
-    echo -e "  - MacOS: brew install inotify-tools"
-    exit 1
-fi
-
 APP_PID=""
 APP_RUNNING=false
-WATCHER_PID=""
-LAST_CHANGE_TIME=0
-BUILD_PENDING=false
-LAST_BUILD_TIME=0
+BUILDER_PID=""
 AUTO_RESTART=false
+
+FIRST_BUILD=true
+RESTART_PENDING=false
+BUILD_FINISH_TIME=0
+LAST_LOG_LINE=0
 
 if [[ ! -z $1 ]]; then
     AUTO_RESTART=true
@@ -35,10 +27,10 @@ fi
 cleanup() {
     echo -e "\n${RED}[SYSTEM] Shutdown...${NC}"
     if [[ -n "$APP_PID" ]]; then kill "$APP_PID" 2>/dev/null; fi
-    if [[ -n "$WATCHER_PID" ]]; then kill "$WATCHER_PID" 2>/dev/null; fi
-    rm -f .watch_trigger 2>/dev/null
+    if [[ -n "$BUILDER_PID" ]]; then kill "$BUILDER_PID" 2>/dev/null; fi
+    rm -f "$BUILD_LOG" 2>/dev/null
 
-    wait $APP_PID $WATCHER_PID
+    wait $APP_PID $BUILDER_PID 2>/dev/null
 
     stty echo
     exit
@@ -51,8 +43,6 @@ start_app() {
         echo -e "${YELLOW}[SYSTEM] Shutting down...${NC}"
         kill "$APP_PID" 2>/dev/null
         wait "$APP_PID" 2>/dev/null
-
-     #   curl -s -X POST localhost:3000/dev/reboot 2>/dev/null > /dev/null
     fi
 
     echo -e "${GREEN}[SYSTEM] Starting application (pnpm events dev)...${NC}"
@@ -68,41 +58,69 @@ start_app() {
     APP_RUNNING=true
 }
 
-run_build() {
-    echo -e "${BLUE}[BUILD] Starting build...${NC}"
-    
-    pnpm --silent events build
-    errCode=$?
+start_builder() {
+    : > "$BUILD_LOG"
 
-    BUILD_PENDING=false 
-    
-    if [ $errCode -eq 0 ]; then
-        echo -e "${GREEN}[BUILD] Build successful.${NC}"
+    echo -e "${BLUE}[BUILD] Starting tsc in watch mode...${NC}"
 
-        if [ "$LAST_BUILD_TIME" -gt 0 ]; then
-            if [ "$AUTO_RESTART" = true ]; then
-                echo -e "${GRAY}[SYSTEM] Auto restart is enabled${NC}"
-                start_app
-            else
-                echo -e "${YELLOW}[HINT] Press 'R' to restart the app with new build.${NC}"
-            fi
-        fi
-    else
-        echo -e "${RED}[BUILD] Build failed.${NC}"
-    fi
+    pnpm --silent events exec tsc \
+        --watch --preserveWatchOutput \
+        --rootDir ./src \
+        --project tsconfig.build.json \
+        > "$BUILD_LOG" 2>&1 &
 
-    LAST_BUILD_TIME="$(date +%s)"
+    BUILDER_PID=$!
 }
 
-start_watcher() {
-    touch .watch_trigger
+process_build_log() {
+    local total
+    total=$(wc -l < "$BUILD_LOG" 2>/dev/null || echo 0)
 
-    inotifywait -m -r -e modify,create,delete,move \
-        --include "$FILE_PATTERN" \
-        --format "%T" --timefmt "%s" \
-        "$WATCH_DIR" > .watch_trigger 2>/dev/null & 
-    
-    WATCHER_PID=$!
+    if [ "$total" -le "$LAST_LOG_LINE" ]; then
+        return
+    fi
+
+    local new_lines
+    new_lines=$(sed -n "$((LAST_LOG_LINE + 1)),${total}p" "$BUILD_LOG")
+    LAST_LOG_LINE=$total
+
+    while IFS= read -r line; do
+        [ -z "$line" ] && continue
+        echo -e "${GRAY}[TSC] ${line}${NC}"
+    done <<< "$new_lines"
+
+    if echo "$new_lines" | grep -q "Watching for file changes"; then
+        if echo "$new_lines" | grep -q "Found 0 errors"; then
+            echo -e "${GREEN}[BUILD] Build successful.${NC}"
+            BUILD_FINISH_TIME=$(date +%s)
+            RESTART_PENDING=true
+        else
+            echo -e "${RED}[BUILD] Build failed.${NC}"
+        fi
+    fi
+}
+
+handle_pending_restart() {
+    [ "$RESTART_PENDING" = false ] && return
+
+    local now
+    now=$(date +%s)
+
+    if [ $((now - BUILD_FINISH_TIME)) -lt "$RESTART_DELAY" ]; then
+        return
+    fi
+
+    RESTART_PENDING=false
+
+    if [ "$FIRST_BUILD" = true ]; then
+        FIRST_BUILD=false
+        start_app
+    elif [ "$AUTO_RESTART" = true ]; then
+        echo -e "${GRAY}[SYSTEM] Auto restart is enabled${NC}"
+        start_app
+    else
+        echo -e "${YELLOW}[HINT] Press 'R' to restart the app with new build.${NC}"
+    fi
 }
 
 toggle_autoreload() {
@@ -119,7 +137,6 @@ print_help() {
     echo -e "${GREEN}=== Menhera Watcher ===${NC}"
     echo -e "Controls:"
     echo -e "  [A] Toggle Auto Reload"
-    echo -e "  [B] Force Build (pnpm events build)"
     echo -e "  [C] Clear Logs"
     echo -e "  [R] Restart App (pnpm events dev)"
     echo -e "  [Q] Quit"
@@ -132,14 +149,10 @@ clear
 print_help
 
 if [ "$AUTO_RESTART" = true ]; then
-    echo -e "${YELLOW}[SYSTEM] Auto Reload is ${GREEN}enabled!${NC}"          
+    echo -e "${YELLOW}[SYSTEM] Auto Reload is ${GREEN}enabled!${NC}"
 fi
 
-start_watcher
-run_build
-start_app
-
-LAST_READ_LINE=0
+start_builder
 
 while true; do
     read -t 0.1 -n 1 -s key
@@ -147,10 +160,6 @@ while true; do
     case $key in
         [rR]) start_app ;;
         [aA]) toggle_autoreload ;;
-        [bB])
-            echo -e "${BLUE}[SYSTEM] Force build triggered.${NC}"
-            run_build
-            ;;
         [cC])
             clear
             print_help
@@ -167,28 +176,11 @@ while true; do
         echo -e "${RED}[SYSTEM] Application process (PID: $APP_PID) has died!${NC}"
     fi
 
-    CURRENT_LINES=$(wc -l < .watch_trigger 2>/dev/null || echo 0)
-    
-    if [ "$CURRENT_LINES" -gt "$LAST_READ_LINE" ]; then
-        LAST_CHANGE_TIME=$(date +%s)
-        LAST_READ_LINE=$CURRENT_LINES
-
-        BUILD_DIFF=$((LAST_CHANGE_TIME - LAST_BUILD_TIME))
-        
-        if [ "$BUILD_DIFF" -ge "$BUILD_DELAY" ]; then
-            BUILD_PENDING=true
-            echo -e "${GRAY}[SYSTEM] Change detected!${NC}"
-        fi
-
+    if [[ -n "$BUILDER_PID" ]] && ! kill -0 "$BUILDER_PID" 2>/dev/null; then
+        echo -e "${RED}[SYSTEM] Builder process (tsc) has died! Restarting...${NC}"
+        start_builder
     fi
 
-    if [ "$BUILD_PENDING" = true ]; then
-        CURRENT_TIME=$(date +%s)
-        TIME_DIFF=$((CURRENT_TIME - LAST_CHANGE_TIME))
-
-        if [ "$TIME_DIFF" -ge "$BUILD_DELAY" ]; then
-            echo -e "${BLUE}[SYSTEM] Last change is too old. We gotta build!${NC}"
-            run_build
-        fi
-    fi
+    process_build_log
+    handle_pending_restart
 done
