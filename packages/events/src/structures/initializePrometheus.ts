@@ -7,6 +7,7 @@ let interactionsCounter: Counter;
 let ratelimitCounter: Counter;
 let stuckQueuesCounter: Counter;
 let redisCacheCounter: Counter;
+let orchestratorMessageCounter: Counter;
 
 const initializePrometheus = (): void => {
   if (process.env.NOMICROSERVICES) return;
@@ -42,11 +43,18 @@ const initializePrometheus = (): void => {
     labelNames: ['type', 'status'],
   });
 
+  orchestratorMessageCounter = new client.Counter({
+    name: 'orchestrator',
+    help: 'Type of message/request received from the orchestrator',
+    labelNames: ['type'],
+  });
+
   register.registerMetric(ratelimitCounter);
   register.registerMetric(commandsCounter);
   register.registerMetric(interactionsCounter);
   register.registerMetric(stuckQueuesCounter);
   register.registerMetric(redisCacheCounter);
+  register.registerMetric(orchestratorMessageCounter);
 };
 
 const getRegister = (): Registry => register;
@@ -55,6 +63,7 @@ const getInteractionsCounter = (): Counter => interactionsCounter;
 const getRateLimitCounter = (): Counter => ratelimitCounter;
 const getStuckQueuesCounter = (): Counter => stuckQueuesCounter;
 const getRedisCacheCounter = (): Counter => redisCacheCounter;
+const getOrchestratorMessageCounter = (): Counter => orchestratorMessageCounter;
 
 const registerCacheStatus = (data: unknown, type: string): void => {
   if (process.env.NOMICROSERVICES) return;
@@ -77,6 +86,7 @@ export {
   getCommandsCounter,
   getRedisCacheCounter,
   getStuckQueuesCounter,
+  getOrchestratorMessageCounter,
   getInteractionsCounter,
   getRateLimitCounter,
 };

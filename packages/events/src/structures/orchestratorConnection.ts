@@ -6,7 +6,11 @@ import { executeVoteWebhook } from '../utils/executeVoteWebhook.js';
 import { getEnviroments } from '../utils/getEnviroments.js';
 import { logger } from '../utils/logger.js';
 import { updateCommandsOnApi } from '../utils/updateApiCommands.js';
-import { getInteractionsCounter, getRegister } from './initializePrometheus.js';
+import {
+  getInteractionsCounter,
+  getOrchestratorMessageCounter,
+  getRegister,
+} from './initializePrometheus.js';
 import { clearPokerTimer, startPokerTimeout } from '../modules/poker/timerManager.js';
 import cacheRepository from '../database/repositories/cacheRepository.js';
 import { getUserAvatar } from '../utils/discord/userUtils.js';
@@ -41,6 +45,14 @@ const createIpcConnection = async (): Promise<void> => {
   orchestratorClient = new Client({ path: ORCHESTRATOR_SOCKET_PATH });
 
   orchestratorClient.on('message', async (msg) => {
+    if (!process.env.NOMICROSERVICES)
+      getOrchestratorMessageCounter().inc(
+        {
+          type: msg.type,
+        },
+        0.5,
+      );
+
     if (msg.type === 'INTERACTION_CREATE') {
       if (!process.env.NOMICROSERVICES)
         getInteractionsCounter().inc(
@@ -82,6 +94,14 @@ const createIpcConnection = async (): Promise<void> => {
   });
 
   orchestratorClient.on('request', async (msg, ack) => {
+    if (!process.env.NOMICROSERVICES)
+      getOrchestratorMessageCounter().inc(
+        {
+          type: msg.type,
+        },
+        0.5,
+      );
+
     switch (msg.type) {
       case 'ARE_YOU_OK': {
         ack(Math.floor(process.uptime() * 1000));
