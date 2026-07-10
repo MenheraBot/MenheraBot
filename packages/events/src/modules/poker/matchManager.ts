@@ -333,7 +333,6 @@ const startNextMatch = async (
 const setupGame = async (
   ctx: InteractionContext,
   players: string[],
-  embedColor: number,
   chips: number,
   originalInteractionId: string,
 ): Promise<void> => {
@@ -367,7 +366,7 @@ const setupGame = async (
     originalInteractionId,
     masterId: players[0],
     language: ctx.interactionLocale,
-    embedColor,
+    embedColor: ctx.userColor,
     worthGame: chips > 0,
     players: playersData,
     communityCards: [0, 0, 0, 0, 0],

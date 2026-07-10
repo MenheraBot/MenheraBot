@@ -15,6 +15,7 @@ import {
 } from '../../utils/discord/interactionRequests.js';
 import { Interaction, User } from '../../types/discordeno.js';
 import { enableLayoutMessage } from '../../utils/discord/componentUtils.js';
+import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
 
 export type CanResolve = 'users' | 'members' | 'attachments' | false;
 
@@ -46,6 +47,10 @@ export default class {
 
   get user(): User {
     return this.author;
+  }
+
+  get userColor(): number {
+    return hexStringToNumber(this.authorData.selectedColor);
   }
 
   get originalInteractionId(): string {

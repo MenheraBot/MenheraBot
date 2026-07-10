@@ -29,6 +29,7 @@ import {
 } from '../../modules/fazendinha/farmComposter.js';
 import { handleDiscardSeeds } from '../../modules/fazendinha/manageSilo.js';
 import { isUndefined } from '../../utils/miscUtils.js';
+import { initTutorial } from '../../modules/fazendinha/tutorialManager.js';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -41,6 +42,12 @@ const FazendinhaCommand = createCommand({
     'en-US': '「🚜」・Visit your farm in the countryside',
   },
   options: [
+    {
+      name: 'tutorial',
+      description: '「❓」・Aprenda como gerenciar sua fazendinha!',
+      descriptionLocalizations: { 'en-US': '「❓」・Learn how to manage your farm!' },
+      type: ApplicationCommandOptionTypes.SubCommand,
+    },
     {
       name: 'plantações',
       nameLocalizations: {
@@ -302,6 +309,8 @@ const FazendinhaCommand = createCommand({
         });
       }
     }
+
+    if (command === 'tutorial') return initTutorial(ctx, farmer);
 
     if (command === 'composteira')
       return displayComposter(ctx, farmer, ctx.authorData.selectedColor);

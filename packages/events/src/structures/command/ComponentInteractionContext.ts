@@ -25,6 +25,7 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
   constructor(
     public interaction: InteractionType,
     public interactionLocale: AvailableLanguages,
+    public userColor: number,
   ) {
     this.i18n = i18next.getFixedT(interactionLocale);
   }

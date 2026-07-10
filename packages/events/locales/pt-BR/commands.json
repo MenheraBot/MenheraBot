@@ -1140,6 +1140,9 @@
     }
   },
   "fazendinha": {
+    "tutorial": {
+      "title": "Tutorial da Fazendinha"
+    },
     "composteira": {
       "title": "Sua Composteira",
       "transform-plant": "Compostar {{plant}}",

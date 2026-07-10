@@ -116,6 +116,7 @@ const handleInteractions = async (ctx: ComponentInteractionContext): Promise<voi
       originalInteraction.originalInteractionToken,
       originalInteraction.originalInteractionId,
       originalInteraction.locale,
+      originalInteraction.userColor,
     );
 
     await rockPaperScissorsRepository.setupGame(ctx.originalInteractionId, Number(betValue));
@@ -163,6 +164,7 @@ const handleInteractions = async (ctx: ComponentInteractionContext): Promise<voi
     originalInteraction.originalInteractionToken,
     originalInteraction.originalInteractionId,
     originalInteraction.locale,
+    originalInteraction.userColor,
   );
 
   if (parsedBet > 0 && !draw) {

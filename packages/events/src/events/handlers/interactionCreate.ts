@@ -19,7 +19,7 @@ import { UsedCommandData } from '../../types/commands.js';
 import { DatabaseUserSchema } from '../../types/database.js';
 import { postCommandExecution } from '../../utils/apiRequests/commands.js';
 import { getUserLastBanData } from '../../utils/apiRequests/statistics.js';
-import { createErrorEmbed } from '../../utils/discord/embedUtils.js';
+import { createErrorEmbed, hexStringToNumber } from '../../utils/discord/embedUtils.js';
 import { getEnviroments } from '../../utils/getEnviroments.js';
 import { logger } from '../../utils/logger.js';
 import { millisToSeconds } from '../../utils/miscUtils.js';
@@ -198,6 +198,7 @@ const setInteractionCreateEvent = (): void => {
       originalInteractionId: `${interaction.id}`,
       commandName,
       locale: interactionLocale,
+      userColor: hexStringToNumber(authorData.selectedColor),
     });
 
     if (!process.env.NOMICROSERVICES)

@@ -2,7 +2,7 @@
 
 WATCH_DIR="./packages/events"
 FILE_PATTERN=".*\.ts$"
-BUILD_DELAY=4
+BUILD_DELAY=3
 
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'

@@ -1135,6 +1135,9 @@
     }
   },
   "fazendinha": {
+    "tutorial": {
+      "title": "How to manage the Farm"
+    },
     "composteira": {
       "title": "Your Composter",
       "add-plants": "Add plants",

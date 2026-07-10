@@ -17,6 +17,7 @@ export default class {
     private interactionToken: string,
     public originalInteractionId: string,
     public interactionLocale: AvailableLanguages,
+    public userColor: number,
   ) {
     this.i18n = i18next.getFixedT(interactionLocale);
   }

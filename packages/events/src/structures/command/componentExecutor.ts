@@ -141,6 +141,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
   const ctx = new ComponentInteractionContext(
     interaction as ComponentInteraction,
     interactionLocale,
+    originalInteraction.userColor,
   );
 
   await new Promise((res) => {

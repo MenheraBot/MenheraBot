@@ -20,6 +20,7 @@ const executeDeleteMatch = async (timer: DeleteMatchTimer) => {
     gameData.interactionToken,
     gameData.originalInteractionId,
     gameData.language,
+    gameData.embedColor,
   );
 
   closeTable(ctx, gameData);
@@ -39,6 +40,7 @@ const executeFoldTimeout = async (timer: TimeoutFoldTimer) => {
     gameData.interactionToken,
     gameData.originalInteractionId,
     gameData.language,
+    gameData.embedColor,
   );
 
   return updateGameState(ctx, gameData);

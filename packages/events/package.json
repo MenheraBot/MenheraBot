@@ -41,6 +41,6 @@
     "@jest/globals": "^30.3.0",
     "@types/md5": "^2.3.6",
     "@types/string-similarity": "^4.0.2",
-    "typescript": "6.0.3"
+    "typescript": "7.0.2"
   }
 }

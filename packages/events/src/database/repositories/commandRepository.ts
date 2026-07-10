@@ -104,6 +104,7 @@ interface OriginalInteraction {
   locale: AvailableLanguages;
   fullCommandUsed: string;
   commandName: string;
+  userColor: number;
 }
 
 const setOriginalInteraction = (
