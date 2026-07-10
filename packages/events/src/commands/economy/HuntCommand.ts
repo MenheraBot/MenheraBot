@@ -153,6 +153,7 @@ const executeHuntCommand = async (
             count: result.value,
             hunt: ctx.locale(`commands:cacar.gods`),
             toRun: timesToHunt,
+            try: ctx.locale('commands:cacar.try', { count: timesToHunt }),
           })
         : ctx.locale('commands:cacar.god_hunted_fail', {
             count: timesToHunt,
