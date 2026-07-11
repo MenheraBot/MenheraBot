@@ -13,6 +13,7 @@ import type {
   ThumbnailComponent,
   LabelComponent,
   MediaGalleryComponent,
+  SelectOption,
 } from '@discordeno/bot';
 
 import { MessageComponentTypes, SeparatorSpacingSize } from '@discordeno/bot';
@@ -24,8 +25,29 @@ import { InteractionContext } from '../../types/menhera.js';
 const DELETE_CUSTOM_ID = '420_INTERACTION_DELETE';
 
 type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+interface ComponentLike {
+  customId?: string;
+  options?: SelectOption[];
+  components?: ComponentLike[];
+}
 
 const deleteMessageCustomId = (ctx: InteractionContext) => `${DELETE_CUSTOM_ID}-${ctx.user.id}`;
+
+const findComponentByCustomId = (
+  components: ComponentLike[] | undefined,
+  customIdAction: string,
+): ComponentLike | undefined => {
+  for (const component of components ?? []) {
+    if (component.customId?.includes(customIdAction)) return component;
+
+    const found = findComponentByCustomId(component.components, customIdAction);
+
+    if (found) return found;
+  }
+};
+
+const getSelectValuesByCustomId = (ctx: InteractionContext, customIdAction: string) =>
+  findComponentByCustomId(ctx.interaction.message?.components, customIdAction)?.options;
 
 const createCustomId = (
   executorIndex: number,
@@ -148,5 +170,6 @@ export {
   createLabel,
   enableLayoutMessage,
   resolveSeparatedStrings,
+  getSelectValuesByCustomId,
   createUsersSelectMenu,
 };

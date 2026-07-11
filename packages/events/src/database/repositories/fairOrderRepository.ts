@@ -53,13 +53,22 @@ const listPublicOrders = async (
   skip: number,
   limit: number,
   ignoreTroll: boolean,
+  filteringPlants: string[],
 ) => {
   const sortedItems = await feirinhaOrderModel.aggregate([
     {
       $match: {
-        $and: [
-          { $or: [{ userId: farmerId }, { completed: { $ne: true } }] },
-          { $or: [{ trollAward: { $ne: ignoreTroll } }, { trollAward: { $exists: false } }] },
+        $or: [
+          { userId: farmerId },
+          {
+            $and: [
+              { completed: { $ne: true } },
+              ...(filteringPlants.length > 0
+                ? [{ plant: { $in: filteringPlants.map(Number) } }]
+                : []),
+              ...(ignoreTroll ? [{ trollAward: { $ne: true } }] : []),
+            ],
+          },
         ],
       },
     },
@@ -78,11 +87,21 @@ const listPublicOrders = async (
   return sortedItems.map(mongoToRedis);
 };
 
-const countPublicOrders = async (ignoreTroll: boolean) => {
+const countPublicOrders = async (
+  ignoreTroll: boolean,
+  farmerId: string,
+  filteringPlants: string[],
+) => {
   return feirinhaOrderModel.countDocuments({
-    $and: [
-      { completed: { $ne: true } },
-      { $or: [{ trollAward: { $ne: ignoreTroll } }, { trollAward: { $exists: false } }] },
+    $or: [
+      { userId: farmerId },
+      {
+        $and: [
+          { completed: { $ne: true } },
+          ...(filteringPlants.length > 0 ? [{ plant: { $in: filteringPlants.map(Number) } }] : []),
+          ...(ignoreTroll ? [{ trollAward: { $ne: true } }] : []),
+        ],
+      },
     ],
   });
 };

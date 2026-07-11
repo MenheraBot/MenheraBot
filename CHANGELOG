@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Changed
+
+- Agora é possível filtrar plantas no `/fazendinha feira trocas`.
+
 ### Fixed
 
 - As transações da `/fazendinha feira trocas` mostravam o ID da Menhera como quem enviou as estrelinhas, ao invés do usuário dono da troca.
+- Corrigido exibição de trocas suspeitas, que estava mostrando apenas um ou outro, ao invés de incluir ambos resultados.
 
 ## [6.6.0] - 2026-07-11
 

@@ -10,8 +10,9 @@ import {
   createSelectMenu,
   createSeparator,
   createTextDisplay,
+  getSelectValuesByCustomId,
 } from '../../utils/discord/componentUtils.js';
-import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { hexStringToNumber, numberToHexString } from '../../utils/discord/embedUtils.js';
 import fairOrderRepository from '../../database/repositories/fairOrderRepository.js';
 import {
   Items,
@@ -126,6 +127,35 @@ const handleClaimOrder = async (
 
   await displayFairOrders(ctx, await farmerRepository.getFarmer(ctx.user.id), embedColor);
 };
+
+const getFilterPlantsSelectMenu = (
+  ctx: InteractionContext,
+  selectedValues: string[],
+  ignoreTroll: boolean,
+) =>
+  createActionRow([
+    createSelectMenu({
+      customId: createCustomId(
+        9,
+        ctx.user.id,
+        ctx.originalInteractionId,
+        'FILTER_PLANTS',
+        numberToHexString(ctx.userColor),
+        -1,
+        ignoreTroll,
+      ),
+      minValues: 0,
+      maxValues: 10,
+      required: false,
+      options: Object.entries(Plants).map(([k, v]) => ({
+        label: ctx.locale(`data:plants.${k as '1'}`),
+        value: k,
+        emoji: { name: v.emoji },
+        default: selectedValues.includes(k),
+      })),
+      placeholder: ctx.locale('commands:fazendinha.feira.order.filter'),
+    }),
+  ]);
 
 const handleTakeOrder = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
@@ -244,10 +274,25 @@ const handleFairOrderButton = async (ctx: ComponentInteractionContext) => {
 
   const farmer = await farmerRepository.getFarmer(ctx.user.id);
 
-  if (action === 'PUBLIC') return displayFairOrders(ctx, farmer, embedColor, { ignoreTroll });
+  console.log(action, embedColor, ignoreTroll);
+
+  if (action === 'FILTER_PLANTS')
+    return displayFairOrders(ctx, farmer, embedColor, {
+      filteringPlants: ctx.interaction.data.values,
+      ignoreTroll,
+    });
+
+  const filteringPlants = getSelectValuesByCustomId(ctx, 'FILTER_PLANTS')?.flatMap?.((p) =>
+    p.default ? [p.value] : [],
+  );
+
+  if (action === 'PUBLIC')
+    return displayFairOrders(ctx, farmer, embedColor, { ignoreTroll, filteringPlants });
+
   if (action === 'DELETE') return deleteOrder(ctx, farmer, embedColor, orderId);
   if (action === 'ASK_DELETE')
-    return displayFairOrders(ctx, farmer, embedColor, { orderId, ignoreTroll });
+    return displayFairOrders(ctx, farmer, embedColor, { orderId, ignoreTroll, filteringPlants });
+
   if (action === 'CLAIM') return handleClaimOrder(ctx, farmer, embedColor, orderId);
   if (action === 'REQUEST') return handleTradeRequestModal(ctx, embedColor);
   if (action === 'EDIT_AWARD') return handleAddAwardButton(ctx, farmer, embedColor);
@@ -256,7 +301,9 @@ const handleFairOrderButton = async (ctx: ComponentInteractionContext) => {
     return displayFairOrders(ctx, farmer, embedColor, {
       page: Number(orderId),
       ignoreTroll,
+      filteringPlants,
     });
+
   if (action === 'AGREED')
     return handleTakeOrder(
       ctx as ComponentInteractionContext<SelectMenuInteraction>,
@@ -276,13 +323,14 @@ interface FairOrderParameters {
   page?: number;
   orderId?: string;
   ignoreTroll?: boolean;
+  filteringPlants?: string[];
 }
 
 const displayFairOrders = async (
   ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   embedColor: string,
-  { page = 0, user, orderId, ignoreTroll = false }: FairOrderParameters = {},
+  { page = 0, user, orderId, ignoreTroll = false, filteringPlants = [] }: FairOrderParameters = {},
 ) => {
   const userData = await userRepository.ensureFindUser(farmer.id);
   const canCreateRequest =
@@ -335,14 +383,17 @@ const displayFairOrders = async (
         accessory: user ? viewPublic : createOrder,
         components: [titleDisplay],
       }),
+      ...(user ? [] : [getFilterPlantsSelectMenu(ctx, filteringPlants, ignoreTroll)]),
     ],
   });
 
   const totalOrders = user
     ? MAX_TRADE_REQUESTS_IN_FAIR_PER_USER
-    : await fairOrderRepository.countPublicOrders(ignoreTroll);
+    : await fairOrderRepository.countPublicOrders(ignoreTroll, farmer.id, filteringPlants);
 
-  const totalPages = Math.floor(totalOrders / MAX_FAIR_ORDERS_PER_PAGE) + 1;
+  console.log(totalOrders);
+
+  const totalPages = Math.max(1, Math.ceil(totalOrders / MAX_FAIR_ORDERS_PER_PAGE));
 
   const toSearchPage = page >= totalPages ? 0 : page;
 
@@ -353,18 +404,21 @@ const displayFairOrders = async (
         MAX_FAIR_ORDERS_PER_PAGE * toSearchPage,
         MAX_FAIR_ORDERS_PER_PAGE,
         ignoreTroll,
+        filteringPlants,
       );
 
   const needPagination = totalOrders > MAX_FAIR_ORDERS_PER_PAGE;
 
-  if (orders.length === 0)
+  if (orders.length === 0) {
     container.components.push(
       createSeparator(),
       createTextDisplay(
-        ctx.locale(`commands:fazendinha.feira.order.no-${user ? 'user' : 'public'}-orders`),
+        filteringPlants.length > 0
+          ? ctx.locale(`commands:fazendinha.feira.order.not-found-orders`)
+          : ctx.locale(`commands:fazendinha.feira.order.no-${user ? 'user' : 'public'}-orders`),
       ),
     );
-  else {
+  } else {
     const mappedUsers = new Set(orders.map((a) => a.userId));
 
     const foundUsers = await Promise.all(
@@ -546,19 +600,25 @@ const displayFairOrders = async (
         disabled: !needPagination || toSearchPage <= 0,
         style: toSearchPage <= 0 ? ButtonStyles.Secondary : ButtonStyles.Primary,
       }),
-      createButton({
-        label: ctx.locale(`commands:fazendinha.feira.order.${ignoreTroll ? 'show' : 'hide'}-troll`),
-        customId: createCustomId(
-          9,
-          ctx.user.id,
-          ctx.originalInteractionId,
-          'PAGE',
-          embedColor,
-          toSearchPage,
-          !ignoreTroll,
-        ),
-        style: ignoreTroll ? ButtonStyles.Secondary : ButtonStyles.Primary,
-      }),
+      ...(user
+        ? []
+        : [
+            createButton({
+              label: ctx.locale(
+                `commands:fazendinha.feira.order.${ignoreTroll ? 'show' : 'hide'}-troll`,
+              ),
+              customId: createCustomId(
+                9,
+                ctx.user.id,
+                ctx.originalInteractionId,
+                'PAGE',
+                embedColor,
+                toSearchPage,
+                !ignoreTroll,
+              ),
+              style: ignoreTroll ? ButtonStyles.Secondary : ButtonStyles.Primary,
+            }),
+          ]),
       createButton({
         label: ctx.locale('common:next'),
         customId: createCustomId(
