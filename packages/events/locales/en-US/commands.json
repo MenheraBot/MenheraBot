@@ -1195,31 +1195,31 @@
         },
         "10": {
           "description": "The farm market is the perfect place to list requests for specific plants. You need stars to buy the plant that the daily delivery requires. Luckily, a user is looking for {{emoji}} {{plant}}. Trade a portion of your plants with them",
-          "objective-0": "$(fazendinha.tutorial.steps.9.objective-0)",
-          "objective-1": "$(fazendinha.tutorial.steps.9.objective-1)",
-          "objective-2": "$(fazendinha.tutorial.steps.9.objective-2)",
-          "objective-3": "$(fazendinha.tutorial.steps.9.objective-3)"
+          "objective-0": "$t(fazendinha.tutorial.steps.9.objective-0)",
+          "objective-1": "$t(fazendinha.tutorial.steps.9.objective-1)",
+          "objective-2": "$t(fazendinha.tutorial.steps.9.objective-2)",
+          "objective-3": "$t(fazendinha.tutorial.steps.9.objective-3)"
         },
         "11": {
           "description": "The market exists for buying and selling products at fixed market prices. Buy the herb that is available.\n\n### You can list products with the command </fazendinha feira anunciar:{{commandId}}>",
-          "objective-0": "$(fazendinha.tutorial.steps.9.objective-0)",
-          "objective-1": "$(fazendinha.tutorial.steps.9.objective-1)",
-          "objective-2": "$(fazendinha.tutorial.steps.9.objective-2)",
-          "objective-3": "$(fazendinha.tutorial.steps.9.objective-3)"
+          "objective-0": "$t(fazendinha.tutorial.steps.9.objective-0)",
+          "objective-1": "$t(fazendinha.tutorial.steps.9.objective-1)",
+          "objective-2": "$t(fazendinha.tutorial.steps.9.objective-2)",
+          "objective-3": "$t(fazendinha.tutorial.steps.9.objective-3)"
         },
         "12": {
           "description": "Now that you have all the necessary plants, the daily delivery can be completed.",
-          "objective-0": "$(fazendinha.tutorial.steps.9.objective-0)",
-          "objective-1": "$(fazendinha.tutorial.steps.9.objective-1)",
-          "objective-2": "$(fazendinha.tutorial.steps.9.objective-2)",
-          "objective-3": "$(fazendinha.tutorial.steps.9.objective-3)"
+          "objective-0": "$t(fazendinha.tutorial.steps.9.objective-0)",
+          "objective-1": "$t(fazendinha.tutorial.steps.9.objective-1)",
+          "objective-2": "$t(fazendinha.tutorial.steps.9.objective-2)",
+          "objective-3": "$t(fazendinha.tutorial.steps.9.objective-3)"
         },
         "13": {
           "description": "You completed all daily deliveries. To finish up, sell the rest of your plants to earn stars {{emoji}}",
-          "objective-0": "$(fazendinha.tutorial.steps.9.objective-0)",
-          "objective-1": "$(fazendinha.tutorial.steps.9.objective-1)",
-          "objective-2": "$(fazendinha.tutorial.steps.9.objective-2)",
-          "objective-3": "$(fazendinha.tutorial.steps.9.objective-3)"
+          "objective-0": "$t(fazendinha.tutorial.steps.9.objective-0)",
+          "objective-1": "$t(fazendinha.tutorial.steps.9.objective-1)",
+          "objective-2": "$t(fazendinha.tutorial.steps.9.objective-2)",
+          "objective-3": "$t(fazendinha.tutorial.steps.9.objective-3)"
         },
         "14": {
           "description": "This was the MenheraBot farm tutorial. If you still have questions, join the support server to get help.",
