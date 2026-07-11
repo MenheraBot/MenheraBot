@@ -189,7 +189,7 @@ const handleTakeOrder = async (
     await starsRepository.addStars(ctx.user.id, order.awards.estrelinhas);
 
     transactions.push({
-      authorId: `${bot.id}`,
+      authorId: `${order.userId}`,
       targetId: `${ctx.user.id}`,
       amount: Number(order.awards.estrelinhas),
       currencyType: 'estrelinhas',
