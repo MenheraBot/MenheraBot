@@ -14,12 +14,13 @@ import {
   createTextDisplay,
   createThumbnail,
 } from '../../utils/discord/componentUtils.js';
-import { millisToSeconds } from '../../utils/miscUtils.js';
+import { isUndefined, millisToSeconds } from '../../utils/miscUtils.js';
 import { InteractionContext } from '../../types/menhera.js';
 import { getPlantationState } from './plantationState.js';
 import { Items, Plants } from './constants.js';
 import { getSeasonalInfo } from './seasonsManager.js';
 import { getPlantationUpgrades, getQuality, getQualityEmoji, isMatePlant } from './siloUtils.js';
+import { FarmTutorialStep } from './tutorialManager.js';
 
 const PlantStateIcon: Record<PlantationState, string> = {
   [PlantationState.Empty]: '🟫',
@@ -67,9 +68,9 @@ const getPlantationDisplay = (
 const parseUserPlantations = (
   ctx: InteractionContext,
   plantations: Plantation[],
-  embedColor: string,
   selectedSeed: AvailablePlants,
   forceField: number,
+  tutorialStep?: FarmTutorialStep,
 ): (SectionComponent | SeparatorComponent)[] => {
   const fieldsComponents: (SectionComponent | SeparatorComponent)[] = [];
 
@@ -84,6 +85,18 @@ const parseUserPlantations = (
 
       return `${text}${Items[upgrade.id].emoji}`;
     }, '');
+
+    const actionCustomId = isUndefined(tutorialStep)
+      ? createCustomId(
+          0,
+          ctx.user.id,
+          ctx.originalInteractionId,
+          `${i}`,
+          `#${ctx.userColor.toString(16)}`,
+          `${selectedSeed}`,
+          forceField === i ? 'Y' : 'N',
+        )
+      : createCustomId(12, ctx.user.id, ctx.originalInteractionId, 'STEP', tutorialStep);
 
     fieldsComponents.push(
       createSeparator(false),
@@ -112,15 +125,7 @@ const parseUserPlantations = (
               ? { name: Plants[selectedSeed].emoji }
               : { name: Plants[(field as PlantedField).plantType].emoji },
           style: ButtonStyleForPlantState[plantState],
-          customId: createCustomId(
-            0,
-            ctx.user.id,
-            ctx.originalInteractionId,
-            `${i}`,
-            embedColor,
-            `${selectedSeed}`,
-            forceField === i ? 'Y' : 'N',
-          ),
+          customId: actionCustomId,
         }),
       }),
     );
@@ -131,11 +136,11 @@ const parseUserPlantations = (
 
 const getAvailableSeeds = (
   ctx: InteractionContext,
-  farmer: DatabaseFarmerSchema,
+  seeds: DatabaseFarmerSchema['seeds'],
   selectedSeed: AvailablePlants,
   currentSeason: Seasons,
 ): SelectOption[] =>
-  farmer.seeds.reduce<SelectOption[]>(
+  seeds.reduce<SelectOption[]>(
     (allSeeds, seed) => {
       if (seed.amount <= 0 || isMatePlant(seed.plant)) return allSeeds;
 
@@ -192,17 +197,11 @@ const displayPlantations = async (
   forceField: number,
   harvested?: QuantitativePlant[],
 ): Promise<void> => {
-  const fields = parseUserPlantations(
-    ctx,
-    farmer.plantations,
-    embedColor,
-    selectedSeed,
-    forceField,
-  );
+  const fields = parseUserPlantations(ctx, farmer.plantations, selectedSeed, forceField);
 
   const seasonalInfo = await getSeasonalInfo();
 
-  const seeds = getAvailableSeeds(ctx, farmer, selectedSeed, seasonalInfo.currentSeason);
+  const seeds = getAvailableSeeds(ctx, farmer.seeds, selectedSeed, seasonalInfo.currentSeason);
 
   const container = createContainer({
     accentColor: hexStringToNumber(embedColor),
@@ -301,4 +300,11 @@ const displayPlantations = async (
   });
 };
 
-export { displayPlantations, repeatIcon, PlantStateIcon, SeasonEmojis };
+export {
+  displayPlantations,
+  repeatIcon,
+  PlantStateIcon,
+  SeasonEmojis,
+  parseUserPlantations,
+  getAvailableSeeds,
+};

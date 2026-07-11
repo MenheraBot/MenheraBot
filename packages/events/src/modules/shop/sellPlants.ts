@@ -30,9 +30,7 @@ const respondInvalidAmount = async (
   farmer: DatabaseFarmerSchema,
   selectedQuality?: PlantQuality,
 ) => {
-  const userData = await userRepository.ensureFindUser(farmer.id);
-
-  await buildSellPlantsMessage(ctx, farmer, userData.selectedColor, selectedQuality);
+  await buildSellPlantsMessage(ctx, farmer, selectedQuality);
 
   await ctx.followUp({
     flags: setComponentsV2Flag(MessageFlags.Ephemeral),
@@ -75,8 +73,6 @@ const executeSellPlant = async (
   let totalStars = 0;
   const soldPlants = [];
 
-  const { selectedColor } = await userRepository.ensureFindUser(farmer.id);
-
   const transactions: RegisterTransaction[] = [];
 
   for (let i = selectedPlants.length - 1; i >= 0; i--) {
@@ -86,7 +82,7 @@ const executeSellPlant = async (
     if (!fromSilo || fromSilo.weight < currentPlant.weight) {
       const updatedFarmer = await farmerRepository.getFarmer(farmer.id);
 
-      await buildSellPlantsMessage(ctx, updatedFarmer, selectedColor, selectedQuality);
+      await buildSellPlantsMessage(ctx, updatedFarmer, selectedQuality);
 
       return ctx.followUp({
         flags: setComponentsV2Flag(MessageFlags.Ephemeral),
@@ -160,7 +156,7 @@ const executeSellPlant = async (
   if (updatedFarmer.silo.filter((a) => a.weight > 0).length === 0)
     return ctx.makeLayoutMessage(successMessage);
 
-  await buildSellPlantsMessage(ctx, updatedFarmer, selectedColor, selectedQuality);
+  await buildSellPlantsMessage(ctx, updatedFarmer, selectedQuality);
 
   return ctx.followUp(successMessage);
 };

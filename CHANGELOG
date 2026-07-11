@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- Adicionado um novo comando: `/fazendinha tutorial`. Aprenda a gerenciar a Fazendinha da Menhera! - Sugerido por @hyperion.a1.
+
 ### Fixed
 
 - Corrigido plural das tentativas de caças no `/caçar`.

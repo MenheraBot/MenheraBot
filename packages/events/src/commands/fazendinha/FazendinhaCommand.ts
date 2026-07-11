@@ -29,7 +29,11 @@ import {
 } from '../../modules/fazendinha/farmComposter.js';
 import { handleDiscardSeeds } from '../../modules/fazendinha/manageSilo.js';
 import { isUndefined } from '../../utils/miscUtils.js';
-import { initTutorial } from '../../modules/fazendinha/tutorialManager.js';
+import {
+  executeTutorialStep,
+  FarmTutorialStep,
+  handleTutorialComponents,
+} from '../../modules/fazendinha/tutorialManager.js';
 
 const FazendinhaCommand = createCommand({
   path: '',
@@ -270,6 +274,7 @@ const FazendinhaCommand = createCommand({
     handleFairOrderButton,
     handleComposterInteractions,
     handleDiscardSeeds,
+    handleTutorialComponents,
   ],
   authorDataFields: ['selectedColor'],
   execute: async (ctx, finishCommand) => {
@@ -310,7 +315,7 @@ const FazendinhaCommand = createCommand({
       }
     }
 
-    if (command === 'tutorial') return initTutorial(ctx, farmer);
+    if (command === 'tutorial') return executeTutorialStep(ctx, FarmTutorialStep.Start);
 
     if (command === 'composteira')
       return displayComposter(ctx, farmer, ctx.authorData.selectedColor);

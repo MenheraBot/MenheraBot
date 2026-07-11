@@ -192,12 +192,14 @@ const removePlants = <T extends QuantitativePlantItem>(user: T[], toRemove: T[])
     return p;
   }, []);
 
-interface SiloLimits {
+export interface SiloLimits {
   limit: number;
   used: number;
 }
 
-const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
+const getSiloLimits = (
+  user: Pick<DatabaseFarmerSchema, 'silo' | 'seeds' | 'items' | 'siloUpgrades'>,
+): SiloLimits => {
   const countQuantitative = (items: (QuantitativePlantItem | QuantitativeItem)[]): number =>
     items.reduce(
       (p, c) =>
@@ -223,7 +225,7 @@ const getSiloLimits = (user: DatabaseFarmerSchema): SiloLimits => {
   return { used, limit };
 };
 
-type PlantRecord = Record<AvailablePlants, QuantitativePlant[]>;
+export type PlantRecord = Record<AvailablePlants, QuantitativePlant[]>;
 
 const groupPlantsByType = (plants: QuantitativePlant[]): PlantRecord =>
   plants.reduce<PlantRecord>((p, c) => {

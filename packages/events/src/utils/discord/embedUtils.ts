@@ -4,6 +4,7 @@ import { bot } from '../../index.js';
 const createEmbed = (data: Embed): DiscordEmbed => bot.transformers.reverse.embed(bot, data);
 
 const hexStringToNumber = (color: string): number => parseInt(color.replace(/^#/, ''), 16);
+const numberToHexString = (color: number): `#${string}` => `#${color.toString(16)}`;
 
 const createErrorEmbed = (
   err: Error,
@@ -30,4 +31,4 @@ const createErrorEmbed = (
   });
 };
 
-export { createEmbed, hexStringToNumber, createErrorEmbed };
+export { createEmbed, hexStringToNumber, numberToHexString, createErrorEmbed };

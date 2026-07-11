@@ -1140,7 +1140,93 @@
   },
   "fazendinha": {
     "tutorial": {
-      "title": "How to manage the Farm"
+      "title": "Farm Tutorial",
+      "start": "Start tutorial",
+      "restart": "Restart tutorial",
+      "jump": "Start the tutorial at a specific objective",
+      "objective": "Objective",
+      "objective-other": "Objectives",
+      "steps": {
+        "0": {
+          "description": "Welcome to the farm tutorial. Read the information carefully. You can run this tutorial as many times as you want. If you don't understand it at first, just use the command again.",
+          "objective-0": ""
+        },
+        "1": {
+          "description": "The core of the farm is the crops. Plant different types of seeds and harvest them at the right time to guarantee better harvest quality. Keep an eye on the clock so your crops don't rot!",
+          "objective-0": "Plant the {{plant}} {{emoji}} seed in your field"
+        },
+        "2": {
+          "description": "If you don't keep an eye on the clock, the plants will rot. The current season is **{{season}} {{emoji}}**, which is bad for {{plant}}. This accelerates the field decay process.\nRotten fields aren't completely discarded. The organic waste can be used to generate fertilizer. Collect the rotten crop to generate fertilizer in the composter.",
+          "objective-0": "Collect the organic waste from the rotten crop"
+        },
+        "3": {
+          "description": "It is possible to generate organic compost using rotten crop fields and also by adding plants from your **silo**, although this doesn't help as much with the fertilizer generation progress.",
+          "objective-0": "Collect a fertilizer from the composter"
+        },
+        "4": {
+          "description": "{{msg}}Fertilizers improve a harvest's weight, the time it takes for the crop to mature, and also the **crop quality**. To make the most of the fertilizer you just collected, buy a plant seed in the /shop. Pay attention to the best season for the plant you buy, remember that the current season is {{season}} {{emoji}}.",
+          "warning": "Buy a plant seed whose best season is {{season}}",
+          "objective-0": "Buy a plant seed whose best season is {{season}} {{emoji}}"
+        },
+        "5": {
+          "description": "The silo is your farm's warehouse! Right now your silo is full, holding one fertilizer and one {{plant}} {{emoji}} seed. You can increase your silo size to hold more seeds, plants, and fertilizers. To guarantee the best harvest, use your fertilizer on the field before planting.",
+          "objective-0": "Use a fertilizer"
+        },
+        "6": {
+          "description": "Your farm's management is done here. You can buy new fields, increase your silo size, manage your market listings, and use fertilizers.",
+          "objective-0": "Increase your silo limit",
+          "objective-1": "Use a fertilizer on your field"
+        },
+        "7": {
+          "description": "The current season is favorable for your plant, and the field has fertilizer. This guarantees a bountiful and **High Quality** {{emoji}} harvest.",
+          "objective-0": "Plant the {{plant}} {{emoji}} seed",
+          "objective-1": "Harvest the crop when it matures"
+        },
+        "8": {
+          "description": "Harvesting the crop shortly after it matures guarantees better plant quality. There are 3 qualities: {{worstEmoji}} {{worst}}, {{normalEmoji}} {{normal}}, and {{bestEmoji}} {{best}}\nThe better the plant quality, the more stars it's worth.",
+          "objective-0": "Plant the {{plant}} {{emoji}} seed",
+          "objective-1": "Harvest the crop when it matures"
+        },
+        "9": {
+          "description": "You harvested **{{qualityEmoji}} {{plantEmoji}} {{amount}} kg**. This harvest can be converted into stars :star: in different ways:\n- /fazendinha feira anunciar\n- /fazendinha feira trocas\n- /loja vender plantas\n- /fazendinha entregas\n\nDaily deliveries are the way to generate the most guaranteed profit with plants. Completing all deliveries grants a star bonus. To be able to complete all deliveries, you will need other plants. Check if there are any trades available from other users to get some stars.",
+          "objective-0": "Trade a portion of your plants for stars",
+          "objective-1": "Buy {{plant}} {{emoji}} at the market",
+          "objective-2": "Complete the daily delivery",
+          "objective-3": "Sell the remainder of your plants"
+        },
+        "10": {
+          "description": "The farm market is the perfect place to list requests for specific plants. You need stars to buy the plant that the daily delivery requires. Luckily, a user is looking for {{emoji}} {{plant}}. Trade a portion of your plants with them",
+          "objective-0": "$(fazendinha.tutorial.steps.9.objective-0)",
+          "objective-1": "$(fazendinha.tutorial.steps.9.objective-1)",
+          "objective-2": "$(fazendinha.tutorial.steps.9.objective-2)",
+          "objective-3": "$(fazendinha.tutorial.steps.9.objective-3)"
+        },
+        "11": {
+          "description": "The market exists for buying and selling products at fixed market prices. Buy the herb that is available.\n\n### You can list products with the command </fazendinha feira anunciar:{{commandId}}>",
+          "objective-0": "$(fazendinha.tutorial.steps.9.objective-0)",
+          "objective-1": "$(fazendinha.tutorial.steps.9.objective-1)",
+          "objective-2": "$(fazendinha.tutorial.steps.9.objective-2)",
+          "objective-3": "$(fazendinha.tutorial.steps.9.objective-3)"
+        },
+        "12": {
+          "description": "Now that you have all the necessary plants, the daily delivery can be completed.",
+          "objective-0": "$(fazendinha.tutorial.steps.9.objective-0)",
+          "objective-1": "$(fazendinha.tutorial.steps.9.objective-1)",
+          "objective-2": "$(fazendinha.tutorial.steps.9.objective-2)",
+          "objective-3": "$(fazendinha.tutorial.steps.9.objective-3)"
+        },
+        "13": {
+          "description": "You completed all daily deliveries. To finish up, sell the rest of your plants to earn stars {{emoji}}",
+          "objective-0": "$(fazendinha.tutorial.steps.9.objective-0)",
+          "objective-1": "$(fazendinha.tutorial.steps.9.objective-1)",
+          "objective-2": "$(fazendinha.tutorial.steps.9.objective-2)",
+          "objective-3": "$(fazendinha.tutorial.steps.9.objective-3)"
+        },
+        "14": {
+          "description": "This was the MenheraBot farm tutorial. If you still have questions, join the support server to get help.",
+          "objective-0": ""
+        }
+      }
     },
     "composteira": {
       "title": "Your Composter",

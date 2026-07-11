@@ -28,6 +28,7 @@
   "hours": "Horas",
   "minutes": "Minutos",
   "rarity": "Raridade",
+  "close": "Fechar",
   "rarities": {
     "common": "Comum",
     "rare": "Raro",

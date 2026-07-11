@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BUILD_LOG=".watch_build.log"
-RESTART_DELAY=1
+RESTART_DELAY=2
 
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'

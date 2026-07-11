@@ -415,28 +415,40 @@ const handleComposterInteractions = async (ctx: ComponentInteractionContext) => 
   }
 };
 
+const getComposterDisplayText = (ctx: InteractionContext, composterValue: number) => {
+  const total = 23;
+  const percent = Math.min(composterValue, COMPOSTER_MULTIPLIER) / COMPOSTER_MULTIPLIER;
+  const filled = Math.round(total * percent);
+  const progressBar = `[${'█'.repeat(filled) + '░'.repeat(total - filled)}]`;
+
+  return [
+    createTextDisplay(
+      `## ${ctx.prettyResponse('composter', 'commands:fazendinha.composteira.title')}\n${ctx.locale(
+        'commands:fazendinha.composteira.description',
+        { percent: Math.floor(percent * 100) },
+      )}`,
+    ),
+    createTextDisplay(`### ${progressBar}`),
+  ];
+};
+
 const displayComposter = async (
   ctx: InteractionContext,
   farmer: DatabaseFarmerSchema,
   embedColor: string,
 ) => {
-  const total = 23;
-  const percent = Math.min(farmer.composter, COMPOSTER_MULTIPLIER) / COMPOSTER_MULTIPLIER;
-  const filled = Math.round(total * percent);
-  const progressBar = `[${'█'.repeat(filled) + '░'.repeat(total - filled)}]`;
-
   const havePlants = farmer.silo.some((a) => a.weight > 0);
-
   const siloLimits = getSiloLimits(farmer);
+  const availableToGet = Math.floor(siloLimits.limit - siloLimits.used);
 
   const maxFertilizers = Math.min(
     Math.floor(farmer.composter / COMPOSTER_MULTIPLIER),
     MAX_COMPOSTER_VALUE / COMPOSTER_MULTIPLIER,
   );
 
-  const availableToGet = Math.floor(siloLimits.limit - siloLimits.used);
-
   const willRetrieve = Math.min(availableToGet, maxFertilizers);
+
+  const textComponents = getComposterDisplayText(ctx, farmer.composter);
 
   await ctx.makeLayoutMessage({
     components: [
@@ -444,13 +456,7 @@ const displayComposter = async (
         accentColor: hexStringToNumber(embedColor),
         type: MessageComponentTypes.Container,
         components: [
-          createTextDisplay(
-            `## ${ctx.prettyResponse('composter', 'commands:fazendinha.composteira.title')}\n${ctx.locale(
-              'commands:fazendinha.composteira.description',
-              { percent: Math.floor(percent * 100) },
-            )}`,
-          ),
-          createTextDisplay(`### ${progressBar}`),
+          ...textComponents,
           createActionRow([
             createButton({
               style: ButtonStyles.Primary,
@@ -461,7 +467,7 @@ const displayComposter = async (
                 'ADD_PLANTS',
                 embedColor,
               ),
-              disabled: !havePlants || percent >= 1,
+              disabled: !havePlants || farmer.composter >= COMPOSTER_MULTIPLIER,
               emoji: { name: PlantStateIcon.GROWING },
               label: ctx.locale('commands:fazendinha.composteira.add-plants'),
             }),
@@ -502,4 +508,9 @@ const composterEquivalentForField = (
   return Math.floor(baseAmount);
 };
 
-export { displayComposter, handleComposterInteractions, composterEquivalentForField };
+export {
+  displayComposter,
+  handleComposterInteractions,
+  composterEquivalentForField,
+  getComposterDisplayText,
+};

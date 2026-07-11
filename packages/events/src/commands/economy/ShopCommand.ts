@@ -267,7 +267,7 @@ const ShopCommand = createCommand({
 
       if (subCommand === 'plantas') {
         const farmer = await farmerRepository.getFarmer(ctx.user.id);
-        return finishCommand(buildSellPlantsMessage(ctx, farmer, ctx.authorData.selectedColor));
+        return finishCommand(buildSellPlantsMessage(ctx, farmer));
       }
     }
 

@@ -30,6 +30,7 @@
   "hours": "Hours",
   "minutes": "Minutes",
   "rarity": "Rarity",
+  "close": "Close",
   "rarities": {
     "common": "Common",
     "rare": "Rare",

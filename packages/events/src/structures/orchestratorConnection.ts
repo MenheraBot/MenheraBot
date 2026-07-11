@@ -48,7 +48,7 @@ const createIpcConnection = async (): Promise<void> => {
     if (!process.env.NOMICROSERVICES)
       getOrchestratorMessageCounter().inc(
         {
-          type: msg.type,
+          type: msg.type ?? 'UNKNOWN',
         },
         0.5,
       );
@@ -97,7 +97,7 @@ const createIpcConnection = async (): Promise<void> => {
     if (!process.env.NOMICROSERVICES)
       getOrchestratorMessageCounter().inc(
         {
-          type: msg.type,
+          type: msg.type ?? 'UNKNOWN',
         },
         0.5,
       );

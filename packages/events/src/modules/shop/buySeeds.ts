@@ -1,7 +1,13 @@
-import { ActionRow, ButtonStyles, TextStyles } from '@discordeno/bot';
+import {
+  ActionRow,
+  ButtonStyles,
+  SeparatorComponent,
+  TextDisplayComponent,
+  TextStyles,
+} from '@discordeno/bot';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext.js';
 import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction.js';
-import { hexStringToNumber } from '../../utils/discord/embedUtils.js';
+import { hexStringToNumber, numberToHexString } from '../../utils/discord/embedUtils.js';
 import { PLANT_CATEGORY_EMOJIS, Plants } from '../fazendinha/constants.js';
 import {
   createActionRow,
@@ -154,26 +160,33 @@ const showModal = async (
   });
 };
 
-const buySeeds = async (
+const getBuySeedsComponents = (
   ctx: InteractionContext,
-  currentCategory: PlantCategories,
-  embedColor: string,
-): Promise<void> => {
-  const selectMenu = createSelectMenu({
-    customId: createCustomId(4, ctx.user.id, ctx.originalInteractionId, 'SHOW_MODAL', embedColor),
+  category: PlantCategories,
+  isTutorial?: boolean,
+): [ActionRow, (TextDisplayComponent | SeparatorComponent)[], ActionRow] => {
+  const embedColor = numberToHexString(ctx.userColor);
+
+  const textComponents: (TextDisplayComponent | SeparatorComponent)[] = [];
+
+  const buySeedCustomId = isTutorial
+    ? createCustomId(12, ctx.user.id, ctx.originalInteractionId, 'BUY_SEED', category)
+    : createCustomId(4, ctx.user.id, ctx.originalInteractionId, 'SHOW_MODAL', embedColor);
+
+  const selectCategoryCustomId = isTutorial
+    ? createCustomId(12, ctx.user.id, ctx.originalInteractionId, 'CHANGE_CATEGORY')
+    : createCustomId(4, ctx.user.id, ctx.originalInteractionId, 'CHANGE_CATEGORY', embedColor);
+
+  const buySeedSelectMenu = createSelectMenu({
+    customId: buySeedCustomId,
     options: [],
     minValues: 1,
+    maxValues: isTutorial ? 1 : 5,
     placeholder: ctx.locale('commands:loja.buy_seeds.select'),
   });
 
   const categorySelectMenu = createSelectMenu({
-    customId: createCustomId(
-      4,
-      ctx.user.id,
-      ctx.originalInteractionId,
-      'CHANGE_CATEGORY',
-      embedColor,
-    ),
+    customId: selectCategoryCustomId,
     options: Object.entries(PlantCategories).flatMap(([id]) => {
       const numberId = Number(id);
       if (Number.isNaN(numberId)) return [];
@@ -182,7 +195,7 @@ const buySeeds = async (
         {
           label: ctx.locale(`data:fazendinha.category_${numberId as 1}`),
           value: id,
-          default: numberId === currentCategory,
+          default: numberId === category,
           emoji: { name: PLANT_CATEGORY_EMOJIS[id as '1'] },
         },
       ];
@@ -192,38 +205,19 @@ const buySeeds = async (
     required: true,
   });
 
-  const container = createContainer({
-    accentColor: hexStringToNumber(embedColor),
-    components: [
-      createSection({
-        components: [
-          createTextDisplay(`## ${ctx.locale('commands:loja.buy_seeds.embed-title')}`),
-          createTextDisplay(ctx.locale('commands:loja.buy_seeds.select-category')),
-        ],
-        accessory: createButton({
-          style: ButtonStyles.Secondary,
-          label: 'Fechar',
-          customId: deleteMessageCustomId(ctx),
-        }),
-      }),
-      createActionRow([categorySelectMenu]),
-    ],
-  });
-
   Object.entries(Plants).forEach(([plant, data]) => {
-    if (isMatePlant(Number(plant))) return;
+    if (!isMatePlant(Number(plant)))
+      buySeedSelectMenu.options.push({
+        label: ctx.locale(`commands:loja.buy_seeds.seed`, {
+          plant: ctx.locale(`data:plants.${plant as '1'}`),
+        }),
+        emoji: { name: Plants[plant as '1'].emoji },
+        value: plant,
+      });
 
-    selectMenu.options.push({
-      label: ctx.locale(`commands:loja.buy_seeds.seed`, {
-        plant: ctx.locale(`data:plants.${plant as '1'}`),
-      }),
-      emoji: { name: Plants[plant as '1'].emoji },
-      value: plant,
-    });
+    if (data.category !== category) return;
 
-    if (data.category !== currentCategory) return;
-
-    container.components.push(
+    textComponents.push(
       createSeparator(),
       createTextDisplay(
         `### ${Plants[plant as '1'].emoji} ${ctx.locale(`data:plants.${plant as '1'}`)}\n${ctx.locale(
@@ -241,13 +235,47 @@ const buySeeds = async (
     );
   });
 
-  selectMenu.maxValues = selectMenu.options.length > 5 ? 5 : selectMenu.options.length;
+  return [
+    createActionRow([categorySelectMenu]),
+    textComponents,
+    createActionRow([buySeedSelectMenu]),
+  ];
+};
 
-  container.components.push(createSeparator(true), createActionRow([selectMenu]));
+const buySeeds = async (
+  ctx: InteractionContext,
+  currentCategory: PlantCategories,
+  embedColor: string,
+): Promise<void> => {
+  const [categorySelectMenu, textComponents, selectMenu] = getBuySeedsComponents(
+    ctx,
+    currentCategory,
+  );
+
+  const container = createContainer({
+    accentColor: hexStringToNumber(embedColor),
+    components: [
+      createSection({
+        components: [
+          createTextDisplay(`## ${ctx.locale('commands:loja.buy_seeds.embed-title')}`),
+          createTextDisplay(ctx.locale('commands:loja.buy_seeds.select-category')),
+        ],
+        accessory: createButton({
+          style: ButtonStyles.Secondary,
+          label: ctx.locale('common:close'),
+          customId: deleteMessageCustomId(ctx),
+        }),
+      }),
+      categorySelectMenu,
+      ...textComponents,
+      createSeparator(true),
+      selectMenu,
+    ],
+  });
 
   ctx.makeLayoutMessage({
     components: [container],
   });
 };
 
-export { buySeeds, handleBuySeedsInteractions };
+export { buySeeds, handleBuySeedsInteractions, getBuySeedsComponents };

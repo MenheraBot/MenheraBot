@@ -1147,12 +1147,98 @@
   },
   "fazendinha": {
     "tutorial": {
-      "title": "Tutorial da Fazendinha"
+      "title": "Tutorial da Fazendinha",
+      "start": "Iniciar tutorial",
+      "restart": "Reiniciar tutorial",
+      "jump": "Inicie o tutorial em um objetivo específico",
+      "objective": "Objetivo",
+      "objective-other": "Objetivos",
+      "steps": {
+        "0": {
+          "description": "Bem-vindo ao tutorial da fazendinha. Leia atentamente as informações. Você pode rodar este tutorial quantas vezes quiser. Se não entender de primeira, basta utilizar o comando novamente.",
+          "objective-0": ""
+        },
+        "1": {
+          "description": "O princípio da fazendinha são as plantações. Plante diferentes tipos de sementes e as colha no momento certo para garantir melhor qualidade de colheita. Fique atento ao relógio para que suas plantações não apodreçam!",
+          "objective-0": "Plante a semente de {{plant}} {{emoji}} em seu campo"
+        },
+        "2": {
+          "description": "Se não ficar ligado no relógio, as plantas apodrecem. A estação atual é a **{{season}} {{emoji}}**, ruim para a {{plant}}. Isso acelera o processo de putrefação de campos.\nCampos apodrecidos não são completamente descartados. Os restos orgânicos podem ser usados para gerar adubo. Recolha a plantação apodrecida para gerar fertilizantes na composteira.",
+          "objective-0": "Recolha os restos orgânicos da plantação apodrecida"
+        },
+        "3": {
+          "description": "É possível gerar composto orgânico usando campos de plantações podres e também adicionando plantas de seu **silo**, embora isso não auxilie tanto no progresso da geração do fertilizante.",
+          "objective-0": "Retire um fertilizante da composteira"
+        },
+        "4": {
+          "description": "{{msg}}Os fertilizantes melhoram o peso de uma colheita, o tempo para amadurecer a plantação, e também a **qualidade da plantação**. Para valer mais a pena o uso do fertilizante que que acabou de coletar, compre a semente de uma planta na /loja. Preste atenção na melhor estação da planta que comprar, lembre-se de que a estação atual é a {{season}} {{emoji}}.",
+          "warning": "Compre a semente de uma planta cuja melhor estação é a {{season}}",
+          "objective-0": "Compre a semente de uma planta cuja sua melhor estação é {{season}} {{emoji}}"
+        },
+        "5": {
+          "description": "O silo é o armazém de sua fazenda! No momento o seu silo está cheio, tendo um fertilizante e uma semente de {{plant}} {{emoji}}. Você pode aumentar o tamanho de seu silo para comportar mais sementes, plantas e fertilizantes. Para garantir a melhor colheita, use seu fertilizante no campo antes de plantar.",
+          "objective-0": "Use um fertilizante"
+        },
+        "6": {
+          "description": "A administração de sua fazendinha é realizada aqui. Você pode comprar novos campos, aumentar o tamanho de seu silo, gerenciar seus anúncios da feira e usar fertilizantes.",
+          "objective-0": "Aumente o limite de seu silo",
+          "objective-1": "Use um fertilizante em seu campo"
+        },
+        "7": {
+          "description": "A estação atual é favorável para sua planta, e o campo está com fertilizantes. Isso é garantia de uma colheita farta e de **Alta Qualidade** {{emoji}}.",
+          "objective-0": "Plante a semente de {{plant}} {{emoji}}",
+          "objective-1": "Colha a plantação quando amadurecer"
+        },
+        "8": {
+          "description": "Colher a plantação pouco tempo após ela amadurecer garante melhor qualidade de plantas. Existem 3 qualidades: {{worstEmoji}} {{worst}}, {{normalEmoji}} {{normal}} e {{bestEmoji}} {{best}}\nQuanto melhor a qualidade da planta, mais estrelinhas ela vale.",
+          "objective-0": "Plante a semente de {{plant}} {{emoji}}",
+          "objective-1": "Colha a plantação quando amadurecer"
+        },
+        "9": {
+          "description": "Você colheu **{{qualityEmoji}} {{plantEmoji}} {{amount}} kg**. Essa colheita pode ser convertida em estrelinhas :star: de diferentes formas:\n- /fazendinha feira anunciar\n- /fazendinha feira trocas\n- /loja vender plantas\n- /fazendinha entregas\n\nAs entregas diárias são a forma que mais gera lucro garantido com plantas. Finalizar todas as entregas garante bônus de estrelinhas. Para poder finalizar todas as entregas, você vai precisar de outras plantas. Veja se não existe nenhuma troca disponível de outros usuários para conseguir algumas estrelinhas.",
+          "objective-0": "Troque uma parcela de suas plantas por estrelinhas",
+          "objective-1": "Compre {{plant}} {{emoji}} na feira",
+          "objective-2": "Finalize a entrega diária",
+          "objective-3": "Venda o que sobrou de suas plantas"
+        },
+        "10": {
+          "description": "A feira da fazendinha é o lugar perfeito para anunciar pedidos de plantas específicas. Você precisa de estrelinhas para comprar a planta de que a entrega diária precisa. Por sorte, um usuário está querendo {{emoji}} {{plant}}. Troque uma parcela de suas plantas com ele",
+          "objective-0": "$(fazendinha.tutorial.steps.9.objective-0)",
+          "objective-1": "$(fazendinha.tutorial.steps.9.objective-1)",
+          "objective-2": "$(fazendinha.tutorial.steps.9.objective-2)",
+          "objective-3": "$(fazendinha.tutorial.steps.9.objective-3)"
+        },
+        "11": {
+          "description": "A feira existe para venda e compra de produtos com preço tabelado de mercado. Compre a erva que está disponível.\n\n### Você pode anunciar produtos com o comando </fazendinha feira anunciar:{{commandId}}>",
+          "objective-0": "$(fazendinha.tutorial.steps.9.objective-0)",
+          "objective-1": "$(fazendinha.tutorial.steps.9.objective-1)",
+          "objective-2": "$(fazendinha.tutorial.steps.9.objective-2)",
+          "objective-3": "$(fazendinha.tutorial.steps.9.objective-3)"
+        },
+        "12": {
+          "description": "Agora que você tem todas as plantas necessárias, a entrega diária pode ser finalizada.",
+          "objective-0": "$(fazendinha.tutorial.steps.9.objective-0)",
+          "objective-1": "$(fazendinha.tutorial.steps.9.objective-1)",
+          "objective-2": "$(fazendinha.tutorial.steps.9.objective-2)",
+          "objective-3": "$(fazendinha.tutorial.steps.9.objective-3)"
+        },
+        "13": {
+          "description": "Você completou todas as entregas diárias. Para finalizar, venda o restante de suas plantas para ganhar estrelinhas {{emoji}}",
+          "objective-0": "$(fazendinha.tutorial.steps.9.objective-0)",
+          "objective-1": "$(fazendinha.tutorial.steps.9.objective-1)",
+          "objective-2": "$(fazendinha.tutorial.steps.9.objective-2)",
+          "objective-3": "$(fazendinha.tutorial.steps.9.objective-3)"
+        },
+        "14": {
+          "description": "Este foi o tutorial da fazendinha da MenheraBot. Se você ainda tem dúvidas, entre no servidor de suporte para receber ajuda.",
+          "objective-0": ""
+        }
+      }
     },
     "composteira": {
       "title": "Sua Composteira",
       "transform-plant": "Compostar {{plant}}",
-      "select": "Informe o peso para compostar. Ex. 0,6 Kg",
+      "select": "Informe o peso para compostar. Ex. 0,6 kg",
       "no-plants": "Você não tem plantas para transformar em composto.",
       "transform": "Compostagem",
       "not-enough": "Tu não tem **{{amount}}** {{plant}} para compostar",
@@ -1191,7 +1277,7 @@
         "claim-order": "Resgatar planta",
         "base-price": "Para referência, {{plant}} custa em média {{price}} {{emoji}}",
         "no-order": "Nenhum pedido ainda",
-        "order-name": "{{plantEmoji}} {{weight}} Kg {{plantName}} {{qualityEmoji}}",
+        "order-name": "{{plantEmoji}} {{weight}} kg {{plantName}} {{qualityEmoji}}",
         "order": "Pedido",
         "plant": "Planta",
         "weight": "Peso",
@@ -1212,13 +1298,13 @@
         "add-estrelinhas": "Adicionar estrelinhas",
         "add-award": "Adicionar valores de troca",
         "add-award-description": "Não é obrigatório adicionar ambos para a troca. Se você preferir, pode adicionar apenas um dos dois",
-        "invalid-weight": "Você inseriu um peso inválido. O máximo permitido é **{{limit}} Kg**",
+        "invalid-weight": "Você inseriu um peso inválido. O máximo permitido é **{{limit}} kg**",
         "invalid-estrelinhas": "Você inseriu uma quantidade inválida de estrelinhas. O máximo permitido é **{{limit}} :star:**",
         "invalid-plant": "Você inseriu uma planta inválida!",
         "order-placed": "Seu pedido de troca for publicado! Se algum usuário aceitar a troca, você pode voltar aqui para resgatar as plantas.",
         "poor-stars": "Você não tem todas essas **estrelinhas** para adicionar de troca no pedido!",
         "poor-items": "Você não tem todos esses **fertilizantes** para adicionar de troca no pedido!",
-        "poor-plants": "Você não possui ****{{weight}} Kg** {{emoji}} para adicionar de troca no pedido!",
+        "poor-plants": "Você não possui ****{{weight}} kg** {{emoji}} para adicionar de troca no pedido!",
         "invalid-values": "Você inseriu informações inválidas no pedido!",
         "no-items": "Você não tem as plantas suficientes para aceitar esse pedido",
         "order-description": "**Trocando por:**\n{{awards}}",
@@ -1251,7 +1337,7 @@
         "no-announcements": "Não há anúncios na feira da vizinhança atualmente",
         "no-announcements-user": "Este vizinho não está anunciando nenhum produto atualmente",
         "fair": "Feirinha da Vizinhança",
-        "description": "\n- {{amount}} Kg {{emoji}} **{{plant}}** por {{price}} :star:",
+        "description": "\n- {{amount}} kg {{emoji}} **{{plant}}** por {{price}} :star:",
         "user-info": "{{user}} ({{index}})",
         "user-fair": "Feirinha de {{user}}",
         "select-item": "Selecione o que tu quer comprar"
@@ -1293,7 +1379,7 @@
       "deliver-embed-name": "Entrega {{index}}",
       "deliver-embed-name-finished": "✅ ~~Entrega {{index}}~~",
       "deliver-embed-field": "Estrelinhas base: **{{award}}** :star:",
-      "deliver-embed-field-need": "Necessário: **{{amount}} Kg** {{emoji}}",
+      "deliver-embed-field-need": "Necessário: **{{amount}} kg** {{emoji}}",
       "description": "Uma vez por dia um caminhão aparecerá em sua fazendinha para buscar entregas. Finalizar todas as entregas antes do caminhão partir lhe dará um adicional de **{{bonus}}** :star: estrelinhas.\n\n**Qualquer qualidade de planta pode ser entregue**. A entrega é sempre realizada ordenando as plantas por peso, a mais pesada será a entregue. Se não for o peso suficiente, a segunda qualidade com mais peso será usada, assim até a entrega ser concluída.\n\nSe a entrega for realizada inteiramente com plantas de qualidade Normal ou Prêmium, um bônus de estrelinhas é entregue.\n### O caminhão partirá <t:{{unix}}:R>\n"
     },
     "silo": {
@@ -1411,7 +1497,7 @@
     "notifications": {
       "user-bought-theme": "@{{username}} comprou o seu tema **{{theme}}** em <t:{{unix}}:d> as <t:{{unix}}:T>",
       "user-bought-image": "@{{username}} comprou sua imagem **{{image}}** em <t:{{unix}}:d> as <t:{{unix}}:T>",
-      "user-bought-announcement": "Seu anúncio de **{{weight}} Kg** {{emoji}} foi comprado por **{{stars}}** :star: na feira por @{{username}} em <t:{{unix}}:d> as <t:{{unix}}:T>",
+      "user-bought-announcement": "Seu anúncio de **{{weight}} kg** {{emoji}} foi comprado por **{{stars}}** :star: na feira por @{{username}} em <t:{{unix}}:d> as <t:{{unix}}:T>",
       "user-won-bicho": "Você ganhou **{{stars}}** :star: com sua aposta no Jogo do Bicho em <t:{{unix}}:d> as <t:{{unix}}:T>",
       "user-accepted-deal": "**@{{username}}** aceitou seu pedido de troca **{{name}}** na feira <t:{{unix}}:d> as <t:{{unix}}:T>",
       "lux-gave-badge": "[<t:{{unix}}:d> <t:{{unix}}:T>] - Oiii, Lux aqui. Acabei de te dar uma **Badge** nova! Cheque seu perfil >.<",
@@ -1458,12 +1544,12 @@
       "success_on_hunt": "{{emoji}} Obtenha sucesso em **{{need}}** caças. ({{has}}/{{need}})",
       "use_action_commands": "{{emoji}} Use **{{need}}** comandos de ação. ({{has}}/{{need}})",
       "win_stars_in_bets": "{{emoji}} Conquiste **{{need}}** :star: jogando _blackjack_, _bicho_, ou _roleta_. ({{has}}/{{need}})",
-      "harvest_plants": "{{emoji}} Colha **{{need}}** Kg de _{{specification}}_. ({{has}}/{{need}})",
+      "harvest_plants": "{{emoji}} Colha **{{need}}** kg de _{{specification}}_. ({{has}}/{{need}})",
       "finish_delivery": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})",
       "finish_delivery-one": "{{emoji}} Realize **{{need}}** entrega da fazendinha. ({{has}}/{{need}})",
       "finish_delivery-other": "{{emoji}} Realize **{{need}}** entregas da fazendinha. ({{has}}/{{need}})",
-      "harvest_quality": "{{emoji}} Colha **{{need}}** Kg de plantas _{{specification}}_. ({{has}}/{{need}})",
-      "harvest_category": "{{emoji}} Colha **{{need}}** Kg de plantas da categoria _{{specification}}_. ({{has}}/{{need}})",
+      "harvest_quality": "{{emoji}} Colha **{{need}}** kg de plantas _{{specification}}_. ({{has}}/{{need}})",
+      "harvest_category": "{{emoji}} Colha **{{need}}** kg de plantas da categoria _{{specification}}_. ({{has}}/{{need}})",
       "trade_request": "{{emoji}} Crie **{{need}}** pedido de troca na feira da vizinhança. ({{has}}/{{need}})",
       "trade_request-one": "{{emoji}} Crie **{{need}}** pedido de troca na feira da vizinhança. ({{has}}/{{need}})",
       "trade_request-other": "{{emoji}} Crie **{{need}}** pedidos de troca na feira da vizinhança. ({{has}}/{{need}})"
