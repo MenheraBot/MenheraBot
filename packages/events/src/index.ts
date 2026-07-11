@@ -8,7 +8,7 @@ import {
   setupMenheraClient,
 } from './structures/menheraClient.js';
 import { MenheraClient } from './types/menhera.js';
-import { getEnviroments } from './utils/getEnviroments.js';
+import { getEnviroments, prodEnviroment } from './utils/getEnviroments.js';
 import { logger } from './utils/logger.js';
 import { updateCommandsOnApi } from './utils/updateApiCommands.js';
 import { desiredProperties } from './desiredProperties.js';
@@ -39,6 +39,6 @@ setupSignalHandlers(bot);
 
 logger.info('[READY] I am ready to process events!');
 
-if (process.env.NODE_ENV === 'production') updateCommandsOnApi();
+if (prodEnviroment) updateCommandsOnApi();
 
 export { bot };

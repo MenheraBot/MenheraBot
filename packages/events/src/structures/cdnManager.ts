@@ -3,7 +3,7 @@ import axios from 'axios';
 import { debugError } from '../utils/debugError.js';
 import { logger } from '../utils/logger.js';
 import { MenheraClient } from '../types/menhera.js';
-import { getEnviroments } from '../utils/getEnviroments.js';
+import { getEnviroments, testEnviroment } from '../utils/getEnviroments.js';
 
 interface AssetsLimit {
   angry: number;
@@ -57,7 +57,7 @@ export const getProfileImageUrl = (imageId: number, bot: MenheraClient): string 
   `${bot.cdnUrl}/images/profiles/${imageId}.png`;
 
 export const updateAssets = async (): Promise<void> => {
-  if (process.env.NOMICROSERVICES || process.env.NODE_ENV === 'test') return;
+  if (process.env.NOMICROSERVICES || testEnviroment) return;
 
   const result = await axios.get(CDN_URL).catch(debugError);
   if (!result) return logger.error('[CDN] Error when updating assets');

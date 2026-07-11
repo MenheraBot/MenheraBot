@@ -15,4 +15,8 @@ const getEnviroments = <Key extends string>(variables: Key[]): Record<Key, strin
   return fromEnv;
 };
 
-export { getEnviroments };
+const devEnviroment = process.env.NODE_ENV === 'development';
+const prodEnviroment = process.env.NODE_ENV === 'production';
+const testEnviroment = process.env.NODE_ENV === 'test';
+
+export { getEnviroments, devEnviroment, prodEnviroment, testEnviroment };

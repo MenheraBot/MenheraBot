@@ -34,6 +34,12 @@ import { getBuySeedsComponents } from '../shop/buySeeds.js';
 import { getSellPlantsComponents, getSiloComponents } from './displaySilo.js';
 import { getAdministrateFarmComponents } from './administrateFarm.js';
 import { getQualityEmoji } from './siloUtils.js';
+import userRepository from '../../database/repositories/userRepository.js';
+import giveRepository from '../../database/repositories/giveRepository.js';
+import notificationRepository from '../../database/repositories/notificationRepository.js';
+import { devEnviroment } from '../../utils/getEnviroments.js';
+
+const TUTORIAL_TITLE_ID = devEnviroment ? 2 : 33;
 
 export enum FarmTutorialStep {
   Start,
@@ -715,7 +721,19 @@ const tutorialSteps = {
       ).components,
       { emoji: ctx.safeEmoji('estrelinhas') },
     ),
-  [FarmTutorialStep.End]: (ctx: InteractionContext) =>
+  [FarmTutorialStep.End]: async (ctx: InteractionContext) => {
+    const user = await userRepository.ensureFindUser(ctx.user.id);
+
+    if (!user.titles.some((a) => a.id === TUTORIAL_TITLE_ID)) {
+      await giveRepository.giveTitleToUser(ctx.user.id, TUTORIAL_TITLE_ID);
+
+      notificationRepository.createNotification(
+        ctx.user.id,
+        'commands:notificações.notifications.lux-gave-title',
+        {},
+      );
+    }
+
     ctx.makeLayoutMessage({
       components: [
         createContainer({
@@ -748,7 +766,8 @@ const tutorialSteps = {
           ],
         }),
       ],
-    }),
+    });
+  },
 };
 
 const executeTutorialStep = (

@@ -1,8 +1,9 @@
 import { MenheraClient } from '../types/menhera.js';
+import { devEnviroment, testEnviroment } from './getEnviroments.js';
 
 const logger = {
   debug: (...args: unknown[]): void => {
-    if (process.env.NODE_ENV === 'development') console.debug(...args);
+    if (devEnviroment) console.debug(...args);
   },
 
   error: (...args: unknown[]): void => {
@@ -10,7 +11,7 @@ const logger = {
   },
 
   info: (...args: unknown[]): void => {
-    if (process.env.NODE_ENV === 'test') return;
+    if (testEnviroment) return;
     console.info(new Date().toISOString(), ...args);
   },
 

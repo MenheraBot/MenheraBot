@@ -3,7 +3,7 @@ import { Client } from 'net-ipc';
 import { DiscordInteraction } from '@discordeno/bot';
 import { bot } from '../index.js';
 import { executeVoteWebhook } from '../utils/executeVoteWebhook.js';
-import { getEnviroments } from '../utils/getEnviroments.js';
+import { getEnviroments, testEnviroment } from '../utils/getEnviroments.js';
 import { logger } from '../utils/logger.js';
 import { updateCommandsOnApi } from '../utils/updateApiCommands.js';
 import {
@@ -202,7 +202,7 @@ const createIpcConnection = async (): Promise<void> => {
     orchestratorClient.send({ type: 'IDENTIFY', version: process.env.VERSION });
   });
 
-  if (process.env.NODE_ENV === 'test') return;
+  if (testEnviroment) return;
 
   await orchestratorClient.connect().catch(logger.panic);
 };

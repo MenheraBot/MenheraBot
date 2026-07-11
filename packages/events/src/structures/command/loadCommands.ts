@@ -5,6 +5,7 @@ import { ChatInputInteractionCommand } from '../../types/commands.js';
 import { readDirectory } from '../../utils/fileUtils.js';
 import { bot } from '../../index.js';
 import { populateCommand } from '../../modules/dailies/dailies.js';
+import { testEnviroment } from '../../utils/getEnviroments.js';
 
 const loadCommands = (): void => {
   const addToMap = (command: ChatInputInteractionCommand, filePath: string): void => {
@@ -15,7 +16,7 @@ const loadCommands = (): void => {
     if (command.category !== 'dev') populateCommand(command.name);
   };
 
-  const pathToResolve = process.env.NODE_ENV === 'test' ? 'packages/events/src' : 'dist';
+  const pathToResolve = testEnviroment ? 'packages/events/src' : 'dist';
 
   readDirectory(resolve(`${pathToResolve}/commands`), addToMap);
 };

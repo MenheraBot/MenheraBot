@@ -1,3 +1,4 @@
+import { prodEnviroment } from '../../utils/getEnviroments.js';
 import { hoursToMillis } from '../../utils/miscUtils.js';
 import {
   AvailableItems,
@@ -97,7 +98,7 @@ export const Items: Record<AvailableItems, ItemsFile> = {
   },
 };
 
-const replaceDevTime = (time: number) => (process.env.NODE_ENV === 'production' ? time : 0.1);
+const replaceDevTime = (time: number) => (prodEnviroment ? time : 0.1);
 
 export const Plants: Record<AvailablePlants, PlantsFile> = {
   [AvailablePlants.Mate]: {

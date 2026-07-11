@@ -1,5 +1,6 @@
 import { BigString, DiscordEmbed, Embed } from '@discordeno/bot';
 import { bot } from '../../index.js';
+import { devEnviroment } from '../getEnviroments.js';
 
 const createEmbed = (data: Embed): DiscordEmbed => bot.transformers.reverse.embed(bot, data);
 
@@ -20,7 +21,7 @@ const createErrorEmbed = (
 
   return createEmbed({
     color: 0xfd0000,
-    title: `${process.env.NODE_ENV === 'development' ? '[DEV]' : ''} Ocorreu um erro ao executar o comando  ${commandName}`,
+    title: `${devEnviroment ? '[DEV]' : ''} Ocorreu um erro ao executar o comando  ${commandName}`,
     description: `\`\`\`js\n${errorMessage}\`\`\``,
     fields: [
       {

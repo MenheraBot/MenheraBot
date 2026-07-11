@@ -3,7 +3,7 @@ import { Collection, createRestManager } from '@discordeno/bot';
 import { initializeRedis, initializeMongo } from '../database/databases.js';
 import { loadLocales } from './localeStructure.js';
 import { initializeSentry } from './initializeSentry.js';
-import { getEnviroments } from '../utils/getEnviroments.js';
+import { getEnviroments, testEnviroment } from '../utils/getEnviroments.js';
 import { MenheraClient } from '../types/menhera.js';
 import { updateAssets } from './cdnManager.js';
 import { initializePrometheus } from './initializePrometheus.js';
@@ -41,7 +41,7 @@ const initializeServices = async (): Promise<void> => {
   await loadLocales();
   await loadChangelog();
 
-  if (process.env.NODE_ENV === 'test') return;
+  if (testEnviroment) return;
 
   await initializeMongo();
   await initializeRedis();
