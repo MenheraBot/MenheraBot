@@ -391,8 +391,6 @@ const displayFairOrders = async (
     ? MAX_TRADE_REQUESTS_IN_FAIR_PER_USER
     : await fairOrderRepository.countPublicOrders(ignoreTroll, farmer.id, filteringPlants);
 
-  console.log(totalOrders);
-
   const totalPages = Math.max(1, Math.ceil(totalOrders / MAX_FAIR_ORDERS_PER_PAGE));
 
   const toSearchPage = page >= totalPages ? 0 : page;
