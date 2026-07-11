@@ -1143,7 +1143,6 @@
       "title": "Farm Tutorial",
       "start": "Start tutorial",
       "restart": "Restart tutorial",
-      "jump": "Start the tutorial at a specific objective",
       "objective": "Objective",
       "objective-other": "Objectives",
       "steps": {
@@ -1165,7 +1164,7 @@
         },
         "4": {
           "description": "{{msg}}Fertilizers improve a harvest's weight, the time it takes for the crop to mature, and also the **crop quality**. To make the most of the fertilizer you just collected, buy a plant seed in the /shop. Pay attention to the best season for the plant you buy, remember that the current season is {{season}} {{emoji}}.",
-          "warning": "Buy a plant seed whose best season is {{season}}",
+          "warning": ":x: **Buy a plant seed whose best season is {{season}}**\n\n",
           "objective-0": "Buy a plant seed whose best season is {{season}} {{emoji}}"
         },
         "5": {
@@ -1178,7 +1177,7 @@
           "objective-1": "Use a fertilizer on your field"
         },
         "7": {
-          "description": "The current season is favorable for your plant, and the field has fertilizer. This guarantees a bountiful and **High Quality** {{emoji}} harvest.",
+          "description": "The current season is favorable for your plant, and the field has fertilizer. This guarantees a bountiful and {{emoji}} **High Quality** harvest.",
           "objective-0": "Plant the {{plant}} {{emoji}} seed",
           "objective-1": "Harvest the crop when it matures"
         },

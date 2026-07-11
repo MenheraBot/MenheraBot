@@ -1,4 +1,4 @@
-import { ButtonStyles, ContainerComponent, MessageFlags, SelectOption } from '@discordeno/bot';
+import { ButtonStyles, ContainerComponent, MessageFlags } from '@discordeno/bot';
 import {
   createActionRow,
   createButton,
@@ -79,6 +79,7 @@ const sendTutorialMessage = async (
       (o, i) =>
         `- ${o.finished ? '✅' : '🔳'} ${ctx.locale(
           `commands:fazendinha.tutorial.steps.${step}.objective-${i as 0}`,
+          objectiveTranslationData[i],
         )}`,
     )
     .join('\n');
@@ -129,26 +130,6 @@ const tutorialSteps = {
                 ),
               }),
             ]),
-            createSeparator(),
-            createActionRow([
-              createSelectMenu({
-                customId: createCustomId(12, ctx.user.id, ctx.originalInteractionId, 'JUMP'),
-                options: Object.values(FarmTutorialStep).reduce<SelectOption[]>((p, v) => {
-                  if (typeof v === 'string') return p;
-
-                  if (v === 0) return p;
-
-                  p.push({
-                    value: `${v}`,
-                    label: ctx.locale(`commands:fazendinha.tutorial.steps.${v as 1}.objective-0`),
-                  });
-
-                  return p;
-                }, []),
-              }),
-            ]),
-
-            createTextDisplay(`-# ${ctx.locale('commands:fazendinha.tutorial.jump')}`),
           ],
         }),
       ],
@@ -285,6 +266,8 @@ const tutorialSteps = {
               season: ctx.locale(`commands:fazendinha.seasons.${TUTORIAL_SEASON}`),
             })
           : undefined,
+        season: ctx.locale(`commands:fazendinha.seasons.${TUTORIAL_SEASON}`),
+        emoji: SeasonEmojis[TUTORIAL_SEASON],
       },
     );
   },
@@ -305,7 +288,7 @@ const tutorialSteps = {
         true,
       )[0],
       {
-        plant: info?.plant ?? DEFAULT_TUTORIAL_PLANT,
+        plant: ctx.locale(`data:plants.${info?.plant ?? DEFAULT_TUTORIAL_PLANT}`),
         emoji: Plants[info?.plant ?? DEFAULT_TUTORIAL_PLANT].emoji,
       },
     ),
@@ -392,6 +375,7 @@ const tutorialSteps = {
           }),
         ]),
       ],
+      { emoji: getQualityEmoji(PlantQuality.Best) },
     ),
   [FarmTutorialStep.HarvestQuality]: (ctx: InteractionContext, info?: TutorialInfo) =>
     sendTutorialMessage(
@@ -484,6 +468,7 @@ const tutorialSteps = {
               ctx.originalInteractionId,
               'STEP',
               FarmTutorialStep.CheckDeliveries,
+              info?.plant ?? DEFAULT_TUTORIAL_PLANT,
             ),
           }),
           components: [
@@ -511,6 +496,7 @@ const tutorialSteps = {
               ctx.originalInteractionId,
               'STEP',
               FarmTutorialStep.TradePlants,
+              info?.plant ?? DEFAULT_TUTORIAL_PLANT,
             ),
           }),
         ]),
@@ -657,7 +643,7 @@ const tutorialSteps = {
       ],
       { commandId: (await commandRepository.getCommandInfo('fazendinha'))?.discordId },
     ),
-  [FarmTutorialStep.FinishDelivery]: (ctx: InteractionContext) =>
+  [FarmTutorialStep.FinishDelivery]: (ctx: InteractionContext, info?: TutorialInfo) =>
     sendTutorialMessage(
       ctx,
       'fazendinha entregas',
@@ -684,6 +670,7 @@ const tutorialSteps = {
               ctx.originalInteractionId,
               'STEP',
               FarmTutorialStep.SellPlants,
+              info?.plant ?? DEFAULT_TUTORIAL_PLANT,
             ),
           }),
           components: [

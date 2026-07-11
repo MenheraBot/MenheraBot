@@ -96,7 +96,14 @@ const parseUserPlantations = (
           `${selectedSeed}`,
           forceField === i ? 'Y' : 'N',
         )
-      : createCustomId(12, ctx.user.id, ctx.originalInteractionId, 'STEP', tutorialStep);
+      : createCustomId(
+          12,
+          ctx.user.id,
+          ctx.originalInteractionId,
+          'STEP',
+          tutorialStep,
+          selectedSeed,
+        );
 
     fieldsComponents.push(
       createSeparator(false),
