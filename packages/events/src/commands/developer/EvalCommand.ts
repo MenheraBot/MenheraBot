@@ -1,13 +1,7 @@
 import { ApplicationCommandOptionTypes, ButtonStyles } from '@discordeno/bot';
 import { inspect } from 'node:util';
 
-import {
-  eventModel,
-  farmerModel,
-  feirinhaOrderModel as ordersModel,
-  usersModel,
-  userThemesModel as themeModel,
-} from '../../database/collections.js';
+import * as collections from '../../database/collections.js';
 import { MainRedisClient as redis } from '../../database/databases.js';
 import userRepository from '../../database/repositories/userRepository.js';
 import { bot } from '../../index.js';
@@ -25,17 +19,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 // This is odd, but its needed so the eslint dont get angry with unused imports
 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
 () => {
-  return [
-    userRepository,
-    themeModel,
-    enableTcp,
-    enableUnixSocket,
-    usersModel,
-    redis,
-    farmerModel,
-    eventModel,
-    ordersModel,
-  ];
+  return [collections, userRepository, enableTcp, enableUnixSocket, redis];
 };
 
 const executeEval = async (ctx: InteractionContext, toEval: string) => {
