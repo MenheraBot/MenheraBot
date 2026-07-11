@@ -1143,6 +1143,7 @@
       "title": "Farm Tutorial",
       "start": "Start tutorial",
       "restart": "Restart tutorial",
+      "check-trades": "Check fair trades", 
       "objective": "Objective",
       "objective-other": "Objectives",
       "steps": {

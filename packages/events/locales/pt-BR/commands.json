@@ -1150,6 +1150,7 @@
       "title": "Tutorial da Fazendinha",
       "start": "Iniciar tutorial",
       "restart": "Reiniciar tutorial",
+      "check-trades": "Ver trocas da feira", 
       "objective": "Objetivo",
       "objective-other": "Objetivos",
       "steps": {

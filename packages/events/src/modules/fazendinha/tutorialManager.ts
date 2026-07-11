@@ -494,7 +494,7 @@ const tutorialSteps = {
         createSeparator(false, false),
         createActionRow([
           createButton({
-            label: 'Checar trocas de usuários',
+            label: ctx.locale('commands:fazendinha.tutorial.check-trades'),
             style: ButtonStyles.Primary,
             customId: createCustomId(
               12,
