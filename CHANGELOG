@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Corrigido plural das tentativas de caças no `/caçar`. - Reportado por @mareys.
 
+### Hotfix
+
+- Corrigido etapa do tutorial onde a plantação deveria estar apodrecida, mas não estava. 
+
 ## [6.5.0] - 2026-07-09
 
 ### Added

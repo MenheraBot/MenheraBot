@@ -198,7 +198,8 @@ const tutorialSteps = {
           [
             {
               isPlanted: true,
-              harvestAt: Date.now() - minutesToMillis(5),
+              harvestAt:
+                Date.now() - minutesToMillis(Plants[AvailablePlants.Mate].minutesToRot) - 1,
               plantType: AvailablePlants.Mate,
               plantedSeason: TUTORIAL_SEASON,
             },
