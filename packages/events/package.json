@@ -1,7 +1,7 @@
 {
   "name": "@menhera-bot/events",
   "type": "module",
-  "version": "6.6.0a",
+  "version": "6.6.0b",
   "engines": {
     "node": "^24"
   },
@@ -18,7 +18,7 @@
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "print-version": "echo version=$npm_package_version",
     "build:dev": "pnpm build && pnpm dev",
-    "start": "VERSION=$npm_package_version NODE_ENV=production node .",
+    "start": "VERSION=$npm_package_version NODE_ENV=production NODE_OPTIONS=\"--heapsnapshot-signal=SIGUSR2 --max-old-space-size=200 --heapsnapshot-near-heap-limit=1\" node .",
     "dev": "VERSION=$npm_package_version NODE_ENV=development node -r dotenv/config .",
     "beta": "VERSION=$npm_package_version NODE_ENV=development node .",
     "dev:nomicroservices": "VERSION=$npm_package_version NODE_ENV=development NOMICROSERVICES=true node -r dotenv/config ."
