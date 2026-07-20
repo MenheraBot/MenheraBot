@@ -26,7 +26,7 @@
   "dependencies": {
     "@discordeno/bot": "22.0.1-next.780f212",
     "@sentry/node": "^10.49.0",
-    "axios": "^1.16.0",
+    "axios": "^1.18.0",
     "i18next": "^26.0.5",
     "i18next-fs-backend": "^2.6.6",
     "ioredis": "^5.10.1",
