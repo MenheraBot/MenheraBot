@@ -15,6 +15,7 @@ RUN apk --no-cache add curl && \
 RUN pnpm deploy --filter=@menhera-bot/events --prod /prod/events --legacy
 RUN pnpm deploy --filter=@menhera-bot/orchestrator --prod /prod/orchestrator --legacy
 
+# Wait until https://github.com/nodejs/node/pull/64664 to update
 FROM node:24-alpine AS events
 WORKDIR /app
 COPY --from=build /prod/events/dist  ./dist/
