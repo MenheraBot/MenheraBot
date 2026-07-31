@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - Corrigido erros no comando poker ao finalizar uma partida.
+- Corrigido problema do site da Menhera aparecer poucos comandos as vezes.
 
 ## [6.6.0] - 2026-07-11
 

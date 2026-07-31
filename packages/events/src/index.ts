@@ -39,6 +39,9 @@ setupSignalHandlers(bot);
 
 logger.info('[READY] I am ready to process events!');
 
-if (prodEnviroment) updateCommandsOnApi();
+if (prodEnviroment)
+  setTimeout(() => {
+    updateCommandsOnApi();
+  }, 10_000).unref();
 
 export { bot };
