@@ -200,3 +200,46 @@ describe('Tests related to getting the next player to play seat', () => {
     expect(getNextPlayableSeat(game, 8)).toBe(2);
   });
 });
+
+describe('No player is able to act (must not overflow the stack)', () => {
+  test('Every non-folded player is all in', () => {
+    const game = mockGame();
+    game.players = [mockPlayer(0), mockPlayer(1), mockPlayer(2, true), mockPlayer(3)];
+
+    game.players[0].chips = 0;
+    game.players[1].chips = 0;
+    game.players[3].chips = 0;
+
+    expect(() => getNextPlayableSeat(game, 0)).not.toThrow();
+    expect(() => getNextPlayableSeat(game, 3)).not.toThrow();
+    expect(() => getNextPlayableSeat(game, 8)).not.toThrow();
+
+    expect(getNextPlayableSeat(game, 0)).toBe(0);
+    expect(getNextPlayableSeat(game, 3)).toBe(3);
+
+    expect(() => getPreviousPlayableSeat(game, 0)).not.toThrow();
+    expect(() => getPreviousPlayableSeat(game, 3)).not.toThrow();
+    expect(getPreviousPlayableSeat(game, 3)).toBe(3);
+  });
+
+  test('Every player has folded', () => {
+    const game = mockGame();
+    game.players = [mockPlayer(0, true), mockPlayer(1, true), mockPlayer(2, true)];
+
+    expect(() => getNextPlayableSeat(game, 1)).not.toThrow();
+    expect(getNextPlayableSeat(game, 1)).toBe(1);
+
+    expect(() => getPreviousPlayableSeat(game, 1)).not.toThrow();
+    expect(getPreviousPlayableSeat(game, 1)).toBe(1);
+  });
+
+  test('There are no players at all', () => {
+    const game = mockGame();
+    game.players = [];
+
+    expect(() => getNextPlayableSeat(game, 0)).not.toThrow();
+    expect(getNextPlayableSeat(game, 0)).toBe(0);
+
+    expect(() => getPreviousPlayableSeat(game, 0)).not.toThrow();
+  });
+});

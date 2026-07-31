@@ -52,6 +52,14 @@ const makeShowdown = async (ctx: GenericContext, gameData: PokerMatch): Promise<
 
   const winners = PokerSolver.Hand.winners(userHands);
 
+  if (winners.length === 0)
+    return finishRound(
+      ctx,
+      gameData,
+      gameData.players.filter((a) => !a.folded),
+      'FOLDED',
+    );
+
   const winReason = winners[0].descr.includes('Royal Flush')
     ? 'ROYAL-FLUSH'
     : winners[0].name.replaceAll(' ', '-').toUpperCase();

@@ -10,8 +10,11 @@ import { mentionUser } from '../../utils/discord/userUtils.js';
 import { GenericContext } from '../../types/menhera.js';
 
 const getNextPlayableSeat = (gameData: PokerMatch, lastSeat: number): number => {
-  const biggestPlayableSeat = gameData.players.reduce((p, c) => {
-    if (c.seatId > p && !c.folded && c.chips > 0) return c.seatId;
+  const playablePlayers = gameData.players.filter((c) => !c.folded && c.chips > 0);
+  if (playablePlayers.length === 0) return lastSeat;
+
+  const biggestPlayableSeat = playablePlayers.reduce((p, c) => {
+    if (c.seatId > p) return c.seatId;
     return p;
   }, 0);
 
@@ -29,8 +32,11 @@ const getNextPlayableSeat = (gameData: PokerMatch, lastSeat: number): number => 
 };
 
 const getPreviousPlayableSeat = (gameData: PokerMatch, lastSeat: number): number => {
-  const lowestPlayableSeat = gameData.players.reduce((p, c) => {
-    if (c.seatId < p && !c.folded && c.chips > 0) return c.seatId;
+  const playablePlayers = gameData.players.filter((c) => !c.folded && c.chips > 0);
+  if (playablePlayers.length === 0) return lastSeat;
+
+  const lowestPlayableSeat = playablePlayers.reduce((p, c) => {
+    if (c.seatId < p) return c.seatId;
     return p;
   }, MAX_POKER_PLAYERS);
 
@@ -82,12 +88,14 @@ const updateGameState = async (ctx: GenericContext, gameData: PokerMatch): Promi
 
   const playingPlayers = gameData.players.filter((a) => !a.folded);
 
-  if (playingPlayers.length === 1)
-    return finishRound(ctx, gameData, [gameData.players.find((a) => !a.folded)!], 'FOLDED');
+  if (playingPlayers.length <= 1) return finishRound(ctx, gameData, playingPlayers, 'FOLDED');
 
   const canBet = playingPlayers.filter((a) => a.chips > 0);
 
-  if (canBet.length <= 1 && gameData.lastAction.playerSeat === gameData.lastPlayerSeat)
+  if (
+    canBet.length === 0 ||
+    (canBet.length <= 1 && gameData.lastAction.playerSeat === gameData.lastPlayerSeat)
+  )
     return makeShowdown(ctx, gameData);
 
   updatePlayerTurn(gameData);
