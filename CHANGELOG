@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [6.7.0] - 2026-07-31
+
+### Changed
+
+- **Balanceamento geral da Fazendinha!** Os preços de venda e de sementes de todas as plantas foram reajustados para que evoluir de planta sempre valha a pena: cada planta mais avançada agora rende mais estrelinhas por minuto (tanto no bruto quanto no lucro) do que a anterior. Chega de sementes que não compensavam comprar!
+- A Erva continua grátis e sem risco, mas passa a ser a planta de menor rendimento — ideal para começar, enquanto as outras sementes valem o investimento.
+- Plantas que apodreciam rápido demais (Cogumelo, Mirtilo e Abacate) agora demoram mais para estragar, garantindo tempo suficiente para colher mesmo na pior estação.
+
 ## [6.6.1] - 2026-07-30
 
 ### Fixed
