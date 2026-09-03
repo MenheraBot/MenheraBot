@@ -234,7 +234,7 @@ const changeThemeType = async (
     let embedFieldValue = ctx.locale('commands:loja.buy_themes.data', {
       description: ctx.locale(`data:themes.${theme.id as 1}.description`),
       price: theme.data.price,
-      author: credits.find((b) => b.themeId === theme.id)?.ownerId,
+      author: credits.find((b) => b.themeId === theme.id)?.ownerId ?? `${bot.id}`,
     });
 
     if (theme.data.type === 'profile') {

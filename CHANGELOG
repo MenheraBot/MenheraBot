@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [6.7.1] - 2026-09-03
+
+### Fixed
+
+- Corrigido erro ao comprar temas que não tem um dono atribuído.
+
 ## [6.7.0] - 2026-07-31
 
 ### Changed

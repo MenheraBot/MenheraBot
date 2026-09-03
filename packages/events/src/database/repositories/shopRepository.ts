@@ -13,6 +13,7 @@ import { bot } from '../../index.js';
 import { ApiTransactionReason } from '../../types/api.js';
 import notificationRepository from './notificationRepository.js';
 import { User } from '../../types/discordeno.js';
+import { logger } from '../../utils/logger.js';
 
 const executeSellHunt = async (
   userId: BigString,
@@ -123,10 +124,11 @@ const executeBuyTheme = async (
     { username: user.username, theme: themeName },
   );
 
-  await themeCreditsRepository.giveOwnerThemeRoyalties(
-    themeId,
-    Math.floor((royalty / 100) * price),
-  );
+  await themeCreditsRepository
+    .giveOwnerThemeRoyalties(themeId, Math.floor((royalty / 100) * price))
+    .catch((err) => {
+      logger.error(`É claro que não tem mais dono essa ....`, err);
+    });
 
   switch (themeType) {
     case 'profile':
