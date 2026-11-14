@@ -117,10 +117,12 @@ const announceAutocomplete = async (interaction: Interaction): Promise<undefined
       max: maximumPrice,
     });
 
+    const baseValue = Math.floor(plantPrice * amount);
+
     return respondWithChoices(interaction, [
       { name: choiceText['pt-BR'], nameLocalizations: choiceText, value: plantPrice },
       { name: `⭐ | ${maximumPrice}`, value: maximumPrice },
-      { name: `⭐ | ${plantPrice}`, value: Math.floor(plantPrice * amount) },
+      { name: `⭐ | ${baseValue}`, value: baseValue },
       { name: `⭐ | ${minimumPrice}`, value: minimumPrice },
     ]);
   }
