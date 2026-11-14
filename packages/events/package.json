@@ -1,7 +1,7 @@
 {
   "name": "@menhera-bot/events",
   "type": "module",
-  "version": "6.7.1",
+  "version": "6.7.2",
   "engines": {
     "node": "^24"
   },
@@ -26,12 +26,12 @@
   "dependencies": {
     "@discordeno/bot": "22.0.1-next.780f212",
     "@sentry/node": "^10.49.0",
-    "axios": "^1.16.0",
+    "axios": "^1.20.0",
     "i18next": "^26.0.5",
     "i18next-fs-backend": "^2.6.6",
     "ioredis": "^5.10.1",
     "md5": "^2.3.0",
-    "mongoose": "6.13.9",
+    "mongoose": "6.13.12",
     "net-ipc": "^2.2.2",
     "pokersolver": "^2.1.4",
     "prom-client": "^15.1.3",
