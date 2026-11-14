@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [6.7.2] - 2026-11-14
 
+### Added
+
+- Criada as badges de 6, 7 e 8 anos com a Menhera! A badge 6 já está disponível para quem utiliza a Menhera a mais de 6 anos.
+
 ### Changed
 
 - Agora é possível filtrar plantas no `/fazendinha feira trocas`.
