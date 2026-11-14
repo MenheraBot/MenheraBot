@@ -101,6 +101,9 @@ export const EMOJIS = {
   badge_202: '<:badge_202:1289844044192808981>',
   badge_203: '<:badge_203:1289844107996430356>',
   badge_204: '<:badge_204:1435078160315060264>',
+  badge_205: '<:badge_205:1571175072667017236>',
+  badge_206: '<:badge_206:1571175074352865341>',
+  badge_207: '<:badge_207:1571175076563517560>',
 };
 
 export const TOP_EMOJIS: Record<string, string> = {

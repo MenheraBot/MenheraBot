@@ -1263,7 +1263,7 @@
       "order": {
         "user-orders": "{{user}}'s trade Requests",
         "public-orders": "Trade Requests",
-        "filter": "Filtrar plantas",
+        "filter": "Filter plants",
         "no-user-orders": "This user does not have any trade requests at the moment.",
         "no-public-orders": "No one in the vicinity of the neighborhood is requesting trades at the moment.",
         "not-found-orders": "Not a single trade found with this filter.",
