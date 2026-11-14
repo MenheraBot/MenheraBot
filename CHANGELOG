@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - Corrigido exibição do preço das plantas no `/fazendinha feira anunciar`, que não considerava a quantidade para mostrar o preço base da planta.
+- Corrigido texto do `Última colheita` do `/fazendinha plantações` que mostrava colheita de 0Kg se alguma planta podre fosse colhida. 
 
 ## [6.7.2] - 2026-11-14
 

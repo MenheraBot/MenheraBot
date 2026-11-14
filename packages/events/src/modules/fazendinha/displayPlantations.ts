@@ -238,7 +238,7 @@ const displayPlantations = async (
         `${ctx.locale('commands:fazendinha.plantations.harvest-text', {
           harvested: harvested
             .flatMap((plant) =>
-              plant.weight >= 0
+              plant.weight > 0
                 ? [
                     `- ${getQualityEmoji(getQuality(plant))}${Plants[plant.plant].emoji} **${plant.weight} kg**`,
                   ]
